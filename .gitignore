@@ -6,6 +6,4 @@ __pycache__/
 
 # Other softwares
 EnergyPlus*/
-!EnergyPlus*/install.md
 bcvtb/
-!bcvtb/install.md
