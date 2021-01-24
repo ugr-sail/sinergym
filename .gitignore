@@ -1,5 +1,6 @@
 # Python stuff
 __pycache__/
+.vscode/
 *.py[cod]
 *$py.class
 .ipynb_checkpoints

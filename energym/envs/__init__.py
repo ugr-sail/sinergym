@@ -1,1 +1,1 @@
-from energym.env.eplus_demo import EplusDemo
+from energym.envs.eplus_demo import EplusDemo
