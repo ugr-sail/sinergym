@@ -5,7 +5,7 @@ class EplusDemo(gym.Env):
     metadata = {'render.modes': ['human']}
     
     def __init__(self):
-        self.simulator = EnergyPlus()
+        self.simulator = EnergyPlus('/home/jjimenez/energym/energym/data/buildings/5ZoneAutoDXVAV.idf')
 
     def step(self, action):
         pass

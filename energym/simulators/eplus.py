@@ -4,16 +4,16 @@ Author: Javier Jiménez based on Zhiang Zhang's implementation
 https://github.com/zhangzhizza/Gym-Eplus
 """
 
-
 import os
 import threading
 import socket
+from eppy.modeleditor import IDF
 
 
 class EnergyPlus(object):
     """"""
 
-    def __init__(self):
+    def __init__(self, idf_file):
         """"""
 
         # Access BCVTB and EnergyPlus locations
@@ -26,7 +26,10 @@ class EnergyPlus(object):
         except:
             raise KeyError('EPLUS_PATH environment variable not set.')
 
-        # Create socket
+        # Read IDF file
+        IDF.setiddname(os.path.join(self.eplus_path, 'Energy+.idd'))
+        self.idf = IDF(idf_file)
+        # Create socket for communication with EnergyPlus
         self._socket, self._host, self._port = self._create_socket()
 
     def _create_socket(self):
