@@ -20,9 +20,7 @@ from gym import Env, spaces
 from gym.envs.registration import register
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
-from ..util.logger import Logger 
-from ..util.time import (get_hours_to_now, get_time_string, get_delta_seconds, 
-                         WEEKDAY_ENCODING)
+from ..utils import *
 
 YEAR = 1991 # Non leap year
 CWD = os.getcwd();
@@ -31,7 +29,7 @@ LOG_LEVEL_EPLS = 'ERROR';
 LOG_FMT = "[%(asctime)s] %(name)s %(levelname)s:%(message)s";
 
 
-class EplusEnv(Env):
+class EnergyPlus(Env):
     """EnergyPlus gym environment
 
     Args:
@@ -362,7 +360,7 @@ class EplusEnv(Env):
         This method is called after finishing using the environment. 
         """
         self._end_episode();
-        self._socket.shutdown(socket.SHUT_RDWR);
+        #self._socket.shutdown(socket.SHUT_RDWR);
         self._socket.close();        
         
     def end_episode(self):

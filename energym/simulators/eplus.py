@@ -8,9 +8,10 @@ import os
 import socket
 from eppy.modeleditor import IDF
 from datetime import datetime
+from base import BaseSimulator
 
 
-class EnergyPlus(object):
+class EnergyPlus(BaseSimulator):
     """"""
 
     def __init__(self, idf_file, weather_file, variables_file, env_name):
@@ -53,7 +54,7 @@ class EnergyPlus(object):
         """"""
         return True
 
-    def return_observation(self):
+    def receive_observation(self):
         """"""
         return True
 
