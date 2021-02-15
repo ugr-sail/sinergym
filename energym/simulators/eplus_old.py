@@ -91,7 +91,7 @@ class EnergyPlus(Env):
         self._epi_num = 0;
         self._act_repeat = act_repeat;
         self._max_ep_data_store_num = max_ep_data_store_num;
-        self._last_action = [20.0]; 
+        self._last_action = [21.0, 25.0]; 
 
     def reset(self):
         """Reset the environment.
@@ -236,6 +236,7 @@ class EnergyPlus(Env):
         ret.append(is_terminal);
         # Change some attributes
         self._curSimTim = curSimTim;
+        self._last_action = action;
         return ret;
         
     def render(self, mode='human', close=False):

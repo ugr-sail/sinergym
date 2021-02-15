@@ -6,7 +6,7 @@ from ..simulators import EnergyPlus
 class EplusDemo(gym.Env):
     metadata = {'render.modes': ['human']}
     
-    def __init__(self, action_type = 'discrete', comfort_range = (20, 22)):
+    def __init__(self, comfort_range = (20, 22)):
         """
         """
 
@@ -25,37 +25,19 @@ class EplusDemo(gym.Env):
         # Observation space
         self.observation_space = gym.spaces.Box(low=-5e6, high=5e6, shape=(16,), dtype=np.float32)
         # Action space
-        self.action_type = action_type
-        if action_type == 'discrete':
-            # 9 possible actions - [Heating SetPoint, Cooling Setpoint]
-            self.action_mapping = {
-                0: [21, 19], 1: [21, 20], 2: [21, 21],
-                3: [22, 19], 4: [22, 20], 5: [22, 21],
-                6: [23, 19], 7: [23, 20], 8: [23, 21] 
-            }
-            self.action_space = gym.spaces.Discrete(9)
-        elif action_type == 'multidiscrete':
-            # 25 possible actions - [Heating SetPoint, Cooling Setpoint]
-            self.action_mapping = {
-                (0,0): [25, 17], (0,1): [25, 18], (0,2): [25, 19], (0,3): [25, 20], (0,4): [25, 21],
-                (1,0): [24, 17], (1,1): [24, 18], (1,2): [24, 19], (1,3): [24, 20], (1,4): [24, 21],
-                (2,0): [23, 17], (2,1): [23, 18], (2,2): [23, 19], (2,3): [23, 20], (2,4): [23, 21],
-                (3,0): [22, 17], (3,1): [22, 18], (3,2): [22, 19], (3,3): [22, 20], (3,4): [22, 21],
-                (4,0): [21, 17], (4,1): [21, 18], (4,2): [21, 19], (4,3): [21, 20], (4,4): [21, 21],
-            }
-            self.action_space = gym.spaces.MultiDiscrete((5, 5))
-        else:
-            raise NotImplementedError('Action type not supported.')
+        # 9 possible actions - [Change Heating SetPoint, Contant Cooling Setpoint = 25]
+        self.action_mapping = {
+            0: 15, 1: 16, 2: 17, 3: 18, 4: 19, 5: 20, 6: 21, 7: 22, 8: 23, 9: 24
+        }
+        self.action_space = gym.spaces.Discrete(10)
 
     def step(self, action):
         """"""
-
-        if self.action_type == 'multidiscrete':
-            a = self.action_mapping[tuple(action)]
-        else:
-            a = self.action_mapping[action]
-        print(a)
+        
+        t1 = self.action_mapping[action]
+        a = [t1, 25.0]
         # Send action to de simulator
+        self.simulator.logger_main.debug(a)
         t, obs, done = self.simulator.step(a)
         temp = obs[9]
         power = obs[-1]
@@ -72,12 +54,12 @@ class EplusDemo(gym.Env):
     def close(self):
         self.simulator.end_env()
 
-    def _get_reward(self, temperature, power, beta = 0.001):
+    def _get_reward(self, temperature, power, beta = 1e-4):
         """"""
-        reward = 0.0
+        comfort_penalty = 0.0
         if temperature < self.comfort_range[0]:
-            reward -= self.comfort_range[0] - temperature
+            comfort_penalty -= self.comfort_range[0] - temperature
         if temperature < self.comfort_range[1]:
-            reward -= temperature - self.comfort_range[1]
-        reward -= beta * power
+            comfort_penalty -= temperature - self.comfort_range[1]
+        reward = - beta * power - comfort_penalty
         return reward
