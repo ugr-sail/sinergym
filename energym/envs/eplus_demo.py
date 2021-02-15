@@ -1,5 +1,6 @@
 import gym
 import os
+import pkg_resources
 import numpy as np
 from ..simulators import EnergyPlus
 
@@ -13,13 +14,14 @@ class EplusDemo(gym.Env):
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
         self.comfort_range = comfort_range
+        data_path = pkg_resources.resource_filename('energym', 'data/')
 
         self.simulator = EnergyPlus(
             eplus_path = eplus_path,
-            weather_path = '/home/jjimenez/energym/energym/data/weather/USA_Pittsburg_TMY3.epw',
+            weather_path = os.path.join(data_path, '/weather/USA_Pittsburg_TMY3.epw'),
             bcvtb_path = bcvtb_path,
-            variable_path = '/home/jjimenez/energym/energym/data/variables/variables.cfg',
-            idf_path = '/home/jjimenez/energym/energym/data/buildings/5ZoneAutoDXVAV.idf',
+            variable_path = os.path.join(data_path, '/variables/variables.cfg'),
+            idf_path = os.path.join(data_path, '/buildings/5ZoneAutoDXVAV.idf'),
             env_name = 'eplus-demo-v1'
         )
         # Observation space
