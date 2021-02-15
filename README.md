@@ -25,3 +25,4 @@ To install energym, follow these steps.
 - [ ] Include reward calculation
 - [ ] Data paths are included in the environment, so no hard-coding needed
 - [ ] Try an example using SB3
+- [ ] Create and test Dockerfile
