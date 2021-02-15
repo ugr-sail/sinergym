@@ -12,8 +12,8 @@ First, it is recommended to create a virtual environment. You can do so by:
 
 ```sh
 $ sudo apt-get install python-virtualenv virtualenv
-$ virtualenv env_energym --python=python3
-$ source env_energym/bin/activat
+$ virtualenv env_energym --python=python3.7
+$ source env_energym/bin/activate
 ```
 
 Then, clone this repository using this command:

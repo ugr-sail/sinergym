@@ -7,4 +7,11 @@ setup(name='energym',
       version='0.0.1',
       install_requires=reqs,
       include_package_data=True,
+      extras_require={
+            'extras': [
+                  'pandas', # data analysis
+                  'matplotlib', # visualization
+                  'stable-baselines3' # DRL with pytorch
+            ]
+      }
 )

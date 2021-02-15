@@ -3,7 +3,6 @@ import energym
 import numpy as np
 
 env = gym.make('Eplus-discrete-v1')
-obs = env.reset()
 for i in range(9):
     obs = env.reset()
     rewards = []

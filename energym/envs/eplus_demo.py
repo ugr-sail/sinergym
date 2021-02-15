@@ -18,10 +18,10 @@ class EplusDemo(gym.Env):
 
         self.simulator = EnergyPlus(
             eplus_path = eplus_path,
-            weather_path = os.path.join(data_path, '/weather/USA_Pittsburg_TMY3.epw'),
+            weather_path = os.path.join(data_path, 'weather/USA_Pittsburg_TMY3.epw'),
             bcvtb_path = bcvtb_path,
-            variable_path = os.path.join(data_path, '/variables/variables.cfg'),
-            idf_path = os.path.join(data_path, '/buildings/5ZoneAutoDXVAV.idf'),
+            variable_path = os.path.join(data_path, 'variables/variables.cfg'),
+            idf_path = os.path.join(data_path, 'buildings/5ZoneAutoDXVAV.idf'),
             env_name = 'eplus-demo-v1'
         )
         # Observation space
