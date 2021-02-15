@@ -4,12 +4,13 @@ import numpy as np
 
 env = gym.make('Eplus-discrete-v1')
 obs = env.reset()
-for i in range(11):
+for i in range(10):
     obs = env.reset()
-    powers = [obs[-1]]
+    rewards = []
     done = False
     while not done:
-        obs, reward, done, info = env.step(2)
-        powers.append(obs[-1])
-    print(np.mean(powers), np.min(powers), np.max(powers), np.std(powers))
+        a = env.action_space.sample()
+        obs, reward, done, info = env.step(a)
+        rewards.append(reward)
+    print('Episode ', i, 'Mean reward: ', np.mean(rewards), 'Cumulative reward: ', sum(rewards))
 env.close()

@@ -6,12 +6,13 @@ from ..simulators import EnergyPlus
 class EplusDemo(gym.Env):
     metadata = {'render.modes': ['human']}
     
-    def __init__(self, action_type = 'discrete'):
+    def __init__(self, action_type = 'discrete', comfort_range = (20, 22)):
         """
         """
 
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
+        self.comfort_range = comfort_range
 
         self.simulator = EnergyPlus(
             eplus_path = eplus_path,
@@ -53,6 +54,7 @@ class EplusDemo(gym.Env):
             a = self.action_mapping[tuple(action)]
         else:
             a = self.action_mapping[action]
+        print(a)
         # Send action to de simulator
         t, obs, done = self.simulator.step(a)
         temp = obs[9]
@@ -70,7 +72,12 @@ class EplusDemo(gym.Env):
     def close(self):
         self.simulator.end_env()
 
-    def _get_reward(self, temperature, power):
+    def _get_reward(self, temperature, power, beta = 0.001):
         """"""
-        #TODO
-        return 1.0
+        reward = 0.0
+        if temperature < self.comfort_range[0]:
+            reward -= self.comfort_range[0] - temperature
+        if temperature < self.comfort_range[1]:
+            reward -= temperature - self.comfort_range[1]
+        reward -= beta * power
+        return reward
