@@ -26,8 +26,8 @@ $ git clone https://github.com/jajimer/energym.git
 Next step is downloading Energy Plus. Currently only version 8.6.0 has been tested,
 but code may also work for other versions.
 
-Follow the instructions [here](https://energyplus.net/downloads) and install Linux platform.
-Choose any location to install the software (not needed to be inside the repository folder).
+Follow the instructions [here](https://energyplus.net/downloads) and install for Linux system (apparently only Ubuntu is supported).
+Choose any location to install the software.
 
 Once installed, a folder called ``Energyplus-8-6-0`` should appear.
 
@@ -42,17 +42,20 @@ Two environment variables must be set: ``EPLUS_PATH`` and ``BCVTB_PATH``, with t
 
 ### 4. Install the package
 
-Finally, energym can be installed by running this command where ``setup.py`` is located.
+Finally, energym can be installed by running this command at the repo root folder:
 
 ```sh
 pip install -e .
 ```
 
+Extra libraries can be installed by typing ``pip install -e .[extras]``. They are intended for running and analysing DRL algorithms over energym, but they are
+not a requirement of the package.   
+
 And that's all!
 
 ## Usage example
 
-Run ``python test_env.py`` for testing the demo environment. Energym uses the standard openAI gym API. So basic loop should be something like:
+Energym uses the standard openAI gym API. So basic loop should be something like:
 
 ```python
 
@@ -71,7 +74,9 @@ print('Total reward for the episode: %.4f' % R)
 env.close()
 ````
 
-This code executes a control episode from January 1st to March 31st. Current implemented environment performs the control of the heating setpoint of an HVAC system. 
+Notice that a folder will be created in the working directory after creating the environment. They are used for saving EnergyPlus outputs during the simulation.
+
+The above code executes a control episode from January 1st to March 31st. Current implemented environment performs the control of the heating setpoint of an HVAC system. 
 There are 9 possible discrete actions (setpoint from 15C to 24C), and the observation is a vector with 16 components. 
 The reward combines the power used by the HVAC system and the thermal discomfort:
 
