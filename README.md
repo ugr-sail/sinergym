@@ -89,3 +89,14 @@ where ``beta = 1e-4`` and the penalty comfort is the difference between current 
   - [x] Data paths are included in the environment, so no hard-coding needed
   - [ ] Try an example using SB3
   - [ ] Create and test Dockerfile
+  
+## Ideas for the future
+
+The following list are ideas and experiments that could be performed using energym.
+
+  - Add different weather conditions and evaluate stability of agents.
+  - Include cooling setpoint. Right now only the heating setpoint is controlled, since it depends undirectly on the cooling setpoint.
+  - Try different reward functions, and also evaluate the trade-off between energy consumption and thermal comfort.
+  - Limit the number of changes of setpoint the agent can do. Additionally, try to incorporate noise or delays in both observations, actions and rewards.
+  - More buildings!
+  - ...
