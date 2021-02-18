@@ -18,7 +18,8 @@ ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_SHA=$ENERGYPLUS_SHA
 
 # This should be x.y.z, but EnergyPlus convention is x-y-z
-ENV ENERGYPLUS_INSTALL_VERSION=${ENERGYPLUS_VERSION//./-}
+ENV ENERGYPLUS_INSTALL_VERSION=8-6-0
+#${ENERGYPLUS_VERSION//./-}
 ENV EPLUS_PATH=/usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION
 
 # Downloading from Github
@@ -38,11 +39,12 @@ RUN apt-get update && apt-get install -y ca-certificates curl libx11-6 libexpat1
     && rm $ENERGYPLUS_DOWNLOAD_FILENAME \
     && cd /usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION \
     && rm -rf DataSets Documentation ExampleFiles WeatherData MacroDataSets PostProcess/convertESOMTRpgm \
-    PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater
+    PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater \
+    && export $ENERGYPLUS_INSTALL_VERSION
 
+RUN echo $ENERGYPLUS_INSTALL_VERSION
 # Remove the broken symlinks
-RUN cd /usr/local/bin \
-    && find -L . -type l -delete
+RUN cd /usr/local/bin find -L . -type l -delete
 
 CMD ["/bin/bash"]
 
