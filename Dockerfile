@@ -31,7 +31,8 @@ ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_F
 # Collapse the update of packages, download and installation into one command
 # to make the container smaller & remove a bunch of the auxiliary apps/files
 # that are not needed in the container
-RUN apt-get update && apt-get install -y ca-certificates curl libx11-6 libexpat1\
+RUN apt-get update && apt-get upgrade \
+    && apt-get install -y ca-certificates curl libx11-6 libexpat1 \
     && rm -rf /var/lib/apt/lists/* \
     && curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
     && chmod +x $ENERGYPLUS_DOWNLOAD_FILENAME \
@@ -41,6 +42,12 @@ RUN apt-get update && apt-get install -y ca-certificates curl libx11-6 libexpat1
     && rm -rf DataSets Documentation ExampleFiles WeatherData MacroDataSets PostProcess/convertESOMTRpgm \
     PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater
 
+# Install Java and BCTVB
+ENV BCVTB_PATH=/usr/local/bcvtb
+RUN apt-get install default-jdk && apt-get install default-jre \
+    && wget http://github.com/lbl-srg/bcvtb/releases/download/v1.6.0/bcvtb-install-linux64-v1.6.0.jar \
+    && echo -e "1\n1\n1\n$BCVTB_PATH" | java -jar bcvtb-install-linux64-v1.6.0.jar
+
 # Remove the broken symlinks
 RUN cd /usr/local/bin find -L . -type l -delete
 
@@ -48,6 +55,5 @@ CMD ["/bin/bash"]
 
 #TODO Install BCVTB
 #TODO Get ENERGYPLUS_INSTALL_VERSION from ENERGYPLUS_VERSION
-#TODO Include repository and install dependencies
 #BUILD: docker build -t energyplus:8.6.0 --build-arg ENERGYPLUS_VERSION=8.6.0 --build-arg ENERGYPLUS_INSTALL_VERSION=8-6-0 --build-arg ENERGYPLUS_SHA=198c6a3cff .
 #RUN: docker run -it --rm -p 5005:5005 energyplus:8.6.0
