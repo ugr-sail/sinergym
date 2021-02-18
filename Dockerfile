@@ -5,22 +5,20 @@ FROM python:3.8
 # Working directory and copy files
 WORKDIR /code
 COPY requirements.txt .
-COPY energym/ .
 COPY setup.py .
+ADD energym /code/energym
 RUN pip3 install -e .
 
-# Arguments for the EnergyPlus version
+# Arguments for EnergyPlus version
 ARG ENERGYPLUS_VERSION
-ARG ENERGYPLUS_TAG
 ARG ENERGYPLUS_SHA
-ARG ENERGYPLUS_INSTALL_VERSION
 
 ENV ENERGYPLUS_VERSION=$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_SHA=$ENERGYPLUS_SHA
 
 # This should be x.y.z, but EnergyPlus convention is x-y-z
-ENV ENERGYPLUS_INSTALL_VERSION=$ENERGYPLUS_INSTALL_VERSION
+ENV ENERGYPLUS_INSTALL_VERSION=${ENERGYPLUS_VERSION//./-}
 ENV EPLUS_PATH=/usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION
 
 # Downloading from Github
@@ -51,6 +49,5 @@ CMD ["/bin/bash"]
 #TODO Install BCVTB
 #TODO Reduce the number of parameters needed
 #TODO Include repository and install dependencies
-#BUILD: docker build -t energyplus:8.6.0 --build-arg ENERGYPLUS_VERSION=8.6.0 --build-arg \
-# ENERGYPLUS_TAG=v8.6.0 --build-arg ENERGYPLUS_SHA=198c6a3cff --build-arg ENERGYPLUS_INSTALL_VERSION=8-6-0 .
+#BUILD: docker build -t energyplus:8.6.0 --build-arg ENERGYPLUS_VERSION=8.6.0 --build-arg ENERGYPLUS_SHA=198c6a3cff .
 #RUN: docker run -it --rm -p 5005:5005 energyplus:8.6.0
