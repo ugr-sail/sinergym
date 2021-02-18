@@ -11,6 +11,7 @@ RUN pip3 install -e .
 
 # Arguments for EnergyPlus version
 ARG ENERGYPLUS_VERSION
+ARG ENERGYPLUS_INSTALL_VERSION
 ARG ENERGYPLUS_SHA
 
 ENV ENERGYPLUS_VERSION=$ENERGYPLUS_VERSION
@@ -18,8 +19,7 @@ ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_SHA=$ENERGYPLUS_SHA
 
 # This should be x.y.z, but EnergyPlus convention is x-y-z
-ENV ENERGYPLUS_INSTALL_VERSION=8-6-0
-#${ENERGYPLUS_VERSION//./-}
+ENV ENERGYPLUS_INSTALL_VERSION=$ENERGYPLUS_INSTALL_VERSION
 ENV EPLUS_PATH=/usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION
 
 # Downloading from Github
@@ -39,17 +39,15 @@ RUN apt-get update && apt-get install -y ca-certificates curl libx11-6 libexpat1
     && rm $ENERGYPLUS_DOWNLOAD_FILENAME \
     && cd /usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION \
     && rm -rf DataSets Documentation ExampleFiles WeatherData MacroDataSets PostProcess/convertESOMTRpgm \
-    PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater \
-    && export $ENERGYPLUS_INSTALL_VERSION
+    PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater
 
-RUN echo $ENERGYPLUS_INSTALL_VERSION
 # Remove the broken symlinks
 RUN cd /usr/local/bin find -L . -type l -delete
 
 CMD ["/bin/bash"]
 
 #TODO Install BCVTB
-#TODO Reduce the number of parameters needed
+#TODO Get ENERGYPLUS_INSTALL_VERSION from ENERGYPLUS_VERSION
 #TODO Include repository and install dependencies
-#BUILD: docker build -t energyplus:8.6.0 --build-arg ENERGYPLUS_VERSION=8.6.0 --build-arg ENERGYPLUS_SHA=198c6a3cff .
+#BUILD: docker build -t energyplus:8.6.0 --build-arg ENERGYPLUS_VERSION=8.6.0 --build-arg ENERGYPLUS_INSTALL_VERSION=8-6-0 --build-arg ENERGYPLUS_SHA=198c6a3cff .
 #RUN: docker run -it --rm -p 5005:5005 energyplus:8.6.0
