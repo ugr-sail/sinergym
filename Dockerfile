@@ -1,13 +1,6 @@
-# Base on nrel/energyplus from Nicholas Long
-# but including Python 3.8 and BCTVB
-FROM python:3.8
-
-# Working directory and copy files
-WORKDIR /code
-COPY requirements.txt .
-COPY setup.py .
-ADD energym /code/energym
-RUN pip3 install -e .
+# Base on nrel/energyplus from Nicholas Long but using 
+# Ubuntu, Python 3.6 and BCVTB
+FROM ubuntu:18.04
 
 # Arguments for EnergyPlus version
 ARG ENERGYPLUS_VERSION
@@ -31,7 +24,7 @@ ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_F
 # Collapse the update of packages, download and installation into one command
 # to make the container smaller & remove a bunch of the auxiliary apps/files
 # that are not needed in the container
-RUN apt-get update && apt-get upgrade \
+RUN apt-get update \
     && apt-get install -y ca-certificates curl libx11-6 libexpat1 \
     && rm -rf /var/lib/apt/lists/* \
     && curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
@@ -42,33 +35,32 @@ RUN apt-get update && apt-get upgrade \
     && rm -rf DataSets Documentation ExampleFiles WeatherData MacroDataSets PostProcess/convertESOMTRpgm \
     PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater
 
-# Install OpenJDK-8
-RUN apt-get update && \
-    apt-get install -y openjdk-8-jdk && \
-    apt-get install -y ant && \
-    apt-get clean;
-
-# Fix certificate issues
-RUN apt-get update && \
-    apt-get install ca-certificates-java && \
-    apt-get clean && \
-    update-ca-certificates -f;
-
-# Setup JAVA_HOME -- useful for docker commandline
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
-RUN export JAVA_HOME
-
-# Install BCVTB
-ENV BCVTB_PATH=/usr/local/bcvtb
-RUN wget http://github.com/lbl-srg/bcvtb/releases/download/v1.6.0/bcvtb-install-linux64-v1.6.0.jar \
-    && echo -e "1\n1\n1\n$BCVTB_PATH" | java -jar bcvtb-install-linux64-v1.6.0.jar
-
 # Remove the broken symlinks
 RUN cd /usr/local/bin find -L . -type l -delete
 
+# Install Python
+RUN apt-get update && echo "Y\r" | apt-get install python3.6 && echo "Y\r" | apt-get install python3-pip
+
+# Install OpenJDK-8
+RUN apt-get update && echo "Y\r" | apt-get install default-jre openjdk-8-jdk
+
+# Install BCVTB
+ENV BCVTB_PATH=/usr/local/bcvtb
+RUN apt-get install wget \
+    && wget http://github.com/lbl-srg/bcvtb/releases/download/v1.6.0/bcvtb-install-linux64-v1.6.0.jar
+#    && echo -e "1\n\r\n$BCVTB_PATH\n" | java -jar bcvtb-install-linux64-v1.6.0.jar
+
+# Working directory and copy files
+WORKDIR /code
+COPY requirements.txt .
+COPY setup.py .
+ADD energym /code/energym
+RUN pip3 install -e .
+
 CMD ["/bin/bash"]
 
-#TODO Install BCVTB
+#TODO Install BCVTB - Only the java -jar file.jar part, because of stupid prompted commands
 #TODO Get ENERGYPLUS_INSTALL_VERSION from ENERGYPLUS_VERSION
-#BUILD: docker build -t energyplus:8.6.0 --build-arg ENERGYPLUS_VERSION=8.6.0 --build-arg ENERGYPLUS_INSTALL_VERSION=8-6-0 --build-arg ENERGYPLUS_SHA=198c6a3cff .
-#RUN: docker run -it --rm -p 5005:5005 energyplus:8.6.0
+
+# Build: docker build -t energyplus:8.6.0 --build-arg ENERGYPLUS_VERSION=8.6.0 --build-arg ENERGYPLUS_INSTALL_VERSION=8-6-0 --build-arg ENERGYPLUS_SHA=198c6a3cff .
+# Run: docker run -it --rm -p 5005:5005 energyplus:8.6.0
