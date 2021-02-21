@@ -47,8 +47,9 @@ RUN apt-get update && echo "Y\r" | apt-get install default-jre openjdk-8-jdk
 # Install BCVTB
 ENV BCVTB_PATH=/usr/local/bcvtb
 RUN apt-get install wget \
-    && wget http://github.com/lbl-srg/bcvtb/releases/download/v1.6.0/bcvtb-install-linux64-v1.6.0.jar
-#    && echo -e "1\n\r\n$BCVTB_PATH\n" | java -jar bcvtb-install-linux64-v1.6.0.jar
+    && wget http://github.com/lbl-srg/bcvtb/releases/download/v1.6.0/bcvtb-install-linux64-v1.6.0.jar \
+    && yes "1" | java -jar bcvtb-install-linux64-v1.6.0.jar \
+    && cp -R 1/ $BCVTB_PATH && rm -R 1/
 
 # Working directory and copy files
 WORKDIR /code
@@ -59,8 +60,8 @@ RUN pip3 install -e .
 
 CMD ["/bin/bash"]
 
-#TODO Install BCVTB - Only the java -jar file.jar part, because of stupid prompted commands
 #TODO Get ENERGYPLUS_INSTALL_VERSION from ENERGYPLUS_VERSION
+#TODO ARG Python version
 
 # Build: docker build -t energyplus:8.6.0 --build-arg ENERGYPLUS_VERSION=8.6.0 --build-arg ENERGYPLUS_INSTALL_VERSION=8-6-0 --build-arg ENERGYPLUS_SHA=198c6a3cff .
 # Run: docker run -it --rm -p 5005:5005 energyplus:8.6.0
