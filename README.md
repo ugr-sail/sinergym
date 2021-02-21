@@ -93,7 +93,8 @@ where ``beta = 1e-4`` and the penalty comfort is the difference between current 
   - [x] Include reward calculation
   - [x] Data paths are included in the environment, so no hard-coding needed
   - [ ] Try an example using SB3
-  - [ ] Create and test Dockerfile
+  - [x] Create and test Dockerfile
+  - [ ] Dockerfile: add volumes and try out other versions of EnergyPlus and Python
   
 ## Ideas for the future
 
