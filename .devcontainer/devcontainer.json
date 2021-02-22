@@ -1,0 +1,11 @@
+{
+	"name": "energym",
+	"build": {
+		"args": {"ENERGYPLUS_VERSION":"8.6.0", "ENERGYPLUS_INSTALL_VERSION":"8-6-0", "ENERGYPLUS_SHA":"198c6a3cff"},
+	},
+	"dockerFile": "../Dockerfile",
+	"context": "..",
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+}
