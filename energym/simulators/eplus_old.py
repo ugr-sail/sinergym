@@ -411,9 +411,9 @@ class EnergyPlus(Env):
         
     def _assembleMsg(self, version, flag, nDb, nIn, nBl, curSimTim, Dblist):
         """
-        Assemble the send msg to the EnergyPlus based on the protocal.
-        Send msg must a blank space seperated string, [verison, flag, nDb
-        , nIn, nBl, curSimTim, float, float, float ....]
+        Assemble the send msg to EnergyPlus based on protocol.
+        Send msg must be a blank space seperated string, [version, flag, nDb, 
+        nIn, nBl, curSimTim, float, float, float ....]
         
         Return:
             The send msg.

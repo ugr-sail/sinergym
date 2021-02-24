@@ -9,11 +9,23 @@ class EplusDemo(gym.Env):
     
     def __init__(self, comfort_range = (20, 22)):
         """
+        Observation:
+            Type: Box(16)
+            Num    Observation               Min            Max
+            0      var0                     -5e6            5e6
+            1      var1                     -5e6            5e6
+            ...
+            15     var15                    -5e6            5e6
+        
+        Actions:
+            Type: Box(2)
+            Num    Action
+            0      Heating setpoint
+            1      Cooling setpoint
         """
 
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
-        self.comfort_range = comfort_range
         data_path = pkg_resources.resource_filename('energym', 'data/')
 
         self.simulator = EnergyPlus(
@@ -24,26 +36,36 @@ class EplusDemo(gym.Env):
             idf_path = os.path.join(data_path, 'buildings/5ZoneAutoDXVAV.idf'),
             env_name = 'eplus-demo-v1'
         )
-        # Observation space
-        self.observation_space = gym.spaces.Box(low=-5e6, high=5e6, shape=(16,), dtype=np.float32)
-        # Action space
-        # 9 possible actions - [Change Heating SetPoint, Contant Cooling Setpoint = 25]
-        self.action_mapping = {
-            0: 15, 1: 16, 2: 17, 3: 18, 4: 19, 5: 20, 6: 21, 7: 22, 8: 23, 9: 24
-        }
-        self.action_space = gym.spaces.Discrete(10)
+
+        self.comfort_range = comfort_range
+        
+        self.min_heat = 17
+        self.max_heat = 22
+        self.min_cool = 23
+        self.max_cool = 28
+
+        self.low = np.array([self.min_heat, self.min_cool], dtype=np.float32)
+        self.high = np.array([self.max_heat, self.max_cool], dtype=np.float32)
+
+        self.observation_space = gym.spaces.Box(
+            low=-5e6, high=5e6, shape=(16,), dtype=np.float32
+        )
+
+        self.action_space = gym.spaces.Box(
+            self.low, self.high, dtype=np.float32
+        )
 
     def step(self, action):
-        """"""
+ 
+        a = [action[0], action[1]]
         
-        t1 = self.action_mapping[action]
-        a = [t1, 25.0]
-        # Send action to de simulator
-        self.simulator.logger_main.debug(a)
+        # Send action to simulator
+        self.simulator.logger_main.debug('[Action] Heat = ', str(action[0]), ' Cool = ', str(action[1]))
         t, obs, done = self.simulator.step(a)
         temp = obs[9]
         power = obs[-1]
         reward = self._get_reward(temp, power)
+        
         return np.array(obs), reward, done, {}
 
     def reset(self):
@@ -57,7 +79,10 @@ class EplusDemo(gym.Env):
         self.simulator.end_env()
 
     def _get_reward(self, temperature, power, beta = 1e-4):
-        """"""
+        """
+        reward = -beta * power - comfort_penalty
+        """
+        
         comfort_penalty = 0.0
         if temperature < self.comfort_range[0]:
             comfort_penalty -= self.comfort_range[0] - temperature
