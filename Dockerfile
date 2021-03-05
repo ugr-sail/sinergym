@@ -56,7 +56,7 @@ WORKDIR /code
 COPY requirements.txt .
 COPY setup.py .
 ADD energym /code/energym
-RUN pip3 install -e .
+RUN pip3 install -e .[extras]
 
 CMD ["/bin/bash"]
 
