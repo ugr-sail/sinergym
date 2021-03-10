@@ -1,5 +1,9 @@
 # energym
 
+<div align="center">
+  <img src="images/logo.png" width=40%><br><br>
+</div>
+
 OpenAI Gym environment for wrapping simulation engines for building control.
 
 Currently only EnergyPlus is supported, but the package should be agnostic of the engine. Additionally, we will include several buildings and weather settings for testing and creating benchmarking environments.
