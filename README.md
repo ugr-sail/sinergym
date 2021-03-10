@@ -4,9 +4,20 @@
   <img src="images/logo.png" width=40%><br><br>
 </div>
 
-OpenAI Gym environment for wrapping simulation engines for building control.
+**Welcome to energym!**
 
-Currently only EnergyPlus is supported, but the package should be agnostic of the engine. Additionally, we will include several buildings and weather settings for testing and creating benchmarking environments.
+This is a project based on Zhiang Zhang and Khee Poh Lam (Gym-Eplus)[https://github.com/zhangzhizza/Gym-Eplus]
+
+The goal of this project is to create an environment following OpenAI Gym interface for wrapping simulation engines for building control using deep reinforcement learning.
+
+Currently only a simple demo environment is included, but we are planning to include some of the following functionalities:
+
+  - **Benchmark environments**. Similarly to Atari or Mujoco environments for RL community, we are designing a set of environments for benchmarking and testing deep RL algorithms. These environments may include different buildings, weathers or action spaces.
+  - **Develop different experimental settings**. We aim to provide a package that allows to modify experimental settings in an easy manner. For example several reward functions or observation variables may be defined. 
+  - **Include different simulation engines**. Communication between Python and Energy Plus is established using BCVTB. Since this tool allows for interacting with several simulation engines, more of them (e.g. Modelica) could be included in the backend while maintaining the Gym API.
+  - Many more!
+
+_This is a work in progress project. Stay tuned for upcoming releases._
 
 ## Installation process
 
@@ -25,15 +36,15 @@ Then, clone this repository using this command:
 $ git clone https://github.com/jajimer/energym.git
 ```
 
+We include a Dockerfile for installing all dependencies and setting up the image for running energym. If you prefer installing it manually, follow the steps below.
+
 ### 1. Install Energy Plus 8.6.0
 
 Next step is downloading Energy Plus. Currently only version 8.6.0 has been tested,
-but code may also work for other versions.
+but code may also work with other versions.
 
-Follow the instructions [here](https://energyplus.net/downloads) and install for Linux system (apparently only Ubuntu is supported).
-Choose any location to install the software.
-
-Once installed, a folder called ``Energyplus-8-6-0`` should appear.
+Follow the instructions [here](https://energyplus.net/downloads) and install for Linux system (only Ubuntu is supported).
+Choose any location to install the software. Once installed, a folder called ``Energyplus-8-6-0`` should appear in the selected location.
 
 ### 2. Install BCVTB software
 
@@ -89,24 +100,4 @@ The reward combines the power used by the HVAC system and the thermal discomfort
 reward = - beta * power - penalty_comfort
 ```
 
-where ``beta = 1e-4`` and the penalty comfort is the difference between current room temperature and the comfort range (between 20C and 22C). Rewards are always negative, so an agent must learn to minimize power consumption while satisfying comfort constraint.
-
-## To do list
-
-  - [ ] Refactor EnergyPlus class (currently in eplus_old.py, but eplus.py should be used).
-  - [x] Include reward calculation
-  - [x] Data paths are included in the environment, so no hard-coding needed
-  - [ ] Try an example using SB3
-  - [x] Create and test Dockerfile
-  - [ ] Dockerfile: add volumes and try out other versions of EnergyPlus and Python
-  
-## Ideas for the future
-
-The following list are ideas and experiments that could be performed using energym.
-
-  - Add different weather conditions and evaluate stability of agents.
-  - Include cooling setpoint. Right now only the heating setpoint is controlled, since it depends undirectly on the cooling setpoint.
-  - Try different reward functions, and also evaluate the trade-off between energy consumption and thermal comfort.
-  - Limit the number of changes of setpoint the agent can do. Additionally, try to incorporate noise or delays in both observations, actions and rewards.
-  - More buildings!
-  - ...
+where ``beta = 1e-4`` and the penalty comfort is the difference between current room temperature and the comfort range (between 20C and 22C). Rewards are always negative, so an agent must learn to minimize power consumption while satisfying comfort constraints.
