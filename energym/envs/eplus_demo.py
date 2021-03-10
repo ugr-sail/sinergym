@@ -27,7 +27,7 @@ class EplusDemo(gym.Env):
         # Observation space
         self.observation_space = gym.spaces.Box(low=-5e6, high=5e6, shape=(16,), dtype=np.float32)
         # Action space
-        # 9 possible actions - [Change Heating SetPoint, Contant Cooling Setpoint = 25]
+        # 9 possible actions - [Heating SetPoint, Contant Cooling Setpoint = 25]
         self.action_mapping = {
             0: 15, 1: 16, 2: 17, 3: 18, 4: 19, 5: 20, 6: 21, 7: 22, 8: 23, 9: 24
         }
