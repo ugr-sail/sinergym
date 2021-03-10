@@ -1,6 +1,6 @@
 """
 Class for connecting EnergyPlus with Python using Ptolomy server
-Author: Javier Jiménez based on Zhiang Zhang's implementation
+Author: Slight modification of Zhiang Zhang's implementation
 https://github.com/zhangzhizza/Gym-Eplus
 """
 
