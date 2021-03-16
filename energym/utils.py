@@ -1,13 +1,10 @@
 import os
 import logging
-import opyplus as op
-
 import xml.etree.ElementTree as ET
-
 from datetime import datetime, timedelta
 
-YEAR = 1991
 
+YEAR = 1991
 WEEKDAY_ENCODING = {'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
                     'friday': 4, 'saturday': 5, 'sunday': 6}
 
@@ -32,16 +29,18 @@ def get_delta_seconds(st_year, st_mon, st_day, end_mon, end_day):
     return delta_sec
 
 
-def get_current_time_info(idf_file, sec_elapsed):
+def get_current_time_info(epm, sec_elapsed, sim_year = 1991):
     """
     Returns the current day, month and hour given the seconds elapsed since the simulation started
 
     Parameters
     ----------
-    idf file : IDF
-        IDF file with simulation context information
+    epm : Epm
+        Energyplus model object from opyplus
     sec_elapsed : int
         seconds elapsed since the start of the simulation
+    sim_year : int (optional)
+        Year of the simulation
 
     Return
     ----------
@@ -49,10 +48,8 @@ def get_current_time_info(idf_file, sec_elapsed):
         a tuple composed by the current day, month and hour in the simulation
     """
 
-    epm = op.Epm.from_idf(idf_file)
-
     start_date = datetime(
-        year = YEAR, # epm.RunPeriod[0]['start_year'],
+        year = sim_year, # epm.RunPeriod[0]['start_year'],
         month = epm.RunPeriod[0]['begin_month'],
         day = epm.RunPeriod[0]['begin_day_of_month']
     )
@@ -62,7 +59,7 @@ def get_current_time_info(idf_file, sec_elapsed):
     return (current_date.day, current_date.month, current_date.hour)
 
 
-def parse_observation(var_file, obs):
+def parse_variables(var_file):
     """
     Parse observation to dictionary
 
@@ -70,26 +67,22 @@ def parse_observation(var_file, obs):
     ----------
     var_file : string 
         variables file path
-    obs : np.array
-        observation vector with variables values
 
     Returns
     -------
-    dict
-        a dictionary with key = the name of the variable, 
-        and value = value of the observed variable
+    list
+        a list with the name of the variables
     """
 
     tree = ET.parse(var_file)
     root = tree.getroot()
 
     variables = []
-
     for var in root.findall('variable'):
         if var.attrib['source'] == 'EnergyPlus':
             variables.append(var[0].attrib['type'])
 
-    return dict(zip(variables, obs))
+    return variables
     
 
 class Logger():  

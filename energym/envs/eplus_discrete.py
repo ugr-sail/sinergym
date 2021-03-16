@@ -4,9 +4,11 @@ import gym
 import os
 import pkg_resources
 import numpy as np
+from opyplus import Epm
 
-from ..utils import get_current_time_info, parse_observation
+from ..utils import get_current_time_info, parse_variables
 from ..simulators import EnergyPlus
+
 
 class EplusDiscrete(gym.Env):
     """
@@ -31,7 +33,6 @@ class EplusDiscrete(gym.Env):
         13      Zone People Occupant Count                               -5e6            5e6
         14      People Air Temperature                                   -5e6            5e6
         15      Facility Total HVAC Electric Demand Power                -5e6            5e6
-
         16      Current day                                               1              31
         17      Current month                                             1              12
         18      Current hour                                              0              23
@@ -39,7 +40,7 @@ class EplusDiscrete(gym.Env):
         ...
     
     Actions:
-        Type: Box(2)
+        Type: Discrete(10)
         Num    Action
         0       Heating setpoint = 15, Cooling setpoint = 30
         1       Heating setpoint = 16, Cooling setpoint = 29
@@ -96,8 +97,12 @@ class EplusDiscrete(gym.Env):
             variable_path = self.variables_path
         )
 
+        # Utils for getting time info and variable names
+        self.epm = Epm.from_idf(self.idf_path)
+        self.variables = parse_variables(self.variables_path)
+
         # Observation space
-        self.observation_space = gym.spaces.Box(low=-5e6, high=5e6, shape=(16,), dtype=np.float32)
+        self.observation_space = gym.spaces.Box(low=-5e6, high=5e6, shape=(19,), dtype=np.float32)
         
         # Action space
         self.action_mapping = {
@@ -137,16 +142,15 @@ class EplusDiscrete(gym.Env):
         
         # Map action into setpoint
         setpoints = self.action_mapping[action]
-        action = [setpoints[0], setpoints[1]]
+        action_ = [setpoints[0], setpoints[1]]
         
         # Send action to the simulator
-        self.simulator.logger_main.debug(action)
-        t, obs, done = self.simulator.step(action)
-        # Parse observation to dictionary
-        obs_dict = parse_observation(self.variables_path, obs)
-
+        self.simulator.logger_main.debug(action_)
+        t, obs, done = self.simulator.step(action_)
+        # Create dictionary with observation
+        obs_dict = dict(zip(self.variables, obs))
         # Add current timestep information
-        time_info = get_current_time_info(self.idf_path, t)
+        time_info = get_current_time_info(self.epm, t)
         obs_dict['day'] = time_info[0]
         obs_dict['month'] = time_info[1]
         obs_dict['hour'] = time_info[2]
