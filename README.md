@@ -21,9 +21,9 @@ _This is a work in progress project. Stay tuned for upcoming releases._
 
 ## List of available environments
 
-| Env. name               | Location        | IDF file           |        Weather type (*)       | Action space | Simulation period |
+| Env. name               | Location        | IDF file           |      Weather type (*)      | Action space | Simulation period |
 |-------------------------|-----------------|--------------------|----------------------------|--------------|-------------------|
-| Eplus-demo-v1           | Pittsburgh, USA | 5ZoneAutoDXVAV.idf |             -              | Discrete(10) |   01/01 - 31/03   |
+| Eplus-demo-v1           | Pittsburgh, USA | 5ZoneAutoDXVAV.idf |             -              | Discrete(10) |   01/01 - 31/12   |
 | Eplus-discrete-hot-v1   | Arizona, USA    | 5ZoneAutoDXVAV.idf |        Hot dry (2B)        | Discrete(10) |   01/01 - 31/12   |
 | Eplus-discrete-mixed-v1 | New York, USA   | 5ZoneAutoDXVAV.idf |      Mixed humid (4A)      | Discrete(10) |   01/01 - 31/12   |
 | Eplus-discrete-cool-v1  | Washington, USA | 5ZoneAutoDXVAV.idf |      Cool marine (5C)      | Discrete(10) |   01/01 - 31/12   |
