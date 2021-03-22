@@ -6,7 +6,7 @@ import pkg_resources
 import numpy as np
 from opyplus import Epm
 
-from ..utils import get_current_time_info, parse_variables
+from ..utils.common import get_current_time_info, parse_variables
 from ..simulators import EnergyPlus
 
 

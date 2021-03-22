@@ -20,7 +20,7 @@ from gym import Env, spaces
 from gym.envs.registration import register
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
-from ..utils import *
+from ..utils.common import *
 
 YEAR = 1991 # Non leap year
 CWD = os.getcwd();
