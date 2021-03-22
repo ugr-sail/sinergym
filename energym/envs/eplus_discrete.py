@@ -170,11 +170,19 @@ class EplusDiscrete(gym.Env):
             'total_power_no_units': energy_term,
             'comfort_penalty': comfort_penalty
         }
-        return np.array(obs_dict.values), reward, done, info
+        return np.array(list(obs_dict.values())), reward, done, info
 
     def reset(self):
         t, obs, done = self.simulator.reset()
-        return np.array(obs)
+        
+        obs_dict = dict(zip(self.variables, obs))
+        
+        time_info = get_current_time_info(self.epm, t)
+        obs_dict['day'] = time_info[0]
+        obs_dict['month'] = time_info[1]
+        obs_dict['hour'] = time_info[2]
+
+        return np.array(list(obs_dict.values()))
 
     def render(self, mode='human'):
         pass
