@@ -1,5 +1,6 @@
 """Gym environment with discrete action space and raw observations."""
 
+
 import gym
 import os
 import pkg_resources
@@ -8,6 +9,7 @@ from opyplus import Epm
 
 from ..utils.common import get_current_time_info, parse_variables
 from ..simulators import EnergyPlus
+from ..utils.rewards import SimpleReward
 
 
 class EplusDiscrete(gym.Env):
@@ -119,6 +121,9 @@ class EplusDiscrete(gym.Env):
         }
         self.action_space = gym.spaces.Discrete(10)
 
+        # Reward class
+        self.cls_reward = SimpleReward()
+
     def step(self, action):
         """
         Sends action to the environment.
@@ -158,7 +163,7 @@ class EplusDiscrete(gym.Env):
         # Calculate reward
         temp = obs_dict['Zone Air Temperature']
         power = obs_dict['Facility Total HVAC Electric Demand Power']
-        reward, energy_term, comfort_penalty = self._get_reward(temp, power)
+        reward, terms = self.cls_reward.calculate(power, temp, time_info[1], time_info[0])
         
         # Extra info
         info = {
@@ -167,8 +172,9 @@ class EplusDiscrete(gym.Env):
             'month' : obs_dict['month'],
             'hour' : obs_dict['hour'],
             'total_power': power,
-            'total_power_no_units': energy_term,
-            'comfort_penalty': comfort_penalty
+            'total_power_no_units': terms['reward_energy'],
+            'comfort_penalty': terms['reward_comfort'],
+            'temperature': temp,
         }
         return np.array(list(obs_dict.values())), reward, done, info
 
@@ -189,40 +195,3 @@ class EplusDiscrete(gym.Env):
     
     def close(self):
         self.simulator.end_env()
-
-    def _get_reward(self, temperature, power, beta = 1e-4):
-        """
-        Method for calculating the reward.
-
-        reward = - beta * power - comfort_penalty
-
-        The comfort penalty is just the difference between the current temperature
-        and the bounds to the comfort range. If temperature between comfort_range,
-        then comfort_penalty = 0.
-
-        Parameters
-        ----------
-        temperature : float
-            Current interior temperature
-        power : float
-            Current power consumption
-        beta : float
-            Parameter for normalizing and remove units from power
-
-        Returns
-        -------
-        reward : float
-            Total reward for this timestep
-        power_no_units : float
-            Power multiplied by beta
-        comfort_penalty : float
-            The comfort penalty
-        """
-        comfort_penalty = 0.0
-        if temperature < self.comfort_range[0]:
-            comfort_penalty -= self.comfort_range[0] - temperature
-        if temperature < self.comfort_range[1]:
-            comfort_penalty -= temperature - self.comfort_range[1]
-        power_no_units = beta * power
-        reward = - power_no_units - comfort_penalty
-        return reward, power_no_units, comfort_penalty
