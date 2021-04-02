@@ -159,7 +159,7 @@
     ,                        !- Name
     1,                       !- Begin Month
     1,                       !- Begin Day of Month
-    12,                      !- End Month
+    3,                      !- End Month
     31,                      !- End Day of Month
     Monday,                  !- Day of Week for Start Day
     Yes,                     !- Use Weather File Holidays and Special Days

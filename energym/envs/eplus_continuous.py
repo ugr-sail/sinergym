@@ -1,4 +1,4 @@
-"""Gym environment with discrete action space and raw observations."""
+"""Gym environment with continuous action space and raw observations."""
 
 
 import gym
@@ -12,7 +12,7 @@ from ..simulators import EnergyPlus
 from ..utils.rewards import SimpleReward
 
 
-class EplusDiscrete(gym.Env):
+class EplusContinuous(gym.Env):
     """
     Discrete environment with EnergyPlus simulator.
 
@@ -42,18 +42,10 @@ class EplusDiscrete(gym.Env):
         ...
     
     Actions:
-        Type: Discrete(10)
-        Num    Action
-        0       Heating setpoint = 15, Cooling setpoint = 30
-        1       Heating setpoint = 16, Cooling setpoint = 29
-        2       Heating setpoint = 17, Cooling setpoint = 28
-        3       Heating setpoint = 18, Cooling setpoint = 27
-        4       Heating setpoint = 19, Cooling setpoint = 26
-        5       Heating setpoint = 20, Cooling setpoint = 25
-        6       Heating setpoint = 21, Cooling setpoint = 24
-        7       Heating setpoint = 22, Cooling setpoint = 23
-        8       Heating setpoint = 22, Cooling setpoint = 22
-        9       Heating setpoint = 21, Cooling setpoint = 21
+        Type: Box(2)
+        Num    Variable name                         Min            Max
+        0      Heating setpoint                     15.0           22.5
+        1      Cooling setpoint                     22.5           30.0
     """
 
     metadata = {'render.modes': ['human']}
@@ -61,7 +53,7 @@ class EplusDiscrete(gym.Env):
     def __init__(
         self,
         idf_file,
-        weather_file,
+        weather_file
     ):
         """
         Class constructor
@@ -85,7 +77,7 @@ class EplusDiscrete(gym.Env):
         self.variables_path = os.path.join(data_path, 'variables', variables_file)
 
         self.simulator = EnergyPlus(
-            env_name = 'eplus-discrete-v1',
+            env_name = 'eplus-continuous-v1',
             eplus_path = eplus_path,
             bcvtb_path = bcvtb_path,
             idf_path = self.idf_path,
@@ -101,19 +93,7 @@ class EplusDiscrete(gym.Env):
         self.observation_space = gym.spaces.Box(low=-5e6, high=5e6, shape=(19,), dtype=np.float32)
         
         # Action space
-        self.action_mapping = {
-            0: (15, 30), 
-            1: (16, 29), 
-            2: (17, 28), 
-            3: (18, 27), 
-            4: (19, 26), 
-            5: (20, 25), 
-            6: (21, 24), 
-            7: (22, 23), 
-            8: (22, 22),
-            9: (21, 21)
-        }
-        self.action_space = gym.spaces.Discrete(10)
+        self.action_space = gym.spaces.Box(low = np.array([15.0, 22.5]), high = np.array([22.5, 30.0]), shape = (2,), dtype = np.float32)
 
         # Reward class
         self.cls_reward = SimpleReward()
@@ -124,7 +104,7 @@ class EplusDiscrete(gym.Env):
 
         Parameters
         ----------
-        action : int
+        action : np.array
             Action selected by the agent
 
         Returns
@@ -139,11 +119,8 @@ class EplusDiscrete(gym.Env):
             A dictionary with extra information
         """
         
-        # Map action into setpoint
-        setpoints = self.action_mapping[action]
-        action_ = [setpoints[0], setpoints[1]]
-        
         # Send action to the simulator
+        action_ = list(action)
         self.simulator.logger_main.debug(action_)
         t, obs, done = self.simulator.step(action_)
         # Create dictionary with observation
