@@ -93,7 +93,7 @@ class EnergyPlus(Env):
         self._max_ep_data_store_num = max_ep_data_store_num;
         self._last_action = [21.0, 25.0]; 
 
-    def reset(self):
+    def reset(self, new_weather: str = None):
         """Reset the environment.
 
         This method does the followings:
@@ -141,7 +141,9 @@ class EnergyPlus(Env):
                                     # Create the socket.cfg file in the working dir
         self.logger_main.info('EnergyPlus working directory is in %s'
                               %(eplus_working_dir));
-        eplus_process = self._create_eplus(self._eplus_path, self._weather_path, 
+        # Select new weather if it is passed into the method
+        weather_path = self._weather_path if new_weather is None else new_weather
+        eplus_process = self._create_eplus(self._eplus_path, weather_path, 
                                             eplus_working_idf_path,
                                             eplus_working_out_path,
                                             eplus_working_dir);

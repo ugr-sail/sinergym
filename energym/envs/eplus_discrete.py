@@ -6,6 +6,7 @@ import os
 import pkg_resources
 import numpy as np
 from opyplus import Epm
+from random import choice
 
 from ..utils.common import get_current_time_info, parse_variables
 from ..simulators import EnergyPlus
@@ -173,7 +174,15 @@ class EplusDiscrete(gym.Env):
         return np.array(list(obs_dict.values())), reward, done, info
 
     def reset(self):
-        t, obs, done = self.simulator.reset()
+        """"""
+        # Randomly selects weather file
+        data_path = pkg_resources.resource_filename('energym', 'data/')
+
+        new_weather = os.path.join(data_path, 'weather', 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw')
+        weather = choice([new_weather, self.weather_path])
+        print(weather)
+        
+        t, obs, done = self.simulator.reset(weather)
         
         obs_dict = dict(zip(self.variables, obs))
         
