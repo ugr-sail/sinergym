@@ -1,18 +1,27 @@
-"""Gym environment with discrete action space and raw observations."""
+"""Gym environment for simulation with EnergyPlus.
+
+Funcionalities:
+    - Both discrete and continuous action spaces
+    - Add variability into the weather series
+    - Reward is computed with absolute difference to comfort range
+    - Raw observations, defined in the variables.cfg file
+"""
+
 
 import gym
 import os
 import pkg_resources
 import numpy as np
-from opyplus import Epm
+from opyplus import Epm, WeatherData
 
-from ..utils import get_current_time_info, parse_variables
+from ..utils.common import get_current_time_info, parse_variables, create_variable_weather
 from ..simulators import EnergyPlus
+from ..utils.rewards import SimpleReward
 
 
-class EplusDiscrete(gym.Env):
+class EplusEnv(gym.Env):
     """
-    Discrete environment with EnergyPlus simulator.
+    Environment with EnergyPlus simulator.
 
     Observation:
         Type: Box(16)
@@ -52,8 +61,12 @@ class EplusDiscrete(gym.Env):
         7       Heating setpoint = 22, Cooling setpoint = 23
         8       Heating setpoint = 22, Cooling setpoint = 22
         9       Heating setpoint = 21, Cooling setpoint = 21
-    """
 
+        Type: Box(2)
+        Num    Variable name                         Min            Max
+        0      Heating setpoint                     15.0           22.5
+        1      Cooling setpoint                     22.5           30.0
+    """
 
     metadata = {'render.modes': ['human']}
     
@@ -61,10 +74,11 @@ class EplusDiscrete(gym.Env):
         self,
         idf_file,
         weather_file,
-        comfort_range = (20, 22)
+        discrete_actions = True,
+        weather_variability = None
     ):
         """
-        Class constructor
+        Class constructor.
 
         Parameters
         ----------
@@ -72,24 +86,22 @@ class EplusDiscrete(gym.Env):
             Name of the IDF file with the building definition.
         weather_file : str
             Name of the EPW file for weather conditions.
-        comfort_range : tuple
-            Temperature bounds (low, high) for calculating reward.
+        discrete_actions : bool
+            Whether the actions are discrete (True) or continuous (False).
         """
 
         variables_file = 'variables.cfg'
 
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
-        data_path = pkg_resources.resource_filename('energym', 'data/')
+        self.pkg_data_path = pkg_resources.resource_filename('energym', 'data/')
 
-        self.idf_path = os.path.join(data_path, 'buildings', idf_file)
-        self.weather_path = os.path.join(data_path, 'weather', weather_file)
-        self.variables_path = os.path.join(data_path, 'variables', variables_file)
-
-        self.comfort_range = comfort_range
+        self.idf_path = os.path.join(self.pkg_data_path, 'buildings', idf_file)
+        self.weather_path = os.path.join(self.pkg_data_path, 'weather', weather_file)
+        self.variables_path = os.path.join(self.pkg_data_path, 'variables', variables_file)
 
         self.simulator = EnergyPlus(
-            env_name = 'eplus-discrete-v1',
+            env_name = 'eplus-env-v1',
             eplus_path = eplus_path,
             bcvtb_path = bcvtb_path,
             idf_path = self.idf_path,
@@ -97,27 +109,42 @@ class EplusDiscrete(gym.Env):
             variable_path = self.variables_path
         )
 
-        # Utils for getting time info and variable names
+        # Utils for getting time info, weather and variable names
         self.epm = Epm.from_idf(self.idf_path)
         self.variables = parse_variables(self.variables_path)
+        self.weather_data = WeatherData.from_epw(self.weather_path)
+
+        # Random noise to apply for weather series
+        self.weather_variability = weather_variability
 
         # Observation space
         self.observation_space = gym.spaces.Box(low=-5e6, high=5e6, shape=(19,), dtype=np.float32)
         
         # Action space
-        self.action_mapping = {
-            0: (15, 30), 
-            1: (16, 29), 
-            2: (17, 28), 
-            3: (18, 27), 
-            4: (19, 26), 
-            5: (20, 25), 
-            6: (21, 24), 
-            7: (22, 23), 
-            8: (22, 22),
-            9: (21, 21)
-        }
-        self.action_space = gym.spaces.Discrete(10)
+        self.flag_discrete = discrete_actions
+        if self.flag_discrete:
+            self.action_mapping = {
+                0: (15, 30), 
+                1: (16, 29), 
+                2: (17, 28), 
+                3: (18, 27), 
+                4: (19, 26), 
+                5: (20, 25), 
+                6: (21, 24), 
+                7: (22, 23), 
+                8: (22, 22),
+                9: (21, 21)
+            }
+            self.action_space = gym.spaces.Discrete(10)
+        else:
+            self.action_space = gym.spaces.Box(
+                low = np.array([15.0, 22.5]), 
+                high = np.array([22.5, 30.0]), 
+                shape = (2,), dtype = np.float32
+            )
+
+        # Reward class
+        self.cls_reward = SimpleReward()
 
     def step(self, action):
         """
@@ -125,7 +152,7 @@ class EplusDiscrete(gym.Env):
 
         Parameters
         ----------
-        action : int
+        action : int or np.array
             Action selected by the agent
 
         Returns
@@ -140,9 +167,12 @@ class EplusDiscrete(gym.Env):
             A dictionary with extra information
         """
         
-        # Map action into setpoint
-        setpoints = self.action_mapping[action]
-        action_ = [setpoints[0], setpoints[1]]
+        # Get action depending on flag_discrete
+        if self.flag_discrete:
+            setpoints = self.action_mapping[action]
+            action_ = [setpoints[0], setpoints[1]]
+        else:
+            action_ = list(action)
         
         # Send action to the simulator
         self.simulator.logger_main.debug(action_)
@@ -158,7 +188,7 @@ class EplusDiscrete(gym.Env):
         # Calculate reward
         temp = obs_dict['Zone Air Temperature']
         power = obs_dict['Facility Total HVAC Electric Demand Power']
-        reward, energy_term, comfort_penalty = self._get_reward(temp, power)
+        reward, terms = self.cls_reward.calculate(power, temp, time_info[1], time_info[0])
         
         # Extra info
         info = {
@@ -167,13 +197,19 @@ class EplusDiscrete(gym.Env):
             'month' : obs_dict['month'],
             'hour' : obs_dict['hour'],
             'total_power': power,
-            'total_power_no_units': energy_term,
-            'comfort_penalty': comfort_penalty
+            'total_power_no_units': terms['reward_energy'],
+            'comfort_penalty': terms['reward_comfort'],
+            'temperature': temp,
+            'out_temperature': obs_dict['Site Outdoor Air Drybulb Temperature']
         }
         return np.array(list(obs_dict.values())), reward, done, info
 
     def reset(self):
-        t, obs, done = self.simulator.reset()
+        """"""
+        # Create new random weather file
+        new_weather = create_variable_weather(self.weather_data, self.weather_path, variation = self.weather_variability)
+        
+        t, obs, done = self.simulator.reset(new_weather)
         
         obs_dict = dict(zip(self.variables, obs))
         
@@ -189,40 +225,3 @@ class EplusDiscrete(gym.Env):
     
     def close(self):
         self.simulator.end_env()
-
-    def _get_reward(self, temperature, power, beta = 1e-4):
-        """
-        Method for calculating the reward.
-
-        reward = - beta * power - comfort_penalty
-
-        The comfort penalty is just the difference between the current temperature
-        and the bounds to the comfort range. If temperature between comfort_range,
-        then comfort_penalty = 0.
-
-        Parameters
-        ----------
-        temperature : float
-            Current interior temperature
-        power : float
-            Current power consumption
-        beta : float
-            Parameter for normalizing and remove units from power
-
-        Returns
-        -------
-        reward : float
-            Total reward for this timestep
-        power_no_units : float
-            Power multiplied by beta
-        comfort_penalty : float
-            The comfort penalty
-        """
-        comfort_penalty = 0.0
-        if temperature < self.comfort_range[0]:
-            comfort_penalty -= self.comfort_range[0] - temperature
-        if temperature < self.comfort_range[1]:
-            comfort_penalty -= temperature - self.comfort_range[1]
-        power_no_units = beta * power
-        reward = - power_no_units - comfort_penalty
-        return reward, power_no_units, comfort_penalty
