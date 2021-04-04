@@ -1,2 +1,1 @@
-from .eplus_discrete import EplusDiscrete
-from .eplus_continuous import EplusContinuous
+from .eplus_env import EplusEnv

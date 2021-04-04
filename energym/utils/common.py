@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import logging
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
@@ -83,6 +84,44 @@ def parse_variables(var_file):
             variables.append(var[0].attrib['type'])
 
     return variables
+
+
+def create_variable_weather(weather_data, original_epw_file, columns: list = ['drybulb'], variation: tuple = None):
+    """
+    Create a new weather file adding gaussian noise to the original one.
+
+    Parameters
+    ----------
+    weather_data : opyplus.WeatherData
+        Opyplus object with the weather for the simulation
+    original_epw_file : str
+        Path to the original EPW file
+    columns : list
+        List of columns to be affected
+    variation : tuple
+        (mean, std) of the Gaussian noise
+
+    Return
+    ------
+    str
+        Name of the file created in the same location as the original one.
+    """
+    if variation is None:
+        return None
+    else:
+        # Get dataframe with weather series
+        df = weather_data.get_weather_series()
+        # Generate random noise
+        shape = (df.shape[0], len(columns))
+        mu, std = variation
+        noise = np.random.normal(mu, std, shape)
+        df[columns] += noise
+        # Save new weather data
+        weather_data.set_weather_series(df)
+        filename = original_epw_file.split('.epw')[0]
+        filename += '_Random_%s_%s.epw' % (str(mu), str(std))
+        weather_data.to_epw(filename)
+        return filename
     
 
 class Logger():  

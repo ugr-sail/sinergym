@@ -1,8 +1,8 @@
 """
 Class for connecting EnergyPlus with Python using Ptolomy server
-Author: Slight modification of Zhiang Zhang's implementation
-https://github.com/zhangzhizza/Gym-Eplus
+Author: Modified from Zhiang Zhang https://github.com/zhangzhizza/Gym-Eplus
 """
+
 
 import socket              
 import os
@@ -14,13 +14,11 @@ import logging
 import subprocess
 import threading
 import numpy as np
-
 from shutil import copyfile, rmtree
-from gym import Env, spaces
-from gym.envs.registration import register
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
 from ..utils.common import *
+
 
 YEAR = 1991 # Non leap year
 CWD = os.getcwd();
@@ -29,8 +27,8 @@ LOG_LEVEL_EPLS = 'ERROR';
 LOG_FMT = "[%(asctime)s] %(name)s %(levelname)s:%(message)s";
 
 
-class EnergyPlus(Env):
-    """EnergyPlus gym environment
+class EnergyPlus(object):
+    """EnergyPlus simulation class.
 
     Args:
     eplus_path: String
@@ -103,6 +101,7 @@ class EnergyPlus(Env):
         4: Create the EnergyPlus subprocess
         5: Establish the socket connection with EnergyPlus
         6: Read the first sensor data from the EnergyPlus
+        7: Use a new weather file if passed
         
         Return: (float, [float], boolean)
             The index 0 is current_simulation_time in second, 
@@ -240,12 +239,6 @@ class EnergyPlus(Env):
         self._curSimTim = curSimTim;
         self._last_action = action;
         return ret;
-        
-    def render(self, mode='human', close=False):
-        pass;
-
-    def _seed(self):
-        return 1;
     
     def _rm_past_history_dir(self, cur_eplus_working_dir, dir_sig):
         """Remove the past simulation results.
@@ -257,7 +250,6 @@ class EnergyPlus(Env):
                 The directory split signature
 
         Reture: None
-
         """
 
         cur_dir_name, cur_dir_id = cur_eplus_working_dir.split(dir_sig)

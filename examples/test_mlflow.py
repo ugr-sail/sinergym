@@ -15,7 +15,6 @@ import mlflow
 import numpy as np
 
 from stable_baselines.common.callbacks import StopTrainingOnRewardThreshold
-
 from stable_baselines.common.policies import MlpPolicy
 from stable_baselines import PPO2
 
