@@ -10,7 +10,7 @@ This is a project based on Zhiang Zhang and Khee Poh Lam [Gym-Eplus](https://git
 
 The goal of this project is to create an environment following OpenAI Gym interface for wrapping simulation engines for building control using deep reinforcement learning.
 
-Currently only a simple demo environment is included, but we are planning to include some of the following functionalities:
+The main functionalities of Energym are the following :
 
   - **Benchmark environments**. Similarly to Atari or Mujoco environments for RL community, we are designing a set of environments for benchmarking and testing deep RL algorithms. These environments may include different buildings, weathers or action spaces.
   - **Develop different experimental settings**. We aim to provide a package that allows to modify experimental settings in an easy manner. For example several reward functions or observation variables may be defined. 
