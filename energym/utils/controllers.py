@@ -37,7 +37,6 @@ class RuleBasedController(object):
 
     def act(self, observation):
         obs_dict = dict(zip(self.variables, observation))
-        current_temp = obs_dict['Zone Air Temperature']
 
         # Set comfort interval depending on season
         current_dt = datetime(YEAR, int(obs_dict['month']), int(obs_dict['day']))
