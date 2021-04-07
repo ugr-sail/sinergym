@@ -1,7 +1,8 @@
 """Script for implementing several types of rewards."""
 
-
 from datetime import datetime
+
+YEAR = 2021
 
 
 class SimpleReward():
@@ -38,15 +39,15 @@ class SimpleReward():
         self.lambda_energy = lambda_energy
         self.lambda_temp = lambda_temperature
         # Periods
-        self.summer_start_date = datetime(2021, 6, 1)
-        self.summer_final_date = datetime(2021, 9, 30)
+        self.summer_start_date = datetime(YEAR, 6, 1)
+        self.summer_final_date = datetime(YEAR, 9, 30)
 
     def calculate(self, power, temperature, month, day):
         """"""
         # Energy term
         reward_energy = - self.lambda_energy * power
         # Comfort term
-        current_dt = datetime(2021, month, day)
+        current_dt = datetime(YEAR, month, day)
         range_T = self.range_comfort_summer if current_dt >= self.summer_start_date and current_dt <= self.summer_final_date else self.range_comfort_winter
         delta_T = 0.0 if temperature >= range_T[0] and temperature <= range_T[1] else min(abs(range_T[0] - temperature), abs(temperature - range_T[1]))
         reward_comfort = - self.lambda_temp * delta_T
