@@ -14,7 +14,8 @@ for i in range(1):
     done = False
     current_month = 0
 while not done:
-    obs, reward, done, info = agent.act(obs)
+    action = agent.act(obs)
+    obs, reward, done, info = env.step(action)
     rewards.append(reward)
     if info['month'] != current_month: # display results every month
         current_month = info['month']

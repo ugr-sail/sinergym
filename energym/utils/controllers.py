@@ -37,12 +37,20 @@ class RuleBasedController(object):
 
     def act(self, observation):
         obs_dict = dict(zip(self.variables, observation))
+        out_temp = obs_dict['Site Outdoor Air Drybulb Temperature']
 
-        # Set comfort interval depending on season
-        current_dt = datetime(YEAR, int(obs_dict['month']), int(obs_dict['day']))
-        range_comfort = self.range_comfort_summer if current_dt >= self.summer_start_date and current_dt <= self.summer_final_date else self.range_comfort_winter
+        if out_temp < 15: # t < 15
+            action = (19, 21)
+        elif out_temp < 20: # 15 <= t < 20
+            action = (20, 22)
+        elif out_temp < 26: # 20 <= t < 26
+            action = (21, 23)
+        elif out_temp < 30: # 26 <= t < 30
+            action = (26, 30)
+        else: # t >= 30
+            action = (24, 26)
 
-        return self.env.step(range_comfort)
+        return action
 
         
 
