@@ -2,3 +2,4 @@ numpy
 gym
 eppy
 opyplus
+pytest
