@@ -1,6 +1,6 @@
 language: python
 python:
-  - "3.7.10"
+  - "3.6"
 
 # Command to install dependencies
 #install:
@@ -15,7 +15,7 @@ before_script:
 
 script:
   - pytest ./tests/
-  - docker build -t 
+#- docker build -t tests
 
 # after_success:
 #   - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  #Previusly set up in our own travis account
