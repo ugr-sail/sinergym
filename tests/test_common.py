@@ -19,7 +19,7 @@ def test_get_delta_seconds(st_year,st_mon,st_day,end_mon,end_day,expected):
 
 @pytest.fixture(scope="function")
 def epm():
-	idf_path="../energym/data/buildings/5ZoneAutoDXVAV.idf"
+	idf_path="./energym/data/buildings/5ZoneAutoDXVAV.idf"
 	return Epm.from_idf(idf_path)
 
 @pytest.mark.parametrize(
@@ -47,7 +47,7 @@ def test_parse_variables():
 			  'Zone Thermal Comfort Clothing Value', 'Zone Thermal Comfort Fanger Model PPD', 'Zone People Occupant Count',
 			  'People Air Temperature', 'Facility Total HVAC Electric Demand Power']
 
-	var_file="../energym/data/variables/variables.cfg"
+	var_file="./energym/data/variables/variables.cfg"
 	variables=common.parse_variables(var_file)
 
 	assert type(variables)==list
@@ -57,7 +57,7 @@ def test_parse_variables():
 
 @pytest.fixture(scope="session")
 def weather_file():
-	return '../energym/data/weather/USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw'
+	return './energym/data/weather/USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw'
 
 @pytest.fixture(scope="function")
 def weather_data(weather_file):

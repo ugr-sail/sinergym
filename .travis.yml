@@ -2,11 +2,12 @@ language: python
 python:
   - "3.6"
 
-# Command to install dependencies
-#install:
-#  - pip install -r requirements.txt
-
 #sudo: required
+
+#Environment variables
+# env:
+#   - TRAVIS=yes
+
 services:
   - docker
 
@@ -24,8 +25,5 @@ script:
 #   - docker tag back $DOCKER_USER/back:latest
 #   - docker push $DOCKER_USER/back:latest
 
-#Environment variables
-# env:
-#   - TRAVIS=yes
 
-# Command to run tests
+
