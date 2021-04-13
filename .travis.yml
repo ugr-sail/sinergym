@@ -1,0 +1,31 @@
+language: python
+python:
+  - "3.7.10"
+
+# Command to install dependencies
+#install:
+#  - pip install -r requirements.txt
+
+#sudo: required
+services:
+  - docker
+
+before_script:
+  - pip install -e .[extras]
+
+script:
+  - pytest ./tests/
+  - docker build -t 
+
+# after_success:
+#   - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  #Previusly set up in our own travis account
+#   - docker tag back $DOCKER_USER/back:$TRAVIS_BUILD_NUMBER
+#   - docker push $DOCKER_USER/back:$TRAVIS_BUILD_NUMBER
+#   - docker tag back $DOCKER_USER/back:latest
+#   - docker push $DOCKER_USER/back:latest
+
+#Environment variables
+# env:
+#   - TRAVIS=yes
+
+# Command to run tests
