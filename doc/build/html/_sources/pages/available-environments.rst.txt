@@ -1,0 +1,11 @@
+############
+Environments
+############
+
+
+(\*) Weather types according to `DOE's
+classification <https://www.energycodes.gov/development/commercial/prototype_models#TMY3>`__.
+
+(\*\*) In these environments, weather series change from episode to
+episode. Gaussian noise with 0 mean and 2.5 std is added to the original
+values in order to add stochasticity.
