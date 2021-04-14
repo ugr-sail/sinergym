@@ -12,11 +12,12 @@ services:
   - docker
 
 before_script:
-  - pip install -e .[extras]
-
+  - docker build -t alejandrocn7/tester .
+  #- docker run --rm -it alejandrocn7/tester /bin/bash -c 'pytest ./tests/'
+  
 script:
-  - pytest ./tests/
-#- docker build -t tests
+  - docker run -it alejandrocn7/tester /bin/bash -c 'pytest ./tests/'
+  
 
 # after_success:
 #   - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  #Previusly set up in our own travis account
