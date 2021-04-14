@@ -58,13 +58,15 @@ Then, clone this repository using this command:
 $ git clone https://github.com/jajimer/energym.git
 ```
 
-## Docker container
+### Docker container
 
 We include a **Dockerfile** for installing all dependencies and setting up the image for running energym. If you use [Visual Studio Code](https://code.visualstudio.com/), by simply opening the root directory and clicking on the pop-up button "_Reopen in container_", dependencies will be installed automatically and you will be able to run energym in an isolated environment.
 
 However, if you prefer installing it manually, follow the steps below.
 
-### 1. Install Energy Plus 8.6.0
+### Manual installation
+
+#### 1. Install Energy Plus 8.6.0
 
 Next step is downloading Energy Plus. Currently only version 8.6.0 has been tested,
 but code may also work with other versions.
@@ -72,16 +74,16 @@ but code may also work with other versions.
 Follow the instructions [here](https://energyplus.net/downloads) and install for Linux system (only Ubuntu is supported).
 Choose any location to install the software. Once installed, a folder called ``Energyplus-8-6-0`` should appear in the selected location.
 
-### 2. Install BCVTB software
+#### 2. Install BCVTB software
 
 Follow the instructions [here](https://simulationresearch.lbl.gov/bcvtb/Download) for installing BCVTB software.
 Another option is to copy the ``bcvtb`` folder from [this repository](https://github.com/zhangzhizza/Gym-Eplus/tree/master/eplus_env/envs).
 
-### 3. Set environment variables
+#### 3. Set environment variables
 
 Two environment variables must be set: ``EPLUS_PATH`` and ``BCVTB_PATH``, with the locations where EnergyPlus and BCVTB are installed respectively.
 
-### 4. Install the package
+#### 4. Install the package
 
 Finally, energym can be installed by running this command at the repo root folder:
 
