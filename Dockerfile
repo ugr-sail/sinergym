@@ -2,10 +2,10 @@
 # Ubuntu, Python 3.6 and BCVTB
 FROM ubuntu:18.04
 
-# Arguments for EnergyPlus version
-ARG ENERGYPLUS_VERSION
-ARG ENERGYPLUS_INSTALL_VERSION
-ARG ENERGYPLUS_SHA
+# Arguments for EnergyPlus version (default values of version 8.6.0 if is not specified)
+ARG ENERGYPLUS_VERSION=8.6.0
+ARG ENERGYPLUS_INSTALL_VERSION=8-6-0
+ARG ENERGYPLUS_SHA=198c6a3cff
 
 ENV ENERGYPLUS_VERSION=$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
@@ -55,7 +55,9 @@ RUN apt-get install wget \
 WORKDIR /code
 COPY requirements.txt .
 COPY setup.py .
-ADD energym /code/energym
+COPY energym /code/energym
+COPY tests /code/tests
+COPY examples /code/examples
 RUN pip3 install -e .[extras]
 
 CMD ["/bin/bash"]
