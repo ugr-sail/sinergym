@@ -51,3 +51,5 @@ html_static_path = ['_static']
 
 html_logo = '_static/logo-sidebar.png'
 html_favicon = '_static/logo-sidebar.png'
+
+html_theme_options = {'style_nav_header_background': '#a9c1be'}
