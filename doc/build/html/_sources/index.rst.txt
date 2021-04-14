@@ -1,5 +1,4 @@
 
-
 .. include:: pages/introduction.rst
 
 .. toctree::
@@ -9,6 +8,7 @@
    pages/1_installation.rst
    pages/2_environments.rst
    pages/3_usage-example.rst
+
    
 
 
