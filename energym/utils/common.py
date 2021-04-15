@@ -1,4 +1,4 @@
-""""Common utilities."""
+"""Common utilities."""
 
 import os
 import logging

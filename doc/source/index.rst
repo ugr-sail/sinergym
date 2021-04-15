@@ -5,9 +5,11 @@
    :maxdepth: 2
    :hidden:
 
-   pages/1_installation.rst
-   pages/2_environments.rst
-   pages/3_usage-example.rst
+   pages/installation.rst
+   pages/environments.rst
+   pages/usage-example.rst
+   pages/API-reference.rst
+
 
 
 

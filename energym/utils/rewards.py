@@ -17,7 +17,7 @@ class SimpleReward():
         """Simple reward considering absolute difference to temperature comfort.
 
         .. math::
-            R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_low, 0) + max(T_up - T, 0))
+            R = - W * \lambda_E * power - (1 - W) * \lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))
 
         Args:
             range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).

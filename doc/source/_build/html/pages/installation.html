@@ -1,69 +1,197 @@
 
+
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Installation &mdash; energym  documentation</title>
+  
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Installation &#8212; energym  documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Usage example" href="usage-example.html" />
-    <link rel="prev" title="Environments" href="environments.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a9c1be" >
           
 
-          <div class="body" role="main">
+          
+            <a href="../index.html" class="icon icon-home"> energym
+          
+
+          
+            
+            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="2_environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_usage-example.html">Usage example</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">energym</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/pages/installation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>To install energym, follow these steps.</p>
-<p>First, it is recommended to create a virtual environment. You can do so
-by:</p>
+<p>To install <em>energym</em>, follow these steps:</p>
+<ul class="simple">
+<li><p>First, it is recommended to create a virtual environment. You can do so by:</p></li>
+</ul>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install python-virtualenv virtualenv
 $ virtualenv env_energym --python<span class="o">=</span>python3.7
 $ <span class="nb">source</span> env_energym/bin/activate
 </pre></div>
 </div>
-<p>Then, clone this repository using this command:</p>
+<ul class="simple">
+<li><p>Then, clone this repository using this command:</p></li>
+</ul>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/jajimer/energym.git
 </pre></div>
 </div>
 <div class="section" id="docker-container">
 <h2>Docker container<a class="headerlink" href="#docker-container" title="Permalink to this headline">¶</a></h2>
 <p>We include a <strong>Dockerfile</strong> for installing all dependencies and setting
-up the image for running energym. If you use <a class="reference external" href="https://code.visualstudio.com/">Visual Studio
-Code</a>, by simply opening the root
-directory and clicking on the pop-up button “<em>Reopen in container</em>“,
-dependencies will be installed automatically and you will be able to run
-energym in an isolated environment.</p>
-<p>However, if you prefer installing it manually, follow the steps below.</p>
+up the image for running <em>energym</em>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you use <a class="reference external" href="https://code.visualstudio.com/">Visual Studio Code</a>, by simply opening the root directory and clicking on the pop-up button “<em>Reopen in container</em>“, all the dependencies will be installed automatically and you will be able to run <em>energym</em> in an isolated environment.</p>
+</div>
 </div>
 <div class="section" id="manual-installation">
 <h2>Manual installation<a class="headerlink" href="#manual-installation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="install-energy-plus-8-6-0">
-<h3>1. Install Energy Plus 8.6.0<a class="headerlink" href="#install-energy-plus-8-6-0" title="Permalink to this headline">¶</a></h3>
-<p>Next step is downloading Energy Plus. Currently only version 8.6.0 has
+<p>If you prefer installing <em>energym</em> manually, follow the steps below:</p>
+<div class="section" id="install-energyplus-8-6-0">
+<h3>1. Install EnergyPlus 8.6.0<a class="headerlink" href="#install-energyplus-8-6-0" title="Permalink to this headline">¶</a></h3>
+<p>Firstly, install EnergyPlus. Currently only version 8.6.0 has
 been tested, but code may also work with other versions.</p>
 <p>Follow the instructions <a class="reference external" href="https://energyplus.net/downloads">here</a> and
-install for Linux system (only Ubuntu is supported). Choose any location
+install it for Linux (only Ubuntu is supported). Choose any location
 to install the software. Once installed, a folder called
 <code class="docutils literal notranslate"><span class="pre">Energyplus-8-6-0</span></code> should appear in the selected location.</p>
 </div>
@@ -83,13 +211,13 @@ installed respectively.</p>
 </div>
 <div class="section" id="install-the-package">
 <h3>4. Install the package<a class="headerlink" href="#install-the-package" title="Permalink to this headline">¶</a></h3>
-<p>Finally, energym can be installed by running this command at the repo
+<p>Finally, <em>energym</em> can be installed by running this command at the repo
 root folder:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install -e .
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ pip install -e .
 </pre></div>
 </div>
 <p>Extra libraries can be installed by typing <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.[extras]</span></code>.
-They are intended for running and analysing DRL algorithms over energym,
+They are intended for running and analysing DRL algorithms over <em>energym</em>,
 but they are not a requirement of the package.</p>
 <p>And that’s all!</p>
 </div>
@@ -97,78 +225,47 @@ but they are not a requirement of the package.</p>
 </div>
 
 
+           </div>
+           
           </div>
-          
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">energym</a></h1>
 
+    </section>
 
+  </div>
+  
 
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
 
-
-
-
-
-<h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#docker-container">Docker container</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#manual-installation">Manual installation</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="environments.html" title="previous chapter">Environments</a></li>
-      <li>Next: <a href="usage-example.html" title="next chapter">Usage example</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2021, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../_sources/pages/installation.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
+  
+  
     
+   
 
-    
-  </body>
+</body>
 </html>

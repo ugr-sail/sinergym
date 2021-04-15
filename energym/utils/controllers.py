@@ -37,7 +37,7 @@ class RandomController(object):
 
 
 class RuleBasedController(object):
-    
+
     def __init__(self, env, range_comfort_winter=(20.0, 23.5), range_comfort_summer=(23.0, 26.0)):
         """Agent whose actions are based on static rules.
 

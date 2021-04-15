@@ -7,7 +7,6 @@ something like:
 
 .. code:: python
 
-
     import gym
     import energym
 
@@ -16,8 +15,8 @@ something like:
     done = False
     R = 0.0
     while not done:
-        a = env.action_space.sample() # action selection
-        obs, reward, done, info = env.step(a) # get new observation and reward
+        a = env.action_space.sample()
+        obs, reward, done, info = env.step(a)
         R += reward
     print('Total reward for the episode: %.4f' % R)
     env.close()

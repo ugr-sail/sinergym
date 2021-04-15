@@ -33,4 +33,4 @@ The main functionalities of *energym* are the following:
    the backend while maintaining the Gym API.
 -  Many more!
 
-*This is a work in progress project. Stay tuned for upcoming releases!*
+.. note:: *This is a work in progress project. Stay tuned for upcoming releases!*
