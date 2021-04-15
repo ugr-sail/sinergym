@@ -23,11 +23,9 @@ Docker container
 ****************
 
 We include a **Dockerfile** for installing all dependencies and setting
-up the image for running *energym*. If you use `Visual Studio
-Code <https://code.visualstudio.com/>`__, by simply opening the root
-directory and clicking on the pop-up button "*Reopen in container*\ ",
-dependencies will be installed automatically and you will be able to run
-*energym* in an isolated environment.
+up the image for running *energym*. 
+
+.. note:: If you use `Visual Studio Code <https://code.visualstudio.com/>`__, by simply opening the root directory and clicking on the pop-up button "*Reopen in container*\ ", all the dependencies will be installed automatically and you will be able to run *energym* in an isolated environment.
 
 *******************
 Manual installation

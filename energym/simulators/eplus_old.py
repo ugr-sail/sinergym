@@ -21,6 +21,9 @@ from ..utils.common import *
 
 
 YEAR = 1991 # Non leap year
+WEEKDAY_ENCODING = {'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
+                    'friday': 4, 'saturday': 5, 'sunday': 6}
+
 CWD = os.getcwd();
 LOG_LEVEL_MAIN = 'INFO';
 LOG_LEVEL_EPLS = 'ERROR';
