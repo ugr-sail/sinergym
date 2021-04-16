@@ -1,17 +1,6 @@
 import pytest
 import energym.utils.rewards as R
 
-
-@pytest.fixture
-def simple_reward():
-	return R.SimpleReward(
-		range_comfort_winter = (20.0, 23.5),
-		range_comfort_summer = (23.0, 26.0),
-		energy_weight        =          0.5,
-		lambda_energy        =         1e-4,
-		lambda_temperature   =          1.0
-		)
-
 @pytest.mark.parametrize(
 	"power,temperature,month,day,reward,reward_energy,reward_comfort",
     [

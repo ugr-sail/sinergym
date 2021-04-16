@@ -16,12 +16,6 @@ def test_get_delta_seconds(st_year,st_mon,st_day,end_mon,end_day,expected):
 	assert type(delta_sec)==float
 	assert delta_sec == expected
 
-
-@pytest.fixture(scope="function")
-def epm():
-	idf_path="./energym/data/buildings/5ZoneAutoDXVAV.idf"
-	return Epm.from_idf(idf_path)
-
 @pytest.mark.parametrize(
 	"sec_elapsed,expected_tuple",
 	[
@@ -55,15 +49,6 @@ def test_parse_variables():
 	for i in range(len(variables)):
 		assert variables[i]==expected[i]
 
-@pytest.fixture(scope="session")
-def weather_file():
-	return './energym/data/weather/USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw'
-
-@pytest.fixture(scope="function")
-def weather_data(weather_file):
-	return WeatherData.from_epw(weather_file)
-
-
 @pytest.mark.parametrize(
 	"variation",
 	[
@@ -73,12 +58,12 @@ def weather_data(weather_file):
 		((0,0)),
 	]
 )
-def test_create_variable_weather(variation,weather_data,weather_file):
-	output = common.create_variable_weather(weather_data,weather_file,['drybulb'],variation)
+def test_create_variable_weather(variation,weather_data,weather_path):
+	output = common.create_variable_weather(weather_data,weather_path,['drybulb'],variation)
 	if variation is None:
 		assert output is None
 	else:
-		expected = weather_file.split('.epw')[0]+'_Random_'+str(variation[0])+'_'+str(variation[1])+'.epw'
+		expected = weather_path.split('.epw')[0]+'_Random_'+str(variation[0])+'_'+str(variation[1])+'.epw'
 		assert output==expected
 
 

@@ -16,7 +16,7 @@ before_script:
   #- docker run --rm -it alejandrocn7/tester /bin/bash -c 'pytest ./tests/'
   
 script:
-  - docker run -it alejandrocn7/tester /bin/bash -c 'pytest ./tests/'
+  - docker run -it alejandrocn7/tester /bin/bash -c 'pytest tests -vv'
   
 
 # after_success:
