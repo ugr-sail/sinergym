@@ -7,6 +7,12 @@ import energym.utils.rewards as R
 from glob import glob #to find directories with patterns
 import shutil
 
+############### ROOT DIRECTORY ###############
+
+@pytest.fixture(scope="session")
+def energym_path():
+	return os.path.abspath(os.path.join(pkg_resources.resource_filename('energym', ''), os.pardir))
+
 ############### SIMULATOR ###############
 
 @pytest.fixture(scope="session")

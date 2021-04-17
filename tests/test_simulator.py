@@ -92,12 +92,13 @@ def test_get_file_name(simulator,idf_path):
 # def test_rm_past_history_dir(cur_eplus_working_dir, dir_sig):
 
 
-def test_create_socket_cfg(simulator):
+def test_create_socket_cfg(simulator,energym_path):
 
 	# creating a socket.cfg example in tests/socket.cfg
-	simulator._create_socket_cfg(simulator._host,simulator._port,"./tests")
+	tests_path=energym_path+"/tests"
+	simulator._create_socket_cfg(simulator._host,simulator._port,tests_path)
 	# Check its content
-	with open("./tests" + '/' + 'socket.cfg', 'r+') as socket_file:
+	with open(tests_path + '/' + 'socket.cfg', 'r+') as socket_file:
 		tree=ET.parse(socket_file)
 		root=tree.getroot()
 		assert root.tag=="BCVTB-client"
@@ -109,11 +110,11 @@ def test_create_socket_cfg(simulator):
 		assert socket_attrs["port"]==str(simulator._port)
 
 	#delete socket.cfg created during simulator_tests
-	os.remove("./tests/socket.cfg")
+	os.remove(tests_path+"/socket.cfg")
 
 
-def test_create_eplus(simulator,eplus_path,weather_path,idf_path):
-	eplus_working_dir="."
+def test_create_eplus(simulator,eplus_path,weather_path,idf_path,energym_path):
+	eplus_working_dir=energym_path
 	out_path=eplus_working_dir+'/output'
 	eplus_process=simulator._create_eplus(eplus_path,weather_path,idf_path,out_path,eplus_working_dir)
 	assert "ERROR" not in str(eplus_process.stdout.read())
