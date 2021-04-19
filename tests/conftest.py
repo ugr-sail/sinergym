@@ -1,9 +1,12 @@
 import pytest
 from energym.simulators.eplus_old import EnergyPlus
+from energym.envs.eplus_env import EplusEnv
+import energym.utils.rewards as R
+from energym.utils.wrappers import NormalizeObservation, MultiObsWrapper
+
+from opyplus import Epm, WeatherData
 import os
 import pkg_resources
-from opyplus import Epm, WeatherData
-import energym.utils.rewards as R
 from glob import glob #to find directories with patterns
 import shutil
 
@@ -13,7 +16,7 @@ import shutil
 def energym_path():
 	return os.path.abspath(os.path.join(pkg_resources.resource_filename('energym', ''), os.pardir))
 
-############### SIMULATOR ###############
+############### SIMULATORS ###############
 
 @pytest.fixture(scope="session")
 def eplus_path():
@@ -44,6 +47,18 @@ def simulator(eplus_path, bcvtb_path,idf_path,variable_path,weather_path):
 	env_name="TEST"
 	return EnergyPlus(eplus_path, weather_path, bcvtb_path, variable_path, idf_path, env_name,act_repeat=1,max_ep_data_store_num = 10)
 
+############### ENVIRONMENTS ANDD WRAPPERS###############
+
+@pytest.fixture(scope="session")
+def env_demo(idf_path, weather_path):
+	idf_file=idf_path.split("/")[-1]
+	weather_file=weather_path.split("/")[-1]
+	return EplusEnv(env_name="TESTGYM",idf_file=idf_file, weather_file=weather_file, discrete_actions=True, weather_variability=None)
+
+@pytest.fixture(scope="session")
+def env_wrapper(env_demo):
+	return NormalizeObservation(MultiObsWrapper(env=env_demo,n=5))
+
 ############### COMMONS ###############
 
 @pytest.fixture(scope="session")
@@ -54,7 +69,7 @@ def epm(idf_path):
 def weather_data(weather_path):
 	return WeatherData.from_epw(weather_path)
 
-############### REWARD ###############
+############### REWARDS ###############
 
 @pytest.fixture(scope="session")
 def simple_reward():
@@ -71,6 +86,11 @@ def simple_reward():
 def pytest_sessionfinish(session, exitstatus):
 	""" whole test run finishes. """
 	# Deleting all temporal directories generated during tests
-	directories=glob("Eplus-env-TEST-res*/")
+	directories=glob("Eplus-env-TEST*/")
 	for directory in directories:
 		shutil.rmtree(directory)
+
+	#Deleting new random weather files once it has been checked
+	files=glob("energym/data/weather/*Random*.epw")
+	for file in files:
+		os.remove(file)

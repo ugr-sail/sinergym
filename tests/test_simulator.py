@@ -113,8 +113,8 @@ def test_create_socket_cfg(simulator,energym_path):
 	os.remove(tests_path+"/socket.cfg")
 
 
-def test_create_eplus(simulator,eplus_path,weather_path,idf_path,energym_path):
-	eplus_working_dir=energym_path
+def test_create_eplus(simulator,eplus_path,weather_path,idf_path):
+	eplus_working_dir=simulator._env_working_dir_parent
 	out_path=eplus_working_dir+'/output'
 	eplus_process=simulator._create_eplus(eplus_path,weather_path,idf_path,out_path,eplus_working_dir)
 	assert "ERROR" not in str(eplus_process.stdout.read())
