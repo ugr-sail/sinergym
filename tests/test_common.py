@@ -1,6 +1,7 @@
 import pytest
 import energym.utils.common as common
 from opyplus import Epm, WeatherData
+import shutil
 
 @pytest.mark.parametrize(
 	"st_year,st_mon,st_day,end_mon,end_day,expected",
@@ -65,7 +66,3 @@ def test_create_variable_weather(variation,weather_data,weather_path):
 	else:
 		expected = weather_path.split('.epw')[0]+'_Random_'+str(variation[0])+'_'+str(variation[1])+'.epw'
 		assert output==expected
-
-
-
-
