@@ -49,13 +49,13 @@ def simulator(eplus_path, bcvtb_path,idf_path,variable_path,weather_path):
 
 ############### ENVIRONMENTS ANDD WRAPPERS###############
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def env_demo(idf_path, weather_path):
 	idf_file=idf_path.split("/")[-1]
 	weather_file=weather_path.split("/")[-1]
 	return EplusEnv(env_name="TESTGYM",idf_file=idf_file, weather_file=weather_file, discrete_actions=True, weather_variability=None)
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def env_wrapper(env_demo):
 	return NormalizeObservation(MultiObsWrapper(env=env_demo,n=5))
 
