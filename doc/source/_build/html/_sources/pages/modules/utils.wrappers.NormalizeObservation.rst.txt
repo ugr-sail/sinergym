@@ -4,9 +4,8 @@ utils.wrappers.NormalizeObservation
 .. currentmodule:: utils.wrappers
 
 .. autoclass:: NormalizeObservation
-   :members:                                  
-   :show-inheritance:                          
-   :inherited-members:                        
+   :members:                                                           
+   :undoc-members:               
 
    
    .. automethod:: __init__

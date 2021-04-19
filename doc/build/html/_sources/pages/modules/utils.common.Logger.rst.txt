@@ -4,9 +4,8 @@ utils.common.Logger
 .. currentmodule:: utils.common
 
 .. autoclass:: Logger
-   :members:                                  
-   :show-inheritance:                          
-   :inherited-members:                        
+   :members:                                                           
+   :undoc-members:               
 
    
    .. automethod:: __init__

@@ -2,10 +2,9 @@
 Welcome to **energym**!
 =======================
 
-This is a project based on Zhiang Zhang and Khee Poh Lam
-`Gym-Eplus <https://github.com/zhangzhizza/Gym-Eplus>`__.
+.. seealso:: This is a project based on Zhiang Zhang and Khee Poh Lam `Gym-Eplus <https://github.com/zhangzhizza/Gym-Eplus>`__.
 
-The goal of this project is to create an environment following OpenAI
+The goal of *energym* is to create an environment following OpenAI
 Gym interface for wrapping simulation engines for building control using
 **deep reinforcement learning**.
 

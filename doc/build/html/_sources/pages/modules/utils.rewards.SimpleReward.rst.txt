@@ -4,9 +4,8 @@ utils.rewards.SimpleReward
 .. currentmodule:: utils.rewards
 
 .. autoclass:: SimpleReward
-   :members:                                  
-   :show-inheritance:                          
-   :inherited-members:                        
+   :members:                                                           
+   :undoc-members:               
 
    
    .. automethod:: __init__

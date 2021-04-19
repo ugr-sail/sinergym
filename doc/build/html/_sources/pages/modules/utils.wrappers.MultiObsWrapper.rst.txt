@@ -4,9 +4,8 @@ utils.wrappers.MultiObsWrapper
 .. currentmodule:: utils.wrappers
 
 .. autoclass:: MultiObsWrapper
-   :members:                                  
-   :show-inheritance:                          
-   :inherited-members:                        
+   :members:                                                           
+   :undoc-members:               
 
    
    .. automethod:: __init__

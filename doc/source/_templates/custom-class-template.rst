@@ -3,9 +3,8 @@
 .. currentmodule:: {{ module }}
 
 .. autoclass:: {{ objname }}
-   :members:                                  
-   :show-inheritance:                          
-   :inherited-members:                        
+   :members:                                                           
+   :undoc-members:               
 
    {% block methods %}
    .. automethod:: __init__

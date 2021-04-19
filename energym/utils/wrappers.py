@@ -17,7 +17,7 @@ class NormalizeObservation(gym.ObservationWrapper):
         super(NormalizeObservation, self).__init__(env)
 
     def observation(self, obs):
-        """Applies _tanh_ to observation.
+        """Applies *tanh* to observation.
 
         Args:
             obs (object): Original observation.
@@ -31,7 +31,7 @@ class NormalizeObservation(gym.ObservationWrapper):
 class MultiObsWrapper(gym.Wrapper):
 
     def __init__(self, env, n=5):
-        """Multiple observations stacked.
+        """Stack of observations.
 
         Args:
             env (object): Original Gym environment.

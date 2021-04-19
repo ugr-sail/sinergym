@@ -52,7 +52,12 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+# Modify icons
 html_logo = '_static/logo-sidebar.png'
 html_favicon = '_static/logo-sidebar.png'
 
+# Change sidebar-logo background
 html_theme_options = {'style_nav_header_background': '#a9c1be'}
+
+# Enable global sidebar
+html_sidebars = { '**': ['globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'] }

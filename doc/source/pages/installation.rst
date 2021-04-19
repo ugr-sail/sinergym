@@ -73,5 +73,3 @@ root folder:
 Extra libraries can be installed by typing ``pip install -e .[extras]``.
 They are intended for running and analysing DRL algorithms over *energym*,
 but they are not a requirement of the package.
-
-And that's all!

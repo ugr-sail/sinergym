@@ -2,6 +2,7 @@
 Usage example
 #############
 
+
 Energym uses the standard OpenAI gym API. So basic loop should be
 something like:
 
