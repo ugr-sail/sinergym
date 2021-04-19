@@ -5,7 +5,8 @@ register(
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV.idf',
-        'weather_file': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw' 
+        'weather_file': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        'env_name' : 'demo-v1' 
     }
 )
 
@@ -14,7 +15,8 @@ register(
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_AZ.idf',
-        'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw' 
+        'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
+        'env_name' : 'discrete-hot-v1' 
     }
 )
 
@@ -23,7 +25,8 @@ register(
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_NY.idf',
-        'weather_file': 'USA_NY_New.York-John.F.Kennedy.Intl.AP.744860_TMY3.epw' 
+        'weather_file': 'USA_NY_New.York-John.F.Kennedy.Intl.AP.744860_TMY3.epw',
+        'env_name' : 'discrete-mixed-v1' 
     }
 )
 
@@ -32,7 +35,8 @@ register(
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_WA.idf',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw' 
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'env_name' : 'discrete-cool-v1' 
     }
 )
 
@@ -42,7 +46,8 @@ register(
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_WA.idf',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'discrete_actions': False
+        'discrete_actions': False,
+        'env_name' : 'continuous-cool-v1'
     }
 )
 
@@ -52,7 +57,8 @@ register(
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_NY.idf',
         'weather_file': 'USA_NY_New.York-John.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'discrete_actions': False
+        'discrete_actions': False,
+        'env_name' : 'continuous-mixed-v1'
     }
 )
 
@@ -62,7 +68,8 @@ register(
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_AZ.idf',
         'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
-        'discrete_actions': False
+        'discrete_actions': False,
+        'env_name' : 'continuous-hot-v1'
     }
 )
 
@@ -73,7 +80,8 @@ register(
         'idf_file': '5ZoneAutoDXVAV_AZ.idf',
         'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
         'discrete_actions': False,
-        'weather_variability': (0.0, 2.5)
+        'weather_variability': (0.0, 2.5),
+        'env_name' : 'continuous-stochastic-hot-v1'
     }
 )
 
@@ -84,6 +92,7 @@ register(
         'idf_file': '5ZoneAutoDXVAV_WA.idf',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
         'discrete_actions': True,
-        'weather_variability': (0.0, 2.5)
+        'weather_variability': (0.0, 2.5),
+        'env_name' : 'discrete-stochastic-cool-v1'
     }
 )

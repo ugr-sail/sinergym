@@ -75,6 +75,7 @@ class EplusEnv(gym.Env):
         self,
         idf_file,
         weather_file,
+        env_name='eplus-env-v1',
         discrete_actions = True,
         weather_variability = None
     ):
@@ -102,7 +103,7 @@ class EplusEnv(gym.Env):
         self.variables_path = os.path.join(self.pkg_data_path, 'variables', variables_file)
 
         self.simulator = EnergyPlus(
-            env_name = 'eplus-env-v1',
+            env_name = env_name,
             eplus_path = eplus_path,
             bcvtb_path = bcvtb_path,
             idf_path = self.idf_path,
