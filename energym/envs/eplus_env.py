@@ -48,7 +48,7 @@ class EplusEnv(gym.Env):
         18      Current hour                                              0              23
 
         ...
-    
+
     Actions:
         Type: Discrete(10)
         Num    Action
@@ -70,44 +70,42 @@ class EplusEnv(gym.Env):
     """
 
     metadata = {'render.modes': ['human']}
-    
+
     def __init__(
         self,
         idf_file,
         weather_file,
-        discrete_actions = True,
-        weather_variability = None
+        discrete_actions=True,
+        weather_variability=None
     ):
-        """
-        Class constructor.
+        """Environment with EnergyPlus simulator.
 
-        Parameters
-        ----------
-        idf_file : str
-            Name of the IDF file with the building definition.
-        weather_file : str
-            Name of the EPW file for weather conditions.
-        discrete_actions : bool
-            Whether the actions are discrete (True) or continuous (False).
+        Args:
+            idf_file (str): Name of the IDF file with the building definition.
+            weather_file (str): Name of the EPW file for weather conditions.
+            discrete_actions (bool, optional): Whether the actions are discrete (True) or continuous (False). Defaults to True.
+            weather_variability (tuple, optional): Tuple with the mean and standard desviation of the Gaussian noise to be applied to weather data. Defaults to None.
         """
-
         variables_file = 'variables.cfg'
 
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
-        self.pkg_data_path = pkg_resources.resource_filename('energym', 'data/')
+        self.pkg_data_path = pkg_resources.resource_filename(
+            'energym', 'data/')
 
         self.idf_path = os.path.join(self.pkg_data_path, 'buildings', idf_file)
-        self.weather_path = os.path.join(self.pkg_data_path, 'weather', weather_file)
-        self.variables_path = os.path.join(self.pkg_data_path, 'variables', variables_file)
+        self.weather_path = os.path.join(
+            self.pkg_data_path, 'weather', weather_file)
+        self.variables_path = os.path.join(
+            self.pkg_data_path, 'variables', variables_file)
 
         self.simulator = EnergyPlus(
-            env_name = 'eplus-env-v1',
-            eplus_path = eplus_path,
-            bcvtb_path = bcvtb_path,
-            idf_path = self.idf_path,
-            weather_path = self.weather_path,
-            variable_path = self.variables_path
+            env_name='eplus-env-v1',
+            eplus_path=eplus_path,
+            bcvtb_path=bcvtb_path,
+            idf_path=self.idf_path,
+            weather_path=self.weather_path,
+            variable_path=self.variables_path
         )
 
         # Utils for getting time info, weather and variable names
@@ -119,62 +117,55 @@ class EplusEnv(gym.Env):
         self.weather_variability = weather_variability
 
         # Observation space
-        self.observation_space = gym.spaces.Box(low=-5e6, high=5e6, shape=(19,), dtype=np.float32)
-        
+        self.observation_space = gym.spaces.Box(
+            low=-5e6, high=5e6, shape=(19,), dtype=np.float32)
+
         # Action space
         self.flag_discrete = discrete_actions
         if self.flag_discrete:
             self.action_mapping = {
-                0: (15, 30), 
-                1: (16, 29), 
-                2: (17, 28), 
-                3: (18, 27), 
-                4: (19, 26), 
-                5: (20, 25), 
-                6: (21, 24), 
-                7: (22, 23), 
+                0: (15, 30),
+                1: (16, 29),
+                2: (17, 28),
+                3: (18, 27),
+                4: (19, 26),
+                5: (20, 25),
+                6: (21, 24),
+                7: (22, 23),
                 8: (22, 22),
                 9: (21, 21)
             }
             self.action_space = gym.spaces.Discrete(10)
         else:
             self.action_space = gym.spaces.Box(
-                low = np.array([15.0, 22.5]), 
-                high = np.array([22.5, 30.0]), 
-                shape = (2,), dtype = np.float32
+                low=np.array([15.0, 22.5]),
+                high=np.array([22.5, 30.0]),
+                shape=(2,), dtype=np.float32
             )
 
         # Reward class
         self.cls_reward = SimpleReward()
 
     def step(self, action):
-        """
-        Sends action to the environment.
+        """Sends action to the environment.
 
-        Parameters
-        ----------
-        action : int or np.array
-            Action selected by the agent
+        Args:
+            action (int or np.array): Action selected by the agent.
 
-        Returns
-        -------
-        np.array
-            Observation for next timestep
-        reward : float
-            Reward obtained
-        done : bool
-            Whether the episode has ended or not
-        info : dict
-            A dictionary with extra information
+        Returns:
+            np.array: Observation for next timestep.
+            float: Reward obtained.
+            bool: Whether the episode has ended or not.
+            dict: A dictionary with extra information.
         """
-        
+
         # Get action depending on flag_discrete
         if self.flag_discrete:
             setpoints = self.action_mapping[action]
             action_ = [setpoints[0], setpoints[1]]
         else:
             action_ = list(action)
-        
+
         # Send action to the simulator
         self.simulator.logger_main.debug(action_)
         t, obs, done = self.simulator.step(action_)
@@ -189,14 +180,15 @@ class EplusEnv(gym.Env):
         # Calculate reward
         temp = obs_dict['Zone Air Temperature']
         power = obs_dict['Facility Total HVAC Electric Demand Power']
-        reward, terms = self.cls_reward.calculate(power, temp, time_info[1], time_info[0])
-        
+        reward, terms = self.cls_reward.calculate(
+            power, temp, time_info[1], time_info[0])
+
         # Extra info
         info = {
             'timestep': t,
-            'day' : obs_dict['day'],
-            'month' : obs_dict['month'],
-            'hour' : obs_dict['hour'],
+            'day': obs_dict['day'],
+            'month': obs_dict['month'],
+            'hour': obs_dict['hour'],
             'total_power': power,
             'total_power_no_units': terms['reward_energy'],
             'comfort_penalty': terms['reward_comfort'],
@@ -206,14 +198,19 @@ class EplusEnv(gym.Env):
         return np.array(list(obs_dict.values())), reward, done, info
 
     def reset(self):
-        """"""
+        """Reset the environment.
+
+        Returns:
+            np.array: Current observation.
+        """
         # Create new random weather file
-        new_weather = create_variable_weather(self.weather_data, self.weather_path, variation = self.weather_variability)
-        
+        new_weather = create_variable_weather(
+            self.weather_data, self.weather_path, variation=self.weather_variability)
+
         t, obs, done = self.simulator.reset(new_weather)
-        
+
         obs_dict = dict(zip(self.variables, obs))
-        
+
         time_info = get_current_time_info(self.epm, t)
         obs_dict['day'] = time_info[0]
         obs_dict['month'] = time_info[1]
@@ -222,7 +219,9 @@ class EplusEnv(gym.Env):
         return np.array(list(obs_dict.values()))
 
     def render(self, mode='human'):
+        """Environment rendering""".
         pass
-    
+
     def close(self):
+        """End simulation."""
         self.simulator.end_env()
