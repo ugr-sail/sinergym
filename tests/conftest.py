@@ -50,7 +50,7 @@ def simulator(eplus_path, bcvtb_path,idf_path,variable_path,weather_path):
 ############### ENVIRONMENTS ANDD WRAPPERS###############
 
 @pytest.fixture(scope="module")
-def env_demo(idf_path, weather_path):
+def env_demo(idf_path, weather_path, variable_path):
 	idf_file=idf_path.split("/")[-1]
 	weather_file=weather_path.split("/")[-1]
 	variables_file=variable_path.split("/")[-1]
