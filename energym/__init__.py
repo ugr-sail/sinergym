@@ -6,7 +6,7 @@ register(
     kwargs={
         'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
-        'variables_file': 'variables.cfg'
+        'variables_file': 'variables.cfg',
         'env_name' : 'demo-v1' 
     }
 )
@@ -17,7 +17,7 @@ register(
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_AZ.idf',
         'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
-        'variables_file': 'variables.cfg'
+        'variables_file': 'variables.cfg',
         'env_name' : 'discrete-hot-v1' 
     }
 )
