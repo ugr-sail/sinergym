@@ -53,7 +53,8 @@ def simulator(eplus_path, bcvtb_path,idf_path,variable_path,weather_path):
 def env_demo(idf_path, weather_path):
 	idf_file=idf_path.split("/")[-1]
 	weather_file=weather_path.split("/")[-1]
-	return EplusEnv(env_name="TESTGYM",idf_file=idf_file, weather_file=weather_file, discrete_actions=True, weather_variability=None)
+	variables_file=variable_path.split("/")[-1]
+	return EplusEnv(env_name="TESTGYM",idf_file=idf_file, weather_file=weather_file, variables_file=variables_file, discrete_actions=True, weather_variability=None)
 
 @pytest.fixture(scope="module")
 def env_wrapper(env_demo):

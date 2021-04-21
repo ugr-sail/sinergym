@@ -75,6 +75,7 @@ class EplusEnv(gym.Env):
         self,
         idf_file,
         weather_file,
+        variables_file,
         env_name='eplus-env-v1',
         discrete_actions = True,
         weather_variability = None
@@ -91,8 +92,6 @@ class EplusEnv(gym.Env):
         discrete_actions : bool
             Whether the actions are discrete (True) or continuous (False).
         """
-
-        variables_file = 'variables.cfg'
 
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
