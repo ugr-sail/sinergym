@@ -9,5 +9,7 @@ API reference
    :template: custom-module-template.rst
    :recursive:
    
-   utils
-   envs
+   energym.utils
+   energym.envs
+   energym.simulators
+

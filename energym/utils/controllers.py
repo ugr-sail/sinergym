@@ -7,11 +7,9 @@ from datetime import datetime
 
 from ..utils.common import parse_variables
 
+
 PKG_DATA_PATH = pkg_resources.resource_filename('energym', 'data/')
 VARIABLES_FILE = 'variables.cfg'
-
-YEAR = 2021
-
 
 class RandomController(object):
 
@@ -46,6 +44,9 @@ class RuleBasedController(object):
             range_comfort_winter (tuple, optional): Comfort temperature range for cool season. Defaults to (20.0, 23.5).
             range_comfort_summer (tuple, optional): Comfort temperature range for hot season. Defaults to (23.0, 26.0).
         """
+
+        year = 2021
+
         self.env = env
         self.range_comfort_winter = range_comfort_winter
         self.range_comfort_summer = range_comfort_summer
@@ -55,11 +56,11 @@ class RuleBasedController(object):
         self.variables = parse_variables(self.variables_path)
         self.variables.extend(['day', 'month', 'hour'])
 
-        self.summer_start_date = datetime(YEAR, 6, 1)
-        self.summer_final_date = datetime(YEAR, 9, 30)
+        self.summer_start_date = datetime(year, 6, 1)
+        self.summer_final_date = datetime(year, 9, 30)
 
     def act(self, observation):
-        """Select action based on _outdoor air drybulb temperature_.
+        """Select action based on outdoor air drybulb temperature.
 
         Args:
             observation (object): Perceived observation.

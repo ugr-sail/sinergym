@@ -24,49 +24,92 @@ class EplusEnv(gym.Env):
     """
     Environment with EnergyPlus simulator.
 
-    Observation:
-        Type: Box(16)
-        Num    Variable name                                             Min            Max
-        0       Site Outdoor Air Drybulb Temperature                     -5e6            5e6
-        1       Site Outdoor Air Relative Humidity                       -5e6            5e6
-        2       Site Wind Speed                                          -5e6            5e6
-        3       Site Wind Direction                                      -5e6            5e6
-        4       Site Diffuse Solar Radiation Rate per Area               -5e6            5e6
-        5       Site Direct Solar Radiation Rate per Area                -5e6            5e6
-        6       Zone Thermostat Heating Setpoint Temperature             -5e6            5e6
-        7       Zone Thermostat Cooling Setpoint Temperature             -5e6            5e6
-        8       Zone Air Temperature                                     -5e6            5e6
-        9       Zone Thermal Comfort Mean Radiant Temperature            -5e6            5e6
-        10      Zone Air Relative Humidity                               -5e6            5e6
-        11      Zone Thermal Comfort Clothing Value                      -5e6            5e6
-        12      Zone Thermal Comfort Fanger Model PPD                    -5e6            5e6
-        13      Zone People Occupant Count                               -5e6            5e6
-        14      People Air Temperature                                   -5e6            5e6
-        15      Facility Total HVAC Electric Demand Power                -5e6            5e6
-        16      Current day                                               1              31
-        17      Current month                                             1              12
-        18      Current hour                                              0              23
+    **OBSERVATIONS**
 
-        ...
+    Type: Box(19)
 
-    Actions:
-        Type: Discrete(10)
-        Num    Action
-        0       Heating setpoint = 15, Cooling setpoint = 30
-        1       Heating setpoint = 16, Cooling setpoint = 29
-        2       Heating setpoint = 17, Cooling setpoint = 28
-        3       Heating setpoint = 18, Cooling setpoint = 27
-        4       Heating setpoint = 19, Cooling setpoint = 26
-        5       Heating setpoint = 20, Cooling setpoint = 25
-        6       Heating setpoint = 21, Cooling setpoint = 24
-        7       Heating setpoint = 22, Cooling setpoint = 23
-        8       Heating setpoint = 22, Cooling setpoint = 22
-        9       Heating setpoint = 21, Cooling setpoint = 21
+    =====  =============================================  ====  ====
+    N      Variable name                                  Max   Min    
+    =====  =============================================  ====  ====
+    0      Site Outdoor Air Drybulb Temperature           -5e6  5e6
+    -----  ---------------------------------------------  ----  ----
+    1      Site Outdoor Air Relative Humidity             -5e6  5e6                
+    -----  ---------------------------------------------  ----  ----
+    2      Site Wind Speed                                -5e6  5e6             
+    -----  ---------------------------------------------  ----  ----
+    3      Site Wind Direction                            -5e6  5e6
+    -----  ---------------------------------------------  ----  ----
+    4      Site Diffuse Solar Radiation Rate per Area     -5e6  5e6           
+    -----  ---------------------------------------------  ----  ----
+    5      Site Direct Solar Radiation Rate per Area      -5e6  5e6         
+    -----  ---------------------------------------------  ----  ----
+    6      Zone Thermostat Heating Setpoint Temperature   -5e6  5e6         
+    -----  ---------------------------------------------  ----  ----
+    7      Zone Thermostat Cooling Setpoint Temperature   -5e6  5e6           
+    -----  ---------------------------------------------  ----  ----
+    8      Zone Air Temperature                           -5e6  5e6         
+    -----  ---------------------------------------------  ----  ----
+    9      Zone Thermal Comfort Mean Radiant Temperature  -5e6  5e6          
+    -----  ---------------------------------------------  ----  ----
+    10     Zone Air Relative Humidity                     -5e6  5e6           
+    -----  ---------------------------------------------  ----  ----
+    11     Zone Thermal Comfort Clothing Value            -5e6  5e6          
+    -----  ---------------------------------------------  ----  ----
+    12     Zone Thermal Comfort Fanger Model PPD          -5e6  5e6          
+    -----  ---------------------------------------------  ----  ----
+    13     Zone People Occupant Count                     -5e6  5e6          
+    -----  ---------------------------------------------  ----  ----
+    14     People Air Temperature                         -5e6  5e6     
+    -----  ---------------------------------------------  ----  ----
+    15     Facility Total HVAC Electric Demand Power      -5e6  5e6  
+    -----  ---------------------------------------------  ----  ----
+    16     Current day                                     1     31
+    -----  ---------------------------------------------  ----  ----
+    17     Current month                                   1     12
+    -----  ---------------------------------------------  ----  ----
+    18     Current hour                                    0     23
+    =====  =============================================  ====  ====
 
-        Type: Box(2)
-        Num    Variable name                         Min            Max
-        0      Heating setpoint                     15.0           22.5
-        1      Cooling setpoint                     22.5           30.0
+    **DISCRETE ACTIONS**
+
+    Type: Discrete(10)
+
+    ======  ================  ================
+    Num     Heating setpoint  Cooling setpoint
+    ======  ================  ================
+    0             15                30
+    ------  ----------------  ----------------
+    1             16                29
+    ------  ----------------  ----------------
+    2             17                28
+    ------  ----------------  ----------------
+    3             18                27
+    ------  ----------------  ----------------
+    4             19                26
+    ------  ----------------  ----------------
+    5             20                25
+    ------  ----------------  ----------------
+    6             21                24
+    ------  ----------------  ----------------
+    7             22                23
+    ------  ----------------  ----------------
+    8             22                22
+    ------  ----------------  ----------------
+    9             21                21
+    ======  ================  ================
+
+    **CONTINUOUS ACTIONS**
+
+    Type: Box(2)
+
+    ===  ================  ====  ====
+    Num  Variable name     Min   Max
+    ===  ================  ====  ====
+    0    Heating setpoint  15.0  22.5
+    ---  ----------------  ----  ----
+    1    Cooling setpoint  22.5  30.0
+    ===  ================  ====  ====
+
     """
 
     metadata = {'render.modes': ['human']}
@@ -219,7 +262,7 @@ class EplusEnv(gym.Env):
         return np.array(list(obs_dict.values()))
 
     def render(self, mode='human'):
-        """Environment rendering""".
+        """Environment rendering."""
         pass
 
     def close(self):
