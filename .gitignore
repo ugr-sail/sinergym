@@ -14,4 +14,4 @@ bcvtb/
 Eplus-env*/
 
 # Documentation
-doc/build/
+doc/_build/
