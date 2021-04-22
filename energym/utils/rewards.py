@@ -1,4 +1,4 @@
-"""Script for implementing several types of rewards."""
+"""Implementation of different types of rewards."""
 
 from datetime import datetime
 
@@ -6,52 +6,64 @@ YEAR = 2021
 
 
 class SimpleReward():
-    """
-    Simple reward considering absolute difference to temperature comfort.
 
-    R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_low, 0) + max(T_up - T, 0))
-    """
     def __init__(self,
-        range_comfort_winter: tuple = (20.0, 23.5),
-        range_comfort_summer: tuple = (23.0, 26.0),
-        energy_weight: float = 0.5,
-        lambda_energy: float = 1e-4,
-        lambda_temperature: float = 1.0
-    ):
+                 range_comfort_winter=(20.0, 23.5),
+                 range_comfort_summer=(23.0, 26.0),
+                 energy_weight=0.5,
+                 lambda_energy=1e-4,
+                 lambda_temperature=1.0
+                 ):
+        """Simple reward considering absolute difference to temperature comfort.
+
+        .. math::
+            R = - W * \lambda_E * power - (1 - W) * \lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))
+
+        Args:
+            range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).
+            range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
+            energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
+            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
+            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
         """
-        Parameters
-        ----------
-        range_comfort_winter
-            Temperature comfort range for winter.
-        range_comfort_summer
-            Temperature comfort range for summer.
-        energy_weight
-            Weight given to the energy term.
-        lambda_energy
-            Constant for removing dimensions from power (1/W)
-        lambda_temperature
-            Constant for removing dimensions from temperature (1/C)
-        """
+
         # Variables
         self.range_comfort_winter = range_comfort_winter
         self.range_comfort_summer = range_comfort_summer
         self.W_energy = energy_weight
         self.lambda_energy = lambda_energy
         self.lambda_temp = lambda_temperature
+
         # Periods
         self.summer_start_date = datetime(YEAR, 6, 1)
         self.summer_final_date = datetime(YEAR, 9, 30)
 
     def calculate(self, power, temperature, month, day):
-        """"""
+        """Reward calculus.
+
+        Args:
+            power (float): Power consumption.
+            temperature (float): Indoor temperature.
+            month (int): Current month.
+            day (int): Current day.
+
+        Returns:
+            float: Reward value.
+        """
         # Energy term
         reward_energy = - self.lambda_energy * power
+
         # Comfort term
         current_dt = datetime(YEAR, month, day)
         range_T = self.range_comfort_summer if current_dt >= self.summer_start_date and current_dt <= self.summer_final_date else self.range_comfort_winter
-        delta_T = 0.0 if temperature >= range_T[0] and temperature <= range_T[1] else min(abs(range_T[0] - temperature), abs(temperature - range_T[1]))
+        delta_T = 0.0 if temperature >= range_T[0] and temperature <= range_T[1] else min(
+            abs(range_T[0] - temperature), abs(temperature - range_T[1]))
         reward_comfort = - self.lambda_temp * delta_T
+
         # Weighted sum of both terms
-        reward = self.W_energy * reward_energy + (1.0 - self.W_energy) * reward_comfort
-        terms = {'reward_energy': reward_energy, 'reward_comfort': reward_comfort}
+        reward = self.W_energy * reward_energy + \
+            (1.0 - self.W_energy) * reward_comfort
+        terms = {'reward_energy': reward_energy,
+                 'reward_comfort': reward_comfort}
+
         return reward, terms
