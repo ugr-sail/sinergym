@@ -1,7 +1,7 @@
 # energym
 
 <div align="center">
-  <img src="images/logo.png" width=40%><br><br>
+  <img src="images/logo.png" width=30%><br><br>
 </div>
 
 **Welcome to energym!**
@@ -19,9 +19,9 @@ The main functionalities of Energym are the following :
 
 _This is a work in progress project. Stay tuned for upcoming releases._
 
-## Documentation
-
-
+<div align="center">
+  <img src="images/operation_diagram.png"><br><br>
+</div>
 
 ## List of available environments
 

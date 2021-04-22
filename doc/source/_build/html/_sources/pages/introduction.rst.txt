@@ -32,4 +32,9 @@ The main functionalities of *energym* are the following:
    the backend while maintaining the Gym API.
 -  Many more!
 
+.. image:: /_static/operation-diagram.png
+  :width: 800
+  :alt: Energym diagram
+  :align: center
+
 .. note:: *This is a work in progress project. Stay tuned for upcoming releases!*
