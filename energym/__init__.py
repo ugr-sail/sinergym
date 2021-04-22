@@ -107,13 +107,13 @@ register(
 )
 
 register(
-    id='Eplus-econimizer-v1',
+    id='Eplus-datacenter-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
         'weather_file': 'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw',
         'variables_file': 'variablesDataCenter.cfg',
         'discrete_actions': True,
-        'env_name' : 'economizer-v1'
+        'env_name' : 'datacenter-v1'
     }
 )
