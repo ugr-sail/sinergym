@@ -13,5 +13,10 @@ bcvtb/
 # Simulation outputs
 Eplus-env*/
 
+
 #Socket.cfg in tests
 socket.cfg
+
+# Documentation
+doc/_build/
+
