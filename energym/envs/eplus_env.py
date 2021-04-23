@@ -118,10 +118,13 @@ class EplusEnv(gym.Env):
         self,
         idf_file,
         weather_file,
-        discrete_actions=True,
-        weather_variability=None
+        variables_file,
+        env_name='eplus-env-v1',
+        discrete_actions = True,
+        weather_variability = None
     ):
         """Environment with EnergyPlus simulator.
+
 
         Args:
             idf_file (str): Name of the IDF file with the building definition.
@@ -129,7 +132,6 @@ class EplusEnv(gym.Env):
             discrete_actions (bool, optional): Whether the actions are discrete (True) or continuous (False). Defaults to True.
             weather_variability (tuple, optional): Tuple with the mean and standard desviation of the Gaussian noise to be applied to weather data. Defaults to None.
         """
-        variables_file = 'variables.cfg'
 
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
@@ -143,12 +145,12 @@ class EplusEnv(gym.Env):
             self.pkg_data_path, 'variables', variables_file)
 
         self.simulator = EnergyPlus(
-            env_name='eplus-env-v1',
-            eplus_path=eplus_path,
-            bcvtb_path=bcvtb_path,
-            idf_path=self.idf_path,
-            weather_path=self.weather_path,
-            variable_path=self.variables_path
+            env_name = env_name,
+            eplus_path = eplus_path,
+            bcvtb_path = bcvtb_path,
+            idf_path = self.idf_path,
+            weather_path = self.weather_path,
+            variable_path = self.variables_path
         )
 
         # Utils for getting time info, weather and variable names
