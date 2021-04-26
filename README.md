@@ -91,10 +91,19 @@ Finally, energym can be installed by running this command at the repo root folde
 pip install -e .
 ```
 
-Extra libraries can be installed by typing ``pip install -e .[extras]``. They are intended for running and analysing DRL algorithms over energym, but they are
+Extra libraries can be installed by typing ``pip install -e .[extras]``. They are intended for running and analyzing DRL algorithms over energym, but they are
 not a requirement of the package.   
 
 And that's all!
+
+## Check Installation
+
+This project is automatically supervised using tests developed specifically for it. If you want to check energym has been installed successfully, run next command:
+
+```sh
+$ pytest tests/ -vv
+```
+Anyway, every time energym repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. [Travis-CI](https://docs.travis-ci.com/) will do that job (see [.travis.yml](https://github.com/jajimer/energym/blob/main/.travis.yml)). You can [learn more about Energym test here](https://github.com/jajimer/energym/blob/main/tests/README.md)
 
 ## Usage example
 
@@ -118,3 +127,4 @@ env.close()
 ````
 
 Notice that a folder will be created in the working directory after creating the environment. It will contain the EnergyPlus outputs produced during the simulation.
+```

@@ -92,6 +92,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../API-reference.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="energym.utils.html">energym.utils</a></li>
@@ -182,7 +183,7 @@
 <h1>energym.envs.eplus_env.EplusEnv<a class="headerlink" href="#energym-envs-eplus-env-eplusenv" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="energym.envs.eplus_env.EplusEnv">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">energym.envs.eplus_env.</span></code><code class="sig-name descname"><span class="pre">EplusEnv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_actions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_variability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#energym.envs.eplus_env.EplusEnv" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">energym.envs.eplus_env.</span></code><code class="sig-name descname"><span class="pre">EplusEnv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'eplus-env-v1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_actions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_variability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#energym.envs.eplus_env.EplusEnv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Environment with EnergyPlus simulator.</p>
 <p><strong>OBSERVATIONS</strong></p>
 <p>Type: Box(19)</p>
@@ -386,7 +387,7 @@
 </table>
 <dl class="py method">
 <dt id="energym.envs.eplus_env.EplusEnv.__init__">
-<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_actions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_variability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#energym.envs.eplus_env.EplusEnv.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'eplus-env-v1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_actions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_variability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#energym.envs.eplus_env.EplusEnv.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Environment with EnergyPlus simulator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -407,7 +408,7 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#energym.envs.eplus_env.EplusEnv.__init__" title="energym.envs.eplus_env.EplusEnv.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(idf_file, weather_file[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#energym.envs.eplus_env.EplusEnv.__init__" title="energym.envs.eplus_env.EplusEnv.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(idf_file, weather_file, variables_file)</p></td>
 <td><p>Environment with EnergyPlus simulator.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#energym.envs.eplus_env.EplusEnv.close" title="energym.envs.eplus_env.EplusEnv.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
