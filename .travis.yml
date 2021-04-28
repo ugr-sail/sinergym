@@ -8,6 +8,10 @@ python:
 # env:
 #   - TRAVIS=yes
 
+branches:
+  only:
+  - main
+
 services:
   - docker
 
