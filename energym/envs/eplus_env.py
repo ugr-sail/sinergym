@@ -15,7 +15,7 @@ import numpy as np
 
 from opyplus import Epm, WeatherData
 
-from ..utils.common import get_current_time_info, parse_variables, create_variable_weather
+from ..utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space
 from ..simulators import EnergyPlus
 from ..utils.rewards import SimpleReward
 
@@ -23,93 +23,6 @@ from ..utils.rewards import SimpleReward
 class EplusEnv(gym.Env):
     """
     Environment with EnergyPlus simulator.
-
-    **OBSERVATIONS**
-
-    Type: Box(19)
-
-    =====  =============================================  ====  ====
-    N      Variable name                                  Max   Min    
-    =====  =============================================  ====  ====
-    0      Site Outdoor Air Drybulb Temperature           -5e6  5e6
-    -----  ---------------------------------------------  ----  ----
-    1      Site Outdoor Air Relative Humidity             -5e6  5e6                
-    -----  ---------------------------------------------  ----  ----
-    2      Site Wind Speed                                -5e6  5e6             
-    -----  ---------------------------------------------  ----  ----
-    3      Site Wind Direction                            -5e6  5e6
-    -----  ---------------------------------------------  ----  ----
-    4      Site Diffuse Solar Radiation Rate per Area     -5e6  5e6           
-    -----  ---------------------------------------------  ----  ----
-    5      Site Direct Solar Radiation Rate per Area      -5e6  5e6         
-    -----  ---------------------------------------------  ----  ----
-    6      Zone Thermostat Heating Setpoint Temperature   -5e6  5e6         
-    -----  ---------------------------------------------  ----  ----
-    7      Zone Thermostat Cooling Setpoint Temperature   -5e6  5e6           
-    -----  ---------------------------------------------  ----  ----
-    8      Zone Air Temperature                           -5e6  5e6         
-    -----  ---------------------------------------------  ----  ----
-    9      Zone Thermal Comfort Mean Radiant Temperature  -5e6  5e6          
-    -----  ---------------------------------------------  ----  ----
-    10     Zone Air Relative Humidity                     -5e6  5e6           
-    -----  ---------------------------------------------  ----  ----
-    11     Zone Thermal Comfort Clothing Value            -5e6  5e6          
-    -----  ---------------------------------------------  ----  ----
-    12     Zone Thermal Comfort Fanger Model PPD          -5e6  5e6          
-    -----  ---------------------------------------------  ----  ----
-    13     Zone People Occupant Count                     -5e6  5e6          
-    -----  ---------------------------------------------  ----  ----
-    14     People Air Temperature                         -5e6  5e6     
-    -----  ---------------------------------------------  ----  ----
-    15     Facility Total HVAC Electric Demand Power      -5e6  5e6  
-    -----  ---------------------------------------------  ----  ----
-    16     Current day                                     1     31
-    -----  ---------------------------------------------  ----  ----
-    17     Current month                                   1     12
-    -----  ---------------------------------------------  ----  ----
-    18     Current hour                                    0     23
-    =====  =============================================  ====  ====
-
-    **DISCRETE ACTIONS**
-
-    Type: Discrete(10)
-
-    ======  ================  ================
-    Num     Heating setpoint  Cooling setpoint
-    ======  ================  ================
-    0             15                30
-    ------  ----------------  ----------------
-    1             16                29
-    ------  ----------------  ----------------
-    2             17                28
-    ------  ----------------  ----------------
-    3             18                27
-    ------  ----------------  ----------------
-    4             19                26
-    ------  ----------------  ----------------
-    5             20                25
-    ------  ----------------  ----------------
-    6             21                24
-    ------  ----------------  ----------------
-    7             22                23
-    ------  ----------------  ----------------
-    8             22                22
-    ------  ----------------  ----------------
-    9             21                21
-    ======  ================  ================
-
-    **CONTINUOUS ACTIONS**
-
-    Type: Box(2)
-
-    ===  ================  ====  ====
-    Num  Variable name     Min   Max
-    ===  ================  ====  ====
-    0    Heating setpoint  15.0  22.5
-    ---  ----------------  ----  ----
-    1    Cooling setpoint  22.5  30.0
-    ===  ================  ====  ====
-
     """
 
     metadata = {'render.modes': ['human']}
@@ -119,6 +32,7 @@ class EplusEnv(gym.Env):
         idf_file,
         weather_file,
         variables_file,
+        spaces_file="",
         env_name='eplus-env-v1',
         discrete_actions = True,
         weather_variability = None
@@ -143,6 +57,8 @@ class EplusEnv(gym.Env):
             self.pkg_data_path, 'weather', weather_file)
         self.variables_path = os.path.join(
             self.pkg_data_path, 'variables', variables_file)
+        self.spaces_path = os.path.join(
+            self.pkg_data_path, 'variables', spaces_file)
 
         self.simulator = EnergyPlus(
             env_name = env_name,
@@ -161,31 +77,29 @@ class EplusEnv(gym.Env):
         # Random noise to apply for weather series
         self.weather_variability = weather_variability
 
+        # parse observation and action spaces from spaces_path
+        space=parse_observation_action_space(self.spaces_path)
+        observation_def=space["observation"]
+        discrete_action_def=space["discrete_action"]
+        continuous_action_def=space["continuous_action"]
+
         # Observation space
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(19,), dtype=np.float32)
+            low=observation_def[0],
+            high=observation_def[1],
+            shape=observation_def[2],
+            dtype=observation_def[3])
 
         # Action space
         self.flag_discrete = discrete_actions
         if self.flag_discrete:
-            self.action_mapping = {
-                0: (15, 30),
-                1: (16, 29),
-                2: (17, 28),
-                3: (18, 27),
-                4: (19, 26),
-                5: (20, 25),
-                6: (21, 24),
-                7: (22, 23),
-                8: (22, 22),
-                9: (21, 21)
-            }
-            self.action_space = gym.spaces.Discrete(10)
+            self.action_mapping = discrete_action_def
+            self.action_space = gym.spaces.Discrete(len(discrete_action_def))
         else:
             self.action_space = gym.spaces.Box(
-                low=np.array([15.0, 22.5]),
-                high=np.array([22.5, 30.0]),
-                shape=(2,), dtype=np.float32
+                low=np.array(continuous_action_def[0]),
+                high=np.array(continuous_action_def[1]), 
+                dtype=continuous_action_def[3]
             )
 
         # Reward class
@@ -207,7 +121,7 @@ class EplusEnv(gym.Env):
         # Get action depending on flag_discrete
         if self.flag_discrete:
             setpoints = self.action_mapping[action]
-            action_ = [setpoints[0], setpoints[1]]
+            action_ = list(setpoints)
         else:
             action_ = list(action)
 
@@ -223,8 +137,12 @@ class EplusEnv(gym.Env):
         obs_dict['hour'] = time_info[2]
 
         # Calculate reward
-        temp = obs_dict['Zone Air Temperature']
-        power = obs_dict['Facility Total HVAC Electric Demand Power']
+
+        #Calculate temperature mean for all building zones
+        temp_values=[value for key,value in obs_dict.items() if key.startswith("Zone Air Temperature")]
+        temp=np.mean(temp_values)
+
+        power = obs_dict['Facility Total HVAC Electric Demand Power (Whole Building)']
         reward, terms = self.cls_reward.calculate(
             power, temp, time_info[1], time_info[0])
 
@@ -238,7 +156,7 @@ class EplusEnv(gym.Env):
             'total_power_no_units': terms['reward_energy'],
             'comfort_penalty': terms['reward_comfort'],
             'temperature': temp,
-            'out_temperature': obs_dict['Site Outdoor Air Drybulb Temperature']
+            'out_temperature': obs_dict['Site Outdoor Air Drybulb Temperature (Environment)']
         }
         return np.array(list(obs_dict.values())), reward, done, info
 
