@@ -142,7 +142,7 @@
     ,                        !- Name
     1,                       !- Begin Month
     1,                       !- Begin Day of Month
-    3,                       !- End Month
+    12,                       !- End Month
     31,                      !- End Day of Month
     Monday,                 !- Day of Week for Start Day
     Yes,                     !- Use Weather File Holidays and Special Days
@@ -2912,7 +2912,7 @@
     East Zone,               !- Zone or ZoneList Name
     Zone Control Type Sched, !- Control Type Schedule Name
     ThermostatSetpoint:DualSetpoint,  !- Control 1 Object Type
-    West-DualSetP-RL;   !- Control 1 Name
+    East-DualSetP-RL;   !- Control 1 Name
 
   ThermostatSetpoint:DualSetpoint,
     Temperature Setpoints,   !- Name
@@ -2924,10 +2924,10 @@
     West-HtgSetP-RL,            !- Heating Setpoint Temperature Schedule Name
     West-ClgSetP-RL;            !- Cooling Setpoint Temperature Schedule Name
 
-  !ThermostatSetpoint:DualSetpoint,
-  !  East-DualSetP-RL,           !- Name
-  !  East-HtgSetP-RL,            !- Heating Setpoint Temperature Schedule Name
-  !  East-ClgSetP-RL;            !- Cooling Setpoint Temperature Schedule Name
+  ThermostatSetpoint:DualSetpoint,
+    East-DualSetP-RL,           !- Name
+    East-HtgSetP-RL,            !- Heating Setpoint Temperature Schedule Name
+    East-ClgSetP-RL;            !- Cooling Setpoint Temperature Schedule Name
 
   Schedule:Compact,
     Zone Control Type Sched, !- Name
@@ -3087,6 +3087,16 @@
     
   ExternalInterface:Schedule ,
     West-ClgSetP-RL, !- Name
+    Temperature , !- ScheduleType
+    25; !- Initial value, used during warm-up
+
+  ExternalInterface:Schedule ,
+    East-HtgSetP-RL, !- Name
+    Temperature , !- ScheduleType
+    21; !- Initial value, used during warm-up
+    
+  ExternalInterface:Schedule ,
+    East-ClgSetP-RL, !- Name
     Temperature , !- ScheduleType
     25; !- Initial value, used during warm-up
 
@@ -3267,7 +3277,8 @@
   Output:Variable,*,Site Wind Direction, timestep;
   Output:Variable,*,Site Diffuse Solar Radiation Rate per Area,timestep;
   Output:Variable,*,Site Direct Solar Radiation Rate per Area,timestep;
-  !- Building room 1 output
+
+  !- Building room 1 output (WEST)
   Output:Variable,West Zone,Zone Air Temperature,timestep;
   Output:Variable,West Zone,Zone Air Relative Humidity,timestep;
   Output:Variable,West Zone,Zone Thermostat Heating Setpoint Temperature,timestep;
@@ -3277,7 +3288,21 @@
   Output:Variable,West Zone PEOPLE,Zone Thermal Comfort Fanger Model PPD,timestep;
   Output:Variable,West Zone PEOPLE,Zone Thermal Comfort Clothing Value,timestep;
   Output:Variable,West Zone PEOPLE,Zone Thermal Comfort Mean Radiant Temperature,timestep;
+ 
+  !- Building room 2 output (EAST)
+  Output:Variable,East Zone,Zone Air Temperature,timestep;
+  Output:Variable,East Zone,Zone Air Relative Humidity,timestep;
+  Output:Variable,East Zone,Zone Thermostat Heating Setpoint Temperature,timestep;
+  Output:Variable,East Zone,Zone Thermostat Cooling Setpoint Temperature,timestep;
+  Output:Variable,East Zone PEOPLE,Zone Thermal Comfort Fanger Model PMV,timestep; 
+  Output:Variable,East Zone,Zone People Occupant Count, timestep;
+  Output:Variable,East Zone PEOPLE,Zone Thermal Comfort Fanger Model PPD,timestep;
+  Output:Variable,East Zone PEOPLE,Zone Thermal Comfort Clothing Value,timestep;
+  Output:Variable,East Zone PEOPLE,Zone Thermal Comfort Mean Radiant Temperature,timestep;
+
+  !- Common
   Output:Variable,*,People Air Temperature,timestep;
+
   !- Building HVAC output
   Output:Variable,*,Facility Total HVAC Electric Demand Power,timestep;
   
