@@ -4,6 +4,7 @@ import os
 import logging
 import numpy as np
 import xml.etree.ElementTree as ET
+from pydoc import locate
 
 from datetime import datetime, timedelta
 
@@ -59,7 +60,7 @@ def parse_variables(var_file):
         var_file (str): Variables file path.
 
     Returns:
-        list: A list with the name of the variables.
+        list: A list with the name of the <variables>(<zone>).
     """
 
     tree = ET.parse(var_file)
@@ -68,9 +69,97 @@ def parse_variables(var_file):
     variables = []
     for var in root.findall('variable'):
         if var.attrib['source'] == 'EnergyPlus':
-            variables.append(var[0].attrib['type'])
+            variables.append(var[0].attrib['type']+" ("+var[0].attrib['name']+")")
 
     return variables
+
+def parse_observation_action_space(space_file):
+    """Parse observation space definition to gym env.
+
+    Args:
+        space_file (str): Observation space definition file path.
+
+    Returns:
+        dictionary: 
+            {
+                "observation"      : tupple (low, high, shape, dtype) --> for gym.spaces.Box() arguments ,
+                "discrete_action"  : dictionary {index,tuple_action} --> action mapping for gym.spaces.Discrete()
+                "continuos_action" : tuple (low_ranges np.array(),high_ranges np.array(), shape , dtype) --> for gym.spaces.Box()
+            }
+    """
+    tree = ET.parse(space_file)
+    root = tree.getroot()
+    if(root.tag!="space"):
+        raise RuntimeError("Failed to open environment action observation space")
+
+    #Observation and action spaces
+    observation_space=root.find('observation-space')
+    action_space=root.find("action-space")
+    discrete_action_space=action_space.find("discrete")
+    continuous_action_space=action_space.find("continuous")
+
+    action_shape=int(action_space.find("shape").attrib["value"])
+
+    #Observation space values
+    dtype=locate(observation_space.find("dtype").attrib["value"])
+    low=dtype(observation_space.find("low").attrib["value"])
+    high=dtype(observation_space.find("high").attrib["value"])
+    shape=int(observation_space.find("shape").attrib["value"])
+    observation=(low, high, (shape,), dtype)
+
+    #discrete action values
+    discrete_action={}
+    for element in discrete_action_space:
+        #element mapping index
+        index=int(element.attrib["index"])
+        #element action values
+        actions=tuple([float(element.attrib["action"+str(i)]) for i in range(action_shape)])
+
+        discrete_action[index]=actions
+
+    #continuous actions values
+    actions_dtype=locate(continuous_action_space.find("dtype").attrib["value"])
+    low_ranges=continuous_action_space.find("low-ranges")
+    high_ranges=continuous_action_space.find("high-ranges")
+    low_action=[actions_dtype(element.attrib["value"]) for element in low_ranges]
+    high_action=[actions_dtype(element.attrib["value"]) for element in high_ranges] 
+
+    continuous_action=(low_action, high_action, (action_shape,) , actions_dtype)
+
+    #return final output
+    result={}
+    result["observation"]=observation
+    result["discrete_action"]=discrete_action
+    result["continuous_action"]=continuous_action
+    return result
+
+
+def read_discrete_action_space(space_file):
+    """Parse discrete action space definition to gym env as action_mapping.
+
+    Args:
+        space_file (str):      action space definition file path.
+
+    Returns:
+        dictionary:  
+    """
+
+    tree = ET.parse(space_file)
+    root = tree.getroot()
+    if(root.tag!="space"):
+        raise RuntimeError("Failed to open environment action observation space")
+
+    observation_values=root.find('observation-space')
+
+def read_continuos_action_space(space_file):
+    """Parse action space definition to gym env.
+
+    Args:
+        space_file (str):      action space definition file path.
+
+    Returns:
+        tuple: 
+    """
 
 
 def create_variable_weather(weather_data, original_epw_file, columns: list = ['drybulb'], variation: tuple = None):
