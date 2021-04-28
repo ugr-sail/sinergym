@@ -90,7 +90,7 @@ def parse_observation_action_space(space_file):
     tree = ET.parse(space_file)
     root = tree.getroot()
     if(root.tag!="space"):
-        raise RuntimeError("Failed to open environment action observation space")
+        raise RuntimeError("Failed to open environment action observation space (Check XML definition)")
 
     #Observation and action spaces
     observation_space=root.find('observation-space')

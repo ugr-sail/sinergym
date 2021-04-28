@@ -32,7 +32,7 @@ class EplusEnv(gym.Env):
         idf_file,
         weather_file,
         variables_file,
-        spaces_file="",
+        spaces_file,
         env_name='eplus-env-v1',
         discrete_actions = True,
         weather_variability = None
