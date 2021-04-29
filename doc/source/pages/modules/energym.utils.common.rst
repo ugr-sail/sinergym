@@ -1,4 +1,4 @@
-energym.utils.common
+﻿energym.utils.common
 ====================
 
 .. automodule:: energym.utils.common
@@ -17,6 +17,7 @@ energym.utils.common
       create_variable_weather
       get_current_time_info
       get_delta_seconds
+      parse_observation_action_space
       parse_variables
    
    

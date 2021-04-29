@@ -36,6 +36,11 @@ _This is a work in progress project. Stay tuned for upcoming releases._
 | Eplus-continuous-cool-v1             | Washington, USA | 5ZoneAutoDXVAV.idf |      Cool marine (5C)      | Box(2)       |   01/01 - 31/12   |
 | Eplus-discrete-stochastic-cool-v1    | Washington, USA | 5ZoneAutoDXVAV.idf |      Cool marine (5C) (**) | Discrete(10) |   01/01 - 31/12   |
 | Eplus-continuous-stochastic-hot-v1   | Arizona, USA    | 5ZoneAutoDXVAV.idf |        Hot dry (2B) (**)   | Box(2)       |   01/01 - 31/12   |
+| Eplus-discrete-datacenter-v1 | Chicago, USA | 2ZoneDataCenterHVAC_wEconomizer.idf |   -   | Discrete(10) | 01/01 - 31/12  |
+| Eplus-discrete-stochastic-datacenter-v1 | Chicago, USA | 2ZoneDataCenterHVAC_wEconomizer.idf |   (**)   | Discrete(10) | 01/01 - 31/12  |
+| Eplus-continuous-datacenter-v1 | Chicago, USA | 2ZoneDataCenterHVAC_wEconomizer.idf |   -   | Box(4) | 01/01 - 31/12  |
+| Eplus-continuous-stochastic-datacenter-v1 | Chicago, USA | 2ZoneDataCenterHVAC_wEconomizer.idf |   (**)   | Box(4) | 01/01 - 31/12  |
+
 
 (*) Weather types according to [DOE's classification](https://www.energycodes.gov/development/commercial/prototype_models#TMY3).
 
