@@ -60,7 +60,7 @@ def parse_variables(var_file):
         var_file (str): Variables file path.
 
     Returns:
-        list: A list with the name of the <variables>(<zone>).
+        list: A list with the name of the <variables> (<zone>).
     """
 
     tree = ET.parse(var_file)
@@ -81,11 +81,9 @@ def parse_observation_action_space(space_file):
 
     Returns:
         dictionary: 
-            {
-                "observation"      : tupple (low, high, shape, dtype) --> for gym.spaces.Box() arguments ,
-                "discrete_action"  : dictionary {index,tuple_action} --> action mapping for gym.spaces.Discrete()
-                "continuos_action" : tuple (low_ranges np.array(),high_ranges np.array(), shape , dtype) --> for gym.spaces.Box()
-            }
+                {"observation"     : tupple for gym.spaces.Box() arguments, \n
+                "discrete_action"  : dictionary action mapping for gym.spaces.Discrete(), \n
+                "continuos_action" : tuple for gym.spaces.Box()}
     """
     tree = ET.parse(space_file)
     root = tree.getroot()
@@ -132,34 +130,6 @@ def parse_observation_action_space(space_file):
     result["discrete_action"]=discrete_action
     result["continuous_action"]=continuous_action
     return result
-
-
-def read_discrete_action_space(space_file):
-    """Parse discrete action space definition to gym env as action_mapping.
-
-    Args:
-        space_file (str):      action space definition file path.
-
-    Returns:
-        dictionary:  
-    """
-
-    tree = ET.parse(space_file)
-    root = tree.getroot()
-    if(root.tag!="space"):
-        raise RuntimeError("Failed to open environment action observation space")
-
-    observation_values=root.find('observation-space')
-
-def read_continuos_action_space(space_file):
-    """Parse action space definition to gym env.
-
-    Args:
-        space_file (str):      action space definition file path.
-
-    Returns:
-        tuple: 
-    """
 
 
 def create_variable_weather(weather_data, original_epw_file, columns: list = ['drybulb'], variation: tuple = None):
