@@ -7,6 +7,7 @@
 
    pages/installation.rst
    pages/environments.rst
+   pages/tests.rst
    pages/usage-example.rst
    pages/API-reference.rst
 
