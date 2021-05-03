@@ -82,25 +82,6 @@ def parse_variables(var_file):
 
     return variables
 
-def parse_action_variables(var_file):
-    """Parse action to dictionary.
-
-    Args:
-        var_file (str): Variables file path.
-
-    Returns:
-        list: A list with the name of the <variables>.
-    """
-    tree = ET.parse(var_file)
-    root = tree.getroot()
-
-    variables = []
-    for var in root.findall('variable'):
-        if var.attrib['source'] == 'Ptolemy':
-            variables.append(var[0].attrib['schedule'])
-
-    return variables
-
 def parse_observation_action_space(space_file):
     """Parse observation space definition to gym env.
 
