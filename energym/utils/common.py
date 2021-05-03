@@ -54,22 +54,50 @@ def get_current_time_info(epm, sec_elapsed, sim_year=1991):
 
 
 def parse_variables(var_file):
-    """Parse observation to dictionary.
+    """Parse observation and action to dictionary.
 
     Args:
         var_file (str): Variables file path.
 
     Returns:
-        list: A list with the name of the <variables> (<zone>).
+        dict: 
+            {"observation": A list with the name of the observation <variables> (<zone>) \n
+            "action"      : A list with the name og the action <variables>}.
     """
 
     tree = ET.parse(var_file)
     root = tree.getroot()
 
-    variables = []
+    variables={}
+    observation=[]
+    action =[]
     for var in root.findall('variable'):
         if var.attrib['source'] == 'EnergyPlus':
-            variables.append(var[0].attrib['type']+" ("+var[0].attrib['name']+")")
+            observation.append(var[0].attrib['type']+" ("+var[0].attrib['name']+")")
+        if var.attrib['source'] == 'Ptolemy':
+            action.append(var[0].attrib['schedule']) 
+
+    variables["observation"]=observation
+    variables["action"]=action
+
+    return variables
+
+def parse_action_variables(var_file):
+    """Parse action to dictionary.
+
+    Args:
+        var_file (str): Variables file path.
+
+    Returns:
+        list: A list with the name of the <variables>.
+    """
+    tree = ET.parse(var_file)
+    root = tree.getroot()
+
+    variables = []
+    for var in root.findall('variable'):
+        if var.attrib['source'] == 'Ptolemy':
+            variables.append(var[0].attrib['schedule'])
 
     return variables
 
@@ -174,3 +202,53 @@ class Logger():
         logger.setLevel(level)
         logger.propagate = False
         return logger
+
+# based on https://gist.github.com/robdmc/d78d48467e3daea22fe6
+# class CSVLogger(object):
+#     def __init__(self, name, log_file=None, level='info', needs_header=True, header=None, formatter):
+#         # create logger on the current module and set its level
+#         self.logger = logging.getLogger(name)
+#         self.logger.setLevel(logging.INFO)
+#         self.logger.setLevel(getattr(logging, level.upper()))
+#         self.needs_header = needs_header
+#         self.header=header
+
+#         # create a formatter that creates a single line of json with a comma at the end
+#         #'%(created)s,%(name)s,"%(utc_time)s","%(eastern_time)s",%(levelname)s,"%(message)s"'
+#         self.formatter = logging.Formatter(formatter)      
+
+#         self.log_file = log_file
+#         if self.log_file:
+#             # create a channel for handling the logger (stderr) and set its format
+#             consoleHandler = logging.FileHandler(log_file)
+#         else:
+#             # create a channel for handling the logger (stderr) and set its format
+#             consoleHandler = logging.StreamHandler()
+#         consoleHandler.setFormatter(self.formatter)
+
+#         # connect the logger to the channel
+#         self.logger.addHandler(consoleHandler)
+
+#         # Create CSV file with header if it's required
+#         if self.needs_header:
+#             if self.log_file:
+#                 with open(self.log_file, 'a') as file_obj:
+#                     if self.needs_header:
+#                         file_obj.write(self.header)
+#             else:
+#                 if self.needs_header:
+#                     sys.stderr.write(self.header)
+
+#     def log(self, observation, action, reward, temperature, power, timestep, simulation_time, level='info'):
+#         #Aquí debería crear las entradas de observaciones y acciones de forma dinámica
+#         info = {
+#             'observation': observation,
+#             'action': action,
+#             'reward': reward,
+#             'temperature': temperature,
+#             'power': power,
+#             'timestep': timestep,
+#             'simulation_time': simulation_time
+#         }
+#         func = getattr(self.logger, level)
+#         func(msg, extra=info)

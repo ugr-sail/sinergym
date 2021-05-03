@@ -105,6 +105,11 @@ class EplusEnv(gym.Env):
         # Reward class
         self.cls_reward = SimpleReward()
 
+        #CSV Logger (timestep, observation, action, simulation_time, etc). It depends on observation and actions spaces and episode.
+        # header=
+        # log_file=self.simulator._env_working_dir+"/monitor.csv"
+        # self.env_logger=CSVLogger(name='LOGGER_%s' % (env_name), log_file=log_file , header=, formatter=)
+
     def step(self, action):
         """Sends action to the environment.
 
@@ -129,7 +134,7 @@ class EplusEnv(gym.Env):
         self.simulator.logger_main.debug(action_)
         t, obs, done = self.simulator.step(action_)
         # Create dictionary with observation
-        obs_dict = dict(zip(self.variables, obs))
+        obs_dict = dict(zip(self.variables["observation"], obs))
         # Add current timestep information
         time_info = get_current_time_info(self.epm, t)
         obs_dict['day'] = time_info[0]
@@ -172,7 +177,7 @@ class EplusEnv(gym.Env):
 
         t, obs, done = self.simulator.reset(new_weather)
 
-        obs_dict = dict(zip(self.variables, obs))
+        obs_dict = dict(zip(self.variables["observation"], obs))
 
         time_info = get_current_time_info(self.epm, t)
         obs_dict['day'] = time_info[0]

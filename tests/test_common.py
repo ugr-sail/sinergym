@@ -35,19 +35,22 @@ def test_get_current_time_info(epm,sec_elapsed,expected_tuple):
 
 def test_parse_variables(variable_path):
 	#The name of variables we expected
-	expected=['Site Outdoor Air Drybulb Temperature (Environment)', 'Site Outdoor Air Relative Humidity (Environment)', 'Site Wind Speed (Environment)',
+	observation_expected=['Site Outdoor Air Drybulb Temperature (Environment)', 'Site Outdoor Air Relative Humidity (Environment)', 'Site Wind Speed (Environment)',
 			  'Site Wind Direction (Environment)', 'Site Diffuse Solar Radiation Rate per Area (Environment)', 'Site Direct Solar Radiation Rate per Area (Environment)',
 			  'Zone Thermostat Heating Setpoint Temperature (SPACE1-1)', 'Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)',
 			  'Zone Air Temperature (SPACE1-1)', 'Zone Thermal Comfort Mean Radiant Temperature (SPACE1-1 PEOPLE 1)', 'Zone Air Relative Humidity (SPACE1-1)',
 			  'Zone Thermal Comfort Clothing Value (SPACE1-1 PEOPLE 1)', 'Zone Thermal Comfort Fanger Model PPD (SPACE1-1 PEOPLE 1)', 'Zone People Occupant Count (SPACE1-1)',
 			  'People Air Temperature (SPACE1-1 PEOPLE 1)', 'Facility Total HVAC Electric Demand Power (Whole Building)']
+	action_expected=['Space1-HtgSetP-RL','Space1-ClgSetP-RL']
 
 	variables=common.parse_variables(variable_path)
 
-	assert type(variables)==list
-	assert len(variables)== 16
-	for i in range(len(variables)):
-		assert variables[i]==expected[i]
+	assert type(variables)==dict
+	assert len(variables)== 2
+	for i in range(len(variables["observation"])):
+		assert variables["observation"][i]==observation_expected[i]
+	for i in range(len(variables["action"])):
+		assert variables["action"][i]==action_expected[i]
 
 def test_parse_observation_action_space(space_path):
 
