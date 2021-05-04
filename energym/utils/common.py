@@ -5,6 +5,7 @@ import logging
 import numpy as np
 import xml.etree.ElementTree as ET
 from pydoc import locate
+import csv
 
 from datetime import datetime, timedelta
 
@@ -184,52 +185,34 @@ class Logger():
         logger.propagate = False
         return logger
 
-# based on https://gist.github.com/robdmc/d78d48467e3daea22fe6
-# class CSVLogger(object):
-#     def __init__(self, name, log_file=None, level='info', needs_header=True, header=None, formatter):
-#         # create logger on the current module and set its level
-#         self.logger = logging.getLogger(name)
-#         self.logger.setLevel(logging.INFO)
-#         self.logger.setLevel(getattr(logging, level.upper()))
-#         self.needs_header = needs_header
-#         self.header=header
+class CSVLogger(object):
+    def __init__(self, needs_header=True, header=None, log_file=None):
+        
+        self.needs_header = needs_header
+        self.header=header+'\n' 
+        self.log_file=log_file
 
-#         # create a formatter that creates a single line of json with a comma at the end
-#         #'%(created)s,%(name)s,"%(utc_time)s","%(eastern_time)s",%(levelname)s,"%(message)s"'
-#         self.formatter = logging.Formatter(formatter)      
+        # Create CSV file with header if it's required
+        if self.needs_header:
+            if self.log_file:
+                with open(self.log_file, 'a', newline='\n') as file_obj:
+                    if self.needs_header:
+                        file_obj.write(self.header)
+            
 
-#         self.log_file = log_file
-#         if self.log_file:
-#             # create a channel for handling the logger (stderr) and set its format
-#             consoleHandler = logging.FileHandler(log_file)
-#         else:
-#             # create a channel for handling the logger (stderr) and set its format
-#             consoleHandler = logging.StreamHandler()
-#         consoleHandler.setFormatter(self.formatter)
+    def log(self, timestep, observation, action, simulation_time, reward, done):
+        row_contents=[timestep]+list(observation)+list(action)+[simulation_time,reward,done]
+        # Open file in append mode
+        with open(self.log_file, 'a+', newline='') as file_obj:
+            # Create a writer object from csv module
+            csv_writer=csv.writer(file_obj)
+            # Add contents of list as last row in the csv file
+            csv_writer.writerow(row_contents)
 
-#         # connect the logger to the channel
-#         self.logger.addHandler(consoleHandler)
-
-#         # Create CSV file with header if it's required
-#         if self.needs_header:
-#             if self.log_file:
-#                 with open(self.log_file, 'a') as file_obj:
-#                     if self.needs_header:
-#                         file_obj.write(self.header)
-#             else:
-#                 if self.needs_header:
-#                     sys.stderr.write(self.header)
-
-#     def log(self, observation, action, reward, temperature, power, timestep, simulation_time, level='info'):
-#         #Aquí debería crear las entradas de observaciones y acciones de forma dinámica
-#         info = {
-#             'observation': observation,
-#             'action': action,
-#             'reward': reward,
-#             'temperature': temperature,
-#             'power': power,
-#             'timestep': timestep,
-#             'simulation_time': simulation_time
-#         }
-#         func = getattr(self.logger, level)
-#         func(msg, extra=info)
+    def log_summary(self,episode,ep_mean_reward,total_time_elapsed):
+        row_contents=[episode,ep_mean_reward,total_time_elapsed]
+        with open(self.log_file, 'a+', newline='') as file_obj:
+            # Create a writer object from csv module
+            csv_writer=csv.writer(file_obj)
+            # Add contents of list as last row in the csv file
+            csv_writer.writerow(row_contents)

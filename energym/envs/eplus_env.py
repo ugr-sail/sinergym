@@ -15,7 +15,7 @@ import numpy as np
 
 from opyplus import Epm, WeatherData
 
-from ..utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space
+from ..utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space, CSVLogger
 from ..simulators import EnergyPlus
 from ..utils.rewards import SimpleReward
 
@@ -104,11 +104,19 @@ class EplusEnv(gym.Env):
 
         # Reward class
         self.cls_reward = SimpleReward()
+        # Episode rewards
+        self.ep_rewards = []
 
-        #CSV Logger (timestep, observation, action, simulation_time, etc). It depends on observation and actions spaces and episode.
-        # header=
-        # log_file=self.simulator._env_working_dir+"/monitor.csv"
-        # self.env_logger=CSVLogger(name='LOGGER_%s' % (env_name), log_file=log_file , header=, formatter=)
+        # Headers for csv loggers
+        monitor_header_list=['timestep']+self.variables["observation"]+self.variables["action"]+["time (seconds)", "reward", "done"]
+        self.monitor_header=""
+        for element_header in monitor_header_list:
+            self.monitor_header+=element_header+","
+        self.monitor_header=self.monitor_header[:-1]
+        self.progress_header="episode,mean_reward,total_time_elapsed"
+
+        # Create whole simulation progress logger (progress.csv)
+        self.logger_progress=CSVLogger(log_file=self.simulator._env_working_dir_parent+"/progress.csv",needs_header=True, header=self.progress_header)
 
     def step(self, action):
         """Sends action to the environment.
@@ -151,9 +159,13 @@ class EplusEnv(gym.Env):
         reward, terms = self.cls_reward.calculate(
             power, temp, time_info[1], time_info[0])
 
+        #Add reward to episode list
+        self.ep_rewards.append(reward)
+
         # Extra info
         info = {
-            'timestep': t,
+            'timestep': int(t/self.simulator._eplus_run_stepsize),
+            'time_elapsed': int(t),
             'day': obs_dict['day'],
             'month': obs_dict['month'],
             'hour': obs_dict['hour'],
@@ -163,6 +175,14 @@ class EplusEnv(gym.Env):
             'temperature': temp,
             'out_temperature': obs_dict['Site Outdoor Air Drybulb Temperature (Environment)']
         }
+
+        #Record action and new observation in simulator's csv
+        self.logger_monitor.log(timestep=info["timestep"], observation=obs, action=action, simulation_time=info["time_elapsed"], reward=reward, done=done)
+
+        #If episode is done, record that episode 
+        if done:
+            self.logger_progress.log_summary(episode=self.simulator._epi_num+1, ep_mean_reward=np.mean(self.ep_rewards), total_time_elapsed=(self.simulator._epi_num+1)*self.simulator._eplus_one_epi_len)
+
         return np.array(list(obs_dict.values())), reward, done, info
 
     def reset(self):
@@ -175,6 +195,9 @@ class EplusEnv(gym.Env):
         new_weather = create_variable_weather(
             self.weather_data, self.weather_path, variation=self.weather_variability)
 
+        # Reset episode rewards
+        self.ep_rewards=[]
+
         t, obs, done = self.simulator.reset(new_weather)
 
         obs_dict = dict(zip(self.variables["observation"], obs))
@@ -183,6 +206,11 @@ class EplusEnv(gym.Env):
         obs_dict['day'] = time_info[0]
         obs_dict['month'] = time_info[1]
         obs_dict['hour'] = time_info[2]
+
+        #Create monitor.csv for information of this episode
+        self.simulator.logger_main.debug("Creating monitor.csv for current episode (episode "+str(self.simulator._epi_num)+")")
+        self.logger_monitor=CSVLogger(log_file=self.simulator._eplus_working_dir+"/monitor.csv",needs_header=True, header=self.monitor_header)
+        self.logger_monitor.log(timestep=0, observation=obs, action=[None for _ in range(len(self.variables["action"]))], simulation_time=0, reward=None, done=done)
 
         return np.array(list(obs_dict.values()))
 
