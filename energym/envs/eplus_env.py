@@ -177,7 +177,7 @@ class EplusEnv(gym.Env):
         }
 
         #Record action and new observation in simulator's csv
-        self.logger_monitor.log(timestep=info["timestep"], observation=obs, action=action, simulation_time=info["time_elapsed"], reward=reward, done=done)
+        self.logger_monitor.log(timestep=info["timestep"], observation=obs, action=action_, simulation_time=info["time_elapsed"], reward=reward, done=done)
 
         #If episode is done, record that episode 
         if done:
