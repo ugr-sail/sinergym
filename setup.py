@@ -8,11 +8,11 @@ setup(name='energym',
       install_requires=reqs,
       include_package_data=True,
       extras_require={
-            'extras': [
-                  'pandas', # data analysis
-                  'matplotlib', # visualization
-                  'stable-baselines3', # DRL with pytorch
-                  'mlflow' # tracking ML experiments
-            ]
+          'extras': [
+              'pandas',  # data analysis
+              'matplotlib',  # visualization
+              'stable-baselines3',  # DRL with pytorch
+              'mlflow'  # tracking ML experiments
+          ]
       }
-)
+      )

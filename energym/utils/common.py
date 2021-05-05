@@ -62,26 +62,28 @@ def parse_variables(var_file):
 
     Returns:
         dict: 
-            {"observation": A list with the name of the observation <variables> (<zone>) \n
-            "action"      : A list with the name og the action <variables>}.
+            {'observation': A list with the name of the observation <variables> (<zone>) \n
+            'action'      : A list with the name og the action <variables>}.
     """
 
     tree = ET.parse(var_file)
     root = tree.getroot()
 
-    variables={}
-    observation=[]
-    action =[]
+    variables = {}
+    observation = []
+    action = []
     for var in root.findall('variable'):
         if var.attrib['source'] == 'EnergyPlus':
-            observation.append(var[0].attrib['type']+" ("+var[0].attrib['name']+")")
+            observation.append(var[0].attrib['type'] +
+                               ' ('+var[0].attrib['name']+')')
         if var.attrib['source'] == 'Ptolemy':
-            action.append(var[0].attrib['schedule']) 
+            action.append(var[0].attrib['schedule'])
 
-    variables["observation"]=observation
-    variables["action"]=action
+    variables['observation'] = observation
+    variables['action'] = action
 
     return variables
+
 
 def parse_observation_action_space(space_file):
     """Parse observation space definition to gym env.
@@ -91,54 +93,60 @@ def parse_observation_action_space(space_file):
 
     Returns:
         dictionary: 
-                {"observation"     : tupple for gym.spaces.Box() arguments, \n
-                "discrete_action"  : dictionary action mapping for gym.spaces.Discrete(), \n
-                "continuos_action" : tuple for gym.spaces.Box()}
+                {'observation'     : tupple for gym.spaces.Box() arguments, \n
+                'discrete_action'  : dictionary action mapping for gym.spaces.Discrete(), \n
+                'continuos_action' : tuple for gym.spaces.Box()}
     """
     tree = ET.parse(space_file)
     root = tree.getroot()
-    if(root.tag!="space"):
-        raise RuntimeError("Failed to open environment action observation space (Check XML definition)")
+    if(root.tag != 'space'):
+        raise RuntimeError(
+            'Failed to open environment action observation space (Check XML definition)')
 
-    #Observation and action spaces
-    observation_space=root.find('observation-space')
-    action_space=root.find("action-space")
-    discrete_action_space=action_space.find("discrete")
-    continuous_action_space=action_space.find("continuous")
+    # Observation and action spaces
+    observation_space = root.find('observation-space')
+    action_space = root.find('action-space')
+    discrete_action_space = action_space.find('discrete')
+    continuous_action_space = action_space.find('continuous')
 
-    action_shape=int(action_space.find("shape").attrib["value"])
+    action_shape = int(action_space.find('shape').attrib['value'])
 
-    #Observation space values
-    dtype=locate(observation_space.find("dtype").attrib["value"])
-    low=dtype(observation_space.find("low").attrib["value"])
-    high=dtype(observation_space.find("high").attrib["value"])
-    shape=int(observation_space.find("shape").attrib["value"])
-    observation=(low, high, (shape,), dtype)
+    # Observation space values
+    dtype = locate(observation_space.find('dtype').attrib['value'])
+    low = dtype(observation_space.find('low').attrib['value'])
+    high = dtype(observation_space.find('high').attrib['value'])
+    shape = int(observation_space.find('shape').attrib['value'])
+    observation = (low, high, (shape,), dtype)
 
-    #discrete action values
-    discrete_action={}
+    # discrete action values
+    discrete_action = {}
     for element in discrete_action_space:
-        #element mapping index
-        index=int(element.attrib["index"])
-        #element action values
-        actions=tuple([float(element.attrib["action"+str(i)]) for i in range(action_shape)])
+        # element mapping index
+        index = int(element.attrib['index'])
+        # element action values
+        actions = tuple([float(element.attrib['action'+str(i)])
+                        for i in range(action_shape)])
 
-        discrete_action[index]=actions
+        discrete_action[index] = actions
 
-    #continuous actions values
-    actions_dtype=locate(continuous_action_space.find("dtype").attrib["value"])
-    low_ranges=continuous_action_space.find("low-ranges")
-    high_ranges=continuous_action_space.find("high-ranges")
-    low_action=[actions_dtype(element.attrib["value"]) for element in low_ranges]
-    high_action=[actions_dtype(element.attrib["value"]) for element in high_ranges] 
+    # continuous actions values
+    actions_dtype = locate(
+        continuous_action_space.find('dtype').attrib['value'])
+    low_ranges = continuous_action_space.find('low-ranges')
+    high_ranges = continuous_action_space.find('high-ranges')
+    low_action = [actions_dtype(element.attrib['value'])
+                  for element in low_ranges]
+    high_action = [actions_dtype(element.attrib['value'])
+                   for element in high_ranges]
 
-    continuous_action=(low_action, high_action, (action_shape,) , actions_dtype)
+    continuous_action = (low_action, high_action,
+                         (action_shape,), actions_dtype)
 
-    #return final output
-    result={}
-    result["observation"]=observation
-    result["discrete_action"]=discrete_action
-    result["continuous_action"]=continuous_action
+    # return final output
+    result = {}
+    result['observation'] = observation
+    result['discrete_action'] = discrete_action
+    result['continuous_action'] = continuous_action
     return result
 
 
@@ -185,12 +193,13 @@ class Logger():
         logger.propagate = False
         return logger
 
+
 class CSVLogger(object):
     def __init__(self, needs_header=True, header=None, log_file=None):
-        
+
         self.needs_header = needs_header
-        self.header=header+'\n' 
-        self.log_file=log_file
+        self.header = header+'\n'
+        self.log_file = log_file
 
         # Create CSV file with header if it's required
         if self.needs_header:
@@ -198,21 +207,21 @@ class CSVLogger(object):
                 with open(self.log_file, 'a', newline='\n') as file_obj:
                     if self.needs_header:
                         file_obj.write(self.header)
-            
 
     def log(self, timestep, observation, action, simulation_time, reward, done):
-        row_contents=[timestep]+list(observation)+list(action)+[simulation_time,reward,done]
+        row_contents = [timestep]+list(observation) + \
+            list(action)+[simulation_time, reward, done]
         # Open file in append mode
         with open(self.log_file, 'a+', newline='') as file_obj:
             # Create a writer object from csv module
-            csv_writer=csv.writer(file_obj)
+            csv_writer = csv.writer(file_obj)
             # Add contents of list as last row in the csv file
             csv_writer.writerow(row_contents)
 
-    def log_summary(self,episode,ep_mean_reward,total_time_elapsed):
-        row_contents=[episode,ep_mean_reward,total_time_elapsed]
+    def log_summary(self, episode, ep_mean_reward, total_time_elapsed):
+        row_contents = [episode, ep_mean_reward, total_time_elapsed]
         with open(self.log_file, 'a+', newline='') as file_obj:
             # Create a writer object from csv module
-            csv_writer=csv.writer(file_obj)
+            csv_writer = csv.writer(file_obj)
             # Add contents of list as last row in the csv file
             csv_writer.writerow(row_contents)

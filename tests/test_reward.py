@@ -1,8 +1,9 @@
 import pytest
 import energym.utils.rewards as R
 
+
 @pytest.mark.parametrize(
-	"power,temperatures,month,day,reward,reward_energy,reward_comfort",
+    'power,temperatures,month,day,reward,reward_energy,reward_comfort',
     [
         # Input 1
         (
@@ -16,7 +17,7 @@ import energym.utils.rewards as R
         ),
         # Input 2
         (
-            688.0477550424935, 
+            688.0477550424935,
             [26.7881162590194],
             3,
             30,
@@ -26,7 +27,7 @@ import energym.utils.rewards as R
         ),
         # Input 3
         (
-            23168.30752221127, 
+            23168.30752221127,
             [20.37505026953311],
             2,
             25,
@@ -36,9 +37,8 @@ import energym.utils.rewards as R
         ),
     ]
 )
-def test_calculate(simple_reward,power,temperatures,month,day,reward,reward_energy,reward_comfort):
-	result=simple_reward.calculate(power,temperatures,month,day)
-	assert result[0]==reward
-	assert result[1]["reward_energy"]==reward_energy
-	assert result[1]["reward_comfort"]==reward_comfort
-
+def test_calculate(simple_reward, power, temperatures, month, day, reward, reward_energy, reward_comfort):
+    result = simple_reward.calculate(power, temperatures, month, day)
+    assert result[0] == reward
+    assert result[1]['reward_energy'] == reward_energy
+    assert result[1]['reward_comfort'] == reward_comfort
