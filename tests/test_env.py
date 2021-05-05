@@ -56,7 +56,7 @@ def test_loggers(env_demo):
         assert os.path.isfile(logger.log_file)
 
         # Check headers
-        with open(logger.log_file, mode="r", newline='') as csvfile:
+        with open(logger.log_file, mode='r', newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')
             for row in reader:
                 assert ','.join(row)+'\n' == logger.header
