@@ -133,7 +133,12 @@ class EplusEnv(gym.Env):
 
         # Get action depending on flag_discrete
         if self.flag_discrete:
-            setpoints = self.action_mapping[action]
+            #Index for action_mapping
+            if type(action)==int: 
+                setpoints = self.action_mapping[action]
+            #Manual action 
+            elif type(action)==tuple or type(action)==list: 
+                setpoints = action
             action_ = list(setpoints)
         else:
             action_ = list(action)
