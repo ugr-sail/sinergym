@@ -31,10 +31,6 @@ def test_step(env_demo):
 	assert info['timestep']==2
 	assert info['time_elapsed']==env_demo.simulator._eplus_run_stepsize *info["timestep"]
 
-	#This is a discrete environment, action cannot be a tuple with continuous values
-	with pytest.raises(KeyError):
-		obs, reward, done, info = env_demo.step((21.2,23.5))
-
 def test_close(env_demo):
 	env_demo.close()
 	assert not env_demo.simulator._episode_existed
