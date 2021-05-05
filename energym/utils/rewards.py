@@ -38,12 +38,12 @@ class SimpleReward():
         self.summer_start_date = datetime(YEAR, 6, 1)
         self.summer_final_date = datetime(YEAR, 9, 30)
 
-    def calculate(self, power, temperature, month, day):
+    def calculate(self, power, temperatures, month, day):
         """Reward calculus.
 
         Args:
             power (float): Power consumption.
-            temperature (float): Indoor temperature.
+            temperatures (list): Indoor temperatures (one per zone).
             month (int): Current month.
             day (int): Current day.
 
@@ -56,8 +56,10 @@ class SimpleReward():
         # Comfort term
         current_dt = datetime(YEAR, month, day)
         range_T = self.range_comfort_summer if current_dt >= self.summer_start_date and current_dt <= self.summer_final_date else self.range_comfort_winter
-        delta_T = 0.0 if temperature >= range_T[0] and temperature <= range_T[1] else min(
-            abs(range_T[0] - temperature), abs(temperature - range_T[1]))
+        delta_T = 0.0
+        for temperature in temperatures:
+            delta_T += 0.0 if temperature >= range_T[0] and temperature <= range_T[1] else min(
+                abs(range_T[0] - temperature), abs(temperature - range_T[1]))
         reward_comfort = - self.lambda_temp * delta_T
 
         # Weighted sum of both terms

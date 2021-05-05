@@ -153,11 +153,10 @@ class EplusEnv(gym.Env):
 
         #Calculate temperature mean for all building zones
         temp_values=[value for key,value in obs_dict.items() if key.startswith("Zone Air Temperature")]
-        temp=np.mean(temp_values)
 
         power = obs_dict['Facility Total HVAC Electric Demand Power (Whole Building)']
         reward, terms = self.cls_reward.calculate(
-            power, temp, time_info[1], time_info[0])
+            power, temp_values, time_info[1], time_info[0])
 
         #Add reward to episode list
         self.ep_rewards.append(reward)
@@ -172,7 +171,7 @@ class EplusEnv(gym.Env):
             'total_power': power,
             'total_power_no_units': terms['reward_energy'],
             'comfort_penalty': terms['reward_comfort'],
-            'temperature': temp,
+            'temperatures': temp_values,
             'out_temperature': obs_dict['Site Outdoor Air Drybulb Temperature (Environment)']
         }
 
@@ -181,6 +180,7 @@ class EplusEnv(gym.Env):
 
         #If episode is done, record that episode 
         if done:
+            self.simulator.logger_main.debug("End of episode, recording summary (progress.csv)")
             self.logger_progress.log_summary(episode=self.simulator._epi_num+1, ep_mean_reward=np.mean(self.ep_rewards), total_time_elapsed=(self.simulator._epi_num+1)*self.simulator._eplus_one_epi_len)
 
         return np.array(list(obs_dict.values())), reward, done, info
