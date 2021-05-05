@@ -9,6 +9,7 @@
    pages/environments.rst
    pages/tests.rst
    pages/usage-example.rst
+   pages/output.rst
    pages/API-reference.rst
 
 
