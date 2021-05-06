@@ -5,7 +5,6 @@ Output format
 When a simulation is run, this generate a directory called `Eplus-env-<env_name>-res<num_simulation>`. The content of this directory is the result of the simulation and we have:
 
 ::
-
     Eplus-env-<env_name>-res<num_simulation>
     ├── Eplus-env-sub_run1
     ├── Eplus-env-sub_run2
@@ -26,6 +25,6 @@ When a simulation is run, this generate a directory called `Eplus-env-<env_name>
 	- A copy of **socket.cfg** and **utilSocket.idf** which are being used in order to communication interface with Energyplus during simulation.
 	- **monitor.csv**: This records all interactions Agent-Enviroment during the episode timestep by timestep, the format is: *timestep, observation_values, action_values, simulation_time (seconds), reward, done*.
 	- **output/**: This directory has EnergyPlus environment output.
-- **progress.csv**: This file has information about general simulation results. There is a row per episode and it records most important data. Currently, the format is: *episode,ep_mean_reward,total_time_elapsed*.
+- **progress.csv**: This file has information about general simulation results. There is a row per episode and it records most important data. Currently, the format is: *episode,ep_mean_reward,cumulative_reward,total_time_elapsed*.
 
 .. note:: For more information about EnergyPlus output, visit `EnegyPlus documentation <https://energyplus.net/documentation>`__.
