@@ -137,10 +137,17 @@ class EplusEnv(gym.Env):
         if self.flag_discrete:
             # Index for action_mapping
             if np.issubdtype(type(action), np.integer):
-                setpoints = self.action_mapping[np.asscalar(action)]
+                if type(action) == int:
+                    setpoints = self.action_mapping[action]
+                else:
+                    setpoints = self.action_mapping[np.asscalar(action)]
             # Manual action
             elif type(action) == tuple or type(action) == list:
-                setpoints = action
+                # stable-baselines DQN bug prevention
+                if len(action) == 1:
+                    setpoints = self.action_mapping[np.asscalar(action)]
+                else:
+                    setpoints = action
             action_ = list(setpoints)
         else:
             action_ = list(action)
