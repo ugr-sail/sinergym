@@ -5,6 +5,7 @@ Output format
 When a simulation is run, this generate a directory called `Eplus-env-<env_name>-res<num_simulation>`. The content of this directory is the result of the simulation and we have:
 
 ::
+
     Eplus-env-<env_name>-res<num_simulation>
     ├── Eplus-env-sub_run1
     ├── Eplus-env-sub_run2
