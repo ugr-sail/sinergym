@@ -114,7 +114,7 @@ class EplusEnv(gym.Env):
         for element_header in monitor_header_list:
             self.monitor_header += element_header+','
         self.monitor_header = self.monitor_header[:-1]
-        self.progress_header = 'episode,mean_reward,total_time_elapsed'
+        self.progress_header = 'episode,mean_reward,cumulative_reward,total_time_elapsed'
 
         # Create whole simulation progress logger (progress.csv)
         self.logger_progress = CSVLogger(
@@ -192,7 +192,7 @@ class EplusEnv(gym.Env):
             self.simulator.logger_main.debug(
                 'End of episode, recording summary (progress.csv)')
             self.logger_progress.log_summary(episode=self.simulator._epi_num+1, ep_mean_reward=np.mean(
-                self.ep_rewards), total_time_elapsed=(self.simulator._epi_num+1)*self.simulator._eplus_one_epi_len)
+                self.ep_rewards), ep_total_reward=np.sum(self.ep_rewards), total_time_elapsed=(self.simulator._epi_num+1)*self.simulator._eplus_one_epi_len)
 
         return np.array(list(obs_dict.values())), reward, done, info
 
