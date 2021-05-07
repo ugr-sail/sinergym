@@ -114,7 +114,7 @@ class EplusEnv(gym.Env):
         for element_header in monitor_header_list:
             self.monitor_header += element_header+','
         self.monitor_header = self.monitor_header[:-1]
-        self.progress_header = 'episode,mean_reward,cumulative_reward,total_time_elapsed'
+        self.progress_header = 'episode,mean_reward,cumulative_reward,num_timesteps,time_elapsed'
 
         # Create whole simulation progress logger (progress.csv)
         self.logger_progress = CSVLogger(
@@ -194,13 +194,6 @@ class EplusEnv(gym.Env):
         self.logger_monitor.log(timestep=info['timestep'], observation=obs, action=action_,
                                 simulation_time=info['time_elapsed'], reward=reward, done=done)
 
-        # If episode is done, record that episode
-        if done:
-            self.simulator.logger_main.debug(
-                'End of episode, recording summary (progress.csv)')
-            self.logger_progress.log_summary(episode=self.simulator._epi_num+1, ep_mean_reward=np.mean(
-                self.ep_rewards), ep_total_reward=np.sum(self.ep_rewards), total_time_elapsed=(self.simulator._epi_num+1)*self.simulator._eplus_one_epi_len)
-
         return np.array(list(obs_dict.values())), reward, done, info
 
     def reset(self):
@@ -213,10 +206,18 @@ class EplusEnv(gym.Env):
         new_weather = create_variable_weather(
             self.weather_data, self.weather_path, variation=self.weather_variability)
 
+        # It isn't first episode simulation, so we can logger last episode
+        if self.simulator._episode_existed:
+            self.simulator.logger_main.debug(
+                'End of episode, recording summary (progress.csv)')
+            self.logger_progress.log_summary(episode=self.simulator._epi_num, ep_mean_reward=np.mean(
+                self.ep_rewards), ep_total_reward=np.sum(self.ep_rewards), ep_num_timestep=self.simulator._curSimTim/self.simulator._eplus_run_stepsize, ep_time_elapsed=self.simulator._curSimTim)
+
+        # Change to next episode
+        t, obs, done = self.simulator.reset(new_weather)
+
         # Reset episode rewards
         self.ep_rewards = []
-
-        t, obs, done = self.simulator.reset(new_weather)
 
         obs_dict = dict(zip(self.variables['observation'], obs))
 
@@ -241,4 +242,10 @@ class EplusEnv(gym.Env):
 
     def close(self):
         """End simulation."""
+        # Record last episode summary before end simulation
+        self.simulator.logger_main.debug(
+            'End of episode, recording summary (progress.csv)')
+        self.logger_progress.log_summary(episode=self.simulator._epi_num, ep_mean_reward=np.mean(
+            self.ep_rewards), ep_total_reward=np.sum(self.ep_rewards), ep_num_timestep=self.simulator._curSimTim/self.simulator._eplus_run_stepsize, ep_time_elapsed=self.simulator._curSimTim)
+
         self.simulator.end_env()

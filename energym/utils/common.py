@@ -218,9 +218,9 @@ class CSVLogger(object):
             # Add contents of list as last row in the csv file
             csv_writer.writerow(row_contents)
 
-    def log_summary(self, episode, ep_mean_reward, ep_total_reward, total_time_elapsed):
+    def log_summary(self, episode, ep_mean_reward, ep_total_reward, ep_num_timestep, ep_time_elapsed):
         row_contents = [episode, ep_mean_reward,
-                        ep_total_reward, total_time_elapsed]
+                        ep_total_reward, ep_num_timestep, ep_time_elapsed]
         with open(self.log_file, 'a+', newline='') as file_obj:
             # Create a writer object from csv module
             csv_writer = csv.writer(file_obj)
