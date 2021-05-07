@@ -8,9 +8,6 @@ from datetime import datetime
 from ..utils.common import parse_variables
 
 
-PKG_DATA_PATH = pkg_resources.resource_filename('energym', 'data/')
-VARIABLES_FILE = 'variables.cfg'
-
 class RandomController(object):
 
     def __init__(self, env):
@@ -51,10 +48,9 @@ class RuleBasedController(object):
         self.range_comfort_winter = range_comfort_winter
         self.range_comfort_summer = range_comfort_summer
 
-        self.variables_path = os.path.join(
-            PKG_DATA_PATH, 'variables', VARIABLES_FILE)
+        self.variables_path = self.env.variables_path
         self.variables = parse_variables(self.variables_path)
-        self.variables.extend(['day', 'month', 'hour'])
+        self.variables['observation'].extend(['day', 'month', 'hour'])
 
         self.summer_start_date = datetime(year, 6, 1)
         self.summer_final_date = datetime(year, 9, 30)
@@ -68,8 +64,8 @@ class RuleBasedController(object):
         Returns:
             object: Action chosen.
         """
-        obs_dict = dict(zip(self.variables, observation))
-        out_temp = obs_dict['Site Outdoor Air Drybulb Temperature']
+        obs_dict = dict(zip(self.variables['observation'], observation))
+        out_temp = obs_dict['Site Outdoor Air Drybulb Temperature (Environment)']
 
         if out_temp < 15:  # t < 15
             action = (19, 21)

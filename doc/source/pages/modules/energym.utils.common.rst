@@ -30,6 +30,7 @@
       :toctree:                                          
       :template: custom-class-template.rst               
    
+      CSVLogger
       Logger
    
    
