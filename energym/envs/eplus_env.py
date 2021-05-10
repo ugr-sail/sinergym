@@ -108,17 +108,18 @@ class EplusEnv(gym.Env):
         self.ep_rewards = []
 
         # Headers for csv loggers
-        monitor_header_list = ['timestep']+self.variables['observation'] + \
-            self.variables['action']+['time (seconds)', 'reward', 'done']
+        monitor_header_list = ['timestep,month,day,hour']+self.variables['observation'] + \
+            self.variables['action']+['time (seconds)', 'reward',
+                                      'total_power_no_units', 'comfort_penalty', 'done']
         self.monitor_header = ''
         for element_header in monitor_header_list:
             self.monitor_header += element_header+','
         self.monitor_header = self.monitor_header[:-1]
-        self.progress_header = 'episode,mean_reward,cumulative_reward,num_timesteps,time_elapsed'
+        self.progress_header = 'episode,cumulative_reward,mean_reward,mean_power_consumption,comfort_violation (%),num_timesteps,time_elapsed'
 
-        # Create whole simulation progress logger (progress.csv)
-        self.logger_progress = CSVLogger(
-            log_file=self.simulator._env_working_dir_parent+'/progress.csv', needs_header=True, header=self.progress_header)
+        # Create simulation logger
+        self.logger = CSVLogger(monitor_header=self.monitor_header, progress_header=self.progress_header,
+                                log_progress_file=self.simulator._env_working_dir_parent+'/progress.csv')
 
     def step(self, action):
         """Sends action to the environment.
@@ -148,6 +149,8 @@ class EplusEnv(gym.Env):
                     setpoints = self.action_mapping[np.asscalar(action)]
                 else:
                     setpoints = action
+            else:
+                print("ERROR: ", action)
             action_ = list(setpoints)
         else:
             action_ = list(action)
@@ -191,8 +194,16 @@ class EplusEnv(gym.Env):
         }
 
         # Record action and new observation in simulator's csv
-        self.logger_monitor.log(timestep=info['timestep'], observation=obs, action=action_,
-                                simulation_time=info['time_elapsed'], reward=reward, done=done)
+        self.logger.log_step(timestep=info['timestep'],
+                             date=[info['month'], info['day'], info['hour']],
+                             observation=obs,
+                             action=action_,
+                             simulation_time=info['time_elapsed'],
+                             reward=reward,
+                             total_power_no_units=info['total_power_no_units'],
+                             comfort_penalty=info['comfort_penalty'],
+                             power=info['total_power'],
+                             done=done)
 
         return np.array(list(obs_dict.values())), reward, done, info
 
@@ -210,8 +221,7 @@ class EplusEnv(gym.Env):
         if self.simulator._episode_existed:
             self.simulator.logger_main.debug(
                 'End of episode, recording summary (progress.csv)')
-            self.logger_progress.log_summary(episode=self.simulator._epi_num, ep_mean_reward=np.mean(
-                self.ep_rewards), ep_total_reward=np.sum(self.ep_rewards), ep_num_timestep=self.simulator._curSimTim/self.simulator._eplus_run_stepsize, ep_time_elapsed=self.simulator._curSimTim)
+            self.logger.log_episode(episode=self.simulator._epi_num)
 
         # Change to next episode
         t, obs, done = self.simulator.reset(new_weather)
@@ -229,10 +239,21 @@ class EplusEnv(gym.Env):
         # Create monitor.csv for information of this episode
         self.simulator.logger_main.debug(
             'Creating monitor.csv for current episode (episode '+str(self.simulator._epi_num)+')')
-        self.logger_monitor = CSVLogger(
-            log_file=self.simulator._eplus_working_dir+'/monitor.csv', needs_header=True, header=self.monitor_header)
-        self.logger_monitor.log(timestep=0, observation=obs, action=[None for _ in range(
-            len(self.variables['action']))], simulation_time=0, reward=None, done=done)
+        self.logger.set_log_file(
+            self.simulator._eplus_working_dir+'/monitor.csv')
+        # Store initial state of simulation
+        self.logger.log_step(timestep=0,
+                             date=[obs_dict['month'],
+                                   obs_dict['day'], obs_dict['hour']],
+                             observation=obs,
+                             action=[None for _ in range(
+                                 len(self.variables['action']))],
+                             simulation_time=0,
+                             reward=None,
+                             total_power_no_units=None,
+                             comfort_penalty=None,
+                             power=None,
+                             done=done)
 
         return np.array(list(obs_dict.values()))
 
@@ -245,7 +266,6 @@ class EplusEnv(gym.Env):
         # Record last episode summary before end simulation
         self.simulator.logger_main.debug(
             'End of episode, recording summary (progress.csv)')
-        self.logger_progress.log_summary(episode=self.simulator._epi_num, ep_mean_reward=np.mean(
-            self.ep_rewards), ep_total_reward=np.sum(self.ep_rewards), ep_num_timestep=self.simulator._curSimTim/self.simulator._eplus_run_stepsize, ep_time_elapsed=self.simulator._curSimTim)
+        self.logger.log_episode(episode=self.simulator._epi_num)
 
         self.simulator.end_env()

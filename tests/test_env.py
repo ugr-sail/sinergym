@@ -45,22 +45,27 @@ def test_close(env_demo):
 
 
 def test_loggers(env_demo):
-    loggers = [env_demo.logger_progress, env_demo.logger_monitor]
+
+    logger = env_demo.logger
 
     # Check CSV's have been created and linked in simulator correctly
-    assert loggers[0].log_file == env_demo.simulator._env_working_dir_parent+'/progress.csv'
-    assert loggers[1].log_file == env_demo.simulator._eplus_working_dir+'/monitor.csv'
+    assert logger.log_progress_file == env_demo.simulator._env_working_dir_parent+'/progress.csv'
+    assert logger.log_file == env_demo.simulator._eplus_working_dir+'/monitor.csv'
 
-    for logger in loggers:
+    assert os.path.isfile(logger.log_progress_file)
+    assert os.path.isfile(logger.log_file)
 
-        assert os.path.isfile(logger.log_file)
-
-        # Check headers
-        with open(logger.log_file, mode='r', newline='') as csvfile:
-            reader = csv.reader(csvfile, delimiter=',')
-            for row in reader:
-                assert ','.join(row)+'\n' == logger.header
-                break
+    # Check headers
+    with open(logger.log_file, mode='r', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for row in reader:
+            assert ','.join(row)+'\n' == logger.monitor_header
+            break
+    with open(logger.log_progress_file, mode='r', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for row in reader:
+            assert ','.join(row)+'\n' == logger.progress_header
+            break
 
 
 def test_all_environments():
