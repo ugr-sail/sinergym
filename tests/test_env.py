@@ -4,6 +4,7 @@ import gym
 import energym
 import os
 import csv
+from stable_baselines3.common.env_checker import check_env
 
 
 def test_reset(env_demo):
@@ -76,22 +77,9 @@ def test_all_environments():
         # Create env with TEST name
         env = gym.make(env_id)
 
-        initial_obs = env.reset()
-        assert len(initial_obs) > 0
-
-        a = env.action_space.sample()
-        assert a is not None
-
-        obs, reward, done, info = env.step(a)
-        assert len(initial_obs) == len(obs)
-        assert reward != 0
-        assert done is not None
-        assert type(info) == dict and len(info) > 0
+        # stable_baselines 3 environment checker
+        check_env(env)
 
         # Rename directory with name TEST for future remove
         os.rename(env.simulator._env_working_dir_parent, 'Eplus-env-TEST' +
                   env.simulator._env_working_dir_parent.split('/')[-1])
-
-        # env.close()
-        # assert not env.simulator._episode_existed
-        # assert env.simulator._conn==None
