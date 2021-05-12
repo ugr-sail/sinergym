@@ -59,7 +59,7 @@ def test_loggers(env_demo):
     with open(logger.log_file, mode='r', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
         for row in reader:
-            assert ','.join(row)+'\n' == logger.monitor_header
+            assert ','.join(row) == logger.monitor_header
             break
     with open(logger.log_progress_file, mode='r', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')

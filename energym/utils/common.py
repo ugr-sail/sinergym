@@ -6,6 +6,7 @@ import numpy as np
 import xml.etree.ElementTree as ET
 from pydoc import locate
 import csv
+import pandas as pd
 
 from datetime import datetime, timedelta
 
@@ -61,7 +62,7 @@ def parse_variables(var_file):
         var_file (str): Variables file path.
 
     Returns:
-        dict: 
+        dict:
             {'observation': A list with the name of the observation <variables> (<zone>) \n
             'action'      : A list with the name og the action <variables>}.
     """
@@ -92,7 +93,7 @@ def parse_observation_action_space(space_file):
         space_file (str): Observation space definition file path.
 
     Returns:
-        dictionary: 
+        dictionary:
                 {'observation'     : tupple for gym.spaces.Box() arguments, \n
                 'discrete_action'  : dictionary action mapping for gym.spaces.Discrete(), \n
                 'continuos_action' : tuple for gym.spaces.Box()}
@@ -197,12 +198,13 @@ class Logger():
 class CSVLogger(object):
     def __init__(self, monitor_header, progress_header, log_progress_file, log_file=None):
 
-        self.monitor_header = monitor_header+'\n'
+        self.monitor_header = monitor_header
         self.progress_header = progress_header+'\n'
         self.log_file = log_file
         self.log_progress_file = log_progress_file
 
         # episode data
+        self.steps_data = [self.monitor_header.split(',')]
         self.rewards = []
         self.powers = []
         self.total_timesteps = 0
@@ -218,14 +220,7 @@ class CSVLogger(object):
         row_contents = [timestep] + list(date) + list(observation) + \
             list(action) + [simulation_time, reward,
                             total_power_no_units, comfort_penalty,  done]
-        assert len(row_contents) == len(self.monitor_header.split(
-            ',')), 'logger try to write a row with different header length'
-        # Open file in append mode
-        with open(self.log_file, 'a+', newline='') as file_obj:
-            # Create a writer object from csv module
-            csv_writer = csv.writer(file_obj)
-            # Add contents of list as last row in the csv file
-            csv_writer.writerow(row_contents)
+        self.steps_data.append(row_contents)
 
         # Store step information for episode
         self._store_step_information(
@@ -239,11 +234,16 @@ class CSVLogger(object):
         comfort_violation = (
             self.comfort_violation_timesteps/self.total_timesteps*100)
 
+        # write steps_info in monitor.csv
+        with open(self.log_file, 'w', newline='') as file_obj:
+            # Create a writer object from csv module
+            csv_writer = csv.writer(file_obj)
+            # Add contents of list as last row in the csv file
+            csv_writer.writerows(self.steps_data)
+
         # building row
         row_contents = [episode, ep_total_reward, ep_mean_reward, ep_mean_power, comfort_violation,
                         self.total_timesteps, self.total_time_elapsed]
-        assert len(row_contents) == len(self.progress_header.split(
-            ',')), 'logger try to write a row with different header length'
         with open(self.log_progress_file, 'a+', newline='') as file_obj:
             # Create a writer object from csv module
             csv_writer = csv.writer(file_obj)
@@ -264,6 +264,7 @@ class CSVLogger(object):
         self.total_time_elapsed = simulation_time
 
     def _reset_logger(self):
+        self.steps_data = [self.monitor_header.split(',')]
         self.rewards = []
         self.powers = []
         self.total_timesteps = 0
