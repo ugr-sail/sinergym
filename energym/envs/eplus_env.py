@@ -117,9 +117,9 @@ class EplusEnv(gym.Env):
         self.monitor_header = self.monitor_header[:-1]
         self.progress_header = 'episode,cumulative_reward,mean_reward,mean_power_consumption,comfort_violation (%),num_timesteps,time_elapsed'
 
-        # Create simulation logger
+        # Create simulation logger, by default is active (flag=True)
         self.logger = CSVLogger(monitor_header=self.monitor_header, progress_header=self.progress_header,
-                                log_progress_file=self.simulator._env_working_dir_parent+'/progress.csv')
+                                log_progress_file=self.simulator._env_working_dir_parent+'/progress.csv', flag=True)
 
     def step(self, action):
         """Sends action to the environment.
@@ -195,7 +195,8 @@ class EplusEnv(gym.Env):
 
         # Record action and new observation in simulator's csv
         self.logger.log_step(timestep=info['timestep'],
-                             date=[info['month'], info['day'], info['hour']],
+                             date=[info['month'],
+                                   info['day'], info['hour']],
                              observation=obs,
                              action=action_,
                              simulation_time=info['time_elapsed'],
@@ -220,7 +221,7 @@ class EplusEnv(gym.Env):
         # It isn't first episode simulation, so we can logger last episode
         if self.simulator._episode_existed:
             self.simulator.logger_main.debug(
-                'End of episode, recording summary (progress.csv)')
+                'End of episode, recording summary (progress.csv) if logger is active')
             self.logger.log_episode(episode=self.simulator._epi_num)
 
         # Change to next episode
@@ -238,7 +239,7 @@ class EplusEnv(gym.Env):
 
         # Create monitor.csv for information of this episode
         self.simulator.logger_main.debug(
-            'Creating monitor.csv for current episode (episode '+str(self.simulator._epi_num)+')')
+            'Creating monitor.csv for current episode (episode '+str(self.simulator._epi_num)+') if logger is active')
         self.logger.set_log_file(
             self.simulator._eplus_working_dir+'/monitor.csv')
         # Store initial state of simulation
@@ -265,7 +266,15 @@ class EplusEnv(gym.Env):
         """End simulation."""
         # Record last episode summary before end simulation
         self.simulator.logger_main.debug(
-            'End of episode, recording summary (progress.csv)')
+            'End of episode, recording summary (progress.csv) if logger is active')
         self.logger.log_episode(episode=self.simulator._epi_num)
 
         self.simulator.end_env()
+
+    ## EXTRA GYM METHODS ##
+
+    def activate_logger(self):
+        self.logger.activate_flag()
+
+    def deactivate_logger(self):
+        self.logger.deactivate_flag()

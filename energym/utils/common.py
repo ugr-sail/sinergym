@@ -196,12 +196,13 @@ class Logger():
 
 
 class CSVLogger(object):
-    def __init__(self, monitor_header, progress_header, log_progress_file, log_file=None):
+    def __init__(self, monitor_header, progress_header, log_progress_file, log_file=None, flag=True):
 
         self.monitor_header = monitor_header
         self.progress_header = progress_header+'\n'
         self.log_file = log_file
         self.log_progress_file = log_progress_file
+        self.flag = flag
 
         # episode data
         self.steps_data = [self.monitor_header.split(',')]
@@ -211,47 +212,62 @@ class CSVLogger(object):
         self.total_time_elapsed = 0
         self.comfort_violation_timesteps = 0
 
-        # Create CSV file with header if it's required
-        if self.log_progress_file:
-            with open(self.log_progress_file, 'a', newline='\n') as file_obj:
-                file_obj.write(self.progress_header)
-
     def log_step(self, timestep, date, observation, action, simulation_time, reward, total_power_no_units, comfort_penalty, power, done):
-        row_contents = [timestep] + list(date) + list(observation) + \
-            list(action) + [simulation_time, reward,
-                            total_power_no_units, comfort_penalty,  done]
-        self.steps_data.append(row_contents)
+        if self.flag:
+            row_contents = [timestep] + list(date) + list(observation) + \
+                list(action) + [simulation_time, reward,
+                                total_power_no_units, comfort_penalty,  done]
+            self.steps_data.append(row_contents)
 
-        # Store step information for episode
-        self._store_step_information(
-            reward, power, comfort_penalty, timestep, simulation_time)
+            # Store step information for episode
+            self._store_step_information(
+                reward, power, comfort_penalty, timestep, simulation_time)
+        else:
+            pass
 
     def log_episode(self, episode):
-        # statistics metrics for whole episode
-        ep_mean_reward = np.mean(self.rewards)
-        ep_total_reward = np.sum(self.rewards)
-        ep_mean_power = np.mean(self.powers)
-        comfort_violation = (
-            self.comfort_violation_timesteps/self.total_timesteps*100)
+        if self.flag:
+            # statistics metrics for whole episode
+            ep_mean_reward = np.mean(self.rewards)
+            ep_total_reward = np.sum(self.rewards)
+            ep_mean_power = np.mean(self.powers)
+            comfort_violation = (
+                self.comfort_violation_timesteps/self.total_timesteps*100)
 
-        # write steps_info in monitor.csv
-        with open(self.log_file, 'w', newline='') as file_obj:
-            # Create a writer object from csv module
-            csv_writer = csv.writer(file_obj)
-            # Add contents of list as last row in the csv file
-            csv_writer.writerows(self.steps_data)
+            # write steps_info in monitor.csv
+            with open(self.log_file, 'w', newline='') as file_obj:
+                # Create a writer object from csv module
+                csv_writer = csv.writer(file_obj)
+                # Add contents of list as last row in the csv file
+                csv_writer.writerows(self.steps_data)
 
-        # building row
-        row_contents = [episode, ep_total_reward, ep_mean_reward, ep_mean_power, comfort_violation,
-                        self.total_timesteps, self.total_time_elapsed]
-        with open(self.log_progress_file, 'a+', newline='') as file_obj:
-            # Create a writer object from csv module
-            csv_writer = csv.writer(file_obj)
-            # Add contents of list as last row in the csv file
-            csv_writer.writerow(row_contents)
+            # Create CSV file with header if it's required for progress.csv
+            if not os.path.isfile(self.log_progress_file):
+                with open(self.log_progress_file, 'a', newline='\n') as file_obj:
+                    file_obj.write(self.progress_header)
 
-        # Reset episode information
-        self._reset_logger()
+            # building episode row
+            row_contents = [episode, ep_total_reward, ep_mean_reward, ep_mean_power, comfort_violation,
+                            self.total_timesteps, self.total_time_elapsed]
+            with open(self.log_progress_file, 'a+', newline='') as file_obj:
+                # Create a writer object from csv module
+                csv_writer = csv.writer(file_obj)
+                # Add contents of list as last row in the csv file
+                csv_writer.writerow(row_contents)
+
+            # Reset episode information
+            self._reset_logger()
+        else:
+            pass
+
+    def set_log_file(self, new_log_file):
+        if self.flag:
+            self.log_file = new_log_file
+            if self.log_file:
+                with open(self.log_file, 'a', newline='\n') as file_obj:
+                    file_obj.write(self.monitor_header)
+        else:
+            pass
 
     def _store_step_information(self, reward, power, comfort_penalty, timestep, simulation_time):
         if reward is not None:
@@ -271,8 +287,8 @@ class CSVLogger(object):
         self.total_time_elapsed = 0
         self.comfort_violation_timesteps = 0
 
-    def set_log_file(self, new_log_file):
-        self.log_file = new_log_file
-        if self.log_file:
-            with open(self.log_file, 'a', newline='\n') as file_obj:
-                file_obj.write(self.monitor_header)
+    def activate_flag(self):
+        self.flag = True
+
+    def deactivate_flag(self):
+        self.flag = False

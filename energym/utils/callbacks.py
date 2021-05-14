@@ -16,11 +16,10 @@ class LoggerCallback(BaseCallback):
         self.ep_timesteps = 0
 
     def _on_training_start(self):
-        # deactivate environment logger
-        pass
+        self.training_env.env_method('deactivate_logger')
 
     def _on_step(self) -> bool:
-        info = self.locals["infos"][-1]
+        info = self.locals['infos'][-1]
         obs_dict = dict(zip(self.training_env.get_attr('variables')[
                         0]['observation'], self.locals['new_obs'][0]))
         obs_dict['day'] = info['day']
@@ -58,3 +57,6 @@ class LoggerCallback(BaseCallback):
                                self.comfort_violation)
 
         return True
+
+    def on_training_end(self):
+        self.training_env.env_method('activate_logger')
