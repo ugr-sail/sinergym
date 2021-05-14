@@ -13,11 +13,14 @@ bcvtb/
 # Simulation outputs
 Eplus-env*/
 
-
 #Socket.cfg in tests
 socket.cfg
 
 # Documentation
 doc/source/_build/
 doc/build/
+
+# Tensorboard and models outputs
+tensorboard*/
+*.zip
 
