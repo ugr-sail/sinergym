@@ -18,6 +18,8 @@ class LoggerCallback(BaseCallback):
         super(LoggerCallback, self).__init__(verbose)
         self.ep_rewards = []
         self.ep_powers = []
+        self.ep_term_comfort = []
+        self.ep_term_energy = []
         self.num_comfort_violation = 0
         self.ep_timesteps = 0
 
@@ -28,15 +30,17 @@ class LoggerCallback(BaseCallback):
         info = self.locals['infos'][-1]
         obs_dict = dict(zip(self.training_env.get_attr('variables')[
                         0]['observation'], self.locals['new_obs'][0]))
-        obs_dict['day'] = info['day']
-        obs_dict['month'] = info['month']
-        obs_dict['hour'] = info['hour']
+        # obs_dict['day'] = info['day']
+        # obs_dict['month'] = info['month']
+        # obs_dict['hour'] = info['hour']
         for key in obs_dict:
             self.logger.record('observation/'+key, obs_dict[key])
 
         # Store episode data
         self.ep_rewards.append(self.locals['rewards'][-1])
         self.ep_powers.append(info['total_power'])
+        self.ep_term_comfort.append(info['comfort_penalty'])
+        self.ep_term_energy.append(info['total_power_no_units'])
         if(info['comfort_penalty'] != 0):
             self.num_comfort_violation += 1
         self.ep_timesteps += 1
@@ -47,13 +51,18 @@ class LoggerCallback(BaseCallback):
             self.cumulative_reward = np.sum(self.ep_rewards)
             self.mean_reward = np.mean(self.ep_rewards)
             self.mean_power = np.mean(self.ep_powers)
+            self.mean_term_comfort = np.mean(self.ep_term_comfort)
+            self.mean_term_power = np.mean(self.ep_term_energy)
             self.comfort_violation = self.num_comfort_violation/self.ep_timesteps*100
             # reset episode info
             self.ep_rewards = []
             self.ep_powers = []
+            self.ep_term_comfort = []
+            self.ep_term_energy = []
             self.ep_timesteps = 0
             self.num_comfort_violation = 0
 
+        # In the first episode, logger doesn't have these attributes
         if(hasattr(self, 'cumulative_reward')):
             self.logger.record('episode/cumulative_reward',
                                self.cumulative_reward)
@@ -61,6 +70,10 @@ class LoggerCallback(BaseCallback):
             self.logger.record('episode/mean_power', self.mean_power)
             self.logger.record('episode/comfort_violation(%)',
                                self.comfort_violation)
+            self.logger.record('episode/mean_comfort_penalty',
+                               self.mean_term_comfort)
+            self.logger.record('episode/mean_power_penalty',
+                               self.mean_term_power)
 
         return True
 
@@ -105,6 +118,8 @@ class LoggerEvalCallback(EvalCallback):
                                                  eval_freq=eval_freq, log_path=log_path, best_model_save_path=best_model_save_path, deterministic=deterministic, render=render, verbose=verbose, warn=warn)
         self.evaluations_power_consumption = []
         self.evaluations_comfort_violation = []
+        self.evaluations_comfort_penalty = []
+        self.evaluations_power_penalty = []
 
     def _on_step(self) -> bool:
 
@@ -115,7 +130,7 @@ class LoggerEvalCallback(EvalCallback):
             # Reset success rate buffer
             self._is_success_buffer = []
 
-            episode_rewards, episode_lengths, episode_powers, episode_comfort_violations = evaluate_policy(
+            episode_rewards, episode_lengths, episode_powers, episode_comfort_violations, episode_comfort_penalties, episode_power_penalties = evaluate_policy(
                 self.model,
                 self.eval_env,
                 n_eval_episodes=self.n_eval_episodes,
@@ -133,6 +148,9 @@ class LoggerEvalCallback(EvalCallback):
                 self.evaluations_power_consumption.append(episode_powers)
                 self.evaluations_comfort_violation.append(
                     episode_comfort_violations)
+                self.evaluations_comfort_penalty.append(
+                    episode_comfort_penalties)
+                self.evaluations_power_penalty.append(episode_power_penalties)
 
                 kwargs = {}
                 # Save success log if present
@@ -147,6 +165,8 @@ class LoggerEvalCallback(EvalCallback):
                     ep_lengths=self.evaluations_length,
                     ep_powers=self.evaluations_power_consumption,
                     ep_comfort_violations=self.evaluations_comfort_violation,
+                    episode_comfort_penalties=self.evaluations_comfort_penalty,
+                    episode_power_penalties=self.evaluations_power_penalty,
                     **kwargs,
                 )
 
@@ -159,6 +179,8 @@ class LoggerEvalCallback(EvalCallback):
             mean_ep_comfort_violation, mean_std_comfort_violation = np.mean(
                 episode_comfort_violations), np.std(episode_comfort_violations)
             self.last_mean_reward = mean_reward
+            mean_ep_comfort_penalty = np.mean(episode_comfort_penalties)
+            mean_ep_power_penalty = np.mean(episode_power_penalties)
 
             if self.verbose > 0:
                 print(
@@ -171,6 +193,10 @@ class LoggerEvalCallback(EvalCallback):
             self.logger.record("eval/mean_power_consumption", mean_ep_power)
             self.logger.record("eval/mean_comfort_violation(%)",
                                mean_ep_comfort_violation)
+            self.logger.record("eval/mean_power_penalty",
+                               mean_ep_power_penalty)
+            self.logger.record("eval/mean_comfort_penalty",
+                               mean_ep_comfort_penalty)
 
             if len(self._is_success_buffer) > 0:
                 success_rate = np.mean(self._is_success_buffer)
@@ -253,7 +279,7 @@ def evaluate_policy(
             UserWarning,
         )
 
-    episode_rewards, episode_lengths, episode_powers, episode_comfort_violations = [], [], [], []
+    episode_rewards, episode_lengths, episode_powers, episode_comfort_violations, episode_comfort_penalties, episode_power_penalties = [], [], [], [], [], []
     not_reseted = True
     while len(episode_rewards) < n_eval_episodes:
         # Number of loops here might differ from true episodes
@@ -267,12 +293,16 @@ def evaluate_policy(
         episode_length = 0
         episode_steps_comfort_violation = 0
         episode_power = 0.0
+        episode_comfort_penalty = 0.0
+        episode_power_penalty = 0.0
         while not done:
             action, state = model.predict(
                 obs, state=state, deterministic=deterministic)
             obs, reward, done, info = env.step(action)
             episode_reward += reward
             episode_power += info[0]['total_power']
+            episode_power_penalty += info[0]['total_power_no_units']
+            episode_comfort_penalty += info[0]['comfort_penalty']
             if info[0]['comfort_penalty'] != 0:
                 episode_steps_comfort_violation += 1
             if callback is not None:
@@ -297,6 +327,8 @@ def evaluate_policy(
             episode_powers.append(episode_power)
             episode_comfort_violations.append(
                 episode_steps_comfort_violation/episode_length*100)
+            episode_comfort_penalties.append(episode_comfort_penalty)
+            episode_power_penalties.append(episode_power_penalty)
 
     mean_reward = np.mean(episode_rewards)
     std_reward = np.std(episode_rewards)
@@ -307,5 +339,5 @@ def evaluate_policy(
     if reward_threshold is not None:
         assert mean_reward > reward_threshold, "Mean reward below threshold: " f"{mean_reward:.2f} < {reward_threshold:.2f}"
     if return_episode_rewards:
-        return episode_rewards, episode_lengths, episode_powers, episode_comfort_violations
+        return episode_rewards, episode_lengths, episode_powers, episode_comfort_violations, episode_comfort_penalties, episode_power_penalties
     return mean_reward, std_reward
