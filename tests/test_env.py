@@ -4,6 +4,7 @@ import gym
 import energym
 import os
 import csv
+from stable_baselines3.common.env_checker import check_env
 
 
 def test_reset(env_demo):
@@ -45,22 +46,27 @@ def test_close(env_demo):
 
 
 def test_loggers(env_demo):
-    loggers = [env_demo.logger_progress, env_demo.logger_monitor]
+
+    logger = env_demo.logger
 
     # Check CSV's have been created and linked in simulator correctly
-    assert loggers[0].log_file == env_demo.simulator._env_working_dir_parent+'/progress.csv'
-    assert loggers[1].log_file == env_demo.simulator._eplus_working_dir+'/monitor.csv'
+    assert logger.log_progress_file == env_demo.simulator._env_working_dir_parent+'/progress.csv'
+    assert logger.log_file == env_demo.simulator._eplus_working_dir+'/monitor.csv'
 
-    for logger in loggers:
+    assert os.path.isfile(logger.log_progress_file)
+    assert os.path.isfile(logger.log_file)
 
-        assert os.path.isfile(logger.log_file)
-
-        # Check headers
-        with open(logger.log_file, mode='r', newline='') as csvfile:
-            reader = csv.reader(csvfile, delimiter=',')
-            for row in reader:
-                assert ','.join(row)+'\n' == logger.header
-                break
+    # Check headers
+    with open(logger.log_file, mode='r', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for row in reader:
+            assert ','.join(row) == logger.monitor_header
+            break
+    with open(logger.log_progress_file, mode='r', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for row in reader:
+            assert ','.join(row)+'\n' == logger.progress_header
+            break
 
 
 def test_all_environments():
@@ -71,22 +77,9 @@ def test_all_environments():
         # Create env with TEST name
         env = gym.make(env_id)
 
-        initial_obs = env.reset()
-        assert len(initial_obs) > 0
-
-        a = env.action_space.sample()
-        assert a is not None
-
-        obs, reward, done, info = env.step(a)
-        assert len(initial_obs) == len(obs)
-        assert reward != 0
-        assert done is not None
-        assert type(info) == dict and len(info) > 0
+        # stable_baselines 3 environment checker
+        check_env(env)
 
         # Rename directory with name TEST for future remove
         os.rename(env.simulator._env_working_dir_parent, 'Eplus-env-TEST' +
                   env.simulator._env_working_dir_parent.split('/')[-1])
-
-        # env.close()
-        # assert not env.simulator._episode_existed
-        # assert env.simulator._conn==None

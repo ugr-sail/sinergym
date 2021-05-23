@@ -6,6 +6,7 @@ import numpy as np
 import xml.etree.ElementTree as ET
 from pydoc import locate
 import csv
+import pandas as pd
 
 from datetime import datetime, timedelta
 
@@ -61,7 +62,7 @@ def parse_variables(var_file):
         var_file (str): Variables file path.
 
     Returns:
-        dict: 
+        dict:
             {'observation': A list with the name of the observation <variables> (<zone>) \n
             'action'      : A list with the name og the action <variables>}.
     """
@@ -92,7 +93,7 @@ def parse_observation_action_space(space_file):
         space_file (str): Observation space definition file path.
 
     Returns:
-        dictionary: 
+        dictionary:
                 {'observation'     : tupple for gym.spaces.Box() arguments, \n
                 'discrete_action'  : dictionary action mapping for gym.spaces.Discrete(), \n
                 'continuos_action' : tuple for gym.spaces.Box()}
@@ -195,34 +196,99 @@ class Logger():
 
 
 class CSVLogger(object):
-    def __init__(self, needs_header=True, header=None, log_file=None):
+    def __init__(self, monitor_header, progress_header, log_progress_file, log_file=None, flag=True):
 
-        self.needs_header = needs_header
-        self.header = header+'\n'
+        self.monitor_header = monitor_header
+        self.progress_header = progress_header+'\n'
         self.log_file = log_file
+        self.log_progress_file = log_progress_file
+        self.flag = flag
 
-        # Create CSV file with header if it's required
-        if self.needs_header:
+        # episode data
+        self.steps_data = [self.monitor_header.split(',')]
+        self.rewards = []
+        self.powers = []
+        self.total_timesteps = 0
+        self.total_time_elapsed = 0
+        self.comfort_violation_timesteps = 0
+
+    def log_step(self, timestep, date, observation, action, simulation_time, reward, total_power_no_units, comfort_penalty, power, done):
+        if self.flag:
+            row_contents = [timestep] + list(date) + list(observation) + \
+                list(action) + [simulation_time, reward,
+                                total_power_no_units, comfort_penalty,  done]
+            self.steps_data.append(row_contents)
+
+            # Store step information for episode
+            self._store_step_information(
+                reward, power, comfort_penalty, timestep, simulation_time)
+        else:
+            pass
+
+    def log_episode(self, episode):
+        if self.flag:
+            # statistics metrics for whole episode
+            ep_mean_reward = np.mean(self.rewards)
+            ep_total_reward = np.sum(self.rewards)
+            ep_mean_power = np.mean(self.powers)
+            comfort_violation = (
+                self.comfort_violation_timesteps/self.total_timesteps*100)
+
+            # write steps_info in monitor.csv
+            with open(self.log_file, 'w', newline='') as file_obj:
+                # Create a writer object from csv module
+                csv_writer = csv.writer(file_obj)
+                # Add contents of list as last row in the csv file
+                csv_writer.writerows(self.steps_data)
+
+            # Create CSV file with header if it's required for progress.csv
+            if not os.path.isfile(self.log_progress_file):
+                with open(self.log_progress_file, 'a', newline='\n') as file_obj:
+                    file_obj.write(self.progress_header)
+
+            # building episode row
+            row_contents = [episode, ep_total_reward, ep_mean_reward, ep_mean_power, comfort_violation,
+                            self.total_timesteps, self.total_time_elapsed]
+            with open(self.log_progress_file, 'a+', newline='') as file_obj:
+                # Create a writer object from csv module
+                csv_writer = csv.writer(file_obj)
+                # Add contents of list as last row in the csv file
+                csv_writer.writerow(row_contents)
+
+            # Reset episode information
+            self._reset_logger()
+        else:
+            pass
+
+    def set_log_file(self, new_log_file):
+        if self.flag:
+            self.log_file = new_log_file
             if self.log_file:
                 with open(self.log_file, 'a', newline='\n') as file_obj:
-                    if self.needs_header:
-                        file_obj.write(self.header)
+                    file_obj.write(self.monitor_header)
+        else:
+            pass
 
-    def log(self, timestep, observation, action, simulation_time, reward, done):
-        row_contents = [timestep]+list(observation) + \
-            list(action)+[simulation_time, reward, done]
-        # Open file in append mode
-        with open(self.log_file, 'a+', newline='') as file_obj:
-            # Create a writer object from csv module
-            csv_writer = csv.writer(file_obj)
-            # Add contents of list as last row in the csv file
-            csv_writer.writerow(row_contents)
+    def _store_step_information(self, reward, power, comfort_penalty, timestep, simulation_time):
+        if reward is not None:
+            self.rewards.append(reward)
+        if power is not None:
+            self.powers.append(power)
+        if comfort_penalty != 0:
+            self.comfort_violation_timesteps += 1
+        self.total_timesteps = timestep
+        self.total_time_elapsed = simulation_time
 
-    def log_summary(self, episode, ep_mean_reward, ep_total_reward, total_time_elapsed):
-        row_contents = [episode, ep_mean_reward,
-                        ep_total_reward, total_time_elapsed]
-        with open(self.log_file, 'a+', newline='') as file_obj:
-            # Create a writer object from csv module
-            csv_writer = csv.writer(file_obj)
-            # Add contents of list as last row in the csv file
-            csv_writer.writerow(row_contents)
+    def _reset_logger(self):
+        self.steps_data = [self.monitor_header.split(',')]
+        self.rewards = []
+        self.powers = []
+        self.total_timesteps = 0
+        self.total_time_elapsed = 0
+        self.comfort_violation_timesteps = 0
+
+    def activate_flag(self):
+        self.flag = True
+
+    def deactivate_flag(self):
+        self.flag = False

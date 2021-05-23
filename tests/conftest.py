@@ -74,6 +74,26 @@ def env_demo(idf_path, weather_path, variable_path, space_path):
     return EplusEnv(env_name='TESTGYM', idf_file=idf_file, weather_file=weather_file, variables_file=variables_file, spaces_file=spaces_file, discrete_actions=True, weather_variability=None)
 
 
+@pytest.fixture(scope='function')
+def env_demo_discrete(idf_path, weather_path, variable_path, space_path):
+    idf_file = idf_path.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+    variables_file = variable_path.split('/')[-1]
+    spaces_file = space_path.split('/')[-1]
+
+    return EplusEnv(env_name='TESTGYM', idf_file=idf_file, weather_file=weather_file, variables_file=variables_file, spaces_file=spaces_file, discrete_actions=True, weather_variability=None)
+
+
+@pytest.fixture(scope='function')
+def env_demo_continuous(idf_path, weather_path, variable_path, space_path):
+    idf_file = idf_path.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+    variables_file = variable_path.split('/')[-1]
+    spaces_file = space_path.split('/')[-1]
+
+    return EplusEnv(env_name='TESTGYM', idf_file=idf_file, weather_file=weather_file, variables_file=variables_file, spaces_file=spaces_file, discrete_actions=False, weather_variability=None)
+
+
 @pytest.fixture(scope='module')
 def env_wrapper(env_demo):
     return NormalizeObservation(MultiObsWrapper(env=env_demo, n=5))
