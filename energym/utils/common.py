@@ -10,6 +10,41 @@ import pandas as pd
 
 from datetime import datetime, timedelta
 
+# NORMALIZATION RANGES
+RANGES_5ZONE = {'Facility Total HVAC Electric Demand Power (Whole Building)': [173.6583692738386,
+                                                                               32595.57259261767],
+                'People Air Temperature (SPACE1-1 PEOPLE 1)': [0.0, 30.00826655379267],
+                'Site Diffuse Solar Radiation Rate per Area (Environment)': [0.0, 588.0],
+                'Site Direct Solar Radiation Rate per Area (Environment)': [0.0, 1033.0],
+                'Site Outdoor Air Drybulb Temperature (Environment)': [-31.05437255409474,
+                                                                       60.72839186915495],
+                'Site Outdoor Air Relative Humidity (Environment)': [3.0, 100.0],
+                'Site Wind Direction (Environment)': [0.0, 357.5],
+                'Site Wind Speed (Environment)': [0.0, 23.1],
+                'Space1-ClgSetP-RL': [21.0, 30.0],
+                'Space1-HtgSetP-RL': [15.0, 22.49999],
+                'Zone Air Relative Humidity (SPACE1-1)': [3.287277410867238,
+                                                          87.60662171287048],
+                'Zone Air Temperature (SPACE1-1)': [15.22565264653451, 30.00826655379267],
+                'Zone People Occupant Count (SPACE1-1)': [0.0, 11.0],
+                'Zone Thermal Comfort Clothing Value (SPACE1-1 PEOPLE 1)': [0.0, 1.0],
+                'Zone Thermal Comfort Fanger Model PPD (SPACE1-1 PEOPLE 1)': [0.0,
+                                                                              98.37141259444684],
+                'Zone Thermal Comfort Mean Radiant Temperature (SPACE1-1 PEOPLE 1)': [0.0,
+                                                                                      35.98853496778508],
+                'Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)': [21.0, 30.0],
+                'Zone Thermostat Heating Setpoint Temperature (SPACE1-1)': [15.0,
+                                                                            22.49999046325684],
+                'comfort_penalty': [-6.508266553792669, -0.0],
+                'day': [1, 31],
+                'done': [False, True],
+                'hour': [0, 23],
+                'month': [1, 12],
+                'reward': [-3.550779087370951, -0.0086829184636919],
+                'time (seconds)': [0, 31536000],
+                'timestep': [0, 35040],
+                'total_power_no_units': [-3.259557259261767, -0.0173658369273838]}
+
 
 def get_delta_seconds(year, st_mon, st_day, end_mon, end_day):
     """Returns the delta seconds between `year:st_mon:st_day:0:0:0` and
@@ -182,6 +217,43 @@ def create_variable_weather(weather_data, original_epw_file, columns: list = ['d
         filename += '_Random_%s_%s.epw' % (str(mu), str(std))
         weather_data.to_epw(filename)
         return filename
+
+
+def ranges_extractor(output_path, last_result=None):
+    """Given a path with simulations outputs, this function is used to extract max and min absolute valors of all episodes in each variable. If a dict ranges is given, will be updated
+
+    Args:
+        output_path (str): path with simulations directories (Eplus-env-*).
+        last_result (dict): Last ranges dict to be updated. This will be created if it is not given.
+
+    Returns:
+        dict: list min,max of each variable as a key.
+    """
+    if last_result is not None:
+        result = last_result
+    else:
+        result = {}
+
+    content = os.listdir(output_path)
+    for simulation in content:
+        if os.path.isdir(output_path+'/'+simulation) and simulation.startswith('Eplus-env'):
+            simulation_content = os.listdir(output_path+'/'+simulation)
+            for episode_dir in simulation_content:
+                if os.path.isdir(output_path+'/'+simulation+'/'+episode_dir):
+                    monitor_path = output_path+'/'+simulation+'/'+episode_dir+'/monitor.csv'
+                    data = pd.read_csv(monitor_path)
+
+                    if len(result) == 0:
+                        for column in data:
+                            # variable : [min,max]
+                            result[column] = [np.inf, -np.inf]
+
+                    for column in data:
+                        if np.min(data[column]) < result[column][0]:
+                            result[column][0] = np.min(data[column])
+                        if np.max(data[column]) > result[column][1]:
+                            result[column][1] = np.max(data[column])
+    return result
 
 
 class Logger():

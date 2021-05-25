@@ -13,6 +13,8 @@ import mlflow
 import numpy as np
 
 from energym.utils.callbacks import LoggerCallback, LoggerEvalCallback
+from energym.utils.wrappers import NormalizeObservation
+
 from stable_baselines3 import A2C
 from stable_baselines3.common.callbacks import EvalCallback, BaseCallback, CallbackList
 from stable_baselines3.common.vec_env import DummyVecEnv
@@ -51,6 +53,7 @@ with mlflow.start_run(run_name=name):
     mlflow.log_param('rms_prop_eps', args.rms_prop_eps)
 
     env = gym.make(environment)
+    env = NormalizeObservation(env)
 
     #### TRAINING ####
 
@@ -74,10 +77,10 @@ with mlflow.start_run(run_name=name):
     env.env_method('activate_logger')
 
     # Callbacks
-    freq = 1  # evaluate every 5 episodes
+    freq = 8  # evaluate every N episodes
     eval_callback = LoggerEvalCallback(env, best_model_save_path='./best_models/' + name + '/',
                                        log_path='./best_models/' + name + '/', eval_freq=n_timesteps_episode * freq,
-                                       deterministic=True, render=False, n_eval_episodes=5)
+                                       deterministic=True, render=False, n_eval_episodes=2)
     log_callback = LoggerCallback()
     callback = CallbackList([log_callback, eval_callback])
 

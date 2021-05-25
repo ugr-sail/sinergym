@@ -30,9 +30,6 @@ class LoggerCallback(BaseCallback):
         info = self.locals['infos'][-1]
         obs_dict = dict(zip(self.training_env.get_attr('variables')[
                         0]['observation'], self.locals['new_obs'][0]))
-        # obs_dict['day'] = info['day']
-        # obs_dict['month'] = info['month']
-        # obs_dict['hour'] = info['hour']
         for key in obs_dict:
             self.logger.record('observation/'+key, obs_dict[key])
 

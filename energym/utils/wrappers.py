@@ -4,6 +4,7 @@ import numpy as np
 import gym
 
 from collections import deque
+from energym.utils.common import RANGES_5ZONE
 
 
 class NormalizeObservation(gym.ObservationWrapper):
@@ -17,7 +18,7 @@ class NormalizeObservation(gym.ObservationWrapper):
         super(NormalizeObservation, self).__init__(env)
 
     def observation(self, obs):
-        """Applies *tanh* to observation.
+        """Applies normalization to observation.
 
         Args:
             obs (object): Original observation.
@@ -25,7 +26,21 @@ class NormalizeObservation(gym.ObservationWrapper):
         Returns:
             object: Normalized observation.
         """
-        return np.tanh(obs)
+        # Don't have variables name, we need to get it and add manually news
+        keys = self.env.variables["observation"]
+        keys.append('day')
+        keys.append('month')
+        keys.append('hour')
+        obs_dict = dict(zip(keys, obs))
+
+        for key in obs_dict:
+            # normalization
+            value = obs_dict[key]
+            value = (value-RANGES_5ZONE[key][0]) / \
+                (RANGES_5ZONE[key][1]-RANGES_5ZONE[key][0])
+            obs_dict[key] = value
+        # Return obs values in the SAME ORDER than obs argument.
+        return np.array(list(obs_dict.values()))
 
 
 class MultiObsWrapper(gym.Wrapper):
