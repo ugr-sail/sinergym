@@ -28,6 +28,7 @@ class LoggerCallback(BaseCallback):
         self.training_env.env_method('deactivate_logger')
 
     def _on_step(self) -> bool:
+        # OBSERVATION
         variables = self.training_env.get_attr('variables')[0]['observation']
 
         # log normalized and original values
@@ -45,6 +46,13 @@ class LoggerCallback(BaseCallback):
             for i, variable in enumerate(variables):
                 self.logger.record(
                     'observation/'+variable, obs[i])
+
+        # ACTION
+        variables = self.training_env.get_attr('variables')[0]['action']
+        action = self.locals['actions'][0]
+        for i, variable in enumerate(variables):
+            self.logger.record(
+                'action/'+variable, action[i])
 
         # Store episode data
         info = self.locals['infos'][0]
