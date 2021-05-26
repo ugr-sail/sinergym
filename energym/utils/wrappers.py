@@ -30,28 +30,21 @@ class NormalizeObservation(gym.ObservationWrapper):
             object: Normalized observation.
         """
         # Save original obs in class attribute
-        self.unwrapped_observation = obs
-        # Don't have variables name, we need to get it and add manually news
-        # len(variables)!=len(obs)
-        keys = self.env.variables["observation"]
-        keys.append('day')
-        keys.append('month')
-        keys.append('hour')
-        obs_dict = dict(zip(keys, obs))
+        self.unwrapped_observation = obs.copy()
+        variables = self.env.variables["observation"]
 
-        for key in obs_dict:
+        # NOTE: If you want to recor day, month and our. You should add to variables that keys
+        for i, variable in enumerate(variables):
             # normalization
-            value = obs_dict[key]
-            value = (value-self.ranges[key][0]) / \
-                (self.ranges[key][1]-self.ranges[key][0])
+            obs[i] = (obs[i]-self.ranges[variable][0]) / \
+                (self.ranges[variable][1]-self.ranges[variable][0])
             # If value is out
-            if value > 1:
-                value = 1
-            if value < 0:
-                value = 0
-            obs_dict[key] = value
+            if obs[i] > 1:
+                obs[i] = 1
+            if obs[i] < 0:
+                obs[i] = 0
         # Return obs values in the SAME ORDER than obs argument.
-        return np.array(list(obs_dict.values()))
+        return np.array(obs)
 
     def get_unwrapped_obs(self):
         return self.unwrapped_observation

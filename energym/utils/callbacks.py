@@ -28,29 +28,27 @@ class LoggerCallback(BaseCallback):
         self.training_env.env_method('deactivate_logger')
 
     def _on_step(self) -> bool:
-        info = self.locals['infos'][-1]
-        obs_dict = dict(zip(self.training_env.get_attr('variables')[
-                        0]['observation'], self.locals['new_obs'][0]))
+        variables = self.training_env.get_attr('variables')[0]['observation']
 
+        # log normalized and original values
         if self.training_env.env_is_wrapped(wrapper_class=NormalizeObservation)[0]:
-            for key in obs_dict:
-                self.logger.record(
-                    'normalized_observation/'+key, obs_dict[key])
-            # unwrapped observation (DummyVec so we need specify index 0)
+            obs_normalized = self.locals['new_obs'][0]
             obs = self.training_env.env_method('get_unwrapped_obs')[0]
-            obs_dict = dict(zip(self.training_env.get_attr('variables')[
-                0]['observation'], obs))
-            for key in obs_dict:
+            for i, variable in enumerate(variables):
                 self.logger.record(
-                    'observation/'+key, obs_dict[key])
+                    'normalized_observation/'+variable, obs_normalized[i])
+                self.logger.record(
+                    'observation/'+variable, obs[i])
+        # Only original values
         else:
-            # Only original observation
-            for key in obs_dict:
+            obs = self.locals['new_obs'][0]
+            for i, variable in enumerate(variables):
                 self.logger.record(
-                    'observation/'+key, obs_dict[key])
+                    'observation/'+variable, obs[i])
 
         # Store episode data
-        self.ep_rewards.append(self.locals['rewards'][-1])
+        info = self.locals['infos'][0]
+        self.ep_rewards.append(self.locals['rewards'][0])
         self.ep_powers.append(info['total_power'])
         self.ep_term_comfort.append(info['comfort_penalty'])
         self.ep_term_energy.append(info['total_power_no_units'])
@@ -59,7 +57,7 @@ class LoggerCallback(BaseCallback):
         self.ep_timesteps += 1
 
         # If episode ends
-        if self.locals['dones'][-1]:
+        if self.locals['dones'][0]:
 
             self.cumulative_reward = np.sum(self.ep_rewards)
             self.mean_reward = np.mean(self.ep_rewards)
