@@ -2,6 +2,7 @@ from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
 import numpy as np
 import gym
 import os
+from energym.utils.wrappers import NormalizeObservation
 
 import warnings
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
@@ -30,8 +31,23 @@ class LoggerCallback(BaseCallback):
         info = self.locals['infos'][-1]
         obs_dict = dict(zip(self.training_env.get_attr('variables')[
                         0]['observation'], self.locals['new_obs'][0]))
-        for key in obs_dict:
-            self.logger.record('observation/'+key, obs_dict[key])
+
+        if self.training_env.env_is_wrapped(wrapper_class=NormalizeObservation)[0]:
+            for key in obs_dict:
+                self.logger.record(
+                    'normalized_observation/'+key, obs_dict[key])
+            # unwrapped observation (DummyVec so we need specify index 0)
+            obs = self.training_env.env_method('get_unwrapped_obs')[0]
+            obs_dict = dict(zip(self.training_env.get_attr('variables')[
+                0]['observation'], obs))
+            for key in obs_dict:
+                self.logger.record(
+                    'observation/'+key, obs_dict[key])
+        else:
+            # Only original observation
+            for key in obs_dict:
+                self.logger.record(
+                    'observation/'+key, obs_dict[key])
 
         # Store episode data
         self.ep_rewards.append(self.locals['rewards'][-1])

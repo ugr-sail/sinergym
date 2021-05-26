@@ -9,13 +9,16 @@ from energym.utils.common import RANGES_5ZONE
 
 class NormalizeObservation(gym.ObservationWrapper):
 
-    def __init__(self, env):
-        """Observations normalized to range [-1, 1].
+    def __init__(self, env, ranges=RANGES_5ZONE):
+        """Observations normalized to range [0, 1].
 
         Args:
             env (object): Original Gym environment.
+            ranges: Observation variables ranges to apply normalization (rely on environment)
         """
         super(NormalizeObservation, self).__init__(env)
+        self.unwrapped_observation = None
+        self.ranges = ranges
 
     def observation(self, obs):
         """Applies normalization to observation.
@@ -26,7 +29,10 @@ class NormalizeObservation(gym.ObservationWrapper):
         Returns:
             object: Normalized observation.
         """
+        # Save original obs in class attribute
+        self.unwrapped_observation = obs
         # Don't have variables name, we need to get it and add manually news
+        # len(variables)!=len(obs)
         keys = self.env.variables["observation"]
         keys.append('day')
         keys.append('month')
@@ -36,11 +42,19 @@ class NormalizeObservation(gym.ObservationWrapper):
         for key in obs_dict:
             # normalization
             value = obs_dict[key]
-            value = (value-RANGES_5ZONE[key][0]) / \
-                (RANGES_5ZONE[key][1]-RANGES_5ZONE[key][0])
+            value = (value-self.ranges[key][0]) / \
+                (self.ranges[key][1]-self.ranges[key][0])
+            # If value is out
+            if value > 1:
+                value = 1
+            if value < 0:
+                value = 0
             obs_dict[key] = value
         # Return obs values in the SAME ORDER than obs argument.
         return np.array(list(obs_dict.values()))
+
+    def get_unwrapped_obs(self):
+        return self.unwrapped_observation
 
 
 class MultiObsWrapper(gym.Wrapper):

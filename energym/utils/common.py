@@ -219,7 +219,7 @@ def create_variable_weather(weather_data, original_epw_file, columns: list = ['d
         return filename
 
 
-def ranges_extractor(output_path, last_result=None):
+def ranges_getter(output_path, last_result=None):
     """Given a path with simulations outputs, this function is used to extract max and min absolute valors of all episodes in each variable. If a dict ranges is given, will be updated
 
     Args:
