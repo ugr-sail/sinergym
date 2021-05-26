@@ -96,7 +96,7 @@ def env_demo_continuous(idf_path, weather_path, variable_path, space_path):
 
 @pytest.fixture(scope='module')
 def env_wrapper(env_demo):
-    return NormalizeObservation(MultiObsWrapper(env=env_demo, n=5))
+    return MultiObsWrapper(env=NormalizeObservation(env=env_demo), n=5)
 
 
 @pytest.fixture(scope='module')
