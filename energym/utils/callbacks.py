@@ -33,8 +33,8 @@ class LoggerCallback(BaseCallback):
 
         # log normalized and original values
         if self.training_env.env_is_wrapped(wrapper_class=NormalizeObservation)[0]:
-            obs_normalized = self.locals['new_obs'][0]
-            obs = self.training_env.env_method('get_unwrapped_obs')[0]
+            obs_normalized = self.locals['new_obs'][-1]
+            obs = self.training_env.env_method('get_unwrapped_obs')[-1]
             for i, variable in enumerate(variables):
                 self.logger.record(
                     'normalized_observation/'+variable, obs_normalized[i])
@@ -42,21 +42,21 @@ class LoggerCallback(BaseCallback):
                     'observation/'+variable, obs[i])
         # Only original values
         else:
-            obs = self.locals['new_obs'][0]
+            obs = self.locals['new_obs'][-1]
             for i, variable in enumerate(variables):
                 self.logger.record(
                     'observation/'+variable, obs[i])
 
         # ACTION
         variables = self.training_env.get_attr('variables')[0]['action']
-        action = self.locals['actions'][0]
+        action = self.locals['actions'][-1]
         for i, variable in enumerate(variables):
             self.logger.record(
                 'action/'+variable, action[i])
 
         # Store episode data
-        info = self.locals['infos'][0]
-        self.ep_rewards.append(self.locals['rewards'][0])
+        info = self.locals['infos'][-1]
+        self.ep_rewards.append(self.locals['rewards'][-1])
         self.ep_powers.append(info['total_power'])
         self.ep_term_comfort.append(info['comfort_penalty'])
         self.ep_term_energy.append(info['total_power_no_units'])
@@ -64,15 +64,26 @@ class LoggerCallback(BaseCallback):
             self.num_comfort_violation += 1
         self.ep_timesteps += 1
 
-        # If episode ends
-        if self.locals['dones'][0]:
+        # If episode ends, store summary of episode and reset
+        if self.locals['dones'][-1]:
+            # store last episode metrics
+            self.episode_metrics = {}
+            self.episode_metrics['cumulutative_reward'] = np.sum(
+                self.ep_rewards)
+            self.episode_metrics['mean_reward'] = np.mean(self.ep_rewards)
+            self.episode_metrics['mean_power'] = np.mean(self.ep_powers)
+            self.episode_metrics['cumulutative_power'] = np.sum(self.ep_powers)
+            self.episode_metrics['mean_comfort_penalty'] = np.mean(
+                self.ep_term_comfort)
+            self.episode_metrics['cumulutative_comfort_penalty'] = np.sum(
+                self.ep_term_comfort)
+            self.episode_metrics['mean_power_penalty'] = np.mean(
+                self.ep_term_energy)
+            self.episode_metrics['cumulutative_power_penalty'] = np.sum(
+                self.ep_term_energy)
+            self.episode_metrics['comfort_violation_time(%)'] = self.num_comfort_violation / \
+                self.ep_timesteps*100
 
-            self.cumulative_reward = np.sum(self.ep_rewards)
-            self.mean_reward = np.mean(self.ep_rewards)
-            self.mean_power = np.mean(self.ep_powers)
-            self.mean_term_comfort = np.mean(self.ep_term_comfort)
-            self.mean_term_power = np.mean(self.ep_term_energy)
-            self.comfort_violation = self.num_comfort_violation/self.ep_timesteps*100
             # reset episode info
             self.ep_rewards = []
             self.ep_powers = []
@@ -81,18 +92,11 @@ class LoggerCallback(BaseCallback):
             self.ep_timesteps = 0
             self.num_comfort_violation = 0
 
-        # In the first episode, logger doesn't have these attributes
-        if(hasattr(self, 'cumulative_reward')):
-            self.logger.record('episode/cumulative_reward',
-                               self.cumulative_reward)
-            self.logger.record('episode/mean_reward', self.mean_reward)
-            self.logger.record('episode/mean_power', self.mean_power)
-            self.logger.record('episode/comfort_violation(%)',
-                               self.comfort_violation)
-            self.logger.record('episode/mean_comfort_penalty',
-                               self.mean_term_comfort)
-            self.logger.record('episode/mean_power_penalty',
-                               self.mean_term_power)
+        # During first episode, as it not finished, it shouldn't be recording
+        if hasattr(self, 'episode_metrics'):
+            for key, metric in self.episode_metrics.items():
+                self.logger.record(
+                    'episode/'+key, metric)
 
         return True
 
@@ -139,6 +143,7 @@ class LoggerEvalCallback(EvalCallback):
         self.evaluations_comfort_violation = []
         self.evaluations_comfort_penalty = []
         self.evaluations_power_penalty = []
+        self.evaluation_metrics = {}
 
     def _on_step(self) -> bool:
 
@@ -149,7 +154,7 @@ class LoggerEvalCallback(EvalCallback):
             # Reset success rate buffer
             self._is_success_buffer = []
 
-            episode_rewards, episode_lengths, episode_powers, episode_comfort_violations, episode_comfort_penalties, episode_power_penalties = evaluate_policy(
+            episodes_rewards, episodes_lengths, episodes_powers, episodes_comfort_violations, episodes_comfort_penalties, episodes_power_penalties = evaluate_policy(
                 self.model,
                 self.eval_env,
                 n_eval_episodes=self.n_eval_episodes,
@@ -162,14 +167,14 @@ class LoggerEvalCallback(EvalCallback):
 
             if self.log_path is not None:
                 self.evaluations_timesteps.append(self.num_timesteps)
-                self.evaluations_results.append(episode_rewards)
-                self.evaluations_length.append(episode_lengths)
-                self.evaluations_power_consumption.append(episode_powers)
+                self.evaluations_results.append(episodes_rewards)
+                self.evaluations_length.append(episodes_lengths)
+                self.evaluations_power_consumption.append(episodes_powers)
                 self.evaluations_comfort_violation.append(
-                    episode_comfort_violations)
+                    episodes_comfort_violations)
                 self.evaluations_comfort_penalty.append(
-                    episode_comfort_penalties)
-                self.evaluations_power_penalty.append(episode_power_penalties)
+                    episodes_comfort_penalties)
+                self.evaluations_power_penalty.append(episodes_power_penalties)
 
                 kwargs = {}
                 # Save success log if present
@@ -184,22 +189,27 @@ class LoggerEvalCallback(EvalCallback):
                     ep_lengths=self.evaluations_length,
                     ep_powers=self.evaluations_power_consumption,
                     ep_comfort_violations=self.evaluations_comfort_violation,
-                    episode_comfort_penalties=self.evaluations_comfort_penalty,
-                    episode_power_penalties=self.evaluations_power_penalty,
+                    episodes_comfort_penalties=self.evaluations_comfort_penalty,
+                    episodes_power_penalties=self.evaluations_power_penalty,
                     **kwargs,
                 )
 
             mean_reward, std_reward = np.mean(
-                episode_rewards), np.std(episode_rewards)
+                episodes_rewards), np.std(episodes_rewards)
             mean_ep_length, std_ep_length = np.mean(
-                episode_lengths), np.std(episode_lengths)
-            mean_ep_power, std_ep_power = np.mean(
-                episode_powers), np.std(episode_powers)
-            mean_ep_comfort_violation, mean_std_comfort_violation = np.mean(
-                episode_comfort_violations), np.std(episode_comfort_violations)
-            self.last_mean_reward = mean_reward
-            mean_ep_comfort_penalty = np.mean(episode_comfort_penalties)
-            mean_ep_power_penalty = np.mean(episode_power_penalties)
+                episodes_lengths), np.std(episodes_lengths)
+
+            self.evaluation_metrics['cumulutative_reward'] = np.mean(
+                mean_reward)
+            self.evaluation_metrics['ep_length'] = mean_ep_length
+            self.evaluation_metrics['power_consumption'] = np.mean(
+                episodes_powers)
+            self.evaluation_metrics['comfort_violation(%)'] = np.mean(
+                episodes_comfort_violations)
+            self.evaluation_metrics['comfort_penalty'] = np.mean(
+                episodes_comfort_penalties)
+            self.evaluation_metrics['power_penalty'] = np.mean(
+                episodes_power_penalties)
 
             if self.verbose > 0:
                 print(
@@ -207,15 +217,8 @@ class LoggerEvalCallback(EvalCallback):
                 print(
                     f"Episode length: {mean_ep_length:.2f} +/- {std_ep_length:.2f}")
             # Add to current Logger
-            self.logger.record("eval/mean_reward", float(mean_reward))
-            self.logger.record("eval/mean_ep_length", mean_ep_length)
-            self.logger.record("eval/mean_power_consumption", mean_ep_power)
-            self.logger.record("eval/mean_comfort_violation(%)",
-                               mean_ep_comfort_violation)
-            self.logger.record("eval/mean_power_penalty",
-                               mean_ep_power_penalty)
-            self.logger.record("eval/mean_comfort_penalty",
-                               mean_ep_comfort_penalty)
+            for key, metric in self.evaluation_metrics.items():
+                self.logger.record('eval/'+key, metric)
 
             if len(self._is_success_buffer) > 0:
                 success_rate = np.mean(self._is_success_buffer)
@@ -240,7 +243,7 @@ class LoggerEvalCallback(EvalCallback):
 def evaluate_policy(
     model: "base_class.BaseAlgorithm",
     env: Union[gym.Env, VecEnv],
-    n_eval_episodes: int = 10,
+    n_eval_episodes: int = 5,
     deterministic: bool = True,
     render: bool = False,
     callback: Optional[Callable[[Dict[str, Any], Dict[str, Any]], None]] = None,
@@ -298,9 +301,9 @@ def evaluate_policy(
             UserWarning,
         )
 
-    episode_rewards, episode_lengths, episode_powers, episode_comfort_violations, episode_comfort_penalties, episode_power_penalties = [], [], [], [], [], []
+    episodes_rewards, episodes_lengths, episodes_powers, episodes_comfort_violations, episodes_comfort_penalties, episodes_power_penalties = [], [], [], [], [], []
     not_reseted = True
-    while len(episode_rewards) < n_eval_episodes:
+    while len(episodes_rewards) < n_eval_episodes:
         # Number of loops here might differ from true episodes
         # played, if underlying wrappers modify episode lengths.
         # Avoid double reset, as VecEnv are reset automatically.
@@ -338,25 +341,25 @@ def evaluate_policy(
             if "episode" in info.keys():
                 # Monitor wrapper includes "episode" key in info if environment
                 # has been wrapped with it. Use those rewards instead.
-                episode_rewards.append(info["episode"]["r"])
-                episode_lengths.append(info["episode"]["l"])
+                episodes_rewards.append(info["episode"]["r"])
+                episodes_lengths.append(info["episode"]["l"])
         else:
-            episode_rewards.append(episode_reward)
-            episode_lengths.append(episode_length)
-            episode_powers.append(episode_power)
-            episode_comfort_violations.append(
+            episodes_rewards.append(episode_reward)
+            episodes_lengths.append(episode_length)
+            episodes_powers.append(episode_power)
+            episodes_comfort_violations.append(
                 episode_steps_comfort_violation/episode_length*100)
-            episode_comfort_penalties.append(episode_comfort_penalty)
-            episode_power_penalties.append(episode_power_penalty)
+            episodes_comfort_penalties.append(episode_comfort_penalty)
+            episodes_power_penalties.append(episode_power_penalty)
 
-    mean_reward = np.mean(episode_rewards)
-    std_reward = np.std(episode_rewards)
-    # mean_power = np.mean(episode_powers)
-    # std_power = np.std(episode_powers)
-    # mean_comfort_violation= np.mean(episode_comfort_violations)
-    # std_comfort_violation= np.std(episode_comfort_violations)
+    mean_reward = np.mean(episodes_rewards)
+    std_reward = np.std(episodes_rewards)
+    # mean_power = np.mean(episodes_powers)
+    # std_power = np.std(episodes_powers)
+    # mean_comfort_violation= np.mean(episodes_comfort_violations)
+    # std_comfort_violation= np.std(episodes_comfort_violations)
     if reward_threshold is not None:
         assert mean_reward > reward_threshold, "Mean reward below threshold: " f"{mean_reward:.2f} < {reward_threshold:.2f}"
     if return_episode_rewards:
-        return episode_rewards, episode_lengths, episode_powers, episode_comfort_violations, episode_comfort_penalties, episode_power_penalties
+        return episodes_rewards, episodes_lengths, episodes_powers, episodes_comfort_violations, episodes_comfort_penalties, episodes_power_penalties
     return mean_reward, std_reward
