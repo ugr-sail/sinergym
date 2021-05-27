@@ -50,6 +50,8 @@ class LoggerCallback(BaseCallback):
         # ACTION
         variables = self.training_env.get_attr('variables')[0]['action']
         action = self.locals['actions'][-1]
+        if self.training_env.get_attr('flag_discrete')[0]:
+            action=self.training_env.get_attr('action_mapping')[0][action]   
         for i, variable in enumerate(variables):
             self.logger.record(
                 'action/'+variable, action[i])
