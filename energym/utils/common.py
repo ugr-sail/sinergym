@@ -303,8 +303,12 @@ class CSVLogger(object):
             ep_mean_reward = np.mean(self.rewards)
             ep_total_reward = np.sum(self.rewards)
             ep_mean_power = np.mean(self.powers)
-            comfort_violation = (
-                self.comfort_violation_timesteps/self.total_timesteps*100)
+            try:
+                comfort_violation = (
+                    self.comfort_violation_timesteps/self.total_timesteps*100)
+            except ZeroDivisionError:
+                comfort_violation = np.nan
+
 
             # write steps_info in monitor.csv
             with open(self.log_file, 'w', newline='') as file_obj:

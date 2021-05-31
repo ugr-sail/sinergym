@@ -70,21 +70,25 @@ class LoggerCallback(BaseCallback):
         if self.locals['dones'][-1]:
             # store last episode metrics
             self.episode_metrics = {}
-            self.episode_metrics['cumulutative_reward'] = np.sum(
+            self.episode_metrics['ep_length'] = self.ep_timesteps
+            self.episode_metrics['cumulative_reward'] = np.sum(
                 self.ep_rewards)
             self.episode_metrics['mean_reward'] = np.mean(self.ep_rewards)
             self.episode_metrics['mean_power'] = np.mean(self.ep_powers)
-            self.episode_metrics['cumulutative_power'] = np.sum(self.ep_powers)
+            self.episode_metrics['cumulative_power'] = np.sum(self.ep_powers)
             self.episode_metrics['mean_comfort_penalty'] = np.mean(
                 self.ep_term_comfort)
-            self.episode_metrics['cumulutative_comfort_penalty'] = np.sum(
+            self.episode_metrics['cumulative_comfort_penalty'] = np.sum(
                 self.ep_term_comfort)
             self.episode_metrics['mean_power_penalty'] = np.mean(
                 self.ep_term_energy)
-            self.episode_metrics['cumulutative_power_penalty'] = np.sum(
+            self.episode_metrics['cumulative_power_penalty'] = np.sum(
                 self.ep_term_energy)
-            self.episode_metrics['comfort_violation_time(%)'] = self.num_comfort_violation / \
+            try:
+                self.episode_metrics['comfort_violation_time(%)'] = self.num_comfort_violation / \
                 self.ep_timesteps*100
+            except ZeroDivisionError:
+                self.episode_metrics['comfort_violation_time(%)'] = np.nan
 
             # reset episode info
             self.ep_rewards = []
@@ -201,7 +205,7 @@ class LoggerEvalCallback(EvalCallback):
             mean_ep_length, std_ep_length = np.mean(
                 episodes_lengths), np.std(episodes_lengths)
 
-            self.evaluation_metrics['cumulutative_reward'] = np.mean(
+            self.evaluation_metrics['cumulative_reward'] = np.mean(
                 mean_reward)
             self.evaluation_metrics['ep_length'] = mean_ep_length
             self.evaluation_metrics['power_consumption'] = np.mean(
@@ -349,8 +353,11 @@ def evaluate_policy(
             episodes_rewards.append(episode_reward)
             episodes_lengths.append(episode_length)
             episodes_powers.append(episode_power)
-            episodes_comfort_violations.append(
-                episode_steps_comfort_violation/episode_length*100)
+            try:
+                episodes_comfort_violations.append(
+                    episode_steps_comfort_violation/episode_length*100)
+            except ZeroDivisionError:
+                episodes_comfort_violations.append(np.nan)
             episodes_comfort_penalties.append(episode_comfort_penalty)
             episodes_power_penalties.append(episode_power_penalty)
 
