@@ -4,6 +4,8 @@ import gym
 import os
 from energym.utils.wrappers import NormalizeObservation
 
+from pprint import pprint
+
 import warnings
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from stable_baselines3.common import base_class
@@ -49,7 +51,14 @@ class LoggerCallback(BaseCallback):
 
         # ACTION
         variables = self.training_env.get_attr('variables')[0]['action']
-        action = self.locals['actions'][-1]
+        try:
+            action = self.locals['actions'][-1]
+        except KeyError:
+            try:
+                action = self.locals['action'][-1]
+            except KeyError:
+                print('Algorithm action key in locals dict unknown')
+        
         if self.training_env.get_attr('flag_discrete')[0]:
             action=self.training_env.get_attr('action_mapping')[0][action]   
         for i, variable in enumerate(variables):
@@ -58,7 +67,14 @@ class LoggerCallback(BaseCallback):
 
         # Store episode data
         info = self.locals['infos'][-1]
-        self.ep_rewards.append(self.locals['rewards'][-1])
+        try:
+            self.ep_rewards.append(self.locals['rewards'][-1])
+        except KeyError:
+            try:
+                self.ep_rewards.append(self.locals['reward'][-1])
+            except KeyError:
+                print('Algorithm reward key in locals dict unknown')
+
         self.ep_powers.append(info['total_power'])
         self.ep_term_comfort.append(info['comfort_penalty'])
         self.ep_term_energy.append(info['total_power_no_units'])
@@ -67,7 +83,14 @@ class LoggerCallback(BaseCallback):
         self.ep_timesteps += 1
 
         # If episode ends, store summary of episode and reset
-        if self.locals['dones'][-1]:
+        try:
+            done= self.locals['dones'][-1]
+        except KeyError:
+            try:
+                done= self.locals['done'][-1]
+            except KeyError:
+                print('Algorithm done key in locals dict unknown')
+        if done:
             # store last episode metrics
             self.episode_metrics = {}
             self.episode_metrics['ep_length'] = self.ep_timesteps
