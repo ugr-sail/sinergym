@@ -110,12 +110,12 @@ class EplusEnv(gym.Env):
         # Headers for csv loggers
         monitor_header_list = ['timestep,month,day,hour']+self.variables['observation'] + \
             self.variables['action']+['time (seconds)', 'reward',
-                                      'total_power_no_units', 'comfort_penalty', 'done']
+                                      'power_penalty', 'comfort_penalty', 'done']
         self.monitor_header = ''
         for element_header in monitor_header_list:
             self.monitor_header += element_header+','
         self.monitor_header = self.monitor_header[:-1]
-        self.progress_header = 'episode,cumulative_reward,mean_reward,mean_power_consumption,comfort_violation (%),num_timesteps,time_elapsed'
+        self.progress_header = 'episode_num,cumulative_reward,mean_reward,cumulative_power_consumption,mean_power_consumption,cumulative_comfort_penalty,mean_comfort_penalty,cumulative_power_penalty,mean_power_penalty,comfort_violation (%),length(timesteps),time_elapsed(seconds)'
 
         # Create simulation logger, by default is active (flag=True)
         self.logger = CSVLogger(monitor_header=self.monitor_header, progress_header=self.progress_header,
