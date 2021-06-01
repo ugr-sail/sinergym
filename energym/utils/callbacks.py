@@ -17,8 +17,11 @@ class LoggerCallback(BaseCallback):
     Custom callback for plotting additional values in tensorboard.
     """
 
-    def __init__(self, verbose=0):
+    def __init__(self, energym_logger=False, verbose=0):
         super(LoggerCallback, self).__init__(verbose)
+
+        self.energym_logger = energym_logger
+
         self.ep_rewards = []
         self.ep_powers = []
         self.ep_term_comfort = []
@@ -27,26 +30,38 @@ class LoggerCallback(BaseCallback):
         self.ep_timesteps = 0
 
     def _on_training_start(self):
-        self.training_env.env_method('deactivate_logger')
+        # energym logger
+        if self.energym_logger:
+            self.training_env.env_method('activate_logger')
+        else:
+            self.training_env.env_method('deactivate_logger')
+
+        # record method depending on the type of algorithm
+
+        if 'OnPolicyAlgorithm' in self.globals.keys():
+            self.record = self.logger.record
+        elif 'OffPolicyAlgorithm' in self.globals.keys():
+            self.record = self.logger.record_mean
+        else:
+            raise KeyError
 
     def _on_step(self) -> bool:
         # OBSERVATION
         variables = self.training_env.get_attr('variables')[0]['observation']
-
         # log normalized and original values
         if self.training_env.env_is_wrapped(wrapper_class=NormalizeObservation)[0]:
             obs_normalized = self.locals['new_obs'][-1]
             obs = self.training_env.env_method('get_unwrapped_obs')[-1]
             for i, variable in enumerate(variables):
-                self.logger.record(
+                self.record(
                     'normalized_observation/'+variable, obs_normalized[i])
-                self.logger.record(
+                self.record(
                     'observation/'+variable, obs[i])
         # Only original values
         else:
             obs = self.locals['new_obs'][-1]
             for i, variable in enumerate(variables):
-                self.logger.record(
+                self.record(
                     'observation/'+variable, obs[i])
 
         # ACTION
@@ -58,11 +73,11 @@ class LoggerCallback(BaseCallback):
                 action = self.locals['action'][-1]
             except KeyError:
                 print('Algorithm action key in locals dict unknown')
-        
+
         if self.training_env.get_attr('flag_discrete')[0]:
-            action=self.training_env.get_attr('action_mapping')[0][action]   
+            action = self.training_env.get_attr('action_mapping')[0][action]
         for i, variable in enumerate(variables):
-            self.logger.record(
+            self.record(
                 'action/'+variable, action[i])
 
         # Store episode data
@@ -84,10 +99,10 @@ class LoggerCallback(BaseCallback):
 
         # If episode ends, store summary of episode and reset
         try:
-            done= self.locals['dones'][-1]
+            done = self.locals['dones'][-1]
         except KeyError:
             try:
-                done= self.locals['done'][-1]
+                done = self.locals['done'][-1]
             except KeyError:
                 print('Algorithm done key in locals dict unknown')
         if done:
@@ -109,7 +124,7 @@ class LoggerCallback(BaseCallback):
                 self.ep_term_energy)
             try:
                 self.episode_metrics['comfort_violation_time(%)'] = self.num_comfort_violation / \
-                self.ep_timesteps*100
+                    self.ep_timesteps*100
             except ZeroDivisionError:
                 self.episode_metrics['comfort_violation_time(%)'] = np.nan
 
