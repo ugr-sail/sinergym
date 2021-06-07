@@ -22,9 +22,12 @@ class NormalizeObservation(gym.ObservationWrapper):
 
     def step(self, action):
         observation, reward, done, info = self.env.step(action)
-        normalized_obs = self.observation(observation)
-        if self.flag_discrete:
+        # Eliminate day,month, hour from observation
+        normalized_obs = self.observation(observation[:-3])
+        if self.flag_discrete and type(action) == int:
             action_ = self.action_mapping[action]
+        else:
+            action_ = action
         self.logger.log_step_normalize(timestep=info['timestep'],
                                        date=[info['month'],
                                              info['day'], info['hour']],
