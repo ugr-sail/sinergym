@@ -20,6 +20,23 @@ class NormalizeObservation(gym.ObservationWrapper):
         self.unwrapped_observation = None
         self.ranges = ranges
 
+    def step(self, action):
+        observation, reward, done, info = self.env.step(action)
+        normalized_obs = self.observation(observation)
+        if self.flag_discrete:
+            action_ = self.action_mapping[action]
+        self.logger.log_step_normalize(timestep=info['timestep'],
+                                       date=[info['month'],
+                                             info['day'], info['hour']],
+                                       observation=normalized_obs,
+                                       action=action_,
+                                       simulation_time=info['time_elapsed'],
+                                       reward=reward,
+                                       total_power_no_units=info['total_power_no_units'],
+                                       comfort_penalty=info['comfort_penalty'],
+                                       done=done)
+        return normalized_obs, reward, done, info
+
     def observation(self, obs):
         """Applies normalization to observation.
 

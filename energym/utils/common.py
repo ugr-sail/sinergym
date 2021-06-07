@@ -307,6 +307,7 @@ class CSVLogger(object):
 
         # episode data
         self.steps_data = [self.monitor_header.split(',')]
+        self.steps_data_normalized = [self.monitor_header.split(',')]
         self.rewards = []
         self.powers = []
         self.comfort_penalties = []
@@ -342,6 +343,15 @@ class CSVLogger(object):
         else:
             pass
 
+    def log_step_normalize(self, timestep, date, observation, action, simulation_time, reward, total_power_no_units, comfort_penalty, done):
+        if self.flag:
+            row_contents = [timestep] + list(date) + list(observation) + \
+                list(action) + [simulation_time, reward,
+                                total_power_no_units, comfort_penalty,  done]
+            self.steps_data_normalized.append(row_contents)
+        else:
+            pass
+
     def log_episode(self, episode):
         """Log episode main information using steps_data param.
 
@@ -370,6 +380,14 @@ class CSVLogger(object):
                 csv_writer = csv.writer(file_obj)
                 # Add contents of list as last row in the csv file
                 csv_writer.writerows(self.steps_data)
+
+            # Write normalize steps_info in monitor_normalized.csv
+            if len(self.steps_data_normalized) > 1:
+                with open(self.log_file[:-4]+'_normalized.csv', 'w', newline='') as file_obj:
+                    # Create a writer object from csv module
+                    csv_writer = csv.writer(file_obj)
+                    # Add contents of list as last row in the csv file
+                    csv_writer.writerows(self.steps_data_normalized)
 
             # Create CSV file with header if it's required for progress.csv
             if not os.path.isfile(self.log_progress_file):
@@ -432,6 +450,7 @@ class CSVLogger(object):
         """Reset relevant data to next episode summary in progress.csv.
         """
         self.steps_data = [self.monitor_header.split(',')]
+        self.steps_data_normalized = [self.monitor_header.split(',')]
         self.rewards = []
         self.powers = []
         self. comfort_penalties = []

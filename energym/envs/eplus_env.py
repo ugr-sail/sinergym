@@ -150,7 +150,7 @@ class EplusEnv(gym.Env):
                 else:
                     setpoints = action
             else:
-                print("ERROR: ", action)
+                print("ERROR: ", type(action))
             action_ = list(setpoints)
         else:
             action_ = list(action)
