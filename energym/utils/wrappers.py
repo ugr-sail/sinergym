@@ -24,7 +24,7 @@ class NormalizeObservation(gym.ObservationWrapper):
         observation, reward, done, info = self.env.step(action)
 
         normalized_obs = self.observation(observation)
-        if self.flag_discrete and type(action) == int:
+        if self.flag_discrete and np.issubdtype(type(action), np.integer):
             action_ = self.action_mapping[action]
         else:
             action_ = action
