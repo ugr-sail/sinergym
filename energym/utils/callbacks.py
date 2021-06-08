@@ -67,7 +67,8 @@ class LoggerCallback(BaseCallback):
         # ACTION
         variables = self.training_env.get_attr('variables')[0]['action']
         try:
-            action = self.locals['actions'][-1]
+            # action = self.locals['actions'][-1]
+            action = self.locals['clipped_actions'][-1]
         except KeyError:
             try:
                 action = self.locals['action'][-1]
