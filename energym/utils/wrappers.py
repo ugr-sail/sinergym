@@ -4,20 +4,45 @@ import numpy as np
 import gym
 
 from collections import deque
+from energym.utils.common import RANGES_5ZONE
 
 
 class NormalizeObservation(gym.ObservationWrapper):
 
-    def __init__(self, env):
-        """Observations normalized to range [-1, 1].
+    def __init__(self, env, ranges=RANGES_5ZONE):
+        """Observations normalized to range [0, 1].
 
         Args:
             env (object): Original Gym environment.
+            ranges: Observation variables ranges to apply normalization (rely on environment)
         """
         super(NormalizeObservation, self).__init__(env)
+        self.unwrapped_observation = None
+        self.ranges = ranges
+
+    def step(self, action):
+        observation, reward, done, info = self.env.step(action)
+
+        normalized_obs = self.observation(observation)
+        if self.flag_discrete and np.issubdtype(type(action), np.integer):
+            action_ = self.action_mapping[action]
+        else:
+            action_ = action
+        # Eliminate day,month, hour from observation
+        self.logger.log_step_normalize(timestep=info['timestep'],
+                                       date=[info['month'],
+                                             info['day'], info['hour']],
+                                       observation=normalized_obs[:-3],
+                                       action=action_,
+                                       simulation_time=info['time_elapsed'],
+                                       reward=reward,
+                                       total_power_no_units=info['total_power_no_units'],
+                                       comfort_penalty=info['comfort_penalty'],
+                                       done=done)
+        return normalized_obs, reward, done, info
 
     def observation(self, obs):
-        """Applies *tanh* to observation.
+        """Applies normalization to observation.
 
         Args:
             obs (object): Original observation.
@@ -25,7 +50,25 @@ class NormalizeObservation(gym.ObservationWrapper):
         Returns:
             object: Normalized observation.
         """
-        return np.tanh(obs)
+        # Save original obs in class attribute
+        self.unwrapped_observation = obs.copy()
+        variables = self.env.variables["observation"]
+
+        # NOTE: If you want to recor day, month and our. You should add to variables that keys
+        for i, variable in enumerate(variables):
+            # normalization
+            obs[i] = (obs[i]-self.ranges[variable][0]) / \
+                (self.ranges[variable][1]-self.ranges[variable][0])
+            # If value is out
+            if obs[i] > 1:
+                obs[i] = 1
+            if obs[i] < 0:
+                obs[i] = 0
+        # Return obs values in the SAME ORDER than obs argument.
+        return np.array(obs)
+
+    def get_unwrapped_obs(self):
+        return self.unwrapped_observation
 
 
 class MultiObsWrapper(gym.Wrapper):

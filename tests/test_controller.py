@@ -1,14 +1,30 @@
-import gym
-import numpy as np
+import pytest
+from energym.utils.controllers import RuleBasedController
 
 
-def test_rule_based_controller(rule_controller_agent, env_demo):
-    obs = env_demo.reset()
+@pytest.mark.parametrize(
+    'env_name',
+    [
+        (
+            'env_demo_discrete'
+        ),
+        (
+            'env_demo_continuous'
+        ),
+    ]
+)
+def test_rule_based_controller(env_name, request):
+    env = request.getfixturevalue(env_name)
+    rule_based_agent = RuleBasedController(env)
+    obs = env.reset()
+
     for i in range(3):
-        action = rule_controller_agent.act(obs)
+        action = rule_based_agent.act(obs)
         assert type(action) == tuple
         for value in action:
             assert value is not None
-        obs, reward, done, info = env_demo.step(action)
+        obs, reward, done, info = env.step(action)
 
-    env_demo.close()
+        assert tuple(info['action_']) == action
+
+    env.close()

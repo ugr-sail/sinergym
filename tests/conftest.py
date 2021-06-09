@@ -3,7 +3,6 @@ from energym.simulators.eplus_old import EnergyPlus
 from energym.envs.eplus_env import EplusEnv
 import energym.utils.rewards as R
 from energym.utils.wrappers import NormalizeObservation, MultiObsWrapper
-from energym.utils.controllers import RuleBasedController
 
 from opyplus import Epm, WeatherData
 import os
@@ -96,12 +95,7 @@ def env_demo_continuous(idf_path, weather_path, variable_path, space_path):
 
 @pytest.fixture(scope='module')
 def env_wrapper(env_demo):
-    return NormalizeObservation(MultiObsWrapper(env=env_demo, n=5))
-
-
-@pytest.fixture(scope='module')
-def rule_controller_agent(env_demo):
-    return RuleBasedController(env_demo)
+    return MultiObsWrapper(env=NormalizeObservation(env=env_demo), n=5)
 
 
 ############### COMMONS ###############

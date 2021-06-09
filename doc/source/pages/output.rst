@@ -26,6 +26,6 @@ When a simulation is run, this generate a directory called `Eplus-env-<env_name>
 	- A copy of **socket.cfg** and **utilSocket.idf** which are being used in order to communication interface with Energyplus during simulation.
 	- **monitor.csv**: This records all interactions Agent-Enviroment during the episode timestep by timestep, the format is: *timestep, observation_values, action_values, simulation_time (seconds), reward, done*.
 	- **output/**: This directory has EnergyPlus environment output.
-- **progress.csv**: This file has information about general simulation results. There is a row per episode and it records most important data. Currently, the format is: *episode,mean_reward,cumulative_reward,num_timestep,time_elapsed*.
+- **progress.csv**: This file has information about general simulation results. There is a row per episode and it records most important data. Currently, the format is: *episode_num,cumulative_reward,mean_reward,cumulative_power_consumption,mean_power_consumption,cumulative_comfort_penalty,mean_comfort_penalty,cumulative_power_penalty,mean_power_penalty,comfort_violation (%),length(timesteps),time_elapsed(seconds)*.
 
 .. note:: For more information about EnergyPlus output, visit `EnegyPlus documentation <https://energyplus.net/documentation>`__.

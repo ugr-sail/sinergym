@@ -7,6 +7,7 @@ import pprint
 import pytest
 
 import stable_baselines3
+from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
 
 TIMESTEPS = 1000
 
@@ -135,7 +136,6 @@ def test_stable_DQN(env_name, request):
                                           exploration_initial_eps=1.0,
                                           exploration_final_eps=.05,
                                           max_grad_norm=10)
-        pass
 
     else:
         model = stable_baselines3.DQN('MlpPolicy', env, verbose=1,
@@ -161,6 +161,106 @@ def test_stable_DQN(env_name, request):
 
         assert type(
             model.policy) == stable_baselines3.dqn.policies.DQNPolicy
+
+        # Check model works
+
+        obs = env.reset()
+        a, _ = model.predict(obs)
+        obs, reward, done, info = env.step(a)
+
+        assert reward is not None and reward < 0
+        assert a is not None
+        assert type(done) == bool
+        assert info['timestep'] == 1
+
+        env.close()
+
+
+@pytest.mark.parametrize(
+    'env_name',
+    [
+        (
+            'env_demo_discrete'
+        ),
+        (
+            'env_demo_continuous'
+        ),
+    ]
+)
+def test_stable_DDPG(env_name, request):
+
+    env = request.getfixturevalue(env_name)
+    # DDPG must fail in discrete environments
+    if env_name == 'env_demo_discrete':
+        with pytest.raises(IndexError):
+            env.action_space.shape[-1]
+        with pytest.raises(AssertionError):
+            model = stable_baselines3.DDPG(
+                "MlpPolicy", env, verbose=1)
+    else:
+        # Action noise
+        n_actions = env.action_space.shape[-1]
+        action_noise = NormalActionNoise(mean=np.zeros(
+            n_actions), sigma=0.1 * np.ones(n_actions))
+        # model
+        model = stable_baselines3.DDPG(
+            "MlpPolicy", env, action_noise=action_noise, verbose=1)
+
+        model.learn(total_timesteps=TIMESTEPS)
+
+        # Check model state
+        assert model.action_space == env.action_space
+        assert model.env.action_space == env.action_space
+
+        assert type(
+            model.policy) == stable_baselines3.td3.policies.TD3Policy
+
+        # Check model works
+
+        obs = env.reset()
+        a, _ = model.predict(obs)
+        obs, reward, done, info = env.step(a)
+
+        assert reward is not None and reward < 0
+        assert a is not None
+        assert type(done) == bool
+        assert info['timestep'] == 1
+
+        env.close()
+
+
+@pytest.mark.parametrize(
+    'env_name',
+    [
+        (
+            'env_demo_discrete'
+        ),
+        (
+            'env_demo_continuous'
+        ),
+    ]
+)
+def test_stable_SAC(env_name, request):
+    env = request.getfixturevalue(env_name)
+    # SAC must fail in discrete environments
+    if env_name == 'env_demo_discrete':
+        with pytest.raises(AssertionError):
+            model = stable_baselines3.SAC(
+                "MlpPolicy", env, verbose=1)
+    else:
+        # model
+        model = stable_baselines3.SAC(
+            "MlpPolicy", env, verbose=1)
+
+        model.learn(total_timesteps=TIMESTEPS)
+
+        # Check model state
+        assert model.action_space == env.action_space
+        assert model.env.action_space == env.action_space
+
+        print(type(model.policy))
+        assert type(
+            model.policy) == stable_baselines3.sac.policies.SACPolicy
 
         # Check model works
 

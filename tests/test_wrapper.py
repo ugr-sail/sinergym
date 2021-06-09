@@ -8,7 +8,7 @@ def test_env_wrappers(env_wrapper):
     for i in range(1):  # Only need 1 episode
         obs = env_wrapper.reset()
         # This obs should be normalize --> [-1,1]
-        assert (obs >= -1).all() and (obs <= 1).all()
+        assert (obs >= 0).all() and (obs <= 1).all()
 
         done = False
         while not done:
