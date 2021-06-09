@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 from pydoc import locate
 import csv
 import pandas as pd
+import gym
 
 from datetime import datetime, timedelta
 
@@ -254,6 +255,36 @@ def ranges_getter(output_path, last_result=None):
                         if np.max(data[column]) > result[column][1]:
                             result[column][1] = np.max(data[column])
     return result
+
+
+def setpoints_transform(action, action_space: gym.spaces.Box, setpoints_space):
+    """Given an action inner gym action_space, this will be converted into an action inner setpoints_space (Energym Simulation).
+
+     Args:
+        action (list): Action of a step in gym simulation.
+        action_space (gym.spaces.Box): Gym action space
+        setpoints_space (list): Energym simulation action space
+
+     Returns:
+        tuple: Action transformed into simulation action space.   
+    """
+
+    action_ = []
+
+    for i, value in enumerate(action):
+        if action_space.low[i] <= value <= action_space.high[i]:
+            a_max_min = action_space.high[i] - \
+                action_space.low[i]
+            sp_max_min = setpoints_space[i][1] - \
+                setpoints_space[i][0]
+
+            action_.append(
+                setpoints_space[i][0] + (value - action_space.low[i]) * sp_max_min/a_max_min)
+        else:
+            # If action is outer action_space already, it don't need transformation
+            action_.append(value)
+
+    return action_
 
 
 class Logger():

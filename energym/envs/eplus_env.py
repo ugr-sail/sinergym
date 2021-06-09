@@ -15,9 +15,10 @@ import numpy as np
 
 from opyplus import Epm, WeatherData
 
-from ..utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space, CSVLogger
+from ..utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space, setpoints_transform, CSVLogger
 from ..simulators import EnergyPlus
 from ..utils.rewards import SimpleReward
+from pprint import pprint
 
 
 class EplusEnv(gym.Env):
@@ -92,13 +93,24 @@ class EplusEnv(gym.Env):
 
         # Action space
         self.flag_discrete = discrete_actions
+
+        # Discrete
         if self.flag_discrete:
             self.action_mapping = discrete_action_def
             self.action_space = gym.spaces.Discrete(len(discrete_action_def))
+        # Continuous
         else:
+            # Defining action values setpoints (one per value)
+            self.action_setpoints = []
+            for i in range(len(self.variables['action'])):
+                # action_variable --> [low,up]
+                self.action_setpoints.append([
+                    continuous_action_def[0][i], continuous_action_def[1][i]])
+
             self.action_space = gym.spaces.Box(
-                low=np.array(continuous_action_def[0]),
-                high=np.array(continuous_action_def[1]),
+                # continuous_action_def[2] --> shape
+                low=np.repeat(-1, continuous_action_def[2][0]),
+                high=np.repeat(1, continuous_action_def[2][0]),
                 dtype=continuous_action_def[3]
             )
 
@@ -153,7 +165,9 @@ class EplusEnv(gym.Env):
                 print("ERROR: ", type(action))
             action_ = list(setpoints)
         else:
-            action_ = list(action)
+            # transform action to setpoints simulation
+            action_ = setpoints_transform(
+                action, self.action_space, self.action_setpoints)
 
         # Send action to the simulator
         self.simulator.logger_main.debug(action_)
@@ -190,7 +204,8 @@ class EplusEnv(gym.Env):
             'total_power_no_units': terms['reward_energy'],
             'comfort_penalty': terms['reward_comfort'],
             'temperatures': temp_values,
-            'out_temperature': obs_dict['Site Outdoor Air Drybulb Temperature (Environment)']
+            'out_temperature': obs_dict['Site Outdoor Air Drybulb Temperature (Environment)'],
+            'action_': action_
         }
 
         # Record action and new observation in simulator's csv
