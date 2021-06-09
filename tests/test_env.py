@@ -21,7 +21,7 @@ def test_step(env_demo):
     assert type(reward) != None
     assert not done
     assert list(info.keys()) == ['timestep', 'time_elapsed', 'day', 'month', 'hour', 'total_power',
-                                 'total_power_no_units', 'comfort_penalty', 'temperatures', 'out_temperature']
+                                 'total_power_no_units', 'comfort_penalty', 'temperatures', 'out_temperature', 'action_']
     assert info['timestep'] == 1
     assert info['time_elapsed'] == env_demo.simulator._eplus_run_stepsize * \
         info['timestep']
@@ -33,7 +33,7 @@ def test_step(env_demo):
     assert type(reward) != None
     assert not done
     assert list(info.keys()) == ['timestep', 'time_elapsed', 'day', 'month', 'hour', 'total_power',
-                                 'total_power_no_units', 'comfort_penalty', 'temperatures', 'out_temperature']
+                                 'total_power_no_units', 'comfort_penalty', 'temperatures', 'out_temperature', 'action_']
     assert info['timestep'] == 2
     assert info['time_elapsed'] == env_demo.simulator._eplus_run_stepsize * \
         info['timestep']
