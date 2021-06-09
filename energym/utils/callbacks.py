@@ -46,6 +46,8 @@ class LoggerCallback(BaseCallback):
             raise KeyError
 
     def _on_step(self) -> bool:
+        info = self.locals['infos'][-1]
+
         # OBSERVATION
         variables = self.training_env.get_attr('variables')[0]['observation']
         # log normalized and original values
@@ -66,9 +68,12 @@ class LoggerCallback(BaseCallback):
 
         # ACTION
         variables = self.training_env.get_attr('variables')[0]['action']
+        action_ = None
         try:
-            # action = self.locals['actions'][-1]
+            # network output clipped with gym action space
             action = self.locals['clipped_actions'][-1]
+            # energym action received inner its own setpoints range
+            action_ = info['action_']
         except KeyError:
             try:
                 action = self.locals['action'][-1]
@@ -80,9 +85,11 @@ class LoggerCallback(BaseCallback):
         for i, variable in enumerate(variables):
             self.record(
                 'action/'+variable, action[i])
+            if action_ is not None:
+                self.record(
+                    'action_simulation/'+variable, action_[i])
 
         # Store episode data
-        info = self.locals['infos'][-1]
         try:
             self.ep_rewards.append(self.locals['rewards'][-1])
         except KeyError:
