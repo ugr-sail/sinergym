@@ -60,37 +60,37 @@ with mlflow.start_run(run_name=name):
     #### TRAINING ####
 
     # Build model
-    # model = DQN('MlpPolicy', env, verbose=1,
-    #             learning_rate=.0001,
-    #             buffer_size=1000000,
-    #             learning_starts=50000,
-    #             batch_size=32,
-    #             tau=1.0,
-    #             gamma=.99,
-    #             train_freq=4,
-    #             gradient_steps=1,
-    #             target_update_interval=10000,
-    #             exploration_fraction=.1,
-    #             exploration_initial_eps=1.0,
-    #             exploration_final_eps=.05,
-    #             max_grad_norm=10,
-    #             tensorboard_log='./tensorboard_log/')
+    model = DQN('MlpPolicy', env, verbose=1,
+                learning_rate=.0001,
+                buffer_size=1000000,
+                learning_starts=50000,
+                batch_size=32,
+                tau=1.0,
+                gamma=.99,
+                train_freq=4,
+                gradient_steps=1,
+                target_update_interval=10000,
+                exploration_fraction=.1,
+                exploration_initial_eps=1.0,
+                exploration_final_eps=.05,
+                max_grad_norm=10,
+                tensorboard_log='./tensorboard_log/')
     # The noise objects for DDPG
     # n_actions = env.action_space.shape[-1]
     # action_noise = NormalActionNoise(mean=np.zeros(
     #     n_actions), sigma=0.1 * np.ones(n_actions))
     # model = DDPG("MlpPolicy", env, action_noise=action_noise, verbose=1,
     #              tensorboard_log='./tensorboard_log/')
-    model = A2C('MlpPolicy', env, verbose=1,
-                learning_rate=args.learning_rate,
-                n_steps=args.n_steps,
-                gamma=args.gamma,
-                gae_lambda=args.gae_lambda,
-                ent_coef=args.ent_coef,
-                vf_coef=args.vf_coef,
-                max_grad_norm=args.max_grad_norm,
-                rms_prop_eps=args.rms_prop_eps,
-                tensorboard_log='./tensorboard_log/')
+    # model = A2C('MlpPolicy', env, verbose=1,
+    #             learning_rate=args.learning_rate,
+    #             n_steps=args.n_steps,
+    #             gamma=args.gamma,
+    #             gae_lambda=args.gae_lambda,
+    #             ent_coef=args.ent_coef,
+    #             vf_coef=args.vf_coef,
+    #             max_grad_norm=args.max_grad_norm,
+    #             rms_prop_eps=args.rms_prop_eps,
+    #             tensorboard_log='./tensorboard_log/')
     # model = PPO('MlpPolicy', env, verbose=1,
     #             learning_rate=.0003,
     #             n_steps=2048,
@@ -109,23 +109,21 @@ with mlflow.start_run(run_name=name):
 
     n_timesteps_episode = env.simulator._eplus_one_epi_len / \
         env.simulator._eplus_run_stepsize
-    timesteps = n_episodes * n_timesteps_episode + 501
+    timesteps = n_episodes * n_timesteps_episode
 
     env = DummyVecEnv([lambda: env])
-    # env.env_method('activate_logger')
 
     # Callbacks
     freq = 2  # evaluate every N episodes
     eval_callback = LoggerEvalCallback(env, best_model_save_path='./best_models/' + name + '/',
                                        log_path='./best_models/' + name + '/', eval_freq=n_timesteps_episode * freq,
                                        deterministic=True, render=False, n_eval_episodes=1)
-    log_callback = LoggerCallback(energym_logger=False)
-    callback = CallbackList([log_callback, eval_callback])
+    log_callback = LoggerCallback(energym_logger=True)
+    callback = CallbackList([log_callback])
 
     # Training
-    model.learn(total_timesteps=timesteps, log_interval=500,
-                n_eval_episodes=1, eval_freq=freq, callback=callback)
-    model.save(name)
+    model.learn(total_timesteps=timesteps, callback=callback, log_interval=1)
+    # model.save(name)
 
     #### LOAD MODEL ####
 
