@@ -1,4 +1,4 @@
-energym.envs.eplus\_env.EplusEnv
+﻿energym.envs.eplus\_env.EplusEnv
 ================================
 
 .. currentmodule:: energym.envs.eplus_env
@@ -16,7 +16,9 @@ energym.envs.eplus\_env.EplusEnv
    .. autosummary::
    
       ~EplusEnv.__init__
+      ~EplusEnv.activate_logger
       ~EplusEnv.close
+      ~EplusEnv.deactivate_logger
       ~EplusEnv.render
       ~EplusEnv.reset
       ~EplusEnv.seed

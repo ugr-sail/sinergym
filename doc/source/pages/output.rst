@@ -2,7 +2,7 @@
 Output format
 ###############
 
-When a simulation is run, this generate a directory called `Eplus-env-<env_name>-res<num_simulation>`. The content of this directory is the result of the simulation and we have:
+When a simulation is run, this generate a directory called ``Eplus-env-<env_name>-res<num_simulation>``. The content of this directory is the result of the simulation and we have:
 
 ::
 
@@ -16,16 +16,41 @@ When a simulation is run, this generate a directory called `Eplus-env-<env_name>
     │   ├── variables.cfg
     │   ├── socket.cfg
     │   ├── utilSocket.cfg
-    │   ├── enviroment.idf
-    │   └── monitor.csv
+    │   ├── environment.idf
+    │   ├── monitor.csv
+    |   └── monitor_normalized.csv (optional)
     └── progress.csv
 
-- **Eplus-env-sub_run<num_episode>** records the results of each episode in simulation. The number of these directories depends on the number of episodes.
-- Within these directories, you have always the same structure:
-	- A copy of **variables.cfg** and **environment.idf** which are being used during simulation.
-	- A copy of **socket.cfg** and **utilSocket.idf** which are being used in order to communication interface with Energyplus during simulation.
-	- **monitor.csv**: This records all interactions Agent-Enviroment during the episode timestep by timestep, the format is: *timestep, observation_values, action_values, simulation_time (seconds), reward, done*.
-	- **output/**: This directory has EnergyPlus environment output.
-- **progress.csv**: This file has information about general simulation results. There is a row per episode and it records most important data. Currently, the format is: *episode_num,cumulative_reward,mean_reward,cumulative_power_consumption,mean_power_consumption,cumulative_comfort_penalty,mean_comfort_penalty,cumulative_power_penalty,mean_power_penalty,comfort_violation (%),length(timesteps),time_elapsed(seconds)*.
+* **Eplus-env-sub_run<num_episode>** records the results of each episode in simulation. The number of these directories depends on the number of episodes.
+* Within these directories, you have always the same structure:
+	* A copy of **variables.cfg** and **environment.idf** which are being used during simulation.
+	* A copy of **socket.cfg** and **utilSocket.idf** which are being used in order to  establish communication interface with Energyplus during simulation.
+	* **monitor.csv**: This records all interactions Agent-Environment during the episode timestep by timestep, the format is: *timestep, observation_values, action_values, simulation_time (seconds), reward, done*.
+	* **monitor_normalized.csv**: This file is only generated when environment is wrapped with normalization (see :ref:`Wrappers`). The structure is the same than **monitor.csv** but ``observation_values`` are normalized.
+	* **output/**: This directory has EnergyPlus environment output.
+* **progress.csv**: This file has information about general simulation results. There is a row per episode and it records most important data. Currently, the format is: *episode_num,cumulative_reward,mean_reward,cumulative_power_consumption,
+  mean_power_consumption,cumulative_comfort_penalty,mean_comfort_penalty,
+  cumulative_power_penalty,mean_power_penalty,comfort_violation (%),length(timesteps),
+  time_elapsed(seconds)*.
 
-.. note:: For more information about EnergyPlus output, visit `EnegyPlus documentation <https://energyplus.net/documentation>`__.
+.. note:: For more information about specific EnergyPlus output, visit `EnergyPlus documentation <https://energyplus.net/documentation>`__.
+
+****************
+Logger
+****************
+
+The files **monitor.csv**, **monitor_normalized.csv** and **progress.csv** belong to **Energym logger**. This logger has the responsibility of recording 
+all the interactions that are carried out in a simulation,
+regardless of the training technique which may be being used or any other external factor.
+
+Recording is managed by a instance of the class ``CSVLogger`` which is present as a environment attribute and is called in each timestep and in the end of a episode:
+
+.. literalinclude:: ../../../energym/utils/common.py
+    :language: python
+    :pyobject: CSVLogger
+
+.. note:: Normalized observation methods are only used when environment is wrapped with normalization (see :ref:`Wrappers`).
+
+.. note:: Note that you can activate and deactivate logger from environment when you want it.
+
+

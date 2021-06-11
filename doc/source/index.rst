@@ -1,3 +1,5 @@
+Welcome to **energym**!
+=======================
 
 .. include:: pages/introduction.rst
 
@@ -10,6 +12,9 @@
    pages/tests.rst
    pages/usage-example.rst
    pages/output.rst
+   pages/controllers.rst
+   pages/wrappers.rst
+   pages/deep-reinforcement-learning.rst
    pages/API-reference.rst
 
 

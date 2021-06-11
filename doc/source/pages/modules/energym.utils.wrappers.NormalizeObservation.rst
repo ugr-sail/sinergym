@@ -1,4 +1,4 @@
-energym.utils.wrappers.NormalizeObservation
+﻿energym.utils.wrappers.NormalizeObservation
 ===========================================
 
 .. currentmodule:: energym.utils.wrappers
@@ -19,6 +19,7 @@ energym.utils.wrappers.NormalizeObservation
       ~NormalizeObservation.class_name
       ~NormalizeObservation.close
       ~NormalizeObservation.compute_reward
+      ~NormalizeObservation.get_unwrapped_obs
       ~NormalizeObservation.observation
       ~NormalizeObservation.render
       ~NormalizeObservation.reset
