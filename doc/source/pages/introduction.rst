@@ -1,7 +1,3 @@
-
-Welcome to **energym**!
-=======================
-
 .. seealso:: This is a project based on Zhiang Zhang and Khee Poh Lam `Gym-Eplus <https://github.com/zhangzhizza/Gym-Eplus>`__.
 
 The goal of *energym* is to create an environment following OpenAI
@@ -30,6 +26,9 @@ The main functionalities of *energym* are the following:
    engines, more of them (e.g.
    `OpenModelica <https://openmodelica.org/>`__) could be included in
    the backend while maintaining the Gym API.
+-  **Stable Baseline 3 Integration**. Some functionalities like callbacks
+   have been developed by our team in order to test easily these environments
+   with deep reinforcement learning algorithms.
 -  Many more!
 
 .. note:: *This is a work in progress project. Stay tuned for upcoming releases!*

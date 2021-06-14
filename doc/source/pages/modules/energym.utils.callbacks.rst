@@ -1,7 +1,7 @@
-energym.utils.common
-====================
+energym.utils.callbacks
+=======================
 
-.. automodule:: energym.utils.common
+.. automodule:: energym.utils.callbacks
   
    
    
@@ -14,13 +14,7 @@ energym.utils.common
    .. autosummary::
       :toctree:                                          
    
-      create_variable_weather
-      get_current_time_info
-      get_delta_seconds
-      parse_observation_action_space
-      parse_variables
-      ranges_getter
-      setpoints_transform
+      evaluate_policy
    
    
 
@@ -32,8 +26,8 @@ energym.utils.common
       :toctree:                                          
       :template: custom-class-template.rst               
    
-      CSVLogger
-      Logger
+      LoggerCallback
+      LoggerEvalCallback
    
    
 

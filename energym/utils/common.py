@@ -60,6 +60,7 @@ def get_delta_seconds(year, st_mon, st_day, end_mon, end_day):
 
     Returns:
         float: Time difference in seconds.
+
     """
 
     startTime = datetime(year, st_mon, st_day, 0, 0, 0)
@@ -78,6 +79,7 @@ def get_current_time_info(epm, sec_elapsed, sim_year=1991):
 
     Returns:
         (int, int, int): A tuple composed by the current day, month and hour in the simulation.
+
     """
 
     start_date = datetime(
@@ -101,6 +103,7 @@ def parse_variables(var_file):
         dict:
             {'observation': A list with the name of the observation <variables> (<zone>) \n
             'action'      : A list with the name og the action <variables>}.
+
     """
 
     tree = ET.parse(var_file)
@@ -133,6 +136,7 @@ def parse_observation_action_space(space_file):
                 {'observation'     : tupple for gym.spaces.Box() arguments, \n
                 'discrete_action'  : dictionary action mapping for gym.spaces.Discrete(), \n
                 'continuos_action' : tuple for gym.spaces.Box()}
+
     """
     tree = ET.parse(space_file)
     root = tree.getroot()
@@ -198,6 +202,7 @@ def create_variable_weather(weather_data, original_epw_file, columns: list = ['d
 
     Returns:
         str: Name of the file created in the same location as the original one.
+
     """
 
     if variation is None:
@@ -224,12 +229,14 @@ def ranges_getter(output_path, last_result=None):
     """Given a path with simulations outputs, this function is used to extract max and min absolute valors of all episodes in each variable. If a dict ranges is given, will be updated.
 
     Args:
-        output_path (str): path with simulations directories (Eplus-env-*).
+        output_path (str): path with simulations directories (Eplus-env-\*).
         last_result (dict): Last ranges dict to be updated. This will be created if it is not given.
 
     Returns:
         dict: list min,max of each variable as a key.
+
     """
+
     if last_result is not None:
         result = last_result
     else:
@@ -266,7 +273,8 @@ def setpoints_transform(action, action_space: gym.spaces.Box, setpoints_space):
         setpoints_space (list): Energym simulation action space
 
      Returns:
-        tuple: Action transformed into simulation action space.   
+        tuple: Action transformed into simulation action space.
+
     """
 
     action_ = []
@@ -288,8 +296,7 @@ def setpoints_transform(action, action_space: gym.spaces.Box, setpoints_space):
 
 
 class Logger():
-    """
-    Energym terminal logger for simulation executions.
+    """Energym terminal logger for simulation executions.
     """
 
     def getLogger(self, name, level, formatter):
@@ -326,6 +333,7 @@ class CSVLogger(object):
         :param total_time_elapsed: Current episode time elapsed (simulation seconds).
         :param comfort_violation_timesteps: Current episode timesteps whose comfort_penalty!=0.
         :param steps_data: It is a array of str's. Each element belong to a step data.
+
     """
 
     def __init__(self, monitor_header, progress_header, log_progress_file, log_file=None, flag=True):
@@ -361,6 +369,7 @@ class CSVLogger(object):
             comfort_penalty (float): Temperature comfort penalty depending on reward function.
             power (float): Power consumption in current step (W).
             done (bool): Spicifies if this step terminates episode or not.
+
         """
         if self.flag:
             row_contents = [timestep] + list(date) + list(observation) + \
@@ -388,6 +397,7 @@ class CSVLogger(object):
 
         Args:
             episode (int): Current simulation episode number.
+
         """
         if self.flag:
             # statistics metrics for whole episode
@@ -444,6 +454,7 @@ class CSVLogger(object):
 
         Args:
             new_log_file (str): New log path depending on simulation.
+
         """
         if self.flag:
             self.log_file = new_log_file
@@ -463,6 +474,7 @@ class CSVLogger(object):
             power_penalty (float): Power consumption penalty depending on reward function.
             timestep (int): Current episode timestep in simulation.
             simulation_time (float): Total time elapsed in current episode (seconds).
+
         """
         if reward is not None:
             self.rewards.append(reward)

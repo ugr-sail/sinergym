@@ -28,6 +28,7 @@
    :template: custom-module-template.rst                
    :recursive:
 
+   energym.utils.callbacks
    energym.utils.common
    energym.utils.controllers
    energym.utils.rewards

@@ -27,7 +27,8 @@ author = 'J. Jiménez, J. Gómez, M.l Molina, A. Manjavacas, A. Campoy'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.autosummary', 'sphinx.ext.napoleon', 'sphinx.ext.mathjax']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.autosummary',
+              'sphinx.ext.napoleon', 'sphinx.ext.mathjax', 'sphinx.ext.autosectionlabel']
 
 autosummary_generate = True
 
@@ -60,4 +61,5 @@ html_favicon = '_static/logo-sidebar.png'
 html_theme_options = {'style_nav_header_background': '#a9c1be'}
 
 # Enable global sidebar
-html_sidebars = { '**': ['globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'] }
+html_sidebars = {'**': ['globaltoc.html',
+                        'relations.html', 'sourcelink.html', 'searchbox.html']}

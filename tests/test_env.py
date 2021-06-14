@@ -5,6 +5,7 @@ import energym.utils.wrappers
 import os
 import csv
 from stable_baselines3.common.env_checker import check_env
+from datetime import datetime
 
 
 def test_reset(env_demo):
@@ -90,8 +91,38 @@ def test_all_environments():
         # Create env with TEST name
         env = gym.make(env_id)
 
-        # stable_baselines 3 environment checker
+        # stable_baselines 3 environment checker. Check if environment follows Gym API.
         check_env(env)
+
+        # Lets run one episode and check time (only some envs randomly)
+        random_value = randint(0, 2)
+        check_time = random_value == 0
+
+        if check_time:
+            begin_time = datetime.now()
+            done = False
+            env.reset()
+            while not done:
+                a = env.action_space.sample()
+                obs, reward, done, info = env.step(a)
+            end_time = datetime.now()
+
+            execution_time = end_time - begin_time
+            # 3 month simulation per episode
+            if env_id == 'Eplus-demo-v1':
+                assert execution_time.total_seconds() < 15, 'ERROR: '+env_id + \
+                    ' too much time executing.'
+            # Datacenter simulations take more time
+            elif 'datacenter' in env_id:
+                assert execution_time.total_seconds() < 115, 'ERROR: '+env_id + \
+                    ' too much time executing.'
+            # 1 year simulation per episode
+            else:
+                assert execution_time.total_seconds() < 40, 'ERROR: '+env_id + \
+                    ' too much time executing.'
+
+        # close env
+        env.close()
 
         # Rename directory with name TEST for future remove
         os.rename(env.simulator._env_working_dir_parent, 'Eplus-env-TEST' +

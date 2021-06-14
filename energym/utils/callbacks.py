@@ -13,8 +13,7 @@ from stable_baselines3.common.vec_env import VecEnv, sync_envs_normalization
 
 
 class LoggerCallback(BaseCallback):
-    """
-    Custom callback for plotting additional values in tensorboard.
+    """Custom callback for plotting additional values in tensorboard.
     """
 
     def __init__(self, energym_logger=False, verbose=0):
@@ -157,23 +156,18 @@ class LoggerCallback(BaseCallback):
 
 
 class LoggerEvalCallback(EvalCallback):
-    """
-    Callback for evaluating an agent.
-    :param eval_env: The environment used for initialization
-    :param callback_on_new_best: Callback to trigger
-        when there is a new best model according to the ``mean_reward``
-    :param n_eval_episodes: The number of episodes to test the agent
-    :param eval_freq: Evaluate the agent every eval_freq call of the callback.
-    :param log_path: Path to a folder where the evaluations (``evaluations.npz``)
-        will be saved. It will be updated at each evaluation.
-    :param best_model_save_path: Path to a folder where the best model
-        according to performance on the eval env will be saved.
-    :param deterministic: Whether the evaluation should
-        use a stochastic or deterministic actions.
-    :param render: Whether to render or not the environment during evaluation
-    :param verbose:
-    :param warn: Passed to ``evaluate_policy`` (warns if ``eval_env`` has not been
-        wrapped with a Monitor wrapper)
+    """Callback for evaluating an agent.
+        :param eval_env: The environment used for initialization
+        :param callback_on_new_best: Callback to trigger when there is a new best model according to the ``mean_reward``
+        :param n_eval_episodes: The number of episodes to test the agent
+        :param eval_freq: Evaluate the agent every eval_freq call of the callback.
+        :param log_path: Path to a folder where the evaluations (``evaluations.npz``) will be saved. It will be updated at each evaluation.
+        :param best_model_save_path: Path to a folder where the best model according to performance on the eval env will be saved.
+        :param deterministic: Whether the evaluation should use a stochastic or deterministic actions.
+        :param render: Whether to render or not the environment during evaluation
+        :param verbose:
+        :param warn: Passed to ``evaluate_policy`` (warns if ``eval_env`` has not been wrapped with a Monitor wrapper)
+
     """
 
     def __init__(
@@ -293,47 +287,38 @@ class LoggerEvalCallback(EvalCallback):
 
 
 def evaluate_policy(
-    model: "base_class.BaseAlgorithm",
-    env: Union[gym.Env, VecEnv],
-    n_eval_episodes: int = 5,
-    deterministic: bool = True,
-    render: bool = False,
-    callback: Optional[Callable[[Dict[str, Any], Dict[str, Any]], None]] = None,
-    reward_threshold: Optional[float] = None,
-    return_episode_rewards: bool = False,
-    warn: bool = True,
-
-
-):
-    """
-    Runs policy for ``n_eval_episodes`` episodes and returns average reward.
-    This is made to work only with one env.
-    .. note::
-        If environment has not been wrapped with ``Monitor`` wrapper, reward and
+        model: "base_class.BaseAlgorithm",
+        env: Union[gym.Env, VecEnv],
+        n_eval_episodes: int = 5,
+        deterministic: bool = True,
+        render: bool = False,
+        callback: Optional[Callable[[Dict[str, Any], Dict[str, Any]], None]] = None,
+        reward_threshold: Optional[float] = None,
+        return_episode_rewards: bool = False,
+        warn: bool = True):
+    """Runs policy for ``n_eval_episodes`` episodes and returns average reward. This is made to work only with one env.
+        .. note:: If environment has not been wrapped with ``Monitor`` wrapper, reward and
         episode lengths are counted as it appears with ``env.step`` calls. If
         the environment contains wrappers that modify rewards or episode lengths
         (e.g. reward scaling, early episode reset), these will affect the evaluation
         results as well. You can avoid this by wrapping environment with ``Monitor``
         wrapper before anything else.
-    :param model: The RL agent you want to evaluate.
-    :param env: The gym environment. In the case of a ``VecEnv``
-        this must contain only one environment.
-    :param n_eval_episodes: Number of episode to evaluate the agent
-    :param deterministic: Whether to use deterministic or stochastic actions
-    :param render: Whether to render the environment or not
-    :param callback: callback function to do additional checks,
-        called after each step. Gets locals() and globals() passed as parameters.
-    :param reward_threshold: Minimum expected reward per episode,
-        this will raise an error if the performance is not met
-    :param return_episode_rewards: If True, a list of rewards and episode lengths
-        per episode will be returned instead of the mean.
-    :param warn: If True (default), warns user about lack of a Monitor wrapper in the
-        evaluation environment.
-    :return: Mean reward per episode, std of reward per episode.
+        :param model: The RL agent you want to evaluate.
+        :param env: The gym environment. In the case of a ``VecEnv`` this must contain only one environment.
+        :param n_eval_episodes: Number of episode to evaluate the agent
+        :param deterministic: Whether to use deterministic or stochastic actions
+        :param render: Whether to render the environment or not
+        :param callback: callback function to do additional checks, called after each step. Gets locals() and globals() passed as parameters.
+        :param reward_threshold: Minimum expected reward per episode, this will raise an error if the performance is not met
+        :param return_episode_rewards: If True, a list of rewards and episode lengths per episode will be returned instead of the mean.
+        :param warn: If True (default), warns user about lack of a Monitor wrapper in the evaluation environment.
+        :return: Mean reward per episode, std of reward per episode.
         Returns ([float], [int]) when ``return_episode_rewards`` is True, first
         list containing per-episode rewards and second containing per-episode lengths
         (in number of steps).
+
     """
+
     is_monitor_wrapped = False
     # Avoid circular import
     from stable_baselines3.common.env_util import is_wrapped
