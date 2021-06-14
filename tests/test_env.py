@@ -108,13 +108,14 @@ def test_all_environments():
             end_time = datetime.now()
 
             execution_time = end_time - begin_time
-            print('ERROR: ', env_id, ' executing too much time')
             # 3 month simulation per episode
             if env_id == 'Eplus-demo-v1':
-                assert execution_time.total_seconds() < 15
+                assert execution_time.total_seconds() < 15, 'ERROR: '+env_id + \
+                    ' too much time executing.'
             # 1 year simulation per episode
             else:
-                assert execution_time.total_seconds() < 30
+                assert execution_time.total_seconds() < 40, 'ERROR: '+env_id + \
+                    ' too much time executing.'
 
         # close env
         env.close()
