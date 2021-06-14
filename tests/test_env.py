@@ -112,6 +112,10 @@ def test_all_environments():
             if env_id == 'Eplus-demo-v1':
                 assert execution_time.total_seconds() < 15, 'ERROR: '+env_id + \
                     ' too much time executing.'
+            # Datacenter simulations take more time
+            elif 'datacenter' in env_id:
+                assert execution_time.total_seconds() < 115, 'ERROR: '+env_id + \
+                    ' too much time executing.'
             # 1 year simulation per episode
             else:
                 assert execution_time.total_seconds() < 40, 'ERROR: '+env_id + \
