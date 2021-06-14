@@ -12,6 +12,7 @@ Welcome to **energym**!
    pages/tests.rst
    pages/usage-example.rst
    pages/output.rst
+   pages/rewards.rst
    pages/controllers.rst
    pages/wrappers.rst
    pages/deep-reinforcement-learning.rst
