@@ -1,9 +1,6 @@
-import pytest
 from random import randint
 import gym
-import energym.utils.wrappers
 import os
-import csv
 from stable_baselines3.common.env_checker import check_env
 
 
@@ -45,43 +42,6 @@ def test_close(env_demo):
     assert env_demo.simulator._conn == None
 
 
-@pytest.mark.parametrize('env_name', [('env_demo'), ('env_wrapper'), ])
-def test_loggers(env_name, request):
-    env = request.getfixturevalue(env_name)
-    logger = env.logger
-
-    # Check CSV's have been created and linked in simulator correctly
-    assert logger.log_progress_file == env.simulator._env_working_dir_parent+'/progress.csv'
-    assert logger.log_file == env.simulator._eplus_working_dir+'/monitor.csv'
-
-    assert os.path.isfile(logger.log_progress_file)
-    assert os.path.isfile(logger.log_file)
-
-    # If env is wrapped with normalize obs...
-    if(type(env) == energym.utils.wrappers.NormalizeObservation):
-        assert os.path.isfile(logger.log_file[:-4]+'_normalized.csv')
-    else:
-        assert not os.path.isfile(logger.log_file[:-4]+'_normalized.csv')
-
-    # Check headers
-    with open(logger.log_file, mode='r', newline='') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
-        for row in reader:
-            assert ','.join(row) == logger.monitor_header
-            break
-    with open(logger.log_progress_file, mode='r', newline='') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
-        for row in reader:
-            assert ','.join(row)+'\n' == logger.progress_header
-            break
-    if(type(env) == energym.utils.wrappers.NormalizeObservation):
-        with open(logger.log_file[:-4]+'_normalized.csv', mode='r', newline='') as csvfile:
-            reader = csv.reader(csvfile, delimiter=',')
-            for row in reader:
-                assert ','.join(row) == logger.monitor_header
-                break
-
-
 def test_all_environments():
 
     envs_id = [env_spec.id for env_spec in gym.envs.registry.all()
@@ -92,9 +52,6 @@ def test_all_environments():
 
         # stable_baselines 3 environment checker. Check if environment follows Gym API.
         check_env(env)
-
-        # close env
-        env.close()
 
         # Rename directory with name TEST for future remove
         os.rename(env.simulator._env_working_dir_parent, 'Eplus-env-TEST' +

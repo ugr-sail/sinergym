@@ -2,7 +2,7 @@ import pytest
 from energym.simulators.eplus_old import EnergyPlus
 from energym.envs.eplus_env import EplusEnv
 import energym.utils.rewards as R
-from energym.utils.wrappers import NormalizeObservation, MultiObsWrapper
+from energym.utils.wrappers import NormalizeObservation, MultiObsWrapper, LoggerWrapper
 
 from opyplus import Epm, WeatherData
 import os
@@ -84,6 +84,16 @@ def env_demo_discrete(idf_path, weather_path, variable_path, space_path):
 
 
 @pytest.fixture(scope='function')
+def env_demo_discrete(idf_path, weather_path, variable_path, space_path):
+    idf_file = idf_path.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+    variables_file = variable_path.split('/')[-1]
+    spaces_file = space_path.split('/')[-1]
+
+    return EplusEnv(env_name='TESTGYM', idf_file=idf_file, weather_file=weather_file, variables_file=variables_file, spaces_file=spaces_file, discrete_actions=True, weather_variability=None)
+
+
+@pytest.fixture(scope='function')
 def env_demo_continuous(idf_path, weather_path, variable_path, space_path):
     idf_file = idf_path.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
@@ -93,9 +103,31 @@ def env_demo_continuous(idf_path, weather_path, variable_path, space_path):
     return EplusEnv(env_name='TESTGYM', idf_file=idf_file, weather_file=weather_file, variables_file=variables_file, spaces_file=spaces_file, discrete_actions=False, weather_variability=None)
 
 
-@pytest.fixture(scope='module')
-def env_wrapper(env_demo):
-    return MultiObsWrapper(env=NormalizeObservation(env=env_demo), n=5)
+@pytest.fixture(scope='function')
+def env_wrapper_logger(idf_path, weather_path, variable_path, space_path):
+    idf_file = idf_path.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+    variables_file = variable_path.split('/')[-1]
+    spaces_file = space_path.split('/')[-1]
+
+    env = EplusEnv(env_name='TESTGYM', idf_file=idf_file, weather_file=weather_file,
+                   variables_file=variables_file, spaces_file=spaces_file, discrete_actions=False, weather_variability=None)
+    return LoggerWrapper(env=env, flag=True)
+
+
+@pytest.fixture(scope='function')
+def env_all_wrappers(idf_path, weather_path, variable_path, space_path):
+    idf_file = idf_path.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+    variables_file = variable_path.split('/')[-1]
+    spaces_file = space_path.split('/')[-1]
+
+    env = EplusEnv(env_name='TESTGYM', idf_file=idf_file, weather_file=weather_file,
+                   variables_file=variables_file, spaces_file=spaces_file, discrete_actions=False, weather_variability=None)
+    env = NormalizeObservation(env=env)
+    env = LoggerWrapper(env=env, flag=True)
+    env = MultiObsWrapper(env=env, n=5)
+    return env
 
 
 ############### COMMONS ###############
