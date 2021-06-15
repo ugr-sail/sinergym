@@ -2,12 +2,12 @@ import gym
 import energym
 import numpy as np
 
-from energym.utils.wrappers import MultiObsWrapper, NormalizeObservation
+from energym.utils.wrappers import MultiObsWrapper, NormalizeObservation, LoggerWrapper
 
 default_env = gym.make('Eplus-demo-v1')
 
 # apply wrappers
-env = NormalizeObservation(MultiObsWrapper(default_env))
+env = MultiObsWrapper(LoggerWrapper(NormalizeObservation(default_env)))
 
 for i in range(1):
     obs = env.reset()
