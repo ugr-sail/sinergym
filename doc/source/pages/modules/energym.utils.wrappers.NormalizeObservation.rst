@@ -1,4 +1,4 @@
-﻿energym.utils.wrappers.NormalizeObservation
+energym.utils.wrappers.NormalizeObservation
 ===========================================
 
 .. currentmodule:: energym.utils.wrappers
