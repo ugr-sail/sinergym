@@ -2,7 +2,7 @@ from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
 import numpy as np
 import gym
 import os
-from energym.utils.wrappers import NormalizeObservation
+from energym.utils.wrappers import NormalizeObservation, LoggerWrapper
 
 from pprint import pprint
 
@@ -10,6 +10,7 @@ import warnings
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from stable_baselines3.common import base_class
 from stable_baselines3.common.vec_env import VecEnv, sync_envs_normalization
+from stable_baselines3.common.env_util import is_wrapped
 
 
 class LoggerCallback(BaseCallback):
@@ -30,10 +31,11 @@ class LoggerCallback(BaseCallback):
 
     def _on_training_start(self):
         # energym logger
-        if self.energym_logger:
-            self.training_env.env_method('activate_logger')
-        else:
-            self.training_env.env_method('deactivate_logger')
+        if is_wrapped(self.training_env, LoggerWrapper):
+            if self.energym_logger:
+                self.training_env.env_method('activate_logger')
+            else:
+                self.training_env.env_method('deactivate_logger')
 
         # record method depending on the type of algorithm
 
@@ -67,12 +69,12 @@ class LoggerCallback(BaseCallback):
 
         # ACTION
         variables = self.training_env.get_attr('variables')[0]['action']
-        action_ = None
+        action = None
+        # energym action received inner its own setpoints range
+        action_ = info['action_']
         try:
             # network output clipped with gym action space
             action = self.locals['clipped_actions'][-1]
-            # energym action received inner its own setpoints range
-            action_ = info['action_']
         except KeyError:
             try:
                 action = self.locals['action'][-1]
@@ -82,11 +84,12 @@ class LoggerCallback(BaseCallback):
         if self.training_env.get_attr('flag_discrete')[0]:
             action = self.training_env.get_attr('action_mapping')[0][action]
         for i, variable in enumerate(variables):
-            self.record(
-                'action/'+variable, action[i])
-            if action_ is not None:
+            if action is not None:
                 self.record(
-                    'action_simulation/'+variable, action_[i])
+                    'action/'+variable, action[i])
+
+            self.record(
+                'action_simulation/'+variable, action_[i])
 
         # Store episode data
         try:
@@ -152,7 +155,8 @@ class LoggerCallback(BaseCallback):
         return True
 
     def on_training_end(self):
-        self.training_env.env_method('activate_logger')
+        if is_wrapped(self.training_env, LoggerWrapper):
+            self.training_env.env_method('activate_logger')
 
 
 class LoggerEvalCallback(EvalCallback):
