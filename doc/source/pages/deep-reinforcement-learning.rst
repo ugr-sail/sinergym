@@ -188,7 +188,14 @@ Code example:
 Mlflow
 ****************
 
-As you have been able to see in usage examples, it is used Mlflow to ...
+As you have been able to see in usage examples, it is using `Mlflow <https://mlflow.org/>`__ in order to tracking experiments and recorded them methodically. It is recommended to use it.
+You can start a local server with information stored during the battery of experiments such as initial and ending date of execution, hyperparameters, duration, etc.
+Here is an example: 
+
+.. image:: /_static/mlflow_example.png
+  :width: 800
+  :alt: Tensorboard example
+  :align: center
 
 
 .. note:: *This is a work in progress project. Compatibility with others algorithms is being planned for the future!*
