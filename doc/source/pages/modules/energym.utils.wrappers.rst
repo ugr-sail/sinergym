@@ -1,4 +1,4 @@
-energym.utils.wrappers
+﻿energym.utils.wrappers
 ======================
 
 .. automodule:: energym.utils.wrappers
@@ -19,6 +19,7 @@ energym.utils.wrappers
       :toctree:                                          
       :template: custom-class-template.rst               
    
+      LoggerWrapper
       MultiObsWrapper
       NormalizeObservation
    

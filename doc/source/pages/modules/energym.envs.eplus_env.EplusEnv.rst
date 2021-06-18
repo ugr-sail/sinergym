@@ -16,9 +16,7 @@
    .. autosummary::
    
       ~EplusEnv.__init__
-      ~EplusEnv.activate_logger
       ~EplusEnv.close
-      ~EplusEnv.deactivate_logger
       ~EplusEnv.render
       ~EplusEnv.reset
       ~EplusEnv.seed
