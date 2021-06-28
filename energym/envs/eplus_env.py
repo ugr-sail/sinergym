@@ -139,7 +139,7 @@ class EplusEnv(gym.Env):
                 else:
                     setpoints = self.action_mapping[np.asscalar(action)]
             # Manual action
-            elif type(action) == tuple or type(action) == list:
+            elif type(action) == tuple or type(action) == list or type(action) == np.ndarray:
                 # stable-baselines DQN bug prevention
                 if len(action) == 1:
                     setpoints = self.action_mapping[np.asscalar(action)]
