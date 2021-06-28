@@ -133,13 +133,12 @@ class LoggerWrapper(gym.Wrapper):
         """
         obs, reward, done, info = self.env.step(action)
         # We added some extra values (month,day,hour) manually in env, so we need to delete them.
-        obs = obs[:-3]
         if is_wrapped(self, NormalizeObservation):
             # Record action and new observation in simulator's csv
             self.logger.log_step_normalize(timestep=info['timestep'],
                                            date=[info['month'],
                                                  info['day'], info['hour']],
-                                           observation=obs,
+                                           observation=obs[:-3],
                                            action=info['action_'],
                                            simulation_time=info['time_elapsed'],
                                            reward=reward,
@@ -163,7 +162,7 @@ class LoggerWrapper(gym.Wrapper):
             self.logger.log_step(timestep=info['timestep'],
                                  date=[info['month'],
                                        info['day'], info['hour']],
-                                 observation=obs,
+                                 observation=obs[:-3],
                                  action=info['action_'],
                                  simulation_time=info['time_elapsed'],
                                  reward=reward,
