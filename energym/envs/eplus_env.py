@@ -146,10 +146,7 @@ class EplusEnv(gym.Env):
                 else:
                     setpoints = action
             elif type(action) == np.ndarray:
-                if action.shape[0] == 1:
-                    setpoints = self.action_mapping[np.asscalar(action)]
-                else:
-                    setpoints = action
+                setpoints = self.action_mapping[np.asscalar(action)]
             else:
                 print("ERROR: ", type(action))
             action_ = list(setpoints)
