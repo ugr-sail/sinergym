@@ -36,7 +36,8 @@ class EplusEnv(gym.Env):
         spaces_file,
         env_name='eplus-env-v1',
         discrete_actions=True,
-        weather_variability=None
+        weather_variability=None,
+        energy_weight=0.5
     ):
         """Environment with EnergyPlus simulator.
 
@@ -60,6 +61,9 @@ class EplusEnv(gym.Env):
             self.pkg_data_path, 'variables', variables_file)
         self.spaces_path = os.path.join(
             self.pkg_data_path, 'variables', spaces_file)
+
+        # energy weight and comfort weight (1-energy weight)
+        self.energy_weight = energy_weight
 
         self.simulator = EnergyPlus(
             env_name=env_name,
@@ -115,7 +119,7 @@ class EplusEnv(gym.Env):
             )
 
         # Reward class
-        self.cls_reward = SimpleReward()
+        self.cls_reward = SimpleReward(energy_weight=self.energy_weight)
 
     def step(self, action):
         """Sends action to the environment.
@@ -145,6 +149,8 @@ class EplusEnv(gym.Env):
                     setpoints = self.action_mapping[np.asscalar(action)]
                 else:
                     setpoints = action
+            elif type(action) == np.ndarray:
+                setpoints = self.action_mapping[np.asscalar(action)]
             else:
                 print("ERROR: ", type(action))
             action_ = list(setpoints)
