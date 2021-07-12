@@ -14,6 +14,7 @@ import pkg_resources
 import numpy as np
 
 from opyplus import Epm, WeatherData
+from copy import deepcopy
 
 from ..utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space, setpoints_transform
 from ..simulators import EnergyPlus
@@ -204,8 +205,10 @@ class EplusEnv(gym.Env):
             np.array: Current observation.
         """
         # Create new random weather file
+        # noise always from original EPW
+        weather_data_aux = deepcopy(self.weather_data)
         new_weather = create_variable_weather(
-            self.weather_data, self.weather_path, variation=self.weather_variability)
+            weather_data_aux, self.weather_path, variation=self.weather_variability)
 
         # Change to next episode
         t, obs, done = self.simulator.reset(new_weather)

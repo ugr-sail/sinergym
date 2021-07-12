@@ -192,13 +192,13 @@ def parse_observation_action_space(space_file):
 
 
 def create_variable_weather(weather_data, original_epw_file, columns: list = ['drybulb'], variation: tuple = None):
-    """Create a new weather file adding gaussian noise to the original one.
+    """Create a new weather file using Ornstein-Uhlenbeck process.
 
     Args:
         weather_data (opyplus.WeatherData): Opyplus object with the weather for the simulation.
         original_epw_file (str): Path to the original EPW file.
         columns (list, optional): List of columns to be affected. Defaults to ['drybulb'].
-        variation (tuple, optional): Tuple with the mean and standard desviation of the Gaussian noise. Defaults to None.
+        variation (tuple, optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
 
     Returns:
         str: Name of the file created in the same location as the original one.
@@ -211,16 +211,34 @@ def create_variable_weather(weather_data, original_epw_file, columns: list = ['d
         # Get dataframe with weather series
         df = weather_data.get_weather_series()
 
-        # Generate random noise
-        shape = (df.shape[0], len(columns))
-        mu, std = variation
-        noise = np.random.normal(mu, std, shape)
-        df[columns] += noise
+        sigma = variation[0]  # Standard deviation.
+        mu = variation[1]  # Mean.
+        tau = variation[2]  # Time constant.
+
+        T = 1.  # Total time.
+        # All the columns are going to have the same num of rows since they are in the same dataframe
+        n = len(df[columns[0]])
+        dt = T/n
+        # t = np.linspace(0., T, n)  # Vector of times.
+
+        sigma_bis = sigma * np.sqrt(2. / tau)
+        sqrtdt = np.sqrt(dt)
+
+        x = np.zeros(n)
+
+        # Create noise
+        for i in range(n - 1):
+            x[i + 1] = x[i] + dt * (-(x[i] - mu) / tau) + \
+                sigma_bis * sqrtdt * np.random.randn()
+
+        for column in columns:
+            # Add noise
+            df[column] += x
 
         # Save new weather data
         weather_data.set_weather_series(df)
         filename = original_epw_file.split('.epw')[0]
-        filename += '_Random_%s_%s.epw' % (str(mu), str(std))
+        filename += '_Random_%s_%s_%s.epw' % (str(sigma), str(mu), str(tau))
         weather_data.to_epw(filename)
         return filename
 
