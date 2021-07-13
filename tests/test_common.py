@@ -87,9 +87,9 @@ def test_parse_observation_action_space(space_path):
     'variation',
     [
         (None),
-        ((1, 0.2)),
-        ((5, 0.5)),
-        ((0, 0)),
+        ((1, 0.0, 0.001)),
+        ((5, 0.0, 0.01)),
+        ((10, 0.0, 0.1)),
     ]
 )
 def test_create_variable_weather(variation, weather_data, weather_path):
@@ -99,5 +99,5 @@ def test_create_variable_weather(variation, weather_data, weather_path):
         assert output is None
     else:
         expected = weather_path.split(
-            '.epw')[0]+'_Random_'+str(variation[0])+'_'+str(variation[1])+'.epw'
+            '.epw')[0]+'_Random_'+str(variation[0])+'_'+str(variation[1])+'_'+str(variation[2])+'.epw'
         assert output == expected
