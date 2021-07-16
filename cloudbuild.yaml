@@ -19,15 +19,15 @@ steps:
   args: ['push', 'gcr.io/energym-314709/energym:latest']
 
   # This container is going to be public (Change command in other case)
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'gsutil'
-  args: ['defacl', 'ch', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'gsutil'
-  args: ['acl', 'ch', '-r', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'gsutil'
-  args: ['acl', 'ch', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   entrypoint: 'gsutil'
+#   args: ['defacl', 'ch', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   entrypoint: 'gsutil'
+#   args: ['acl', 'ch', '-r', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   entrypoint: 'gsutil'
+#   args: ['acl', 'ch', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
 
   # GCE for instance a VM with that container uploaded
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -38,11 +38,10 @@ steps:
             '--zone', 'europe-west1-d',
             '--container-privileged',
             '--machine-type', 'n2-highcpu-16',
-
         ]
 
 #Other options for execute build
 options:
   diskSizeGb: '50'
-  #machineType: 'n2-highcpu-16'
+  machineType: 'E2_HIGHCPU_8'
 images: ['gcr.io/energym-314709/energym:latest']
