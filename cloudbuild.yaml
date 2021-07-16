@@ -1,0 +1,48 @@
+steps:
+  # Write in cache for quick updates
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'bash'
+  args: ['-c', 'docker pull gcr.io/energym-314709/energym:latest || exit 0']
+  # Build image (using cache if it's possible)
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'docker'
+  args: [
+            'build',
+            '-t', 'gcr.io/energym-314709/energym:latest',
+            '--cache-from', 'gcr.io/energym-314709/energym:latest',
+            '.'
+        ]
+
+  # Push image built to container registry
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'docker'
+  args: ['push', 'gcr.io/energym-314709/energym:latest']
+
+  # This container is going to be public (Change command in other case)
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gsutil'
+  args: ['defacl', 'ch', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gsutil'
+  args: ['acl', 'ch', '-r', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gsutil'
+  args: ['acl', 'ch', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
+
+  # GCE for instance a VM with that container uploaded
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args: [
+            'compute','instances', 'create-with-container','energym',
+            '--container-image', 'gcr.io/energym-314709/energym:latest',
+            '--zone', 'europe-west1-d',
+            '--container-privileged',
+            '--machine-type', 'n2-highcpu-16',
+
+        ]
+
+#Other options for execute build
+options:
+  diskSizeGb: '50'
+  #machineType: 'n2-highcpu-16'
+images: ['gcr.io/energym-314709/energym:latest']
