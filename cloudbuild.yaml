@@ -19,29 +19,46 @@ steps:
   args: ['push', 'gcr.io/energym-314709/energym:latest']
 
   # This container is going to be public (Change command in other case)
-# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-#   entrypoint: 'gsutil'
-#   args: ['defacl', 'ch', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
-# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-#   entrypoint: 'gsutil'
-#   args: ['acl', 'ch', '-r', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
-# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-#   entrypoint: 'gsutil'
-#   args: ['acl', 'ch', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
+- name: 'gcr.io/cloud-builders/gsutil'
+  args: ['defacl', 'ch', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
+- name: 'gcr.io/cloud-builders/gsutil'
+  args: ['acl', 'ch', '-r', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
+- name: 'gcr.io/cloud-builders/gsutil'
+  args: ['acl', 'ch', '-u', 'AllUsers:R', 'gs://artifacts.energym-314709.appspot.com']
 
-  # GCE for instance a VM with that container uploaded
+# - name: 'gcr.io/cloud-builders/gsutil'
+#   args: ['defacl', 'ch', '-u', 'AllUsers:R', 'gs://energym-314709_cloudbuild']
+# - name: 'gcr.io/cloud-builders/gsutil'
+#   args: ['acl', 'ch', '-r', '-u', 'AllUsers:R', 'gs://energym-314709_cloudbuild']
+# - name: 'gcr.io/cloud-builders/gsutil'
+#   args: ['acl', 'ch', '-u', 'AllUsers:R', 'gs://energym-314709_cloudbuild']
+
+# We are going to create a disk for our VM
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   entrypoint: 'gcloud'
+#   args: [
+#             'compute','disks', 'create','energymdisk',
+#             '--size', '50GB',
+#             '--type', 'pd-balanced',
+#             '--zone', 'europe-west1-b'
+#         ]
+
+# GCE for instance a VM with that container uploaded
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'gcloud'
   args: [
             'compute','instances', 'create-with-container','energym',
             '--container-image', 'gcr.io/energym-314709/energym:latest',
-            '--zone', 'europe-west1-d',
+            '--zone', 'europe-west1-b',
             '--container-privileged',
-            '--machine-type', 'n2-highcpu-16',
+            '--create-disk', 'name=energymvolume,mode=rw,size=50GB,type=pd-ssd',
+            '--container-mount-host-path', 'mode=rw,mount-path=/mnt/disks/data,host-path=/home/hapneck/',
+            '--machine-type', 'n2-highcpu-8'
         ]
 
-#Other options for execute build
+#Other options for execute build (not container)
 options:
-  diskSizeGb: '50'
+  diskSizeGb: '10'
   machineType: 'E2_HIGHCPU_8'
+timeout: 86400s
 images: ['gcr.io/energym-314709/energym:latest']
