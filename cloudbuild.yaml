@@ -32,7 +32,7 @@ steps:
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'gcloud'
   args: [
-            'compute','instances', 'create-with-container','energym',
+            'compute','instances', 'create-with-container','${_VM_NAME}',
             '--container-image', 'gcr.io/${PROJECT_ID}/energym:latest',
             '--zone', 'europe-west1-b',
             '--container-privileged',
