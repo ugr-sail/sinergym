@@ -58,6 +58,7 @@ COPY setup.py .
 COPY energym /code/energym
 COPY tests /code/tests
 COPY examples /code/examples
+COPY check_run_times.py .
 RUN pip3 install -e .[extras]
 
 CMD ["/bin/bash"]

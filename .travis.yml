@@ -16,19 +16,17 @@ services:
   - docker
 
 before_script:
-  - docker build -t alejandrocn7/tester .
-  #- docker run --rm -it alejandrocn7/tester /bin/bash -c 'pytest ./tests/'
+  - docker build -t $DOCKER_USER/energym .
   
 script:
-  - docker run -it alejandrocn7/tester /bin/bash -c 'pytest tests -vv'
+  - docker run -it $DOCKER_USER/energym /bin/bash -c 'pytest tests -vv'
   
-
-# after_success:
-#   - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  #Previusly set up in our own travis account
-#   - docker tag back $DOCKER_USER/back:$TRAVIS_BUILD_NUMBER
-#   - docker push $DOCKER_USER/back:$TRAVIS_BUILD_NUMBER
-#   - docker tag back $DOCKER_USER/back:latest
-#   - docker push $DOCKER_USER/back:latest
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  #Previusly set up in our own travis account
+  - docker tag $DOCKER_USER/energym $DOCKER_USER/energym:$TRAVIS_BUILD_NUMBER
+  - docker push $DOCKER_USER/energym:$TRAVIS_BUILD_NUMBER
+  - docker tag $DOCKER_USER/energym $DOCKER_USER/energym:latest
+  - docker push $DOCKER_USER/energym:latest
 
 
 
