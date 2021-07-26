@@ -18,7 +18,7 @@ from copy import deepcopy
 
 from ..utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space, setpoints_transform
 from ..simulators import EnergyPlus
-from ..utils.rewards import SimpleReward
+from ..utils.rewards import ExpReward, SimpleReward
 from pprint import pprint
 
 
@@ -38,7 +38,7 @@ class EplusEnv(gym.Env):
         env_name='eplus-env-v1',
         discrete_actions=True,
         weather_variability=None,
-        energy_weight=0.5
+        reward = SimpleReward()
     ):
         """Environment with EnergyPlus simulator.
 
@@ -62,9 +62,6 @@ class EplusEnv(gym.Env):
             self.pkg_data_path, 'variables', variables_file)
         self.spaces_path = os.path.join(
             self.pkg_data_path, 'variables', spaces_file)
-
-        # energy weight and comfort weight (1-energy weight)
-        self.energy_weight = energy_weight
 
         self.simulator = EnergyPlus(
             env_name=env_name,
@@ -120,7 +117,7 @@ class EplusEnv(gym.Env):
             )
 
         # Reward class
-        self.cls_reward = SimpleReward(energy_weight=self.energy_weight)
+        self.cls_reward = reward
 
     def step(self, action):
         """Sends action to the environment.
@@ -230,3 +227,5 @@ class EplusEnv(gym.Env):
         """End simulation."""
 
         self.simulator.end_env()
+
+    
