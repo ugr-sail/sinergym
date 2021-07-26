@@ -12,7 +12,8 @@ setup(name='energym',
               'pandas',  # data analysis
               'matplotlib',  # visualization
               'stable-baselines3',  # DRL with pytorch
-              'mlflow'  # tracking ML experiments
+              'mlflow',  # tracking ML experiments
+              'tensorboard' #Log stable-baselines3 trainings
           ]
       }
       )
