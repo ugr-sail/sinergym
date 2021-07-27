@@ -17,5 +17,9 @@ Reward is always negative. This means that perfect reward would be 0 (perfect po
 Notice there are two temperature comfort ranges in that class, those ranges are used rely on the specific date on the simulation. Moreover, notice there are
 two weights in the reward function, this allows you to adjust how important each aspect is when making a general evaluation of the environment.
 
+By default, all environments in gym register will use SimpleReward() with default parameters. However, this configuration can be overwriting in ``gym.make()``, for example:
+::
+    env = gym.make('Eplus-discrete-stochastic-mixed-v1', reward=ExpReward(energy_weight=0.5))
+
 .. note:: *Currently, it is only available these classes. However, more reward functions could be designed in the future!*
 
