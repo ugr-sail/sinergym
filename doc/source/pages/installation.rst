@@ -161,7 +161,7 @@ If you want to use it in a **GCE VM**, you can execute the next:
 Suppose you have this repository forked and you want to upload your own container on Google Cloud and to use it. You can use **cloudbuild.yaml** 
 with our **Dockerfile** for this purpose:
 
-.. literalinclude:: ../../../cloud/cloudbuild.yaml
+.. literalinclude:: ../../../cloudbuild.yaml
     :language: yaml
 
 This file does the next:
