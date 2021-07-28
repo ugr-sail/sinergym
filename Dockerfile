@@ -1,11 +1,15 @@
 # Base on nrel/energyplus from Nicholas Long but using 
 # Ubuntu, Python 3.6 and BCVTB
-FROM ubuntu:18.04
+ARG UBUNTU_VERSION=18.04
+FROM ubuntu:${UBUNTU_VERSION}
 
 # Arguments for EnergyPlus version (default values of version 8.6.0 if is not specified)
 ARG ENERGYPLUS_VERSION=8.6.0
 ARG ENERGYPLUS_INSTALL_VERSION=8-6-0
 ARG ENERGYPLUS_SHA=198c6a3cff
+
+# Argument for Energym extras libraries
+ARG ENERGYM_EXTRAS=[extras]
 
 ENV ENERGYPLUS_VERSION=$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
@@ -59,7 +63,7 @@ COPY energym /code/energym
 COPY tests /code/tests
 COPY examples /code/examples
 COPY check_run_times.py .
-RUN pip3 install -e .[extras]
+RUN pip3 install -e .${ENERGYM_EXTRAS}
 
 CMD ["/bin/bash"]
 
