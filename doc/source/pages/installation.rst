@@ -25,6 +25,24 @@ Docker container
 We include a **Dockerfile** for installing all dependencies and setting
 up the image for running *energym*. 
 
+By default, Dockerfile will do `pip install -e .[extras]`, if you want to install a diffetent setup, you will have to do in root repository:
+
+.. code:: sh
+
+    $ docker build -t <tag_name> --build-arg ENERGYM_EXTRAS=[<setup_tag(s)>] .
+
+For example, if you want a container with only documentation libaries and testing:
+
+.. code:: sh
+
+    $ docker build -t example1/energym:latest --build-arg ENERGYM_EXTRAS=[doc,test] .
+
+On the other hand, if you don't want any extra library, it's neccesary to write an empty value like this:
+
+.. code:: sh
+
+    $ docker build -t example1/energym:latest --build-arg ENERGYM_EXTRAS= .
+
 .. note:: If you use `Visual Studio Code <https://code.visualstudio.com/>`__, by simply opening the root directory and clicking on the pop-up button "*Reopen in container*\ ", all the dependencies will be installed automatically and you will be able to run *energym* in an isolated environment.
 
 *******************
@@ -71,8 +89,17 @@ root folder:
     $ pip install -e .
 
 Extra libraries can be installed by typing ``pip install -e .[extras]``.
-They are intended for running and analyzing DRL algorithms over *energym*,
-but they are not a requirement of the package.
+*extras* include all optional libraries which have been considered in this project such as 
+testing, visualization, Deep Reinforcement Learning, monitoring , etc.
+It's possible to select a subset of these libraries instead of 'extras' tag in which we select all optional libaries, for example:
+
+.. code:: sh
+
+    $ pip install -e .[test,doc]
+
+In order to check all our tag list, visit `setup.py <https://github.com/jajimer/energym/blob/main/setup.py>`__ in Energym root repository.
+
+In any case, they are not a requirement of the package.
 
 *******************
 Cloud Computing
@@ -134,7 +161,7 @@ If you want to use it in a **GCE VM**, you can execute the next:
 Suppose you have this repository forked and you want to upload your own container on Google Cloud and to use it. You can use **cloudbuild.yaml** 
 with our **Dockerfile** for this purpose:
 
-.. literalinclude:: ../../../cloudbuild.yaml
+.. literalinclude:: ../../../cloud/cloudbuild.yaml
     :language: yaml
 
 This file does the next:
