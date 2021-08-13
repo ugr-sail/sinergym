@@ -10,6 +10,7 @@ steps:
             'build',
             '-t', 'gcr.io/${PROJECT_ID}/energym:latest',
             '--cache-from', 'gcr.io/${PROJECT_ID}/energym:latest',
+            '--build-arg', 'ENERGYM_EXTRAS=[DRL]',
             '.'
         ]
 
@@ -21,30 +22,11 @@ steps:
   # This container is going to be public (Change command in other case)
 - name: 'gcr.io/cloud-builders/gsutil'
   args: ['iam', 'ch', 'AllUsers:objectViewer', 'gs://artifacts.${PROJECT_ID}.appspot.com']
-# - name: 'gcr.io/cloud-builders/gsutil'
-#   args: ['defacl', 'ch', '-u', 'AllUsers:R', 'gs://artifacts.${PROJECT_ID}.appspot.com']
-# - name: 'gcr.io/cloud-builders/gsutil'
-#   args: ['acl', 'ch', '-r', '-u', 'AllUsers:R', 'gs://artifacts.${PROJECT_ID}.appspot.com']
-# - name: 'gcr.io/cloud-builders/gsutil'
-#   args: ['acl', 'ch', '-u', 'AllUsers:R', 'gs://artifacts.${PROJECT_ID}.appspot.com']
-
-# GCE for instance a VM with that container uploaded
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'gcloud'
-  args: [
-            'compute','instances', 'create-with-container','${_VM_NAME}',
-            '--container-image', 'gcr.io/${PROJECT_ID}/energym:latest',
-            '--zone', 'europe-west1-b',
-            '--container-privileged',
-            # '--create-disk', 'name=energymvolume,mode=rw,size=50GB,type=pd-ssd',
-            # '--container-mount-host-path', 'mode=rw,mount-path=/mnt/disks/data,host-path=/home/hapneck/',
-            '--boot-disk-size', '${_DISK_SIZE}', 
-            '--boot-disk-type', '${_DISK_TYPE}',
-            '--machine-type', '${_MACHINE_TYPE}'
-        ]
 #Other options for execute build (not container)
 options:
   diskSizeGb: '10'
   machineType: 'E2_HIGHCPU_8'
 timeout: 86400s
 images: ['gcr.io/${PROJECT_ID}/energym:latest']
+
+

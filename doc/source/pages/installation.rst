@@ -25,6 +25,24 @@ Docker container
 We include a **Dockerfile** for installing all dependencies and setting
 up the image for running *energym*. 
 
+By default, Dockerfile will do `pip install -e .[extras]`, if you want to install a diffetent setup, you will have to do in root repository:
+
+.. code:: sh
+
+    $ docker build -t <tag_name> --build-arg ENERGYM_EXTRAS=[<setup_tag(s)>] .
+
+For example, if you want a container with only documentation libaries and testing:
+
+.. code:: sh
+
+    $ docker build -t example1/energym:latest --build-arg ENERGYM_EXTRAS=[doc,test] .
+
+On the other hand, if you don't want any extra library, it's neccesary to write an empty value like this:
+
+.. code:: sh
+
+    $ docker build -t example1/energym:latest --build-arg ENERGYM_EXTRAS= .
+
 .. note:: If you use `Visual Studio Code <https://code.visualstudio.com/>`__, by simply opening the root directory and clicking on the pop-up button "*Reopen in container*\ ", all the dependencies will be installed automatically and you will be able to run *energym* in an isolated environment.
 
 *******************
@@ -71,8 +89,17 @@ root folder:
     $ pip install -e .
 
 Extra libraries can be installed by typing ``pip install -e .[extras]``.
-They are intended for running and analyzing DRL algorithms over *energym*,
-but they are not a requirement of the package.
+*extras* include all optional libraries which have been considered in this project such as 
+testing, visualization, Deep Reinforcement Learning, monitoring , etc.
+It's possible to select a subset of these libraries instead of 'extras' tag in which we select all optional libaries, for example:
+
+.. code:: sh
+
+    $ pip install -e .[test,doc]
+
+In order to check all our tag list, visit `setup.py <https://github.com/jajimer/energym/blob/main/setup.py>`__ in Energym root repository.
+
+In any case, they are not a requirement of the package.
 
 *******************
 Cloud Computing
@@ -82,7 +109,7 @@ Cloud Computing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can run your experiments in cloud too. We are using `Google Cloud <https://cloud.google.com/>`__ in order to make it possible. Our team aim to set up
-a virtual machine in which execute our Energym container.
+a instances group (`MIG <https://cloud.google.com/compute/docs/instance-groups/getting-info-about-migs?hl=es-419>`__) in which execute our Energym container.
 
 Firstly, it is necessary that you have a Google Cloud account set up and SDK configured (auth, invoicing, project ID, etc). If you don't have this, it is recommended to check `their documentation <https://cloud.google.com/sdk/docs/install>`__.
 Secondly, It is important to have installed `Docker <https://www.docker.com/>`__ in order to be able to manage these containers in Google Cloud.
@@ -98,7 +125,7 @@ On the other hand, we are going to use specifically this services in **Google Cl
 
     - Container Registry and Artifact Registry.
     - Google Cloud builds
-    - Google Cloud Compute Engine (VM specifically)
+    - Google Cloud Compute Engine (VM and MIGs specifically)
 
 Hence, you will have to allow this services into your **Google account**.
 
@@ -116,12 +143,15 @@ If you want to use it in a **GCE VM**, you can execute the next:
 .. code:: sh
 
     $ gcloud compute instances create-with-container energym \
-    --container-image gcr.io/energym-314709/energym:latest \
-    --zone europe-west1-b \
-    --container-privileged \
-    --boot-disk-size 30GB \
-    --boot-disk-type pd-ssd  \
-    --machine-type n2-highcpu-8
+        --container-image gcr.io/energym-314709/energym \
+        --zone europe-west1-b \
+        --container-privileged \
+        --container-restart-policy never \
+        --container-stdin \
+        --container-tty \
+        --boot-disk-size 20GB \
+        --boot-disk-type pd-ssd \
+        --machine-type n2-highcpu-8
 
 .. note:: It is possible to change parameters in order to set up your own VM with your preferences (see `create-with-container <https://cloud.google.com/sdk/gcloud/reference/compute/instances/create-with-container>`__).
 
@@ -143,7 +173,6 @@ This file does the next:
     2. Build image (using cache if it's available)
     3. Push image built to Container Registry
     4. Make container public inner Container Registry.
-    5. Create GCE VM instance with that container uploaded.
 
 There is an option section at the end of the file. Do not confuse this part with the virtual machine configuration. 
 Google Cloud uses a helper VM to build everything mentioned above.
@@ -158,25 +187,69 @@ In order to execute **cloudbuild.yaml**, you have to do the next:
 .. code:: sh
 
     $ gcloud builds submit \
-      --substitutions _VM_NAME=energym,_DISK_SIZE=30GB,_DISK_TYPE=pd-ssd,_MACHINE_TYPE=n2-highcpu-8 \
-      --config ./cloudbuild.yaml .
+        --config ./cloudbuild.yaml .
 
-*Substitutions* are used in order to configure VM at the same time you build all process dinamically.
+*--substitutions* can be used in order to configure build parameters if they are needed.
 
 .. note:: "." in `--config` refers to **Dockerfile**, which is necessary to build container image (see `build-config <https://cloud.google.com/build/docs/build-config>`__).
 
 .. note:: In **cloudbuild.yaml** there is a variable named *PROJECT_ID*. However, it is not defined in substitutions. This is because it's a predetermined
           variable by Google Cloud. When build begins *"$PROJECT_ID"* is set to current value in gcloud configuration (see `substitutions-variables <https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values>`__).
 
+4. Create your VM or MIG
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-4. Init your VM
+To create a **VM** that uses this container, here there is an example:
+
+.. code:: sh
+
+    $ gcloud compute instances create-with-container energym \
+        --container-image gcr.io/energym-314709/energym \
+        --zone europe-west1-b \
+        --container-privileged \
+        --container-restart-policy never \
+        --container-stdin \
+        --container-tty \
+        --boot-disk-size 20GB \
+        --boot-disk-type pd-ssd \
+        --machine-type n2-highcpu-8
+
+.. note:: `--container-restart-policy never` it's really important for a correct functionality.
+
+.. warning:: If you decide enter in VM after create it immediately, it is possible container hasn't been created yet. 
+             You can think that is an error, Google cloud should notify this.
+
+To create a **MIG**, you need to create a machine set up **template** firstly, for example:
+
+.. code:: sh
+
+    $ gcloud compute instance-templates create-with-container energym-template \
+        --container-image gcr.io/energym-314709/energym \
+        --container-privileged \
+        --container-restart-policy never \
+        --container-stdin \
+        --container-tty \
+        --boot-disk-size 20GB \
+        --boot-disk-type pd-ssd \
+        --machine-type n2-highcpu-8
+
+Then, you can create a group-instances as large as you want:
+
+.. code:: sh
+
+    $ gcloud compute instance-groups managed create example-group \
+        --base-instance-name energym-vm \
+        --size 3 \
+        --template energym-template
+
+5. Init your VM
 ~~~~~~~~~~~~~~~~
 
 Your virtual machine is ready! To connect you can use ssh (see `gcloud-ssh <https://cloud.google.com/sdk/gcloud/reference/compute/ssh>`__):
 
 .. code:: sh
 
-    $ gcloud compute ssh ${_VM_NAME}
+    $ gcloud compute ssh energym
 
 Google Cloud use a **Container-Optimized OS** (see `documentation <https://cloud.google.com/container-optimized-os/docs>`__) in VM. This SO have docker pre-installed with energym container.
 
@@ -190,7 +263,7 @@ To use this container in our machine you only have to do:
 
 .. code:: sh
 
-    $ docker run -it gcr.io/${PROJECT_ID}/energym:latest
+    $ docker attach <container name or ID>
 
 .. image:: /_static/container2.png
   :width: 800

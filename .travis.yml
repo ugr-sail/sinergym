@@ -16,7 +16,7 @@ services:
   - docker
 
 before_script:
-  - docker build -t $DOCKER_USER/energym .
+  - docker build -t $DOCKER_USER/energym --build-arg ENERGYM_EXTRAS=[DRL,test] .
   
 script:
   - docker run -it $DOCKER_USER/energym /bin/bash -c 'pytest tests -vv'

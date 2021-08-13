@@ -9,10 +9,28 @@ setup(name='energym',
       include_package_data=True,
       extras_require={
           'extras': [
-              'pandas',  # data analysis
               'matplotlib',  # visualization
               'stable-baselines3',  # DRL with pytorch
               'mlflow',  # tracking ML experiments
+              'tensorboard', # Training logger
+              'pytest',  # Unit test repository
+              'sphinx',  # documentation
+              'sphinx-rtd-theme' #documentation theme
+          ],
+          'test': [
+              'pytest'
+          ],
+          'DRL': [
+              'stable-baselines3',
+              'mlflow',
+              'tensorboard'
+          ],
+          'doc': [
+              'sphinx',
+              'sphinx-rtd-theme'
+          ],
+          'visualization': [
+              'matplotlib',
               'tensorboard' #Log stable-baselines3 trainings
           ]
       }
