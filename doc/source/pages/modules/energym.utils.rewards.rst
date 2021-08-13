@@ -1,4 +1,4 @@
-energym.utils.rewards
+﻿energym.utils.rewards
 =====================
 
 .. automodule:: energym.utils.rewards
@@ -19,6 +19,7 @@ energym.utils.rewards
       :toctree:                                          
       :template: custom-class-template.rst               
    
+      ExpReward
       SimpleReward
    
    
