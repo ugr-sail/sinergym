@@ -30,7 +30,8 @@ setup(name='energym',
               'sphinx-rtd-theme'
           ],
           'visualization': [
-              'matplotlib'
+              'matplotlib',
+              'tensorboard' #Log stable-baselines3 trainings
           ]
       }
       )
