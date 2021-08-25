@@ -12,7 +12,7 @@ import gym
 from datetime import datetime, timedelta
 
 # NORMALIZATION RANGES
-RANGES_5ZONE = {'Facility Total HVAC Electric Demand Power (Whole Building)': [173.6583692738386,
+RANGES_5ZONE = {'Facility Total HVAC Electricity Demand Rate (Whole Building)': [173.6583692738386,
                                                                                32595.57259261767],
                 'People Air Temperature (SPACE1-1 PEOPLE 1)': [0.0, 30.00826655379267],
                 'Site Diffuse Solar Radiation Rate per Area (Environment)': [0.0, 588.0],
