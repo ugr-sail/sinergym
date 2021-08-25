@@ -83,8 +83,8 @@ class EnergyPlus(object):
         self._variable_path = variable_path
         self._idf_path = idf_path
         self._episode_existed = False
-        (self._eplus_run_st_mon, self._eplus_run_st_day,
-         self._eplus_run_ed_mon, self._eplus_run_ed_day,
+        (self._eplus_run_st_mon, self._eplus_run_st_day, self._eplus_run_st_year,
+         self._eplus_run_ed_mon, self._eplus_run_ed_day, self._eplus_run_ed_year,
          self._eplus_run_st_weekday,
          self._eplus_run_stepsize) = self._get_eplus_run_info(idf_path)
 
@@ -453,7 +453,6 @@ class EnergyPlus(object):
             ret += '%20.15e' % (Dblist[i])
             ret += ' '
         ret += '\n'
-
         return ret
 
     def _disassembleMsg(self, rcv):
@@ -471,13 +470,13 @@ class EnergyPlus(object):
         return (version, flag, nDb, nIn, nBl, curSimTim, Dblist)
 
     def _get_eplus_run_info(self, idf_path):
-        """This method read the .idf file and finds the running start month, start date, end month, end date and the step size.
+        """This method read the .idf file and finds the running start month, start date, start year, end month, end date, end year, start weekday and the step size. If any value is Unknown, then value will be 0.
 
         Args:
             idf_path (str): The .idf file path.
 
         Returns:
-            (int, int, int, int, int, int): A tuple with: the start month, start date, end month, end date, start weekday and step size.
+            (int, int, int, int, int, int, int, int): A tuple with: the start month, start date, start year, end month, end date, end year, start weekday and step size.
         """
 
         ret = []
@@ -498,13 +497,16 @@ class EnergyPlus(object):
                 tgtIndex = i
                 break
 
-        for i in range(2, 6):
-            ret.append(int(contents[tgtIndex + i].strip()
-                                                 .split('!')[0]
-                                                 .strip()
-                                                 .split(',')[0]
-                                                 .strip()
-                                                 .split(';')[0]))
+        for i in range(2, 8):
+            try:
+                ret.append(int(contents[tgtIndex + i].strip()
+                                                        .split('!')[0]
+                                                        .strip()
+                                                        .split(',')[0]
+                                                        .strip()
+                                                        .split(';')[0]))
+            except ValueError:
+                ret.append(0)
         # Start weekday
         ret.append(WEEKDAY_ENCODING[contents[tgtIndex + i + 1].strip()
                                     .split('!')[0]
