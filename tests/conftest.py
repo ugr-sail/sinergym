@@ -4,7 +4,7 @@ from energym.envs.eplus_env import EplusEnv
 import energym.utils.rewards as R
 from energym.utils.wrappers import NormalizeObservation, MultiObsWrapper, LoggerWrapper
 
-from opyplus import Epm, WeatherData
+from opyplus import Epm, WeatherData, Idd
 import os
 import pkg_resources
 from glob import glob  # to find directories with patterns
@@ -134,8 +134,9 @@ def env_all_wrappers(idf_path, weather_path, variable_path, space_path):
 
 
 @pytest.fixture(scope='session')
-def epm(idf_path):
-    return Epm.from_idf(idf_path)
+def epm(idf_path, eplus_path):
+    idd = Idd(os.path.join(eplus_path, 'Energy+.idd'))
+    return Epm.from_idf(idf_path, idd_or_version=idd)
 
 
 @pytest.fixture(scope='session')
