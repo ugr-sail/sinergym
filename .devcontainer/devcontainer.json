@@ -1,7 +1,7 @@
 {
 	"name": "energym",
 	"build": {
-		"args": {"ENERGYPLUS_VERSION":"8.6.0", "ENERGYPLUS_INSTALL_VERSION":"8-6-0", "ENERGYPLUS_SHA":"198c6a3cff"},
+		"args": {"ENERGYPLUS_VERSION":"9.5.0", "ENERGYPLUS_INSTALL_VERSION":"9-5-0", "ENERGYPLUS_SHA":"de239b2e5f"},
 	},
 	"dockerFile": "../Dockerfile",
 	"context": "..",
