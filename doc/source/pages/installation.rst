@@ -51,18 +51,28 @@ Manual installation
 
 If you prefer installing *energym* manually, follow the steps below:
 
-1. Install EnergyPlus 8.6.0
+1. Install EnergyPlus 9.5.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Firstly, install EnergyPlus. Currently only version 8.6.0 has
-been tested, but code may also work with other versions.
+Firstly, install EnergyPlus. Currently it has been update compability to 9.5.0 and it has
+been tested, but code may also work with other versions. Energym ensure this support:
+
++------------------+--------------------+
+| Energym Version  | EnergyPlus version |
++==================+====================+
+| 1.0.0            | 8.6.0              | 
++------------------+--------------------+
+| 1.1.0            | 9.5.0              | 
++------------------+--------------------+
+
+Other combination may works, but they don't have been tested.
 
 Follow the instructions `here <https://energyplus.net/downloads>`__ and
 install it for Linux (only Ubuntu is supported). Choose any location
 to install the software. Once installed, a folder called
-``Energyplus-8-6-0`` should appear in the selected location.
+``Energyplus-9-5-0`` should appear in the selected location.
 
-2. Install BCVTB software
+1. Install BCVTB software
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Follow the instructions
