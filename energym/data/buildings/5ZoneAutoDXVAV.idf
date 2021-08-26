@@ -96,13 +96,13 @@
 ! Environmental Emissions:        None
 ! Utility Tariffs:                None
 
-  Version,8.6;
+  Version,9.5;
 
   Building,
     Building,                !- Name
     30.,                     !- North Axis {deg}
     City,                    !- Terrain
-    0.04,                    !- Loads Convergence Tolerance Value
+    0.04,                    !- Loads Convergence Tolerance Value {W}
     0.4,                     !- Temperature Convergence Tolerance Value {deltaC}
     FullExterior,            !- Solar Distribution
     25,                      !- Maximum Number of Warmup Days
@@ -119,7 +119,7 @@
   GlobalGeometryRules,
     UpperLeftCorner,         !- Starting Vertex Position
     CounterClockWise,        !- Vertex Entry Direction
-    relative;                !- Coordinate System
+    Relative;                !- Coordinate System
 
   ScheduleTypeLimits,
     Any Number;              !- Name
@@ -156,91 +156,95 @@
     CONTINUOUS;              !- Numeric Type
 
   RunPeriod,
-    ,                        !- Name
+    RUNPERIOD 1,             !- Name
     1,                       !- Begin Month
     1,                       !- Begin Day of Month
-    3,                      !- End Month
+    ,                        !- Begin Year
+    3,                       !- End Month
     31,                      !- End Day of Month
+    ,                        !- End Year
     Monday,                  !- Day of Week for Start Day
     Yes,                     !- Use Weather File Holidays and Special Days
     Yes,                     !- Use Weather File Daylight Saving Period
     No,                      !- Apply Weekend Holiday Rule
     Yes,                     !- Use Weather File Rain Indicators
     Yes,                     !- Use Weather File Snow Indicators
-    1;                       !- Number of Times Runperiod to be Repeated 
+    ;                        !- Treat Weather as Actual
 
   Site:Location,
-  Pittsburgh Allegheny Co Ap_PA_USA Design_Conditions,     !- Location Name
-      40.35,     !- Latitude {N+ S-}
-     -79.92,     !- Longitude {W- E+}
-      -5.00,     !- Time Zone Relative to GMT {GMT+/-}
-     380.00;     !- Elevation {m}
+    Pittsburgh Allegheny Co Ap_PA_USA Design_Conditions,  !- Name
+    40.35,                   !- Latitude {deg}
+    -79.92,                  !- Longitude {deg}
+    -5.00,                   !- Time Zone {hr}
+    380.00;                  !- Elevation {m}
 
   SimulationControl,
     Yes,                     !- Do Zone Sizing Calculation
     Yes,                     !- Do System Sizing Calculation
     No,                      !- Do Plant Sizing Calculation
     No,                      !- Run Simulation for Sizing Periods
-    Yes;                     !- Run Simulation for Weather File Run Periods
+    Yes,                     !- Run Simulation for Weather File Run Periods
+    No,                      !- Do HVAC Sizing Simulation for Sizing Periods
+    1;                       !- Maximum Number of HVAC Sizing Simulation Passes
 
 ! Pittsburgh Allegheny Co Ap_PA_USA Annual Heating 99.6%, MaxDB=-15.4�C
 
-SizingPeriod:DesignDay,
-  Pittsburgh Allegheny Co Ap Ann Htg 99.6% Condns DB,     !- Name
-          1,      !- Month
-         21,      !- Day of Month
-  WinterDesignDay,!- Day Type
-      -15.4,      !- Maximum Dry-Bulb Temperature {C}
-        0.0,      !- Daily Dry-Bulb Temperature Range {C}
- DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
-           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
-    Wetbulb,      !- Humidity Condition Type
-      -15.4,      !- Wetbulb at Maximum Dry-Bulb {C}
-           ,      !- Humidity Indicating Day Schedule Name
-           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
-           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
-     96842.,      !- Barometric Pressure {Pa}
-        4.7,      !- Wind Speed {m/s} design conditions vs. traditional 6.71 m/s (15 mph)
-        240,      !- Wind Direction {Degrees; N=0, S=180}
-         No,      !- Rain {Yes/No}
-         No,      !- Snow on ground {Yes/No}
-         No,      !- Daylight Savings Time Indicator
-  ASHRAEClearSky, !- Solar Model Indicator
-           ,      !- Beam Solar Day Schedule Name
-           ,      !- Diffuse Solar Day Schedule Name
-           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-       0.00;      !- Clearness {0.0 to 1.1}
+  SizingPeriod:DesignDay,
+    Pittsburgh Allegheny Co Ap Ann Htg 99.6% Condns DB,  !- Name
+    1,                       !- Month
+    21,                      !- Day of Month
+    WinterDesignDay,         !- Day Type
+    -15.4,                   !- Maximum Dry-Bulb Temperature {C}
+    0.0,                     !- Daily Dry-Bulb Temperature Range {deltaC}
+    DefaultMultipliers,      !- Dry-Bulb Temperature Range Modifier Type
+    ,                        !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+    Wetbulb,                 !- Humidity Condition Type
+    -15.4,                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+    ,                        !- Humidity Condition Day Schedule Name
+    ,                        !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+    ,                        !- Enthalpy at Maximum Dry-Bulb {J/kg}
+    ,                        !- Daily Wet-Bulb Temperature Range {deltaC}
+    96842.,                  !- Barometric Pressure {Pa}
+    4.7,                     !- Wind Speed {m/s}
+    240,                     !- Wind Direction {deg}
+    No,                      !- Rain Indicator
+    No,                      !- Snow Indicator
+    No,                      !- Daylight Saving Time Indicator
+    ASHRAEClearSky,          !- Solar Model Indicator
+    ,                        !- Beam Solar Day Schedule Name
+    ,                        !- Diffuse Solar Day Schedule Name
+    ,                        !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub) {dimensionless}
+    ,                        !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud) {dimensionless}
+    0.00;                    !- Sky Clearness
 
 ! Pittsburgh Allegheny Co Ap_PA_USA Annual Cooling (DB=>MWB) .4%, MaxDB=32.2�C MWB=22.5�C
 
- SizingPeriod:DesignDay,
-  Pittsburgh Allegheny Co Ap Ann Clg .4% Condns DB=>MWB,     !- Name
-          7,      !- Month
-         21,      !- Day of Month
-  SummerDesignDay,!- Day Type
-       32.2,      !- Maximum Dry-Bulb Temperature {C}
-        9.9,      !- Daily Dry-Bulb Temperature Range {C}
- DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
-           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
-    Wetbulb,      !- Humidity Condition Type
-       22.5,      !- Wetbulb at Maximum Dry-Bulb {C}
-           ,      !- Humidity Indicating Day Schedule Name
-           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
-           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
-     96842.,      !- Barometric Pressure {Pa}
-        4.4,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
-        240,      !- Wind Direction {Degrees; N=0, S=180}
-         No,      !- Rain {Yes/No}
-         No,      !- Snow on ground {Yes/No}
-         No,      !- Daylight Savings Time Indicator
-       ASHRAETau, !- Solar Model Indicator
-           ,      !- Beam Solar Day Schedule Name
-           ,      !- Diffuse Solar Day Schedule Name
-      0.484,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-      1.916;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+  SizingPeriod:DesignDay,
+    Pittsburgh Allegheny Co Ap Ann Clg .4% Condns DB=>MWB,  !- Name
+    7,                       !- Month
+    21,                      !- Day of Month
+    SummerDesignDay,         !- Day Type
+    32.2,                    !- Maximum Dry-Bulb Temperature {C}
+    9.9,                     !- Daily Dry-Bulb Temperature Range {deltaC}
+    DefaultMultipliers,      !- Dry-Bulb Temperature Range Modifier Type
+    ,                        !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+    Wetbulb,                 !- Humidity Condition Type
+    22.5,                    !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+    ,                        !- Humidity Condition Day Schedule Name
+    ,                        !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+    ,                        !- Enthalpy at Maximum Dry-Bulb {J/kg}
+    ,                        !- Daily Wet-Bulb Temperature Range {deltaC}
+    96842.,                  !- Barometric Pressure {Pa}
+    4.4,                     !- Wind Speed {m/s}
+    240,                     !- Wind Direction {deg}
+    No,                      !- Rain Indicator
+    No,                      !- Snow Indicator
+    No,                      !- Daylight Saving Time Indicator
+    ASHRAETau,               !- Solar Model Indicator
+    ,                        !- Beam Solar Day Schedule Name
+    ,                        !- Diffuse Solar Day Schedule Name
+    0.484,                   !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub) {dimensionless}
+    1.916;                   !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud) {dimensionless}
 
   Site:GroundTemperature:BuildingSurface,20.03,20.03,20.13,20.30,20.43,20.52,20.62,20.77,20.78,20.55,20.44,20.20;
 
@@ -613,9 +617,9 @@ SizingPeriod:DesignDay,
   Schedule:Compact,
     BasinHeaterSched,        !- Name
     On/Off,                  !- Schedule Type Limits Name
-    Through: 12/31,          !- Field 9
-    For: AllDays,            !- Field 10
-    Until: 24:00,1.0;        !- Field 11
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until: 24:00,1.0;        !- Field 3
 
   Schedule:Compact,
     ShadeTransSch,           !- Name
@@ -625,44 +629,39 @@ SizingPeriod:DesignDay,
     Until: 24:00,0.0;        !- Field 3
 
   Schedule:Compact,
-    ClothingSch, !- Name
+    ClothingSch,             !- Name
     Any Number,              !- Schedule Type Limits Name
     Through: 4/1,            !- Field 1
     For: AllDays,            !- Field 2
-    Until: 24:00,            !- Field 3
-    1,                       !- Field 4
+    Until: 24:00,1,          !- Field 3
     Through: 9/30,           !- Field 5
     For: AllDays,            !- Field 6
-    Until: 24:00,            !- Field 7
-    .5,                      !- Field 8
+    Until: 24:00,.5,         !- Field 7
     Through: 12/31,          !- Field 9
     For: AllDays,            !- Field 10
-    Until: 24:00,            !- Field 11
-    1;                       !- Field 12
-    
+    Until: 24:00,1;          !- Field 11
+
   Schedule:Compact,
-    ActivitySch, !- Name
+    ActivitySch,             !- Name
     Any Number,              !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
     For: AllDays,            !- Field 2
-    Until: 24:00,            !- Field 3
-    117;                     !- Field 4
-  
+    Until: 24:00,117;        !- Field 3
+
   Schedule:Compact,
-    AirVelocitySch,     !- Name
+    AirVelocitySch,          !- Name
     Any Number,              !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
     For: AllDays,            !- Field 2
-    Until: 24:00,            !- Field 3
-    .137;                    !- Field 4
-    
+    Until: 24:00,.137;       !- Field 3
+
   Schedule:Compact,
-    WorkEffSch,           !- Name
+    WorkEffSch,              !- Name
     Fraction,                !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
     For: AllDays,            !- Field 2
     Until: 24:00,0.0;        !- Field 3
-  
+
   Zone,
     PLENUM-1,                !- Name
     0,                       !- Direction of Relative North {deg}
@@ -859,6 +858,8 @@ SizingPeriod:DesignDay,
     0.2237,                  !- Velocity Term Coefficient
     0;                       !- Velocity Squared Term Coefficient
 
+                             !- Clothing Insulation Calculation Method
+
   People,
     SPACE1-1 People 1,       !- Name
     SPACE1-1,                !- Zone or ZoneList Name
@@ -872,14 +873,13 @@ SizingPeriod:DesignDay,
     ActSchd,                 !- Activity Level Schedule Name
     3.82E-8,                 !- Carbon Dioxide Generation Rate {m3/s-W}
     No,                      !- Enable ASHRAE 55 Comfort Warnings
-    ZoneAveraged ,           !- Mean Radiant Temperature Calculation Type
+    ZoneAveraged,            !- Mean Radiant Temperature Calculation Type
     ,                        !- Surface Name/Angle Factor List Name
     WorkEffSch,              !- Work Efficiency Schedule Name
-    DynamicClothingModelASHRAE55,                        
-                             !- Clothing Insulation Calculation Method
+    DynamicClothingModelASHRAE55,  !- Clothing Insulation Calculation Method
     ,                        !- Clothing Insulation Calculation Method Schedule Name
     ,                        !- Clothing Insulation Schedule Name
-    AirVelocitySch ,         !- Air Velocity Schedule Name
+    AirVelocitySch,          !- Air Velocity Schedule Name
     Fanger;                  !- Thermal Comfort Model 1 Type
 
   Lights,
@@ -931,7 +931,6 @@ SizingPeriod:DesignDay,
     FRONT-1,                 !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     0.50000,                 !- View Factor to Ground
-    ,                        !- Shading Control Name
     ,                        !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
@@ -947,7 +946,6 @@ SizingPeriod:DesignDay,
     FRONT-1,                 !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     0.50000,                 !- View Factor to Ground
-    ,                        !- Shading Control Name
     ,                        !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
@@ -1081,6 +1079,8 @@ SizingPeriod:DesignDay,
     0.2237,                  !- Velocity Term Coefficient
     0;                       !- Velocity Squared Term Coefficient
 
+                             !- Clothing Insulation Calculation Method
+
   People,
     SPACE2-1 People 1,       !- Name
     SPACE2-1,                !- Zone or ZoneList Name
@@ -1094,14 +1094,13 @@ SizingPeriod:DesignDay,
     ActSchd,                 !- Activity Level Schedule Name
     3.82E-8,                 !- Carbon Dioxide Generation Rate {m3/s-W}
     No,                      !- Enable ASHRAE 55 Comfort Warnings
-    ZoneAveraged ,           !- Mean Radiant Temperature Calculation Type
+    ZoneAveraged,            !- Mean Radiant Temperature Calculation Type
     ,                        !- Surface Name/Angle Factor List Name
     WorkEffSch,              !- Work Efficiency Schedule Name
-    DynamicClothingModelASHRAE55,                        
-                             !- Clothing Insulation Calculation Method
+    DynamicClothingModelASHRAE55,  !- Clothing Insulation Calculation Method
     ,                        !- Clothing Insulation Calculation Method Schedule Name
-    ,                        !- Clothing Insulation Schedule Namee
-    AirVelocitySch ,         !- Air Velocity Schedule Name
+    ,                        !- Clothing Insulation Schedule Name
+    AirVelocitySch,          !- Air Velocity Schedule Name
     Fanger;                  !- Thermal Comfort Model 1 Type
 
   Lights,
@@ -1153,7 +1152,6 @@ SizingPeriod:DesignDay,
     RIGHT-1,                 !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     0.50000,                 !- View Factor to Ground
-    ,                        !- Shading Control Name
     ,                        !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
@@ -1267,6 +1265,8 @@ SizingPeriod:DesignDay,
     0.2237,                  !- Velocity Term Coefficient
     0;                       !- Velocity Squared Term Coefficient
 
+                             !- Clothing Insulation Calculation Method
+
   People,
     SPACE3-1 People 1,       !- Name
     SPACE3-1,                !- Zone or ZoneList Name
@@ -1280,14 +1280,13 @@ SizingPeriod:DesignDay,
     ActSchd,                 !- Activity Level Schedule Name
     3.82E-8,                 !- Carbon Dioxide Generation Rate {m3/s-W}
     No,                      !- Enable ASHRAE 55 Comfort Warnings
-    ZoneAveraged ,           !- Mean Radiant Temperature Calculation Type
+    ZoneAveraged,            !- Mean Radiant Temperature Calculation Type
     ,                        !- Surface Name/Angle Factor List Name
     WorkEffSch,              !- Work Efficiency Schedule Name
-    DynamicClothingModelASHRAE55,                        
-                             !- Clothing Insulation Calculation Method
+    DynamicClothingModelASHRAE55,  !- Clothing Insulation Calculation Method
     ,                        !- Clothing Insulation Calculation Method Schedule Name
     ,                        !- Clothing Insulation Schedule Name
-    AirVelocitySch ,         !- Air Velocity Schedule Name
+    AirVelocitySch,          !- Air Velocity Schedule Name
     Fanger;                  !- Thermal Comfort Model 1 Type
 
   Lights,
@@ -1339,7 +1338,6 @@ SizingPeriod:DesignDay,
     BACK-1,                  !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     0.50000,                 !- View Factor to Ground
-    ,                        !- Shading Control Name
     ,                        !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
@@ -1355,7 +1353,6 @@ SizingPeriod:DesignDay,
     BACK-1,                  !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     0.50000,                 !- View Factor to Ground
-    ,                        !- Shading Control Name
     ,                        !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
@@ -1469,6 +1466,8 @@ SizingPeriod:DesignDay,
     0.2237,                  !- Velocity Term Coefficient
     0;                       !- Velocity Squared Term Coefficient
 
+                             !- Clothing Insulation Calculation Method
+
   People,
     SPACE4-1 People 1,       !- Name
     SPACE4-1,                !- Zone or ZoneList Name
@@ -1482,14 +1481,13 @@ SizingPeriod:DesignDay,
     ActSchd,                 !- Activity Level Schedule Name
     3.82E-8,                 !- Carbon Dioxide Generation Rate {m3/s-W}
     No,                      !- Enable ASHRAE 55 Comfort Warnings
-    ZoneAveraged ,           !- Mean Radiant Temperature Calculation Type
+    ZoneAveraged,            !- Mean Radiant Temperature Calculation Type
     ,                        !- Surface Name/Angle Factor List Name
     WorkEffSch,              !- Work Efficiency Schedule Name
-    DynamicClothingModelASHRAE55,                        
-                             !- Clothing Insulation Calculation Method
+    DynamicClothingModelASHRAE55,  !- Clothing Insulation Calculation Method
     ,                        !- Clothing Insulation Calculation Method Schedule Name
     ,                        !- Clothing Insulation Schedule Name
-    AirVelocitySch ,         !- Air Velocity Schedule Name
+    AirVelocitySch,          !- Air Velocity Schedule Name
     Fanger;                  !- Thermal Comfort Model 1 Type
 
   Lights,
@@ -1541,7 +1539,6 @@ SizingPeriod:DesignDay,
     LEFT-1,                  !- Building Surface Name
     ,                        !- Outside Boundary Condition Object
     0.50000,                 !- View Factor to Ground
-    ,                        !- Shading Control Name
     ,                        !- Frame and Divider Name
     1,                       !- Multiplier
     4,                       !- Number of Vertices
@@ -1655,6 +1652,8 @@ SizingPeriod:DesignDay,
     0.2237,                  !- Velocity Term Coefficient
     0;                       !- Velocity Squared Term Coefficient
 
+                             !- Clothing Insulation Calculation Method
+
   People,
     SPACE5-1 People 1,       !- Name
     SPACE5-1,                !- Zone or ZoneList Name
@@ -1668,14 +1667,13 @@ SizingPeriod:DesignDay,
     ActSchd,                 !- Activity Level Schedule Name
     3.82E-8,                 !- Carbon Dioxide Generation Rate {m3/s-W}
     No,                      !- Enable ASHRAE 55 Comfort Warnings
-    ZoneAveraged ,           !- Mean Radiant Temperature Calculation Type
+    ZoneAveraged,            !- Mean Radiant Temperature Calculation Type
     ,                        !- Surface Name/Angle Factor List Name
     WorkEffSch,              !- Work Efficiency Schedule Name
-    DynamicClothingModelASHRAE55,                        
-                             !- Clothing Insulation Calculation Method
+    DynamicClothingModelASHRAE55,  !- Clothing Insulation Calculation Method
     ,                        !- Clothing Insulation Calculation Method Schedule Name
     ,                        !- Clothing Insulation Schedule Name
-    AirVelocitySch ,         !- Air Velocity Schedule Name
+    AirVelocitySch,          !- Air Velocity Schedule Name
     Fanger;                  !- Thermal Comfort Model 1 Type
 
   Lights,
@@ -1827,7 +1825,12 @@ SizingPeriod:DesignDay,
     0,                       !- Heating Design Air Flow Rate {m3/s}
     ,                        !- Heating Maximum Air Flow per Zone Floor Area {m3/s-m2}
     ,                        !- Heating Maximum Air Flow {m3/s}
-    ;                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Design Specification Zone Air Distribution Object Name
+    No,                      !- Account for Dedicated Outdoor Air System
+    NeutralSupplyAir,        !- Dedicated Outdoor Air System Control Strategy
+    autosize,                !- Dedicated Outdoor Air Low Setpoint Temperature for Design {C}
+    autosize;                !- Dedicated Outdoor Air High Setpoint Temperature for Design {C}
 
   DesignSpecification:OutdoorAir,
     SZ DSOA SPACE1-1,        !- Name
@@ -1858,7 +1861,12 @@ SizingPeriod:DesignDay,
     0,                       !- Heating Design Air Flow Rate {m3/s}
     ,                        !- Heating Maximum Air Flow per Zone Floor Area {m3/s-m2}
     ,                        !- Heating Maximum Air Flow {m3/s}
-    ;                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Design Specification Zone Air Distribution Object Name
+    No,                      !- Account for Dedicated Outdoor Air System
+    NeutralSupplyAir,        !- Dedicated Outdoor Air System Control Strategy
+    autosize,                !- Dedicated Outdoor Air Low Setpoint Temperature for Design {C}
+    autosize;                !- Dedicated Outdoor Air High Setpoint Temperature for Design {C}
 
   DesignSpecification:OutdoorAir,
     SZ DSOA SPACE2-1,        !- Name
@@ -1889,7 +1897,12 @@ SizingPeriod:DesignDay,
     0,                       !- Heating Design Air Flow Rate {m3/s}
     ,                        !- Heating Maximum Air Flow per Zone Floor Area {m3/s-m2}
     ,                        !- Heating Maximum Air Flow {m3/s}
-    ;                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Design Specification Zone Air Distribution Object Name
+    No,                      !- Account for Dedicated Outdoor Air System
+    NeutralSupplyAir,        !- Dedicated Outdoor Air System Control Strategy
+    autosize,                !- Dedicated Outdoor Air Low Setpoint Temperature for Design {C}
+    autosize;                !- Dedicated Outdoor Air High Setpoint Temperature for Design {C}
 
   DesignSpecification:OutdoorAir,
     SZ DSOA SPACE3-1,        !- Name
@@ -1920,7 +1933,12 @@ SizingPeriod:DesignDay,
     0,                       !- Heating Design Air Flow Rate {m3/s}
     ,                        !- Heating Maximum Air Flow per Zone Floor Area {m3/s-m2}
     ,                        !- Heating Maximum Air Flow {m3/s}
-    ;                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Design Specification Zone Air Distribution Object Name
+    No,                      !- Account for Dedicated Outdoor Air System
+    NeutralSupplyAir,        !- Dedicated Outdoor Air System Control Strategy
+    autosize,                !- Dedicated Outdoor Air Low Setpoint Temperature for Design {C}
+    autosize;                !- Dedicated Outdoor Air High Setpoint Temperature for Design {C}
 
   DesignSpecification:OutdoorAir,
     SZ DSOA SPACE4-1,        !- Name
@@ -1951,7 +1969,12 @@ SizingPeriod:DesignDay,
     0,                       !- Heating Design Air Flow Rate {m3/s}
     ,                        !- Heating Maximum Air Flow per Zone Floor Area {m3/s-m2}
     ,                        !- Heating Maximum Air Flow {m3/s}
-    ;                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Design Specification Zone Air Distribution Object Name
+    No,                      !- Account for Dedicated Outdoor Air System
+    NeutralSupplyAir,        !- Dedicated Outdoor Air System Control Strategy
+    autosize,                !- Dedicated Outdoor Air Low Setpoint Temperature for Design {C}
+    autosize;                !- Dedicated Outdoor Air High Setpoint Temperature for Design {C}
 
   DesignSpecification:OutdoorAir,
     SZ DSOA SPACE5-1,        !- Name
@@ -1965,7 +1988,7 @@ SizingPeriod:DesignDay,
     sensible,                !- Type of Load to Size On
     autosize,                !- Design Outdoor Air Flow Rate {m3/s}
     1.0,                     !- Central Heating Maximum System Air Flow Ratio
-    -15.0,                     !- Preheat Design Temperature {C}
+    -15.0,                   !- Preheat Design Temperature {C}
     0.008,                   !- Preheat Design Humidity Ratio {kgWater/kgDryAir}
     30.0,                    !- Precool Design Temperature {C}
     0.008,                   !- Precool Design Humidity Ratio {kgWater/kgDryAir}
@@ -2080,21 +2103,21 @@ SizingPeriod:DesignDay,
   Schedule:Compact,
     FanAvailSched,           !- Name
     Fraction,                !- Schedule Type Limits Name
-    Through: 12/31,           !- Field 1
+    Through: 12/31,          !- Field 1
     For: AllDays,            !- Field 2
     Until: 24:00,1.0;        !- Field 3
 
   Schedule:Compact,
     CoolingCoilAvailSched,   !- Name
     Fraction,                !- Schedule Type Limits Name
-    Through: 12/31,           !- Field 1
+    Through: 12/31,          !- Field 1
     For: AllDays,            !- Field 2
     Until: 24:00,1.0;        !- Field 3
 
   Schedule:Compact,
     ReheatCoilAvailSched,    !- Name
     Fraction,                !- Schedule Type Limits Name
-    Through: 12/31,           !- Field 1
+    Through: 12/31,          !- Field 1
     For: AllDays,            !- Field 2
     Until: 24:00,1.0;        !- Field 3
 
@@ -2262,7 +2285,7 @@ SizingPeriod:DesignDay,
     SPACE1-1 In Nodes,       !- Zone Air Inlet Node or NodeList Name
     ,                        !- Zone Air Exhaust Node or NodeList Name
     SPACE1-1 Node,           !- Zone Air Node Name
-    SPACE1-1 Out Node;       !- Zone Return Air Node Name
+    SPACE1-1 Out Node;       !- Zone Return Air Node or NodeList Name
 
   ZoneHVAC:EquipmentConnections,
     SPACE2-1,                !- Zone Name
@@ -2270,7 +2293,7 @@ SizingPeriod:DesignDay,
     SPACE2-1 In Nodes,       !- Zone Air Inlet Node or NodeList Name
     ,                        !- Zone Air Exhaust Node or NodeList Name
     SPACE2-1 Node,           !- Zone Air Node Name
-    SPACE2-1 Out Node;       !- Zone Return Air Node Name
+    SPACE2-1 Out Node;       !- Zone Return Air Node or NodeList Name
 
   ZoneHVAC:EquipmentConnections,
     SPACE3-1,                !- Zone Name
@@ -2278,7 +2301,7 @@ SizingPeriod:DesignDay,
     SPACE3-1 In Nodes,       !- Zone Air Inlet Node or NodeList Name
     ,                        !- Zone Air Exhaust Node or NodeList Name
     SPACE3-1 Node,           !- Zone Air Node Name
-    SPACE3-1 Out Node;       !- Zone Return Air Node Name
+    SPACE3-1 Out Node;       !- Zone Return Air Node or NodeList Name
 
   ZoneHVAC:EquipmentConnections,
     SPACE4-1,                !- Zone Name
@@ -2286,7 +2309,7 @@ SizingPeriod:DesignDay,
     SPACE4-1 In Nodes,       !- Zone Air Inlet Node or NodeList Name
     ,                        !- Zone Air Exhaust Node or NodeList Name
     SPACE4-1 Node,           !- Zone Air Node Name
-    SPACE4-1 Out Node;       !- Zone Return Air Node Name
+    SPACE4-1 Out Node;       !- Zone Return Air Node or NodeList Name
 
   ZoneHVAC:EquipmentConnections,
     SPACE5-1,                !- Zone Name
@@ -2294,7 +2317,7 @@ SizingPeriod:DesignDay,
     SPACE5-1 In Nodes,       !- Zone Air Inlet Node or NodeList Name
     ,                        !- Zone Air Exhaust Node or NodeList Name
     SPACE5-1 Node,           !- Zone Air Node Name
-    SPACE5-1 Out Node;       !- Zone Return Air Node Name
+    SPACE5-1 Out Node;       !- Zone Return Air Node or NodeList Name
 
   ZoneControl:Thermostat,
     SPACE1-1 Control,        !- Name
@@ -2305,7 +2328,7 @@ SizingPeriod:DesignDay,
     ThermostatSetpoint:SingleHeating,  !- Control 2 Object Type
     HeatingSetpoint,         !- Control 2 Name
     ThermostatSetpoint:DualSetpoint,  !- Control 3 Object Type
-    Space1-DualSetP-RL;            !- Control 3 Name
+    Space1-DualSetP-RL;      !- Control 3 Name
 
   ZoneControl:Thermostat,
     SPACE2-1 Control,        !- Name
@@ -2373,44 +2396,59 @@ SizingPeriod:DesignDay,
     Clg-SetP-Sch;            !- Cooling Setpoint Temperature Schedule Name
 
   ThermostatSetpoint:DualSetpoint,
-    Space1-DualSetP-RL,            !- Name
-    Space1-HtgSetP-RL,            !- Heating Setpoint Temperature Schedule Name
-    Space1-ClgSetP-RL;            !- Cooling Setpoint Temperature Schedule Name
-    
+    Space1-DualSetP-RL,      !- Name
+    Space1-HtgSetP-RL,       !- Heating Setpoint Temperature Schedule Name
+    Space1-ClgSetP-RL;       !- Cooling Setpoint Temperature Schedule Name
+
   ZoneHVAC:EquipmentList,
     SPACE1-1 Eq,             !- Name
+    SequentialLoad,          !- Load Distribution Scheme
     ZoneHVAC:AirDistributionUnit,  !- Zone Equipment 1 Object Type
     SPACE1-1 ATU,            !- Zone Equipment 1 Name
     1,                       !- Zone Equipment 1 Cooling Sequence
-    1;                       !- Zone Equipment 1 Heating or No-Load Sequence
+    1,                       !- Zone Equipment 1 Heating or No-Load Sequence
+    ,                        !- Zone Equipment 1 Sequential Cooling Fraction Schedule Name
+    ;                        !- Zone Equipment 1 Sequential Heating Fraction Schedule Name
 
   ZoneHVAC:EquipmentList,
     SPACE2-1 Eq,             !- Name
+    SequentialLoad,          !- Load Distribution Scheme
     ZoneHVAC:AirDistributionUnit,  !- Zone Equipment 1 Object Type
     SPACE2-1 ATU,            !- Zone Equipment 1 Name
     1,                       !- Zone Equipment 1 Cooling Sequence
-    1;                       !- Zone Equipment 1 Heating or No-Load Sequence
+    1,                       !- Zone Equipment 1 Heating or No-Load Sequence
+    ,                        !- Zone Equipment 1 Sequential Cooling Fraction Schedule Name
+    ;                        !- Zone Equipment 1 Sequential Heating Fraction Schedule Name
 
   ZoneHVAC:EquipmentList,
     SPACE3-1 Eq,             !- Name
+    SequentialLoad,          !- Load Distribution Scheme
     ZoneHVAC:AirDistributionUnit,  !- Zone Equipment 1 Object Type
     SPACE3-1 ATU,            !- Zone Equipment 1 Name
     1,                       !- Zone Equipment 1 Cooling Sequence
-    1;                       !- Zone Equipment 1 Heating or No-Load Sequence
+    1,                       !- Zone Equipment 1 Heating or No-Load Sequence
+    ,                        !- Zone Equipment 1 Sequential Cooling Fraction Schedule Name
+    ;                        !- Zone Equipment 1 Sequential Heating Fraction Schedule Name
 
   ZoneHVAC:EquipmentList,
     SPACE4-1 Eq,             !- Name
+    SequentialLoad,          !- Load Distribution Scheme
     ZoneHVAC:AirDistributionUnit,  !- Zone Equipment 1 Object Type
     SPACE4-1 ATU,            !- Zone Equipment 1 Name
     1,                       !- Zone Equipment 1 Cooling Sequence
-    1;                       !- Zone Equipment 1 Heating or No-Load Sequence
+    1,                       !- Zone Equipment 1 Heating or No-Load Sequence
+    ,                        !- Zone Equipment 1 Sequential Cooling Fraction Schedule Name
+    ;                        !- Zone Equipment 1 Sequential Heating Fraction Schedule Name
 
   ZoneHVAC:EquipmentList,
     SPACE5-1 Eq,             !- Name
+    SequentialLoad,          !- Load Distribution Scheme
     ZoneHVAC:AirDistributionUnit,  !- Zone Equipment 1 Object Type
     SPACE5-1 ATU,            !- Zone Equipment 1 Name
     1,                       !- Zone Equipment 1 Cooling Sequence
-    1;                       !- Zone Equipment 1 Heating or No-Load Sequence
+    1,                       !- Zone Equipment 1 Heating or No-Load Sequence
+    ,                        !- Zone Equipment 1 Sequential Cooling Fraction Schedule Name
+    ;                        !- Zone Equipment 1 Sequential Heating Fraction Schedule Name
 
   ZoneHVAC:AirDistributionUnit,
     SPACE1-1 ATU,            !- Name
@@ -2452,14 +2490,14 @@ SizingPeriod:DesignDay,
     0.1,                     !- Constant Minimum Air Flow Fraction
     ,                        !- Fixed Minimum Air Flow Rate {m3/s}
     ,                        !- Minimum Air Flow Fraction Schedule Name
-    Coil:Heating:Electric,       !- Reheat Coil Object Type
+    Coil:Heating:Electric,   !- Reheat Coil Object Type
     SPACE1-1 Zone Coil,      !- Reheat Coil Name
     0.0,                     !- Maximum Hot Water or Steam Flow Rate {m3/s}
     0.0,                     !- Minimum Hot Water or Steam Flow Rate {m3/s}
     SPACE1-1 In Node,        !- Air Outlet Node Name
     0.001,                   !- Convergence Tolerance
-    Reverse,       !- Damper Heating Action
-    ,                !- Maximum Flow per Zone Floor Area During Reheat {m3/s-m2}
+    Reverse,                 !- Damper Heating Action
+    ,                        !- Maximum Flow per Zone Floor Area During Reheat {m3/s-m2}
     AutoCalculate,           !- Maximum Flow Fraction During Reheat
     ,                        !- Maximum Reheat Air Temperature {C}
     ZoneMinOARequirements;   !- Design Specification Outdoor Air Object Name
@@ -2473,7 +2511,7 @@ SizingPeriod:DesignDay,
     0.000508,                !- Outdoor Air Flow per Zone Floor Area {m3/s-m2}
     ,                        !- Outdoor Air Flow per Zone {m3/s}
     ,                        !- Outdoor Air Flow Air Changes per Hour {1/hr}
-    Min OARequirements Sched;!- Outdoor Air Flow Rate Fraction Schedule Name
+    Min OARequirements Sched;!- Outdoor Air Schedule Name
 
   Schedule:Compact,
     Min OARequirements Sched,!- Name
@@ -2494,14 +2532,14 @@ SizingPeriod:DesignDay,
     0.1,                     !- Constant Minimum Air Flow Fraction
     ,                        !- Fixed Minimum Air Flow Rate {m3/s}
     ,                        !- Minimum Air Flow Fraction Schedule Name
-    Coil:Heating:Electric,       !- Reheat Coil Object Type
+    Coil:Heating:Electric,   !- Reheat Coil Object Type
     SPACE2-1 Zone Coil,      !- Reheat Coil Name
     0.0,                     !- Maximum Hot Water or Steam Flow Rate {m3/s}
     0.0,                     !- Minimum Hot Water or Steam Flow Rate {m3/s}
     SPACE2-1 In Node,        !- Air Outlet Node Name
     0.001,                   !- Convergence Tolerance
-    Reverse,       !- Damper Heating Action
-    ,                !- Maximum Flow per Zone Floor Area During Reheat {m3/s-m2}
+    Reverse,                 !- Damper Heating Action
+    ,                        !- Maximum Flow per Zone Floor Area During Reheat {m3/s-m2}
     ,                        !- Maximum Flow Fraction During Reheat
     ,                        !- Maximum Reheat Air Temperature {C}
     ZoneMinOARequirements;   !- Design Specification Outdoor Air Object Name
@@ -2516,14 +2554,14 @@ SizingPeriod:DesignDay,
     0.1,                     !- Constant Minimum Air Flow Fraction
     ,                        !- Fixed Minimum Air Flow Rate {m3/s}
     ,                        !- Minimum Air Flow Fraction Schedule Name
-    Coil:Heating:Electric,       !- Reheat Coil Object Type
+    Coil:Heating:Electric,   !- Reheat Coil Object Type
     SPACE3-1 Zone Coil,      !- Reheat Coil Name
     0.0,                     !- Maximum Hot Water or Steam Flow Rate {m3/s}
     0.0,                     !- Minimum Hot Water or Steam Flow Rate {m3/s}
     SPACE3-1 In Node,        !- Air Outlet Node Name
     0.001,                   !- Convergence Tolerance
-    Reverse,       !- Damper Heating Action
-    ,                !- Maximum Flow per Zone Floor Area During Reheat {m3/s-m2}
+    Reverse,                 !- Damper Heating Action
+    ,                        !- Maximum Flow per Zone Floor Area During Reheat {m3/s-m2}
     ,                        !- Maximum Flow Fraction During Reheat
     ,                        !- Maximum Reheat Air Temperature {C}
     ZoneMinOARequirements;   !- Design Specification Outdoor Air Object Name
@@ -2538,14 +2576,14 @@ SizingPeriod:DesignDay,
     0.1,                     !- Constant Minimum Air Flow Fraction
     ,                        !- Fixed Minimum Air Flow Rate {m3/s}
     ,                        !- Minimum Air Flow Fraction Schedule Name
-    Coil:Heating:Electric,       !- Reheat Coil Object Type
+    Coil:Heating:Electric,   !- Reheat Coil Object Type
     SPACE4-1 Zone Coil,      !- Reheat Coil Name
     0.0,                     !- Maximum Hot Water or Steam Flow Rate {m3/s}
     0.0,                     !- Minimum Hot Water or Steam Flow Rate {m3/s}
     SPACE4-1 In Node,        !- Air Outlet Node Name
     0.001,                   !- Convergence Tolerance
-    Reverse,       !- Damper Heating Action
-    ,                !- Maximum Flow per Zone Floor Area During Reheat {m3/s-m2}
+    Reverse,                 !- Damper Heating Action
+    ,                        !- Maximum Flow per Zone Floor Area During Reheat {m3/s-m2}
     ,                        !- Maximum Flow Fraction During Reheat
     ,                        !- Maximum Reheat Air Temperature {C}
     ZoneMinOARequirements;   !- Design Specification Outdoor Air Object Name
@@ -2560,14 +2598,14 @@ SizingPeriod:DesignDay,
     0.1,                     !- Constant Minimum Air Flow Fraction
     ,                        !- Fixed Minimum Air Flow Rate {m3/s}
     ,                        !- Minimum Air Flow Fraction Schedule Name
-    Coil:Heating:Electric,       !- Reheat Coil Object Type
+    Coil:Heating:Electric,   !- Reheat Coil Object Type
     SPACE5-1 Zone Coil,      !- Reheat Coil Name
     0.0,                     !- Maximum Hot Water or Steam Flow Rate {m3/s}
     0.0,                     !- Minimum Hot Water or Steam Flow Rate {m3/s}
     SPACE5-1 In Node,        !- Air Outlet Node Name
     0.001,                   !- Convergence Tolerance
-    Reverse,       !- Damper Heating Action
-    ,                !- Maximum Flow per Zone Floor Area During Reheat {m3/s-m2}
+    Reverse,                 !- Damper Heating Action
+    ,                        !- Maximum Flow per Zone Floor Area During Reheat {m3/s-m2}
     ,                        !- Maximum Flow Fraction During Reheat
     ,                        !- Maximum Reheat Air Temperature {C}
     ZoneMinOARequirements;   !- Design Specification Outdoor Air Object Name
@@ -2575,7 +2613,7 @@ SizingPeriod:DesignDay,
   Coil:Heating:Electric,
     SPACE1-1 Zone Coil,      !- Name
     ReheatCoilAvailSched,    !- Availability Schedule Name
-    0.98,                     !- Efficiency
+    0.98,                    !- Efficiency
     autosize,                !- Nominal Capacity {W}
     SPACE1-1 Zone Coil Air In Node,  !- Air Inlet Node Name
     SPACE1-1 In Node;        !- Air Outlet Node Name
@@ -2583,7 +2621,7 @@ SizingPeriod:DesignDay,
   Coil:Heating:Electric,
     SPACE2-1 Zone Coil,      !- Name
     ReheatCoilAvailSched,    !- Availability Schedule Name
-    0.98,                     !- Efficiency
+    0.98,                    !- Efficiency
     autosize,                !- Nominal Capacity {W}
     SPACE2-1 Zone Coil Air In Node,  !- Air Inlet Node Name
     SPACE2-1 In Node;        !- Air Outlet Node Name
@@ -2591,7 +2629,7 @@ SizingPeriod:DesignDay,
   Coil:Heating:Electric,
     SPACE3-1 Zone Coil,      !- Name
     ReheatCoilAvailSched,    !- Availability Schedule Name
-    0.98,                     !- Efficiency
+    0.98,                    !- Efficiency
     autosize,                !- Nominal Capacity {W}
     SPACE3-1 Zone Coil Air In Node,  !- Air Inlet Node Name
     SPACE3-1 In Node;        !- Air Outlet Node Name
@@ -2599,7 +2637,7 @@ SizingPeriod:DesignDay,
   Coil:Heating:Electric,
     SPACE4-1 Zone Coil,      !- Name
     ReheatCoilAvailSched,    !- Availability Schedule Name
-    0.98,                     !- Burner Efficiency
+    0.98,                    !- Efficiency
     autosize,                !- Nominal Capacity {W}
     SPACE4-1 Zone Coil Air In Node,  !- Air Inlet Node Name
     SPACE4-1 In Node;        !- Air Outlet Node Name
@@ -2607,7 +2645,7 @@ SizingPeriod:DesignDay,
   Coil:Heating:Electric,
     SPACE5-1 Zone Coil,      !- Name
     ReheatCoilAvailSched,    !- Availability Schedule Name
-    0.98,                     !- Burner Efficiency
+    0.98,                    !- Efficiency
     autosize,                !- Nominal Capacity {W}
     SPACE5-1 Zone Coil Air In Node,  !- Air Inlet Node Name
     SPACE5-1 In Node;        !- Air Outlet Node Name
@@ -2681,7 +2719,7 @@ SizingPeriod:DesignDay,
     DX Cooling Coil System 1,!- Component 2 Name
     Mixed Air Node 1,        !- Component 2 Inlet Node Name
     Main Cooling Coil 1 Outlet Node,  !- Component 2 Outlet Node Name
-    Coil:Heating:Electric,       !- Component 3 Object Type
+    Coil:Heating:Electric,   !- Component 3 Object Type
     Main Heating Coil 1,     !- Component 3 Name
     Main Cooling Coil 1 Outlet Node,  !- Component 3 Inlet Node Name
     Main Heating Coil 1 Outlet Node,  !- Component 3 Outlet Node Name
@@ -2726,7 +2764,7 @@ SizingPeriod:DesignDay,
     Main Cooling Coil 1,     !- Name
     CoolingCoilAvailSched,   !- Availability Schedule Name
     autosize,                !- High Speed Gross Rated Total Cooling Capacity {W}
-    autosize,                     !- High Speed Rated Sensible Heat Ratio
+    autosize,                !- High Speed Rated Sensible Heat Ratio
     3.0,                     !- High Speed Gross Rated Cooling COP {W/W}
     autosize,                !- High Speed Rated Air Flow Rate {m3/s}
     450,                     !- Unit Internal Static Air Pressure {Pa}
@@ -2738,13 +2776,14 @@ SizingPeriod:DesignDay,
     PackagedRatedCoolEIRFFlow,  !- Energy Input Ratio Function of Flow Fraction Curve Name
     VarSpeedCyclingPLFFPLR,  !- Part Load Fraction Correlation Curve Name
     autosize,                !- Low Speed Gross Rated Total Cooling Capacity {W}
-    autosize,                     !- Low Speed Gross Rated Sensible Heat Ratio
+    autosize,                !- Low Speed Gross Rated Sensible Heat Ratio
     4.2,                     !- Low Speed Gross Rated Cooling COP {W/W}
     autosize,                !- Low Speed Rated Air Flow Rate {m3/s}
     VarSpeedCoolCapLSFT,     !- Low Speed Total Cooling Capacity Function of Temperature Curve Name
     VarSpeedCoolEIRLSFT,     !- Low Speed Energy Input Ratio Function of Temperature Curve Name
     Main Cooling Coil 1 Condenser Node,  !- Condenser Air Inlet Node Name
     EvaporativelyCooled,     !- Condenser Type
+    ,                        !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {C}
     ,                        !- High Speed Evaporative Condenser Effectiveness {dimensionless}
     ,                        !- High Speed Evaporative Condenser Air Flow Rate {m3/s}
     ,                        !- High Speed Evaporative Condenser Pump Rated Power Consumption {W}
@@ -2764,7 +2803,7 @@ SizingPeriod:DesignDay,
   Coil:Heating:Electric,
     Main heating Coil 1,     !- Name
     ReheatCoilAvailSched,    !- Availability Schedule Name
-    0.98,                     !- Burner Efficiency
+    0.98,                    !- Efficiency
     autosize,                !- Nominal Capacity {W}
     Main Cooling Coil 1 Outlet Node,  !- Air Inlet Node Name
     Main Heating Coil 1 Outlet Node,  !- Air Outlet Node Name
@@ -2812,8 +2851,8 @@ SizingPeriod:DesignDay,
     Supply Air Temp Manager 1,  !- Name
     Temperature,             !- Control Variable
     VAV Sys 1,               !- HVAC Air Loop Name
-    12,                      !- Minimum setpoint temperature
-    18,                      !- Maximum setpoint temperature
+    12,                      !- Minimum Setpoint Temperature {C}
+    18,                      !- Maximum Setpoint Temperature {C}
     MaximumTemperature,      !- Strategy
     Supply Air Temp Nodes 1; !- Setpoint Node or NodeList Name
 
@@ -2834,54 +2873,80 @@ SizingPeriod:DesignDay,
     Mixed Air Node 1,        !- Node 1 Name
     Main Cooling Coil 1 Outlet Node,  !- Node 2 Name
     Main Heating Coil 1 Outlet Node;  !- Node 3 Name
-    
+
   !-External Interface
-  ExternalInterface, !- Object to activate the external interface
-    PtolemyServer; !- Name of external interface
-    
-  ExternalInterface:Schedule ,
-    Space1-HtgSetP-RL, !- Name
-    Temperature , !- ScheduleType
-    21; !- Initial value, used during warm-up
-    
-  ExternalInterface:Schedule ,
-    Space1-ClgSetP-RL, !- Name
-    Temperature , !- ScheduleType
-    25; !- Initial value, used during warm-up
-    
-  !- Site weather output  
+
+  ExternalInterface,
+    PtolemyServer;           !- Name of External Interface
+
+  ExternalInterface:Schedule,
+    Space1-HtgSetP-RL,       !- Name
+    Temperature,             !- Schedule Type Limits Name
+    21;                      !- Initial Value
+
+  ExternalInterface:Schedule,
+    Space1-ClgSetP-RL,       !- Name
+    Temperature,             !- Schedule Type Limits Name
+    25;                      !- Initial Value
+
+  !- Site weather output
+
   Output:Variable,*,Site Outdoor Air Drybulb Temperature,timestep;
+
   Output:Variable,*,Site Outdoor Air Relative Humidity,timestep;
-  Output:Variable,*,Site Wind Speed, timestep;
-  Output:Variable,*,Site Wind Direction, timestep;
+
+  Output:Variable,*,Site Wind Speed,timestep;
+
+  Output:Variable,*,Site Wind Direction,timestep;
+
   Output:Variable,*,Site Diffuse Solar Radiation Rate per Area,timestep;
+
   Output:Variable,*,Site Direct Solar Radiation Rate per Area,timestep;
+
   !- Building room 1 output
+
   Output:Variable,SPACE1-1,Zone Air Temperature,timestep;
+
   Output:Variable,SPACE1-1,Zone Air Relative Humidity,timestep;
+
   Output:Variable,SPACE1-1,Zone Thermostat Heating Setpoint Temperature,timestep;
+
   Output:Variable,SPACE1-1,Zone Thermostat Cooling Setpoint Temperature,timestep;
-  Output:Variable,SPACE1-1 PEOPLE 1,Zone Thermal Comfort Fanger Model PMV,timestep; 
-  Output:Variable,SPACE1-1,Zone People Occupant Count, timestep;
+
+  Output:Variable,SPACE1-1 PEOPLE 1,Zone Thermal Comfort Fanger Model PMV,timestep;
+
+  Output:Variable,SPACE1-1,Zone People Occupant Count,timestep;
+
   Output:Variable,SPACE1-1 PEOPLE 1,Zone Thermal Comfort Fanger Model PPD,timestep;
+
   Output:Variable,SPACE1-1 PEOPLE 1,Zone Thermal Comfort Clothing Value,timestep;
+
   Output:Variable,SPACE1-1 PEOPLE 1,Zone Thermal Comfort Mean Radiant Temperature,timestep;
+
   Output:Variable,*,People Air Temperature,timestep;
+
   !- Building HVAC output
-  Output:Variable,*,Facility Total HVAC Electric Demand Power,timestep;
-  
+
+  Output:Variable,*,Facility Total HVAC Electricity Demand Rate,timestep;
+
   !- Debug
-  Output:Variable,SPACE1-1 IN NODE,System Node Temperature, timestep;
-  Output:Variable,VAV SYS 1 OUTLET NODE,System Node Temperature, timestep;
-  Output:Variable,SPACE1-1 IN NODE,System Node Mass Flow Rate, timestep;
-  Output:Variable,VAV SYS 1 OUTLET NODE,System Node Mass Flow Rate, timestep;
+
+  Output:Variable,SPACE1-1 IN NODE,System Node Temperature,timestep;
+
+  Output:Variable,VAV SYS 1 OUTLET NODE,System Node Temperature,timestep;
+
+  Output:Variable,SPACE1-1 IN NODE,System Node Mass Flow Rate,timestep;
+
+  Output:Variable,VAV SYS 1 OUTLET NODE,System Node Mass Flow Rate,timestep;
 
   Output:VariableDictionary,Regular;
+
   Output:Surfaces:Drawing,dxf;
-  
+
   OutputControl:Table:Style,
     HTML,                    !- Column Separator
-    ;               !- Unit Conversion
+    ;                        !- Unit Conversion
 
   Output:Table:SummaryReports,
     AllSummary;              !- Report 1 Name
+

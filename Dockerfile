@@ -4,9 +4,9 @@ ARG UBUNTU_VERSION=18.04
 FROM ubuntu:${UBUNTU_VERSION}
 
 # Arguments for EnergyPlus version (default values of version 8.6.0 if is not specified)
-ARG ENERGYPLUS_VERSION=8.6.0
-ARG ENERGYPLUS_INSTALL_VERSION=8-6-0
-ARG ENERGYPLUS_SHA=198c6a3cff
+ARG ENERGYPLUS_VERSION=9.5.0
+ARG ENERGYPLUS_INSTALL_VERSION=9-5-0
+ARG ENERGYPLUS_SHA=de239b2e5f
 
 # Argument for Energym extras libraries
 ARG ENERGYM_EXTRAS=[extras]
@@ -20,9 +20,9 @@ ENV ENERGYPLUS_INSTALL_VERSION=$ENERGYPLUS_INSTALL_VERSION
 ENV EPLUS_PATH=/usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION
 
 # Downloading from Github
-# e.g. https://github.com/NREL/EnergyPlus/releases/download/v8.3.0/EnergyPlus-8.3.0-6d97d074ea-Linux-x86_64.sh
+# e.g. https://github.com/NREL/EnergyPlus/releases/download/v9.5.0/EnergyPlus-9.5.0-de239b2e5f-Linux-Ubuntu18.04-x86_64.sh
 ENV ENERGYPLUS_DOWNLOAD_BASE_URL https://github.com/NREL/EnergyPlus/releases/download/$ENERGYPLUS_TAG
-ENV ENERGYPLUS_DOWNLOAD_FILENAME EnergyPlus-$ENERGYPLUS_VERSION-$ENERGYPLUS_SHA-Linux-x86_64.sh
+ENV ENERGYPLUS_DOWNLOAD_FILENAME EnergyPlus-$ENERGYPLUS_VERSION-$ENERGYPLUS_SHA-Linux-Ubuntu18.04-x86_64.sh
 ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_FILENAME
 
 # Collapse the update of packages, download and installation into one command

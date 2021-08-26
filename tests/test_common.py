@@ -43,7 +43,7 @@ def test_parse_variables(variable_path):
                             'Zone Thermostat Heating Setpoint Temperature (SPACE1-1)', 'Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)',
                             'Zone Air Temperature (SPACE1-1)', 'Zone Thermal Comfort Mean Radiant Temperature (SPACE1-1 PEOPLE 1)', 'Zone Air Relative Humidity (SPACE1-1)',
                             'Zone Thermal Comfort Clothing Value (SPACE1-1 PEOPLE 1)', 'Zone Thermal Comfort Fanger Model PPD (SPACE1-1 PEOPLE 1)', 'Zone People Occupant Count (SPACE1-1)',
-                            'People Air Temperature (SPACE1-1 PEOPLE 1)', 'Facility Total HVAC Electric Demand Power (Whole Building)']
+                            'People Air Temperature (SPACE1-1 PEOPLE 1)', 'Facility Total HVAC Electricity Demand Rate (Whole Building)']
     action_expected = ['Space1-HtgSetP-RL', 'Space1-ClgSetP-RL']
 
     variables = common.parse_variables(variable_path)

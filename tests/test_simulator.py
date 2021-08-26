@@ -181,7 +181,7 @@ def test_disassembleMsg(simulator):
 
 def test_get_eplus_run_info(simulator, idf_path):
     info = simulator._get_eplus_run_info(idf_path)
-    assert info == (1, 1, 3, 31, 0, 4)
+    assert info == (1, 1, 0, 3, 31, 0, 0, 4)
 
 
 def test_get_one_epi_len(simulator):

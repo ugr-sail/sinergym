@@ -10,6 +10,7 @@ Funcionalities:
 
 import gym
 import os
+import opyplus
 import pkg_resources
 import numpy as np
 
@@ -73,7 +74,8 @@ class EplusEnv(gym.Env):
         )
 
         # Utils for getting time info, weather and variable names
-        self.epm = Epm.from_idf(self.idf_path)
+        idd = opyplus.Idd(os.path.join(eplus_path, 'Energy+.idd'))
+        self.epm = Epm.from_idf(self.idf_path, idd_or_version=idd)
         self.variables = parse_variables(self.variables_path)
         self.weather_data = WeatherData.from_epw(self.weather_path)
 
@@ -174,7 +176,7 @@ class EplusEnv(gym.Env):
         temp_values = [value for key, value in obs_dict.items(
         ) if key.startswith('Zone Air Temperature')]
 
-        power = obs_dict['Facility Total HVAC Electric Demand Power (Whole Building)']
+        power = obs_dict['Facility Total HVAC Electricity Demand Rate (Whole Building)']
         reward, terms = self.cls_reward.calculate(
             power, temp_values, time_info[1], time_info[0])
 

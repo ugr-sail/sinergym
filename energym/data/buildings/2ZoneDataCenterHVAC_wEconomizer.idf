@@ -15,8 +15,8 @@
 !
 ! Location:                Chicago, IL
 !
-! Design Days:             Chicago Ohare Intl Ap IL USA Annual Heating 99%, MaxDB=-16.6°C
-!                          Chicago Ohare Intl Ap IL USA Annual Cooling (DB=>MWB) 1%, MaxDB=31.6°C MWB=23°C
+! Design Days:             Chicago Ohare Intl Ap IL USA Annual Heating 99%, MaxDB=-16.6ï¿½C
+!                          Chicago Ohare Intl Ap IL USA Annual Cooling (DB=>MWB) 1%, MaxDB=31.6ï¿½C MWB=23ï¿½C
 !
 ! Run Period (Weather File): 1/1 - 12/31.
 !
@@ -111,7 +111,7 @@
 ! Environmental Emissions:        None
 ! Utility Tariffs:                None
 
-  Version,8.6;
+  Version,9.5;
 
   Timestep,4;
 
@@ -119,7 +119,7 @@
     Simple One Zone (Wireframe DXF),  !- Name
     0.0000000E+00,           !- North Axis {deg}
     Suburbs,                 !- Terrain
-    .04,                     !- Loads Convergence Tolerance Value
+    .04,                     !- Loads Convergence Tolerance Value {W}
     .004,                    !- Temperature Convergence Tolerance Value {deltaC}
     MinimalShadowing,        !- Solar Distribution
     30,                      !- Maximum Number of Warmup Days
@@ -136,20 +136,25 @@
     Yes,                     !- Do System Sizing Calculation
     Yes,                     !- Do Plant Sizing Calculation
     No,                      !- Run Simulation for Sizing Periods
-    Yes;                     !- Run Simulation for Weather File Run Periods
+    Yes,                     !- Run Simulation for Weather File Run Periods
+    No,                      !- Do HVAC Sizing Simulation for Sizing Periods
+    1;                       !- Maximum Number of HVAC Sizing Simulation Passes
 
   RunPeriod,
-    ,                        !- Name
+    RUNPERIOD 1,             !- Name
     1,                       !- Begin Month
     1,                       !- Begin Day of Month
-    12,                       !- End Month
+    ,                        !- Begin Year
+    12,                      !- End Month
     31,                      !- End Day of Month
-    Monday,                 !- Day of Week for Start Day
+    ,                        !- End Year
+    Monday,                  !- Day of Week for Start Day
     Yes,                     !- Use Weather File Holidays and Special Days
     Yes,                     !- Use Weather File Daylight Saving Period
     No,                      !- Apply Weekend Holiday Rule
     Yes,                     !- Use Weather File Rain Indicators
-    Yes;                     !- Use Weather File Snow Indicators
+    Yes,                     !- Use Weather File Snow Indicators
+    ;                        !- Treat Weather as Actual
 
   Site:Location,
     CHICAGO_IL_USA TMY2-94846,  !- Name
@@ -158,7 +163,7 @@
     -6.00,                   !- Time Zone {hr}
     190.00;                  !- Elevation {m}
 
-! CHICAGO_IL_USA Annual Heating 99% Design Conditions DB, MaxDB= -17.3°C
+! CHICAGO_IL_USA Annual Heating 99% Design Conditions DB, MaxDB= -17.3ï¿½C
 
   SizingPeriod:DesignDay,
     CHICAGO_IL_USA Annual Heating 99% Design Conditions DB,  !- Name
@@ -188,7 +193,7 @@
     ,                        !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud) {dimensionless}
     0.0;                     !- Sky Clearness
 
-! CHICAGO_IL_USA Annual Cooling 1% Design Conditions, MaxDB=  31.5°C MCWB=  23.0°C
+! CHICAGO_IL_USA Annual Cooling 1% Design Conditions, MaxDB=  31.5ï¿½C MCWB=  23.0ï¿½C
 
   SizingPeriod:DesignDay,
     CHICAGO_IL_USA Annual Cooling 1% Design Conditions DB/MCWB,  !- Name
@@ -791,7 +796,7 @@
     West Zone Inlets,        !- Zone Air Inlet Node or NodeList Name
     ,                        !- Zone Air Exhaust Node or NodeList Name
     West Zone Air Node,      !- Zone Air Node Name
-    West Zone Return Node;   !- Zone Return Air Node Name
+    West Zone Return Node;   !- Zone Return Air Node or NodeList Name
 
   NodeList,
     West Zone Inlets,        !- Name
@@ -799,10 +804,13 @@
 
   ZoneHVAC:EquipmentList,
     West Zone Equipment,     !- Name
+    SequentialLoad,          !- Load Distribution Scheme
     ZoneHVAC:AirDistributionUnit,  !- Zone Equipment 1 Object Type
     West Zone ATU,           !- Zone Equipment 1 Name
     1,                       !- Zone Equipment 1 Cooling Sequence
-    1;                       !- Zone Equipment 1 Heating or No-Load Sequence
+    1,                       !- Zone Equipment 1 Heating or No-Load Sequence
+    ,                        !- Zone Equipment 1 Sequential Cooling Fraction Schedule Name
+    ;                        !- Zone Equipment 1 Sequential Heating Fraction Schedule Name
 
   ZoneHVAC:AirDistributionUnit,
     West Zone ATU,           !- Name
@@ -1054,155 +1062,361 @@
     50.0;                    !- Dry Operation Maximum Limit Outdoor Drybulb Temperature
 
    !Munters Oasis Wet Op Eff Mod Fac,
+!  Table:OneIndependentVariable,
+!    IECEffWBFlowMod,        !- Name
+!    Cubic,                  !- Curve Type
+!    LagrangeInterpolationLinearExtrapolation,  !- Interpolation Method
+!    0.0,                    !- Minimum Value of X
+!    1.875,                  !- Maximum Value of X
+!    0.0,                    !- Minimum Table Output
+!    1.15,                   !- Maximum Table Output
+!    Dimensionless,          !- Input Unit Type for X
+!    Dimensionless,          !- Output Unit Type
+!    ,                       !- Normalization Reference
+!    0.0,                    !- X Value #1
+!    0.0,                    !- Output Value #1
+!    0.125,                  !- X Value #2
+!    0.503563817,            !- Output Value #2
+!    0.250,                  !- X Value #3
+!    0.669042545,            !- Output Value #3
+!    0.375,                  !- X Value #4
+!    0.765841395,            !- Output Value #4
+!    0.500,                  !- X Value #5
+!    0.834521272,            !- Output Value #5
+!    0.625,                  !- X Value #6
+!    0.887793524,            !- Output Value #6
+!    0.750,                  !- X Value #7
+!    0.931320123,            !- Output Value #7
+!    0.875,                  !- <none>
+!    0.968121338,            !- <none>
+!    1.000,                  !- <none>
+!    1.0,                    !- <none>
+!    1.125,                  !- <none>
+!    1.028118973,            !- <none>
+!    1.25,                   !- <none>
+!    1.053272252,            !- <none>
+!    1.375,                  !- <none>
+!    1.07602616,             !- <none>
+!    1.500,                  !- <none>
+!    1.09679885,             !- <none>
+!    1.625,                  !- <none>
+!    1.115907873,            !- <none>
+!    1.750,                  !- <none>
+!    1.133600065,            !- <none>
+!    1.875,                  !- <none>
+!    1.150071102;            !- <none>
 
-  Table:OneIndependentVariable,
-    IECEffWBFlowMod,         !- Name
-    Cubic,                   !- Curve Type
-    LagrangeInterpolationLinearExtrapolation,  !- Interpolation Method
-    0.0,                     !- Minimum Value of X
-    1.875,                   !- Maximum Value of X
-    0.0,                     !- Minimum Table Output
-    1.15,                    !- Maximum Table Output
-    Dimensionless,           !- Input Unit Type for X
-    Dimensionless,           !- Output Unit Type
-    ,                        !- Normalization Reference
-    0.0,                     !- X Value #1
-    0.0,                     !- Output Value #1
-    0.125,                   !- X Value #2
-    0.503563817,             !- Output Value #2
-    0.250,                   !- X Value #3
-    0.669042545,             !- Output Value #3
-    0.375,                   !- X Value #4
-    0.765841395,             !- Output Value #4
-    0.500,                   !- X Value #5
-    0.834521272,             !- Output Value #5
-    0.625,                   !- X Value #6
-    0.887793524,             !- Output Value #6
-    0.750,                   !- X Value #7
-    0.931320123,             !- Output Value #7
+  Table:IndependentVariable,
+    IECEffWBFlowMod_IndependentVariable1,  !- Name
+    Cubic,                   !- Interpolation Method
+    Linear,                  !- Extrapolation Method
+    0.0,                     !- Minimum Value
+    1.875,                   !- Maximum Value
+    ,                        !- Normalization Reference Value
+    Dimensionless,           !- Unit Type
+    ,                        !- External File Name
+    ,                        !- External File Column Number
+    ,                        !- External File Starting Row Number
+    0.0,                     !- Value 1
+    0.125,                   !- Value 2
+    0.250,                   !- <none>
+    0.375,                   !- <none>
+    0.500,                   !- <none>
+    0.625,                   !- <none>
+    0.750,                   !- <none>
     0.875,                   !- <none>
-    0.968121338,             !- <none>
     1.000,                   !- <none>
-    1.0,                     !- <none>
     1.125,                   !- <none>
-    1.028118973,             !- <none>
     1.25,                    !- <none>
-    1.053272252,             !- <none>
     1.375,                   !- <none>
-    1.07602616,              !- <none>
     1.500,                   !- <none>
-    1.09679885,              !- <none>
     1.625,                   !- <none>
-    1.115907873,             !- <none>
     1.750,                   !- <none>
+    1.875;                   !- Extended Field
+
+  Table:IndependentVariableList,
+    IECEffWBFlowMod_IndependentVariableList,  !- Name
+    IECEffWBFlowMod_IndependentVariable1;  !- Independent Variable 1 Name
+
+  Table:Lookup,
+    IECEffWBFlowMod,         !- Name
+    IECEffWBFlowMod_IndependentVariableList,  !- Independent Variable List Name
+    ,                        !- Normalization Method
+    ,                        !- Normalization Divisor
+    0.0,                     !- Minimum Output
+    1.15,                    !- Maximum Output
+    Dimensionless,           !- Output Unit Type
+    ,                        !- External File Name
+    ,                        !- External File Column Number
+    ,                        !- External File Starting Row Number
+    0.0,                     !- Output Value 1
+    0.503563817,             !- Output Value 2
+    0.669042545,             !- <none>
+    0.765841395,             !- <none>
+    0.834521272,             !- <none>
+    0.887793524,             !- <none>
+    0.931320123,             !- <none>
+    0.968121338,             !- <none>
+    1.0,                     !- <none>
+    1.028118973,             !- <none>
+    1.053272252,             !- <none>
+    1.07602616,              !- <none>
+    1.09679885,              !- <none>
+    1.115907873,             !- <none>
     1.133600065,             !- <none>
-    1.875,                   !- <none>
     1.150071102;             !- <none>
 
    ! Munters Oasis Dry Op Eff Mod Fac,  ! formulated no mass capacitance flux ratio, flow ratio = sec/sys
+!  Table:OneIndependentVariable,
+!    IECEffDBFlowMod,        !- Name
+!    Cubic,                  !- Curve Type
+!    LagrangeInterpolationLinearExtrapolation,  !- Interpolation Method
+!    0.0,                    !- Minimum Value of X
+!    1.1,                    !- Maximum Value of X
+!    0.0,                    !- Minimum Table Output
+!    1.0,                    !- Maximum Table Output
+!    Dimensionless,          !- Input Unit Type for X
+!    Dimensionless,          !- Output Unit Type
+!    ,                       !- Normalization Reference
+!    0.0,                    !- X Value #1
+!    0.0,                    !- Output Value #1
+!    0.156016442,            !- X Value #2
+!    0.251901141,            !- Output Value #2
+!    0.224969531,            !- X Value #3
+!    0.272633745,            !- Output Value #3
+!    0.245292433,            !- X Value #4
+!    0.297085202,            !- Output Value #4
+!    0.269624525,            !- X Value #5
+!    0.32635468,             !- Output Value #5
+!    0.299327692,            !- X Value #6
+!    0.362021858,            !- Output Value #6
+!    0.33698954,             !- X Value #7
+!    0.406441718,            !- Output Value #7
+!    0.385709241,            !- <none>
+!    0.463286713,            !- <none>
+!    0.453044107,            !- <none>
+!    0.538617886,            !- <none>
+!    0.553875806,            !- <none>
+!    0.643203883,            !- <none>
+!    0.732741489,            !- <none>
+!    0.798192771,            !- <none>
+!    0.899289342,            !- <none>
+!    0.907534247,            !- <none>
+!    1.047473735,            !- <none>
+!    0.989130435,            !- <none>
+!    1.074970273,            !- <none>
+!    0.994186047,            !- <none>
+!    1.104173513,            !- <none>
+!    1.0;                    !- <none>
 
-  Table:OneIndependentVariable,
-    IECEffDBFlowMod,         !- Name
-    Cubic,                   !- Curve Type
-    LagrangeInterpolationLinearExtrapolation,  !- Interpolation Method
-    0.0,                     !- Minimum Value of X
-    1.1,                     !- Maximum Value of X
-    0.0,                     !- Minimum Table Output
-    1.0,                     !- Maximum Table Output
-    Dimensionless,           !- Input Unit Type for X
-    Dimensionless,           !- Output Unit Type
-    ,                        !- Normalization Reference
-    0.0,                     !- X Value #1
-    0.0,                     !- Output Value #1
-    0.156016442,             !- X Value #2
-    0.251901141,             !- Output Value #2
-    0.224969531,             !- X Value #3
-    0.272633745,             !- Output Value #3
-    0.245292433,             !- X Value #4
-    0.297085202,             !- Output Value #4
-    0.269624525,             !- X Value #5
-    0.32635468,              !- Output Value #5
-    0.299327692,             !- X Value #6
-    0.362021858,             !- Output Value #6
-    0.33698954,              !- X Value #7
-    0.406441718,             !- Output Value #7
+  Table:IndependentVariable,
+    IECEffDBFlowMod_IndependentVariable1,  !- Name
+    Cubic,                   !- Interpolation Method
+    Linear,                  !- Extrapolation Method
+    0.0,                     !- Minimum Value
+    1.1,                     !- Maximum Value
+    ,                        !- Normalization Reference Value
+    Dimensionless,           !- Unit Type
+    ,                        !- External File Name
+    ,                        !- External File Column Number
+    ,                        !- External File Starting Row Number
+    0.0,                     !- Value 1
+    0.156016442,             !- Value 2
+    0.224969531,             !- <none>
+    0.245292433,             !- <none>
+    0.269624525,             !- <none>
+    0.299327692,             !- <none>
+    0.33698954,              !- <none>
     0.385709241,             !- <none>
-    0.463286713,             !- <none>
     0.453044107,             !- <none>
-    0.538617886,             !- <none>
     0.553875806,             !- <none>
-    0.643203883,             !- <none>
     0.732741489,             !- <none>
-    0.798192771,             !- <none>
     0.899289342,             !- <none>
-    0.907534247,             !- <none>
     1.047473735,             !- <none>
-    0.989130435,             !- <none>
     1.074970273,             !- <none>
+    1.104173513;             !- <none>
+
+  Table:IndependentVariableList,
+    IECEffDBFlowMod_IndependentVariableList,  !- Name
+    IECEffDBFlowMod_IndependentVariable1;  !- Independent Variable 1 Name
+
+  Table:Lookup,
+    IECEffDBFlowMod,         !- Name
+    IECEffDBFlowMod_IndependentVariableList,  !- Independent Variable List Name
+    ,                        !- Normalization Method
+    ,                        !- Normalization Divisor
+    0.0,                     !- Minimum Output
+    1.0,                     !- Maximum Output
+    Dimensionless,           !- Output Unit Type
+    ,                        !- External File Name
+    ,                        !- External File Column Number
+    ,                        !- External File Starting Row Number
+    0.0,                     !- Output Value 1
+    0.251901141,             !- Output Value 2
+    0.272633745,             !- <none>
+    0.297085202,             !- <none>
+    0.32635468,              !- <none>
+    0.362021858,             !- <none>
+    0.406441718,             !- <none>
+    0.463286713,             !- <none>
+    0.538617886,             !- <none>
+    0.643203883,             !- <none>
+    0.798192771,             !- <none>
+    0.907534247,             !- <none>
+    0.989130435,             !- <none>
     0.994186047,             !- <none>
-    1.104173513,             !- <none>
     1.0;                     !- <none>
 
     !Fan Power Mod Fac x raised to 2_6 ,  ! fan power following x^2.6
+!  Table:OneIndependentVariable,
+!    IECFanPowerMod,         !- Name
+!    Cubic,                  !- Curve Type
+!    LagrangeInterpolationLinearExtrapolation,  !- Interpolation Method
+!    0.0,                    !- Minimum Value of X
+!    1.0,                    !- Maximum Value of X
+!    0.0,                    !- Minimum Table Output
+!    1.0,                    !- Maximum Table Output
+!    Dimensionless,          !- Input Unit Type for X
+!    Dimensionless,          !- Output Unit Type
+!    ,                       !- Normalization Reference
+!    0,                      !- X Value #1
+!    0,                      !- Output Value #1
+!    0.125,                  !- X Value #2
+!    0.004487103,            !- Output Value #2
+!    0.25,                   !- X Value #3
+!    0.027204705,            !- Output Value #3
+!    0.375,                  !- X Value #4
+!    0.078069482,            !- Output Value #4
+!    0.5,                    !- X Value #5
+!    0.164938489,            !- Output Value #5
+!    0.625,                  !- X Value #6
+!    0.294637516,            !- Output Value #6
+!    0.75,                   !- X Value #7
+!    0.473324827,            !- Output Value #7
+!    0.875,                  !- <none>
+!    0.706676969,            !- <none>
+!    1,                      !- <none>
+!    1;                      !- <none>
 
-  Table:OneIndependentVariable,
-    IECFanPowerMod,          !- Name
-    Cubic,                   !- Curve Type
-    LagrangeInterpolationLinearExtrapolation,  !- Interpolation Method
-    0.0,                     !- Minimum Value of X
-    1.0,                     !- Maximum Value of X
-    0.0,                     !- Minimum Table Output
-    1.0,                     !- Maximum Table Output
-    Dimensionless,           !- Input Unit Type for X
-    Dimensionless,           !- Output Unit Type
-    ,                        !- Normalization Reference
-    0,                       !- X Value #1
-    0,                       !- Output Value #1
-    0.125,                   !- X Value #2
-    0.004487103,             !- Output Value #2
-    0.25,                    !- X Value #3
-    0.027204705,             !- Output Value #3
-    0.375,                   !- X Value #4
-    0.078069482,             !- Output Value #4
-    0.5,                     !- X Value #5
-    0.164938489,             !- Output Value #5
-    0.625,                   !- X Value #6
-    0.294637516,             !- Output Value #6
-    0.75,                    !- X Value #7
-    0.473324827,             !- Output Value #7
+  Table:IndependentVariable,
+    IECFanPowerMod_IndependentVariable1,  !- Name
+    Cubic,                   !- Interpolation Method
+    Linear,                  !- Extrapolation Method
+    0.0,                     !- Minimum Value
+    1.0,                     !- Maximum Value
+    ,                        !- Normalization Reference Value
+    Dimensionless,           !- Unit Type
+    ,                        !- External File Name
+    ,                        !- External File Column Number
+    ,                        !- External File Starting Row Number
+    0,                       !- Value 1
+    0.125,                   !- Value 2
+    0.25,                    !- <none>
+    0.375,                   !- <none>
+    0.5,                     !- <none>
+    0.625,                   !- <none>
+    0.75,                    !- <none>
     0.875,                   !- <none>
+    1;                       !- <none>
+
+  Table:IndependentVariableList,
+    IECFanPowerMod_IndependentVariableList,  !- Name
+    IECFanPowerMod_IndependentVariable1;  !- Independent Variable 1 Name
+
+  Table:Lookup,
+    IECFanPowerMod,          !- Name
+    IECFanPowerMod_IndependentVariableList,  !- Independent Variable List Name
+    ,                        !- Normalization Method
+    ,                        !- Normalization Divisor
+    0.0,                     !- Minimum Output
+    1.0,                     !- Maximum Output
+    Dimensionless,           !- Output Unit Type
+    ,                        !- External File Name
+    ,                        !- External File Column Number
+    ,                        !- External File Starting Row Number
+    0,                       !- Output Value 1
+    0.004487103,             !- Output Value 2
+    0.027204705,             !- <none>
+    0.078069482,             !- <none>
+    0.164938489,             !- <none>
+    0.294637516,             !- <none>
+    0.473324827,             !- <none>
     0.706676969,             !- <none>
-    1,                       !- <none>
     1;                       !- <none>
 
    !Pump Power Mod Fac two speed spray pump ,  !
+!  Table:OneIndependentVariable,
+!    IECPumpPowerMod,        !- Name
+!    Cubic,                  !- Curve Type
+!    LagrangeInterpolationLinearExtrapolation,  !- Interpolation Method
+!    0.0,                    !- Minimum Value of X
+!    1.0,                    !- Maximum Value of X
+!    0.0,                    !- Minimum Table Output
+!    1.0,                    !- Maximum Table Output
+!    Dimensionless,          !- Input Unit Type for X
+!    Dimensionless,          !- Output Unit Type
+!    ,                       !- Normalization Reference
+!    0,                      !- X Value #1
+!    0.4,                    !- Output Value #1
+!    0.125,                  !- X Value #2
+!    0.4,                    !- Output Value #2
+!    0.25,                   !- X Value #3
+!    0.4,                    !- Output Value #3
+!    0.375,                  !- X Value #4
+!    0.4,                    !- Output Value #4
+!    0.5,                    !- X Value #5
+!    1,                      !- Output Value #5
+!    0.625,                  !- X Value #6
+!    1,                      !- Output Value #6
+!    0.75,                   !- X Value #7
+!    1,                      !- Output Value #7
+!    0.875,                  !- <none>
+!    1,                      !- <none>
+!    1,                      !- <none>
+!    1;                      !- <none>
 
-  Table:OneIndependentVariable,
-    IECPumpPowerMod,         !- Name
-    Cubic,                   !- Curve Type
-    LagrangeInterpolationLinearExtrapolation,  !- Interpolation Method
-    0.0,                     !- Minimum Value of X
-    1.0,                     !- Maximum Value of X
-    0.0,                     !- Minimum Table Output
-    1.0,                     !- Maximum Table Output
-    Dimensionless,           !- Input Unit Type for X
-    Dimensionless,           !- Output Unit Type
-    ,                        !- Normalization Reference
-    0,                       !- X Value #1
-    0.4,                     !- Output Value #1
-    0.125,                   !- X Value #2
-    0.4,                     !- Output Value #2
-    0.25,                    !- X Value #3
-    0.4,                     !- Output Value #3
-    0.375,                   !- X Value #4
-    0.4,                     !- Output Value #4
-    0.5,                     !- X Value #5
-    1,                       !- Output Value #5
-    0.625,                   !- X Value #6
-    1,                       !- Output Value #6
-    0.75,                    !- X Value #7
-    1,                       !- Output Value #7
+  Table:IndependentVariable,
+    IECPumpPowerMod_IndependentVariable1,  !- Name
+    Cubic,                   !- Interpolation Method
+    Linear,                  !- Extrapolation Method
+    0.0,                     !- Minimum Value
+    1.0,                     !- Maximum Value
+    ,                        !- Normalization Reference Value
+    Dimensionless,           !- Unit Type
+    ,                        !- External File Name
+    ,                        !- External File Column Number
+    ,                        !- External File Starting Row Number
+    0,                       !- Value 1
+    0.125,                   !- Value 2
+    0.25,                    !- <none>
+    0.375,                   !- <none>
+    0.5,                     !- <none>
+    0.625,                   !- <none>
+    0.75,                    !- <none>
     0.875,                   !- <none>
+    1;                       !- <none>
+
+  Table:IndependentVariableList,
+    IECPumpPowerMod_IndependentVariableList,  !- Name
+    IECPumpPowerMod_IndependentVariable1;  !- Independent Variable 1 Name
+
+  Table:Lookup,
+    IECPumpPowerMod,         !- Name
+    IECPumpPowerMod_IndependentVariableList,  !- Independent Variable List Name
+    ,                        !- Normalization Method
+    ,                        !- Normalization Divisor
+    0.0,                     !- Minimum Output
+    1.0,                     !- Maximum Output
+    Dimensionless,           !- Output Unit Type
+    ,                        !- External File Name
+    ,                        !- External File Column Number
+    ,                        !- External File Starting Row Number
+    0.4,                     !- Output Value 1
+    0.4,                     !- Output Value 2
+    0.4,                     !- <none>
+    0.4,                     !- <none>
+    1,                       !- <none>
+    1,                       !- <none>
     1,                       !- <none>
     1,                       !- <none>
     1;                       !- <none>
@@ -1320,6 +1534,7 @@
     DXSysACCoolEIRFT,        !- Energy Input Ratio Function of Temperature Curve Name
     DXSysACCoolEIRFFF,       !- Energy Input Ratio Function of Flow Fraction Curve Name
     DXSysACCoolPLFFPLR,      !- Part Load Fraction Correlation Curve Name
+    ,                        !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {C}
     ,                        !- Nominal Time for Condensate Removal to Begin {s}
     ,                        !- Ratio of Initial Moisture Evaporation Rate and Steady State Latent Capacity {dimensionless}
     ,                        !- Maximum Cycling Rate {cycles/hr}
@@ -1410,7 +1625,7 @@
     East Zone Inlets,        !- Zone Air Inlet Node or NodeList Name
     ,                        !- Zone Air Exhaust Node or NodeList Name
     East Zone Air Node,      !- Zone Air Node Name
-    East Zone Return Node;   !- Zone Return Air Node Name
+    East Zone Return Node;   !- Zone Return Air Node or NodeList Name
 
   NodeList,
     East Zone Inlets,        !- Name
@@ -1418,10 +1633,13 @@
 
   ZoneHVAC:EquipmentList,
     East Zone Equipment,     !- Name
+    SequentialLoad,          !- Load Distribution Scheme
     ZoneHVAC:AirDistributionUnit,  !- Zone Equipment 1 Object Type
     East Zone ATU,           !- Zone Equipment 1 Name
     1,                       !- Zone Equipment 1 Cooling Sequence
-    1;                       !- Zone Equipment 1 Heating or No-Load Sequence
+    1,                       !- Zone Equipment 1 Heating or No-Load Sequence
+    ,                        !- Zone Equipment 1 Sequential Cooling Fraction Schedule Name
+    ;                        !- Zone Equipment 1 Sequential Heating Fraction Schedule Name
 
   ZoneHVAC:AirDistributionUnit,
     East Zone ATU,           !- Name
@@ -1673,11 +1891,11 @@
   SetpointManager:SingleZone:Cooling,
     East System Setpoint manager,  !- Name
     Temperature,             !- Control Variable
-    12,                   !- Minimum Supply Air Temperature {C}
-    18,                    !- Maximum Supply Air Temperature {C}
+    12,                      !- Minimum Supply Air Temperature {C}
+    18,                      !- Maximum Supply Air Temperature {C}
     East Zone,               !- Control Zone Name
     East Zone Air Node,      !- Zone Node Name
-    West Zone Inlets,        !- Zone Inlet Node Name
+    East Zone Inlets,        !- Zone Inlet Node Name
     East Sys Setpoint nodes; !- Setpoint Node or NodeList Name
 
   NodeList,
@@ -1774,6 +1992,7 @@
     DXSysACCoolEIRFT,        !- Energy Input Ratio Function of Temperature Curve Name
     DXSysACCoolEIRFFF,       !- Energy Input Ratio Function of Flow Fraction Curve Name
     DXSysACCoolPLFFPLR,      !- Part Load Fraction Correlation Curve Name
+    ,                        !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {C}
     ,                        !- Nominal Time for Condensate Removal to Begin {s}
     ,                        !- Ratio of Initial Moisture Evaporation Rate and Steady State Latent Capacity {dimensionless}
     ,                        !- Maximum Cycling Rate {cycles/hr}
@@ -2004,7 +2223,6 @@
 !    18,                      !- Maximum setpoint temperature
 !    MaximumTemperature,      !- Strategy
 !    West Zone Inlet Node;    !- Setpoint Node or NodeList Name
-
 !====CW loop Circulation pump===================
 
   Pump:VariableSpeed,
@@ -2531,7 +2749,12 @@
     0,                       !- Heating Design Air Flow Rate {m3/s}
     ,                        !- Heating Maximum Air Flow per Zone Floor Area {m3/s-m2}
     ,                        !- Heating Maximum Air Flow {m3/s}
-    ;                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Design Specification Zone Air Distribution Object Name
+    No,                      !- Account for Dedicated Outdoor Air System
+    NeutralSupplyAir,        !- Dedicated Outdoor Air System Control Strategy
+    autosize,                !- Dedicated Outdoor Air Low Setpoint Temperature for Design {C}
+    autosize;                !- Dedicated Outdoor Air High Setpoint Temperature for Design {C}
 
   DesignSpecification:OutdoorAir,
     SZ DSOA West Zone,       !- Name
@@ -2545,14 +2768,14 @@
     West Zone,               !- Zone or ZoneList Name
     OFFICE OCCUPANCY,        !- Number of People Schedule Name
     people,                  !- Number of People Calculation Method
-    11,                       !- Number of People
+    11,                      !- Number of People
     ,                        !- People per Zone Floor Area {person/m2}
     ,                        !- Zone Floor Area per Person {m2/person}
     0.3000000,               !- Fraction Radiant
     ,                        !- Sensible Heat Fraction
     Activity Sch,            !- Activity Level Schedule Name
     3.82E-8,                 !- Carbon Dioxide Generation Rate {m3/s-W}
-    No,                        !- Enable ASHRAE 55 Comfort Warnings
+    No,                      !- Enable ASHRAE 55 Comfort Warnings
     zoneaveraged,            !- Mean Radiant Temperature Calculation Type
     ,                        !- Surface Name/Angle Factor List Name
     Work Eff Sch,            !- Work Efficiency Schedule Name
@@ -2584,7 +2807,12 @@
     0,                       !- Heating Design Air Flow Rate {m3/s}
     ,                        !- Heating Maximum Air Flow per Zone Floor Area {m3/s-m2}
     ,                        !- Heating Maximum Air Flow {m3/s}
-    ;                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Heating Maximum Air Flow Fraction
+    ,                        !- Design Specification Zone Air Distribution Object Name
+    No,                      !- Account for Dedicated Outdoor Air System
+    NeutralSupplyAir,        !- Dedicated Outdoor Air System Control Strategy
+    autosize,                !- Dedicated Outdoor Air Low Setpoint Temperature for Design {C}
+    autosize;                !- Dedicated Outdoor Air High Setpoint Temperature for Design {C}
 
   DesignSpecification:OutdoorAir,
     SZ DSOA East Zone,       !- Name
@@ -2605,7 +2833,7 @@
     ,                        !- Sensible Heat Fraction
     Activity Sch,            !- Activity Level Schedule Name
     3.82E-8,                 !- Carbon Dioxide Generation Rate {m3/s-W}
-    No,                        !- Enable ASHRAE 55 Comfort Warnings
+    No,                      !- Enable ASHRAE 55 Comfort Warnings
     zoneaveraged,            !- Mean Radiant Temperature Calculation Type
     ,                        !- Surface Name/Angle Factor List Name
     Work Eff Sch,            !- Work Efficiency Schedule Name
@@ -2717,6 +2945,7 @@
   ElectricEquipment:ITE:AirCooled,
     WestDataCenter_Equip,    !- Name
     West Zone,               !- Zone Name
+    FlowFromSystem,          !- Air Flow Calculation Method
     Watts/Area,              !- Design Power Input Calculation Method
     ,                        !- Watts per Unit {W}
     ,                        !- Number of Units
@@ -2857,6 +3086,7 @@
   ElectricEquipment:ITE:AirCooled,
     EastDataCenter_Equip,    !- Name
     East Zone,               !- Zone Name
+    FlowFromSystem,          !- Air Flow Calculation Method
     Watts/Area,              !- Design Power Input Calculation Method
     ,                        !- Watts per Unit {W}
     ,                        !- Number of Units
@@ -2905,14 +3135,14 @@
     West Zone,               !- Zone or ZoneList Name
     Zone Control Type Sched, !- Control Type Schedule Name
     ThermostatSetpoint:DualSetpoint,  !- Control 1 Object Type
-    West-DualSetP-RL;      !- Control 1 Name
+    West-DualSetP-RL;        !- Control 1 Name
 
   ZoneControl:Thermostat,
     East Zone Thermostat,    !- Name
     East Zone,               !- Zone or ZoneList Name
     Zone Control Type Sched, !- Control Type Schedule Name
     ThermostatSetpoint:DualSetpoint,  !- Control 1 Object Type
-    East-DualSetP-RL;   !- Control 1 Name
+    East-DualSetP-RL;        !- Control 1 Name
 
   ThermostatSetpoint:DualSetpoint,
     Temperature Setpoints,   !- Name
@@ -2920,14 +3150,14 @@
     Cooling Setpoints;       !- Cooling Setpoint Temperature Schedule Name
 
   ThermostatSetpoint:DualSetpoint,
-    West-DualSetP-RL,           !- Name
-    West-HtgSetP-RL,            !- Heating Setpoint Temperature Schedule Name
-    West-ClgSetP-RL;            !- Cooling Setpoint Temperature Schedule Name
+    West-DualSetP-RL,        !- Name
+    West-HtgSetP-RL,         !- Heating Setpoint Temperature Schedule Name
+    West-ClgSetP-RL;         !- Cooling Setpoint Temperature Schedule Name
 
   ThermostatSetpoint:DualSetpoint,
-    East-DualSetP-RL,           !- Name
-    East-HtgSetP-RL,            !- Heating Setpoint Temperature Schedule Name
-    East-ClgSetP-RL;            !- Cooling Setpoint Temperature Schedule Name
+    East-DualSetP-RL,        !- Name
+    East-HtgSetP-RL,         !- Heating Setpoint Temperature Schedule Name
+    East-ClgSetP-RL;         !- Cooling Setpoint Temperature Schedule Name
 
   Schedule:Compact,
     Zone Control Type Sched, !- Name
@@ -3045,21 +3275,21 @@
   EnergyManagementSystem:Sensor,
     IT_Equip_Power,          !- Name
     Whole Building,          !- Output:Variable or Output:Meter Index Key Name
-    Facility Total Building Electric Demand Power;  !- Output:Variable or Output:Meter Name
+    Facility Total Building Electricity Demand Rate;  !- Output:Variable or Output:Meter Name
 
   ! "Facility Total Electric Demand Power" is the total of the whole Building and HVAC electric demands.
 
   EnergyManagementSystem:Sensor,
     Whole_Building_Power,    !- Name
     Whole Building,          !- Output:Variable or Output:Meter Index Key Name
-    Facility Total Electric Demand Power;  !- Output:Variable or Output:Meter Name
+    Facility Total Electricity Demand Rate;  !- Output:Variable or Output:Meter Name
 
   ! "Facility Total HVAC Electric Demand Power" is the total of the whole Building HVAC electric demands.
 
   EnergyManagementSystem:Sensor,
     Whole_HVAC_Power,        !- Name
     Whole Building,          !- Output:Variable or Output:Meter Index Key Name
-    Facility Total HVAC Electric Demand Power;  !- Output:Variable or Output:Meter Name
+    Facility Total HVAC Electricity Demand Rate;  !- Output:Variable or Output:Meter Name
 
   EnergyManagementSystem:OutputVariable,
     Power Utilization Effectiveness,  !- Name
@@ -3077,28 +3307,29 @@
     set PUE_Value = Whole_Building_Power / IT_Equip_Power;  !- Program Line 1
 
   !-External Interface
-  ExternalInterface, !- Object to activate the external interface
-    PtolemyServer; !- Name of external interface
 
-  ExternalInterface:Schedule ,
-    West-HtgSetP-RL, !- Name
-    Temperature , !- ScheduleType
-    21; !- Initial value, used during warm-up
-    
-  ExternalInterface:Schedule ,
-    West-ClgSetP-RL, !- Name
-    Temperature , !- ScheduleType
-    25; !- Initial value, used during warm-up
+  ExternalInterface,
+    PtolemyServer;           !- Name of External Interface
 
-  ExternalInterface:Schedule ,
-    East-HtgSetP-RL, !- Name
-    Temperature , !- ScheduleType
-    21; !- Initial value, used during warm-up
-    
-  ExternalInterface:Schedule ,
-    East-ClgSetP-RL, !- Name
-    Temperature , !- ScheduleType
-    25; !- Initial value, used during warm-up
+  ExternalInterface:Schedule,
+    West-HtgSetP-RL,         !- Name
+    Temperature,             !- Schedule Type Limits Name
+    21;                      !- Initial Value
+
+  ExternalInterface:Schedule,
+    West-ClgSetP-RL,         !- Name
+    Temperature,             !- Schedule Type Limits Name
+    25;                      !- Initial Value
+
+  ExternalInterface:Schedule,
+    East-HtgSetP-RL,         !- Name
+    Temperature,             !- Schedule Type Limits Name
+    21;                      !- Initial Value
+
+  ExternalInterface:Schedule,
+    East-ClgSetP-RL,         !- Name
+    Temperature,             !- Schedule Type Limits Name
+    25;                      !- Initial Value
 
   OutputControl:Table:Style,
     HTML;                    !- Column Separator
@@ -3107,205 +3338,149 @@
     AllSummary;              !- Report 1 Name
 
   !Output:Variable,*,Power Utilization Effectiveness,timestep;
-
   !Output:Variable,*,Site Outdoor Air Drybulb Temperature,timestep;
-
   !Output:Variable,West Zone,Zone Air Temperature,timestep;
-
   !Output:Variable,East Zone,Zone Air Temperature,timestep;
-
   !Output:Variable,West Zone,Zone Air Relative Humidity,timestep;
-
   !Output:Variable,East Zone,Zone Air Relative Humidity,timestep;
-
   !Output:Variable,*,Cooling Coil Total Cooling Rate,timestep;
-
   !Output:Variable,*,Cooling Coil Sensible Cooling Rate,timestep;
-
   !Output:Variable,West Outside Air Inlet Node,System Node Mass Flow Rate,timestep;
-
   !Output:Variable,East Outside Air Inlet Node,System Node Mass Flow Rate,timestep;
-
   !Output:Variable,West Outside Air Inlet Node,System Node Temperature,timestep;
-
   !Output:Variable,East Outside Air Inlet Node,System Node Temperature,timestep;
-
   !Output:Variable,West IEC Secondary Air Inlet Node,System Node Mass Flow Rate,timestep;
-
   !Output:Variable,West IEC Secondary Air Inlet Node,System Node Temperature,timestep;
-
   !Output:Variable,East IEC Secondary Air Inlet Node,System Node Mass Flow Rate,timestep;
-
   !Output:Variable,East IEC Secondary Air Inlet Node,System Node Temperature,timestep;
-
   !Output:Variable,West IEC Secondary Air Outlet Node,System Node Temperature,timestep;
-
   !Output:Variable,West IEC Secondary Air Outlet Node,System Node Mass Flow Rate,timestep;
-
   !Output:Variable,West Zone Return Air Node,System Node Mass Flow Rate,timestep;
-
   !Output:Variable,West Zone Return Air Node,System Node Temperature,timestep;
-
   !Output:Variable,West Zone Mixed Air Node,System Node Mass Flow Rate,timestep;
-
   !Output:Variable,West Zone Mixed Air Node,System Node Temperature,timestep;
-
   !Output:Variable,West Zone Supply Fan Outlet Node,System Node Temperature,timestep;
-
   !Output:Variable,East Zone Supply Fan Outlet Node,System Node Temperature,timestep;
-
   !Output:Variable,West Zone DEC Outlet Node,System Node Temperature,timestep;
-
   !Output:Variable,West Zone IEC Outlet Node,System Node Temperature,timestep;
-
   !Output:Variable,West Zone IEC Outlet Node,System Node Setpoint Temperature,timestep;
-
   !Output:Variable,East Zone DEC Outlet Node,System Node Temperature,timestep;
-
   !Output:Variable,East Zone IEC Outlet Node,System Node Temperature,timestep;
-
   !Output:Variable,West Zone CCoil Air Outlet Node,System Node Temperature,timestep;
-
   !Output:Variable,East Zone CCoil Air Outlet Node,System Node Temperature,timestep;
-
   !Output:Variable,West Air Loop Outlet Node,System Node Temperature,timestep;
-
   !Output:Variable,East Air Loop Outlet Node,System Node Temperature,timestep;
-
   !Output:Variable,West Zone Inlet Node,System Node Mass Flow Rate,timestep;
-
   !Output:Variable,West Zone Inlet Node,System Node Temperature,timestep;
-
   !Output:Variable,East Zone Inlet Node,System Node Mass Flow Rate,timestep;
-
   !Output:Variable,East Zone Inlet Node,System Node Temperature,timestep;
-
   !Output:Variable,*,Evaporative Cooler Stage Effectiveness,timestep;
-
   !Output:Variable,*,Evaporative Cooler Total Stage Effectiveness,timestep;
-
   !Output:Variable,*,Evaporative Cooler Operating Mode Status,timestep;
-
   !Output:Variable,*,Evaporative Cooler Electric Power,timestep;
-
   !Output:Variable,*,Evaporative Cooler Water Volume,timestep;
-
   !Output:Variable,*,ITE CPU Electric Power,hourly;
-
   !Output:Variable,*,ITE Fan Electric Power,hourly;
-
   !Output:Variable,*,ITE UPS Electric Power,hourly;
-
   !Output:Variable,*,ITE CPU Electric Power at Design Inlet Conditions,hourly;
-
   !Output:Variable,*,ITE Fan Electric Power at Design Inlet Conditions,hourly;
-
   !Output:Variable,*,ITE UPS Heat Gain to Zone Rate,hourly;
-
   !Output:Variable,*,ITE Total Heat Gain to Zone Rate,hourly;
-
   !Output:Variable,*,ITE Standard Density Air Volume Flow Rate,hourly;
-
   !Output:Variable,*,ITE Air Inlet Dry-Bulb Temperature,hourly;
-
   !Output:Variable,*,ITE Air Inlet Dewpoint Temperature,hourly;
-
   !Output:Variable,*,ITE Air Inlet Relative Humidity,hourly;
-
   !Output:Variable,*,ITE Air Outlet Dry-Bulb Temperature,hourly;
-
   !Output:Variable,*,ITE Supply Heat Index,hourly;
-
   !Output:Variable,*,ITE Air Inlet Operating Range Exceeded Time,hourly;
-
   !Output:Variable,*,ITE Air Inlet Dry-Bulb Temperature Above Operating Range Time,hourly;
-
   !Output:Variable,*,ITE Air Inlet Dry-Bulb Temperature Below Operating Range Time,hourly;
-
   !Output:Variable,*,ITE Air Inlet Dewpoint Temperature Above Operating Range Time,hourly;
-
   !Output:Variable,*,ITE Air Inlet Dewpoint Temperature Below Operating Range Time,hourly;
-
   !Output:Variable,*,ITE Air Inlet Relative Humidity Above Operating Range Time,hourly;
-
   !Output:Variable,*,ITE Air Inlet Relative Humidity Below Operating Range Time,hourly;
-
   !Output:Variable,*,ITE Air Inlet Dry-Bulb Temperature Difference Above Operating Range,hourly;
-
   !Output:Variable,*,ITE Air Inlet Dry-Bulb Temperature Difference Below Operating Range,hourly;
-
   !Output:Variable,*,ITE Air Inlet Dewpoint Temperature Difference Above Operating Range,hourly;
-
   !Output:Variable,*,ITE Air Inlet Dewpoint Temperature Difference Below Operating Range,hourly;
-
   !Output:Variable,*,ITE Air Inlet Relative Humidity Difference Above Operating Range,hourly;
-
   !Output:Variable,*,ITE Air Inlet Relative Humidity Difference Below Operating Range,hourly;
-
   !Output:Variable,*,Zone ITE CPU Electric Power,hourly;
-
   !Output:Variable,*,Zone ITE Fan Electric Power,hourly;
-
   !Output:Variable,*,Zone ITE UPS Electric Power,hourly;
-
   !Output:Variable,*,Zone ITE CPU Electric Power at Design Inlet Conditions,hourly;
-
   !Output:Variable,*,Zone ITE Fan Electric Power at Design Inlet Conditions,hourly;
-
   !Output:Variable,*,Zone ITE UPS Heat Gain to Zone Rate,hourly;
-
   !Output:Variable,*,Zone ITE Total Heat Gain to Zone Rate,hourly;
-
   !Output:Variable,*,Chiller Evaporator Cooling Rate,hourly;
-
   !Output:Variable,*,Chiller Evaporator Inlet Temperature,hourly;
-
   !Output:Variable,*,Chiller Evaporator Outlet Temperature,hourly;
-
   !Output:Variable,*,Chiller Condenser Heat Transfer Rate,hourly;
-
   !Output:Variable,*,Chiller Condenser Inlet Temperature,hourly;
-
   !Output:Variable,*,Chiller Condenser Outlet Temperature,hourly;
-
   !Output:VariableDictionary,IDF;
+  !- Site weather output
 
-  !- Site weather output  
   Output:Variable,*,Site Outdoor Air Drybulb Temperature,timestep;
+
   Output:Variable,*,Site Outdoor Air Relative Humidity,timestep;
-  Output:Variable,*,Site Wind Speed, timestep;
-  Output:Variable,*,Site Wind Direction, timestep;
+
+  Output:Variable,*,Site Wind Speed,timestep;
+
+  Output:Variable,*,Site Wind Direction,timestep;
+
   Output:Variable,*,Site Diffuse Solar Radiation Rate per Area,timestep;
+
   Output:Variable,*,Site Direct Solar Radiation Rate per Area,timestep;
 
   !- Building room 1 output (WEST)
+
   Output:Variable,West Zone,Zone Air Temperature,timestep;
+
   Output:Variable,West Zone,Zone Air Relative Humidity,timestep;
+
   Output:Variable,West Zone,Zone Thermostat Heating Setpoint Temperature,timestep;
+
   Output:Variable,West Zone,Zone Thermostat Cooling Setpoint Temperature,timestep;
-  Output:Variable,West Zone PEOPLE,Zone Thermal Comfort Fanger Model PMV,timestep; 
-  Output:Variable,West Zone,Zone People Occupant Count, timestep;
+
+  Output:Variable,West Zone PEOPLE,Zone Thermal Comfort Fanger Model PMV,timestep;
+
+  Output:Variable,West Zone,Zone People Occupant Count,timestep;
+
   Output:Variable,West Zone PEOPLE,Zone Thermal Comfort Fanger Model PPD,timestep;
+
   Output:Variable,West Zone PEOPLE,Zone Thermal Comfort Clothing Value,timestep;
+
   Output:Variable,West Zone PEOPLE,Zone Thermal Comfort Mean Radiant Temperature,timestep;
- 
+
   !- Building room 2 output (EAST)
+
   Output:Variable,East Zone,Zone Air Temperature,timestep;
+
   Output:Variable,East Zone,Zone Air Relative Humidity,timestep;
+
   Output:Variable,East Zone,Zone Thermostat Heating Setpoint Temperature,timestep;
+
   Output:Variable,East Zone,Zone Thermostat Cooling Setpoint Temperature,timestep;
-  Output:Variable,East Zone PEOPLE,Zone Thermal Comfort Fanger Model PMV,timestep; 
-  Output:Variable,East Zone,Zone People Occupant Count, timestep;
+
+  Output:Variable,East Zone PEOPLE,Zone Thermal Comfort Fanger Model PMV,timestep;
+
+  Output:Variable,East Zone,Zone People Occupant Count,timestep;
+
   Output:Variable,East Zone PEOPLE,Zone Thermal Comfort Fanger Model PPD,timestep;
+
   Output:Variable,East Zone PEOPLE,Zone Thermal Comfort Clothing Value,timestep;
+
   Output:Variable,East Zone PEOPLE,Zone Thermal Comfort Mean Radiant Temperature,timestep;
 
   !- Common
+
   Output:Variable,*,People Air Temperature,timestep;
 
   !- Building HVAC output
-  Output:Variable,*,Facility Total HVAC Electric Demand Power,timestep;
-  
+
+  Output:Variable,*,Facility Total HVAC Electricity Demand Rate,timestep;
+
   !- Debug
   !Output:Variable,West Zone IN NODE,System Node Temperature, timestep;
   !Output:Variable,VAV SYS 1 OUTLET NODE,System Node Temperature, timestep;
@@ -3313,6 +3488,7 @@
   !Output:Variable,VAV SYS 1 OUTLET NODE,System Node Mass Flow Rate, timestep;
 
   Output:VariableDictionary,Regular;
+
   Output:Surfaces:Drawing,dxf;
 
   Output:Surfaces:Drawing,dxf;
