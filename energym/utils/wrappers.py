@@ -15,17 +15,13 @@ class NormalizeObservation(gym.ObservationWrapper):
         """Observations normalized to range [0, 1].
 
         Args:
-            env (object): Original Gym environment.
+            env (object): Original Energym environment.
             ranges: Observation variables ranges to apply normalization (rely on environment)
         """
         super(NormalizeObservation, self).__init__(env)
         self.unwrapped_observation = None
         self.ranges = ranges
-
-    def step(self, action):
-        observation, reward, done, info = self.env.step(action)
-
-        return self.observation(observation), reward, done, info
+        self.variables = env.variables["observation"]
 
     def observation(self, obs):
         """Applies normalization to observation.
@@ -38,10 +34,9 @@ class NormalizeObservation(gym.ObservationWrapper):
         """
         # Save original obs in class attribute
         self.unwrapped_observation = obs.copy()
-        variables = self.env.variables["observation"]
 
-        # NOTE: If you want to recor day, month and our. You should add to variables that keys
-        for i, variable in enumerate(variables):
+        # NOTE: If you want to record day, month and hour, you should add that variables as keys
+        for i, variable in enumerate(self.variables):
             # normalization
             obs[i] = (obs[i]-self.ranges[variable][0]) / \
                 (self.ranges[variable][1]-self.ranges[variable][0])
@@ -64,19 +59,22 @@ class NormalizeObservation(gym.ObservationWrapper):
 
 class MultiObsWrapper(gym.Wrapper):
 
-    def __init__(self, env, n=5):
+    def __init__(self, env, n=5, flatten=True):
         """Stack of observations.
 
         Args:
             env (object): Original Gym environment.
             n (int, optional): Number of observations to be stacked. Defaults to 5.
+            flatten (bool, optional): Whether or not flat the observation vector. Defaults to True.
         """
-        gym.Wrapper.__init__(self, env)
+        super(MultiObsWrapper, self).__init__(env)
         self.n = n
+        self.ind_flat = flatten
         self.history = deque([], maxlen=n)
         shape = env.observation_space.shape
+        new_shape = (shape[0] * n,) if flatten else ((n,) + shape)
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=((n,) + shape), dtype=np.float32)
+            low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
 
     def reset(self):
         """Resets the environment.
@@ -89,13 +87,24 @@ class MultiObsWrapper(gym.Wrapper):
             self.history.append(obs)
         return self._get_obs()
 
+    def step(self, action):
+        """Performs the action in the new environment."""
+        
+        observation, reward, done, info = self.env.step(action)
+        self.history.append(observation)
+        return self._get_obs(), reward, done, info
+
+
     def _get_obs(self):
         """Get observation history.
 
         Returns:
             np.array: Array of previous observations.
         """
-        return np.array(self.history)
+        if self.ind_flat:
+            return np.array(self.history).reshape(-1,)
+        else:
+            return np.array(self.history)
 
 
 class LoggerWrapper(gym.Wrapper):
