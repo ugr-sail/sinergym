@@ -21,7 +21,6 @@ class NormalizeObservation(gym.ObservationWrapper):
         super(NormalizeObservation, self).__init__(env)
         self.unwrapped_observation = None
         self.ranges = ranges
-        self.variables = env.variables["observation"]
 
     def observation(self, obs):
         """Applies normalization to observation.
@@ -36,7 +35,7 @@ class NormalizeObservation(gym.ObservationWrapper):
         self.unwrapped_observation = obs.copy()
 
         # NOTE: If you want to record day, month and hour, you should add that variables as keys
-        for i, variable in enumerate(self.variables):
+        for i, variable in enumerate(self.env.variables['observation']):
             # normalization
             obs[i] = (obs[i]-self.ranges[variable][0]) / \
                 (self.ranges[variable][1]-self.ranges[variable][0])
