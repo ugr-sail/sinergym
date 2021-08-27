@@ -23,8 +23,6 @@ script:
   
 after_success:
   - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  #Previusly set up in our own travis account
-  - docker tag $DOCKER_USER/energym $DOCKER_USER/energym:$TRAVIS_BUILD_NUMBER
-  - docker push $DOCKER_USER/energym:$TRAVIS_BUILD_NUMBER
   - docker tag $DOCKER_USER/energym $DOCKER_USER/energym:latest
   - docker push $DOCKER_USER/energym:latest
 
