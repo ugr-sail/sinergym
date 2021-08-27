@@ -67,8 +67,5 @@ RUN pip3 install -e .${ENERGYM_EXTRAS}
 
 CMD ["/bin/bash"]
 
-#TODO Get ENERGYPLUS_INSTALL_VERSION from ENERGYPLUS_VERSION
-#TODO ARG Python version
-
-# Build: docker build -t energyplus:8.6.0 --build-arg ENERGYPLUS_VERSION=8.6.0 --build-arg ENERGYPLUS_INSTALL_VERSION=8-6-0 --build-arg ENERGYPLUS_SHA=198c6a3cff .
-# Run: docker run -it --rm -p 5005:5005 energyplus:8.6.0
+# Build: docker build -t energym:1.1.0 --build-arg ENERGYPLUS_VERSION=9.5.0 --build-arg ENERGYPLUS_INSTALL_VERSION=9-5-0 --build-arg ENERGYPLUS_SHA=de239b2e5f .
+# Run: docker run -it --rm -p 5005:5005 energym:1.1.0

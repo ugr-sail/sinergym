@@ -72,7 +72,7 @@ install it for Linux (only Ubuntu is supported). Choose any location
 to install the software. Once installed, a folder called
 ``Energyplus-9-5-0`` should appear in the selected location.
 
-1. Install BCVTB software
+2. Install BCVTB software
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Follow the instructions
