@@ -46,6 +46,21 @@ RANGES_5ZONE = {'Facility Total HVAC Electricity Demand Rate (Whole Building)': 
                 'timestep': [0, 35040],
                 'total_power_no_units': [-3.259557259261767, -0.0173658369273838]}
 
+RANGES_IW = {
+    "Site Outdoor Air Drybulb Temperature": [-13.0, 26.0],
+    "Site Outdoor Air Relative Humidity": [0.0, 100.0],
+    "Site Wind Speed": [0.0, 11.0],
+    "Site Wind Direction": [0.0, 360.0],
+    "Site Diffuse Solar Radiation Rate per Area": [0.0, 378.0],
+    "Site Direct Solar Radiation Rate per Area": [0.0, 1000.0],
+    "IW Hot Water System OA Enable Flag OA Setpoint": [-30.0, 30.0],
+    "IW Average PPD": [0.0, 100.0],
+    "IW Effective Zone Air Temperature Setpoint": [18.0, 25.0],
+    "IW North Zone Average Temperature": [18.0, 25.0],
+    "IW Effective IAT Setpoint by Logics": [18.0, 25.0],
+    "IW Occupy Mode Flag": [0.0, 1.0],
+    "IW Calculated Heating Demand": [0.0, 85.0]
+}
 
 def get_delta_seconds(year, st_mon, st_day, end_mon, end_day):
     """Returns the delta seconds between `year:st_mon:st_day:0:0:0` and
