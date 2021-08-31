@@ -6,7 +6,7 @@ from math import exp
 YEAR = 2021
 
 
-class SimpleReward():
+class LinearReward():
 
     def __init__(self,
                  range_comfort_winter=(20.0, 23.5),

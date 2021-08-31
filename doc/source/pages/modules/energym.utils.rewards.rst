@@ -20,7 +20,7 @@
       :template: custom-class-template.rst               
    
       ExpReward
-      SimpleReward
+      LinearReward
    
    
 

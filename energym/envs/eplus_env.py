@@ -19,7 +19,7 @@ from copy import deepcopy
 
 from ..utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space, setpoints_transform
 from ..simulators import EnergyPlus
-from ..utils.rewards import ExpReward, SimpleReward
+from ..utils.rewards import ExpReward, LinearReward
 from pprint import pprint
 
 
@@ -39,7 +39,7 @@ class EplusEnv(gym.Env):
         env_name='eplus-env-v1',
         discrete_actions=True,
         weather_variability=None,
-        reward = SimpleReward()
+        reward = LinearReward()
     ):
         """Environment with EnergyPlus simulator.
 
