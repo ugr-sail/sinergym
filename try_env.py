@@ -2,7 +2,7 @@ import gym
 import energym
 import numpy as np
 
-env = gym.make('Eplus-continuous-hot-v1')
+env = gym.make('Eplus-5Zone-hot-continuous-v1')
 for i in range(1):
     obs = env.reset()
     rewards = []

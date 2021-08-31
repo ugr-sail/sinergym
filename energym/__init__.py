@@ -15,7 +15,7 @@ register(
 )
 
 register(
-    id='Eplus-discrete-hot-v1',
+    id='Eplus-5Zone-hot-discrete-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_AZ.idf',
@@ -29,7 +29,7 @@ register(
 )
 
 register(
-    id='Eplus-discrete-mixed-v1',
+    id='Eplus-5Zone-mixed-discrete-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_NY.idf',
@@ -43,7 +43,7 @@ register(
 )
 
 register(
-    id='Eplus-discrete-cool-v1',
+    id='Eplus-5Zone-cool-discrete-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_WA.idf',
@@ -57,7 +57,7 @@ register(
 )
 
 register(
-    id='Eplus-discrete-stochastic-hot-v1',
+    id='Eplus-5Zone-hot-discrete-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_AZ.idf',
@@ -72,7 +72,7 @@ register(
 )
 
 register(
-    id='Eplus-discrete-stochastic-mixed-v1',
+    id='Eplus-5Zone-mixed-discrete-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_NY.idf',
@@ -87,7 +87,7 @@ register(
 )
 
 register(
-    id='Eplus-discrete-stochastic-cool-v1',
+    id='Eplus-5Zone-cool-discrete-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_WA.idf',
@@ -102,7 +102,7 @@ register(
 )
 
 register(
-    id='Eplus-continuous-hot-v1',
+    id='Eplus-5Zone-hot-continuous-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_AZ.idf',
@@ -116,7 +116,7 @@ register(
 )
 
 register(
-    id='Eplus-continuous-mixed-v1',
+    id='Eplus-5Zone-mixed-continuous-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_NY.idf',
@@ -130,7 +130,7 @@ register(
 )
 
 register(
-    id='Eplus-continuous-cool-v1',
+    id='Eplus-5Zone-cool-continuous-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_WA.idf',
@@ -144,7 +144,7 @@ register(
 )
 
 register(
-    id='Eplus-continuous-stochastic-hot-v1',
+    id='Eplus-5Zone-hot-continuous-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_AZ.idf',
@@ -159,7 +159,7 @@ register(
 )
 
 register(
-    id='Eplus-continuous-stochastic-mixed-v1',
+    id='Eplus-5Zone-mixed-continuous-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_NY.idf',
@@ -174,7 +174,7 @@ register(
 )
 
 register(
-    id='Eplus-continuous-stochastic-cool-v1',
+    id='Eplus-5Zone-cool-continuous-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '5ZoneAutoDXVAV_WA.idf',
@@ -191,7 +191,7 @@ register(
 #========================DATACENTER========================#
 
 register(
-    id='Eplus-discrete-datacenter-v1',
+    id='Eplus-datacenter-discrete-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
@@ -205,7 +205,7 @@ register(
 )
 
 register(
-    id='Eplus-continuous-datacenter-v1',
+    id='Eplus-datacenter-continuous-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
@@ -219,7 +219,7 @@ register(
 )
 
 register(
-    id='Eplus-discrete-stochastic-datacenter-v1',
+    id='Eplus-datacenter-discrete-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
@@ -234,7 +234,7 @@ register(
 )
 
 register(
-    id='Eplus-continuous-stochastic-datacenter-v1',
+    id='Eplus-datacenter-continuous-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
