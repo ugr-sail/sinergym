@@ -24,7 +24,7 @@ register(
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
         'discrete_actions': True,
         'reward': LinearReward(),
-        'env_name': 'discrete-hot-v1'
+        'env_name': '5Zone-hot-discrete-v1'
     }
 )
 
@@ -38,7 +38,7 @@ register(
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
         'discrete_actions': True,
         'reward': LinearReward(),
-        'env_name': 'discrete-mixed-v1'
+        'env_name': '5Zone-mixed-discrete-v1'
     }
 )
 
@@ -52,7 +52,7 @@ register(
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
         'discrete_actions': True,
         'reward': LinearReward(),
-        'env_name': 'discrete-cool-v1'
+        'env_name': '5Zone-cool-discrete-v1'
     }
 )
 
@@ -67,7 +67,7 @@ register(
         'discrete_actions': True,
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward(),
-        'env_name': 'discrete-stochastic-hot-v1'
+        'env_name': '5Zone-hot-discrete-stochastic-v1'
     }
 )
 
@@ -82,7 +82,7 @@ register(
         'discrete_actions': True,
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward(),
-        'env_name': 'discrete-stochastic-mixed-v1'
+        'env_name': '5Zone-mixed-discrete-stochastic-v1'
     }
 )
 
@@ -97,7 +97,7 @@ register(
         'discrete_actions': True,
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward(),
-        'env_name': 'discrete-stochastic-cool-v1'
+        'env_name': '5Zone-cool-discrete-stochastic-v1'
     }
 )
 
@@ -111,7 +111,7 @@ register(
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
         'discrete_actions': False,
         'reward': LinearReward(),
-        'env_name': 'continuous-hot-v1'
+        'env_name': '5Zone-hot-continuous-v1'
     }
 )
 
@@ -125,7 +125,7 @@ register(
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
         'discrete_actions': False,
         'reward': LinearReward(),
-        'env_name': 'continuous-mixed-v1'
+        'env_name': '5Zone-mixed-continuous-v1'
     }
 )
 
@@ -139,7 +139,7 @@ register(
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
         'discrete_actions': False,
         'reward': LinearReward(),
-        'env_name': 'continuous-cool-v1'
+        'env_name': '5Zone-cool-continuous-v1'
     }
 )
 
@@ -154,7 +154,7 @@ register(
         'discrete_actions': False,
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward(),
-        'env_name': 'continuous-stochastic-hot-v1'
+        'env_name': '5Zone-hot-continuous-stochastic-v1'
     }
 )
 
@@ -169,7 +169,7 @@ register(
         'discrete_actions': False,
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward(),
-        'env_name': 'continuous-stochastic-mixed-v1'
+        'env_name': '5Zone-mixed-continuous-stochastic-v1'
     }
 )
 
@@ -184,7 +184,7 @@ register(
         'discrete_actions': False,
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward(),
-        'env_name': 'continuous-stochastic-cool-v1'
+        'env_name': '5Zone-cool-continuous-stochastic-v1'
     }
 )
 
@@ -200,7 +200,7 @@ register(
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
         'discrete_actions': True,
         'reward': LinearReward(),
-        'env_name': 'discrete-datacenter-v1'
+        'env_name': 'datacenter-discrete-v1'
     }
 )
 
@@ -214,7 +214,7 @@ register(
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
         'discrete_actions': False,
         'reward': LinearReward(),
-        'env_name': 'continuous-datacenter-v1'
+        'env_name': 'datacenter-continuous-v1'
     }
 )
 
@@ -229,7 +229,7 @@ register(
         'discrete_actions': True,
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward(),
-        'env_name': 'discrete-stochastic-datacenter-v1'
+        'env_name': 'datacenter-discrete-stochastic-v1'
     }
 )
 
@@ -244,6 +244,22 @@ register(
         'discrete_actions': False,
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward(),
-        'env_name': 'continuous-stochastic-datacenter-v1'
+        'env_name': 'datacenter-continuous-stochastic-v1'
+    }
+)
+
+#========================MULLION========================#
+
+register(
+    id='Eplus-IWMullion-discrete-v1',
+    entry_point='energym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'IW_Mullion.idf',
+        'weather_file': 'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw',
+        'variables_file': 'variablesIW.cfg',
+        'spaces_file': 'IW_Mullion_spaces.cfg',
+        'discrete_actions': True,
+        'reward': LinearReward(),
+        'env_name': 'IWMullion-discrete-v1'
     }
 )
