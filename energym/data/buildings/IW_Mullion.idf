@@ -12549,8 +12549,6 @@
 
   Output:Variable,*,IW Effective Zone Air Temperature Setpoint,timestep;
 
-  Output:Variable,*,IW Effective Zone Air Temperature Setpoint,timestep;
-
   Output:Variable,*,Site Outdoor Air Drybulb Temperature,timestep;
 
   Output:Variable,*,Site Outdoor Air Relative Humidity,timestep;
