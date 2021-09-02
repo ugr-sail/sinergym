@@ -75,7 +75,7 @@ class EplusEnv(gym.Env):
 
         # Utils for getting time info, weather and variable names
         idd = opyplus.Idd(os.path.join(eplus_path, 'Energy+.idd'))
-        self.epm = Epm.from_idf(self.idf_path, idd_or_version=idd)
+        self.epm = Epm.from_idf(self.idf_path, idd_or_version=idd, check_length=False)
         self.variables = parse_variables(self.variables_path)
         self.weather_data = WeatherData.from_epw(self.weather_path)
 
