@@ -1,6 +1,9 @@
 from gym.envs.registration import register
 from energym.utils.rewards import LinearReward
+
+
 #========================5ZoneAutoDXVAV========================#
+# 0) Demo environment
 register(
     id='Eplus-demo-v1',
     entry_point='energym.envs:EplusEnv',
@@ -14,6 +17,7 @@ register(
     }
 )
 
+# 1) 5-zone, hot weather, discrete actions
 register(
     id='Eplus-5Zone-hot-discrete-v1',
     entry_point='energym.envs:EplusEnv',
@@ -28,6 +32,7 @@ register(
     }
 )
 
+# 2) 5-zone, mixed weather, discrete actions
 register(
     id='Eplus-5Zone-mixed-discrete-v1',
     entry_point='energym.envs:EplusEnv',
@@ -42,6 +47,7 @@ register(
     }
 )
 
+# 3) 5-zone, cool weather, discrete actions
 register(
     id='Eplus-5Zone-cool-discrete-v1',
     entry_point='energym.envs:EplusEnv',
@@ -56,6 +62,7 @@ register(
     }
 )
 
+# 4) 5-zone, hot weather, discrete actions and stochastic
 register(
     id='Eplus-5Zone-hot-discrete-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
@@ -71,6 +78,7 @@ register(
     }
 )
 
+# 5) 5-zone, mixed weather, discrete actions and stochastic
 register(
     id='Eplus-5Zone-mixed-discrete-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
@@ -86,6 +94,7 @@ register(
     }
 )
 
+# 6) 5-zone, cool weather, discrete actions and stochastic
 register(
     id='Eplus-5Zone-cool-discrete-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
@@ -101,6 +110,7 @@ register(
     }
 )
 
+# 7) 5-zone, hot weather, continuous actions
 register(
     id='Eplus-5Zone-hot-continuous-v1',
     entry_point='energym.envs:EplusEnv',
@@ -115,6 +125,7 @@ register(
     }
 )
 
+# 8) 5-zone, mixed weather, continuous actions
 register(
     id='Eplus-5Zone-mixed-continuous-v1',
     entry_point='energym.envs:EplusEnv',
@@ -129,6 +140,7 @@ register(
     }
 )
 
+# 9) 5-zone, cool weather, continuous actions
 register(
     id='Eplus-5Zone-cool-continuous-v1',
     entry_point='energym.envs:EplusEnv',
@@ -143,6 +155,7 @@ register(
     }
 )
 
+# 10) 5-zone, hot weather, continuous actions and stochastic
 register(
     id='Eplus-5Zone-hot-continuous-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
@@ -158,6 +171,7 @@ register(
     }
 )
 
+# 11) 5-zone, mixed weather, continuous actions and stochastic
 register(
     id='Eplus-5Zone-mixed-continuous-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
@@ -173,6 +187,7 @@ register(
     }
 )
 
+# 12) 5-zone, cool weather, continuous actions and stochastic
 register(
     id='Eplus-5Zone-cool-continuous-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
@@ -189,66 +204,132 @@ register(
 )
 
 #========================DATACENTER========================#
-
+# 13) DC, hot weather, discrete actions
 register(
-    id='Eplus-datacenter-discrete-v1',
+    id='Eplus-datacenter-hot-discrete-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
-        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
-        'weather_file': 'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw',
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_AZ.idf',
+        'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
         'discrete_actions': True,
         'reward': LinearReward(),
-        'env_name': 'datacenter-discrete-v1'
+        'env_name': 'datacenter-hot-discrete-v1'
     }
 )
 
+# 14) DC, hot weather, continuous actions
 register(
-    id='Eplus-datacenter-continuous-v1',
+    id='Eplus-datacenter-hot-continuous-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
-        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
-        'weather_file': 'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw',
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_AZ.idf',
+        'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
         'discrete_actions': False,
         'reward': LinearReward(),
-        'env_name': 'datacenter-continuous-v1'
+        'env_name': 'datacenter-hot-continuous-v1'
     }
 )
 
+# 15) DC, hot weather, discrete actions and stochastic
 register(
-    id='Eplus-datacenter-discrete-stochastic-v1',
+    id='Eplus-datacenter-hot-discrete-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
-        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
-        'weather_file': 'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw',
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_AZ.idf',
+        'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
         'discrete_actions': True,
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward(),
-        'env_name': 'datacenter-discrete-stochastic-v1'
+        'env_name': 'datacenter-hot-discrete-stochastic-v1'
     }
 )
 
+# 16) DC, hot weather, continuous actions and stochastic
 register(
-    id='Eplus-datacenter-continuous-stochastic-v1',
+    id='Eplus-datacenter-hot-continuous-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
-        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
-        'weather_file': 'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw',
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_AZ.idf',
+        'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
         'discrete_actions': False,
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward(),
-        'env_name': 'datacenter-continuous-stochastic-v1'
+        'env_name': 'datacenter-hot-continuous-stochastic-v1'
+    }
+)
+
+# 17) DC, mixed weather, discrete actions
+register(
+    id='Eplus-datacenter-mixed-discrete-v1',
+    entry_point='energym.envs:EplusEnv',
+    kwargs={
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_NY.idf',
+        'weather_file': 'USA_NY_New.York-John.F.Kennedy.Intl.AP.744860_TMY3.epw',
+        'variables_file': 'variablesDataCenter.cfg',
+        'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
+        'discrete_actions': True,
+        'reward': LinearReward(),
+        'env_name': 'datacenter-mixed-discrete-v1'
+    }
+)
+
+# 18) DC, mixed weather, continuous actions
+register(
+    id='Eplus-datacenter-hot-continuous-v1',
+    entry_point='energym.envs:EplusEnv',
+    kwargs={
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_NY.idf',
+        'weather_file': 'USA_NY_New.York-John.F.Kennedy.Intl.AP.744860_TMY3.epw',
+        'variables_file': 'variablesDataCenter.cfg',
+        'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
+        'discrete_actions': False,
+        'reward': LinearReward(),
+        'env_name': 'datacenter-mixed-continuous-v1'
+    }
+)
+
+# 19) DC, mixed weather, discrete actions and stochastic
+register(
+    id='Eplus-datacenter-mixed-discrete-stochastic-v1',
+    entry_point='energym.envs:EplusEnv',
+    kwargs={
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_NY.idf',
+        'weather_file': 'USA_NY_New.York-John.F.Kennedy.Intl.AP.744860_TMY3.epw',
+        'variables_file': 'variablesDataCenter.cfg',
+        'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
+        'discrete_actions': True,
+        'weather_variability': (1.0, 0.0, 0.001),
+        'reward': LinearReward(),
+        'env_name': 'datacenter-mixed-discrete-stochastic-v1'
+    }
+)
+
+# 20) DC, mixed weather, continuous actions and stochastic
+register(
+    id='Eplus-datacenter-hot-continuous-stochastic-v1',
+    entry_point='energym.envs:EplusEnv',
+    kwargs={
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_NY.idf',
+        'weather_file': 'USA_NY_New.York-John.F.Kennedy.Intl.AP.744860_TMY3.epw',
+        'variables_file': 'variablesDataCenter.cfg',
+        'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
+        'discrete_actions': False,
+        'weather_variability': (1.0, 0.0, 0.001),
+        'reward': LinearReward(),
+        'env_name': 'datacenter-mixed-continuous-stochastic-v1'
     }
 )
 
 #========================MULLION========================#
+#TODO Include 8 environments of IW for mixed and cool weathers
 
 register(
     id='Eplus-IWMullion-discrete-v1',
