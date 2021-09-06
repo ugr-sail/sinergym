@@ -10137,7 +10137,7 @@
     General;                 !- End-Use Subcategory
 
   Fan:ConstantVolume,
-    Desiccant Regen Fan,     !- Name
+    Desiccant Regen Fan2,     !- Name
     regen_fan_op,            !- Availability Schedule Name
     0.70,                    !- Fan Total Efficiency
     300.00,                  !- Pressure Rise {Pa}
@@ -10146,7 +10146,21 @@
     1.00,                    !- Motor In Airstream Fraction
     DOAS Desiccant Regen Wheel Air Outlet,  !- Air Inlet Node Name
     DOAS Desiccant Regen Air Relief Outlet,  !- Air Outlet Node Name
-    General;                 !- End-Use Subcategory
+    General; 
+
+  Fan:OnOff,
+    Desiccant Regen Fan,  !- Name
+    regen_fan_op,                 !- Availability Schedule Name
+    0.70,                    !- Fan Total Efficiency
+    300.00,                  !- Pressure Rise {Pa}
+    1.060000,                !- Maximum Flow Rate {m3/s}
+    0.90,                    !- Motor Efficiency
+    1.00,                    !- Motor In Airstream Fraction
+    DOAS Desiccant Regen Wheel Air Outlet,  !- Air Inlet Node Name
+    DOAS Desiccant Regen Air Relief Outlet,  !- Air Outlet Node Name
+    DefaultFanPowerRatioCurve,  !- Fan Power Ratio Function of Speed Ratio Curve Name
+    DefaultFanEffRatioCurve, !- Fan Efficiency Ratio Function of Speed Ratio Curve Name
+    General;
 
 !-   ===========  ALL OBJECTS IN CLASS: FAN:ONOFF ===========
 ! - Component name
@@ -10211,7 +10225,7 @@
     HeatExchanger:Desiccant:BalancedFlow,  !- Desiccant Heat Exchanger Object Type
     Desiccant Heat Exchanger 1,  !- Desiccant Heat Exchanger Name
     DOAS Supply Side Outlet 1,  !- Sensor Node Name
-    Fan:ConstantVolume,      !- Regeneration Air Fan Object Type
+    Fan:OnOff,      !- Regeneration Air Fan Object Type
     Desiccant Regen Fan,     !- Regeneration Air Fan Name
     DrawThrough,             !- Regeneration Air Fan Placement
     Coil:Heating:Fuel,       !- Regeneration Air Heater Object Type
