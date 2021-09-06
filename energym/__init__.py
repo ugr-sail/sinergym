@@ -263,3 +263,47 @@ register(
         'env_name': 'IWMullion-discrete-v1'
     }
 )
+
+register(
+    id='Eplus-IWMullion-continuous-v1',
+    entry_point='energym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'IW_Mullion.idf',
+        'weather_file': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        'variables_file': 'variablesIW.cfg',
+        'spaces_file': 'IW_Mullion_spaces.cfg',
+        'discrete_actions': False,
+        'reward': LinearReward(),
+        'env_name': 'IWMullion-continuous-v1'
+    }
+)
+
+register(
+    id='Eplus-IWMullion-discrete-stochastic-v1',
+    entry_point='energym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'IW_Mullion.idf',
+        'weather_file': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        'variables_file': 'variablesIW.cfg',
+        'spaces_file': 'IW_Mullion_spaces.cfg',
+        'discrete_actions': True,
+        'weather_variability': (1.0, 0.0, 0.001),
+        'reward': LinearReward(),
+        'env_name': 'IWMullion-discrete-stochastic-v1'
+    }
+)
+
+register(
+    id='Eplus-IWMullion-continuous-stochastic-v1',
+    entry_point='energym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'IW_Mullion.idf',
+        'weather_file': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        'variables_file': 'variablesIW.cfg',
+        'spaces_file': 'IW_Mullion_spaces.cfg',
+        'discrete_actions': False,
+        'weather_variability': (1.0, 0.0, 0.001),
+        'reward': LinearReward(),
+        'env_name': 'IWMullion-continuous-stochastic-v1'
+    }
+)
