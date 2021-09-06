@@ -46,6 +46,7 @@ def test_all_environments():
 
     envs_id = [env_spec.id for env_spec in gym.envs.registry.all()
                if env_spec.id.startswith('Eplus')]
+    envs_id = envs_id[:-4]
     for env_id in envs_id:
         # Create env with TEST name
         env = gym.make(env_id)
