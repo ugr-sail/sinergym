@@ -3,7 +3,7 @@
 > :warning: **We are in the process of rebranding this project. Stay tuned for new updates!**
 
 <div align="center">
-  <img src="images/logo.png" width=30%><br><br>
+  <img src="images/logo.png" width=40%><br><br>
 </div>
 
 **Welcome to energym!**
