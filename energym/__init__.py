@@ -275,7 +275,7 @@ register(
 
 # 18) DC, mixed weather, continuous actions
 register(
-    id='Eplus-datacenter-hot-continuous-v1',
+    id='Eplus-datacenter-mixed-continuous-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '2ZoneDataCenterHVAC_wEconomizer_NY.idf',
@@ -305,7 +305,7 @@ register(
 
 # 20) DC, mixed weather, continuous actions and stochastic
 register(
-    id='Eplus-datacenter-hot-continuous-stochastic-v1',
+    id='Eplus-datacenter-mixed-continuous-stochastic-v1',
     entry_point='energym.envs:EplusEnv',
     kwargs={
         'idf_file': '2ZoneDataCenterHVAC_wEconomizer_NY.idf',
