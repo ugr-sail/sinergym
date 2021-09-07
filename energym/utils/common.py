@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 
 # NORMALIZATION RANGES
 RANGES_5ZONE = {'Facility Total HVAC Electricity Demand Rate (Whole Building)': [173.6583692738386,
-                                                                               32595.57259261767],
+                                                                                 32595.57259261767],
                 'People Air Temperature (SPACE1-1 PEOPLE 1)': [0.0, 30.00826655379267],
                 'Site Diffuse Solar Radiation Rate per Area (Environment)': [0.0, 588.0],
                 'Site Direct Solar Radiation Rate per Area (Environment)': [0.0, 1033.0],
@@ -61,6 +61,7 @@ RANGES_IW = {
     "IW Occupy Mode Flag": [0.0, 1.0],
     "IW Calculated Heating Demand": [0.0, 85.0]
 }
+
 
 def get_delta_seconds(year, st_mon, st_day, end_mon, end_day):
     """Returns the delta seconds between `year:st_mon:st_day:0:0:0` and
@@ -130,7 +131,7 @@ def parse_variables(var_file):
     for var in root.findall('variable'):
         if var.attrib['source'] == 'EnergyPlus':
             observation.append(var[0].attrib['type'] +
-                               ' ('+var[0].attrib['name']+')')
+                               ' (' + var[0].attrib['name'] + ')')
         if var.attrib['source'] == 'Ptolemy':
             action.append(var[0].attrib['schedule'])
 
@@ -180,7 +181,7 @@ def parse_observation_action_space(space_file):
         # element mapping index
         index = int(element.attrib['index'])
         # element action values
-        actions = tuple([float(element.attrib['action'+str(i)])
+        actions = tuple([float(element.attrib['action' + str(i)])
                         for i in range(action_shape)])
 
         discrete_action[index] = actions
@@ -206,7 +207,11 @@ def parse_observation_action_space(space_file):
     return result
 
 
-def create_variable_weather(weather_data, original_epw_file, columns: list = ['drybulb'], variation: tuple = None):
+def create_variable_weather(
+        weather_data,
+        original_epw_file,
+        columns: list = ['drybulb'],
+        variation: tuple = None):
     """Create a new weather file using Ornstein-Uhlenbeck process.
 
     Args:
@@ -231,9 +236,10 @@ def create_variable_weather(weather_data, original_epw_file, columns: list = ['d
         tau = variation[2]  # Time constant.
 
         T = 1.  # Total time.
-        # All the columns are going to have the same num of rows since they are in the same dataframe
+        # All the columns are going to have the same num of rows since they are
+        # in the same dataframe
         n = len(df[columns[0]])
-        dt = T/n
+        dt = T / n
         # t = np.linspace(0., T, n)  # Vector of times.
 
         sigma_bis = sigma * np.sqrt(2. / tau)
@@ -262,7 +268,7 @@ def ranges_getter(output_path, last_result=None):
     """Given a path with simulations outputs, this function is used to extract max and min absolute valors of all episodes in each variable. If a dict ranges is given, will be updated.
 
     Args:
-        output_path (str): path with simulations directories (Eplus-env-\*).
+        output_path (str): path with simulations directories (Eplus-env-\\*).
         last_result (dict): Last ranges dict to be updated. This will be created if it is not given.
 
     Returns:
@@ -277,11 +283,19 @@ def ranges_getter(output_path, last_result=None):
 
     content = os.listdir(output_path)
     for simulation in content:
-        if os.path.isdir(output_path+'/'+simulation) and simulation.startswith('Eplus-env'):
-            simulation_content = os.listdir(output_path+'/'+simulation)
+        if os.path.isdir(
+            output_path +
+            '/' +
+                simulation) and simulation.startswith('Eplus-env'):
+            simulation_content = os.listdir(output_path + '/' + simulation)
             for episode_dir in simulation_content:
-                if os.path.isdir(output_path+'/'+simulation+'/'+episode_dir):
-                    monitor_path = output_path+'/'+simulation+'/'+episode_dir+'/monitor.csv'
+                if os.path.isdir(
+                    output_path +
+                    '/' +
+                    simulation +
+                    '/' +
+                        episode_dir):
+                    monitor_path = output_path + '/' + simulation + '/' + episode_dir + '/monitor.csv'
                     data = pd.read_csv(monitor_path)
 
                     if len(result) == 0:
@@ -320,9 +334,10 @@ def setpoints_transform(action, action_space: gym.spaces.Box, setpoints_space):
                 setpoints_space[i][0]
 
             action_.append(
-                setpoints_space[i][0] + (value - action_space.low[i]) * sp_max_min/a_max_min)
+                setpoints_space[i][0] + (value - action_space.low[i]) * sp_max_min / a_max_min)
         else:
-            # If action is outer action_space already, it don't need transformation
+            # If action is outer action_space already, it don't need
+            # transformation
             action_.append(value)
 
     return action_
@@ -369,10 +384,16 @@ class CSVLogger(object):
 
     """
 
-    def __init__(self, monitor_header, progress_header, log_progress_file, log_file=None, flag=True):
+    def __init__(
+            self,
+            monitor_header,
+            progress_header,
+            log_progress_file,
+            log_file=None,
+            flag=True):
 
         self.monitor_header = monitor_header
-        self.progress_header = progress_header+'\n'
+        self.progress_header = progress_header + '\n'
         self.log_file = log_file
         self.log_progress_file = log_progress_file
         self.flag = flag
@@ -388,7 +409,18 @@ class CSVLogger(object):
         self.total_time_elapsed = 0
         self.comfort_violation_timesteps = 0
 
-    def log_step(self, timestep, date, observation, action, simulation_time, reward, total_power_no_units, comfort_penalty, power, done):
+    def log_step(
+            self,
+            timestep,
+            date,
+            observation,
+            action,
+            simulation_time,
+            reward,
+            total_power_no_units,
+            comfort_penalty,
+            power,
+            done):
         """Log step information and store it in steps_data param.
 
         Args:
@@ -407,20 +439,35 @@ class CSVLogger(object):
         if self.flag:
             row_contents = [timestep] + list(date) + list(observation) + \
                 list(action) + [simulation_time, reward,
-                                total_power_no_units, comfort_penalty,  done]
+                                total_power_no_units, comfort_penalty, done]
             self.steps_data.append(row_contents)
 
             # Store step information for episode
             self._store_step_information(
-                reward, power, comfort_penalty, total_power_no_units, timestep, simulation_time)
+                reward,
+                power,
+                comfort_penalty,
+                total_power_no_units,
+                timestep,
+                simulation_time)
         else:
             pass
 
-    def log_step_normalize(self, timestep, date, observation, action, simulation_time, reward, total_power_no_units, comfort_penalty, done):
+    def log_step_normalize(
+            self,
+            timestep,
+            date,
+            observation,
+            action,
+            simulation_time,
+            reward,
+            total_power_no_units,
+            comfort_penalty,
+            done):
         if self.flag:
             row_contents = [timestep] + list(date) + list(observation) + \
                 list(action) + [simulation_time, reward,
-                                total_power_no_units, comfort_penalty,  done]
+                                total_power_no_units, comfort_penalty, done]
             self.steps_data_normalized.append(row_contents)
         else:
             pass
@@ -444,7 +491,9 @@ class CSVLogger(object):
             ep_mean_power_penalty = np.mean(self.power_penalties)
             try:
                 comfort_violation = (
-                    self.comfort_violation_timesteps/self.total_timesteps*100)
+                    self.comfort_violation_timesteps /
+                    self.total_timesteps *
+                    100)
             except ZeroDivisionError:
                 comfort_violation = np.nan
 
@@ -457,7 +506,7 @@ class CSVLogger(object):
 
             # Write normalize steps_info in monitor_normalized.csv
             if len(self.steps_data_normalized) > 1:
-                with open(self.log_file[:-4]+'_normalized.csv', 'w', newline='') as file_obj:
+                with open(self.log_file[:-4] + '_normalized.csv', 'w', newline='') as file_obj:
                     # Create a writer object from csv module
                     csv_writer = csv.writer(file_obj)
                     # Add contents of list as last row in the csv file
@@ -469,8 +518,19 @@ class CSVLogger(object):
                     file_obj.write(self.progress_header)
 
             # building episode row
-            row_contents = [episode, ep_cumulative_reward, ep_mean_reward, ep_cumulative_power, ep_mean_power, ep_cumulative_comfort_penalty,
-                            ep_mean_comfort_penalty, ep_cumulative_power_penalty, ep_mean_power_penalty, comfort_violation, self.total_timesteps, self.total_time_elapsed]
+            row_contents = [
+                episode,
+                ep_cumulative_reward,
+                ep_mean_reward,
+                ep_cumulative_power,
+                ep_mean_power,
+                ep_cumulative_comfort_penalty,
+                ep_mean_comfort_penalty,
+                ep_cumulative_power_penalty,
+                ep_mean_power_penalty,
+                comfort_violation,
+                self.total_timesteps,
+                self.total_time_elapsed]
             with open(self.log_progress_file, 'a+', newline='') as file_obj:
                 # Create a writer object from csv module
                 csv_writer = csv.writer(file_obj)
@@ -497,7 +557,14 @@ class CSVLogger(object):
         else:
             pass
 
-    def _store_step_information(self, reward, power, comfort_penalty, power_penalty, timestep, simulation_time):
+    def _store_step_information(
+            self,
+            reward,
+            power,
+            comfort_penalty,
+            power_penalty,
+            timestep,
+            simulation_time):
         """Store relevant data to episode summary in progress.csv.
 
         Args:

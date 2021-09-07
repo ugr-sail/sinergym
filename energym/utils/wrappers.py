@@ -34,11 +34,12 @@ class NormalizeObservation(gym.ObservationWrapper):
         # Save original obs in class attribute
         self.unwrapped_observation = obs.copy()
 
-        # NOTE: If you want to record day, month and hour, you should add that variables as keys
+        # NOTE: If you want to record day, month and hour, you should add that
+        # variables as keys
         for i, variable in enumerate(self.env.variables['observation']):
             # normalization
-            obs[i] = (obs[i]-self.ranges[variable][0]) / \
-                (self.ranges[variable][1]-self.ranges[variable][0])
+            obs[i] = (obs[i] - self.ranges[variable][0]) / \
+                (self.ranges[variable][1] - self.ranges[variable][0])
             # If value is out
             if obs[i] > 1:
                 obs[i] = 1
@@ -88,11 +89,10 @@ class MultiObsWrapper(gym.Wrapper):
 
     def step(self, action):
         """Performs the action in the new environment."""
-        
+
         observation, reward, done, info = self.env.step(action)
         self.history.append(observation)
         return self._get_obs(), reward, done, info
-
 
     def _get_obs(self):
         """Get observation history.
@@ -117,18 +117,22 @@ class LoggerWrapper(gym.Wrapper):
         """
         gym.Wrapper.__init__(self, env)
         # Headers for csv logger
-        monitor_header_list = ['timestep,month,day,hour']+env.variables['observation'] + \
-            env.variables['action']+['time (seconds)', 'reward',
-                                     'power_penalty', 'comfort_penalty', 'done']
+        monitor_header_list = ['timestep,month,day,hour'] + env.variables['observation'] + \
+            env.variables['action'] + ['time (seconds)', 'reward',
+                                       'power_penalty', 'comfort_penalty', 'done']
         self.monitor_header = ''
         for element_header in monitor_header_list:
-            self.monitor_header += element_header+','
+            self.monitor_header += element_header + ','
         self.monitor_header = self.monitor_header[:-1]
         self.progress_header = 'episode_num,cumulative_reward,mean_reward,cumulative_power_consumption,mean_power_consumption,cumulative_comfort_penalty,mean_comfort_penalty,cumulative_power_penalty,mean_power_penalty,comfort_violation (%),length(timesteps),time_elapsed(seconds)'
 
         # Create simulation logger, by default is active (flag=True)
-        self.logger = CSVLogger(monitor_header=self.monitor_header, progress_header=self.progress_header,
-                                log_progress_file=env.simulator._env_working_dir_parent+'/progress.csv', flag=flag)
+        self.logger = CSVLogger(
+            monitor_header=self.monitor_header,
+            progress_header=self.progress_header,
+            log_progress_file=env.simulator._env_working_dir_parent +
+            '/progress.csv',
+            flag=flag)
 
     def step(self, action):
         """Step the environment. Logging new information
@@ -137,10 +141,11 @@ class LoggerWrapper(gym.Wrapper):
             action: Action executed in step
 
         Returns:
-            (np.array(),float,bool,dict) tuple 
+            (np.array(),float,bool,dict) tuple
         """
         obs, reward, done, info = self.env.step(action)
-        # We added some extra values (month,day,hour) manually in env, so we need to delete them.
+        # We added some extra values (month,day,hour) manually in env, so we
+        # need to delete them.
         if is_wrapped(self, NormalizeObservation):
             # Record action and new observation in simulator's csv
             self.logger.log_step_normalize(timestep=info['timestep'],
@@ -154,17 +159,21 @@ class LoggerWrapper(gym.Wrapper):
                                            comfort_penalty=info['comfort_penalty'],
                                            done=done)
             # Record original observation too
-            self.logger.log_step(timestep=info['timestep'],
-                                 date=[info['month'],
-                                       info['day'], info['hour']],
-                                 observation=self.env.get_unwrapped_obs()[:-3],
-                                 action=info['action_'],
-                                 simulation_time=info['time_elapsed'],
-                                 reward=reward,
-                                 total_power_no_units=info['total_power_no_units'],
-                                 comfort_penalty=info['comfort_penalty'],
-                                 power=info['total_power'],
-                                 done=done)
+            self.logger.log_step(
+                timestep=info['timestep'],
+                date=[
+                    info['month'],
+                    info['day'],
+                    info['hour']],
+                observation=self.env.get_unwrapped_obs()[
+                    :-3],
+                action=info['action_'],
+                simulation_time=info['time_elapsed'],
+                reward=reward,
+                total_power_no_units=info['total_power_no_units'],
+                comfort_penalty=info['comfort_penalty'],
+                power=info['total_power'],
+                done=done)
         else:
             # Only record observation without normalization
             self.logger.log_step(timestep=info['timestep'],
@@ -195,9 +204,10 @@ class LoggerWrapper(gym.Wrapper):
 
         # Create monitor.csv for information of this episode
         self.env.simulator.logger_main.debug(
-            'Creating monitor.csv for current episode (episode '+str(self.env.simulator._epi_num)+') if logger is active')
+            'Creating monitor.csv for current episode (episode ' + str(
+                self.env.simulator._epi_num) + ') if logger is active')
         self.logger.set_log_file(
-            self.env.simulator._eplus_working_dir+'/monitor.csv')
+            self.env.simulator._eplus_working_dir + '/monitor.csv')
         # Store initial state of simulation
         self.logger.log_step(timestep=0,
                              date=[obs[-2], obs[-3], obs[-1]],

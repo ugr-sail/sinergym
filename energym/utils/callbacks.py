@@ -52,20 +52,21 @@ class LoggerCallback(BaseCallback):
         # OBSERVATION
         variables = self.training_env.get_attr('variables')[0]['observation']
         # log normalized and original values
-        if self.training_env.env_is_wrapped(wrapper_class=NormalizeObservation)[0]:
+        if self.training_env.env_is_wrapped(
+                wrapper_class=NormalizeObservation)[0]:
             obs_normalized = self.locals['new_obs'][-1]
             obs = self.training_env.env_method('get_unwrapped_obs')[-1]
             for i, variable in enumerate(variables):
                 self.record(
-                    'normalized_observation/'+variable, obs_normalized[i])
+                    'normalized_observation/' + variable, obs_normalized[i])
                 self.record(
-                    'observation/'+variable, obs[i])
+                    'observation/' + variable, obs[i])
         # Only original values
         else:
             obs = self.locals['new_obs'][-1]
             for i, variable in enumerate(variables):
                 self.record(
-                    'observation/'+variable, obs[i])
+                    'observation/' + variable, obs[i])
 
         # ACTION
         variables = self.training_env.get_attr('variables')[0]['action']
@@ -86,10 +87,10 @@ class LoggerCallback(BaseCallback):
         for i, variable in enumerate(variables):
             if action is not None:
                 self.record(
-                    'action/'+variable, action[i])
+                    'action/' + variable, action[i])
 
             self.record(
-                'action_simulation/'+variable, action_[i])
+                'action_simulation/' + variable, action_[i])
 
         # Store episode data
         try:
@@ -134,7 +135,7 @@ class LoggerCallback(BaseCallback):
                 self.ep_term_energy)
             try:
                 self.episode_metrics['comfort_violation_time(%)'] = self.num_comfort_violation / \
-                    self.ep_timesteps*100
+                    self.ep_timesteps * 100
             except ZeroDivisionError:
                 self.episode_metrics['comfort_violation_time(%)'] = np.nan
 
@@ -150,7 +151,7 @@ class LoggerCallback(BaseCallback):
         if hasattr(self, 'episode_metrics'):
             for key, metric in self.episode_metrics.items():
                 self.logger.record(
-                    'episode/'+key, metric)
+                    'episode/' + key, metric)
 
         return True
 
@@ -187,8 +188,19 @@ class LoggerEvalCallback(EvalCallback):
         verbose: int = 1,
         warn: bool = True,
     ):
-        super(LoggerEvalCallback, self).__init__(eval_env=eval_env, callback_on_new_best=callback_on_new_best, n_eval_episodes=n_eval_episodes,
-                                                 eval_freq=eval_freq, log_path=log_path, best_model_save_path=best_model_save_path, deterministic=deterministic, render=render, verbose=verbose, warn=warn)
+        super(
+            LoggerEvalCallback,
+            self).__init__(
+            eval_env=eval_env,
+            callback_on_new_best=callback_on_new_best,
+            n_eval_episodes=n_eval_episodes,
+            eval_freq=eval_freq,
+            log_path=log_path,
+            best_model_save_path=best_model_save_path,
+            deterministic=deterministic,
+            render=render,
+            verbose=verbose,
+            warn=warn)
         self.evaluations_power_consumption = []
         self.evaluations_comfort_violation = []
         self.evaluations_comfort_penalty = []
@@ -263,12 +275,13 @@ class LoggerEvalCallback(EvalCallback):
 
             if self.verbose > 0:
                 print(
-                    f"Eval num_timesteps={self.num_timesteps}, " f"episode_reward={mean_reward:.2f} +/- {std_reward:.2f}")
+                    f"Eval num_timesteps={self.num_timesteps}, "
+                    f"episode_reward={mean_reward:.2f} +/- {std_reward:.2f}")
                 print(
                     f"Episode length: {mean_ep_length:.2f} +/- {std_ep_length:.2f}")
             # Add to current Logger
             for key, metric in self.evaluation_metrics.items():
-                self.logger.record('eval/'+key, metric)
+                self.logger.record('eval/' + key, metric)
 
             if len(self._is_success_buffer) > 0:
                 success_rate = np.mean(self._is_success_buffer)
@@ -338,9 +351,7 @@ def evaluate_policy(
         warnings.warn(
             "Evaluation environment is not wrapped with a ``Monitor`` wrapper. "
             "This may result in reporting modified episode lengths and rewards, if other wrappers happen to modify these. "
-            "Consider wrapping environment first with ``Monitor`` wrapper.",
-            UserWarning,
-        )
+            "Consider wrapping environment first with ``Monitor`` wrapper.", UserWarning, )
 
     episodes_rewards, episodes_lengths, episodes_powers, episodes_comfort_violations, episodes_comfort_penalties, episodes_power_penalties = [], [], [], [], [], []
     not_reseted = True
@@ -390,7 +401,7 @@ def evaluate_policy(
             episodes_powers.append(episode_power)
             try:
                 episodes_comfort_violations.append(
-                    episode_steps_comfort_violation/episode_length*100)
+                    episode_steps_comfort_violation / episode_length * 100)
             except ZeroDivisionError:
                 episodes_comfort_violations.append(np.nan)
             episodes_comfort_penalties.append(episode_comfort_penalty)

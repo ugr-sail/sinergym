@@ -43,8 +43,9 @@ def test_stable_PPO(env_name, request):
     assert model.action_space == env.action_space
     assert model.env.action_space == env.action_space
 
-    assert type(
-        model.policy) == stable_baselines3.common.policies.ActorCriticPolicy
+    assert isinstance(
+        model.policy,
+        stable_baselines3.common.policies.ActorCriticPolicy)
 
     # Check model works
 
@@ -54,7 +55,7 @@ def test_stable_PPO(env_name, request):
 
     assert reward is not None and reward < 0
     assert a is not None
-    assert type(done) == bool
+    assert isinstance(done, bool)
     assert info['timestep'] == 1
 
     env.close()
@@ -89,8 +90,9 @@ def test_stable_A2C(env_name, request):
     assert model.action_space == env.action_space
     assert model.env.action_space == env.action_space
 
-    assert type(
-        model.policy) == stable_baselines3.common.policies.ActorCriticPolicy
+    assert isinstance(
+        model.policy,
+        stable_baselines3.common.policies.ActorCriticPolicy)
 
     # Check model works
 
@@ -100,7 +102,7 @@ def test_stable_A2C(env_name, request):
 
     assert reward is not None and reward < 0
     assert a is not None
-    assert type(done) == bool
+    assert isinstance(done, bool)
     assert info['timestep'] == 1
 
     env.close()
@@ -159,8 +161,9 @@ def test_stable_DQN(env_name, request):
         assert model.action_space == env.action_space
         assert model.env.action_space == env.action_space
 
-        assert type(
-            model.policy) == stable_baselines3.dqn.policies.DQNPolicy
+        assert isinstance(
+            model.policy,
+            stable_baselines3.dqn.policies.DQNPolicy)
 
         # Check model works
 
@@ -170,7 +173,7 @@ def test_stable_DQN(env_name, request):
 
         assert reward is not None and reward < 0
         assert a is not None
-        assert type(done) == bool
+        assert isinstance(done, bool)
         assert info['timestep'] == 1
 
         env.close()
@@ -212,8 +215,9 @@ def test_stable_DDPG(env_name, request):
         assert model.action_space == env.action_space
         assert model.env.action_space == env.action_space
 
-        assert type(
-            model.policy) == stable_baselines3.td3.policies.TD3Policy
+        assert isinstance(
+            model.policy,
+            stable_baselines3.td3.policies.TD3Policy)
 
         # Check model works
 
@@ -223,7 +227,7 @@ def test_stable_DDPG(env_name, request):
 
         assert reward is not None and reward < 0
         assert a is not None
-        assert type(done) == bool
+        assert isinstance(done, bool)
         assert info['timestep'] == 1
 
         env.close()
@@ -259,8 +263,9 @@ def test_stable_SAC(env_name, request):
         assert model.env.action_space == env.action_space
 
         print(type(model.policy))
-        assert type(
-            model.policy) == stable_baselines3.sac.policies.SACPolicy
+        assert isinstance(
+            model.policy,
+            stable_baselines3.sac.policies.SACPolicy)
 
         # Check model works
 
@@ -270,7 +275,7 @@ def test_stable_SAC(env_name, request):
 
         assert reward is not None and reward < 0
         assert a is not None
-        assert type(done) == bool
+        assert isinstance(done, bool)
         assert info['timestep'] == 1
 
         env.close()

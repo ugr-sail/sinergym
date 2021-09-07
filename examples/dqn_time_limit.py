@@ -26,6 +26,7 @@ from energym.utils.wrappers import NormalizeObservation
 
 class PartialDQN(DQN):
     """Slight modification of DQN for partial-episode bootstrapping"""
+
     def __init__(
         self,
         policy: str,
@@ -46,7 +47,7 @@ class PartialDQN(DQN):
         max_grad_norm: float = 10,
         verbose: int = 0,
         seed: Optional[int] = None
-        ):
+    ):
 
         super(PartialDQN, self).__init__(
             policy=policy,
@@ -75,10 +76,12 @@ class PartialDQN(DQN):
         losses = []
         for gradient_step in range(gradient_steps):
             # Sample replay buffer
-            replay_data = self.replay_buffer.sample(batch_size, env=self._vec_normalize_env)
+            replay_data = self.replay_buffer.sample(
+                batch_size, env=self._vec_normalize_env)
             with th.no_grad():
                 # Compute the next Q-values using the target network
-                next_q_values = self.q_net_target(replay_data.next_observations)
+                next_q_values = self.q_net_target(
+                    replay_data.next_observations)
                 # Follow greedy policy: use the one with the highest value
                 next_q_values, _ = next_q_values.max(dim=1)
                 # Avoid potential broadcast issue
@@ -89,7 +92,8 @@ class PartialDQN(DQN):
             # Get current Q-values estimates
             current_q_values = self.q_net(replay_data.observations)
             # Retrieve the q-values for the actions from the replay buffer
-            current_q_values = th.gather(current_q_values, dim=1, index=replay_data.actions.long())
+            current_q_values = th.gather(
+                current_q_values, dim=1, index=replay_data.actions.long())
             # Compute Huber loss (less sensitive to outliers)
             loss = F.smooth_l1_loss(current_q_values, target_q_values)
             losses.append(loss.item())
@@ -97,18 +101,27 @@ class PartialDQN(DQN):
             self.policy.optimizer.zero_grad()
             loss.backward()
             # Clip gradient norm
-            th.nn.utils.clip_grad_norm_(self.policy.parameters(), self.max_grad_norm)
+            th.nn.utils.clip_grad_norm_(
+                self.policy.parameters(), self.max_grad_norm)
             self.policy.optimizer.step()
         # Increase update counter
         self._n_updates += gradient_steps
-        logger.record("train/n_updates", self._n_updates, exclude="tensorboard")
+        logger.record(
+            "train/n_updates",
+            self._n_updates,
+            exclude="tensorboard")
         logger.record("train/loss", np.mean(losses))
 
 
 def main():
     """Run an experiment."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("-a", "--algo", help="which version of DQN to use", type=str, required=True)
+    parser.add_argument(
+        "-a",
+        "--algo",
+        help="which version of DQN to use",
+        type=str,
+        required=True)
     parser.add_argument("-s", "--seed", help="seed", type=int, default=42)
     args = parser.parse_args()
     assert args.algo in ['simple', 'peb']
@@ -132,16 +145,21 @@ def main():
         agent = PartialDQN
         results_path = 'dqn_peb_%d' % args.seed
 
-    model = agent("MlpPolicy", env, verbose=1, 
-        gamma = GAMMA, 
-        learning_starts = LEARNING_STARTS,
-        target_update_interval = TARGET_UPDATE_INTERVAL,
-        exploration_fraction = EXPLORATION_FRACTION,
-        exploration_initial_eps = INITIAL_EPS,
-        exploration_final_eps = FINAL_EPS,
-        seed = args.seed)
-    
-    model.learn(total_timesteps = TOTAL_TIMESTEPS, eval_env = eval_env, eval_freq = EVAL_FREQ, n_eval_episodes = 1, eval_log_path = results_path)
+    model = agent("MlpPolicy", env, verbose=1,
+                  gamma=GAMMA,
+                  learning_starts=LEARNING_STARTS,
+                  target_update_interval=TARGET_UPDATE_INTERVAL,
+                  exploration_fraction=EXPLORATION_FRACTION,
+                  exploration_initial_eps=INITIAL_EPS,
+                  exploration_final_eps=FINAL_EPS,
+                  seed=args.seed)
+
+    model.learn(
+        total_timesteps=TOTAL_TIMESTEPS,
+        eval_env=eval_env,
+        eval_freq=EVAL_FREQ,
+        n_eval_episodes=1,
+        eval_log_path=results_path)
 
 
 if __name__ == '__main__':

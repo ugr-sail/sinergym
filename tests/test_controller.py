@@ -20,7 +20,7 @@ def test_rule_based_controller(env_name, request):
 
     for i in range(3):
         action = rule_based_agent.act(obs)
-        assert type(action) == tuple
+        assert isinstance(action, tuple)
         for value in action:
             assert value is not None
         obs, reward, done, info = env.step(action)

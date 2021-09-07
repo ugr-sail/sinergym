@@ -6,11 +6,13 @@ from pprint import pprint
 import googleapiclient.discovery
 #from six.moves import input
 
+
 def list_instances(service, project, zone):
-    peticion=service.instances().list(project=project, zone=zone)
+    peticion = service.instances().list(project=project, zone=zone)
     print(peticion.to_json())
     result = service.instances().list(project=project, zone=zone).execute()
     return result['items'] if 'items' in result else None
+
 
 def create_instance(service, project, zone, name, bucket):
     # Get the latest Debian Jessie image.
@@ -85,25 +87,34 @@ def create_instance(service, project, zone, name, bucket):
         zone=zone,
         body=config).execute()
 
+
 def delete_instance(service, project, zone, name):
     return service.instances().delete(
         project=project,
         zone=zone,
         instance=name).execute()
 
-def create_instance_group(service ,project, zone, size, template_name, group_name):
 
-    body_request= {
-  "versions": [
-    {
-      "instanceTemplate": "global/instanceTemplates/"+template_name
+def create_instance_group(
+        service,
+        project,
+        zone,
+        size,
+        template_name,
+        group_name):
+
+    body_request = {
+        "versions": [
+            {
+                "instanceTemplate": "global/instanceTemplates/" + template_name
+            }
+        ],
+        "name": group_name,
+        "targetSize": size
     }
-  ],
-  "name": group_name,
-  "targetSize": size
-}
-    request= service.instanceGroupManagers().insert(project=project, zone=zone, body=body_request)
-    response=request.execute()
+    request = service.instanceGroupManagers().insert(
+        project=project, zone=zone, body=body_request)
+    response = request.execute()
     pprint(response)
 
 
@@ -113,7 +124,13 @@ def main(project, zone):
     size = 4
     template_name = "energym-template"
     group_name = "group-example"
-    create_instance_group(service,project,zone,size, template_name, group_name)
+    create_instance_group(
+        service,
+        project,
+        zone,
+        size,
+        template_name,
+        group_name)
     # instances = list_instances(service, project, zone)
     # print('Instances in project %s and zone %s:' % (project, zone))
     # for instance in instances:
