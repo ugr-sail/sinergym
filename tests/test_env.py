@@ -15,7 +15,7 @@ def test_step(env_demo):
     obs, reward, done, info = env_demo.step(action)
 
     assert len(obs) == 19
-    assert not isinstance(reward, None)
+    assert not isinstance(reward, type(None))
     assert not done
     assert list(
         info.keys()) == [
@@ -38,7 +38,7 @@ def test_step(env_demo):
     obs, reward, done, info = env_demo.step(action)
 
     assert len(obs) == 19
-    assert not isinstance(reward, None)
+    assert not isinstance(reward, type(None))
     assert not done
     assert list(
         info.keys()) == [
