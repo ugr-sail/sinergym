@@ -8,10 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          ref: ${{ github.head_ref }}
+      - name: Copy code
+        uses: actions/checkout@v2
 
       - name: autopep8 check and fix
         id: autopep8
