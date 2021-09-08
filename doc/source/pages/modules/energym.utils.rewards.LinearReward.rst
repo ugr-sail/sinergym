@@ -1,9 +1,9 @@
-energym.utils.rewards.SimpleReward
+energym.utils.rewards.LinearReward
 ==================================
 
 .. currentmodule:: energym.utils.rewards
 
-.. autoclass:: SimpleReward
+.. autoclass:: LinearReward
    :members:                                                           
    :undoc-members:               
 
@@ -15,8 +15,8 @@ energym.utils.rewards.SimpleReward
 
    .. autosummary::
    
-      ~SimpleReward.__init__
-      ~SimpleReward.calculate
+      ~LinearReward.__init__
+      ~LinearReward.calculate
    
    
 

@@ -31,7 +31,7 @@ parser.add_argument('--noptepochs', '-o', type=int, default=4)
 parser.add_argument('--timesteps', '-t', type=int, default=5000)
 args = parser.parse_args()
 
-with mlflow.start_run(run_name = 'PPO2_test'):
+with mlflow.start_run(run_name='PPO2_test'):
 
     mlflow.log_param('gamma', args.gamma)
     mlflow.log_param('n_steps', args.n_steps)
@@ -45,13 +45,22 @@ with mlflow.start_run(run_name = 'PPO2_test'):
 
     env = gym.make('Eplus-demo-v1')
 
-    # Possible params: policy, gamma, n_steps, ent_coef, learning_rate, 
+    # Possible params: policy, gamma, n_steps, ent_coef, learning_rate,
     # vf_coef, max_grad_norm, lam, nminibatches, noptepochs...
     # https://stable-baselines.readthedocs.io/en/master/modules/ppo2.html
 
-    model = PPO2(MlpPolicy, env, verbose=1, gamma=args.gamma, n_steps=args.n_steps, ent_coef=args.ent_coef, 
-                learning_rate=args.learning_rate, max_grad_norm=args.max_grad_norm,
-                lam=args.lam, nminibatches=args.nminibatches, noptepochs=args.noptepochs)
+    model = PPO2(
+        MlpPolicy,
+        env,
+        verbose=1,
+        gamma=args.gamma,
+        n_steps=args.n_steps,
+        ent_coef=args.ent_coef,
+        learning_rate=args.learning_rate,
+        max_grad_norm=args.max_grad_norm,
+        lam=args.lam,
+        nminibatches=args.nminibatches,
+        noptepochs=args.noptepochs)
     model.learn(total_timesteps=args.timesteps)
     model.save('ppo2_eplus')
 
@@ -64,12 +73,18 @@ with mlflow.start_run(run_name = 'PPO2_test'):
         a, _ = model.predict(obs)
         obs, reward, done, info = env.step(a)
         rewards.append(reward)
-        if info['month'] != current_month: # display results every month
+        if info['month'] != current_month:  # display results every month
             current_month = info['month']
             print('Reward: ', sum(rewards), info)
-    print('Episode ', i, 'Mean reward: ', np.mean(rewards), 'Cumulative reward: ', sum(rewards))
+    print(
+        'Episode ',
+        i,
+        'Mean reward: ',
+        np.mean(rewards),
+        'Cumulative reward: ',
+        sum(rewards))
 
-    mlflow.log_metric('mean_reward', np.mean(rewards))    
+    mlflow.log_metric('mean_reward', np.mean(rewards))
     mlflow.log_metric('sum_reward', sum(rewards))
 
     mlflow.log_artifact('./ppo2_eplus.zip')

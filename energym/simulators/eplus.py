@@ -27,11 +27,11 @@ class EnergyPlus(BaseSimulator):
         # Access BCVTB and EnergyPlus locations
         try:
             self.bcvtb_path = os.environ['BCVTB_PATH']
-        except:
+        except BaseException:
             raise KeyError('BCVTB_PATH environment variable not set.')
         try:
             self.eplus_path = os.environ['EPLUS_PATH']
-        except:
+        except BaseException:
             raise KeyError('EPLUS_PATH environment variable not set.')
 
         # Read IDF and weather files
@@ -84,14 +84,14 @@ class EnergyPlus(BaseSimulator):
         """Get the length of the run in timesteps."""
 
         self.timestep = self.idf.idfobjects['Timestep'][0]['Number_of_Timesteps_per_Hour']
-        self.start_date = datetime(1991,
-                                   self.idf.idfobjects['RunPeriod'][0]['Begin_Month'],
-                                   self.idf.idfobjects['RunPeriod'][0]['Begin_Day_of_Month']
-                                   )
-        self.final_date = datetime(1991,
-                                   self.idf.idfobjects['RunPeriod'][0]['End_Month'],
-                                   self.idf.idfobjects['RunPeriod'][0]['End_Day_of_Month']
-                                   )
+        self.start_date = datetime(
+            1991,
+            self.idf.idfobjects['RunPeriod'][0]['Begin_Month'],
+            self.idf.idfobjects['RunPeriod'][0]['Begin_Day_of_Month'])
+        self.final_date = datetime(
+            1991,
+            self.idf.idfobjects['RunPeriod'][0]['End_Month'],
+            self.idf.idfobjects['RunPeriod'][0]['End_Day_of_Month'])
         duration = (self.final_date -
                     self.start_date).total_seconds() / 3600  # hours
         times_to_repeat = self.idf.idfobjects['RunPeriod'][0]['Number_of_Times_Runperiod_to_be_Repeated']

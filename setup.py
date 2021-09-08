@@ -12,10 +12,10 @@ setup(name='energym',
               'matplotlib',  # visualization
               'stable-baselines3',  # DRL with pytorch
               'mlflow',  # tracking ML experiments
-              'tensorboard', # Training logger
+              'tensorboard',  # Training logger
               'pytest',  # Unit test repository
               'sphinx',  # documentation
-              'sphinx-rtd-theme' #documentation theme
+              'sphinx-rtd-theme'  # documentation theme
           ],
           'test': [
               'pytest'
@@ -31,7 +31,7 @@ setup(name='energym',
           ],
           'visualization': [
               'matplotlib',
-              'tensorboard' #Log stable-baselines3 trainings
+              'tensorboard'  # Log stable-baselines3 trainings
           ]
       }
       )

@@ -19,7 +19,7 @@ from copy import deepcopy
 
 from ..utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space, setpoints_transform
 from ..simulators import EnergyPlus
-from ..utils.rewards import ExpReward, SimpleReward
+from ..utils.rewards import ExpReward, LinearReward
 from pprint import pprint
 
 
@@ -39,7 +39,7 @@ class EplusEnv(gym.Env):
         env_name='eplus-env-v1',
         discrete_actions=True,
         weather_variability=None,
-        reward = SimpleReward()
+        reward=LinearReward()
     ):
         """Environment with EnergyPlus simulator.
 
@@ -75,7 +75,10 @@ class EplusEnv(gym.Env):
 
         # Utils for getting time info, weather and variable names
         idd = opyplus.Idd(os.path.join(eplus_path, 'Energy+.idd'))
-        self.epm = Epm.from_idf(self.idf_path, idd_or_version=idd)
+        self.epm = Epm.from_idf(
+            self.idf_path,
+            idd_or_version=idd,
+            check_length=False)
         self.variables = parse_variables(self.variables_path)
         self.weather_data = WeatherData.from_epw(self.weather_path)
 
@@ -138,18 +141,18 @@ class EplusEnv(gym.Env):
         if self.flag_discrete:
             # Index for action_mapping
             if np.issubdtype(type(action), np.integer):
-                if type(action) == int:
+                if isinstance(action, int):
                     setpoints = self.action_mapping[action]
                 else:
                     setpoints = self.action_mapping[np.asscalar(action)]
             # Manual action
-            elif type(action) == tuple or type(action) == list:
+            elif isinstance(action, tuple) or isinstance(action, list):
                 # stable-baselines DQN bug prevention
                 if len(action) == 1:
                     setpoints = self.action_mapping[np.asscalar(action)]
                 else:
                     setpoints = action
-            elif type(action) == np.ndarray:
+            elif isinstance(action, np.ndarray):
                 setpoints = self.action_mapping[np.asscalar(action)]
             else:
                 print("ERROR: ", type(action))
@@ -182,7 +185,8 @@ class EplusEnv(gym.Env):
 
         # Extra info
         info = {
-            'timestep': int(t/self.simulator._eplus_run_stepsize),
+            'timestep': int(
+                t / self.simulator._eplus_run_stepsize),
             'time_elapsed': int(t),
             'day': obs_dict['day'],
             'month': obs_dict['month'],
@@ -192,8 +196,7 @@ class EplusEnv(gym.Env):
             'comfort_penalty': terms['reward_comfort'],
             'temperatures': temp_values,
             'out_temperature': obs_dict['Site Outdoor Air Drybulb Temperature (Environment)'],
-            'action_': action_
-        }
+            'action_': action_}
 
         return np.array(list(obs_dict.values())), reward, done, info
 
@@ -207,7 +210,9 @@ class EplusEnv(gym.Env):
         # noise always from original EPW
         weather_data_aux = deepcopy(self.weather_data)
         new_weather = create_variable_weather(
-            weather_data_aux, self.weather_path, variation=self.weather_variability)
+            weather_data_aux,
+            self.weather_path,
+            variation=self.weather_variability)
 
         # Change to next episode
         t, obs, done = self.simulator.reset(new_weather)
@@ -229,5 +234,3 @@ class EplusEnv(gym.Env):
         """End simulation."""
 
         self.simulator.end_env()
-
-    

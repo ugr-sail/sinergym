@@ -16,7 +16,7 @@ def test_reset(simulator):
 
     # Checking output
     assert output[0] == 0
-    assert type(output[1]) == list
+    assert isinstance(output[1], list)
     assert len(output[1]) == 16
     assert output[2] == False
 
@@ -25,29 +25,30 @@ def test_reset(simulator):
     assert simulator._eplus_one_epi_len == 7776000
     assert simulator._curSimTim == 0
     assert simulator._env_working_dir_parent.split(
-        '/')[-1] == 'Eplus-env-'+simulator._env_name+'-res1'
+        '/')[-1] == 'Eplus-env-' + simulator._env_name + '-res1'
     assert simulator._epi_num == 0
     assert simulator._episode_existed
     path_list = simulator._eplus_working_dir.split('/')
-    assert path_list[-2]+'/'+path_list[-1] == 'Eplus-env-' + \
-        simulator._env_name+'-res1/Eplus-env-sub_run'+str(simulator._epi_num+1)
+    assert path_list[-2] + '/' + path_list[-1] == 'Eplus-env-' + \
+        simulator._env_name + '-res1/Eplus-env-sub_run' + str(simulator._epi_num + 1)
 
     # Checking energyplus subprocess
-    assert type(simulator._eplus_process) == subprocess.Popen
+    assert isinstance(simulator._eplus_process, subprocess.Popen)
     assert '/usr/local/EnergyPlus' in simulator._eplus_process.args
 
-    # Checking next directory for the next simulation episode is created successfully
+    # Checking next directory for the next simulation episode is created
+    # successfully
     simulator.reset()
     assert simulator._epi_num == 1
     path_list = simulator._eplus_working_dir.split('/')
-    assert path_list[-2]+'/'+path_list[-1] == 'Eplus-env-' + \
-        simulator._env_name+'-res1/Eplus-env-sub_run'+str(simulator._epi_num+1)
+    assert path_list[-2] + '/' + path_list[-1] == 'Eplus-env-' + \
+        simulator._env_name + '-res1/Eplus-env-sub_run' + str(simulator._epi_num + 1)
 
 
 def test_get_eplus_working_folder(simulator):
     # +1 for get current Subrun number and +1 because this function return the next directory name for the next episode
     expected = 'Eplus-env-TEST-res1/Eplus-env-sub_run' + \
-        str(simulator._epi_num+2)
+        str(simulator._epi_num + 2)
     parent_dir = 'Eplus-env-TEST-res1'
     dir_sig = '-sub_run'
     path = simulator._get_eplus_working_folder(parent_dir, dir_sig)
@@ -61,7 +62,7 @@ def test_step(simulator):
     # Simulation time elapsed at each timestep is defined in the simulator
     assert simulator._curSimTim == simulator._eplus_run_stepsize
     assert simulator._curSimTim == output[0]
-    assert type(output[1]) == list
+    assert isinstance(output[1], list)
     assert len(output[1]) == 16
     assert (simulator._curSimTim >= simulator._eplus_one_epi_len) == output[2]
 
@@ -76,14 +77,15 @@ def test_episode_transition_with_steps(simulator):
         output = simulator.step(action=[20.0, 24.0])[2]
         is_terminal = output
 
-    # When we raise a terminal state it is only because our Current Simulation Time is greater or equeal to episode length
+    # When we raise a terminal state it is only because our Current Simulation
+    # Time is greater or equeal to episode length
     assert simulator._curSimTim >= simulator._eplus_one_epi_len
 
     # If we try to do one step more, it shouldn't change environment
     # One step more...
     output = simulator.step(action=[23.0, 25.0])
     # Let's see
-    assert output == None
+    assert output is None
     # Last action shouldn't change too
     assert simulator._last_action == [20.0, 24.0]
 
@@ -99,7 +101,7 @@ def test_get_file_name(simulator, idf_path):
 def test_create_socket_cfg(simulator, energym_path):
 
     # creating a socket.cfg example in tests/socket.cfg
-    tests_path = energym_path+'/tests'
+    tests_path = energym_path + '/tests'
     simulator._create_socket_cfg(simulator._host, simulator._port, tests_path)
     # Check its content
     with open(tests_path + '/' + 'socket.cfg', 'r+') as socket_file:
@@ -114,12 +116,12 @@ def test_create_socket_cfg(simulator, energym_path):
         assert socket_attrs['port'] == str(simulator._port)
 
     # delete socket.cfg created during simulator_tests
-    os.remove(tests_path+'/socket.cfg')
+    os.remove(tests_path + '/socket.cfg')
 
 
 def test_create_eplus(simulator, eplus_path, weather_path, idf_path):
     eplus_working_dir = simulator._env_working_dir_parent
-    out_path = eplus_working_dir+'/output'
+    out_path = eplus_working_dir + '/output'
     eplus_process = simulator._create_eplus(
         eplus_path, weather_path, idf_path, out_path, eplus_working_dir)
     assert 'ERROR' not in str(eplus_process.stdout.read())
@@ -133,12 +135,13 @@ def test_get_is_eplus_running(simulator):
 
 
 def test_end_episode(simulator):
-    # In this point, we have a simulation running second episode which is terminated
+    # In this point, we have a simulation running second episode which is
+    # terminated
     assert simulator._episode_existed
     simulator.end_episode()
     # Now, let's check simulator
     assert not simulator._episode_existed
-    assert simulator._conn == None
+    assert simulator._conn is None
     assert not simulator.get_is_eplus_running()
 
 

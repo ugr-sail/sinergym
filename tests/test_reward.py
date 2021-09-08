@@ -37,7 +37,15 @@ import energym.utils.rewards as R
         ),
     ]
 )
-def test_calculate(simple_reward, power, temperatures, month, day, reward, reward_energy, reward_comfort):
+def test_calculate(
+        simple_reward,
+        power,
+        temperatures,
+        month,
+        day,
+        reward,
+        reward_energy,
+        reward_comfort):
     result = simple_reward.calculate(power, temperatures, month, day)
     assert result[0] == reward
     assert result[1]['reward_energy'] == reward_energy

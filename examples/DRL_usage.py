@@ -115,9 +115,14 @@ with mlflow.start_run(run_name=name):
 
     # Callbacks
     freq = 2  # evaluate every N episodes
-    eval_callback = LoggerEvalCallback(env, best_model_save_path='./best_models/' + name + '/',
-                                       log_path='./best_models/' + name + '/', eval_freq=n_timesteps_episode * freq,
-                                       deterministic=True, render=False, n_eval_episodes=1)
+    eval_callback = LoggerEvalCallback(
+        env,
+        best_model_save_path='./best_models/' + name + '/',
+        log_path='./best_models/' + name + '/',
+        eval_freq=n_timesteps_episode * freq,
+        deterministic=True,
+        render=False,
+        n_eval_episodes=1)
     log_callback = LoggerCallback(energym_logger=True)
     callback = CallbackList([log_callback])
 

@@ -15,7 +15,12 @@ import shutil
 
 @pytest.fixture(scope='session')
 def energym_path():
-    return os.path.abspath(os.path.join(pkg_resources.resource_filename('energym', ''), os.pardir))
+    return os.path.abspath(
+        os.path.join(
+            pkg_resources.resource_filename(
+                'energym',
+                ''),
+            os.pardir))
 
 ############### SIMULATORS ###############
 
@@ -47,20 +52,34 @@ def variable_path(pkg_data_path):
 
 @pytest.fixture(scope='session')
 def space_path(pkg_data_path):
-    return os.path.join(pkg_data_path, 'variables', '5ZoneAutoDXVAV_spaces.cfg')
+    return os.path.join(
+        pkg_data_path,
+        'variables',
+        '5ZoneAutoDXVAV_spaces.cfg')
 
 
 @pytest.fixture(scope='session')
 def weather_path(pkg_data_path):
-    return os.path.join(pkg_data_path, 'weather', 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw')
+    return os.path.join(
+        pkg_data_path,
+        'weather',
+        'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw')
 
 
 @pytest.fixture(scope='session')
 def simulator(eplus_path, bcvtb_path, idf_path, variable_path, weather_path):
     env_name = 'TEST'
-    return EnergyPlus(eplus_path, weather_path, bcvtb_path, variable_path, idf_path, env_name, act_repeat=1, max_ep_data_store_num=10)
+    return EnergyPlus(
+        eplus_path,
+        weather_path,
+        bcvtb_path,
+        variable_path,
+        idf_path,
+        env_name,
+        act_repeat=1,
+        max_ep_data_store_num=10)
 
-############### ENVIRONMENTS, WRAPPERS AND RULE BASED CONTROLLER AGENT###############
+############### ENVIRONMENTS, WRAPPERS AND RULE BASED CONTROLLER AGENT####
 
 
 @pytest.fixture(scope='module')
@@ -70,7 +89,14 @@ def env_demo(idf_path, weather_path, variable_path, space_path):
     variables_file = variable_path.split('/')[-1]
     spaces_file = space_path.split('/')[-1]
 
-    return EplusEnv(env_name='TESTGYM', idf_file=idf_file, weather_file=weather_file, variables_file=variables_file, spaces_file=spaces_file, discrete_actions=True, weather_variability=None)
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=True,
+        weather_variability=None)
 
 
 @pytest.fixture(scope='function')
@@ -80,7 +106,14 @@ def env_demo_discrete(idf_path, weather_path, variable_path, space_path):
     variables_file = variable_path.split('/')[-1]
     spaces_file = space_path.split('/')[-1]
 
-    return EplusEnv(env_name='TESTGYM', idf_file=idf_file, weather_file=weather_file, variables_file=variables_file, spaces_file=spaces_file, discrete_actions=True, weather_variability=None)
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=True,
+        weather_variability=None)
 
 
 @pytest.fixture(scope='function')
@@ -90,7 +123,14 @@ def env_demo_discrete(idf_path, weather_path, variable_path, space_path):
     variables_file = variable_path.split('/')[-1]
     spaces_file = space_path.split('/')[-1]
 
-    return EplusEnv(env_name='TESTGYM', idf_file=idf_file, weather_file=weather_file, variables_file=variables_file, spaces_file=spaces_file, discrete_actions=True, weather_variability=None)
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=True,
+        weather_variability=None)
 
 
 @pytest.fixture(scope='function')
@@ -100,7 +140,14 @@ def env_demo_continuous(idf_path, weather_path, variable_path, space_path):
     variables_file = variable_path.split('/')[-1]
     spaces_file = space_path.split('/')[-1]
 
-    return EplusEnv(env_name='TESTGYM', idf_file=idf_file, weather_file=weather_file, variables_file=variables_file, spaces_file=spaces_file, discrete_actions=False, weather_variability=None)
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=False,
+        weather_variability=None)
 
 
 @pytest.fixture(scope='function')
@@ -110,8 +157,14 @@ def env_wrapper_logger(idf_path, weather_path, variable_path, space_path):
     variables_file = variable_path.split('/')[-1]
     spaces_file = space_path.split('/')[-1]
 
-    env = EplusEnv(env_name='TESTGYM', idf_file=idf_file, weather_file=weather_file,
-                   variables_file=variables_file, spaces_file=spaces_file, discrete_actions=False, weather_variability=None)
+    env = EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=False,
+        weather_variability=None)
     return LoggerWrapper(env=env, flag=True)
 
 
@@ -122,8 +175,14 @@ def env_all_wrappers(idf_path, weather_path, variable_path, space_path):
     variables_file = variable_path.split('/')[-1]
     spaces_file = space_path.split('/')[-1]
 
-    env = EplusEnv(env_name='TESTGYM', idf_file=idf_file, weather_file=weather_file,
-                   variables_file=variables_file, spaces_file=spaces_file, discrete_actions=False, weather_variability=None)
+    env = EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=False,
+        weather_variability=None)
     env = NormalizeObservation(env=env)
     env = LoggerWrapper(env=env, flag=True)
     env = MultiObsWrapper(env=env, n=5)
@@ -148,7 +207,7 @@ def weather_data(weather_path):
 
 @pytest.fixture(scope='session')
 def simple_reward():
-    return R.SimpleReward(
+    return R.LinearReward(
         range_comfort_winter=(20.0, 23.5),
         range_comfort_summer=(23.0, 26.0),
         energy_weight=0.5,

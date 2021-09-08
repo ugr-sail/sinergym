@@ -35,13 +35,21 @@ LOG_FMT = "[%(asctime)s] %(name)s %(levelname)s:%(message)s"
 
 class EnergyPlus(object):
 
-    def __init__(self, eplus_path, weather_path, bcvtb_path, variable_path, idf_path, env_name,
-                 act_repeat=1, max_ep_data_store_num=10):
+    def __init__(
+            self,
+            eplus_path,
+            weather_path,
+            bcvtb_path,
+            variable_path,
+            idf_path,
+            env_name,
+            act_repeat=1,
+            max_ep_data_store_num=10):
         """EnergyPlus simulation class.
 
         Args:
             eplus_path (str): EnergyPlus installation path.
-            weather_path (str): EnergyPlus weather file (.epw) path. 
+            weather_path (str): EnergyPlus weather file (.epw) path.
             bcvtb_path (str): BCVTB installation path.
             variable_path (str): Path to variables file.
             idf_path (str): EnergyPlus input description file (.idf) path.
@@ -51,8 +59,9 @@ class EnergyPlus(object):
         """
         self._env_name = env_name
         self._thread_name = threading.current_thread().getName()
-        self.logger_main = Logger().getLogger('EPLUS_ENV_%s_%s_ROOT' % (env_name, self._thread_name),
-                                              LOG_LEVEL_MAIN, LOG_FMT)
+        self.logger_main = Logger().getLogger(
+            'EPLUS_ENV_%s_%s_ROOT' %
+            (env_name, self._thread_name), LOG_LEVEL_MAIN, LOG_FMT)
 
         # Set the environment variable for bcvtb
         os.environ['BCVTB_HOME'] = bcvtb_path
@@ -83,8 +92,12 @@ class EnergyPlus(object):
         self._variable_path = variable_path
         self._idf_path = idf_path
         self._episode_existed = False
-        (self._eplus_run_st_mon, self._eplus_run_st_day, self._eplus_run_st_year,
-         self._eplus_run_ed_mon, self._eplus_run_ed_day, self._eplus_run_ed_year,
+        (self._eplus_run_st_mon,
+         self._eplus_run_st_day,
+         self._eplus_run_st_year,
+         self._eplus_run_ed_mon,
+         self._eplus_run_ed_day,
+         self._eplus_run_ed_year,
          self._eplus_run_st_weekday,
          self._eplus_run_stepsize) = self._get_eplus_run_info(idf_path)
 
@@ -106,8 +119,8 @@ class EnergyPlus(object):
             new_weather (str, optional): New weather file, if passed. Defaults to None.
 
         Returns:
-            (float, [float], boolean): The first element is the *current_simulation_time* in seconds; 
-            the second element consist on EnergyPlus results in a 1-D list correponding to the variables in 
+            (float, [float], boolean): The first element is the *current_simulation_time* in seconds;
+            the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
             variables.cfg. The last element is a boolean indicating whether the episode terminates.
 
         This method does the following:
@@ -160,14 +173,14 @@ class EnergyPlus(object):
                                            eplus_working_idf_path,
                                            eplus_working_out_path,
                                            eplus_working_dir)
-        self.logger_main.debug('EnergyPlus process is still running ? %r'
-                               % self._get_is_subprocess_running(eplus_process))
+        self.logger_main.debug(
+            'EnergyPlus process is still running ? %r' %
+            self._get_is_subprocess_running(eplus_process))
         self._eplus_process = eplus_process
 
         # Log EnergyPlus output
-        eplus_logger = Logger().getLogger('EPLUS_ENV_%s_%s-EPLUSPROCESS_EPI_%d'
-                                          % (self._env_name, self._thread_name, self._epi_num),
-                                          LOG_LEVEL_EPLS, LOG_FMT)
+        eplus_logger = Logger().getLogger('EPLUS_ENV_%s_%s-EPLUSPROCESS_EPI_%d' %
+                                          (self._env_name, self._thread_name, self._epi_num), LOG_LEVEL_EPLS, LOG_FMT)
         _thread.start_new_thread(self._log_subprocess_info,
                                  (eplus_process.stdout,
                                   eplus_logger))
@@ -212,8 +225,8 @@ class EnergyPlus(object):
             action (float or list): Control actions that will be passed to EnergyPlus.
 
         Returns:
-            (float, [float], boolean): The first element is the *current_simulation_time* in seconds; 
-            the second element consist on EnergyPlus results in a 1-D list correponding to the variables in 
+            (float, [float], boolean): The first element is the *current_simulation_time* in seconds;
+            the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
             variables.cfg. The last element is a boolean indicating whether the episode terminates.
 
         This method does the following:
@@ -249,7 +262,8 @@ class EnergyPlus(object):
                 # Remember the last action
                 self._last_action = action
             act_repeat_i += 1
-        # Construct the return, which is the state observation of the last step plus the integral item
+        # Construct the return, which is the state observation of the last step
+        # plus the integral item
         ret.append(curSimTim)
         ret.append(Dblist)
         # Add terminal state
@@ -290,14 +304,18 @@ class EnergyPlus(object):
             subprocess.Popen: EnergyPlus process.
         """
 
-        eplus_process = subprocess.Popen('%s -w %s -d %s %s'
-                                         % (eplus_path + '/energyplus', weather_path,
-                                            out_path, idf_path),
-                                         shell=True,
-                                         cwd=eplus_working_dir,
-                                         stdout=subprocess.PIPE,
-                                         stderr=subprocess.PIPE,
-                                         preexec_fn=os.setsid)
+        eplus_process = subprocess.Popen(
+            '%s -w %s -d %s %s' %
+            (eplus_path +
+             '/energyplus',
+             weather_path,
+             out_path,
+             idf_path),
+            shell=True,
+            cwd=eplus_working_dir,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            preexec_fn=os.setsid)
         return eplus_process
 
     def _get_eplus_working_folder(self, parent_dir, dir_sig='-run'):
@@ -322,7 +340,7 @@ class EnergyPlus(object):
                 folder_name = int(folder_name.split(dir_sig)[-1])
                 if folder_name > experiment_id:
                     experiment_id = folder_name
-            except:
+            except BaseException:
                 pass
         experiment_id += 1
 
@@ -380,7 +398,7 @@ class EnergyPlus(object):
         self._end_episode()
 
     def _end_episode(self):
-        """This process terminates the current EnergyPlus subprocess. 
+        """This process terminates the current EnergyPlus subprocess.
         It is usually called by the *reset()* function before it resets the EnergyPlus environment.
         """
 
@@ -500,11 +518,11 @@ class EnergyPlus(object):
         for i in range(2, 8):
             try:
                 ret.append(int(contents[tgtIndex + i].strip()
-                                                        .split('!')[0]
-                                                        .strip()
-                                                        .split(',')[0]
-                                                        .strip()
-                                                        .split(';')[0]))
+                               .split('!')[0]
+                               .strip()
+                               .split(',')[0]
+                               .strip()
+                               .split(';')[0]))
             except ValueError:
                 ret.append(0)
         # Start weekday
@@ -586,7 +604,7 @@ class EnergyPlus(object):
     def start_weekday(self):
         """Returns the EnergyPlus simulaton start weekday. From 0 (Monday) to 6 (Sunday).
 
-        Returns: 
+        Returns:
             int: Simulation start weekday.
         """
         return self._eplus_run_st_weekday

@@ -1,7 +1,9 @@
 # energym
 
+> :warning: **We are in the process of rebranding this project. Stay tuned for new updates!**
+
 <div align="center">
-  <img src="images/logo.png" width=30%><br><br>
+  <img src="images/logo.png" width=40%><br><br>
 </div>
 
 **Welcome to energym!**
@@ -25,21 +27,31 @@ _This is a work in progress project. Stay tuned for upcoming releases._
 
 ## List of available environments
 
-| Env. name                            | Location        | IDF file           | Weather type (*)           | Action space | Simulation period |
-|--------------------------------------|-----------------|--------------------|----------------------------|--------------|-------------------|
-| Eplus-demo-v1                        | Pittsburgh, USA | 5ZoneAutoDXVAV.idf |             -              | Discrete(10) |   01/01 - 31/03   |
-| Eplus-discrete-hot-v1                | Arizona, USA    | 5ZoneAutoDXVAV.idf |        Hot dry (2B)        | Discrete(10) |   01/01 - 31/12   |
-| Eplus-discrete-mixed-v1              | New York, USA   | 5ZoneAutoDXVAV.idf |      Mixed humid (4A)      | Discrete(10) |   01/01 - 31/12   |
-| Eplus-discrete-cool-v1               | Washington, USA | 5ZoneAutoDXVAV.idf |      Cool marine (5C)      | Discrete(10) |   01/01 - 31/12   |
-| Eplus-continuous-hot-v1              | Arizona, USA    | 5ZoneAutoDXVAV.idf |        Hot dry (2B)        | Box(2)       |   01/01 - 31/12   |
-| Eplus-continuous-mixed-v1            | New York, USA   | 5ZoneAutoDXVAV.idf |      Mixed humid (4A)      | Box(2)       |   01/01 - 31/12   |
-| Eplus-continuous-cool-v1             | Washington, USA | 5ZoneAutoDXVAV.idf |      Cool marine (5C)      | Box(2)       |   01/01 - 31/12   |
-| Eplus-discrete-stochastic-cool-v1    | Washington, USA | 5ZoneAutoDXVAV.idf |      Cool marine (5C) (**) | Discrete(10) |   01/01 - 31/12   |
-| Eplus-continuous-stochastic-hot-v1   | Arizona, USA    | 5ZoneAutoDXVAV.idf |        Hot dry (2B) (**)   | Box(2)       |   01/01 - 31/12   |
-| Eplus-discrete-datacenter-v1 | Chicago, USA | 2ZoneDataCenterHVAC_wEconomizer.idf |   -   | Discrete(10) | 01/01 - 31/12  |
-| Eplus-discrete-stochastic-datacenter-v1 | Chicago, USA | 2ZoneDataCenterHVAC_wEconomizer.idf |   (**)   | Discrete(10) | 01/01 - 31/12  |
-| Eplus-continuous-datacenter-v1 | Chicago, USA | 2ZoneDataCenterHVAC_wEconomizer.idf |   -   | Box(4) | 01/01 - 31/12  |
-| Eplus-continuous-stochastic-datacenter-v1 | Chicago, USA | 2ZoneDataCenterHVAC_wEconomizer.idf |   (**)   | Box(4) | 01/01 - 31/12  |
+| Env. name                                  | Location        | IDF file                | Weather type (*)           | Action space | Simulation period |
+|--------------------------------------------|-----------------|-------------------------|----------------------------|--------------|-------------------|
+| Eplus-demo-v1                              | Pittsburgh, USA | 5ZoneAutoDXVAV.idf      |             -              | Discrete(10) |   01/01 - 31/03   |
+| Eplus-5Zone-hot-discrete-v1                | Arizona, USA    | 5ZoneAutoDXVAV.idf      |        Hot dry (2B)        | Discrete(10) |   01/01 - 31/12   |
+| Eplus-5Zone-mixed-discrete-v1              | New York, USA   | 5ZoneAutoDXVAV.idf      |      Mixed humid (4A)      | Discrete(10) |   01/01 - 31/12   |
+| Eplus-5Zone-cool-discrete-v1               | Washington, USA | 5ZoneAutoDXVAV.idf      |      Cool marine (5C)      | Discrete(10) |   01/01 - 31/12   |
+| Eplus-5Zone-hot-continuous-v1              | Arizona, USA    | 5ZoneAutoDXVAV.idf      |        Hot dry (2B)        | Box(2)       |   01/01 - 31/12   |
+| Eplus-5Zone-mixed-continuous-v1            | New York, USA   | 5ZoneAutoDXVAV.idf      |      Mixed humid (4A)      | Box(2)       |   01/01 - 31/12   |
+| Eplus-5Zone-cool-continuous-v1             | Washington, USA | 5ZoneAutoDXVAV.idf      |      Cool marine (5C)      | Box(2)       |   01/01 - 31/12   |
+| Eplus-5Zone-hot-discrete-stochastic-v1     | Arizona, USA    | 5ZoneAutoDXVAV.idf      |        Hot dry (2B)(**)    | Discrete(10) |   01/01 - 31/12   |
+| Eplus-5Zone-mixed-discrete-stochastic-v1   | New York, USA   | 5ZoneAutoDXVAV.idf      |      Mixed humid (4A)(**)  | Discrete(10) |   01/01 - 31/12   |
+| Eplus-5Zone-cool-discrete-stochastic-v1    | Washington, USA | 5ZoneAutoDXVAV.idf      |      Cool marine (5C)(**)  | Discrete(10) |   01/01 - 31/12   |
+| Eplus-5Zone-hot-continuous-stochastic-v1   | Arizona, USA    | 5ZoneAutoDXVAV.idf      |        Hot dry (2B)(**)    | Box(2)       |   01/01 - 31/12   |
+| Eplus-5Zone-mixed-continuous-stochastic-v1 | New York, USA   | 5ZoneAutoDXVAV.idf      |      Mixed humid (4A)(**)  | Box(2)       |   01/01 - 31/12   |
+| Eplus-5Zone-cool-continuous-stochastic-v1  | Washington, USA | 5ZoneAutoDXVAV.idf      |      Cool marine (5C)(**)  | Box(2)       |   01/01 - 31/12   |
+| Eplus-datacenter-discrete-v1               | Chicago, USA    | 2ZoneDataCenterHVAC.idf |             -              | Discrete(10) |   01/01 - 31/12   |
+| Eplus-datacenter-continuous-v1             | Chicago, USA    | 2ZoneDataCenterHVAC.idf |             -              | Box(4)       |   01/01 - 31/12   |
+| Eplus-datacenter-discrete-stochastic-v1    | Chicago, USA    | 2ZoneDataCenterHVAC.idf |            (**)            | Discrete(10) |   01/01 - 31/12   |
+| Eplus-datacenter-continuous-stochastic-v1  | Chicago, USA    | 2ZoneDataCenterHVAC.idf |            (**)            | Box(4)       |   01/01 - 31/12   |
+| Eplus-IWMullion-discrete-v1                | Pittsburgh, USA | IWMullion.idf           |             -              | Discrete(10) |   01/01 - 31/03   |
+| Eplus-IWMullion-continuous-v1              | Pittsburgh, USA | IWMullion.idf           |             -              | Box(2)       |   01/01 - 31/03   |
+| Eplus-IWMullion-discrete-stochastic-v1     | Pittsburgh, USA | IWMullion.idf           |            (**)            | Discrete(10) |   01/01 - 31/03   |
+| Eplus-IWMullion-continuous-stochastic-v1   | Pittsburgh, USA | IWMullion.idf           |            (**)            | Box(2)       |   01/01 - 31/03   |
+
+
 
 
 (*) Weather types according to [DOE's classification](https://www.energycodes.gov/development/commercial/prototype_models#TMY3).

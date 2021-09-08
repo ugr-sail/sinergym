@@ -4,10 +4,11 @@ import pytest
 
 
 def multiply(input_num1, input_num2):
-    return input_num1*input_num2
+    return input_num1 * input_num2
 
 
-# We can implement several inputs and pytest try it one by one (in this function pytest execute 3 tests)
+# We can implement several inputs and pytest try it one by one (in this
+# function pytest execute 3 tests)
 @pytest.mark.parametrize(
     'input_num1,input_num2,expected',
     [
@@ -34,7 +35,8 @@ def multiply(input_num1, input_num2):
 def test_multiply(input_num1, input_num2, expected):
     assert multiply(input_num1, input_num2) == expected
 
-# If we have an object that we will use in several tests, fixtures can be really useful
+# If we have an object that we will use in several tests, fixtures can be
+# really useful
 
 
 @pytest.fixture

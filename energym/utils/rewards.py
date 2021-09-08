@@ -6,7 +6,7 @@ from math import exp
 YEAR = 2021
 
 
-class SimpleReward():
+class LinearReward():
 
     def __init__(self,
                  range_comfort_winter=(20.0, 23.5),
@@ -125,8 +125,8 @@ class ExpReward():
         range_T = self.range_comfort_summer if current_dt >= self.summer_start_date and current_dt <= self.summer_final_date else self.range_comfort_winter
         delta_T = 0.0
         for temperature in temperatures:
-            delta_T += 0.0 if temperature >= range_T[0] and temperature <= range_T[1] else exp(min(
-                abs(range_T[0] - temperature), abs(temperature - range_T[1])))
+            delta_T += 0.0 if temperature >= range_T[0] and temperature <= range_T[1] else exp(
+                min(abs(range_T[0] - temperature), abs(temperature - range_T[1])))
         reward_comfort = - self.lambda_temp * delta_T
 
         # Weighted sum of both terms

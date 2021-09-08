@@ -8,16 +8,16 @@ reward class or defining a new one and integrate in available environments if yo
 .. literalinclude:: ../../../energym/utils/rewards.py
     :language: python
 
-``SimpleReward()`` class implements an evaluation which consists in taking into account **power consumption** and **temperature comfort**. This class is used
+``LinearReward()`` class implements an evaluation which consists in taking into account **power consumption** and **temperature comfort**. This class is used
 inner environment as an attribute.
 
-``ExpReward()`` class is the same than ``SimpleReward()`` class, but comfort penalty is exponential instead of lineal.
+``ExpReward()`` class is the same than ``LinearReward()`` class, but comfort penalty is exponential instead of lineal.
 
 Reward is always negative. This means that perfect reward would be 0 (perfect power consumption and perfect temperature comfort), we apply penalties in both factors.
 Notice there are two temperature comfort ranges in that class, those ranges are used rely on the specific date on the simulation. Moreover, notice there are
 two weights in the reward function, this allows you to adjust how important each aspect is when making a general evaluation of the environment.
 
-By default, all environments in gym register will use SimpleReward() with default parameters. However, this configuration can be overwriting in ``gym.make()``, for example:
+By default, all environments in gym register will use LinearReward() with default parameters. However, this configuration can be overwriting in ``gym.make()``, for example:
 
 .. code:: python
     
