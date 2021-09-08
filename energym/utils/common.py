@@ -182,7 +182,7 @@ def parse_observation_action_space(space_file):
         index = int(element.attrib['index'])
         # element action values
         actions = tuple([float(element.attrib['action' + str(i)])
-                        for i in range(action_shape)])
+                         for i in range(action_shape)])
 
         discrete_action[index] = actions
 
