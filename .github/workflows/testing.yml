@@ -17,9 +17,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build the latest Docker image
-        run: docker build . --file Dockerfile --tag $DOCKER_USER/energym:latest
+        run: docker build . --file Dockerfile --build-arg ENERGYM_EXTRAS=[DRL,test] --tag $DOCKER_USER/energym:latest
       - name: Execute tests from container
-        run: docker run -it $DOCKER_USER/energym:latest /bin/bash -c 'pytest tests -vv'
+        run: docker run -t $DOCKER_USER/energym:latest /bin/bash -c 'pytest tests/ -vv'
 #  upload_docker:
 #    name: Updating latest tag in Docker Hub
 #    needs: test
