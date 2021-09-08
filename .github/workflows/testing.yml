@@ -5,17 +5,21 @@ on:
       - main
   # release:
   #   types: [published, created, edited]
+env:
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  #DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
 jobs:
   test:
     name: Installation and Testing
     runs-on: ubuntu-18.04
     steps:
-      - name: Checkout code into github machine
+      - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install container (Dockerfile)
-        run: pip install -e .[DRL,test]
-      - name: Execute tests (pytest repository)
-        run: pytest tests/ -vv
+      - name: Build the latest Docker image
+        run: docker build . --file Dockerfile --tag $DOCKER_USER/energym:latest
+      - name: Execute tests from container
+        run: docker run -it $DOCKER_USER/energym:latest /bin/bash -c 'pytest tests -vv'
 #  upload_docker:
 #    name: Updating latest tag in Docker Hub
 #    needs: test
