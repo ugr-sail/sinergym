@@ -17,18 +17,18 @@ jobs:
         uses: actions/checkout@v2
       - name: Build the latest Docker image
         run: docker build . --file Dockerfile --build-arg ENERGYM_EXTRAS=[DRL,test] --tag $DOCKER_USER/energym:latest
+      - name: Execute tests from container
+        run: docker run -t $DOCKER_USER/energym:latest /bin/bash -c 'pytest tests/ -vv'
       - name: Save Docker image
         run: |
-          mkdir -p /container
-          docker save $DOCKER_USER/energym:latest > /container/docker-image.tar
+          mkdir -p ./container
+          docker save $DOCKER_USER/energym:latest > ./container/docker-image.tar
       - name: Upload artifact docker
         uses: actions/upload-artifact@v2
         with:
           name: docker-artifact
-          path: /container
+          path: ./container
           retention-days: 1
-      - name: Execute tests from container
-        run: docker run -t $DOCKER_USER/energym:latest /bin/bash -c 'pytest tests/ -vv'
   upload_docker:
     name: Updating latest tag in Docker Hub
     needs: test
@@ -38,11 +38,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: docker-artifact
-          path: /container
+          path: ./container
       - name: Login in Docker Hub account
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - name: Push container used with test
         run: |
-          cd /container
+          cd ./container
           docker load < docker-image.tar
           docker push $DOCKER_USER/energym:latest
