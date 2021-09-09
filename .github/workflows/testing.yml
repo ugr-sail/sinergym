@@ -11,12 +11,12 @@ env:
 jobs:
   test:
     name: Container build, testing and upload in Docker Hub
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build the latest Docker image
-        run: docker build . --file Dockerfile --build-arg ENERGYM_EXTRAS=[DRL,test] --tag $DOCKER_USER/energym:latest
+        run: docker build --file Dockerfile --build-arg ENERGYM_EXTRAS=[DRL,test] --tag $DOCKER_USER/energym:latest
       - name: Execute tests from container
         run: docker run -t $DOCKER_USER/energym:latest /bin/bash -c 'pytest tests/ -vv'
       - name: Login in Docker Hub account
