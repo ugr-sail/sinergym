@@ -1,6 +1,6 @@
 on:
   release:
-    types: [published, created, edited]
+    types: [published, edited]
 
 env:
   DOCKER_USER: ${{ secrets.DOCKER_USER }}
@@ -18,7 +18,7 @@ jobs:
         with:
           owner: jajimer
           repo: energym
-      - name: Read release information and build container image
+      - name: Build container image with release tag
         env:
           TAG: ${{ steps.tag_version.outputs.latest_tag }}
           #TAG_DATE: ${{ steps.tag_version.outputs.latest_tag_published_at }}
@@ -26,4 +26,6 @@ jobs:
       - name: Login Docker Hub
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - name: Push container built with release tag
+        env:
+          TAG: ${{ steps.tag_version.outputs.latest_tag }}
         run: docker push $DOCKER_USER/energym:$TAG
