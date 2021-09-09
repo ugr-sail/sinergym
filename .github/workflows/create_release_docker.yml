@@ -1,0 +1,29 @@
+on:
+  release:
+    types: [published, created, edited]
+
+env:
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+jobs:
+  upload-release-container:
+    name: Upload Docker hub container with release tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Get tag Release
+        id: tag_version
+        uses: abatilo/release-info-action@v1.3.0
+        with:
+          owner: jajimer
+          repo: energym
+      - name: Read release information and build container image
+        env:
+          TAG: ${{ steps.tag_version.outputs.latest_tag }}
+          #TAG_DATE: ${{ steps.tag_version.outputs.latest_tag_published_at }}
+        run: docker build . --file Dockerfile --build-arg ENERGYM_EXTRAS=[extras] --tag $DOCKER_USER/energym:$TAG
+      - name: Login Docker Hub
+        run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: Push container built with release tag
+        run: docker push $DOCKER_USER/energym:$TAG
