@@ -10,7 +10,7 @@ env:
 
 jobs:
   test:
-    name: Installation and Testing
+    name: Container build, testing and upload in Docker Hub
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout code
@@ -19,30 +19,7 @@ jobs:
         run: docker build . --file Dockerfile --build-arg ENERGYM_EXTRAS=[DRL,test] --tag $DOCKER_USER/energym:latest
       - name: Execute tests from container
         run: docker run -t $DOCKER_USER/energym:latest /bin/bash -c 'pytest tests/ -vv'
-      - name: Save Docker image
-        run: |
-          mkdir -p ./container
-          docker save $DOCKER_USER/energym:latest > ./container/docker-image.tar
-      - name: Upload artifact docker
-        uses: actions/upload-artifact@v2
-        with:
-          name: docker-artifact
-          path: ./container
-          retention-days: 1
-  upload_docker:
-    name: Updating latest tag in Docker Hub
-    needs: test
-    runs-on: ubuntu-18.04
-    steps:
-      - name: Retrieve saved Docker image
-        uses: actions/download-artifact@v2
-        with:
-          name: docker-artifact
-          path: ./container
       - name: Login in Docker Hub account
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - name: Push container used with test
-        run: |
-          cd ./container
-          docker load < docker-image.tar
-          docker push $DOCKER_USER/energym:latest
+        run: docker push $DOCKER_USER/energym:latest
