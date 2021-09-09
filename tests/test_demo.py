@@ -16,7 +16,7 @@ def multiply(input_num1, input_num2):
         (
             1,  # input_num1
             1,  # input_num2
-            1  # expected
+            2  # expected
         ),
         # Input 2
         (
