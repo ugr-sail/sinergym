@@ -4,7 +4,7 @@ with open('requirements.txt') as f:
     reqs = f.read().splitlines()
 
 setup(name='energym',
-      version='1.2.0',
+      version='1.2.1',
       install_requires=reqs,
       include_package_data=True,
       extras_require={
