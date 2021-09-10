@@ -8,9 +8,9 @@ This project is automatically supervised using tests developed specifically for 
 
     $ pytest tests/ -vv
 
-Anyway, every time energym repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. `Travis-CI <https://docs.travis-ci.com/>`__ will do that job.
+Anyway, every time energym repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. `Github Action <https://docs.github.com/es/actions/>`__ will do that job.
 
-.. note:: See `.travis.yml <https://github.com/jajimer/energym/blob/main/.travis.yml>`__ for more information
+.. note:: See `.github/workflows YML files <https://github.com/jajimer/energym/tree/develop/.github/workflows>`__ and :ref:`Github Actions` section for more information.
 
 These tests running under `pytest <https://docs.pytest.org/en/6.2.x/>`__ framework which makes it easy to write small tests, yet scales to support complex functional testing for applications and libraries.
 

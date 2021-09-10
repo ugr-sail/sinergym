@@ -43,6 +43,8 @@ On the other hand, if you don't want any extra library, it's neccesary to write 
 
     $ docker build -t example1/energym:latest --build-arg ENERGYM_EXTRAS= .
 
+.. note:: You can install directly our container from `Docker Hub repository <https://hub.docker.com/repository/docker/alejandrocn7/energym>`__, all releases of this project are there.
+
 .. note:: If you use `Visual Studio Code <https://code.visualstudio.com/>`__, by simply opening the root directory and clicking on the pop-up button "*Reopen in container*\ ", all the dependencies will be installed automatically and you will be able to run *energym* in an isolated environment.
 
 *******************

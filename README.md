@@ -79,6 +79,8 @@ $ git clone https://github.com/jajimer/energym.git
 
 We include a **Dockerfile** for installing all dependencies and setting up the image for running energym. If you use [Visual Studio Code](https://code.visualstudio.com/), by simply opening the root directory and clicking on the pop-up button "_Reopen in container_", dependencies will be installed automatically and you will be able to run energym in an isolated environment.
 
+You can also use our [Docker Hub repository](https://hub.docker.com/repository/docker/alejandrocn7/energym) with the desired version directly.
+
 However, if you prefer installing it manually, follow the steps below.
 
 ### Manual installation
@@ -127,7 +129,7 @@ This project is automatically supervised using tests developed specifically for 
 ```sh
 $ pytest tests/ -vv
 ```
-Anyway, every time energym repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. [Travis-CI](https://docs.travis-ci.com/) will do that job (see [.travis.yml](https://github.com/jajimer/energym/blob/main/.travis.yml)). You can [learn more about Energym test here](https://github.com/jajimer/energym/blob/main/tests/README.md)
+Anyway, every time energym repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. `Github Action <https://docs.github.com/es/actions/>`__ will do that job (see our documentation for more information).
 
 ## Usage example
 
