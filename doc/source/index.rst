@@ -9,6 +9,7 @@ Welcome to **energym**!
 
    pages/installation.rst
    pages/environments.rst
+   pages/github-actions.rst
    pages/tests.rst
    pages/usage-example.rst
    pages/output.rst
