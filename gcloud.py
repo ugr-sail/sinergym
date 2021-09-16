@@ -184,20 +184,6 @@ def create_instance_group(
     pprint(response)
 
 
-def run_command(
-        cmd,
-        shell=False,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE):
-    """Run a command on a remote system."""
-
-    if stdout and stderr:
-        result = command.stdout.read().decode().strip()
-        err = command.stderr.read().decode().strip()
-        return result, err
-    # return result if result else ssh.stderr.readlines()
-
-
 def main(project, zone):
     credentials = GoogleCredentials.get_application_default()
     service = googleapiclient.discovery.build(
