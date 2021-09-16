@@ -1,9 +1,11 @@
 import argparse
+import subprocess
 import os
 import time
 from pprint import pprint
 
 import googleapiclient.discovery
+from oauth2client.client import GoogleCredentials
 #from six.moves import input
 
 
@@ -138,6 +140,13 @@ def delete_instance(service, project, zone, name):
         instance=name).execute()
 
 
+def delete_instance_group(service, project, zone, group_name):
+    request = service.instanceGroupManagers().delete(
+        project=project, zone=zone, instanceGroupManager=group_name)
+    response = request.execute()
+    pprint(response)
+
+
 def create_instance_group(
         service,
         project,
@@ -175,8 +184,21 @@ def create_instance_group(
     pprint(response)
 
 
+def run_command(cmd):
+    """Run a command on a remote system."""
+    command = subprocess.Popen(
+        cmd, shell=False, stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+    result = command.stdout.read().decode()
+    err = command.stderr.read().decode()
+    return result.strip(), err.strip()
+    # return result if result else ssh.stderr.readlines()
+
+
 def main(project, zone):
-    service = googleapiclient.discovery.build('compute', 'v1')
+    credentials = GoogleCredentials.get_application_default()
+    service = googleapiclient.discovery.build(
+        'compute', 'v1', credentials=credentials)
     size = 2
     template_name = "energym-template"
     group_name = "sinergym"
@@ -187,11 +209,23 @@ def main(project, zone):
     #     size,
     #     template_name,
     #     group_name)
-    instances = list_instances(service, project, zone, "sinergym")
-    print(instances)
+    # instances = list_instances(service, project, zone, "sinergym")
+    # print(instances)
     # print('Instances in project %s and zone %s:' % (project, zone))
     # for instance in instances:
     #     print(' - ' + instance['name'])
+    #delete_instance_group(service, project, zone, 'sinergym')
+    cmd1 = ['gcloud', 'compute', 'ssh', 'sinergym-7pzz',
+            '--command', 'docker ps -q --filter name=klt']
+    output1, err1 = run_command(cmd1)
+    cmd2 = ['gcloud', 'compute', 'ssh', 'sinergym-7pzz', '--container',
+            output1, '--command', 'energyplus --version']
+    output2, err2 = run_command(cmd2)
+    print(output1)
+    print(cmd2)
+    print(err1)
+    print(output2)
+    print(err2)
 
 
 if __name__ == '__main__':
