@@ -9,6 +9,19 @@ from oauth2client.client import GoogleCredentials
 # from six.moves import input
 
 
+def init_gcloud_service():
+    """List instances names created in Google Cloud currently.
+
+    Returns:
+        service: Google Cloud API service resource with owner credentials.
+
+    """
+    credentials = GoogleCredentials.get_application_default()
+    service = googleapiclient.discovery.build(
+        'compute', 'v1', credentials=credentials)
+    return service
+
+
 def list_instances(service, project, zone, base_instances_names=None):
     """List instances names created in Google Cloud currently.
 
@@ -125,7 +138,7 @@ def delete_instance(service, project, zone, name):
     """Delete an instance inner Google Cloud.
 
     Args:
-        service: gcloud API service built previusly
+        service: gcloud API service built previously
         project: Project id from Google Cloud Platform
         zone: Google Cloud Zone where instance is
         name: The name of instance you want to delete
@@ -134,13 +147,24 @@ def delete_instance(service, project, zone, name):
         str JSON: State response from API
 
     """
-    return service.instances().delete(
-        project=project,
-        zone=zone,
-        instance=name).execute()
+    request = service.instances().delete(project=project, zone=zone, instance=name)
+    response = request.execute()
+    pprint(response)
 
 
 def delete_instance_group(service, project, zone, group_name):
+    """Delete a whole instance group inner Google Cloud.
+
+    Args:
+        service: gcloud API service built previously
+        project: Project id from Google Cloud Platform
+        zone: Google Cloud Zone where instance is
+        group_name: The name of instance group you want to delete
+
+    Returns:
+        str JSON: State response from API
+
+    """
     request = service.instanceGroupManagers().delete(
         project=project, zone=zone, instanceGroupManager=group_name)
     response = request.execute()
@@ -157,7 +181,7 @@ def create_instance_group(
     """Create an instance group (MIG) in Google Cloud.
 
     Args:
-        service: gcloud API service built previusly
+        service: gcloud API service built previously
         project: Project id from Google Cloud Platform
         zone: Google Cloud Zone where instances are
         size: Number of instances desired inner MIG
@@ -184,27 +208,16 @@ def create_instance_group(
     pprint(response)
 
 
-def main(project, zone):
-    credentials = GoogleCredentials.get_application_default()
-    service = googleapiclient.discovery.build(
-        'compute', 'v1', credentials=credentials)
-    size = 2
-    template_name = "energym-template"
-    group_name = "sinergym"
-    # create_instance_group(
-    #     service,
-    #     project,
-    #     zone,
-    #     size,
-    #     template_name,
-    #     group_name)
-    # instances = list_instances(service, project, zone, "sinergym")
-    # print(instances)
-    # print('Instances in project %s and zone %s:' % (project, zone))
-    # for instance in instances:
-    #     print(' - ' + instance['name'])
-    # delete_instance_group(service, project, zone, 'sinergym')
-    cmd1 = ['gcloud', 'compute', 'ssh', 'sinergym-7pzz',
+def execute_remote_command_instance(instance_name, experiment_command):
+    """Execute a specified command in an instance previously created inner Google Cloud (Terminal is free after sending command).
+
+    Args:
+        instance_name: Name of instance where command will be executed.
+        experiment_command: Command that will be executed
+
+    """
+    # Command to extract containerID inner VM
+    cmd1 = ['gcloud', 'compute', 'ssh', instance_name,
             '--command', 'docker ps -q --filter name=klt']
     containerID_process = subprocess.Popen(
         cmd1,
@@ -214,32 +227,17 @@ def main(project, zone):
     containerID_process.wait()
     result = containerID_process.stdout.read().decode().strip()
     err = containerID_process.stderr.read().decode().strip()
+
+    # Exception management
     if err:
         print(err)
         raise RuntimeError
     if not result:
         raise RuntimeError(
             'It is not possible to find out containerID from machine specified. Please, check docker ps filter.')
-    cmd2 = ['gcloud', 'compute', 'ssh', 'sinergym-7pzz', '--container',
-            result, '--command', 'python3 check_run_times.py']
-    containerID_process = subprocess.Popen(
+
+    # Command to execute remote experiment in container
+    cmd2 = ['gcloud', 'compute', 'ssh', instance_name, '--container',
+            result, '--command', experiment_command]
+    remoteCommand_process = subprocess.Popen(
         cmd2, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('project_id', help='Your Google Cloud project ID.')
-    # parser.add_argument(
-    #     'bucket_name', help='Your Google Cloud Storage bucket name.')
-    parser.add_argument(
-        '--zone',
-        default='europe-west1-b',
-        help='service Engine zone to deploy to.')
-    # parser.add_argument(
-    #     '--name', default='demo-instance', help='New instance name.')
-
-    args = parser.parse_args()
-
-    main(args.project_id, args.zone)
