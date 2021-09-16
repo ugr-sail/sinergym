@@ -6,7 +6,7 @@ from pprint import pprint
 
 import googleapiclient.discovery
 from oauth2client.client import GoogleCredentials
-#from six.moves import input
+# from six.moves import input
 
 
 def list_instances(service, project, zone, base_instances_names=None):
@@ -184,14 +184,17 @@ def create_instance_group(
     pprint(response)
 
 
-def run_command(cmd):
+def run_command(
+        cmd,
+        shell=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE):
     """Run a command on a remote system."""
-    command = subprocess.Popen(
-        cmd, shell=False, stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE)
-    result = command.stdout.read().decode()
-    err = command.stderr.read().decode()
-    return result.strip(), err.strip()
+
+    if stdout and stderr:
+        result = command.stdout.read().decode().strip()
+        err = command.stderr.read().decode().strip()
+        return result, err
     # return result if result else ssh.stderr.readlines()
 
 
@@ -214,18 +217,27 @@ def main(project, zone):
     # print('Instances in project %s and zone %s:' % (project, zone))
     # for instance in instances:
     #     print(' - ' + instance['name'])
-    #delete_instance_group(service, project, zone, 'sinergym')
+    # delete_instance_group(service, project, zone, 'sinergym')
     cmd1 = ['gcloud', 'compute', 'ssh', 'sinergym-7pzz',
             '--command', 'docker ps -q --filter name=klt']
-    output1, err1 = run_command(cmd1)
+    containerID_process = subprocess.Popen(
+        cmd1,
+        shell=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+    containerID_process.wait()
+    result = containerID_process.stdout.read().decode().strip()
+    err = containerID_process.stderr.read().decode().strip()
+    if err:
+        print(err)
+        raise RuntimeError
+    if not result:
+        raise RuntimeError(
+            'It is not possible to find out containerID from machine specified. Please, check docker ps filter.')
     cmd2 = ['gcloud', 'compute', 'ssh', 'sinergym-7pzz', '--container',
-            output1, '--command', 'energyplus --version']
-    output2, err2 = run_command(cmd2)
-    print(output1)
-    print(cmd2)
-    print(err1)
-    print(output2)
-    print(err2)
+            result, '--command', 'python3 check_run_times.py']
+    containerID_process = subprocess.Popen(
+        cmd2, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 
 if __name__ == '__main__':
