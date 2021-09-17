@@ -12,7 +12,11 @@ parser.add_argument(
     '-zo',
     default='europe-west1-b',
     help='service Engine zone to deploy to.')
-parser.add_argument('--experiments', '-exps', default=envs_id, nargs='+')
+parser.add_argument(
+    '--experiments',
+    '-exps',
+    default=['python3 ./algorithm/DQN.py -env Eplus-demo-v1 -ep 1 -'],
+    nargs='+')
 # parser.add_argument(
 #     '--name', default='demo-instance', help='New instance name.')
 
