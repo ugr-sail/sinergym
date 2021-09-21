@@ -47,6 +47,163 @@ def list_instances(service, project, zone, base_instances_names=None):
     return instances
 
 
+def delete_instance(service, project, zone, name):
+    """Delete an instance inner Google Cloud.
+
+    Args:
+        service: gcloud API service built previously
+        project: Project id from Google Cloud Platform
+        zone: Google Cloud Zone where instance is
+        name: The name of instance you want to delete
+
+    Returns:
+        Dict: State response from API
+
+    """
+    request = service.instances().delete(project=project, zone=zone, instance=name)
+    response = request.execute()
+    return response
+
+
+def delete_instance_group(service, project, zone, group_name):
+    """Delete a whole instance group inner Google Cloud.
+
+    Args:
+        service: gcloud API service built previously
+        project: Project id from Google Cloud Platform
+        zone: Google Cloud Zone where instance is
+        group_name: The name of instance group you want to delete
+
+    Returns:
+        Dict: State response from API
+
+    """
+    request = service.instanceGroupManagers().delete(
+        project=project, zone=zone, instanceGroupManager=group_name)
+    response = request.execute()
+    return response
+
+
+def create_instance_group(
+        service,
+        project,
+        zone,
+        size,
+        template_name,
+        group_name):
+    """Create an instance group (MIG) in Google Cloud.
+
+    Args:
+        service: gcloud API service built previously
+        project: Project id from Google Cloud Platform
+        zone: Google Cloud Zone where instances are
+        size: Number of instances desired inner MIG
+        template_name: template name for machine type definition, previously defined into your Google Cloud account.
+        group_name: Base name for every machine inner MIG, this name will be concatenated with a different random str for every machine
+
+    Returns:
+        str JSON: State response from API
+
+    """
+
+    body_request = {
+        "versions": [
+            {
+                "instanceTemplate": "global/instanceTemplates/" + template_name
+            }
+        ],
+        "name": group_name,
+        "targetSize": size
+    }
+    request = service.instanceGroupManagers().insert(
+        project=project, zone=zone, body=body_request)
+    response = request.execute()
+    return response
+
+
+def get_container_id(instance_name, base='klt'):
+    """Get container id inner an instance.
+
+    Args:
+        instance_name: Name of instance.
+        base: The base name of container for filter (substring "klt" will be in all create-with-container gcloud operations).
+
+    Returns:
+        str: Container id inner instance.
+
+    """
+    cmd = ['gcloud', 'compute', 'ssh', instance_name,
+           '--command', 'docker ps -q --filter name=' + base]
+    containerID_process = subprocess.Popen(
+        cmd,
+        shell=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+    containerID_process.wait()
+    result = containerID_process.stdout.read().decode().strip()
+    err = containerID_process.stderr.read().decode().strip()
+
+    if err:
+        print(err)
+
+    # Exception management
+    # if err:
+    #     raise RuntimeError(err)
+    # if not result:
+    #     raise RuntimeError(
+    #         'It is not possible to find out containerID from machine specified. Please, check docker ps filter.')
+    return result
+
+
+def execute_remote_command_instance(
+        container_id,
+        instance_name,
+        experiment_command):
+    """Execute a specified command in an instance previously created inner Google Cloud (Terminal is free after sending command).
+
+    Args:
+        instance_name: Name of instance.
+        container_id: Container id inner instance where command will be executed.
+        experiment_command: Command that will be executed
+
+    """
+
+    cmd = ['gcloud', 'compute', 'ssh', instance_name, '--container',
+           container_id, '--command', experiment_command]
+    remoteCommand_process = subprocess.Popen(
+        cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+
+# Google Cloud doc function
+def wait_for_operation(service, project, zone, operation, operation_type=''):
+    """Sleep script execution until response status is DONE.
+
+    Args:
+        service: gcloud API service built previously
+        project: Project id from Google Cloud Platform
+        zone: Google Cloud Zone where instances are
+        operation: Response id
+        operation_type: (Optional), operation type for prints feedback to user.
+
+    Returns:
+        Dict: Response state after status DONE.
+
+    """
+    print('Waiting for operation {} to finish...'.format(operation_type))
+    while True:
+        result = service.zoneOperations().get(
+            project=project,
+            zone=zone,
+            operation=operation).execute()
+
+        if result['status'] == 'DONE':
+            print('{} operation DONE successfully.'.format(operation_type))
+            if 'error' in result:
+                raise Exception(result['error'])
+            return result
+
+        time.sleep(1)
+
 # def create_instance(service, project, zone, name, bucket):
 #     """Create an individual instance in Google Cloud.
 
@@ -132,112 +289,3 @@ def list_instances(service, project, zone, base_instances_names=None):
 #         project=project,
 #         zone=zone,
 #         body=config).execute()
-
-
-def delete_instance(service, project, zone, name):
-    """Delete an instance inner Google Cloud.
-
-    Args:
-        service: gcloud API service built previously
-        project: Project id from Google Cloud Platform
-        zone: Google Cloud Zone where instance is
-        name: The name of instance you want to delete
-
-    Returns:
-        str JSON: State response from API
-
-    """
-    request = service.instances().delete(project=project, zone=zone, instance=name)
-    response = request.execute()
-    pprint(response)
-
-
-def delete_instance_group(service, project, zone, group_name):
-    """Delete a whole instance group inner Google Cloud.
-
-    Args:
-        service: gcloud API service built previously
-        project: Project id from Google Cloud Platform
-        zone: Google Cloud Zone where instance is
-        group_name: The name of instance group you want to delete
-
-    Returns:
-        str JSON: State response from API
-
-    """
-    request = service.instanceGroupManagers().delete(
-        project=project, zone=zone, instanceGroupManager=group_name)
-    response = request.execute()
-    pprint(response)
-
-
-def create_instance_group(
-        service,
-        project,
-        zone,
-        size,
-        template_name,
-        group_name):
-    """Create an instance group (MIG) in Google Cloud.
-
-    Args:
-        service: gcloud API service built previously
-        project: Project id from Google Cloud Platform
-        zone: Google Cloud Zone where instances are
-        size: Number of instances desired inner MIG
-        template_name: template name for machine type definition, previously defined into your Google Cloud account.
-        group_name: Base name for every machine inner MIG, this name will be concatenated with a different random str for every machine
-
-    Returns:
-        str JSON: State response from API
-
-    """
-
-    body_request = {
-        "versions": [
-            {
-                "instanceTemplate": "global/instanceTemplates/" + template_name
-            }
-        ],
-        "name": group_name,
-        "targetSize": size
-    }
-    request = service.instanceGroupManagers().insert(
-        project=project, zone=zone, body=body_request)
-    response = request.execute()
-    pprint(response)
-
-
-def execute_remote_command_instance(instance_name, experiment_command):
-    """Execute a specified command in an instance previously created inner Google Cloud (Terminal is free after sending command).
-
-    Args:
-        instance_name: Name of instance where command will be executed.
-        experiment_command: Command that will be executed
-
-    """
-    # Command to extract containerID inner VM
-    cmd1 = ['gcloud', 'compute', 'ssh', instance_name,
-            '--command', 'docker ps -q --filter name=klt']
-    containerID_process = subprocess.Popen(
-        cmd1,
-        shell=False,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE)
-    containerID_process.wait()
-    result = containerID_process.stdout.read().decode().strip()
-    err = containerID_process.stderr.read().decode().strip()
-
-    # Exception management
-    if err:
-        print(err)
-        raise RuntimeError
-    if not result:
-        raise RuntimeError(
-            'It is not possible to find out containerID from machine specified. Please, check docker ps filter.')
-
-    # Command to execute remote experiment in container
-    cmd2 = ['gcloud', 'compute', 'ssh', instance_name, '--container',
-            result, '--command', experiment_command]
-    remoteCommand_process = subprocess.Popen(
-        cmd2, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
