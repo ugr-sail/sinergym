@@ -59,6 +59,7 @@ RUN apt-get install wget \
 WORKDIR /code
 COPY requirements.txt .
 COPY setup.py .
+COPY DRL_battery.py .
 COPY energym /code/energym
 COPY tests /code/tests
 COPY examples /code/examples
