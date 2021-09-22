@@ -252,7 +252,9 @@ Then, you can create a group-instances as large as you want:
         --size 3 \
         --template energym-template
 
-5. Init your VM
+.. warning:: It is possible that quote doesn't let you have more than one VM at the same time. Hence, the rest of VM's probably will be *initializing* always but never ready. If it is your case, we recommend you check your quotes `here <https://console.cloud.google.com/iam-admin/quotas>`__
+
+1. Init your VM
 ~~~~~~~~~~~~~~~~
 
 Your virtual machine is ready! To connect you can use ssh (see `gcloud-ssh <https://cloud.google.com/sdk/gcloud/reference/compute/ssh>`__):
