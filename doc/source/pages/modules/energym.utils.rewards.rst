@@ -1,4 +1,4 @@
-﻿energym.utils.rewards
+energym.utils.rewards
 =====================
 
 .. automodule:: energym.utils.rewards
