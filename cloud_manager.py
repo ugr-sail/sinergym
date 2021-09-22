@@ -19,13 +19,6 @@ parser.add_argument(
     dest='zone',
     help='service Engine zone to deploy to.')
 parser.add_argument(
-    '--experiment_commands',
-    '-cmds',
-    default=['python3 ./algorithm/DQN.py -env Eplus-demo-v1 -ep 1 -'],
-    nargs='+',
-    dest='commands',
-    help='list of commands for DRL_battery.py you want to execute remotely.')
-parser.add_argument(
     '--template_name',
     '-tem',
     type=str,
@@ -39,6 +32,13 @@ parser.add_argument(
     default='energym-group',
     dest='group_name',
     help='Name of instance group(MIG) will be created during experimentation.')
+parser.add_argument(
+    '--experiment_commands',
+    '-cmds',
+    default=['python3 ./algorithm/DQN.py -env Eplus-demo-v1 -ep 1 -'],
+    nargs='+',
+    dest='commands',
+    help='list of commands for DRL_battery.py you want to execute remotely.')
 
 args = parser.parse_args()
 
@@ -102,7 +102,7 @@ for i, instance in enumerate(instances):
         instance_name=instance,
         experiment_command=args.commands[i])
     print(
-        'command {} has been sent to ionstance {}(container: {}).'.format(
+        'command {} has been sent to instance {}(container: {}).'.format(
             args.commands[i],
             instance,
             container_id))

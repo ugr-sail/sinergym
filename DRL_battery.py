@@ -79,25 +79,25 @@ parser.add_argument(
     dest='evaluation',
     help='Evaluation is processed during training with this flag (save best model online).')
 parser.add_argument(
-    '--evalfreq',
+    '--eval_freq',
     '-evalf',
     type=int,
     default=2,
-    dest='evalfreq',
+    dest='eval_freq',
     help='Episodes executed before applying evaluation (if evaluation flag is not specified, this value is useless).')
 parser.add_argument(
-    '--evallength',
+    '--eval_length',
     '-evall',
     type=int,
     default=2,
-    dest='evallength',
+    dest='eval_length',
     help='Episodes executed during evaluation (if evaluation flag is not specified, this value is useless).')
 parser.add_argument(
-    '--loginterval',
+    '--log_interval',
     '-inter',
     type=int,
     default=1,
-    dest='loginterval',
+    dest='log_interval',
     help='model training log_interval parameter. See documentation since this value is different in every algorithm.')
 parser.add_argument(
     '--seed',
@@ -242,10 +242,10 @@ if args.evaluation:
         env,
         best_model_save_path='./best_models/' + args.environment + '/',
         log_path='./best_models/' + args.environment + '/',
-        eval_freq=n_timesteps_episode * args.evalfreq,
+        eval_freq=n_timesteps_episode * args.eval_freq,
         deterministic=True,
         render=False,
-        n_eval_episodes=args.evallength)
+        n_eval_episodes=args.eval_length)
     callbacks.append(eval_callback)
 
 if args.tensorboard:
@@ -258,5 +258,5 @@ callback = CallbackList(callbacks)
 model.learn(
     total_timesteps=timesteps,
     callback=callback,
-    log_interval=args.loginterval)
+    log_interval=args.log_interval)
 # model.save(name)
