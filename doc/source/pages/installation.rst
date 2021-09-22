@@ -282,4 +282,4 @@ To use this container in our machine you only have to do:
   :alt: GCE VM container usage.
   :align: center
 
-And now you can execute your own experiments in Google Cloud!
+And now you can execute your own experiments in Google Cloud! If you are interested in using our API specifically for Gcloud (automated experiments using remotes containers). Please, visit our section :ref:`Energym Google Cloud API`
