@@ -163,6 +163,8 @@ If you want to use it in a **GCE VM**, you can execute the next:
         --boot-disk-type pd-ssd \
         --machine-type n2-highcpu-8
 
+We have available containers in Docker Hub too. Please, visit our `repository <https://hub.docker.com/repository/docker/alejandrocn7/energym>`__
+
 .. note:: It is possible to change parameters in order to set up your own VM with your preferences (see `create-with-container <https://cloud.google.com/sdk/gcloud/reference/compute/instances/create-with-container>`__).
 
 .. warning:: `--boot-disk-size` is really important, by default VM set 10GB and it isn't enough at all for Energym container.
