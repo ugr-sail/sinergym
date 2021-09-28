@@ -1,5 +1,5 @@
 """
-Evaluation of time limits using DQN and energym.
+Evaluation of time limits using DQN and sinergym.
 https://arxiv.org/abs/1712.00378 (Pardo et al., 2017)
 
 The authors of the paper argue that termination conditions due
@@ -8,12 +8,12 @@ represent a real terminal state. Therefore, instead of assigning
 them a V(s) = 0, we should bootstrap as if they episode would continue.
 
 In this script an implementation of this method (Partial-Episode Bootstrapping)
-is applied to a simple DQN algorithm with the hot discrete energym environment.
+is applied to a simple DQN algorithm with the hot discrete sinergym environment.
 """
 
 
 import gym
-import energym
+import sinergym
 import argparse
 import numpy as np
 import torch as th
@@ -21,7 +21,7 @@ from torch.nn import functional as F
 from stable_baselines3 import DQN
 from stable_baselines3.common import logger
 from typing import Optional, Tuple, Union
-from energym.utils.wrappers import NormalizeObservation
+from sinergym.utils.wrappers import NormalizeObservation
 
 
 class PartialDQN(DQN):

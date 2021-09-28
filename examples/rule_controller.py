@@ -1,7 +1,7 @@
 import gym
 import numpy as np
 
-from energym.utils.controllers import RuleBasedController
+from sinergym.utils.controllers import RuleBasedController
 
 env = gym.make('Eplus-continuous-mixed-v1')
 

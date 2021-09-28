@@ -1,5 +1,5 @@
 import pytest
-from energym.simulators.eplus_old import EnergyPlus
+from sinergym.simulators.eplus_old import EnergyPlus
 import xml.etree.ElementTree as ET
 import subprocess
 import threading
@@ -98,10 +98,10 @@ def test_get_file_name(simulator, idf_path):
 # def test_rm_past_history_dir(cur_eplus_working_dir, dir_sig):
 
 
-def test_create_socket_cfg(simulator, energym_path):
+def test_create_socket_cfg(simulator, sinergym_path):
 
     # creating a socket.cfg example in tests/socket.cfg
-    tests_path = energym_path + '/tests'
+    tests_path = sinergym_path + '/tests'
     simulator._create_socket_cfg(simulator._host, simulator._port, tests_path)
     # Check its content
     with open(tests_path + '/' + 'socket.cfg', 'r+') as socket_file:

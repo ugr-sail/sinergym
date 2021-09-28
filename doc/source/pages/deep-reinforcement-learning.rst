@@ -2,8 +2,8 @@
 Deep Reinforcement Learning Integration
 #######################################
 
-Energym integrates some facilities in order to use Deep Reinforcement Learning algorithms provided by `Stable Baselines 3 <https://stable-baselines3.readthedocs.io/en/master/>`__. 
-Current algorithms checked by Energym are:
+Sinergym integrates some facilities in order to use Deep Reinforcement Learning algorithms provided by `Stable Baselines 3 <https://stable-baselines3.readthedocs.io/en/master/>`__. 
+Current algorithms checked by Sinergym are:
 
 +--------------------------------------------------------+
 |                   Stable Baselines 3:                  |
@@ -32,14 +32,14 @@ be called at given stages of the training procedure. You can use callbacks to ac
 It allows one to do monitoring, auto saving, model manipulation, progress bars, ...
 
 This structure allows to custom our own logger for DRL executions. Our objective is to **log all information about our custom environment** specifically.
-Therefore, `energym/energym/utils/callbacks.py <https://github.com/jajimer/energym/blob/main/energym/utils/callbacks.py>`__ has been created with this proposal.
+Therefore, `sinergym/sinergym/utils/callbacks.py <https://github.com/jajimer/sinergym/blob/main/sinergym/utils/callbacks.py>`__ has been created with this proposal.
 Each algorithm has its own differences about how information is extracted which is why its implementation. ``LoggerCallback`` can deal with those subtleties.
 
-.. literalinclude:: ../../../energym/utils/callbacks.py
+.. literalinclude:: ../../../sinergym/utils/callbacks.py
     :language: python
     :pyobject: LoggerCallback
 
-.. note:: You can specify if you want Energym logger (see :ref:`Logger`) to record simulation interactions during training at the same time using ``energym_logger`` attribute in constructor. 
+.. note:: You can specify if you want Sinergym logger (see :ref:`Logger`) to record simulation interactions during training at the same time using ``sinergym_logger`` attribute in constructor. 
 
 This callback derives ``BaseCallback`` from Stable Baselines 3 while ``BaseCallBack`` uses `Tensorboard <https://www.tensorflow.org/tensorboard?hl=es-419>`__ on the background at the same time.
 With Tensorboard, it's possible to visualize all DRL training in real time and compare between different executions. This is an example: 
@@ -59,11 +59,11 @@ There are tables which are in some algorithms and not in others and vice versa. 
 Tensorboard structure
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The main structure for Energym with Tensorboard is:
+The main structure for Sinergym with Tensorboard is:
 
 * **action**: This section has action values during training. When algorithm is On Policy will appear **action_simulation** too. This is because algorithms
   in continuous environments has their own output and clipped with gym action space. Then, this output is parse to simulation action space (See :ref:`Observation/action spaces`).
-* **episode**: Here is stored all information about entires episodes. It is equivalent to progress.csv in Energym logger (see Energym :ref:`Output format`):
+* **episode**: Here is stored all information about entires episodes. It is equivalent to progress.csv in Sinergym logger (see Sinergym :ref:`Output format`):
     - *comfort_violation_time(%)*: Percentage of time in episode simulation in which temperature has been out of bound comfort temperature ranges.
     - *cumulative_comfort_penalty*: Sum of comfort penalties (reward component) during whole episode.
     - *cumulative_power*: Sum of power consumption during whole episode.
@@ -86,7 +86,7 @@ The main structure for Energym with Tensorboard is:
 How use
 ****************
 
-You can try your own experiments and benefit from this functionality. `energym/examples/DRL_usage.py <https://github.com/jajimer/energym/blob/main/examples/DRL_usage.py>`__
+You can try your own experiments and benefit from this functionality. `sinergym/examples/DRL_usage.py <https://github.com/jajimer/sinergym/blob/main/examples/DRL_usage.py>`__
 is a example code to use it.
 
 The most important information you must keep in mind when you try your own experiments are:
@@ -106,8 +106,8 @@ Code example:
     import argparse
     import mlflow
 
-    from energym.utils.callbacks import LoggerCallback, LoggerEvalCallback
-    from energym.utils.wrappers import NormalizeObservation
+    from sinergym.utils.callbacks import LoggerCallback, LoggerEvalCallback
+    from sinergym.utils.wrappers import NormalizeObservation
 
 
     from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
@@ -178,7 +178,7 @@ Code example:
         eval_callback = LoggerEvalCallback(env, best_model_save_path='./best_models/' + name + '/',
                                         log_path='./best_models/' + name + '/', eval_freq=n_timesteps_episode * freq,
                                         deterministic=True, render=False, n_eval_episodes=1)
-        log_callback = LoggerCallback(energym_logger=False)
+        log_callback = LoggerCallback(sinergym_logger=False)
         callback = CallbackList([log_callback, eval_callback])
 
         # Training

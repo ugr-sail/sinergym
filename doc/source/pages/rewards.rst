@@ -5,7 +5,7 @@ Rewards
 Defining a reward function is one of the most important things in reinforcement learning. Consequently, our team has designed an structure which let you use our
 reward class or defining a new one and integrate in available environments if you want:
 
-.. literalinclude:: ../../../energym/utils/rewards.py
+.. literalinclude:: ../../../sinergym/utils/rewards.py
     :language: python
 
 ``LinearReward()`` class implements an evaluation which consists in taking into account **power consumption** and **temperature comfort**. This class is used

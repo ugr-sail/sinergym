@@ -10,7 +10,7 @@ Execution in localhost:5000 by default
 import argparse
 
 import gym
-import energym
+import sinergym
 import mlflow
 import numpy as np
 

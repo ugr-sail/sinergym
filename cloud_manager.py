@@ -1,7 +1,7 @@
 import argparse
 from time import sleep
 from pprint import pprint
-import energym.utils.gcloud as gcloud
+import sinergym.utils.gcloud as gcloud
 
 parser = argparse.ArgumentParser(
     description='Process for run experiments in Google Cloud')
@@ -22,14 +22,14 @@ parser.add_argument(
     '--template_name',
     '-tem',
     type=str,
-    default='energym-template',
+    default='sinergym-template',
     dest='template_name',
     help='Name of template previously created in gcloud account to generate VM copies.')
 parser.add_argument(
     '--group_name',
     '-group',
     type=str,
-    default='energym-group',
+    default='sinergym-group',
     dest='group_name',
     help='Name of instance group(MIG) will be created during experimentation.')
 parser.add_argument(
@@ -110,8 +110,8 @@ for i, instance in enumerate(instances):
 print('All VM\'s are working correctly, see Google Cloud Platform Console.')
 # Close VM when finished with google cloud alerts?
 
-# python  cloud_manager.py --project_id energym-314709
+# python  cloud_manager.py --project_id sinergym-314709
 # --experiments_commands
 # 'python 3 DRL_battery.py --environment Eplus-5Zone-hot-discrete-v1 --episodes 3 --algorithm DQN --logger log_interval 1 --seed 54'
 # 'python3 DRL_battery.py --environment Eplus-5Zone-hot-continuous-stochastic-v1 --episodes 3 --algorithm PPO --logger --log_interval 1 --tensorboard --normalization --seed 54'
-# --template_name energym_template --group_name sinergym-vm
+# --template_name sinergym_template --group_name sinergym-vm

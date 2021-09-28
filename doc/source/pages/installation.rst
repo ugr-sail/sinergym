@@ -2,65 +2,65 @@
 Installation
 ############
 
-To install *energym*, follow these steps:
+To install *sinergym*, follow these steps:
 
 * First, it is recommended to create a virtual environment. You can do so by:
 
 .. code:: sh
 
     $ sudo apt-get install python-virtualenv virtualenv
-    $ virtualenv env_energym --python=python3.7
-    $ source env_energym/bin/activate
+    $ virtualenv env_sinergym --python=python3.7
+    $ source env_sinergym/bin/activate
 
 * Then, clone this repository using this command:
 
 .. code:: sh
 
-    $ git clone https://github.com/jajimer/energym.git
+    $ git clone https://github.com/jajimer/sinergym.git
 
 ****************
 Docker container
 ****************
 
 We include a **Dockerfile** for installing all dependencies and setting
-up the image for running *energym*. 
+up the image for running *sinergym*. 
 
 By default, Dockerfile will do `pip install -e .[extras]`, if you want to install a diffetent setup, you will have to do in root repository:
 
 .. code:: sh
 
-    $ docker build -t <tag_name> --build-arg ENERGYM_EXTRAS=[<setup_tag(s)>] .
+    $ docker build -t <tag_name> --build-arg SINERGYM_EXTRAS=[<setup_tag(s)>] .
 
 For example, if you want a container with only documentation libaries and testing:
 
 .. code:: sh
 
-    $ docker build -t example1/energym:latest --build-arg ENERGYM_EXTRAS=[doc,test] .
+    $ docker build -t example1/sinergym:latest --build-arg SINERGYM_EXTRAS=[doc,test] .
 
 On the other hand, if you don't want any extra library, it's neccesary to write an empty value like this:
 
 .. code:: sh
 
-    $ docker build -t example1/energym:latest --build-arg ENERGYM_EXTRAS= .
+    $ docker build -t example1/sinergym:latest --build-arg SINERGYM_EXTRAS= .
 
-.. note:: You can install directly our container from `Docker Hub repository <https://hub.docker.com/repository/docker/alejandrocn7/energym>`__, all releases of this project are there.
+.. note:: You can install directly our container from `Docker Hub repository <https://hub.docker.com/repository/docker/alejandrocn7/sinergym>`__, all releases of this project are there.
 
-.. note:: If you use `Visual Studio Code <https://code.visualstudio.com/>`__, by simply opening the root directory and clicking on the pop-up button "*Reopen in container*\ ", all the dependencies will be installed automatically and you will be able to run *energym* in an isolated environment.
+.. note:: If you use `Visual Studio Code <https://code.visualstudio.com/>`__, by simply opening the root directory and clicking on the pop-up button "*Reopen in container*\ ", all the dependencies will be installed automatically and you will be able to run *sinergym* in an isolated environment.
 
 *******************
 Manual installation
 *******************
 
-If you prefer installing *energym* manually, follow the steps below:
+If you prefer installing *sinergym* manually, follow the steps below:
 
 1. Install EnergyPlus 9.5.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Firstly, install EnergyPlus. Currently it has been update compability to 9.5.0 and it has
-been tested, but code may also work with other versions. Energym ensure this support:
+been tested, but code may also work with other versions. Sinergym ensure this support:
 
 +------------------+--------------------+
-| Energym Version  | EnergyPlus version |
+| Sinergym Version | EnergyPlus version |
 +==================+====================+
 | 1.0.0            | 8.6.0              | 
 +------------------+--------------------+
@@ -93,7 +93,7 @@ installed respectively.
 4. Install the package
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Finally, *energym* can be installed by running this command at the repo
+Finally, *sinergym* can be installed by running this command at the repo
 root folder:
 
 .. code:: sh
@@ -109,7 +109,7 @@ It's possible to select a subset of these libraries instead of 'extras' tag in w
 
     $ pip install -e .[test,doc]
 
-In order to check all our tag list, visit `setup.py <https://github.com/jajimer/energym/blob/main/setup.py>`__ in Energym root repository.
+In order to check all our tag list, visit `setup.py <https://github.com/jajimer/sinergym/blob/main/setup.py>`__ in Sinergym root repository.
 
 In any case, they are not a requirement of the package.
 
@@ -121,7 +121,7 @@ Cloud Computing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can run your experiments in cloud too. We are using `Google Cloud <https://cloud.google.com/>`__ in order to make it possible. Our team aim to set up
-a instances group (`MIG <https://cloud.google.com/compute/docs/instance-groups/getting-info-about-migs?hl=es-419>`__) in which execute our Energym container.
+a instances group (`MIG <https://cloud.google.com/compute/docs/instance-groups/getting-info-about-migs?hl=es-419>`__) in which execute our Sinergym container.
 
 Firstly, it is necessary that you have a Google Cloud account set up and SDK configured (auth, invoicing, project ID, etc). If you don't have this, it is recommended to check `their documentation <https://cloud.google.com/sdk/docs/install>`__.
 Secondly, It is important to have installed `Docker <https://www.docker.com/>`__ in order to be able to manage these containers in Google Cloud.
@@ -144,18 +144,18 @@ Hence, you will have to allow this services into your **Google account**.
 2. Use our container in Google Cloud Platform
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Our Energym container is uploaded in container registry as a public one currently. You can use it **locally**:
+Our Sinergym container is uploaded in container registry as a public one currently. You can use it **locally**:
 
 .. code:: sh
 
-    $ docker run -it gcr.io/energym-314709/energym:latest
+    $ docker run -it gcr.io/sinergym-314709/sinergym:latest
 
 If you want to use it in a **GCE VM**, you can execute the next:
 
 .. code:: sh
 
-    $ gcloud compute instances create-with-container energym \
-        --container-image gcr.io/energym-314709/energym \
+    $ gcloud compute instances create-with-container sinergym \
+        --container-image gcr.io/sinergym-314709/sinergym \
         --zone europe-west1-b \
         --container-privileged \
         --container-restart-policy never \
@@ -165,11 +165,11 @@ If you want to use it in a **GCE VM**, you can execute the next:
         --boot-disk-type pd-ssd \
         --machine-type n2-highcpu-8
 
-We have available containers in Docker Hub too. Please, visit our `repository <https://hub.docker.com/repository/docker/alejandrocn7/energym>`__
+We have available containers in Docker Hub too. Please, visit our `repository <https://hub.docker.com/repository/docker/alejandrocn7/sinergym>`__
 
 .. note:: It is possible to change parameters in order to set up your own VM with your preferences (see `create-with-container <https://cloud.google.com/sdk/gcloud/reference/compute/instances/create-with-container>`__).
 
-.. warning:: `--boot-disk-size` is really important, by default VM set 10GB and it isn't enough at all for Energym container.
+.. warning:: `--boot-disk-size` is really important, by default VM set 10GB and it isn't enough at all for Sinergym container.
               This derive in a silence error for Google Cloud Build (and you would need to check logs, which incident is not clear).
 
 3. Use your own container
@@ -217,8 +217,8 @@ To create a **VM** that uses this container, here there is an example:
 
 .. code:: sh
 
-    $ gcloud compute instances create-with-container energym \
-        --container-image gcr.io/energym-314709/energym \
+    $ gcloud compute instances create-with-container sinergym \
+        --container-image gcr.io/sinergym-314709/sinergym \
         --zone europe-west1-b \
         --container-privileged \
         --container-restart-policy never \
@@ -237,8 +237,8 @@ To create a **MIG**, you need to create a machine set up **template** firstly, f
 
 .. code:: sh
 
-    $ gcloud compute instance-templates create-with-container energym-template \
-        --container-image gcr.io/energym-314709/energym \
+    $ gcloud compute instance-templates create-with-container sinergym-template \
+        --container-image gcr.io/sinergym-314709/sinergym \
         --container-privileged \
         --container-restart-policy never \
         --container-stdin \
@@ -252,9 +252,9 @@ Then, you can create a group-instances as large as you want:
 .. code:: sh
 
     $ gcloud compute instance-groups managed create example-group \
-        --base-instance-name energym-vm \
+        --base-instance-name sinergym-vm \
         --size 3 \
-        --template energym-template
+        --template sinergym-template
 
 .. warning:: It is possible that quote doesn't let you have more than one VM at the same time. Hence, the rest of VM's probably will be *initializing* always but never ready. If it is your case, we recommend you check your quotes `here <https://console.cloud.google.com/iam-admin/quotas>`__
 
@@ -265,9 +265,9 @@ Your virtual machine is ready! To connect you can use ssh (see `gcloud-ssh <http
 
 .. code:: sh
 
-    $ gcloud compute ssh energym
+    $ gcloud compute ssh sinergym
 
-Google Cloud use a **Container-Optimized OS** (see `documentation <https://cloud.google.com/container-optimized-os/docs>`__) in VM. This SO have docker pre-installed with energym container.
+Google Cloud use a **Container-Optimized OS** (see `documentation <https://cloud.google.com/container-optimized-os/docs>`__) in VM. This SO have docker pre-installed with sinergym container.
 
 .. image:: /_static/container1.png
   :width: 800
@@ -286,4 +286,4 @@ To use this container in our machine you only have to do:
   :alt: GCE VM container usage.
   :align: center
 
-And now you can execute your own experiments in Google Cloud! If you are interested in using our API specifically for Gcloud (automated experiments using remotes containers). Please, visit our section :ref:`Energym Google Cloud API`
+And now you can execute your own experiments in Google Cloud! If you are interested in using our API specifically for Gcloud (automated experiments using remotes containers). Please, visit our section :ref:`Sinergym Google Cloud API`

@@ -1,7 +1,7 @@
-energym
-=======
+sinergym
+=========
 
 .. toctree::
    :maxdepth: 4
 
-   energym
+   sinergym

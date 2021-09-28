@@ -1,5 +1,5 @@
 #########################
-Energym Google Cloud API 
+Sinergym Google Cloud API 
 #########################
 
 In this project, an API based on RESTfull API for gcloud has been designed and developed in order to use Google Cloud infrastructure directly writing experiments definition ir our personal computer.
@@ -35,7 +35,7 @@ Here is an example bash code to execute the script:
     $ python cloud_manager.py \
         --project_id ${PROJECT_ID} \
         --zone europe-west1-b \
-        --template_name energym-template \
+        --template_name sinergym-template \
         --group_name sinergym \
         --experiment_commands \
         'python3 DRL_battery.py --environment Eplus-5Zone-hot-discrete-v1 --episodes 3 --algorithm DQN --logger --log_interval 1 --seed 54' \
@@ -45,7 +45,7 @@ This example generates only 2 machines inner an instance group in your Google Cl
 
 .. note:: Because of its real-time process. Some containers, instance list action and others could take time. In that case, the API wait a process finish to execute the next (when it is necessary).
 
-.. note:: This script uses gcloud API in background. Methods developed and used to this issues can be seen in `energym/energym/utils/gcloud.py <https://github.com/jajimer/energym/blob/main/energym/utils/gcloud.py>`__ or in :ref:`API reference`.
+.. note:: This script uses gcloud API in background. Methods developed and used to this issues can be seen in `sinergym/sinergym/utils/gcloud.py <https://github.com/jajimer/sinergym/blob/main/sinergym/utils/gcloud.py>`__ or in :ref:`API reference`.
 
 *******************************************
 Receiving experiments in remote containers

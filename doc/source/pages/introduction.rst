@@ -1,15 +1,15 @@
 .. seealso:: This is a project based on Zhiang Zhang and Khee Poh Lam `Gym-Eplus <https://github.com/zhangzhizza/Gym-Eplus>`__.
 
-The goal of *energym* is to create an environment following OpenAI
+The goal of *sinergym* is to create an environment following OpenAI
 Gym interface for wrapping simulation engines for building control using
 **deep reinforcement learning**.
 
 .. image:: /_static/operation_diagram.jpg
   :width: 800
-  :alt: Energym diagram
+  :alt: Sinergym diagram
   :align: center
 
-The main functionalities of *energym* are the following:
+The main functionalities of *sinergym* are the following:
 
 -  **Benchmark environments**. Similarly to Atari or Mujoco environments
    for RL community, we are designing a set of environments for

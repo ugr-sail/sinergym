@@ -1,5 +1,5 @@
 import gym
-from energym.utils.wrappers import NormalizeObservation, LoggerWrapper, MultiObsWrapper
+from sinergym.utils.wrappers import NormalizeObservation, LoggerWrapper, MultiObsWrapper
 from datetime import datetime
 import argparse
 import os
@@ -49,6 +49,6 @@ for directory in directories:
     shutil.rmtree(directory)
 
 # Deleting new random weather files once it has been checked
-files = glob('energym/data/weather/*Random*.epw')
+files = glob('sinergym/data/weather/*Random*.epw')
 for file in files:
     os.remove(file)

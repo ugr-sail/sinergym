@@ -16,10 +16,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build the latest Docker image
-        run: docker build . --file Dockerfile --build-arg ENERGYM_EXTRAS=[DRL,test] --tag $DOCKER_USER/energym:latest
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[DRL,test] --tag $DOCKER_USER/sinergym:latest
       - name: Execute tests from container
-        run: docker run -t $DOCKER_USER/energym:latest /bin/bash -c 'pytest tests/ -vv'
+        run: docker run -t $DOCKER_USER/sinergym:latest /bin/bash -c 'pytest tests/ -vv'
       - name: Login in Docker Hub account
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - name: Push container used with test
-        run: docker push $DOCKER_USER/energym:latest
+        run: docker push $DOCKER_USER/sinergym:latest

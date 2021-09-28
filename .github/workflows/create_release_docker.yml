@@ -17,15 +17,15 @@ jobs:
         uses: abatilo/release-info-action@v1.3.0
         with:
           owner: jajimer
-          repo: energym
+          repo: sinergym
       - name: Build container image with release tag
         env:
           TAG: ${{ steps.tag_version.outputs.latest_tag }}
           #TAG_DATE: ${{ steps.tag_version.outputs.latest_tag_published_at }}
-        run: docker build . --file Dockerfile --build-arg ENERGYM_EXTRAS=[extras] --tag $DOCKER_USER/energym:$TAG
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extras] --tag $DOCKER_USER/sinergym:$TAG
       - name: Login Docker Hub
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - name: Push container built with release tag
         env:
           TAG: ${{ steps.tag_version.outputs.latest_tag }}
-        run: docker push $DOCKER_USER/energym:$TAG
+        run: docker push $DOCKER_USER/sinergym:$TAG
