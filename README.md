@@ -22,7 +22,7 @@ The main functionalities of Energym are the following :
 _This is a work in progress project. Stay tuned for upcoming releases._
 
 <div align="center">
-  <img src="images/operation_diagram.png"><br><br>
+  <img src="images/operation_diagram.jpg"><br><br>
 </div>
 
 ## List of available environments
