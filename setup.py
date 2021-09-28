@@ -32,6 +32,10 @@ setup(name='energym',
           'visualization': [
               'matplotlib',
               'tensorboard'  # Log stable-baselines3 trainings
+          ],
+          'gcloud': [
+              'google-api-python-client',
+              'oauth2client'
           ]
       }
       )

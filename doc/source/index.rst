@@ -17,6 +17,7 @@ Welcome to **energym**!
    pages/controllers.rst
    pages/wrappers.rst
    pages/deep-reinforcement-learning.rst
+   pages/gcloudAPI.rst
    pages/API-reference.rst
 
 

@@ -15,6 +15,13 @@ from stable_baselines3.common.env_util import is_wrapped
 
 class LoggerCallback(BaseCallback):
     """Custom callback for plotting additional values in tensorboard.
+        :param energym_logger: Boolean, indicate if CSVLogger inner Energym will be activated or not.
+        :param ep_rewards: Here will be stored all rewards during episode.
+        :param ep_powers: Here will be stored all consumption data during episode.
+        :param ep_term_comfort: Here will be stored all comfort terms (reward component) during episode.
+        :param ep_term_energy: Here will be stored all energy terms (reward component) during episode.
+        :param num_comfort_violation: Number of timesteps in which comfort has been violated.
+        :param ep_timesteps: Each timestep during an episode, this value increment 1.
     """
 
     def __init__(self, energym_logger=False, verbose=0):

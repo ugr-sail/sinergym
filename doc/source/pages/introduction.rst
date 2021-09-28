@@ -4,7 +4,7 @@ The goal of *energym* is to create an environment following OpenAI
 Gym interface for wrapping simulation engines for building control using
 **deep reinforcement learning**.
 
-.. image:: /_static/energym-diagram.png
+.. image:: /_static/operation_diagram.jpg
   :width: 800
   :alt: Energym diagram
   :align: center

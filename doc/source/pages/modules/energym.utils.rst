@@ -31,6 +31,7 @@
    energym.utils.callbacks
    energym.utils.common
    energym.utils.controllers
+   energym.utils.gcloud
    energym.utils.rewards
    energym.utils.wrappers
 

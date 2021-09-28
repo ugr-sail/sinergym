@@ -1,4 +1,4 @@
-﻿energym.utils.wrappers
+energym.utils.wrappers
 ======================
 
 .. automodule:: energym.utils.wrappers
