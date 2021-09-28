@@ -17,9 +17,9 @@ import numpy as np
 from opyplus import Epm, WeatherData
 from copy import deepcopy
 
-from ..utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space, setpoints_transform
-from ..simulators import EnergyPlus
-from ..utils.rewards import ExpReward, LinearReward
+from energym.utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space, setpoints_transform
+from energym.simulators import EnergyPlus
+from energym.utils.rewards import ExpReward, LinearReward
 from pprint import pprint
 
 
@@ -198,7 +198,8 @@ class EplusEnv(gym.Env):
             'out_temperature': obs_dict['Site Outdoor Air Drybulb Temperature (Environment)'],
             'action_': action_}
 
-        return np.array(list(obs_dict.values())), reward, done, info
+        return np.array(list(obs_dict.values()),
+                        dtype=np.float32), reward, done, info
 
     def reset(self):
         """Reset the environment.
@@ -216,7 +217,6 @@ class EplusEnv(gym.Env):
 
         # Change to next episode
         t, obs, done = self.simulator.reset(new_weather)
-
         obs_dict = dict(zip(self.variables['observation'], obs))
 
         time_info = get_current_time_info(self.epm, t)
@@ -224,7 +224,7 @@ class EplusEnv(gym.Env):
         obs_dict['month'] = time_info[1]
         obs_dict['hour'] = time_info[2]
 
-        return np.array(list(obs_dict.values()))
+        return np.array(list(obs_dict.values()), dtype=np.float32)
 
     def render(self, mode='human'):
         """Environment rendering."""
