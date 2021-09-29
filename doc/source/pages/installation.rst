@@ -148,14 +148,14 @@ Our Sinergym container is uploaded in container registry as a public one current
 
 .. code:: sh
 
-    $ docker run -it gcr.io/sinergym-314709/sinergym:latest
+    $ docker run -it gcr.io/sinergym/sinergym:latest
 
 If you want to use it in a **GCE VM**, you can execute the next:
 
 .. code:: sh
 
     $ gcloud compute instances create-with-container sinergym \
-        --container-image gcr.io/sinergym-314709/sinergym \
+        --container-image gcr.io/sinergym/sinergym \
         --zone europe-west1-b \
         --container-privileged \
         --container-restart-policy never \
@@ -218,7 +218,7 @@ To create a **VM** that uses this container, here there is an example:
 .. code:: sh
 
     $ gcloud compute instances create-with-container sinergym \
-        --container-image gcr.io/sinergym-314709/sinergym \
+        --container-image gcr.io/sinergym/sinergym \
         --zone europe-west1-b \
         --container-privileged \
         --container-restart-policy never \
@@ -238,7 +238,7 @@ To create a **MIG**, you need to create a machine set up **template** firstly, f
 .. code:: sh
 
     $ gcloud compute instance-templates create-with-container sinergym-template \
-        --container-image gcr.io/sinergym-314709/sinergym \
+        --container-image gcr.io/sinergym/sinergym \
         --container-privileged \
         --container-restart-policy never \
         --container-stdin \

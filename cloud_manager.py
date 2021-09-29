@@ -110,7 +110,7 @@ for i, instance in enumerate(instances):
 print('All VM\'s are working correctly, see Google Cloud Platform Console.')
 # Close VM when finished with google cloud alerts?
 
-# python  cloud_manager.py --project_id sinergym-314709
+# python  cloud_manager.py --project_id sinergym
 # --experiments_commands
 # 'python 3 DRL_battery.py --environment Eplus-5Zone-hot-discrete-v1 --episodes 3 --algorithm DQN --logger log_interval 1 --seed 54'
 # 'python3 DRL_battery.py --environment Eplus-5Zone-hot-continuous-stochastic-v1 --episodes 3 --algorithm PPO --logger --log_interval 1 --tensorboard --normalization --seed 54'
