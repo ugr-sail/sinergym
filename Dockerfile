@@ -8,8 +8,8 @@ ARG ENERGYPLUS_VERSION=9.5.0
 ARG ENERGYPLUS_INSTALL_VERSION=9-5-0
 ARG ENERGYPLUS_SHA=de239b2e5f
 
-# Argument for Energym extras libraries
-ARG ENERGYM_EXTRAS=[extras]
+# Argument for Sinergym extras libraries
+ARG SINERGYM_EXTRAS=[extras]
 
 ENV ENERGYPLUS_VERSION=$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
@@ -60,13 +60,13 @@ WORKDIR /code
 COPY requirements.txt .
 COPY setup.py .
 COPY DRL_battery.py .
-COPY energym /code/energym
+COPY sinergym /code/sinergym
 COPY tests /code/tests
 COPY examples /code/examples
 COPY check_run_times.py .
-RUN pip3 install -e .${ENERGYM_EXTRAS}
+RUN pip3 install -e .${SINERGYM_EXTRAS}
 
 CMD ["/bin/bash"]
 
-# Build: docker build -t energym:1.1.0 --build-arg ENERGYPLUS_VERSION=9.5.0 --build-arg ENERGYPLUS_INSTALL_VERSION=9-5-0 --build-arg ENERGYPLUS_SHA=de239b2e5f .
-# Run: docker run -it --rm -p 5005:5005 energym:1.1.0
+# Build: docker build -t sinergym:1.1.0 --build-arg ENERGYPLUS_VERSION=9.5.0 --build-arg ENERGYPLUS_INSTALL_VERSION=9-5-0 --build-arg ENERGYPLUS_SHA=de239b2e5f .
+# Run: docker run -it --rm -p 5005:5005 sinergym:1.1.0
