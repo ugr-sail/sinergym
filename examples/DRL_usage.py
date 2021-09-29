@@ -5,15 +5,15 @@
 # pip install opyplus
 
 import gym
-import energym
+import sinergym
 import argparse
 import uuid
 import mlflow
 
 import numpy as np
 
-from energym.utils.callbacks import LoggerCallback, LoggerEvalCallback
-from energym.utils.wrappers import NormalizeObservation
+from sinergym.utils.callbacks import LoggerCallback, LoggerEvalCallback
+from sinergym.utils.wrappers import NormalizeObservation
 
 
 from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
@@ -123,7 +123,7 @@ with mlflow.start_run(run_name=name):
         deterministic=True,
         render=False,
         n_eval_episodes=1)
-    log_callback = LoggerCallback(energym_logger=True)
+    log_callback = LoggerCallback(sinergym_logger=True)
     callback = CallbackList([log_callback])
 
     # Training

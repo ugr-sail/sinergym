@@ -1,5 +1,5 @@
 import pytest
-import energym.utils.rewards as R
+import sinergym.utils.rewards as R
 
 
 @pytest.mark.parametrize(

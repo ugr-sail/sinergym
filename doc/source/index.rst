@@ -1,5 +1,5 @@
-Welcome to **energym**!
-=======================
+Welcome to **sinergym**!
+========================
 
 .. include:: pages/introduction.rst
 

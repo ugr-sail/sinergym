@@ -3,7 +3,7 @@ Usage example
 #############
 
 
-Energym uses the standard OpenAI gym API. So basic loop should be
+Sinergym uses the standard OpenAI gym API. So basic loop should be
 something like:
 
 .. literalinclude:: ../../../try_env.py

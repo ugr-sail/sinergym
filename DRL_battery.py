@@ -1,14 +1,14 @@
 import gym
-import energym
+import sinergym
 import argparse
 import uuid
 import mlflow
 
 import numpy as np
 
-from energym.utils.callbacks import LoggerCallback, LoggerEvalCallback
-from energym.utils.wrappers import MultiObsWrapper, NormalizeObservation, LoggerWrapper
-from energym.utils.rewards import *
+from sinergym.utils.callbacks import LoggerCallback, LoggerEvalCallback
+from sinergym.utils.wrappers import MultiObsWrapper, NormalizeObservation, LoggerWrapper
+from sinergym.utils.rewards import *
 
 
 from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
@@ -25,7 +25,7 @@ parser.add_argument(
     required=True,
     type=str,
     dest='environment',
-    help='Environment name of simulation (see energym/__init__.py).')
+    help='Environment name of simulation (see sinergym/__init__.py).')
 parser.add_argument(
     '--episodes',
     '-ep',
@@ -64,7 +64,7 @@ parser.add_argument(
     '-log',
     action='store_true',
     dest='logger',
-    help='Apply Energym CSVLogger class if this flag is specified.')
+    help='Apply Sinergym CSVLogger class if this flag is specified.')
 parser.add_argument(
     '--tensorboard',
     '-tens',
@@ -249,7 +249,7 @@ if args.evaluation:
     callbacks.append(eval_callback)
 
 if args.tensorboard:
-    log_callback = LoggerCallback(energym_logger=bool(args.logger))
+    log_callback = LoggerCallback(sinergym_logger=bool(args.logger))
     callbacks.append(log_callback)
 
 callback = CallbackList(callbacks)

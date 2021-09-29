@@ -61,16 +61,16 @@ values in order to add stochastic.
 Observation/action spaces
 **************************
 
-Observation and action spaces are defined in `energym/energym/data/variables <https://github.com/jajimer/energym/tree/main/energym/data/variables>`__ specifically for each IDF file. Therefore, external interface with simulation is defined in the same way.
+Observation and action spaces are defined in `sinergym/sinergym/data/variables <https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables>`__ specifically for each IDF file. Therefore, external interface with simulation is defined in the same way.
 
 This is a definition example for 5ZoneAutoDXVAV.idf and its variants:
 
-.. literalinclude:: ../../../energym/data/variables/5ZoneAutoDXVAV_spaces.cfg
+.. literalinclude:: ../../../sinergym/data/variables/5ZoneAutoDXVAV_spaces.cfg
     :language: xml
 
 This gives you the possibility of playing with different observation/action spaces in discrete and continuous environments in order to study how this affects the resolution of a building problem.
 Inner each environment it is known what configuration file must read and spaces will be defined automatically, so you should not worry about anything.
 
-In order to make environments more generic in DRL solutions. We have updated action space for continuous problem. Gym action space is defined always between [-1,1] and Energym parse this values to action space defined in configuration file internally.
+In order to make environments more generic in DRL solutions. We have updated action space for continuous problem. Gym action space is defined always between [-1,1] and Sinergym parse this values to action space defined in configuration file internally.
 
-The function in charge of reading those configuration files is ``parse_observation_action_space(space_file)`` in *energym/energym/utils/common.py*
+The function in charge of reading those configuration files is ``parse_observation_action_space(space_file)`` in *sinergym/sinergym/utils/common.py*

@@ -1,8 +1,8 @@
 import pytest
-from energym.simulators.eplus_old import EnergyPlus
-from energym.envs.eplus_env import EplusEnv
-import energym.utils.rewards as R
-from energym.utils.wrappers import NormalizeObservation, MultiObsWrapper, LoggerWrapper
+from sinergym.simulators.eplus_old import EnergyPlus
+from sinergym.envs.eplus_env import EplusEnv
+import sinergym.utils.rewards as R
+from sinergym.utils.wrappers import NormalizeObservation, MultiObsWrapper, LoggerWrapper
 
 from opyplus import Epm, WeatherData, Idd
 import os
@@ -14,11 +14,11 @@ import shutil
 
 
 @pytest.fixture(scope='session')
-def energym_path():
+def sinergym_path():
     return os.path.abspath(
         os.path.join(
             pkg_resources.resource_filename(
-                'energym',
+                'sinergym',
                 ''),
             os.pardir))
 
@@ -37,7 +37,7 @@ def bcvtb_path():
 
 @pytest.fixture(scope='session')
 def pkg_data_path():
-    return pkg_resources.resource_filename('energym', 'data/')
+    return pkg_resources.resource_filename('sinergym', 'data/')
 
 
 @pytest.fixture(scope='session')
@@ -226,6 +226,6 @@ def pytest_sessionfinish(session, exitstatus):
         shutil.rmtree(directory)
 
     # Deleting new random weather files once it has been checked
-    files = glob('energym/data/weather/*Random*.epw')
+    files = glob('sinergym/data/weather/*Random*.epw')
     for file in files:
         os.remove(file)

@@ -1,5 +1,5 @@
 import pytest
-from energym.utils.controllers import RuleBasedController
+from sinergym.utils.controllers import RuleBasedController
 
 
 @pytest.mark.parametrize(

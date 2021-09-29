@@ -1,5 +1,5 @@
 import pytest
-import energym.utils.common as common
+import sinergym.utils.common as common
 from opyplus import Epm, WeatherData
 import shutil
 

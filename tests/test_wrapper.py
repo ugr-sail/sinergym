@@ -1,4 +1,4 @@
-from energym.utils.wrappers import NormalizeObservation
+from sinergym.utils.wrappers import NormalizeObservation
 import pytest
 import numpy as np
 import os

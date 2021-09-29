@@ -16,15 +16,15 @@ services:
   - docker
 
 before_script:
-  - docker build -t $DOCKER_USER/energym --build-arg ENERGYM_EXTRAS=[DRL,test] .
+  - docker build -t $DOCKER_USER/sinergym --build-arg SINERGYM_EXTRAS=[DRL,test] .
   
 script:
-  - docker run -it $DOCKER_USER/energym /bin/bash -c 'pytest tests -vv'
+  - docker run -it $DOCKER_USER/sinergym /bin/bash -c 'pytest tests -vv'
   
 after_success:
   - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  #Previusly set up in our own travis account
-  - docker tag $DOCKER_USER/energym $DOCKER_USER/energym:latest
-  - docker push $DOCKER_USER/energym:latest
+  - docker tag $DOCKER_USER/sinergym $DOCKER_USER/sinergym:latest
+  - docker push $DOCKER_USER/sinergym:latest
 
 
 

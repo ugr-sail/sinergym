@@ -1,7 +1,7 @@
 import argparse
 
 import gym
-import energym
+import sinergym
 import numpy as np
 import pprint
 import pytest

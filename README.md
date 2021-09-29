@@ -1,18 +1,16 @@
-# energym
-
-> :warning: **We are in the process of rebranding this project. Stay tuned for new updates!**
+# sinergym
 
 <div align="center">
   <img src="images/logo.png" width=40%><br><br>
 </div>
 
-**Welcome to energym!**
+**Welcome to sinergym!**
 
 This is a project based on Zhiang Zhang and Khee Poh Lam [Gym-Eplus](https://github.com/zhangzhizza/Gym-Eplus).
 
 The goal of this project is to create an environment following OpenAI Gym interface for wrapping simulation engines for building control using **deep reinforcement learning**.
 
-The main functionalities of Energym are the following :
+The main functionalities of Sinergym are the following :
 
   - **Benchmark environments**. Similarly to Atari or Mujoco environments for RL community, we are designing a set of environments for benchmarking and testing deep RL algorithms. These environments may include different buildings, weathers or action spaces.
   - **Develop different experimental settings**. We aim to provide a package that allows to modify experimental settings in an easy manner. For example, several reward functions or observation variables may be defined. 
@@ -60,26 +58,26 @@ _This is a work in progress project. Stay tuned for upcoming releases._
 
 ## Installation process
 
-To install energym, follow these steps.
+To install sinergym, follow these steps.
 
 First, it is recommended to create a virtual environment. You can do so by:
 
 ```sh
 $ sudo apt-get install python-virtualenv virtualenv
-$ virtualenv env_energym --python=python3.7
-$ source env_energym/bin/activate
+$ virtualenv env_sinergym --python=python3.7
+$ source env_sinergym/bin/activate
 ```
 
 Then, clone this repository using this command:
 ```
-$ git clone https://github.com/jajimer/energym.git
+$ git clone https://github.com/jajimer/sinergym.git
 ```
 
 ### Docker container
 
-We include a **Dockerfile** for installing all dependencies and setting up the image for running energym. If you use [Visual Studio Code](https://code.visualstudio.com/), by simply opening the root directory and clicking on the pop-up button "_Reopen in container_", dependencies will be installed automatically and you will be able to run energym in an isolated environment.
+We include a **Dockerfile** for installing all dependencies and setting up the image for running sinergym. If you use [Visual Studio Code](https://code.visualstudio.com/), by simply opening the root directory and clicking on the pop-up button "_Reopen in container_", dependencies will be installed automatically and you will be able to run sinergym in an isolated environment.
 
-You can also use our [Docker Hub repository](https://hub.docker.com/repository/docker/alejandrocn7/energym) with the desired version directly.
+You can also use our [Docker Hub repository](https://hub.docker.com/repository/docker/alejandrocn7/sinergym) with the desired version directly.
 
 However, if you prefer installing it manually, follow the steps below.
 
@@ -88,9 +86,9 @@ However, if you prefer installing it manually, follow the steps below.
 #### 1. Install Energy Plus 9.5.0
 
 Firstly, install EnergyPlus. Currently it has been update compability to 9.5.0 and it has
-been tested, but code may also work with other versions. Energym ensure this support:
+been tested, but code may also work with other versions. Sinergym ensure this support:
 
-| Energym Version  | EnergyPlus version |
+| Sinergym Version  | EnergyPlus version |
 |------------------|--------------------|
 | 1.0.0            | 8.6.0              | 
 | 1.1.0            | 9.5.0              | 
@@ -111,34 +109,34 @@ Two environment variables must be set: ``EPLUS_PATH`` and ``BCVTB_PATH``, with t
 
 #### 4. Install the package
 
-Finally, energym can be installed by running this command at the repo root folder:
+Finally, sinergym can be installed by running this command at the repo root folder:
 
 ```sh
 pip install -e .
 ```
 
-Extra libraries can be installed by typing ``pip install -e .[extras]``. They are intended for running and analyzing DRL algorithms over energym, but they are
+Extra libraries can be installed by typing ``pip install -e .[extras]``. They are intended for running and analyzing DRL algorithms over sinergym, but they are
 not a requirement of the package.   
 
 And that's all!
 
 ## Check Installation
 
-This project is automatically supervised using tests developed specifically for it. If you want to check energym has been installed successfully, run next command:
+This project is automatically supervised using tests developed specifically for it. If you want to check sinergym has been installed successfully, run next command:
 
 ```sh
 $ pytest tests/ -vv
 ```
-Anyway, every time energym repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. `Github Action <https://docs.github.com/es/actions/>`__ will do that job (see our documentation for more information).
+Anyway, every time sinergym repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. `Github Action <https://docs.github.com/es/actions/>`__ will do that job (see our documentation for more information).
 
 ## Usage example
 
-Energym uses the standard OpenAI gym API. So basic loop should be something like:
+Sinergym uses the standard OpenAI gym API. So basic loop should be something like:
 
 ```python
 
 import gym
-import energym
+import sinergym
 
 env = gym.make('Eplus-demo-v1')
 obs = env.reset()

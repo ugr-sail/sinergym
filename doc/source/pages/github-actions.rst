@@ -11,4 +11,4 @@ Currently, we have developed the next procedures for this project:
 - **Installation, Testing and Updating**: There is another action which builds a remote container using *Dockerfile*, executes pytest inner and, if tests have been passed, uploads our **Docker Hub** repository using *latest* tag.
 - When a **release** is *published* or *edited* manually in the repository, there is an action which catches release tag version and uses it to build a container and upload/update on Docker Hub with that tag version.
 
-.. note:: See `.github/workflows YML files <https://github.com/jajimer/energym/tree/develop/.github/workflows>`__ to see code used.
+.. note:: See `.github/workflows YML files <https://github.com/jajimer/sinergym/tree/develop/.github/workflows>`__ to see code used.
