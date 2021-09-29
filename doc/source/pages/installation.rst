@@ -141,6 +141,12 @@ On the other hand, we are going to use specifically this services in **Google Cl
 
 Hence, you will have to allow this services into your **Google account**.
 
+.. image:: /_static/service-account-permissions.png
+  :width: 500
+  :alt: Permissions required for cloud build. You must activate (and API's required too)
+  :align: center
+
+
 2. Use our container in Google Cloud Platform
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
