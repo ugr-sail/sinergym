@@ -106,6 +106,12 @@ parser.add_argument(
     default=None,
     dest='seed',
     help='Seed used to algorithm training.')
+parser.add_argument(
+    '--remote_store',
+    '-sto',
+    action='store_true',
+    dest='remote_store',
+    help='Determine if sinergym output will be sent to a common resource')
 
 parser.add_argument('--learning_rate', '-lr', type=float, default=.0007)
 parser.add_argument('--gamma', '-g', type=float, default=.99)
@@ -145,6 +151,10 @@ if args.multiobs:
 
 # Defining model(algorithm)
 model = None
+name = args.algorithm + '-' + args.environment + \
+    '-' + str(args.episodes) + '_episodes'
+if args.seed:
+    name += '-' + str(args.seed) + '_seed'
 #--------------------------DQN---------------------------#
 if args.algorithm == 'DQN':
     model = DQN('MlpPolicy', env, verbose=1,
@@ -259,4 +269,10 @@ model.learn(
     total_timesteps=timesteps,
     callback=callback,
     log_interval=args.log_interval)
-# model.save(name)
+if not args.evaluation:
+    model.save(env.simulator._eplus_working_dir + '/' + name)
+
+if args.remote:
+    # Code for send output and tensorboard to common resource here.
+    # We can programming a command to shut down remote machine or stop it too
+    pass
