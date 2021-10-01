@@ -16,8 +16,11 @@ Eplus-env*/
 #Socket.cfg in tests
 socket.cfg
 
-# Documentation
-docs/source/_build/
+# Documentation (ignore all built except docs/build/html/index.html required by Github Pages)
+docs/build/*
+!docs/build/html
+docs/build/html/*
+!docs/build/html/index.html
 
 # Tensorboard mlflow and models outputs
 tensorboard*/
