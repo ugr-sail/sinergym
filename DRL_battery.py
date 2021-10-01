@@ -3,6 +3,7 @@ import sinergym
 import argparse
 import uuid
 import mlflow
+import os
 
 import numpy as np
 
@@ -272,7 +273,7 @@ model.learn(
 if not args.evaluation:
     model.save(env.simulator._eplus_working_dir + '/' + name)
 
-if args.remote:
+if args.remote_store:
     # Code for send output and tensorboard to common resource here.
     # We can programming a command to shut down remote machine or stop it too
-    pass
+    os.system('shutdown -s')
