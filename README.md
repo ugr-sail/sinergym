@@ -137,13 +137,14 @@ Sinergym uses the standard OpenAI gym API. So basic loop should be something lik
 
 import gym
 import sinergym
-
-env = gym.make('Eplus-demo-v1')
+# Create the environment
+env = gym.make('Eplus-datacenter-mixed-continuous-stochastic-v1')
+# Initialize the episode
 obs = env.reset()
 done = False
 R = 0.0
 while not done:
-    a = env.action_space.sample() # action selection
+    a = env.action_space.sample() # random action selection
     obs, reward, done, info = env.step(a) # get new observation and reward
     R += reward
 print('Total reward for the episode: %.4f' % R)
