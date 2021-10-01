@@ -17,8 +17,7 @@ Eplus-env*/
 socket.cfg
 
 # Documentation
-doc/source/_build/
-doc/build/
+docs_source/source/_build/
 
 # Tensorboard mlflow and models outputs
 tensorboard*/
