@@ -152,4 +152,3 @@ env.close()
 ````
 
 Notice that a folder will be created in the working directory after creating the environment. It will contain the EnergyPlus outputs produced during the simulation.
-```
