@@ -3,9 +3,11 @@ import subprocess
 import os
 import time
 from pprint import pprint
+import glob
 
 import googleapiclient.discovery
 from oauth2client.client import GoogleCredentials
+from google.cloud import storage
 # from six.moves import input
 
 
@@ -22,6 +24,11 @@ def init_gcloud_service():
     return service
 
 
+def init_storage_client():
+    client = storage.Client()
+    return client
+
+
 def list_instances(service, project, zone, base_instances_names=None):
     """List instances names created in Google Cloud currently.
 
@@ -35,7 +42,6 @@ def list_instances(service, project, zone, base_instances_names=None):
         list(str): Name of the instances availables in Google Cloud.
 
     """
-    service.instances().list(project=project, zone=zone)
     result = service.instances().list(project=project, zone=zone).execute()
     instance_objects = result['items'] if 'items' in result else None
     instances = []
@@ -204,6 +210,35 @@ def wait_for_operation(service, project, zone, operation, operation_type=''):
 
         time.sleep(1)
 
+
+def create_bucket(client, bucket_name, location):
+    bucket = client.create_bucket(
+        bucket_name,
+        location=location)
+    return bucket
+
+
+def get_bucket(client, bucket_name):
+    bucket = client.get_bucket(bucket_name)
+    return bucket
+
+
+def upload_to_bucket(client, src_path, dest_bucket_name, dest_path):
+    bucket = client.get_bucket(dest_bucket_name)
+    if os.path.isfile(src_path):
+        blob = bucket.blob(os.path.join(dest_path, os.path.basename(src_path)))
+        blob.upload_from_filename(src_path)
+        return
+    for item in glob.glob(src_path + '/*'):
+        if os.path.isfile(item):
+            blob = bucket.blob(os.path.join(dest_path, os.path.basename(item)))
+            blob.upload_from_filename(item)
+        else:
+            upload_to_bucket(client,
+                             item, dest_bucket_name, os.path.join(
+                                 dest_path, os.path.basename(item)))
+
+
 # def create_instance(service, project, zone, name, bucket):
 #     """Create an individual instance in Google Cloud.
 
@@ -212,7 +247,7 @@ def wait_for_operation(service, project, zone, operation, operation_type=''):
 #         project: Project id from Google Cloud Platform
 #         zone: Google Cloud Zone where instance will be
 #         name: Name of the new instance
-#         bucket:
+#         bucket: Bucket name used for create instance
 
 #     Returns:
 #         list(str): Name of the instances availables in Google Cloud.
