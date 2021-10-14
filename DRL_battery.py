@@ -4,12 +4,15 @@ import argparse
 import uuid
 import mlflow
 import os
+from datetime import datetime
 
 import numpy as np
 
 from sinergym.utils.callbacks import LoggerCallback, LoggerEvalCallback
+from sinergym.utils.gcloud import get_bucket
 from sinergym.utils.wrappers import MultiObsWrapper, NormalizeObservation, LoggerWrapper
 from sinergym.utils.rewards import *
+import sinergym.utils.gcloud as gcloud
 
 
 from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
@@ -150,12 +153,15 @@ if args.multiobs:
 
 ######################## TRAINING ########################
 
+experiment_date = datetime.today().strftime('%Y-%m-%d %H:%M')
+
 # Defining model(algorithm)
 model = None
 name = args.algorithm + '-' + args.environment + \
-    '-' + str(args.episodes) + '_episodes'
+    '-episodes_' + str(args.episodes)
 if args.seed:
-    name += '-' + str(args.seed) + '_seed'
+    name += '-seed_' + str(args.seed)
+name += '(' + experiment_date + ')'
 #--------------------------DQN---------------------------#
 if args.algorithm == 'DQN':
     model = DQN('MlpPolicy', env, verbose=1,
@@ -243,17 +249,24 @@ n_timesteps_episode = env.simulator._eplus_one_epi_len / \
 timesteps = args.episodes * n_timesteps_episode
 
 # For callbacks processing
-env = DummyVecEnv([lambda: env])
+env_vec = DummyVecEnv([lambda: env])
 
 # Using Callbacks for training
 callbacks = []
 
 if args.evaluation:
     eval_callback = LoggerEvalCallback(
-        env,
-        best_model_save_path='./best_models/' + args.environment + '/',
-        log_path='./best_models/' + args.environment + '/',
-        eval_freq=n_timesteps_episode * args.eval_freq,
+        env_vec,
+        best_model_save_path=env.simulator._env_working_dir_parent +
+        '/best_model/' +
+        name +
+        '/',
+        log_path=env.simulator._env_working_dir_parent +
+        '/best_model/' +
+        name +
+        '/',
+        eval_freq=n_timesteps_episode *
+        args.eval_freq,
         deterministic=True,
         render=False,
         n_eval_episodes=args.eval_length)
@@ -271,9 +284,23 @@ model.learn(
     callback=callback,
     log_interval=args.log_interval)
 if not args.evaluation:
-    model.save(env.simulator._eplus_working_dir + '/' + name)
+    model.save(env.simulator._env_working_dir_parent + '/' + name)
 
 if args.remote_store:
+    # Initiate Google Cloud client
+    client = gcloud.init_storage_client()
     # Code for send output and tensorboard to common resource here.
+    gcloud.upload_to_bucket(
+        client,
+        src_path=env.simulator._env_working_dir_parent,
+        dest_bucket_name='experiments-storage',
+        dest_path=name)
+    if args.tensorboard:
+        gcloud.upload_to_bucket(
+            client,
+            src_path=args.tensorboard,
+            dest_bucket_name='experiments-storage',
+            dest_path=name + '/tensorboard_log')
+
     # We can programming a command to shut down remote machine or stop it too
-    os.system('shutdown -s')
+    os.system('sudo shutdown -h now')
