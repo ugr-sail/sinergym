@@ -35,7 +35,8 @@ setup(name='sinergym',
           ],
           'gcloud': [
               'google-api-python-client',
-              'oauth2client'
+              'oauth2client',
+              'google-cloud-storage'
           ]
       }
       )
