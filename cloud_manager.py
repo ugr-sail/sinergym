@@ -2,6 +2,8 @@ import argparse
 from time import sleep
 from pprint import pprint
 import sinergym.utils.gcloud as gcloud
+from google.cloud import storage
+import google.api_core.exceptions
 
 parser = argparse.ArgumentParser(
     description='Process for run experiments in Google Cloud')
@@ -45,6 +47,9 @@ args = parser.parse_args()
 print('Init Google cloud service API...')
 service = gcloud.init_gcloud_service()
 
+print('Init Google Cloud Storage Client...')
+client = gcloud.init_storage_client()
+
 # Create instance group
 n_experiments = len(args.commands)
 print('Creating instance group(MIG) for experiments ({} instances)...'.format(
@@ -72,6 +77,21 @@ if response['status'] != 'DONE':
         operation_type=response['operationType'])
 pprint(response)
 print('MIG created.')
+
+# If storage exists it will be used, else it will be created previously by API
+print('Looking for experiments storage')
+try:
+    bucket = gcloud.get_bucket(client, bucket_name='experiments-storage')
+    print(
+        'Bucket {} found, this storage will be used when experiments finish.'.format(
+            bucket.name))
+except(google.api_core.exceptions.NotFound):
+    print('Any bucket found into your Google account, generating new one...')
+    bucket = gcloud.create_bucket(
+        client,
+        bucket_name='experiments-storage',
+        location='EU')
+
 
 # List VM names
 print('Looking for instance names... (waiting for they are visible too)')
