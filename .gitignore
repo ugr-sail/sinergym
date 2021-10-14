@@ -26,3 +26,6 @@ tensorboard*/
 best_model*/
 mlruns/
 
+# Google storage credentials
+google-storage.json
+
