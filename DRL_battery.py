@@ -9,16 +9,16 @@ from datetime import datetime
 import numpy as np
 
 from sinergym.utils.callbacks import LoggerCallback, LoggerEvalCallback
-from sinergym.utils.gcloud import get_bucket
 from sinergym.utils.wrappers import MultiObsWrapper, NormalizeObservation, LoggerWrapper
 from sinergym.utils.rewards import *
 import sinergym.utils.gcloud as gcloud
 
 
-from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
+from stable_baselines3.common.noise import NormalActionNoise
 from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC
-from stable_baselines3.common.callbacks import EvalCallback, BaseCallback, CallbackList
+from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.vec_env import DummyVecEnv
+from stable_baselines3.common.logger import configure
 
 #--------------------------------BATTERY ARGUMENTS DEFINITION---------------------------------#
 parser = argparse.ArgumentParser()
@@ -275,6 +275,10 @@ if args.evaluation:
 if args.tensorboard:
     log_callback = LoggerCallback(sinergym_logger=bool(args.logger))
     callbacks.append(log_callback)
+    # lets change default dir for TensorboardFormatLogger only
+    tb_path = args.tensorboard + '/' + name
+    new_logger = configure(tb_path, ["tensorboard"])
+    model.set_logger(new_logger)
 
 callback = CallbackList(callbacks)
 
