@@ -231,7 +231,7 @@ class LoggerEvalCallback(EvalCallback):
                 deterministic=self.deterministic,
                 return_episode_rewards=True,
                 warn=self.warn,
-                callback=self._log_success_callback,
+                callback=None,
             )
 
             if self.log_path is not None:
