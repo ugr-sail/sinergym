@@ -133,177 +133,213 @@ parser.add_argument('--sigma', '-sig', type=float, default=0.1)
 
 args = parser.parse_args()
 #---------------------------------------------------------------------------------------------#
-
-# Environment construction (with reward specified)
-if args.reward == 'linear':
-    env = gym.make(args.environment, reward=LinearReward())
-elif args.reward == 'exponential':
-    env = gym.make(args.environment, reward=ExpReward())
-else:
-    raise RuntimeError('Reward function specified is not registered.')
-
-# env wrappers (optionals)
-if args.normalization:
-    env = NormalizeObservation(env)
-if args.logger:
-    env = LoggerWrapper(env)
-if args.multiobs:
-    env = MultiObsWrapper(env)
-
-
-######################## TRAINING ########################
-
+# register run name
 experiment_date = datetime.today().strftime('%Y-%m-%d %H:%M')
-
-# Defining model(algorithm)
-model = None
 name = args.algorithm + '-' + args.environment + \
     '-episodes_' + str(args.episodes)
 if args.seed:
     name += '-seed_' + str(args.seed)
 name += '(' + experiment_date + ')'
-#--------------------------DQN---------------------------#
-if args.algorithm == 'DQN':
-    model = DQN('MlpPolicy', env, verbose=1,
-                learning_rate=args.learning_rate,
-                buffer_size=args.buffer_size,
-                learning_starts=50000,
-                batch_size=32,
-                tau=args.tau,
-                gamma=args.gamma,
-                train_freq=4,
-                gradient_steps=1,
-                target_update_interval=10000,
-                exploration_fraction=.1,
-                exploration_initial_eps=1.0,
-                exploration_final_eps=.05,
-                max_grad_norm=args.max_grad_norm,
-                seed=args.seed,
-                tensorboard_log=args.tensorboard)
-#--------------------------------------------------------#
+# MLflow track
+with mlflow.start_run(run_name=name):
+    # Log experiment params
+    mlflow.log_param('sinergym-version', sinergym.__version__)
 
-#--------------------------DDPG--------------------------#
-# The noise objects for DDPG
-elif args.algorithm == 'DDPG':
-    if args.sigma:
-        n_actions = env.action_space.shape[-1]
-        action_noise = NormalActionNoise(mean=np.zeros(
-            n_actions), sigma=0.1 * np.ones(n_actions))
+    mlflow.log_param('env', args.environment)
+    mlflow.log_param('episodes', args.episodes)
+    mlflow.log_param('algorithm', args.algorithm)
+    mlflow.log_param('reward', args.reward)
+    mlflow.log_param('normalization', bool(args.normalization))
+    mlflow.log_param('multi-observations', bool(args.multiobs))
+    mlflow.log_param('logger', bool(args.logger))
+    mlflow.log_param('tensorboard', args.tensorboard)
+    mlflow.log_param('evaluation', bool(args.evaluation))
+    mlflow.log_param('evaluation-frequency', args.eval_freq)
+    mlflow.log_param('evaluation-length', args.eval_length)
+    mlflow.log_param('log-interval', args.log_interval)
+    mlflow.log_param('seed', args.seed)
+    mlflow.log_param('remote-store', bool(args.seed))
 
-    model = DDPG("MlpPolicy",
-                 env,
-                 action_noise=action_noise,
-                 verbose=1,
-                 seed=args.seed,
-                 tensorboard_log=args.tensorboard)
-#--------------------------------------------------------#
+    mlflow.log_param('learning_rate', args.learning_rate)
+    mlflow.log_param('n_steps', args.n_steps)
+    mlflow.log_param('gamma', args.gamma)
+    mlflow.log_param('gae_lambda', args.gae_lambda)
+    mlflow.log_param('ent_coef', args.ent_coef)
+    mlflow.log_param('buffer_size', args.buffer_size)
+    mlflow.log_param('vf_coef', args.vf_coef)
+    mlflow.log_param('max_grad_norm', args.max_grad_norm)
+    mlflow.log_param('rms_prop_eps', args.rms_prop_eps)
+    mlflow.log_param('learning_starts', args.learning_starts)
+    mlflow.log_param('tau', args.tau)
+    mlflow.log_param('sigma', args.sigma)
 
-#--------------------------A2C---------------------------#
-elif args.algorithm == 'A2C':
-    model = A2C('MlpPolicy', env, verbose=1,
-                learning_rate=args.learning_rate,
-                n_steps=args.n_steps,
-                gamma=args.gamma,
-                gae_lambda=args.gae_lambda,
-                ent_coef=args.ent_coef,
-                vf_coef=args.vf_coef,
-                max_grad_norm=args.max_grad_norm,
-                rms_prop_eps=args.rms_prop_eps,
-                seed=args.seed,
-                tensorboard_log=args.tensorboard)
-#--------------------------------------------------------#
+    # Environment construction (with reward specified)
+    if args.reward == 'linear':
+        env = gym.make(args.environment, reward=LinearReward())
+    elif args.reward == 'exponential':
+        env = gym.make(args.environment, reward=ExpReward())
+    else:
+        raise RuntimeError('Reward function specified is not registered.')
 
-#--------------------------PPO---------------------------#
-elif args.algorithm == 'PPO':
-    model = PPO('MlpPolicy', env, verbose=1,
-                learning_rate=args.learning_rate,
-                n_steps=args.n_steps,
-                batch_size=64,
-                n_epochs=10,
-                gamma=args.gamma,
-                gae_lambda=args.gae_lambda,
-                clip_range=.2,
-                ent_coef=0,
-                vf_coef=.5,
-                max_grad_norm=args.max_grad_norm,
-                seed=args.seed,
-                tensorboard_log=args.tensorboard)
-#--------------------------------------------------------#
+    # env wrappers (optionals)
+    if args.normalization:
+        env = NormalizeObservation(env)
+    if args.logger:
+        env = LoggerWrapper(env)
+    if args.multiobs:
+        env = MultiObsWrapper(env)
 
-#--------------------------SAC---------------------------#
-elif args.algorithm == 'SAC':
-    model = SAC(policy='MlpPolicy',
-                env=env,
-                seed=args.seed,
-                tensorboard_log=args.tensorboard)
-#--------------------------------------------------------#
+    ######################## TRAINING ########################
 
-#-------------------------ERROR?-------------------------#
-else:
-    raise RuntimeError('Algorithm specified is not registered.')
-#--------------------------------------------------------#
+    # Defining model(algorithm)
+    model = None
+    #--------------------------DQN---------------------------#
+    if args.algorithm == 'DQN':
+        model = DQN('MlpPolicy', env, verbose=1,
+                    learning_rate=args.learning_rate,
+                    buffer_size=args.buffer_size,
+                    learning_starts=50000,
+                    batch_size=32,
+                    tau=args.tau,
+                    gamma=args.gamma,
+                    train_freq=4,
+                    gradient_steps=1,
+                    target_update_interval=10000,
+                    exploration_fraction=.1,
+                    exploration_initial_eps=1.0,
+                    exploration_final_eps=.05,
+                    max_grad_norm=args.max_grad_norm,
+                    seed=args.seed,
+                    tensorboard_log=args.tensorboard)
+    #--------------------------------------------------------#
 
-# Calculating n_timesteps_episode for training
-n_timesteps_episode = env.simulator._eplus_one_epi_len / \
-    env.simulator._eplus_run_stepsize
-timesteps = args.episodes * n_timesteps_episode
+    #--------------------------DDPG--------------------------#
+    # The noise objects for DDPG
+    elif args.algorithm == 'DDPG':
+        if args.sigma:
+            n_actions = env.action_space.shape[-1]
+            action_noise = NormalActionNoise(mean=np.zeros(
+                n_actions), sigma=0.1 * np.ones(n_actions))
 
-# For callbacks processing
-env_vec = DummyVecEnv([lambda: env])
+        model = DDPG("MlpPolicy",
+                     env,
+                     action_noise=action_noise,
+                     verbose=1,
+                     seed=args.seed,
+                     tensorboard_log=args.tensorboard)
+    #--------------------------------------------------------#
 
-# Using Callbacks for training
-callbacks = []
+    #--------------------------A2C---------------------------#
+    elif args.algorithm == 'A2C':
+        model = A2C('MlpPolicy', env, verbose=1,
+                    learning_rate=args.learning_rate,
+                    n_steps=args.n_steps,
+                    gamma=args.gamma,
+                    gae_lambda=args.gae_lambda,
+                    ent_coef=args.ent_coef,
+                    vf_coef=args.vf_coef,
+                    max_grad_norm=args.max_grad_norm,
+                    rms_prop_eps=args.rms_prop_eps,
+                    seed=args.seed,
+                    tensorboard_log=args.tensorboard)
+    #--------------------------------------------------------#
 
-if args.evaluation:
-    eval_callback = LoggerEvalCallback(
-        env_vec,
-        best_model_save_path='best_model/' + name + '/',
-        log_path='best_model/' + name + '/',
-        eval_freq=n_timesteps_episode *
-        args.eval_freq,
-        deterministic=True,
-        render=False,
-        n_eval_episodes=args.eval_length)
-    callbacks.append(eval_callback)
+    #--------------------------PPO---------------------------#
+    elif args.algorithm == 'PPO':
+        model = PPO('MlpPolicy', env, verbose=1,
+                    learning_rate=args.learning_rate,
+                    n_steps=args.n_steps,
+                    batch_size=64,
+                    n_epochs=10,
+                    gamma=args.gamma,
+                    gae_lambda=args.gae_lambda,
+                    clip_range=.2,
+                    ent_coef=0,
+                    vf_coef=.5,
+                    max_grad_norm=args.max_grad_norm,
+                    seed=args.seed,
+                    tensorboard_log=args.tensorboard)
+    #--------------------------------------------------------#
 
-if args.tensorboard:
-    log_callback = LoggerCallback(sinergym_logger=bool(args.logger))
-    callbacks.append(log_callback)
-    # lets change default dir for TensorboardFormatLogger only
-    tb_path = args.tensorboard + '/' + name
-    new_logger = configure(tb_path, ["tensorboard"])
-    model.set_logger(new_logger)
+    #--------------------------SAC---------------------------#
+    elif args.algorithm == 'SAC':
+        model = SAC(policy='MlpPolicy',
+                    env=env,
+                    seed=args.seed,
+                    tensorboard_log=args.tensorboard)
+    #--------------------------------------------------------#
 
-callback = CallbackList(callbacks)
+    #-------------------------ERROR?-------------------------#
+    else:
+        raise RuntimeError('Algorithm specified is not registered.')
+    #--------------------------------------------------------#
 
-# Training
-model.learn(
-    total_timesteps=timesteps,
-    callback=callback,
-    log_interval=args.log_interval)
-model.save(env.simulator._env_working_dir_parent + '/' + name)
+    # Calculating n_timesteps_episode for training
+    n_timesteps_episode = env.simulator._eplus_one_epi_len / \
+        env.simulator._eplus_run_stepsize
+    timesteps = args.episodes * n_timesteps_episode
 
-if args.remote_store:
-    # Initiate Google Cloud client
-    client = gcloud.init_storage_client()
-    # Code for send output and tensorboard to common resource here.
-    gcloud.upload_to_bucket(
-        client,
-        src_path=env.simulator._env_working_dir_parent,
-        dest_bucket_name='experiments-storage',
-        dest_path=name)
-    if args.tensorboard:
-        gcloud.upload_to_bucket(
-            client,
-            src_path=args.tensorboard + '/' + name + '/',
-            dest_bucket_name='experiments-storage',
-            dest_path=args.tensorboard + '/' + name + '/')
+    # For callbacks processing
+    env_vec = DummyVecEnv([lambda: env])
+
+    # Using Callbacks for training
+    callbacks = []
+
     if args.evaluation:
+        eval_callback = LoggerEvalCallback(
+            env_vec,
+            best_model_save_path='best_model/' + name + '/',
+            log_path='best_model/' + name + '/',
+            eval_freq=n_timesteps_episode *
+            args.eval_freq,
+            deterministic=True,
+            render=False,
+            n_eval_episodes=args.eval_length)
+        callbacks.append(eval_callback)
+
+    if args.tensorboard:
+        log_callback = LoggerCallback(sinergym_logger=bool(args.logger))
+        callbacks.append(log_callback)
+        # lets change default dir for TensorboardFormatLogger only
+        tb_path = args.tensorboard + '/' + name
+        new_logger = configure(tb_path, ["tensorboard"])
+        model.set_logger(new_logger)
+
+    callback = CallbackList(callbacks)
+
+    # Training
+    model.learn(
+        total_timesteps=timesteps,
+        callback=callback,
+        log_interval=args.log_interval)
+    model.save(env.simulator._env_working_dir_parent + '/' + name)
+
+    # Store all results if remote_store flag is True
+    if args.remote_store:
+        # Initiate Google Cloud client
+        client = gcloud.init_storage_client()
+        # Code for send output and tensorboard to common resource here.
         gcloud.upload_to_bucket(
             client,
-            src_path='best_model/' + name + '/',
+            src_path=env.simulator._env_working_dir_parent,
             dest_bucket_name='experiments-storage',
-            dest_path='best_model/' + name + '/')
+            dest_path=name)
+        if args.tensorboard:
+            gcloud.upload_to_bucket(
+                client,
+                src_path=args.tensorboard + '/' + name + '/',
+                dest_bucket_name='experiments-storage',
+                dest_path=os.path.abspath(args.tensorboard).split('/')[-1] + '/' + name + '/')
+        if args.evaluation:
+            gcloud.upload_to_bucket(
+                client,
+                src_path='best_model/' + name + '/',
+                dest_bucket_name='experiments-storage',
+                dest_path='best_model/' + name + '/')
 
-    # We can programming a command to shut down remote machine or stop it too
-    os.system('sudo shutdown -h now')
+    # End mlflow run
+    mlflow.end_run()
+
+    # If it is a Google Cloud VM, shutdown remote machine when ends
+    if args.remote_store:
+        os.system('shutdown -h now')
