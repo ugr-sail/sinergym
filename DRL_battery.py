@@ -257,14 +257,8 @@ callbacks = []
 if args.evaluation:
     eval_callback = LoggerEvalCallback(
         env_vec,
-        best_model_save_path=env.simulator._env_working_dir_parent +
-        '/best_model/' +
-        name +
-        '/',
-        log_path=env.simulator._env_working_dir_parent +
-        '/best_model/' +
-        name +
-        '/',
+        best_model_save_path='best_model/' + name + '/',
+        log_path='best_model/' + name + '/',
         eval_freq=n_timesteps_episode *
         args.eval_freq,
         deterministic=True,
@@ -287,8 +281,7 @@ model.learn(
     total_timesteps=timesteps,
     callback=callback,
     log_interval=args.log_interval)
-if not args.evaluation:
-    model.save(env.simulator._env_working_dir_parent + '/' + name)
+model.save(env.simulator._env_working_dir_parent + '/' + name)
 
 if args.remote_store:
     # Initiate Google Cloud client
@@ -302,9 +295,15 @@ if args.remote_store:
     if args.tensorboard:
         gcloud.upload_to_bucket(
             client,
-            src_path=args.tensorboard,
+            src_path=args.tensorboard + '/' + name + '/',
             dest_bucket_name='experiments-storage',
-            dest_path=name + '/tensorboard_log')
+            dest_path=args.tensorboard + '/' + name + '/')
+    if args.evaluation:
+        gcloud.upload_to_bucket(
+            client,
+            src_path='best_model/' + name + '/',
+            dest_bucket_name='experiments-storage',
+            dest_path='best_model/' + name + '/')
 
     # We can programming a command to shut down remote machine or stop it too
     os.system('sudo shutdown -h now')
