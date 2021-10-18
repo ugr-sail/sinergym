@@ -56,6 +56,7 @@ RUN apt-get install wget \
     && cp -R 1/ $BCVTB_PATH && rm -R 1/
 
 # Working directory and copy files
+RUN pip3 install --upgrade pip
 WORKDIR /code
 COPY requirements.txt .
 COPY setup.py .
