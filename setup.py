@@ -1,10 +1,14 @@
+import os
 from setuptools import setup
+
+with open(os.path.join("sinergym", "version.txt"), "r") as file_handler:
+    __version__ = file_handler.read().strip()
 
 with open('requirements.txt') as f:
     reqs = f.read().splitlines()
 
 setup(name='sinergym',
-      version='1.3.0',
+      version=__version__,
       install_requires=reqs,
       include_package_data=True,
       extras_require={
