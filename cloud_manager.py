@@ -108,6 +108,10 @@ while len(instances) < n_experiments:
 print(instances)
 # Number of machines should be the same than commands
 
+# Processing commands and adding group id to the petition
+for i in range(len(args.commands)):
+    args.commands[i] += ' --group_name ' + args.group_name
+
 # Execute a comand in every container inner VM
 print('Sending commands to every container VM... (waiting for container inner VM is ready too)')
 for i, instance in enumerate(instances):
@@ -128,10 +132,3 @@ for i, instance in enumerate(instances):
             container_id))
 
 print('All VM\'s are working correctly, see Google Cloud Platform Console.')
-# Close VM when finished with google cloud alerts?
-
-# python  cloud_manager.py --project_id sinergym
-# --experiments_commands
-# 'python 3 DRL_battery.py --environment Eplus-5Zone-hot-discrete-v1 --episodes 3 --algorithm DQN --logger log_interval 1 --seed 54'
-# 'python3 DRL_battery.py --environment Eplus-5Zone-hot-continuous-stochastic-v1 --episodes 3 --algorithm PPO --logger --log_interval 1 --tensorboard --normalization --seed 54'
-# --template_name sinergym_template --group_name sinergym-vm
