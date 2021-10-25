@@ -342,11 +342,11 @@ with mlflow.start_run(run_name=name):
                 src_path='best_model/' + name + '/',
                 dest_bucket_name='experiments-storage',
                 dest_path='best_model/' + name + '/')
-        gcloud.upload_to_bucket(
-            client,
-            src_path='mlruns/',
-            dest_bucket_name='experiments-storage',
-            dest_path='mlruns/')
+        # gcloud.upload_to_bucket(
+        #     client,
+        #     src_path='mlruns/',
+        #     dest_bucket_name='experiments-storage',
+        #     dest_path='mlruns/')
 
     # End mlflow run
     mlflow.end_run()
