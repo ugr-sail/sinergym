@@ -54,7 +54,12 @@ gsutil cp ./start_mlflow_tracking.sh gs://${BUCKET_NAME}/scripts/start_mlflow_tr
 echo "Deleting temporal local script [start_mlflow_tracking.sh]"
 rm ./start_mlflow_tracking.sh
 
-# Step 7 - Compute Instance
+#Step 7 - creating static external ip for mlflow server
+echo "Creating static external ip for mlflow-tracking-server [mlflow-ip]"
+gcloud compute addresses create mlflow-ip \
+    --region europe-west1
+
+# Step 8 - Compute Instance
 echo "Deploying remote server [mlflow-tracking-server]..."
 gcloud compute --project=$PROJECT_ID instances create mlflow-tracking-server \
     --zone=$ZONE \
@@ -74,7 +79,8 @@ gcloud compute --project=$PROJECT_ID instances create mlflow-tracking-server \
     --no-shielded-secure-boot \
     --shielded-vtpm \
     --shielded-integrity-monitoring \
-    --reservation-affinity=any
+    --reservation-affinity=any \
+    --address=$(gcloud compute addresses describe mlflow-ip --format='get(address)')
 
 # Step 8 - Firewall
 echo "Creating firewall rules [allow-mlflow-tracking]..."
