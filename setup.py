@@ -16,7 +16,8 @@ setup(name='sinergym',
               'matplotlib',  # visualization
               'stable-baselines3',  # DRL with pytorch
               'mlflow',  # tracking ML experiments
-              'tensorboard',  # Training logger
+              'tensorflow',
+              'tensorboard_plugin_profile',  # Training logger
               'pytest',  # Unit test repository
               'sphinx',  # documentation
               'sphinx-rtd-theme'  # documentation theme
@@ -27,7 +28,8 @@ setup(name='sinergym',
           'DRL': [
               'stable-baselines3',
               'mlflow',
-              'tensorboard'
+              'tensorflow',
+              'tensorboard_plugin_profile'
           ],
           'doc': [
               'sphinx',
@@ -35,7 +37,6 @@ setup(name='sinergym',
           ],
           'visualization': [
               'matplotlib',
-              'tensorboard'  # Log stable-baselines3 trainings
           ],
           'gcloud': [
               'google-api-python-client',
