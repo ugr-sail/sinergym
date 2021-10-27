@@ -1,5 +1,5 @@
 import pytest
-from sinergym.simulators.eplus_old import EnergyPlus
+from sinergym.simulators.eplus import EnergyPlus
 import xml.etree.ElementTree as ET
 import subprocess
 import threading
