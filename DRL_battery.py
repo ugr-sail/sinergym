@@ -291,6 +291,7 @@ with mlflow.start_run(run_name=name):
     # Using Callbacks for training
     callbacks = []
 
+    # Set up Evaluation and saving best model
     if args.evaluation:
         eval_callback = LoggerEvalCallback(
             env_vec,
@@ -303,6 +304,7 @@ with mlflow.start_run(run_name=name):
             n_eval_episodes=args.eval_length)
         callbacks.append(eval_callback)
 
+    # Set up tensorboard logger
     if args.tensorboard:
         log_callback = LoggerCallback(sinergym_logger=bool(args.logger))
         callbacks.append(log_callback)
