@@ -80,7 +80,7 @@ gcloud compute --project=$PROJECT_ID instances create mlflow-tracking-server \
     --shielded-vtpm \
     --shielded-integrity-monitoring \
     --reservation-affinity=any \
-    --address=$(gcloud compute addresses describe mlflow-ip --format='get(address)')
+    --address $(gcloud compute addresses describe mlflow-ip --format='get(address)')
 
 # Step 8 - Firewall
 echo "Creating firewall rules [allow-mlflow-tracking]..."
