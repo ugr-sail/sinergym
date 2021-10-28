@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sinergym Google Cloud API &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API reference" href="API-reference.html" />
+    <link rel="prev" title="Deep Reinforcement Learning Integration" href="deep-reinforcement-learning.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+            <a href="../index.html" class="icon icon-home"> sinergym
+            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sinergym Google Cloud API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#executing-api">Executing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#receiving-experiments-in-remote-containers">Receiving experiments in remote containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#google-cloud-alerts">Google Cloud Alerts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Sinergym Google Cloud API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/gcloudAPI.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sinergym-google-cloud-api">
+<h1>Sinergym Google Cloud API<a class="headerlink" href="#sinergym-google-cloud-api" title="Permalink to this headline"></a></h1>
+<p>In this project, an API based on RESTfull API for gcloud has been designed and developed in order to use Google Cloud infrastructure directly writing experiments definition ir our personal computer.</p>
+<a class="reference internal image-reference" href="../_images/Sinergym_cloud_API.png"><img alt="Sinergym cloud API diagram" class="align-center" src="../_images/Sinergym_cloud_API.png" style="width: 1000px;" /></a>
+<p>Let’s see a detailed explanation of the diagram above.</p>
+<section id="executing-api">
+<h2>Executing API<a class="headerlink" href="#executing-api" title="Permalink to this headline"></a></h2>
+<p>Our objective is defining a set of experiments in order to execute them in a Google Cloud remote container each one. For this, <em>cloud_manager.py</em> has been created in repository root. This file must be used in our local computer:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">import</span> <span class="nn">sinergym.utils.gcloud</span> <span class="k">as</span> <span class="nn">gcloud</span>
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">storage</span>
+<span class="kn">import</span> <span class="nn">google.api_core.exceptions</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Process for run experiments in Google Cloud&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--project_id&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-id&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;project&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Your Google Cloud project ID.&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--zone&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-zo&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="s1">&#39;europe-west1-b&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;zone&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;service Engine zone to deploy to.&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--template_name&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-tem&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="s1">&#39;sinergym-template&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;template_name&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Name of template previously created in gcloud account to generate VM copies.&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--group_name&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-group&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="s1">&#39;sinergym-group&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;group_name&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Name of instance group(MIG) will be created during experimentation.&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--experiment_commands&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-cmds&#39;</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;python3 ./algorithm/DQN.py -env Eplus-demo-v1 -ep 1 -&#39;</span><span class="p">],</span>
+    <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;commands&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;list of commands for DRL_battery.py you want to execute remotely.&#39;</span><span class="p">)</span>
+
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Init Google cloud service API...&#39;</span><span class="p">)</span>
+<span class="n">service</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">init_gcloud_service</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Init Google Cloud Storage Client...&#39;</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">init_storage_client</span><span class="p">()</span>
+
+<span class="c1"># Create instance group</span>
+<span class="n">n_experiments</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">commands</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Creating instance group(MIG) for experiments (</span><span class="si">{}</span><span class="s1"> instances)...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">n_experiments</span><span class="p">))</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">create_instance_group</span><span class="p">(</span>
+    <span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span>
+    <span class="n">project</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">zone</span><span class="p">,</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">n_experiments</span><span class="p">,</span>
+    <span class="n">template_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span>
+    <span class="n">group_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">group_name</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+<span class="c1"># Wait for the machines to be fully created.</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> status is </span><span class="si">{1}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">response</span><span class="p">[</span><span class="s1">&#39;operationType&#39;</span><span class="p">],</span>
+        <span class="n">response</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]))</span>
+<span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;DONE&#39;</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">wait_for_operation</span><span class="p">(</span>
+        <span class="n">service</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">zone</span><span class="p">,</span>
+        <span class="n">operation</span><span class="o">=</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+        <span class="n">operation_type</span><span class="o">=</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;operationType&#39;</span><span class="p">])</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MIG created.&#39;</span><span class="p">)</span>
+
+<span class="c1"># If storage exists it will be used, else it will be created previously by API</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Looking for experiments storage&#39;</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket_name</span><span class="o">=</span><span class="s1">&#39;experiments-storage&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s1">&#39;Bucket </span><span class="si">{}</span><span class="s1"> found, this storage will be used when experiments finish.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+<span class="k">except</span><span class="p">(</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Any bucket found into your Google account, generating new one...&#39;</span><span class="p">)</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span>
+        <span class="n">client</span><span class="p">,</span>
+        <span class="n">bucket_name</span><span class="o">=</span><span class="s1">&#39;experiments-storage&#39;</span><span class="p">,</span>
+        <span class="n">location</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
+
+<span class="c1"># List VM names</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Looking for instance names... (waiting for they are visible too)&#39;</span><span class="p">)</span>
+<span class="c1"># Sometimes, although instance group insert status is DONE, isn&#39;t visible</span>
+<span class="c1"># for API yet. Hence, we have to wait for with a loop...</span>
+<span class="n">instances</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_experiments</span><span class="p">:</span>
+    <span class="n">instances</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">list_instances</span><span class="p">(</span>
+        <span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span>
+        <span class="n">project</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+        <span class="n">zone</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">zone</span><span class="p">,</span>
+        <span class="n">base_instances_names</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">group_name</span><span class="p">)</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span>
+<span class="c1"># Number of machines should be the same than commands</span>
+
+<span class="c1"># Processing commands and adding group id to the petition</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">commands</span><span class="p">)):</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; --group_name &#39;</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">group_name</span>
+
+<span class="c1"># Execute a comand in every container inner VM</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sending commands to every container VM... (waiting for container inner VM is ready too)&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">instance</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">instances</span><span class="p">):</span>
+    <span class="n">container_id</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># Obtain container id inner VM</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">container_id</span><span class="p">:</span>
+        <span class="n">container_id</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">get_container_id</span><span class="p">(</span><span class="n">instance_name</span><span class="o">=</span><span class="n">instance</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="c1"># Execute command in container</span>
+    <span class="n">gcloud</span><span class="o">.</span><span class="n">execute_remote_command_instance</span><span class="p">(</span>
+        <span class="n">container_id</span><span class="o">=</span><span class="n">container_id</span><span class="p">,</span>
+        <span class="n">instance_name</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
+        <span class="n">experiment_command</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s1">&#39;command </span><span class="si">{}</span><span class="s1"> has been sent to instance </span><span class="si">{}</span><span class="s1">(container: </span><span class="si">{}</span><span class="s1">).&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="n">instance</span><span class="p">,</span>
+            <span class="n">container_id</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;All VM</span><span class="se">\&#39;</span><span class="s1">s are working correctly, see Google Cloud Platform Console.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This script uses the following parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--project_id</span></code> or <code class="docutils literal notranslate"><span class="pre">-id</span></code>: Your Google Cloud project id must be specified.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--zone</span></code> or <code class="docutils literal notranslate"><span class="pre">-zo</span></code>: Zone for your project (default is <em>europe-west1-b</em>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--template_name</span></code> or <code class="docutils literal notranslate"><span class="pre">-tem</span></code>: Template used to generate VM’s clones, defined in your project previously (see <a class="reference internal" href="installation.html#create-your-vm-or-mig"><span class="std std-ref">4. Create your VM or MIG</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--group_name</span></code> or <code class="docutils literal notranslate"><span class="pre">-group</span></code>: Instance group name you want. All instances inner MIG will have this name concatenated with a random str.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--experiment_commands</span></code> or <code class="docutils literal notranslate"><span class="pre">-cmds</span></code>: Experiment definitions list using python command format (for information about its format, see <a class="reference internal" href="#receiving-experiments-in-remote-containers"><span class="std std-ref">Receiving experiments in remote containers</span></a>).</p></li>
+</ul>
+<p>Here is an example bash code to execute the script:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ python cloud_manager.py <span class="se">\</span>
+    --project_id sinergym <span class="se">\</span>
+    --zone europe-west1-b <span class="se">\</span>
+    --template_name sinergym-template <span class="se">\</span>
+    --group_name sinergym-prueba2 <span class="se">\</span>
+    --experiment_commands <span class="se">\</span>
+    <span class="s1">&#39;python3 DRL_battery.py --environment Eplus-5Zone-hot-discrete-v1 --episodes 2 --algorithm DQN --logger --log_interval 1 --seed 58 --evaluation --eval_freq 1 --eval_length 1 --tensorboard ./tensorboard_log --remote_store&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;python3 DRL_battery.py --environment Eplus-5Zone-hot-continuous-v1 --episodes 3 --algorithm PPO --logger --log_interval 300 --seed 52 --evaluation --eval_freq 1 --eval_length 1 --tensorboard ./tensorboard_log --remote_store&#39;</span>
+</pre></div>
+</div>
+<p>This example generates only 2 machines inner an instance group in your Google Cloud Platform because of you have defined two experiments. If you defined more experiments, more machines will be created by API.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Because of its real-time process. Some containers, instance list action and others could take time. In that case, the API wait a process finish to execute the next (when it is necessary).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This script uses gcloud API in background. Methods developed and used to this issues can be seen in <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/gcloud.py">sinergym/sinergym/utils/gcloud.py</a> or in <a class="reference internal" href="API-reference.html#api-reference"><span class="std std-ref">API reference</span></a>.</p>
+</div>
+</section>
+<section id="receiving-experiments-in-remote-containers">
+<h2>Receiving experiments in remote containers<a class="headerlink" href="#receiving-experiments-in-remote-containers" title="Permalink to this headline"></a></h2>
+<p>This script, called <em>DRL_battery.py</em>, will be allocated in every remote container and it is used to understand experiments command exposed above:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">mlflow</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">sinergym.utils.callbacks</span> <span class="kn">import</span> <span class="n">LoggerCallback</span><span class="p">,</span> <span class="n">LoggerEvalCallback</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">MultiObsWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span><span class="p">,</span> <span class="n">LoggerWrapper</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">sinergym.utils.gcloud</span> <span class="k">as</span> <span class="nn">gcloud</span>
+
+
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.noise</span> <span class="kn">import</span> <span class="n">NormalActionNoise</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="n">A2C</span><span class="p">,</span> <span class="n">DDPG</span><span class="p">,</span> <span class="n">DQN</span><span class="p">,</span> <span class="n">PPO</span><span class="p">,</span> <span class="n">SAC</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.callbacks</span> <span class="kn">import</span> <span class="n">CallbackList</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.vec_env</span> <span class="kn">import</span> <span class="n">DummyVecEnv</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.logger</span> <span class="kn">import</span> <span class="n">configure</span>
+
+<span class="c1">#--------------------------------BATTERY ARGUMENTS DEFINITION---------------------------------#</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="c1"># commons arguments for battery</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--environment&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-env&#39;</span><span class="p">,</span>
+    <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;environment&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Environment name of simulation (see sinergym/__init__.py).&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--episodes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-ep&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;episodes&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Number of episodes for training.&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--algorithm&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-alg&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="s1">&#39;PPO&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;algorithm&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Algorithm used to train (possible values: PPO, A2C, DQN, DDPG, SAC).&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--reward&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-rw&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;reward&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Reward function used by model, by default is linear (possible values: linear, exponential).&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--normalization&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-norm&#39;</span><span class="p">,</span>
+    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;normalization&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Apply normalization to observations if this flag is specified.&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--multiobs&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-mobs&#39;</span><span class="p">,</span>
+    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;multiobs&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Apply Multi observations if this flag is specified.&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--logger&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-log&#39;</span><span class="p">,</span>
+    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;logger&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Apply Sinergym CSVLogger class if this flag is specified.&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--tensorboard&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-tens&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Tensorboard path for logging (if not specified, tensorboard log will not be stored).&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--evaluation&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-eval&#39;</span><span class="p">,</span>
+    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;evaluation&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Evaluation is processed during training with this flag (save best model online).&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--eval_freq&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-evalf&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;eval_freq&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Episodes executed before applying evaluation (if evaluation flag is not specified, this value is useless).&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--eval_length&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-evall&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;eval_length&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Episodes executed during evaluation (if evaluation flag is not specified, this value is useless).&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--log_interval&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-inter&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;log_interval&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;model training log_interval parameter. See documentation since this value is different in every algorithm.&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--seed&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-sd&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;seed&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Seed used to algorithm training.&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--remote_store&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-sto&#39;</span><span class="p">,</span>
+    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;remote_store&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Determine if sinergym output will be sent to a common resource&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--group_name&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-group&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;group_name&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;This field indicate instance group name&#39;</span><span class="p">)</span>
+
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--learning_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;-lr&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">.0007</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--gamma&#39;</span><span class="p">,</span> <span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">.99</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--n_steps&#39;</span><span class="p">,</span> <span class="s1">&#39;-n&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--gae_lambda&#39;</span><span class="p">,</span> <span class="s1">&#39;-gl&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--ent_coef&#39;</span><span class="p">,</span> <span class="s1">&#39;-ec&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--vf_coef&#39;</span><span class="p">,</span> <span class="s1">&#39;-v&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--max_grad_norm&#39;</span><span class="p">,</span> <span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--rms_prop_eps&#39;</span><span class="p">,</span> <span class="s1">&#39;-rms&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--buffer_size&#39;</span><span class="p">,</span> <span class="s1">&#39;-bfs&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--learning_starts&#39;</span><span class="p">,</span> <span class="s1">&#39;-ls&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--tau&#39;</span><span class="p">,</span> <span class="s1">&#39;-tu&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span>
+<span class="c1"># for DDPG noise only</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;-sig&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<span class="c1">#---------------------------------------------------------------------------------------------#</span>
+<span class="c1"># register run name</span>
+<span class="n">experiment_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M&#39;</span><span class="p">)</span>
+<span class="n">name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">environment</span> <span class="o">+</span> \
+    <span class="s1">&#39;-episodes_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">episodes</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">:</span>
+    <span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;-seed_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+<span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="n">experiment_date</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+<span class="c1"># MLflow track</span>
+<span class="k">with</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">start_run</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">name</span><span class="p">):</span>
+    <span class="c1"># Log experiment params</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;sinergym-version&#39;</span><span class="p">,</span> <span class="n">sinergym</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;env&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">environment</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;episodes&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">episodes</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;algorithm&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;reward&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">reward</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;normalization&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">normalization</span><span class="p">))</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;multi-observations&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">multiobs</span><span class="p">))</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;logger&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">logger</span><span class="p">))</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;evaluation&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">evaluation</span><span class="p">))</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;evaluation-frequency&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">eval_freq</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;evaluation-length&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">eval_length</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;log-interval&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">log_interval</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;seed&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;remote-store&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">))</span>
+
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;n_steps&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">n_steps</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">gamma</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;gae_lambda&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">gae_lambda</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;ent_coef&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">ent_coef</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;buffer_size&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">buffer_size</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;vf_coef&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">vf_coef</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;max_grad_norm&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">max_grad_norm</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;rms_prop_eps&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">rms_prop_eps</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;learning_starts&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">learning_starts</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;tau&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">tau</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">sigma</span><span class="p">)</span>
+
+    <span class="c1"># Environment construction (with reward specified)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">reward</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">environment</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">LinearReward</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">reward</span> <span class="o">==</span> <span class="s1">&#39;exponential&#39;</span><span class="p">:</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">environment</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">ExpReward</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Reward function specified is not registered.&#39;</span><span class="p">)</span>
+
+    <span class="c1"># env wrappers (optionals)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">normalization</span><span class="p">:</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">logger</span><span class="p">:</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">multiobs</span><span class="p">:</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">MultiObsWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+    <span class="c1">######################## TRAINING ########################</span>
+
+    <span class="c1"># Defining model(algorithm)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#--------------------------DQN---------------------------#</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;DQN&#39;</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="s1">&#39;MlpPolicy&#39;</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">learning_rate</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
+                    <span class="n">buffer_size</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">buffer_size</span><span class="p">,</span>
+                    <span class="n">learning_starts</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>
+                    <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+                    <span class="n">tau</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span>
+                    <span class="n">gamma</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
+                    <span class="n">train_freq</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                    <span class="n">gradient_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">target_update_interval</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                    <span class="n">exploration_fraction</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span>
+                    <span class="n">exploration_initial_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                    <span class="n">exploration_final_eps</span><span class="o">=</span><span class="mf">.05</span><span class="p">,</span>
+                    <span class="n">max_grad_norm</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_grad_norm</span><span class="p">,</span>
+                    <span class="n">seed</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
+                    <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
+    <span class="c1">#--------------------------------------------------------#</span>
+
+    <span class="c1">#--------------------------DDPG--------------------------#</span>
+    <span class="c1"># The noise objects for DDPG</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;DDPG&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">sigma</span><span class="p">:</span>
+            <span class="n">n_actions</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">action_noise</span> <span class="o">=</span> <span class="n">NormalActionNoise</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="n">n_actions</span><span class="p">),</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_actions</span><span class="p">))</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="n">DDPG</span><span class="p">(</span><span class="s2">&quot;MlpPolicy&quot;</span><span class="p">,</span>
+                     <span class="n">env</span><span class="p">,</span>
+                     <span class="n">action_noise</span><span class="o">=</span><span class="n">action_noise</span><span class="p">,</span>
+                     <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                     <span class="n">seed</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
+                     <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
+    <span class="c1">#--------------------------------------------------------#</span>
+
+    <span class="c1">#--------------------------A2C---------------------------#</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;A2C&#39;</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">A2C</span><span class="p">(</span><span class="s1">&#39;MlpPolicy&#39;</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">learning_rate</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
+                    <span class="n">n_steps</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">n_steps</span><span class="p">,</span>
+                    <span class="n">gamma</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
+                    <span class="n">gae_lambda</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gae_lambda</span><span class="p">,</span>
+                    <span class="n">ent_coef</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">ent_coef</span><span class="p">,</span>
+                    <span class="n">vf_coef</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">vf_coef</span><span class="p">,</span>
+                    <span class="n">max_grad_norm</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_grad_norm</span><span class="p">,</span>
+                    <span class="n">rms_prop_eps</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">rms_prop_eps</span><span class="p">,</span>
+                    <span class="n">seed</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
+                    <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
+    <span class="c1">#--------------------------------------------------------#</span>
+
+    <span class="c1">#--------------------------PPO---------------------------#</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;PPO&#39;</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">PPO</span><span class="p">(</span><span class="s1">&#39;MlpPolicy&#39;</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">learning_rate</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
+                    <span class="n">n_steps</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">n_steps</span><span class="p">,</span>
+                    <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
+                    <span class="n">n_epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                    <span class="n">gamma</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
+                    <span class="n">gae_lambda</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gae_lambda</span><span class="p">,</span>
+                    <span class="n">clip_range</span><span class="o">=</span><span class="mf">.2</span><span class="p">,</span>
+                    <span class="n">ent_coef</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">vf_coef</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span>
+                    <span class="n">max_grad_norm</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_grad_norm</span><span class="p">,</span>
+                    <span class="n">seed</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
+                    <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
+    <span class="c1">#--------------------------------------------------------#</span>
+
+    <span class="c1">#--------------------------SAC---------------------------#</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;SAC&#39;</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">SAC</span><span class="p">(</span><span class="n">policy</span><span class="o">=</span><span class="s1">&#39;MlpPolicy&#39;</span><span class="p">,</span>
+                    <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+                    <span class="n">seed</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
+                    <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
+    <span class="c1">#--------------------------------------------------------#</span>
+
+    <span class="c1">#-------------------------ERROR?-------------------------#</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Algorithm specified is not registered.&#39;</span><span class="p">)</span>
+    <span class="c1">#--------------------------------------------------------#</span>
+
+    <span class="c1"># Calculating n_timesteps_episode for training</span>
+    <span class="n">n_timesteps_episode</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_eplus_one_epi_len</span> <span class="o">/</span> \
+        <span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_eplus_run_stepsize</span>
+    <span class="n">timesteps</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">episodes</span> <span class="o">*</span> <span class="n">n_timesteps_episode</span>
+
+    <span class="c1"># For callbacks processing</span>
+    <span class="n">env_vec</span> <span class="o">=</span> <span class="n">DummyVecEnv</span><span class="p">([</span><span class="k">lambda</span><span class="p">:</span> <span class="n">env</span><span class="p">])</span>
+
+    <span class="c1"># Using Callbacks for training</span>
+    <span class="n">callbacks</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Set up Evaluation and saving best model</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">evaluation</span><span class="p">:</span>
+        <span class="n">eval_callback</span> <span class="o">=</span> <span class="n">LoggerEvalCallback</span><span class="p">(</span>
+            <span class="n">env_vec</span><span class="p">,</span>
+            <span class="n">best_model_save_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+            <span class="n">log_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+            <span class="n">eval_freq</span><span class="o">=</span><span class="n">n_timesteps_episode</span> <span class="o">*</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">eval_freq</span><span class="p">,</span>
+            <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">n_eval_episodes</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">eval_length</span><span class="p">)</span>
+        <span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eval_callback</span><span class="p">)</span>
+
+    <span class="c1"># Set up tensorboard logger</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">:</span>
+        <span class="n">log_callback</span> <span class="o">=</span> <span class="n">LoggerCallback</span><span class="p">(</span><span class="n">sinergym_logger</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">logger</span><span class="p">))</span>
+        <span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">log_callback</span><span class="p">)</span>
+        <span class="c1"># lets change default dir for TensorboardFormatLogger only</span>
+        <span class="n">tb_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span>
+        <span class="n">new_logger</span> <span class="o">=</span> <span class="n">configure</span><span class="p">(</span><span class="n">tb_path</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;tensorboard&quot;</span><span class="p">])</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="n">new_logger</span><span class="p">)</span>
+
+    <span class="n">callback</span> <span class="o">=</span> <span class="n">CallbackList</span><span class="p">(</span><span class="n">callbacks</span><span class="p">)</span>
+
+    <span class="c1"># Training</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span>
+        <span class="n">total_timesteps</span><span class="o">=</span><span class="n">timesteps</span><span class="p">,</span>
+        <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
+        <span class="n">log_interval</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">log_interval</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_env_working_dir_parent</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># Store all results if remote_store flag is True</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">remote_store</span><span class="p">:</span>
+        <span class="c1"># Initiate Google Cloud client</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">init_storage_client</span><span class="p">()</span>
+        <span class="c1"># Code for send output and tensorboard to common resource here.</span>
+        <span class="n">gcloud</span><span class="o">.</span><span class="n">upload_to_bucket</span><span class="p">(</span>
+            <span class="n">client</span><span class="p">,</span>
+            <span class="n">src_path</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_env_working_dir_parent</span><span class="p">,</span>
+            <span class="n">dest_bucket_name</span><span class="o">=</span><span class="s1">&#39;experiments-storage&#39;</span><span class="p">,</span>
+            <span class="n">dest_path</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">:</span>
+            <span class="n">gcloud</span><span class="o">.</span><span class="n">upload_to_bucket</span><span class="p">(</span>
+                <span class="n">client</span><span class="p">,</span>
+                <span class="n">src_path</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+                <span class="n">dest_bucket_name</span><span class="o">=</span><span class="s1">&#39;experiments-storage&#39;</span><span class="p">,</span>
+                <span class="n">dest_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">evaluation</span><span class="p">:</span>
+            <span class="n">gcloud</span><span class="o">.</span><span class="n">upload_to_bucket</span><span class="p">(</span>
+                <span class="n">client</span><span class="p">,</span>
+                <span class="n">src_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+                <span class="n">dest_bucket_name</span><span class="o">=</span><span class="s1">&#39;experiments-storage&#39;</span><span class="p">,</span>
+                <span class="n">dest_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="c1"># gcloud.upload_to_bucket(</span>
+        <span class="c1">#     client,</span>
+        <span class="c1">#     src_path=&#39;mlruns/&#39;,</span>
+        <span class="c1">#     dest_bucket_name=&#39;experiments-storage&#39;,</span>
+        <span class="c1">#     dest_path=&#39;mlruns/&#39;)</span>
+
+    <span class="c1"># End mlflow run</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">end_run</span><span class="p">()</span>
+
+    <span class="c1"># If it is a Google Cloud VM, shutdown remote machine when ends</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">group_name</span><span class="p">:</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">get_service_account_token</span><span class="p">()</span>
+        <span class="n">gcloud</span><span class="o">.</span><span class="n">delete_instance_MIG_from_container</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">group_name</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The list of parameter is pretty large. Let’s see it:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--environment</span></code> or <code class="docutils literal notranslate"><span class="pre">-env</span></code>: Environment name you want to use (see <a class="reference internal" href="environments.html#environments"><span class="std std-ref">Environments</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--episodes</span></code> or <code class="docutils literal notranslate"><span class="pre">-ep</span></code>: Number of episodes you want to train agent in simulation (Depending on environment episode length can be different)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--algorithm</span></code> or <code class="docutils literal notranslate"><span class="pre">-alg</span></code>: Algorithm you want to use to train (Currently, it is available <em>PPO</em>, <em>A2C</em>, <em>DQN</em>, <em>DDPG</em> and <em>SAC</em>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--reward</span></code> or <code class="docutils literal notranslate"><span class="pre">-rw</span></code>: Reward class you want to use for reward function. Currently, possible values are “linear” and “exponential”(see <a class="reference internal" href="rewards.html#rewards"><span class="std std-ref">Rewards</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--normalization</span></code> or <code class="docutils literal notranslate"><span class="pre">-norm</span></code>: Apply normalization wrapper to observations during training. If it isn’t specified wrapper will not be applied (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--multiobs</span></code> or <code class="docutils literal notranslate"><span class="pre">-mobs</span></code>: Apply Multi-Observation wrapper to observations during training. If it isn’t specified wrapper will not be applied (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--logger</span></code> or <code class="docutils literal notranslate"><span class="pre">-log</span></code>: Apply Sinergym logger wrapper during training. If it isn’t specified wrapper will not be applied (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a> and <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> or <code class="docutils literal notranslate"><span class="pre">-tens</span></code>: This parameter will contain a path-file to allocate tensorboard training logs. If it isn’t specified this log will be deactivate (see <a class="reference internal" href="deep-reinforcement-learning.html#drl-logger"><span class="std std-ref">DRL Logger</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--evaluation</span></code> or <code class="docutils literal notranslate"><span class="pre">-eval</span></code>: If it is specified, evaluation callback will be activate, else model evaluation will be deactivate during training (see <a class="reference internal" href="deep-reinforcement-learning.html#deep-reinforcement-learning-integration"><span class="std std-ref">Deep Reinforcement Learning Integration</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--eval_freq</span></code> or <code class="docutils literal notranslate"><span class="pre">-evalf</span></code>: Only if <code class="docutils literal notranslate"><span class="pre">--evaluation</span></code> flag has been written. Episode frequency for evaluation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--eval_length</span></code> or <code class="docutils literal notranslate"><span class="pre">-evall</span></code>: Only if <code class="docutils literal notranslate"><span class="pre">--evaluation</span></code> flag has been written. Number of episodes for each evaluation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--log_interval</span></code> or <code class="docutils literal notranslate"><span class="pre">-inter</span></code>: This parameter is used for <code class="docutils literal notranslate"><span class="pre">learn()</span></code> method in each algorithm. It is important specify a correct value.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--seed</span></code> or <code class="docutils literal notranslate"><span class="pre">-sd</span></code>: Seed for training, random components in process will be able to be recreated.</p></li>
+<li><p><strong>algorithm hyperparameters</strong>: Execute <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">DRL_battery</span> <span class="pre">--help</span></code> for more information.</p></li>
+</ul>
+</section>
+<section id="google-cloud-alerts">
+<h2>Google Cloud Alerts<a class="headerlink" href="#google-cloud-alerts" title="Permalink to this headline"></a></h2>
+<p><strong>Google Cloud Platform</strong> include functionality in order to trigger some events and generate alerts in consequence.
+Then, a trigger has been created in our gcloud project which aim to advertise when an experiment has finished.
+This alert can be captured in several ways (slack, sms, email, etc).
+If you want to do the same, please, check Google Cloud Alerts documentation <a class="reference external" href="https://cloud.google.com/monitoring/alerts">here</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="deep-reinforcement-learning.html" class="btn btn-neutral float-left" title="Deep Reinforcement Learning Integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="API-reference.html" class="btn btn-neutral float-right" title="API reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
