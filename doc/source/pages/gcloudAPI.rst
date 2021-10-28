@@ -33,13 +33,13 @@ Here is an example bash code to execute the script:
 .. code:: sh
 
     $ python cloud_manager.py \
-        --project_id ${PROJECT_ID} \
+        --project_id sinergym \
         --zone europe-west1-b \
         --template_name sinergym-template \
-        --group_name sinergym \
+        --group_name sinergym-prueba2 \
         --experiment_commands \
-        'python3 DRL_battery.py --environment Eplus-5Zone-hot-discrete-v1 --episodes 3 --algorithm DQN --logger --log_interval 1 --seed 54' \
-        'python3 DRL_battery.py --environment Eplus-5Zone-hot-continuous-stochastic-v1 --episodes 3 --algorithm PPO --logger --log_interval 1 --tensorboard ./tensorboard_log  --normalization --seed 54' 
+        'python3 DRL_battery.py --environment Eplus-5Zone-hot-discrete-v1 --episodes 2 --algorithm DQN --logger --log_interval 1 --seed 58 --evaluation --eval_freq 1 --eval_length 1 --tensorboard ./tensorboard_log --remote_store' \
+        'python3 DRL_battery.py --environment Eplus-5Zone-hot-continuous-v1 --episodes 3 --algorithm PPO --logger --log_interval 300 --seed 52 --evaluation --eval_freq 1 --eval_length 1 --tensorboard ./tensorboard_log --remote_store'
 
 This example generates only 2 machines inner an instance group in your Google Cloud Platform because of you have defined two experiments. If you defined more experiments, more machines will be created by API.
 

@@ -62,9 +62,9 @@ been tested, but code may also work with other versions. Sinergym ensure this su
 +------------------+--------------------+
 | Sinergym Version | EnergyPlus version |
 +==================+====================+
-| 1.0.0            | 8.6.0              | 
+| 1.0.0 or before  | 8.6.0              | 
 +------------------+--------------------+
-| 1.1.0            | 9.5.0              | 
+| 1.1.0 or later   | 9.5.0              | 
 +------------------+--------------------+
 
 Other combination may works, but they don't have been tested.
@@ -74,7 +74,7 @@ install it for Linux (only Ubuntu is supported). Choose any location
 to install the software. Once installed, a folder called
 ``Energyplus-9-5-0`` should appear in the selected location.
 
-2. Install BCVTB software
+1. Install BCVTB software
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Follow the instructions
@@ -244,14 +244,17 @@ To create a **MIG**, you need to create a machine set up **template** firstly, f
 .. code:: sh
 
     $ gcloud compute instance-templates create-with-container sinergym-template \
-        --container-image gcr.io/sinergym/sinergym \
-        --container-privileged \
-        --container-restart-policy never \
-        --container-stdin \
-        --container-tty \
-        --boot-disk-size 20GB \
-        --boot-disk-type pd-ssd \
-        --machine-type n2-highcpu-8
+    --container-image gcr.io/sinergym/sinergym \
+    --container-privileged \
+    --service-account storage-account@sinergym.iam.gserviceaccount.com \
+    --scopes https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/devstorage.full_control \
+    --container-env=gce_zone=europe-west1-b,gce_project_id=sinergym \
+    --container-restart-policy never \
+    --container-stdin \
+    --container-tty \
+    --boot-disk-size 20GB \
+    --boot-disk-type pd-ssd \
+    --machine-type n2-highcpu-8
 
 Then, you can create a group-instances as large as you want:
 
