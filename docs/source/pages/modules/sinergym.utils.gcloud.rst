@@ -1,4 +1,4 @@
-﻿sinergym.utils.gcloud
+sinergym.utils.gcloud
 =====================
 
 .. automodule:: sinergym.utils.gcloud

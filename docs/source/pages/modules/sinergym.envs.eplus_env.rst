@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿sinergym.envs.eplus\_env
+=======
+sinergym.envs.eplus\_env
+>>>>>>> main
 ========================
 
 .. automodule:: sinergym.envs.eplus_env

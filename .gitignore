@@ -16,10 +16,6 @@ Eplus-env*/
 #Socket.cfg in tests
 socket.cfg
 
-# Documentation
-doc/source/_build/
-doc/build/
-
 # Tensorboard mlflow and models outputs
 tensorboard*/
 *.zip
