@@ -30,9 +30,5 @@
 
    sinergym.simulators.base
    sinergym.simulators.eplus
-<<<<<<< HEAD
    sinergym.simulators.eplus_alpha
-=======
-   sinergym.simulators.eplus_old
->>>>>>> main
 
