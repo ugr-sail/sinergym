@@ -29,5 +29,5 @@ google-storage.json
 start_mlflow_tracking.sh
 
 # Ignoring sphinx build (there is a Github action which compile that documentation for us remotely)
-docs/build
+docs/build/
 docs/build/*

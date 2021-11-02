@@ -134,7 +134,8 @@ You have two options:
 
 The second options is enough since we can read from bucket when we need directly and shut down local service when we finish.
 
-.. code::
+.. code:: sh
+
     $ tensorboard --logdir gs://experiments-storage/tensorboard_log/
 
 
@@ -145,7 +146,7 @@ Mlflow tracking server set up
 Mlflow tracking server can be set up into your google account in order to organize your own experiments (:ref:`Mlflow`). You can separate **back-end** (SQL database) from tracking server.
 In this way, you can shut down or delete server instance without loose your experiments run data, since SQL is always up. Let's see how:
 
-.. literalinclude:: ../../../google_storage_conf.sh
+.. literalinclude:: ../../../mlflowbuild.sh
     :language: sh
 
 This bash script define all the process to configure this functionality automatically. (Once you execute it you don't have to use this script anymore). The arguments it needs are:
