@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Github Actions &mdash; sinergym  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <title>Github Actions &mdash; sinergym  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /><link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -28,8 +25,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../index.html" class="icon icon-home"> sinergym
-            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> sinergym<img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -78,21 +74,29 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="github-actions">
-<h1>Github Actions<a class="headerlink" href="#github-actions" title="Permalink to this headline"></a></h1>
+  <div class="section" id="github-actions">
+<h1>Github Actions<a class="headerlink" href="#github-actions" title="Permalink to this headline">¶</a></h1>
 <p>This project is automatically processed using <a class="reference external" href="https://docs.github.com/es/actions/">Github Action</a> which allows building continuous integration and continuous deployment pipelines
 for testing, releasing and deploying software without the use of third-party websites/platforms.</p>
 <p>Currently, we have developed the next procedures for this project:</p>
-<ul class="simple">
+<ul>
 <li><p><strong>Python Code format</strong>: Python code format is checked in every pull request following <strong>Pep8</strong> <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">standard</a> (Level 2 aggressive).</p></li>
 <li><p><strong>Installation, Testing and Updating</strong>: There is another action which builds a remote container using <em>Dockerfile</em>, executes pytest inner and, if tests have been passed, uploads our <strong>Docker Hub</strong> repository using <em>latest</em> tag.</p></li>
 <li><p>When a <strong>release</strong> is <em>published</em> or <em>edited</em> manually in the repository, there is an action which catches release tag version and uses it to build a container and upload/update on Docker Hub with that tag version.</p></li>
+<li><p><strong>Docs Checks and Update Github-Pages</strong>: This action compile documentation <em>source</em> in every pull-request, verify if documentation built is updated and commit and push automatically from a bot account.
+If you want to ignore <em>docs/build</em> files while you are working. You can ignore files although files are in repository executing next in local:</p>
+<blockquote>
+<div><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git ls-files -z docs/build/ <span class="p">|</span> xargs -0 git update-index --assume-unchanged
+</pre></div>
+</div>
+</div></blockquote>
+</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>See <a class="reference external" href="https://github.com/jajimer/sinergym/tree/develop/.github/workflows">.github/workflows YML files</a> to see code used.</p>
 </div>
-</section>
+</div>
 
 
            </div>

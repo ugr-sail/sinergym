@@ -15,6 +15,14 @@ The main functionalities of Sinergym are the following :
   - **Benchmark environments**. Similarly to Atari or Mujoco environments for RL community, we are designing a set of environments for benchmarking and testing deep RL algorithms. These environments may include different buildings, weathers or action spaces.
   - **Develop different experimental settings**. We aim to provide a package that allows to modify experimental settings in an easy manner. For example, several reward functions or observation variables may be defined. 
   - **Include different simulation engines**. Communication between Python and [EnergyPlus](https://energyplus.net/) is established using [BCVTB](https://simulationresearch.lbl.gov/bcvtb/FrontPage). Since this tool allows for interacting with several simulation engines, more of them (e.g. [OpenModelica](https://openmodelica.org/)) could be included in the backend while maintaining the Gym API.
+  -  **Stable Baseline 3 Integration**. Some functionalities like callbacks
+   have been developed by our team in order to test easily these environments
+   with deep reinforcement learning algorithms.
+  -  **Google Cloud Integration**. Whether you have a Google Cloud account and you want to
+   use your infrastructure with Sinergym, it has been designed a complete functionality
+   in order to facilitate this work.
+  -  **Data Visualization**. Using Sinergym logger or Tensorboard server to visualize training information
+   in real-time.
   - Many more!
 
 _This is a work in progress project. Stay tuned for upcoming releases._
@@ -86,10 +94,10 @@ However, if you prefer installing it manually, follow the steps below.
 Firstly, install EnergyPlus. Currently it has been update compability to 9.5.0 and it has
 been tested, but code may also work with other versions. Sinergym ensure this support:
 
-| Sinergym Version  | EnergyPlus version |
+| Sinergym Version | EnergyPlus version |
 |------------------|--------------------|
-| 1.0.0            | 8.6.0              | 
-| 1.1.0            | 9.5.0              | 
+| 1.0.0  or before | 8.6.0              | 
+| 1.1.0 or later   | 9.5.0              | 
 
 Other combination may works, but they don't have been tested.
 
@@ -147,6 +155,16 @@ while not done:
     R += reward
 print('Total reward for the episode: %.4f' % R)
 env.close()
-````
+```
 
 Notice that a folder will be created in the working directory after creating the environment. It will contain the EnergyPlus outputs produced during the simulation.
+
+## Google Cloud Platform support
+
+In this project, an API based on RESTfull API for **Google Cloud** has been designed and developed in order to use Google Cloud infrastructure directly writing experiments definition ir our personal computer.
+
+<div align="center">
+  <img src="images/Sinergym_cloud_API.png" width=100%><br><br>
+</div>
+
+For more information about this functionality, please, visit our documentation [here](https://jajimer.github.io/sinergym/build/html/pages/gcloudAPI.html)

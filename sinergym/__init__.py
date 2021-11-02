@@ -1,5 +1,11 @@
+import os
 from gym.envs.registration import register
 from sinergym.utils.rewards import LinearReward
+
+# Set __version__ in module
+version_file = os.path.join(os.path.dirname(__file__), "version.txt")
+with open(version_file, "r") as file_handler:
+    __version__ = file_handler.read().strip()
 
 
 #========================5ZoneAutoDXVAV========================#

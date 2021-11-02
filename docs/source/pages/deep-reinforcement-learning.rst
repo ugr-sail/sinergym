@@ -198,4 +198,6 @@ Here is an example:
   :align: center
 
 
+.. note:: For information about how use *Tensorboard* and *Mlflow* with a Cloud Computing paradigm, see :ref:`Remote Tensorboard log` and :ref:`Mlflow tracking server set up`
+
 .. note:: *This is a work in progress project. Compatibility with others algorithms is being planned for the future!*

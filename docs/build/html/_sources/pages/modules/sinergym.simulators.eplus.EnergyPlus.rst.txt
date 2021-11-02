@@ -16,14 +16,24 @@ sinergym.simulators.eplus.EnergyPlus
    .. autosummary::
    
       ~EnergyPlus.__init__
-      ~EnergyPlus.end_simulation
-      ~EnergyPlus.receive_observation
-      ~EnergyPlus.send_action
-      ~EnergyPlus.start_simulation
-      ~EnergyPlus.stop_simulation
+      ~EnergyPlus.end_env
+      ~EnergyPlus.end_episode
+      ~EnergyPlus.get_is_eplus_running
+      ~EnergyPlus.reset
+      ~EnergyPlus.step
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EnergyPlus.env_name
+      ~EnergyPlus.start_day
+      ~EnergyPlus.start_mon
+      ~EnergyPlus.start_weekday
+      ~EnergyPlus.start_year
    
    

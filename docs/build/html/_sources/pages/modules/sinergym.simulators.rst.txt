@@ -30,5 +30,5 @@
 
    sinergym.simulators.base
    sinergym.simulators.eplus
-   sinergym.simulators.eplus_old
+   sinergym.simulators.eplus_alpha
 

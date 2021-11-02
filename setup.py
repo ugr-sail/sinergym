@@ -1,10 +1,14 @@
+import os
 from setuptools import setup
+
+with open(os.path.join("sinergym", "version.txt"), "r") as file_handler:
+    __version__ = file_handler.read().strip()
 
 with open('requirements.txt') as f:
     reqs = f.read().splitlines()
 
 setup(name='sinergym',
-      version='1.3.0',
+      version=__version__,
       install_requires=reqs,
       include_package_data=True,
       extras_require={
@@ -12,7 +16,8 @@ setup(name='sinergym',
               'matplotlib',  # visualization
               'stable-baselines3',  # DRL with pytorch
               'mlflow',  # tracking ML experiments
-              'tensorboard',  # Training logger
+              'tensorflow',
+              'tensorboard_plugin_profile',  # Training logger
               'pytest',  # Unit test repository
               'sphinx',  # documentation
               'sphinx-rtd-theme'  # documentation theme
@@ -23,7 +28,8 @@ setup(name='sinergym',
           'DRL': [
               'stable-baselines3',
               'mlflow',
-              'tensorboard'
+              'tensorflow',
+              'tensorboard_plugin_profile'
           ],
           'doc': [
               'sphinx',
@@ -31,11 +37,11 @@ setup(name='sinergym',
           ],
           'visualization': [
               'matplotlib',
-              'tensorboard'  # Log stable-baselines3 trainings
           ],
           'gcloud': [
               'google-api-python-client',
-              'oauth2client'
+              'oauth2client',
+              'google-cloud-storage'
           ]
       }
       )

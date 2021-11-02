@@ -136,6 +136,7 @@ if args.seed:
     name += '-seed_' + str(args.seed)
 name += '(' + experiment_date + ')'
 # MLflow track
+# mlflow.set_tracking_uri("file:./mlruns/other_mlflow_name")
 with mlflow.start_run(run_name=name):
     # Log experiment params
     mlflow.log_param('sinergym-version', sinergym.__version__)
