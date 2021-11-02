@@ -14,6 +14,8 @@ Each VM send MLFlow logs to **MLFlow tracking server** (see :ref:`Mlflow trackin
 
 When an instance has finished its job, container **auto-remove** its host instance from Google Cloud Platform. Whether an instance is the last in the MIG, that container auto-remove the empty MIG too.
 
+.. warning:: Don't try to remove an instance inner MIG directly using Google Cloud API REST, it needs to be executed from MIG to work. Some other problems (like wrong API REST documentation) have been solved in our API. We recommend you use this API directly.
+
 Let’s see a detailed explanation above.
 
 ****************
@@ -56,7 +58,7 @@ This script do the next:
     4. Looking for instance names generated randomly by Google cloud once MIG is created (waiting for instances generation if they haven't been created yet).
     5. To each commands experiment, it is added ``--group_name`` option in order to each container see what is its own MIG (useful to auto-remove them).
     6. Looking for *id container* about each instance. This process waits for containers are initialize, since instance is initialize earlier than inner container.
-    7. Sending each experiment command in inner containers from each instance using an SSH connection. 
+    7. Sending each experiment command in containers from each instance using an SSH connection. 
 
 .. note:: Because of its real-time process. Some containers, instance list action and others could take time. In that case, the API wait a process finish to execute the next (when it is necessary).
 
@@ -67,7 +69,7 @@ This script do the next:
 Receiving experiments in remote containers
 *******************************************
 
-This script, called *DRL_battery.py*, will be allocated in every remote container and it is used to understand experiments command exposed above by *cloud_manager.py (--experiment_commands)*:
+This script, called *DRL_battery.py*, will be allocated in every remote container and it is used to understand experiments command exposed above by *cloud_manager.py* (``--experiment_commands``):
 
 .. literalinclude:: ../../../DRL_battery.py
     :language: python
@@ -121,7 +123,7 @@ Remote Tensorboard log
 In ``--tensorboard`` parameter we have to specify a **local path** in order to read this logs data in real-time. 
 However, we want to send this data to *experiments-storage* bucket created in Google Cloud Platform by *cloud_manager.py* process (see :ref:`Executing API`).
 Hence, Tensorboard has added support to do this recently (`#628 <https://github.com/ContinualAI/avalanche/pull/628>`__).
-You have to write `gs://<bucket_name>/<tensorboard_log_path>` directly in *DRL_battery.py* --tensorboard parameter directly.
+You have to write `gs://<bucket_name>/<tensorboard_log_path>` in *DRL_battery.py* ``--tensorboard`` parameter directly.
 
 .. warning:: In the case that gs URI isn't recognized. Maybe is due to your tensorboard installation hasn't got access your google account. Try `gcloud auth application-default login <https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login>`__ command.
 
@@ -164,8 +166,8 @@ This script do the next for you:
     8. Creating static external ip for mlflow-tracking-server
     9. Deploying remote server [mlflow-tracking-server]
 
-Step 8 is very important, this allow you to delete server instance and create again when you need it without redefining server ip in sinergym-template for remote container experiments.
-Notice that server instance creation use service account for mlflow, with this configuration mlflow con read from SQL server. In :ref:`4. Create your VM or MIG` it is specified MLFLOW_TRACKING_URI container environment variable using that external static ip.
+Step 8 is very important, this allows you to delete server instance and create again when you need it without redefining server ip in sinergym-template for remote container experiments.
+Notice that server instance creation use service account for mlflow, with this configuration mlflow can read from SQL server. In :ref:`4. Create your VM or MIG` it is specified MLFLOW_TRACKING_URI container environment variable using that external static ip.
 
 .. warning:: It is important execute this script before create sinergym-template instances in order to anotate mlflow-server-ip.
 

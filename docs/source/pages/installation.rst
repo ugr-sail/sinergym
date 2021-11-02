@@ -292,7 +292,7 @@ Your virtual machine is ready! To connect you can use ssh (see `gcloud-ssh <http
 
 .. code:: sh
 
-    $ gcloud compute ssh sinergym
+    $ gcloud compute ssh <machine-name>
 
 Google Cloud use a **Container-Optimized OS** (see `documentation <https://cloud.google.com/container-optimized-os/docs>`__) in VM. This SO have docker pre-installed with sinergym container.
 
@@ -306,7 +306,7 @@ To use this container in our machine you only have to do:
 
 .. code:: sh
 
-    $ docker attach <container name or ID>
+    $ docker attach <container-name-or-ID>
 
 .. image:: /_static/container2.png
   :width: 800
