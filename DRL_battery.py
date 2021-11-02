@@ -9,6 +9,7 @@ import numpy as np
 from sinergym.utils.callbacks import LoggerCallback, LoggerEvalCallback
 from sinergym.utils.wrappers import MultiObsWrapper, NormalizeObservation, LoggerWrapper
 from sinergym.utils.rewards import *
+from sinergym.utils.common import RANGES_5ZONE, RANGES_IW, RANGES_DATACENTER
 
 
 from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
@@ -134,7 +135,18 @@ else:
 
 # env wrappers (optionals)
 if args.normalization:
-    env = NormalizeObservation(env)
+    # We have to know what dictionary ranges to use
+    norm_range = None
+    env_type = args.environment.split('-')[2]
+    if env_type == 'datacenter':
+        range = RANGES_5ZONE
+    elif env_type == '5Zone':
+        range = RANGES_IW
+    elif env_type == 'IWMullion':
+        range = RANGES_DATACENTER
+    else:
+        raise NameError('env_type is not valid, check environment name')
+    env = NormalizeObservation(env, ranges=range)
 if args.logger:
     env = LoggerWrapper(env)
 if args.multiobs:
