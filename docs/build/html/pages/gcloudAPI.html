@@ -283,7 +283,14 @@ Remember to configure Google Cloud account correctly before use this functionali
 <div class="section" id="receiving-experiments-in-remote-containers">
 <h2>Receiving experiments in remote containers<a class="headerlink" href="#receiving-experiments-in-remote-containers" title="Permalink to this headline">¶</a></h2>
 <p>This script, called <em>DRL_battery.py</em>, will be allocated in every remote container and it is used to understand experiments command exposed above by <em>cloud_manager.py</em> (<code class="docutils literal notranslate"><span class="pre">--experiment_commands</span></code>):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">stable_baselines3.common.logger</span> <span class="kn">import</span> <span class="n">configure</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.vec_env</span> <span class="kn">import</span> <span class="n">DummyVecEnv</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.callbacks</span> <span class="kn">import</span> <span class="n">CallbackList</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="n">A2C</span><span class="p">,</span> <span class="n">DDPG</span><span class="p">,</span> <span class="n">DQN</span><span class="p">,</span> <span class="n">PPO</span><span class="p">,</span> <span class="n">SAC</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.noise</span> <span class="kn">import</span> <span class="n">NormalActionNoise</span>
+<span class="kn">import</span> <span class="nn">sinergym.utils.gcloud</span> <span class="k">as</span> <span class="nn">gcloud</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.common</span> <span class="kn">import</span> <span class="n">RANGES_5ZONE</span><span class="p">,</span> <span class="n">RANGES_IW</span><span class="p">,</span> <span class="n">RANGES_DATACENTER</span>
+<span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">sinergym</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">uuid</span>
@@ -296,14 +303,7 @@ Remember to configure Google Cloud account correctly before use this functionali
 <span class="kn">from</span> <span class="nn">sinergym.utils.callbacks</span> <span class="kn">import</span> <span class="n">LoggerCallback</span><span class="p">,</span> <span class="n">LoggerEvalCallback</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">MultiObsWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span><span class="p">,</span> <span class="n">LoggerWrapper</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">import</span> <span class="nn">sinergym.utils.gcloud</span> <span class="k">as</span> <span class="nn">gcloud</span>
 
-
-<span class="kn">from</span> <span class="nn">stable_baselines3.common.noise</span> <span class="kn">import</span> <span class="n">NormalActionNoise</span>
-<span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="n">A2C</span><span class="p">,</span> <span class="n">DDPG</span><span class="p">,</span> <span class="n">DQN</span><span class="p">,</span> <span class="n">PPO</span><span class="p">,</span> <span class="n">SAC</span>
-<span class="kn">from</span> <span class="nn">stable_baselines3.common.callbacks</span> <span class="kn">import</span> <span class="n">CallbackList</span>
-<span class="kn">from</span> <span class="nn">stable_baselines3.common.vec_env</span> <span class="kn">import</span> <span class="n">DummyVecEnv</span>
-<span class="kn">from</span> <span class="nn">stable_baselines3.common.logger</span> <span class="kn">import</span> <span class="n">configure</span>
 
 <span class="c1">#--------------------------------BATTERY ARGUMENTS DEFINITION---------------------------------#</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
@@ -482,6 +482,24 @@ Remember to configure Google Cloud account correctly before use this functionali
 
     <span class="c1">######################## TRAINING ########################</span>
 
+    <span class="c1"># env wrappers (optionals)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">normalization</span><span class="p">:</span>
+        <span class="c1"># We have to know what dictionary ranges to use</span>
+        <span class="n">norm_range</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">env_type</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">env_type</span> <span class="o">==</span> <span class="s1">&#39;datacenter&#39;</span><span class="p">:</span>
+            <span class="nb">range</span> <span class="o">=</span> <span class="n">RANGES_5ZONE</span>
+        <span class="k">elif</span> <span class="n">env_type</span> <span class="o">==</span> <span class="s1">&#39;5Zone&#39;</span><span class="p">:</span>
+            <span class="nb">range</span> <span class="o">=</span> <span class="n">RANGES_IW</span>
+        <span class="k">elif</span> <span class="n">env_type</span> <span class="o">==</span> <span class="s1">&#39;IWMullion&#39;</span><span class="p">:</span>
+            <span class="nb">range</span> <span class="o">=</span> <span class="n">RANGES_DATACENTER</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s1">&#39;env_type is not valid, check environment name&#39;</span><span class="p">)</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">ranges</span><span class="o">=</span><span class="nb">range</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">logger</span><span class="p">:</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">multiobs</span><span class="p">:</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">MultiObsWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
     <span class="c1"># Defining model(algorithm)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#--------------------------DQN---------------------------#</span>

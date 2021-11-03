@@ -211,7 +211,7 @@ class LoggerWrapper(gym.Wrapper):
         # Store initial state of simulation
         self.logger.log_step(timestep=0,
                              date=[obs[-2], obs[-3], obs[-1]],
-                             observation=obs,
+                             observation=obs[:-3],
                              action=[None for _ in range(
                                  len(self.env.variables['action']))],
                              simulation_time=0,

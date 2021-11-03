@@ -1,3 +1,10 @@
+from stable_baselines3.common.logger import configure
+from stable_baselines3.common.vec_env import DummyVecEnv
+from stable_baselines3.common.callbacks import CallbackList
+from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC
+from stable_baselines3.common.noise import NormalActionNoise
+import sinergym.utils.gcloud as gcloud
+from sinergym.utils.common import RANGES_5ZONE, RANGES_IW, RANGES_DATACENTER
 import gym
 import sinergym
 import argparse
@@ -11,14 +18,7 @@ import numpy as np
 from sinergym.utils.callbacks import LoggerCallback, LoggerEvalCallback
 from sinergym.utils.wrappers import MultiObsWrapper, NormalizeObservation, LoggerWrapper
 from sinergym.utils.rewards import *
-import sinergym.utils.gcloud as gcloud
 
-
-from stable_baselines3.common.noise import NormalActionNoise
-from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC
-from stable_baselines3.common.callbacks import CallbackList
-from stable_baselines3.common.vec_env import DummyVecEnv
-from stable_baselines3.common.logger import configure
 
 #--------------------------------BATTERY ARGUMENTS DEFINITION---------------------------------#
 parser = argparse.ArgumentParser()
@@ -197,6 +197,24 @@ with mlflow.start_run(run_name=name):
 
     ######################## TRAINING ########################
 
+    # env wrappers (optionals)
+    if args.normalization:
+        # We have to know what dictionary ranges to use
+        norm_range = None
+        env_type = args.environment.split('-')[2]
+        if env_type == 'datacenter':
+            range = RANGES_5ZONE
+        elif env_type == '5Zone':
+            range = RANGES_IW
+        elif env_type == 'IWMullion':
+            range = RANGES_DATACENTER
+        else:
+            raise NameError('env_type is not valid, check environment name')
+        env = NormalizeObservation(env, ranges=range)
+    if args.logger:
+        env = LoggerWrapper(env)
+    if args.multiobs:
+        env = MultiObsWrapper(env)
     # Defining model(algorithm)
     model = None
     #--------------------------DQN---------------------------#

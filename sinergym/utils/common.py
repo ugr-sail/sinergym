@@ -62,6 +62,50 @@ RANGES_IW = {
     "IW Calculated Heating Demand": [0.0, 85.0]
 }
 
+RANGES_DATACENTER = {
+    'East-ClgSetP-RL': [21.0, 30.0],
+    'East-HtgSetP-RL': [15.0, 22.499973],
+    'Facility Total HVAC Electricity Demand Rate (Whole Building)': [1763.7415,
+                                                                     76803.016],
+    'People Air Temperature (East Zone PEOPLE)': [0.0, 30.279287],
+    'People Air Temperature (West Zone PEOPLE)': [0.0, 30.260946],
+    'Site Diffuse Solar Radiation Rate per Area (Environment)': [0.0, 588.0],
+    'Site Direct Solar Radiation Rate per Area (Environment)': [0.0, 1033.0],
+    'Site Outdoor Air Drybulb Temperature (Environment)': [-16.049532, 42.0],
+    'Site Outdoor Air Relative Humidity (Environment)': [3.0, 100.0],
+    'Site Wind Direction (Environment)': [0.0, 357.5],
+    'Site Wind Speed (Environment)': [0.0, 17.5],
+    'West-ClgSetP-RL': [21.0, 30.0],
+    'West-HtgSetP-RL': [15.0, 22.499998],
+    'Zone Air Relative Humidity (East Zone)': [1.8851701, 67.184616],
+    'Zone Air Relative Humidity (West Zone)': [1.8945858, 66.7946],
+    'Zone Air Temperature (East Zone)': [21.003511, 30.279287],
+    'Zone Air Temperature (West Zone)': [21.004263, 30.260946],
+    'Zone People Occupant Count (East Zone)': [0.0, 7.0],
+    'Zone People Occupant Count (West Zone)': [0.0, 11.0],
+    'Zone Thermal Comfort Clothing Value (East Zone PEOPLE)': [0.0, 0.0],
+    'Zone Thermal Comfort Clothing Value (West Zone PEOPLE)': [0.0, 0.0],
+    'Zone Thermal Comfort Fanger Model PPD (East Zone PEOPLE)': [0.0, 66.75793],
+    'Zone Thermal Comfort Fanger Model PPD (West Zone PEOPLE)': [0.0, 59.53962],
+    'Zone Thermal Comfort Mean Radiant Temperature (East Zone PEOPLE)': [0.0,
+                                                                         29.321169],
+    'Zone Thermal Comfort Mean Radiant Temperature (West Zone PEOPLE)': [0.0,
+                                                                         29.04933],
+    'Zone Thermostat Cooling Setpoint Temperature (East Zone)': [21.0, 30.0],
+    'Zone Thermostat Cooling Setpoint Temperature (West Zone)': [21.0, 30.0],
+    'Zone Thermostat Heating Setpoint Temperature (East Zone)': [15.0, 22.499973],
+    'Zone Thermostat Heating Setpoint Temperature (West Zone)': [15.0, 22.499998],
+    'comfort_penalty': [-13.264959140712048, -0.0],
+    'day': [1.0, 31.0],
+    'done': [False, True],
+    'hour': [0.0, 23.0],
+    'month': [1.0, 12.0],
+    'power_penalty': [-7.68030164869835, -0.1763741508343818],
+    'reward': [-9.090902680780722, -0.0881870754171909],
+    'time (seconds)': [0, 31536000],
+    'timestep': [0, 35040]
+}
+
 
 def get_delta_seconds(year, st_mon, st_day, end_mon, end_day):
     """Returns the delta seconds between `year:st_mon:st_day:0:0:0` and
@@ -296,6 +340,7 @@ def ranges_getter(output_path, last_result=None):
                     '/' +
                         episode_dir):
                     monitor_path = output_path + '/' + simulation + '/' + episode_dir + '/monitor.csv'
+                    print('Reading ' + monitor_path + ' limits.')
                     data = pd.read_csv(monitor_path)
 
                     if len(result) == 0:
