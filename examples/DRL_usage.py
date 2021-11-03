@@ -40,6 +40,7 @@ environment = args.environment
 n_episodes = args.episodes
 name = 'A2C-' + environment + '-' + str(n_episodes) + '-episodes'
 
+# mlflow.set_tracking_uri("file:./mlruns/other_mlflow_name")
 with mlflow.start_run(run_name=name):
 
     mlflow.log_param('env', environment)
@@ -114,7 +115,7 @@ with mlflow.start_run(run_name=name):
     env = DummyVecEnv([lambda: env])
 
     # Callbacks
-    freq = 2  # evaluate every N episodes
+    freq = 1  # evaluate every N episodes
     eval_callback = LoggerEvalCallback(
         env,
         best_model_save_path='./best_models/' + name + '/',
@@ -124,7 +125,7 @@ with mlflow.start_run(run_name=name):
         render=False,
         n_eval_episodes=1)
     log_callback = LoggerCallback(sinergym_logger=True)
-    callback = CallbackList([log_callback])
+    callback = CallbackList([log_callback, eval_callback])
 
     # Training
     model.learn(total_timesteps=timesteps, callback=callback, log_interval=1)

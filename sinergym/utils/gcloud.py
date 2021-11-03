@@ -1,16 +1,20 @@
-import argparse
 import subprocess
 import os
 import time
 from pprint import pprint
+import glob
+import requests
 
 import googleapiclient.discovery
 from oauth2client.client import GoogleCredentials
-# from six.moves import input
+from google.cloud import storage
+
+
+####################### GCLOUD SERVICE OWNER #######################
 
 
 def init_gcloud_service():
-    """List instances names created in Google Cloud currently.
+    """Init gcloud service to do operations.
 
     Returns:
         service: Google Cloud API service resource with owner credentials.
@@ -20,6 +24,17 @@ def init_gcloud_service():
     service = googleapiclient.discovery.build(
         'compute', 'v1', credentials=credentials)
     return service
+
+
+def init_storage_client():
+    """Init gcloud storage client to send petitions.
+
+    Returns:
+        client: Google Cloud storage client object to ask resources.
+
+    """
+    client = storage.Client()
+    return client
 
 
 def list_instances(service, project, zone, base_instances_names=None):
@@ -35,7 +50,6 @@ def list_instances(service, project, zone, base_instances_names=None):
         list(str): Name of the instances availables in Google Cloud.
 
     """
-    service.instances().list(project=project, zone=zone)
     result = service.instances().list(project=project, zone=zone).execute()
     instance_objects = result['items'] if 'items' in result else None
     instances = []
@@ -121,6 +135,25 @@ def create_instance_group(
     return response
 
 
+def list_instance_groups(service, project, zone):
+    """List instances groups names created in Google Cloud currently.
+
+    Args:
+        service: gcloud API service built previously
+        project: Project id from Google Cloud Platform
+        zone: Google Cloud Zone where instances are
+
+    Returns:
+        list(str): Name of the group instances availables in Google Cloud.
+
+    """
+    request = service.instanceGroupManagers().list(project=project, zone=zone)
+    while request is not None:
+        response = request.execute()
+    for instance_group_manager in response['items']:
+        pprint(instance_group_manager)
+
+
 def get_container_id(instance_name, base='klt'):
     """Get container id inner an instance.
 
@@ -146,12 +179,6 @@ def get_container_id(instance_name, base='klt'):
     if err:
         print(err)
 
-    # Exception management
-    # if err:
-    #     raise RuntimeError(err)
-    # if not result:
-    #     raise RuntimeError(
-    #         'It is not possible to find out containerID from machine specified. Please, check docker ps filter.')
     return result
 
 
@@ -171,7 +198,7 @@ def execute_remote_command_instance(
     cmd = ['gcloud', 'compute', 'ssh', instance_name, '--container',
            container_id, '--command', experiment_command]
     remoteCommand_process = subprocess.Popen(
-        cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd, shell=False, stdout=None, stderr=None)
 
 
 # Google Cloud doc function
@@ -204,88 +231,165 @@ def wait_for_operation(service, project, zone, operation, operation_type=''):
 
         time.sleep(1)
 
-# def create_instance(service, project, zone, name, bucket):
-#     """Create an individual instance in Google Cloud.
+    ####################### GCLOUD BUCKETS MANIPULATION #######################
 
-#     Args:
-#         service: gcloud API service built previously
-#         project: Project id from Google Cloud Platform
-#         zone: Google Cloud Zone where instance will be
-#         name: Name of the new instance
-#         bucket:
 
-#     Returns:
-#         list(str): Name of the instances availables in Google Cloud.
+def create_bucket(client, bucket_name='experiments-storage', location='EU'):
+    """Create bucket in Google Cloud.
 
-#     """
-#     # Get the latest Debian Jessie image.
-#     image_response = service.images().getFromFamily(
-#         project='debian-cloud', family='debian-9').execute()
-#     source_disk_image = image_response['selfLink']
+    Args:
+        client: Google Cloud storage client object to ask resources.
+        bucket_name: Name of the bucket
+        location: Location for the bucket.
 
-#     # Configure the machine
-#     machine_type = "zones/%s/machineTypes/n1-standard-1" % zone
-#     startup_script = open(
-#         os.path.join(
-#             os.path.dirname(__file__), 'startup-script.sh'), 'r').read()
-#     image_url = "http://storage.googleapis.com/gce-demo-input/photo.jpg"
-#     image_caption = "Ready for dessert?"
+    Returns:
+        bucket: Bucket object.
 
-#     config = {
-#         'name': name,
-#         'machineType': machine_type,
+    """
+    bucket = client.create_bucket(
+        bucket_name,
+        location=location)
+    return bucket
 
-#         # Specify the boot disk and the image to use as a source.
-#         'disks': [
-#             {
-#                 'boot': True,
-#                 'autoDelete': True,
-#                 'initializeParams': {
-#                     'sourceImage': source_disk_image,
-#                 }
-#             }
-#         ],
 
-#         # Specify a network interface with NAT to access the public
-#         # internet.
-#         'networkInterfaces': [{
-#             'network': 'global/networks/default',
-#             'accessConfigs': [
-#                 {'type': 'ONE_TO_ONE_NAT', 'name': 'External NAT'}
-#             ]
-#         }],
+def get_bucket(client, bucket_name):
+    """Get bucket object into Google Account using client.
 
-#         # Allow the instance to access cloud storage and logging.
-#         'serviceAccounts': [{
-#             'email': 'default',
-#             'scopes': [
-#                 'https://www.googleapis.com/auth/devstorage.read_write',
-#                 'https://www.googleapis.com/auth/logging.write'
-#             ]
-#         }],
+    Args:
+        client: Google Cloud storage client object to ask resources.
+        bucket_name: Name of the bucket
 
-#         # Metadata is readable from the instance and allows you to
-#         # pass configuration from deployment scripts to instances.
-#         'metadata': {
-#             'items': [{
-#                 # Startup script is automatically executed by the
-#                 # instance upon startup.
-#                 'key': 'startup-script',
-#                 'value': startup_script
-#             }, {
-#                 'key': 'url',
-#                 'value': image_url
-#             }, {
-#                 'key': 'text',
-#                 'value': image_caption
-#             }, {
-#                 'key': 'bucket',
-#                 'value': bucket
-#             }]
-#         }
-#     }
+    Returns:
+        bucket: Bucket object.
 
-#     return service.instances().insert(
-#         project=project,
-#         zone=zone,
-#         body=config).execute()
+    """
+    bucket = client.get_bucket(bucket_name)
+    return bucket
+
+
+def upload_to_bucket(client, src_path, dest_bucket_name, dest_path):
+    """Upload a file or a directory (recursively) from local file system to specified bucket.
+
+    Args:
+        client: Google Cloud storage client object to ask resources.
+        src_path: Path to the local file or directory you want to send
+        dest_bucket_name: Destination bucket name
+        dest_path: Path where you want to store data inner the bucket
+    """
+    bucket = client.get_bucket(dest_bucket_name)
+    if os.path.isfile(src_path):
+        blob = bucket.blob(os.path.join(dest_path, os.path.basename(src_path)))
+        blob.upload_from_filename(src_path)
+        return
+    for item in glob.glob(src_path + '/*'):
+        if os.path.isfile(item):
+            blob = bucket.blob(os.path.join(dest_path, os.path.basename(item)))
+            blob.upload_from_filename(item)
+        else:
+            upload_to_bucket(client,
+                             item, dest_bucket_name, os.path.join(
+                                 dest_path, os.path.basename(item)))
+
+
+def read_from_bucket(client, src_path, ori_bucket_name, ori_path):
+    """Read a file or a directory (recursively) from specified bucket to local file system.
+
+    Args:
+        client: Google Cloud storage client object to ask resources.
+        src_path: Path to the local file or directory you want to read and download data
+        ori_bucket_name: Origin bucket name where reading
+        ori_path: Path where you want to read data inner the bucket
+    """
+    bucket = client.get_bucket(ori_bucket_name)
+    blobs = bucket.list_blobs(prefix=ori_path)
+    for blob in blobs:
+        filename = blob.name.replace('/', '_')
+        blob.download_to_filename(src_path + filename)
+
+
+######## OPERATION DESIGNED TO BE EXECUTED FROM REMOTE CONTAINER ########
+
+
+def get_service_account_token():
+    """Get token authorization if container has a valid service account.
+
+    Returns:
+        str: Authorization token for send petition to Google Cloud accounts (with its account service privileges).
+    """
+    url_token = 'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token'
+    headers_token = {'Metadata-Flavor': 'Google'}
+    token = requests.get(url_token, headers=headers_token).json()[
+        'access_token']
+    return token
+
+
+def _get_instance_group_len(instance_group_name, token):
+    """Get number of instances in a specific Managed Instance Groups (MIG).
+
+    Args:
+        instance_group_name: Instance group name you want to know number of instances.
+        token: str to auth in Google Cloud Account service from container
+
+    Returns:
+        int: Number of instances inner Managed Instance Groups
+    """
+    url_list = 'https://compute.googleapis.com/compute/v1/projects/' + \
+        os.environ['gce_project_id'] + '/zones/' + os.environ['gce_zone'] + '/instanceGroupManagers/' + instance_group_name + '/listManagedInstances'
+    header_auth = {'Authorization': 'Bearer ' + token}
+    response = requests.post(
+        url_list,
+        headers=header_auth)
+
+    return len(response.json()['managedInstances'])
+
+
+def delete_instance_from_container(token):
+    """Delete an individual instance group (this functionality doesn't work in Managed Instance Groups) where container is executing.
+
+    Args:
+        token: str to auth in Google Cloud Account service from container
+
+    Returns:
+        Request object: REST reponse
+    """
+    # Make request for delete host container
+    url_delete = 'https://www.googleapis.com/compute/v1/projects/' + \
+        os.environ['gce_project_id'] + '/zones/' + os.environ['gce_zone'] + '/instances/' + os.environ['HOSTNAME']
+    header_auth = {'Authorization': 'Bearer ' + token}
+    response = requests.delete(url_delete, headers=header_auth)
+    return response
+
+
+def delete_instance_MIG_from_container(instance_group_name, token):
+    """Delete the instance group inner Managed Instance Groups where container is executing. Whether this vm is alone in MIG, MIG will be removed too.
+
+    Args:
+        instance_group_name: Instance group name where container is executing.
+        token: str to auth in Google Cloud Account service from container
+
+    Returns:
+        Request object: REST reponse
+    """
+    header_auth = {'Authorization': 'Bearer ' + token}
+    if _get_instance_group_len(instance_group_name, token) == 1:
+        # We can delete entire instance group
+        url_delete = 'https://compute.googleapis.com/compute/v1/projects/' + \
+            os.environ['gce_project_id'] + '/zones/' + os.environ['gce_zone'] + '/instanceGroupManagers/' + instance_group_name
+        response = requests.delete(url_delete, headers=header_auth)
+    else:
+        # We can only delete specific machine from instance group
+        url_delete = 'https://compute.googleapis.com/compute/v1/projects/' + \
+            os.environ['gce_project_id'] + '/zones/' + os.environ['gce_zone'] + '/instanceGroupManagers/' + instance_group_name + '/deleteInstances'
+
+        data_delete = {
+            "instances": [
+                'zones/' +
+                os.environ['gce_zone'] +
+                '/instances/' +
+                os.environ['HOSTNAME']],
+            "skipInstancesOnValidationError": True}
+        response = requests.post(
+            url_delete,
+            headers=header_auth,
+            data=data_delete)
+    return response

@@ -29,6 +29,11 @@ The main functionalities of *sinergym* are the following:
 -  **Stable Baseline 3 Integration**. Some functionalities like callbacks
    have been developed by our team in order to test easily these environments
    with deep reinforcement learning algorithms.
+-  **Google Cloud Integration**. Whether you have a Google Cloud account and you want to
+   use your infrastructure with Sinergym, it has been designed a complete functionality
+   in order to facilitate this work.
+-  **Data Visualization**. Using Sinergym logger or Tensorboard server to visualize training information
+   in real-time.
 -  Many more!
 
 .. note:: *This is a work in progress project. Stay tuned for upcoming releases!*

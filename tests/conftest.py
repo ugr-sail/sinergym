@@ -1,5 +1,5 @@
 import pytest
-from sinergym.simulators.eplus_old import EnergyPlus
+from sinergym.simulators.eplus import EnergyPlus
 from sinergym.envs.eplus_env import EplusEnv
 import sinergym.utils.rewards as R
 from sinergym.utils.wrappers import NormalizeObservation, MultiObsWrapper, LoggerWrapper

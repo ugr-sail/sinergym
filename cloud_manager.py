@@ -2,6 +2,8 @@ import argparse
 from time import sleep
 from pprint import pprint
 import sinergym.utils.gcloud as gcloud
+from google.cloud import storage
+import google.api_core.exceptions
 
 parser = argparse.ArgumentParser(
     description='Process for run experiments in Google Cloud')
@@ -45,6 +47,9 @@ args = parser.parse_args()
 print('Init Google cloud service API...')
 service = gcloud.init_gcloud_service()
 
+print('Init Google Cloud Storage Client...')
+client = gcloud.init_storage_client()
+
 # Create instance group
 n_experiments = len(args.commands)
 print('Creating instance group(MIG) for experiments ({} instances)...'.format(
@@ -73,6 +78,21 @@ if response['status'] != 'DONE':
 pprint(response)
 print('MIG created.')
 
+# If storage exists it will be used, else it will be created previously by API
+print('Looking for experiments storage')
+try:
+    bucket = gcloud.get_bucket(client, bucket_name='experiments-storage')
+    print(
+        'Bucket {} found, this storage will be used when experiments finish.'.format(
+            bucket.name))
+except(google.api_core.exceptions.NotFound):
+    print('Any bucket found into your Google account, generating new one...')
+    bucket = gcloud.create_bucket(
+        client,
+        bucket_name='experiments-storage',
+        location='EU')
+
+
 # List VM names
 print('Looking for instance names... (waiting for they are visible too)')
 # Sometimes, although instance group insert status is DONE, isn't visible
@@ -87,6 +107,10 @@ while len(instances) < n_experiments:
     sleep(3)
 print(instances)
 # Number of machines should be the same than commands
+
+# Processing commands and adding group id to the petition
+for i in range(len(args.commands)):
+    args.commands[i] += ' --group_name ' + args.group_name
 
 # Execute a comand in every container inner VM
 print('Sending commands to every container VM... (waiting for container inner VM is ready too)')
@@ -108,10 +132,3 @@ for i, instance in enumerate(instances):
             container_id))
 
 print('All VM\'s are working correctly, see Google Cloud Platform Console.')
-# Close VM when finished with google cloud alerts?
-
-# python  cloud_manager.py --project_id sinergym
-# --experiments_commands
-# 'python 3 DRL_battery.py --environment Eplus-5Zone-hot-discrete-v1 --episodes 3 --algorithm DQN --logger log_interval 1 --seed 54'
-# 'python3 DRL_battery.py --environment Eplus-5Zone-hot-continuous-stochastic-v1 --episodes 3 --algorithm PPO --logger --log_interval 1 --tensorboard --normalization --seed 54'
-# --template_name sinergym_template --group_name sinergym-vm

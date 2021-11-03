@@ -1,7 +1,7 @@
-sinergym.simulators.eplus\_old
-==============================
+sinergym.simulators.eplus\_alpha
+================================
 
-.. automodule:: sinergym.simulators.eplus_old
+.. automodule:: sinergym.simulators.eplus_alpha
   
    
    

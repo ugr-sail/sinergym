@@ -22,3 +22,8 @@ tensorboard*/
 best_model*/
 mlruns/
 
+# Google storage credentials
+google-storage.json
+
+# Google Cloud MLflow server start script
+start_mlflow_tracking.sh
