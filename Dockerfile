@@ -3,6 +3,10 @@
 ARG UBUNTU_VERSION=18.04
 FROM ubuntu:${UBUNTU_VERSION}
 
+# Configuring tzdata in order to don't ask for geographic area
+ENV TZ=Europe/Kiev
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Arguments for EnergyPlus version (default values of version 8.6.0 if is not specified)
 ARG ENERGYPLUS_VERSION=9.5.0
 ARG ENERGYPLUS_INSTALL_VERSION=9-5-0
