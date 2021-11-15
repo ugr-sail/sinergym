@@ -86,69 +86,72 @@
 !-   ===========  ALL OBJECTS IN CLASS: SITE:LOCATION ===========
 
   Site:Location,
-    Pittsburgh PA USA,       !- Name
-    40.36,                   !- Latitude {deg}
-    -79.92,                  !- Longitude {deg}
-    -5,                      !- Time Zone {hr}
-    388;                     !- Elevation {m}
+    New York J F Kennedy IntL Ar_NY_USA Design_Conditions,  !- Name
+    40.65,                   !- Latitude {deg}
+    -73.80,                  !- Longitude {deg}
+    -5.00,                   !- Time Zone {hr}
+    5.00;                    !- Elevation {m}
 
 !-   ===========  ALL OBJECTS IN CLASS: SIZINGPERIOD:DESIGNDAY ===========
 
-  SizingPeriod:DesignDay,
-    Summer Design Day in Pittsburgh PA 99.6,  !- Name
-    7,                       !- Month
-    15,                      !- Day of Month
-    SummerDesignDay,         !- Day Type
-    32.2,                    !- Maximum Dry-Bulb Temperature {C}
-    9.8,                     !- Daily Dry-Bulb Temperature Range {deltaC}
-    ,                        !- Dry-Bulb Temperature Range Modifier Type
-    ,                        !- Dry-Bulb Temperature Range Modifier Day Schedule Name
-    WetBulb,                 !- Humidity Condition Type
-    22.4,                    !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
-    ,                        !- Humidity Condition Day Schedule Name
-    ,                        !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
-    ,                        !- Enthalpy at Maximum Dry-Bulb {J/kg}
-    ,                        !- Daily Wet-Bulb Temperature Range {deltaC}
-    96749.9,                 !- Barometric Pressure {Pa}
-    0,                       !- Wind Speed {m/s}
-    0,                       !- Wind Direction {deg}
-    No,                      !- Rain Indicator
-    No,                      !- Snow Indicator
-    Yes,                     !- Daylight Saving Time Indicator
-    ,                        !- Solar Model Indicator
-    ,                        !- Beam Solar Day Schedule Name
-    ,                        !- Diffuse Solar Day Schedule Name
-    ,                        !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub) {dimensionless}
-    ,                        !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud) {dimensionless}
-    0.98;                    !- Sky Clearness
+! New York J F Kennedy IntL Ar_NY_USA Annual Cooling (DB=>MWB) .4%, MaxDB=32.1°C MWB=23.1°C
 
   SizingPeriod:DesignDay,
-    Winter Design Day in Pittsburgh PA 99.6,  !- Name
-    1,                       !- Month
-    15,                      !- Day of Month
-    WinterDesignDay,         !- Day Type
-    -14.7,                   !- Maximum Dry-Bulb Temperature {C}
-    0,                       !- Daily Dry-Bulb Temperature Range {deltaC}
-    ,                        !- Dry-Bulb Temperature Range Modifier Type
+    New York J F Kennedy IntL Ar Ann Clg .4% Condns DB=>MWB,  !- Name
+    7,                       !- Month
+    21,                      !- Day of Month
+    SummerDesignDay,         !- Day Type
+    32.1,                    !- Maximum Dry-Bulb Temperature {C}
+    7.4,                     !- Daily Dry-Bulb Temperature Range {deltaC}
+    DefaultMultipliers,      !- Dry-Bulb Temperature Range Modifier Type
     ,                        !- Dry-Bulb Temperature Range Modifier Day Schedule Name
-    WetBulb,                 !- Humidity Condition Type
-    -14.7,                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+    Wetbulb,                 !- Humidity Condition Type
+    23.1,                    !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
     ,                        !- Humidity Condition Day Schedule Name
     ,                        !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
     ,                        !- Enthalpy at Maximum Dry-Bulb {J/kg}
     ,                        !- Daily Wet-Bulb Temperature Range {deltaC}
-    96749.9,                 !- Barometric Pressure {Pa}
-    11.2,                    !- Wind Speed {m/s}
-    0,                       !- Wind Direction {deg}
+    101265.,                 !- Barometric Pressure {Pa}
+    5.6,                     !- Wind Speed {m/s}
+    230,                     !- Wind Direction {deg}
     No,                      !- Rain Indicator
     No,                      !- Snow Indicator
     No,                      !- Daylight Saving Time Indicator
-    ,                        !- Solar Model Indicator
+    ASHRAETau,               !- Solar Model Indicator
+    ,                        !- Beam Solar Day Schedule Name
+    ,                        !- Diffuse Solar Day Schedule Name
+    0.541,                   !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub) {dimensionless}
+    1.800;                   !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud) {dimensionless}
+
+! New York J F Kennedy IntL Ar_NY_USA Annual Heating 99.6%, MaxDB=-10.7°C
+
+  SizingPeriod:DesignDay,
+    New York J F Kennedy IntL Ar Ann Htg 99.6% Condns DB,  !- Name
+    1,                       !- Month
+    21,                      !- Day of Month
+    WinterDesignDay,         !- Day Type
+    -10.7,                   !- Maximum Dry-Bulb Temperature {C}
+    0.0,                     !- Daily Dry-Bulb Temperature Range {deltaC}
+    DefaultMultipliers,      !- Dry-Bulb Temperature Range Modifier Type
+    ,                        !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+    Wetbulb,                 !- Humidity Condition Type
+    -10.7,                   !- Wetbulb or DewPoint at Maximum Dry-Bulb {C}
+    ,                        !- Humidity Condition Day Schedule Name
+    ,                        !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+    ,                        !- Enthalpy at Maximum Dry-Bulb {J/kg}
+    ,                        !- Daily Wet-Bulb Temperature Range {deltaC}
+    101265.,                 !- Barometric Pressure {Pa}
+    7.5,                     !- Wind Speed {m/s}
+    320,                     !- Wind Direction {deg}
+    No,                      !- Rain Indicator
+    No,                      !- Snow Indicator
+    No,                      !- Daylight Saving Time Indicator
+    ASHRAEClearSky,          !- Solar Model Indicator
     ,                        !- Beam Solar Day Schedule Name
     ,                        !- Diffuse Solar Day Schedule Name
     ,                        !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub) {dimensionless}
     ,                        !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud) {dimensionless}
-    0;                       !- Sky Clearness
+    0.00;                    !- Sky Clearness
 
 !-   ===========  ALL OBJECTS IN CLASS: RUNPERIOD ===========
 

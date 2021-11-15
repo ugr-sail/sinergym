@@ -327,40 +327,29 @@ register(
         'env_name': 'datacenter-mixed-continuous-stochastic-v1'})
 
 #========================MULLION========================#
-# TODO Include 8 environments of IW for mixed and cool weathers
 
+# 21) IW, mixed weather, discrete actions
 register(
-    id='Eplus-IWMullion-discrete-v1',
+    id='Eplus-IWMullion-mixed-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': 'IW_Mullion.idf',
-        'weather_file': 'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw',
+        'idf_file': 'IW_Mullion_NY.idf',
+        'weather_file': 'USA_NY_New.York-John.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesIW.cfg',
         'spaces_file': 'IW_Mullion_spaces.cfg',
         'discrete_actions': True,
         'reward': LinearReward(),
-        'env_name': 'IWMullion-discrete-v1'
+        'env_name': 'IWMullion-mixed-discrete-v1'
     }
 )
 
+# 22) IW, mixed weather, discrete actions and stochastic
 register(
-    id='Eplus-IWMullion-continuous-v1',
+    id='Eplus-IWMullion-mixed-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': 'IW_Mullion.idf',
-        'weather_file': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
-        'variables_file': 'variablesIW.cfg',
-        'spaces_file': 'IW_Mullion_spaces.cfg',
-        'discrete_actions': False,
-        'reward': LinearReward(),
-        'env_name': 'IWMullion-continuous-v1'})
-
-register(
-    id='Eplus-IWMullion-discrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'idf_file': 'IW_Mullion.idf',
-        'weather_file': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        'idf_file': 'IW_Mullion_NY.idf',
+        'weather_file': 'USA_NY_New.York-John.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesIW.cfg',
         'spaces_file': 'IW_Mullion_spaces.cfg',
         'discrete_actions': True,
@@ -369,14 +358,32 @@ register(
             0.0,
             0.001),
         'reward': LinearReward(),
-        'env_name': 'IWMullion-discrete-stochastic-v1'})
+        'env_name': 'IWMullion-mixed-discrete-stochastic-v1'
+    }
+)
 
+# 23) IW, mixed weather, continuous actions
 register(
-    id='Eplus-IWMullion-continuous-stochastic-v1',
+    id='Eplus-IWMullion-mixed-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': 'IW_Mullion.idf',
-        'weather_file': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        'idf_file': 'IW_Mullion_NY.idf',
+        'weather_file': 'USA_NY_New.York-John.F.Kennedy.Intl.AP.744860_TMY3.epw',
+        'variables_file': 'variablesIW.cfg',
+        'spaces_file': 'IW_Mullion_spaces.cfg',
+        'discrete_actions': False,
+        'reward': LinearReward(),
+        'env_name': 'IWMullion-mixed-continuous-v1'
+    }
+)
+
+# 24) IW, mixed weather, continuous actions and stochastic
+register(
+    id='Eplus-IWMullion-mixed-continuous-stochastic-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'IW_Mullion_NY.idf',
+        'weather_file': 'USA_NY_New.York-John.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesIW.cfg',
         'spaces_file': 'IW_Mullion_spaces.cfg',
         'discrete_actions': False,
@@ -385,4 +392,74 @@ register(
             0.0,
             0.001),
         'reward': LinearReward(),
-        'env_name': 'IWMullion-continuous-stochastic-v1'})
+        'env_name': 'IWMullion-mixed-continuous-stochastic-v1'
+    }
+)
+
+# 25) IW, cool weather, discrete actions
+register(
+    id='Eplus-IWMullion-cool-discrete-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'IW_Mullion_WA.idf',
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'variables_file': 'variablesIW.cfg',
+        'spaces_file': 'IW_Mullion_spaces.cfg',
+        'discrete_actions': True,
+        'reward': LinearReward(),
+        'env_name': 'IWMullion-cool-discrete-v1'
+    }
+)
+
+# 26) IW, cool weather, discrete actions and stochastic
+register(
+    id='Eplus-IWMullion-cool-discrete-stochastic-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'IW_Mullion_WA.idf',
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'variables_file': 'variablesIW.cfg',
+        'spaces_file': 'IW_Mullion_spaces.cfg',
+        'discrete_actions': True,
+        'weather_variability': (
+            1.0,
+            0.0,
+            0.001),
+        'reward': LinearReward(),
+        'env_name': 'IWMullion-cool-discrete-stochastic-v1'
+    }
+)
+
+# 27) IW, cool weather, continuous actions
+register(
+    id='Eplus-IWMullion-cool-continuous-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'IW_Mullion_WA.idf',
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'variables_file': 'variablesIW.cfg',
+        'spaces_file': 'IW_Mullion_spaces.cfg',
+        'discrete_actions': False,
+        'reward': LinearReward(),
+        'env_name': 'IWMullion-cool-continuous-v1'
+    }
+)
+
+# 28) IW, cool weather, continuous actions and stochastic
+register(
+    id='Eplus-IWMullion-cool-continuous-stochastic-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'IW_Mullion_WA.idf',
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'variables_file': 'variablesIW.cfg',
+        'spaces_file': 'IW_Mullion_spaces.cfg',
+        'discrete_actions': False,
+        'weather_variability': (
+            1.0,
+            0.0,
+            0.001),
+        'reward': LinearReward(),
+        'env_name': 'IWMullion-cool-continuous-stochastic-v1'
+    }
+)
