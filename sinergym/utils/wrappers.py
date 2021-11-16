@@ -37,13 +37,21 @@ class NormalizeObservation(gym.ObservationWrapper):
         # NOTE: If you want to record day, month and hour, you should add that
         # variables as keys
         for i, variable in enumerate(self.env.variables['observation']):
-            # normalization
-            obs[i] = (obs[i] - self.ranges[variable][0]) / \
-                (self.ranges[variable][1] - self.ranges[variable][0])
+            # normalization (handle DivisionbyZero Error)
+            if(self.ranges[variable][1] - self.ranges[variable][0] == 0):
+                obs[i] = max(
+                    self.ranges[variable][0], min(
+                        obs[i], self.ranges[variable][1]))
+            else:
+                obs[i] = (obs[i] - self.ranges[variable][0]) / \
+                    (self.ranges[variable][1] - self.ranges[variable][0])
+
             # If value is out
-            if obs[i] > 1:
+            if np.isnan(obs[i]):
+                obs[i] = 0
+            elif obs[i] > 1:
                 obs[i] = 1
-            if obs[i] < 0:
+            elif obs[i] < 0:
                 obs[i] = 0
         # Return obs values in the SAME ORDER than obs argument.
         return np.array(obs)
