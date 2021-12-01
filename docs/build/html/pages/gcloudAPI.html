@@ -256,7 +256,7 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong> (see <a clas
     --zone europe-west1-b <span class="se">\</span>
     --template_name sinergym-template <span class="se">\</span>
     --group_name sinergym-group <span class="se">\</span>
-    --experiment_commands
+    --experiment_commands <span class="se">\</span>
     <span class="s1">&#39;python3 DRL_battery.py --environment Eplus-5Zone-hot-discrete-v1 --episodes 2 --algorithm DQN --logger --log_interval 1 --seed 58 --evaluation --eval_freq 1 --eval_length 1 --tensorboard ./tensorboard_log --remote_store&#39;</span> <span class="se">\</span>
     <span class="s1">&#39;python3 DRL_battery.py --environment Eplus-5Zone-hot-continuous-v1 --episodes 3 --algorithm PPO --logger --log_interval 300 --seed 52 --evaluation --eval_freq 1 --eval_length 1 --tensorboard ./tensorboard_log --remote_store&#39;</span>
 </pre></div>
@@ -707,6 +707,15 @@ Remember to configure Google Cloud account correctly before use this functionali
 <p>As you see in sinergym template explained in <a class="reference internal" href="installation.html#create-your-vm-or-mig"><span class="std std-ref">4. Create your VM or MIG</span></a>, it is specified <code class="docutils literal notranslate"><span class="pre">--scope</span></code>, <code class="docutils literal notranslate"><span class="pre">--service-account</span></code> and <code class="docutils literal notranslate"><span class="pre">--container-env</span></code>. This aim to <em>remote_store</em> option in <em>DRL_battery.py</em> works correctly.
 Those parameters provide each container with permissions to write in the bucket and manage Google Cloud Platform (auto instance remove function).
 Container environment variables indicate zone, project_id and mlflow tracking server uri need it in <a class="reference internal" href="#mlflow-tracking-server-set-up"><span class="std std-ref">Mlflow tracking server set up</span></a>.</p>
+<p>Hence, it is <strong>necessary</strong> to <strong>set up this service account</strong> and give privileges in order to that objective. Then, following <a class="reference external" href="https://cloud.google.com/docs/authentication/getting-started">Google authentication documentation</a> we will do the next:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud iam service-accounts create storage-account
+$ gcloud projects add-iam-policy-binding PROJECT_ID --member<span class="o">=</span><span class="s2">&quot;serviceAccount:storage-account@PROJECT_ID.iam.gserviceaccount.com&quot;</span> --role<span class="o">=</span><span class="s2">&quot;roles/owner&quot;</span>
+$ gcloud iam service-accounts keys create PROJECT_PATH/google-storage.json --iam-account<span class="o">=</span>storage-account@PROJECT_ID.iam.gserviceaccount.com
+$ <span class="nb">export</span> <span class="nv">GOOGLE_CLOUD_CREDENTIALS</span><span class="o">=</span> PROJECT_PATH/google-storage.json
+</pre></div>
+</div>
+<p>In short, we create a new service account called <strong>storage-account</strong>. Then, we dote this account with <em>roles/owner</em> permission. The next step is create a file key (json) called <strong>google-storage.json</strong> in our project root (gitignore will ignore this file in remote).
+Finally, we export this file in <strong>GOOGLE_CLOUD_CREDENTIALS</strong> in order to gcloud SDK knows that it has to use that token to authenticate.</p>
 </section>
 </section>
 <section id="remote-tensorboard-log">
