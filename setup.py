@@ -20,7 +20,7 @@ setup(name='sinergym',
               'tensorboard_plugin_profile',  # Training logger
               'pytest',  # Unit test repository
               'sphinx',  # documentation
-              'sphinx-rtd-theme'  # documentation theme
+              'sphinx-rtd-theme',  # documentation theme
               'google-api-python-client',
               'oauth2client',
               'google-cloud-storage'
