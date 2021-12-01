@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sinergym Google Cloud API &mdash; sinergym  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /><link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <title>Sinergym Google Cloud API &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -25,7 +28,8 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../index.html" class="icon icon-home"> sinergym<img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> sinergym
+            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -87,8 +91,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="sinergym-google-cloud-api">
-<h1>Sinergym Google Cloud API<a class="headerlink" href="#sinergym-google-cloud-api" title="Permalink to this headline">¶</a></h1>
+  <section id="sinergym-google-cloud-api">
+<h1>Sinergym Google Cloud API<a class="headerlink" href="#sinergym-google-cloud-api" title="Permalink to this headline"></a></h1>
 <p>In this project, an API based on RESTfull API for gcloud has been designed and developed in order to use Google Cloud infrastructure directly writing experiments definition ir our personal computer.</p>
 <a class="reference internal image-reference" href="../_images/Sinergym_cloud_API.png"><img alt="Sinergym cloud API diagram" class="align-center" src="../_images/Sinergym_cloud_API.png" style="width: 1000px;" /></a>
 <p>From our personal computer, we send a list of experiments we want to be executed in Google Cloud, using <strong>cloud_manager.py</strong> script for that purpose. An instance will be created for every experiment defined.
@@ -99,13 +103,13 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong> (see <a clas
 <p>Don’t try to remove an instance inner MIG directly using Google Cloud API REST, it needs to be executed from MIG to work. Some other problems (like wrong API REST documentation) have been solved in our API. We recommend you use this API directly.</p>
 </div>
 <p>Let’s see a detailed explanation above.</p>
-<div class="section" id="executing-api">
-<h2>Executing API<a class="headerlink" href="#executing-api" title="Permalink to this headline">¶</a></h2>
+<section id="executing-api">
+<h2>Executing API<a class="headerlink" href="#executing-api" title="Permalink to this headline"></a></h2>
 <p>Our objective is defining a set of experiments in order to execute them in a Google Cloud remote container each one. For this, <em>cloud_manager.py</em> has been created in repository root. This file must be used in our local computer:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="kn">import</span> <span class="nn">sinergym.utils.gcloud</span> <span class="k">as</span> <span class="nn">gcloud</span>
+<span class="kn">import</span> <span class="nn">sinergym.utils.gcloud</span> <span class="kn">as</span> <span class="nn">gcloud</span>
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="kn">import</span> <span class="nn">google.api_core.exceptions</span>
 
@@ -148,15 +152,15 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong> (see <a clas
 
 <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Init Google cloud service API...&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Init Google cloud service API...&#39;</span><span class="p">)</span>
 <span class="n">service</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">init_gcloud_service</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Init Google Cloud Storage Client...&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Init Google Cloud Storage Client...&#39;</span><span class="p">)</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">init_storage_client</span><span class="p">()</span>
 
 <span class="c1"># Create instance group</span>
 <span class="n">n_experiments</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">commands</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Creating instance group(MIG) for experiments (</span><span class="si">{}</span><span class="s1"> instances)...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Creating instance group(MIG) for experiments ({} instances)...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="n">n_experiments</span><span class="p">))</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">create_instance_group</span><span class="p">(</span>
     <span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span>
@@ -168,8 +172,8 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong> (see <a clas
 <span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
 <span class="c1"># Wait for the machines to be fully created.</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> status is </span><span class="si">{1}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="k">print</span><span class="p">(</span>
+    <span class="s1">&#39;{0} status is {1}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="n">response</span><span class="p">[</span><span class="s1">&#39;operationType&#39;</span><span class="p">],</span>
         <span class="n">response</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]))</span>
 <span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;DONE&#39;</span><span class="p">:</span>
@@ -180,17 +184,17 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong> (see <a clas
         <span class="n">operation</span><span class="o">=</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
         <span class="n">operation_type</span><span class="o">=</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;operationType&#39;</span><span class="p">])</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MIG created.&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;MIG created.&#39;</span><span class="p">)</span>
 
 <span class="c1"># If storage exists it will be used, else it will be created previously by API</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Looking for experiments storage&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Looking for experiments storage&#39;</span><span class="p">)</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="n">bucket</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket_name</span><span class="o">=</span><span class="s1">&#39;experiments-storage&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span>
-        <span class="s1">&#39;Bucket </span><span class="si">{}</span><span class="s1"> found, this storage will be used when experiments finish.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="k">print</span><span class="p">(</span>
+        <span class="s1">&#39;Bucket {} found, this storage will be used when experiments finish.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
 <span class="k">except</span><span class="p">(</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Any bucket found into your Google account, generating new one...&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Any bucket found into your Google account, generating new one...&#39;</span><span class="p">)</span>
     <span class="n">bucket</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span>
         <span class="n">client</span><span class="p">,</span>
         <span class="n">bucket_name</span><span class="o">=</span><span class="s1">&#39;experiments-storage&#39;</span><span class="p">,</span>
@@ -198,7 +202,7 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong> (see <a clas
 
 
 <span class="c1"># List VM names</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Looking for instance names... (waiting for they are visible too)&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Looking for instance names... (waiting for they are visible too)&#39;</span><span class="p">)</span>
 <span class="c1"># Sometimes, although instance group insert status is DONE, isn&#39;t visible</span>
 <span class="c1"># for API yet. Hence, we have to wait for with a loop...</span>
 <span class="n">instances</span> <span class="o">=</span> <span class="p">[]</span>
@@ -209,7 +213,7 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong> (see <a clas
         <span class="n">zone</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">zone</span><span class="p">,</span>
         <span class="n">base_instances_names</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">group_name</span><span class="p">)</span>
     <span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span>
 <span class="c1"># Number of machines should be the same than commands</span>
 
 <span class="c1"># Processing commands and adding group id to the petition</span>
@@ -217,9 +221,9 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong> (see <a clas
     <span class="n">args</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; --group_name &#39;</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">group_name</span>
 
 <span class="c1"># Execute a comand in every container inner VM</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sending commands to every container VM... (waiting for container inner VM is ready too)&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Sending commands to every container VM... (waiting for container inner VM is ready too)&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">instance</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">instances</span><span class="p">):</span>
-    <span class="n">container_id</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">container_id</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="c1"># Obtain container id inner VM</span>
     <span class="k">while</span> <span class="ow">not</span> <span class="n">container_id</span><span class="p">:</span>
         <span class="n">container_id</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">get_container_id</span><span class="p">(</span><span class="n">instance_name</span><span class="o">=</span><span class="n">instance</span><span class="p">)</span>
@@ -229,13 +233,13 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong> (see <a clas
         <span class="n">container_id</span><span class="o">=</span><span class="n">container_id</span><span class="p">,</span>
         <span class="n">instance_name</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
         <span class="n">experiment_command</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span>
-        <span class="s1">&#39;command </span><span class="si">{}</span><span class="s1"> has been sent to instance </span><span class="si">{}</span><span class="s1">(container: </span><span class="si">{}</span><span class="s1">).&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="k">print</span><span class="p">(</span>
+        <span class="s1">&#39;command {} has been sent to instance {}(container: {}).&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">args</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
             <span class="n">instance</span><span class="p">,</span>
             <span class="n">container_id</span><span class="p">))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;All VM</span><span class="se">\&#39;</span><span class="s1">s are working correctly, see Google Cloud Platform Console.&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;All VM</span><span class="se">\&#39;</span><span class="s1">s are working correctly, see Google Cloud Platform Console.&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This script uses the following parameters:</p>
@@ -279,16 +283,16 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong> (see <a clas
 <p>This script uses gcloud API in background. Methods developed and used to this issues can be seen in <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/gcloud.py">sinergym/sinergym/utils/gcloud.py</a> or in <a class="reference internal" href="API-reference.html#api-reference"><span class="std std-ref">API reference</span></a>.
 Remember to configure Google Cloud account correctly before use this functionality.</p>
 </div>
-</div>
-<div class="section" id="receiving-experiments-in-remote-containers">
-<h2>Receiving experiments in remote containers<a class="headerlink" href="#receiving-experiments-in-remote-containers" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="receiving-experiments-in-remote-containers">
+<h2>Receiving experiments in remote containers<a class="headerlink" href="#receiving-experiments-in-remote-containers" title="Permalink to this headline"></a></h2>
 <p>This script, called <em>DRL_battery.py</em>, will be allocated in every remote container and it is used to understand experiments command exposed above by <em>cloud_manager.py</em> (<code class="docutils literal notranslate"><span class="pre">--experiment_commands</span></code>):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">stable_baselines3.common.logger</span> <span class="kn">import</span> <span class="n">configure</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3.common.vec_env</span> <span class="kn">import</span> <span class="n">DummyVecEnv</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3.common.callbacks</span> <span class="kn">import</span> <span class="n">CallbackList</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="n">A2C</span><span class="p">,</span> <span class="n">DDPG</span><span class="p">,</span> <span class="n">DQN</span><span class="p">,</span> <span class="n">PPO</span><span class="p">,</span> <span class="n">SAC</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3.common.noise</span> <span class="kn">import</span> <span class="n">NormalActionNoise</span>
-<span class="kn">import</span> <span class="nn">sinergym.utils.gcloud</span> <span class="k">as</span> <span class="nn">gcloud</span>
+<span class="kn">import</span> <span class="nn">sinergym.utils.gcloud</span> <span class="kn">as</span> <span class="nn">gcloud</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.common</span> <span class="kn">import</span> <span class="n">RANGES_5ZONE</span><span class="p">,</span> <span class="n">RANGES_IW</span><span class="p">,</span> <span class="n">RANGES_DATACENTER</span>
 <span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">sinergym</span>
@@ -298,7 +302,7 @@ Remember to configure Google Cloud account correctly before use this functionali
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">sinergym.utils.callbacks</span> <span class="kn">import</span> <span class="n">LoggerCallback</span><span class="p">,</span> <span class="n">LoggerEvalCallback</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">MultiObsWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span><span class="p">,</span> <span class="n">LoggerWrapper</span>
@@ -311,7 +315,7 @@ Remember to configure Google Cloud account correctly before use this functionali
 <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
     <span class="s1">&#39;--environment&#39;</span><span class="p">,</span>
     <span class="s1">&#39;-env&#39;</span><span class="p">,</span>
-    <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
     <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
     <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;environment&#39;</span><span class="p">,</span>
     <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Environment name of simulation (see sinergym/__init__.py).&#39;</span><span class="p">)</span>
@@ -358,7 +362,7 @@ Remember to configure Google Cloud account correctly before use this functionali
     <span class="s1">&#39;--tensorboard&#39;</span><span class="p">,</span>
     <span class="s1">&#39;-tens&#39;</span><span class="p">,</span>
     <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
     <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span>
     <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Tensorboard path for logging (if not specified, tensorboard log will not be stored).&#39;</span><span class="p">)</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -392,7 +396,7 @@ Remember to configure Google Cloud account correctly before use this functionali
     <span class="s1">&#39;--seed&#39;</span><span class="p">,</span>
     <span class="s1">&#39;-sd&#39;</span><span class="p">,</span>
     <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
     <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;seed&#39;</span><span class="p">,</span>
     <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Seed used to algorithm training.&#39;</span><span class="p">)</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -408,7 +412,7 @@ Remember to configure Google Cloud account correctly before use this functionali
     <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;group_name&#39;</span><span class="p">,</span>
     <span class="n">help</span><span class="o">=</span><span class="s1">&#39;This field indicate instance group name&#39;</span><span class="p">)</span>
 
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--learning_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;-lr&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=.</span><span class="mi">0007</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--learning_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;-lr&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=.</span><span class="mo">0007</span><span class="p">)</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--gamma&#39;</span><span class="p">,</span> <span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=.</span><span class="mi">99</span><span class="p">)</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--n_steps&#39;</span><span class="p">,</span> <span class="s1">&#39;-n&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--gae_lambda&#39;</span><span class="p">,</span> <span class="s1">&#39;-gl&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
@@ -485,7 +489,7 @@ Remember to configure Google Cloud account correctly before use this functionali
     <span class="c1"># env wrappers (optionals)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">normalization</span><span class="p">:</span>
         <span class="c1"># We have to know what dictionary ranges to use</span>
-        <span class="n">norm_range</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">norm_range</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="n">env_type</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">env_type</span> <span class="o">==</span> <span class="s1">&#39;datacenter&#39;</span><span class="p">:</span>
             <span class="nb">range</span> <span class="o">=</span> <span class="n">RANGES_5ZONE</span>
@@ -501,7 +505,7 @@ Remember to configure Google Cloud account correctly before use this functionali
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">multiobs</span><span class="p">:</span>
         <span class="n">env</span> <span class="o">=</span> <span class="n">MultiObsWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
     <span class="c1"># Defining model(algorithm)</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="c1">#--------------------------DQN---------------------------#</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;DQN&#39;</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="s1">&#39;MlpPolicy&#39;</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -516,7 +520,7 @@ Remember to configure Google Cloud account correctly before use this functionali
                     <span class="n">target_update_interval</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
                     <span class="n">exploration_fraction</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span>
                     <span class="n">exploration_initial_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-                    <span class="n">exploration_final_eps</span><span class="o">=.</span><span class="mi">05</span><span class="p">,</span>
+                    <span class="n">exploration_final_eps</span><span class="o">=.</span><span class="mo">05</span><span class="p">,</span>
                     <span class="n">max_grad_norm</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_grad_norm</span><span class="p">,</span>
                     <span class="n">seed</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
                     <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
@@ -602,8 +606,8 @@ Remember to configure Google Cloud account correctly before use this functionali
             <span class="n">log_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
             <span class="n">eval_freq</span><span class="o">=</span><span class="n">n_timesteps_episode</span> <span class="o">*</span>
             <span class="n">args</span><span class="o">.</span><span class="n">eval_freq</span><span class="p">,</span>
-            <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">deterministic</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+            <span class="n">render</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
             <span class="n">n_eval_episodes</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">eval_length</span><span class="p">)</span>
         <span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eval_callback</span><span class="p">)</span>
 
@@ -698,15 +702,15 @@ Remember to configure Google Cloud account correctly before use this functionali
 <li><p>Auto-delete remote container in Google Cloud Platform.</p></li>
 </ol>
 </div></blockquote>
-<div class="section" id="containers-permission-to-bucket-storage-output">
-<h3>Containers permission to bucket storage output<a class="headerlink" href="#containers-permission-to-bucket-storage-output" title="Permalink to this headline">¶</a></h3>
+<section id="containers-permission-to-bucket-storage-output">
+<h3>Containers permission to bucket storage output<a class="headerlink" href="#containers-permission-to-bucket-storage-output" title="Permalink to this headline"></a></h3>
 <p>As you see in sinergym template explained in <a class="reference internal" href="installation.html#create-your-vm-or-mig"><span class="std std-ref">4. Create your VM or MIG</span></a>, it is specified <code class="docutils literal notranslate"><span class="pre">--scope</span></code>, <code class="docutils literal notranslate"><span class="pre">--service-account</span></code> and <code class="docutils literal notranslate"><span class="pre">--container-env</span></code>. This aim to <em>remote_store</em> option in <em>DRL_battery.py</em> works correctly.
 Those parameters provide each container with permissions to write in the bucket and manage Google Cloud Platform (auto instance remove function).
 Container environment variables indicate zone, project_id and mlflow tracking server uri need it in <a class="reference internal" href="#mlflow-tracking-server-set-up"><span class="std std-ref">Mlflow tracking server set up</span></a>.</p>
-</div>
-</div>
-<div class="section" id="remote-tensorboard-log">
-<h2>Remote Tensorboard log<a class="headerlink" href="#remote-tensorboard-log" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="remote-tensorboard-log">
+<h2>Remote Tensorboard log<a class="headerlink" href="#remote-tensorboard-log" title="Permalink to this headline"></a></h2>
 <p>In <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> parameter we have to specify a <strong>local path</strong> in order to read this logs data in real-time.
 However, we want to send this data to <em>experiments-storage</em> bucket created in Google Cloud Platform by <em>cloud_manager.py</em> process (see <a class="reference internal" href="#executing-api"><span class="std std-ref">Executing API</span></a>).
 Hence, Tensorboard has added support to do this recently (<a class="reference external" href="https://github.com/ContinualAI/avalanche/pull/628">#628</a>).
@@ -715,8 +719,8 @@ You have to write <cite>gs://&lt;bucket_name&gt;/&lt;tensorboard_log_path&gt;</c
 <p class="admonition-title">Warning</p>
 <p>In the case that gs URI isn’t recognized. Maybe is due to your tensorboard installation hasn’t got access your google account. Try <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login">gcloud auth application-default login</a> command.</p>
 </div>
-<div class="section" id="visualize-remote-tensorboard-log-in-real-time">
-<h3>Visualize remote Tensorboard log in real-time<a class="headerlink" href="#visualize-remote-tensorboard-log-in-real-time" title="Permalink to this headline">¶</a></h3>
+<section id="visualize-remote-tensorboard-log-in-real-time">
+<h3>Visualize remote Tensorboard log in real-time<a class="headerlink" href="#visualize-remote-tensorboard-log-in-real-time" title="Permalink to this headline"></a></h3>
 <dl class="simple">
 <dt>You have two options:</dt><dd><ol class="arabic simple">
 <li><p>Create a remote server with tensorboard service deployed.</p></li>
@@ -728,10 +732,10 @@ You have to write <cite>gs://&lt;bucket_name&gt;/&lt;tensorboard_log_path&gt;</c
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ tensorboard --logdir gs://experiments-storage/tensorboard_log/
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="mlflow-tracking-server-set-up">
-<h2>Mlflow tracking server set up<a class="headerlink" href="#mlflow-tracking-server-set-up" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="mlflow-tracking-server-set-up">
+<h2>Mlflow tracking server set up<a class="headerlink" href="#mlflow-tracking-server-set-up" title="Permalink to this headline"></a></h2>
 <p>Mlflow tracking server can be set up into your google account in order to organize your own experiments (<a class="reference internal" href="deep-reinforcement-learning.html#mlflow"><span class="std std-ref">Mlflow</span></a>). You can separate <strong>back-end</strong> (SQL database) from tracking server.
 In this way, you can shut down or delete server instance without loose your experiments run data, since SQL is always up. Let’s see how:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
@@ -849,15 +853,15 @@ Notice that server instance creation use service account for mlflow, with this c
 <p class="admonition-title">Note</p>
 <p>If you want to change any backend configuration, you can change any parameter of the script bellow.</p>
 </div>
-</div>
-<div class="section" id="google-cloud-alerts">
-<h2>Google Cloud Alerts<a class="headerlink" href="#google-cloud-alerts" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="google-cloud-alerts">
+<h2>Google Cloud Alerts<a class="headerlink" href="#google-cloud-alerts" title="Permalink to this headline"></a></h2>
 <p><strong>Google Cloud Platform</strong> include functionality in order to trigger some events and generate alerts in consequence.
 Then, a trigger has been created in our gcloud project which aim to advertise when an experiment has finished.
 This alert can be captured in several ways (slack, sms, email, etc).
 If you want to do the same, please, check Google Cloud Alerts documentation <a class="reference external" href="https://cloud.google.com/monitoring/alerts">here</a>.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
