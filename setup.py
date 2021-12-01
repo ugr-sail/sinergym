@@ -21,6 +21,9 @@ setup(name='sinergym',
               'pytest',  # Unit test repository
               'sphinx',  # documentation
               'sphinx-rtd-theme'  # documentation theme
+              'google-api-python-client',
+              'oauth2client',
+              'google-cloud-storage'
           ],
           'test': [
               'pytest'
