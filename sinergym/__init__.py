@@ -339,9 +339,7 @@ register(
         'spaces_file': 'IW_Mullion_spaces.cfg',
         'discrete_actions': True,
         'reward': LinearReward(),
-        'env_name': 'IWMullion-mixed-discrete-v1'
-    }
-)
+        'env_name': 'IWMullion-mixed-discrete-v1'})
 
 # 22) IW, mixed weather, discrete actions and stochastic
 register(
@@ -358,9 +356,7 @@ register(
             0.0,
             0.001),
         'reward': LinearReward(),
-        'env_name': 'IWMullion-mixed-discrete-stochastic-v1'
-    }
-)
+        'env_name': 'IWMullion-mixed-discrete-stochastic-v1'})
 
 # 23) IW, mixed weather, continuous actions
 register(
@@ -373,9 +369,7 @@ register(
         'spaces_file': 'IW_Mullion_spaces.cfg',
         'discrete_actions': False,
         'reward': LinearReward(),
-        'env_name': 'IWMullion-mixed-continuous-v1'
-    }
-)
+        'env_name': 'IWMullion-mixed-continuous-v1'})
 
 # 24) IW, mixed weather, continuous actions and stochastic
 register(
@@ -392,9 +386,7 @@ register(
             0.0,
             0.001),
         'reward': LinearReward(),
-        'env_name': 'IWMullion-mixed-continuous-stochastic-v1'
-    }
-)
+        'env_name': 'IWMullion-mixed-continuous-stochastic-v1'})
 
 # 25) IW, cool weather, discrete actions
 register(
@@ -407,9 +399,7 @@ register(
         'spaces_file': 'IW_Mullion_spaces.cfg',
         'discrete_actions': True,
         'reward': LinearReward(),
-        'env_name': 'IWMullion-cool-discrete-v1'
-    }
-)
+        'env_name': 'IWMullion-cool-discrete-v1'})
 
 # 26) IW, cool weather, discrete actions and stochastic
 register(
@@ -426,9 +416,7 @@ register(
             0.0,
             0.001),
         'reward': LinearReward(),
-        'env_name': 'IWMullion-cool-discrete-stochastic-v1'
-    }
-)
+        'env_name': 'IWMullion-cool-discrete-stochastic-v1'})
 
 # 27) IW, cool weather, continuous actions
 register(
@@ -441,9 +429,7 @@ register(
         'spaces_file': 'IW_Mullion_spaces.cfg',
         'discrete_actions': False,
         'reward': LinearReward(),
-        'env_name': 'IWMullion-cool-continuous-v1'
-    }
-)
+        'env_name': 'IWMullion-cool-continuous-v1'})
 
 # 28) IW, cool weather, continuous actions and stochastic
 register(
@@ -460,6 +446,4 @@ register(
             0.0,
             0.001),
         'reward': LinearReward(),
-        'env_name': 'IWMullion-cool-continuous-stochastic-v1'
-    }
-)
+        'env_name': 'IWMullion-cool-continuous-stochastic-v1'})

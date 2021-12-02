@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deep Reinforcement Learning Integration &mdash; sinergym  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /><link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <title>Deep Reinforcement Learning Integration &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -25,7 +28,8 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../index.html" class="icon icon-home"> sinergym<img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> sinergym
+            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -82,8 +86,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="deep-reinforcement-learning-integration">
-<h1>Deep Reinforcement Learning Integration<a class="headerlink" href="#deep-reinforcement-learning-integration" title="Permalink to this headline">¶</a></h1>
+  <section id="deep-reinforcement-learning-integration">
+<h1>Deep Reinforcement Learning Integration<a class="headerlink" href="#deep-reinforcement-learning-integration" title="Permalink to this headline"></a></h1>
 <p>Sinergym integrates some facilities in order to use Deep Reinforcement Learning algorithms provided by <a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/">Stable Baselines 3</a>.
 Current algorithms checked by Sinergym are:</p>
 <table class="docutils align-default">
@@ -129,8 +133,8 @@ Current algorithms checked by Sinergym are:</p>
 </tbody>
 </table>
 <p><code class="docutils literal notranslate"><span class="pre">Type</span></code> column has been specified due to its importance about <em>Stable Baselines callback</em> functionality.</p>
-<div class="section" id="drl-logger">
-<h2>DRL Logger<a class="headerlink" href="#drl-logger" title="Permalink to this headline">¶</a></h2>
+<section id="drl-logger">
+<h2>DRL Logger<a class="headerlink" href="#drl-logger" title="Permalink to this headline"></a></h2>
 <p><a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html">Callbacks</a> are a set of functions that will
 be called at given stages of the training procedure. You can use callbacks to access internal state of the RL model during training.
 It allows one to do monitoring, auto saving, model manipulation, progress bars, …</p>
@@ -148,7 +152,7 @@ Each algorithm has its own differences about how information is extracted which 
 <span class="sd">        :param ep_timesteps: Each timestep during an episode, this value increment 1.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sinergym_logger</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sinergym_logger</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LoggerCallback</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sinergym_logger</span> <span class="o">=</span> <span class="n">sinergym_logger</span>
@@ -201,7 +205,7 @@ Each algorithm has its own differences about how information is extracted which 
 
         <span class="c1"># ACTION</span>
         <span class="n">variables</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">training_env</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s1">&#39;variables&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;action&#39;</span><span class="p">]</span>
-        <span class="n">action</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="c1"># sinergym action received inner its own setpoints range</span>
         <span class="n">action_</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;action_&#39;</span><span class="p">]</span>
         <span class="k">try</span><span class="p">:</span>
@@ -211,12 +215,12 @@ Each algorithm has its own differences about how information is extracted which 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locals</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Algorithm action key in locals dict unknown&#39;</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Algorithm action key in locals dict unknown&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">training_env</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s1">&#39;flag_discrete&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">training_env</span><span class="o">.</span><span class="n">get_attr</span><span class="p">(</span><span class="s1">&#39;action_mapping&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="n">action</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">variable</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">variables</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">action</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">action</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">record</span><span class="p">(</span>
                     <span class="s1">&#39;action/&#39;</span> <span class="o">+</span> <span class="n">variable</span><span class="p">,</span> <span class="n">action</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
@@ -230,7 +234,7 @@ Each algorithm has its own differences about how information is extracted which 
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ep_rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">locals</span><span class="p">[</span><span class="s1">&#39;reward&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Algorithm reward key in locals dict unknown&#39;</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Algorithm reward key in locals dict unknown&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ep_powers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power&#39;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ep_term_comfort</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;comfort_penalty&#39;</span><span class="p">])</span>
@@ -246,7 +250,7 @@ Each algorithm has its own differences about how information is extracted which 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">locals</span><span class="p">[</span><span class="s1">&#39;done&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Algorithm done key in locals dict unknown&#39;</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Algorithm done key in locals dict unknown&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
             <span class="c1"># store last episode metrics</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">episode_metrics</span> <span class="o">=</span> <span class="p">{}</span>
@@ -284,7 +288,7 @@ Each algorithm has its own differences about how information is extracted which 
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">record</span><span class="p">(</span>
                     <span class="s1">&#39;episode/&#39;</span> <span class="o">+</span> <span class="n">key</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="bp">True</span>
 
     <span class="k">def</span> <span class="nf">on_training_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">is_wrapped</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">training_env</span><span class="p">,</span> <span class="n">LoggerWrapper</span><span class="p">):</span>
@@ -304,8 +308,8 @@ With Tensorboard, it’s possible to visualize all DRL training in real time and
 <li><p><strong>OffPolicyAlgorithms</strong> can be recorded each episode. Consequently, <code class="docutils literal notranslate"><span class="pre">log_interval</span></code> in learn process is used to specify the episode frequency log and not step frequency.
 Some features like actions and observations are set up in each timestep. Thus, Off Policy Algorithms record a mean value of whole episode values instead of values steps by steps (see <code class="docutils literal notranslate"><span class="pre">LoggerCallback</span></code> class implementation).</p></li>
 </ul>
-<div class="section" id="tensorboard-structure">
-<h3>Tensorboard structure<a class="headerlink" href="#tensorboard-structure" title="Permalink to this headline">¶</a></h3>
+<section id="tensorboard-structure">
+<h3>Tensorboard structure<a class="headerlink" href="#tensorboard-structure" title="Permalink to this headline"></a></h3>
 <p>The main structure for Sinergym with Tensorboard is:</p>
 <ul class="simple">
 <li><p><strong>action</strong>: This section has action values during training. When algorithm is On Policy will appear <strong>action_simulation</strong> too. This is because algorithms
@@ -336,10 +340,10 @@ in continuous environments has their own output and clipped with gym action spac
 <p class="admonition-title">Note</p>
 <p>Evaluation of models can be recorded too, adding <code class="docutils literal notranslate"><span class="pre">EvalLoggerCallback</span></code> to model learn method.</p>
 </div>
-</div>
-</div>
-<div class="section" id="how-use">
-<h2>How use<a class="headerlink" href="#how-use" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="how-use">
+<h2>How use<a class="headerlink" href="#how-use" title="Permalink to this headline"></a></h2>
 <p>You can try your own experiments and benefit from this functionality. <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/examples/DRL_usage.py">sinergym/examples/DRL_usage.py</a>
 is a example code to use it.</p>
 <p>The most important information you must keep in mind when you try your own experiments are:</p>
@@ -367,9 +371,9 @@ specify train <code class="docutils literal notranslate"><span class="pre">times
 
 
 <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--environment&#39;</span><span class="p">,</span> <span class="s1">&#39;-env&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--environment&#39;</span><span class="p">,</span> <span class="s1">&#39;-env&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--episodes&#39;</span><span class="p">,</span> <span class="s1">&#39;-ep&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--learning_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;-lr&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=.</span><span class="mi">0007</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--learning_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;-lr&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=.</span><span class="mo">0007</span><span class="p">)</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--n_steps&#39;</span><span class="p">,</span> <span class="s1">&#39;-n&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--gamma&#39;</span><span class="p">,</span> <span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=.</span><span class="mi">99</span><span class="p">)</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--gae_lambda&#39;</span><span class="p">,</span> <span class="s1">&#39;-gl&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
@@ -427,17 +431,17 @@ specify train <code class="docutils literal notranslate"><span class="pre">times
     <span class="n">freq</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># evaluate every N episodes</span>
     <span class="n">eval_callback</span> <span class="o">=</span> <span class="n">LoggerEvalCallback</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">best_model_save_path</span><span class="o">=</span><span class="s1">&#39;./best_models/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
                                     <span class="n">log_path</span><span class="o">=</span><span class="s1">&#39;./best_models/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">eval_freq</span><span class="o">=</span><span class="n">n_timesteps_episode</span> <span class="o">*</span> <span class="n">freq</span><span class="p">,</span>
-                                    <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_eval_episodes</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">log_callback</span> <span class="o">=</span> <span class="n">LoggerCallback</span><span class="p">(</span><span class="n">sinergym_logger</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                                    <span class="n">deterministic</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">render</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">n_eval_episodes</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">log_callback</span> <span class="o">=</span> <span class="n">LoggerCallback</span><span class="p">(</span><span class="n">sinergym_logger</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
     <span class="n">callback</span> <span class="o">=</span> <span class="n">CallbackList</span><span class="p">([</span><span class="n">log_callback</span><span class="p">,</span> <span class="n">eval_callback</span><span class="p">])</span>
 
     <span class="c1"># Training</span>
     <span class="n">model</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span><span class="n">total_timesteps</span><span class="o">=</span><span class="n">timesteps</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">log_interval</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="mlflow">
-<h2>Mlflow<a class="headerlink" href="#mlflow" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="mlflow">
+<h2>Mlflow<a class="headerlink" href="#mlflow" title="Permalink to this headline"></a></h2>
 <p>As you have been able to see in usage examples, it is using <a class="reference external" href="https://mlflow.org/">Mlflow</a> in order to tracking experiments and recorded them methodically. It is recommended to use it.
 You can start a local server with information stored during the battery of experiments such as initial and ending date of execution, hyperparameters, duration, etc.
 Here is an example:</p>
@@ -450,8 +454,8 @@ Here is an example:</p>
 <p class="admonition-title">Note</p>
 <p><em>This is a work in progress project. Compatibility with others algorithms is being planned for the future!</em></p>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

@@ -44,7 +44,7 @@ Here is an example bash code to execute the script:
         --zone europe-west1-b \
         --template_name sinergym-template \
         --group_name sinergym-group \
-        --experiment_commands 
+        --experiment_commands \
         'python3 DRL_battery.py --environment Eplus-5Zone-hot-discrete-v1 --episodes 2 --algorithm DQN --logger --log_interval 1 --seed 58 --evaluation --eval_freq 1 --eval_length 1 --tensorboard ./tensorboard_log --remote_store' \
         'python3 DRL_battery.py --environment Eplus-5Zone-hot-continuous-v1 --episodes 3 --algorithm PPO --logger --log_interval 300 --seed 52 --evaluation --eval_freq 1 --eval_length 1 --tensorboard ./tensorboard_log --remote_store'
 
@@ -115,6 +115,18 @@ Containers permission to bucket storage output
 As you see in sinergym template explained in :ref:`4. Create your VM or MIG`, it is specified ``--scope``, ``--service-account`` and ``--container-env``. This aim to *remote_store* option in *DRL_battery.py* works correctly.
 Those parameters provide each container with permissions to write in the bucket and manage Google Cloud Platform (auto instance remove function).
 Container environment variables indicate zone, project_id and mlflow tracking server uri need it in :ref:`Mlflow tracking server set up`.
+
+Hence, it is **necessary** to **set up this service account** and give privileges in order to that objective. Then, following `Google authentication documentation <https://cloud.google.com/docs/authentication/getting-started>`__ we will do the next:
+
+.. code:: sh
+
+    $ gcloud iam service-accounts create storage-account
+    $ gcloud projects add-iam-policy-binding PROJECT_ID --member="serviceAccount:storage-account@PROJECT_ID.iam.gserviceaccount.com" --role="roles/owner"
+    $ gcloud iam service-accounts keys create PROJECT_PATH/google-storage.json --iam-account=storage-account@PROJECT_ID.iam.gserviceaccount.com
+    $ export GOOGLE_CLOUD_CREDENTIALS= PROJECT_PATH/google-storage.json
+
+In short, we create a new service account called **storage-account**. Then, we dote this account with *roles/owner* permission. The next step is create a file key (json) called **google-storage.json** in our project root (gitignore will ignore this file in remote).
+Finally, we export this file in **GOOGLE_CLOUD_CREDENTIALS** in order to gcloud SDK knows that it has to use that token to authenticate.
 
 ***********************
 Remote Tensorboard log

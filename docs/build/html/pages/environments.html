@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Environments &mdash; sinergym  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /><link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <title>Environments &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -25,7 +28,8 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../index.html" class="icon icon-home"> sinergym<img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> sinergym
+            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -77,8 +81,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="environments">
-<h1>Environments<a class="headerlink" href="#environments" title="Permalink to this headline">¶</a></h1>
+  <section id="environments">
+<h1>Environments<a class="headerlink" href="#environments" title="Permalink to this headline"></a></h1>
 <p>The list of available environments is the following:</p>
 <table class="docutils align-default">
 <colgroup>
@@ -253,8 +257,8 @@ classification</a>.</p>
 <p>(**) In these environments, weather series change from episode to
 episode. Gaussian noise with 0 mean and 2.5 std is added to the original
 values in order to add stochastic.</p>
-<div class="section" id="observation-action-spaces">
-<h2>Observation/action spaces<a class="headerlink" href="#observation-action-spaces" title="Permalink to this headline">¶</a></h2>
+<section id="observation-action-spaces">
+<h2>Observation/action spaces<a class="headerlink" href="#observation-action-spaces" title="Permalink to this headline"></a></h2>
 <p>Observation and action spaces are defined in <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables">sinergym/sinergym/data/variables</a> specifically for each IDF file. Therefore, external interface with simulation is defined in the same way.</p>
 <p>This is a definition example for 5ZoneAutoDXVAV.idf and its variants:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</span>
@@ -396,8 +400,8 @@ values in order to add stochastic.</p>
 Inner each environment it is known what configuration file must read and spaces will be defined automatically, so you should not worry about anything.</p>
 <p>In order to make environments more generic in DRL solutions. We have updated action space for continuous problem. Gym action space is defined always between [-1,1] and Sinergym parse this values to action space defined in configuration file internally.</p>
 <p>The function in charge of reading those configuration files is <code class="docutils literal notranslate"><span class="pre">parse_observation_action_space(space_file)</span></code> in <em>sinergym/sinergym/utils/common.py</em></p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

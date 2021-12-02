@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; sinergym  documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /><link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <title>Installation &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -25,7 +28,8 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../index.html" class="icon icon-home"> sinergym<img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> sinergym
+            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -92,8 +96,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
 <p>To install <em>sinergym</em>, follow these steps:</p>
 <ul class="simple">
 <li><p>First, it is recommended to create a virtual environment. You can do so by:</p></li>
@@ -109,8 +113,8 @@ $ <span class="nb">source</span> env_sinergym/bin/activate
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/jajimer/sinergym.git
 </pre></div>
 </div>
-<div class="section" id="docker-container">
-<h2>Docker container<a class="headerlink" href="#docker-container" title="Permalink to this headline">¶</a></h2>
+<section id="docker-container">
+<h2>Docker container<a class="headerlink" href="#docker-container" title="Permalink to this headline"></a></h2>
 <p>We include a <strong>Dockerfile</strong> for installing all dependencies and setting
 up the image for running <em>sinergym</em>.</p>
 <p>By default, Dockerfile will do <cite>pip install -e .[extras]</cite>, if you want to install a diffetent setup, you will have to do in root repository:</p>
@@ -131,14 +135,14 @@ up the image for running <em>sinergym</em>.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you use <a class="reference external" href="https://code.visualstudio.com/">Visual Studio Code</a>, by simply opening the root directory and clicking on the pop-up button “<em>Reopen in container</em>”, all the dependencies will be installed automatically and you will be able to run <em>sinergym</em> in an isolated environment.</p>
+<p>If you use <a class="reference external" href="https://code.visualstudio.com/">Visual Studio Code</a>, by simply opening the root directory and clicking on the pop-up button “<em>Reopen in container</em>“, all the dependencies will be installed automatically and you will be able to run <em>sinergym</em> in an isolated environment.</p>
 </div>
-</div>
-<div class="section" id="manual-installation">
-<h2>Manual installation<a class="headerlink" href="#manual-installation" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="manual-installation">
+<h2>Manual installation<a class="headerlink" href="#manual-installation" title="Permalink to this headline"></a></h2>
 <p>If you prefer installing <em>sinergym</em> manually, follow the steps below:</p>
-<div class="section" id="install-energyplus-9-5-0">
-<h3>1. Install EnergyPlus 9.5.0<a class="headerlink" href="#install-energyplus-9-5-0" title="Permalink to this headline">¶</a></h3>
+<section id="install-energyplus-9-5-0">
+<h3>1. Install EnergyPlus 9.5.0<a class="headerlink" href="#install-energyplus-9-5-0" title="Permalink to this headline"></a></h3>
 <p>Firstly, install EnergyPlus. Currently it has been update compability to 9.5.0 and it has
 been tested, but code may also work with other versions. Sinergym ensure this support:</p>
 <table class="docutils align-default">
@@ -165,23 +169,23 @@ been tested, but code may also work with other versions. Sinergym ensure this su
 install it for Linux (only Ubuntu is supported). Choose any location
 to install the software. Once installed, a folder called
 <code class="docutils literal notranslate"><span class="pre">Energyplus-9-5-0</span></code> should appear in the selected location.</p>
-</div>
-<div class="section" id="install-bcvtb-software">
-<h3>1. Install BCVTB software<a class="headerlink" href="#install-bcvtb-software" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="install-bcvtb-software">
+<h3>1. Install BCVTB software<a class="headerlink" href="#install-bcvtb-software" title="Permalink to this headline"></a></h3>
 <p>Follow the instructions
 <a class="reference external" href="https://simulationresearch.lbl.gov/bcvtb/Download">here</a> for
 installing BCVTB software. Another option is to copy the <code class="docutils literal notranslate"><span class="pre">bcvtb</span></code>
 folder from <a class="reference external" href="https://github.com/zhangzhizza/Gym-Eplus/tree/master/eplus_env/envs">this
 repository</a>.</p>
-</div>
-<div class="section" id="set-environment-variables">
-<h3>3. Set environment variables<a class="headerlink" href="#set-environment-variables" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="set-environment-variables">
+<h3>3. Set environment variables<a class="headerlink" href="#set-environment-variables" title="Permalink to this headline"></a></h3>
 <p>Two environment variables must be set: <code class="docutils literal notranslate"><span class="pre">EPLUS_PATH</span></code> and
 <code class="docutils literal notranslate"><span class="pre">BCVTB_PATH</span></code>, with the locations where EnergyPlus and BCVTB are
 installed respectively.</p>
-</div>
-<div class="section" id="install-the-package">
-<h3>4. Install the package<a class="headerlink" href="#install-the-package" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="install-the-package">
+<h3>4. Install the package<a class="headerlink" href="#install-the-package" title="Permalink to this headline"></a></h3>
 <p>Finally, <em>sinergym</em> can be installed by running this command at the repo
 root folder:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ pip install -e .
@@ -196,12 +200,12 @@ It’s possible to select a subset of these libraries instead of ‘extras’ ta
 </div>
 <p>In order to check all our tag list, visit <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/setup.py">setup.py</a> in Sinergym root repository.</p>
 <p>In any case, they are not a requirement of the package.</p>
-</div>
-</div>
-<div class="section" id="cloud-computing">
-<h2>Cloud Computing<a class="headerlink" href="#cloud-computing" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="first-steps">
-<h3>1. First steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="cloud-computing">
+<h2>Cloud Computing<a class="headerlink" href="#cloud-computing" title="Permalink to this headline"></a></h2>
+<section id="first-steps">
+<h3>1. First steps<a class="headerlink" href="#first-steps" title="Permalink to this headline"></a></h3>
 <p>You can run your experiments in cloud too. We are using <a class="reference external" href="https://cloud.google.com/">Google Cloud</a> in order to make it possible. Our team aim to set up
 a managed instance group (<a class="reference external" href="https://cloud.google.com/compute/docs/instance-groups/getting-info-about-migs?hl=es-419">MIG</a>) in which execute our Sinergym container.</p>
 <p>Firstly, it is necessary that you have a Google Cloud account set up and SDK configured (auth, invoicing, project ID, etc). If you don’t have this, it is recommended to check <a class="reference external" href="https://cloud.google.com/sdk/docs/install">their documentation</a>.
@@ -233,9 +237,9 @@ On the other hand, we are going to use specifically this services in <strong>Goo
 <p>Hence, you will have to allow this services into your <strong>Google account</strong>.</p>
 <a class="reference internal image-reference" href="../_images/service-account-permissions.png"><img alt="Permissions required for cloud build." class="align-center" src="../_images/service-account-permissions.png" style="width: 500px;" /></a>
 <a class="reference internal image-reference" href="../_images/service-account-APIs.png"><img alt="API's required for cloud build." class="align-center" src="../_images/service-account-APIs.png" style="width: 800px;" /></a>
-</div>
-<div class="section" id="use-our-container-in-google-cloud-platform">
-<h3>1. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="use-our-container-in-google-cloud-platform">
+<h3>1. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Permalink to this headline"></a></h3>
 <p>Our Sinergym container is uploaded in container registry as a public one currently. You can use it <strong>locally</strong>:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ docker run -it gcr.io/sinergym/sinergym:latest
 </pre></div>
@@ -263,9 +267,9 @@ On the other hand, we are going to use specifically this services in <strong>Goo
 <p><code class="docutils literal notranslate"><span class="pre">--boot-disk-size</span></code> is really important, by default VM set 10GB and it isn’t enough at all for Sinergym container.
 This derive in a silence error for Google Cloud Build (and you would need to check logs, which incident is not clear).</p>
 </div>
-</div>
-<div class="section" id="use-your-own-container">
-<h3>1. Use your own container<a class="headerlink" href="#use-your-own-container" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="use-your-own-container">
+<h3>1. Use your own container<a class="headerlink" href="#use-your-own-container" title="Permalink to this headline"></a></h3>
 <p>Suppose you have this repository forked and you want to upload your own container on Google Cloud and to use it. You can use <strong>cloudbuild.yaml</strong>
 with our <strong>Dockerfile</strong> for this purpose:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">steps</span><span class="p">:</span>
@@ -345,9 +349,9 @@ so be careful.</p>
 <p>In <strong>cloudbuild.yaml</strong> there is a variable named <em>PROJECT_ID</em>. However, it is not defined in substitutions. This is because it’s a predetermined
 variable by Google Cloud. When build begins <em>“$PROJECT_ID”</em> is set to current value in gcloud configuration (see <a class="reference external" href="https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values">substitutions-variables</a>).</p>
 </div>
-</div>
-<div class="section" id="create-your-vm-or-mig">
-<h3>4. Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="create-your-vm-or-mig">
+<h3>4. Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Permalink to this headline"></a></h3>
 <p>To create a <strong>VM</strong> that uses this container, here there is an example:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud compute instances create-with-container sinergym <span class="se">\</span>
     --container-image gcr.io/sinergym/sinergym <span class="se">\</span>
@@ -387,7 +391,7 @@ You can think that is an error, Google cloud should notify this. If this issue h
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">--service-account</span></code>, <code class="docutils literal notranslate"><span class="pre">--scopes</span></code> and <code class="docutils literal notranslate"><span class="pre">--container-env</span></code> parameters will be explained in <a class="reference internal" href="gcloudAPI.html#containers-permission-to-bucket-storage-output"><span class="std std-ref">Containers permission to bucket storage output</span></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">--service-account</span></code>, <code class="docutils literal notranslate"><span class="pre">--scopes</span></code> and <code class="docutils literal notranslate"><span class="pre">--container-env</span></code> parameters will be explained in <a class="reference internal" href="gcloudAPI.html#containers-permission-to-bucket-storage-output"><span class="std std-ref">Containers permission to bucket storage output</span></a>. Please, read that documentation before using these parameters, since they require a previous configuration.</p>
 </div>
 <p>Then, you can create a group-instances as large as you want:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud compute instance-groups managed create example-group <span class="se">\</span>
@@ -400,9 +404,9 @@ You can think that is an error, Google cloud should notify this. If this issue h
 <p class="admonition-title">Warning</p>
 <p>It is possible that quote doesn’t let you have more than one VM at the same time. Hence, the rest of VM’s probably will be <em>initializing</em> always but never ready. If it is your case, we recommend you check your quotes <a class="reference external" href="https://console.cloud.google.com/iam-admin/quotas">here</a></p>
 </div>
-</div>
-<div class="section" id="init-your-vm">
-<h3>1. Init your VM<a class="headerlink" href="#init-your-vm" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="init-your-vm">
+<h3>1. Init your VM<a class="headerlink" href="#init-your-vm" title="Permalink to this headline"></a></h3>
 <p>Your virtual machine is ready! To connect you can use ssh (see <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh">gcloud-ssh</a>):</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud compute ssh &lt;machine-name&gt;
 </pre></div>
@@ -415,9 +419,9 @@ You can think that is an error, Google cloud should notify this. If this issue h
 </div>
 <a class="reference internal image-reference" href="../_images/container2.png"><img alt="GCE VM container usage." class="align-center" src="../_images/container2.png" style="width: 800px;" /></a>
 <p>And now you can execute your own experiments in Google Cloud! If you are interested in using our API specifically for Gcloud (automated experiments using remotes containers generation). Please, visit our section <a class="reference internal" href="gcloudAPI.html#sinergym-google-cloud-api"><span class="std std-ref">Sinergym Google Cloud API</span></a></p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

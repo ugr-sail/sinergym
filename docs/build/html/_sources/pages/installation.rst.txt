@@ -272,7 +272,7 @@ To create a **MIG**, you need to create a machine set up **template** firstly, f
     --boot-disk-type pd-ssd \
     --machine-type n2-highcpu-8
 
-.. note:: ``--service-account``, ``--scopes`` and ``--container-env`` parameters will be explained in :ref:`Containers permission to bucket storage output`.
+.. note:: ``--service-account``, ``--scopes`` and ``--container-env`` parameters will be explained in :ref:`Containers permission to bucket storage output`. Please, read that documentation before using these parameters, since they require a previous configuration.
 
 Then, you can create a group-instances as large as you want:
 
