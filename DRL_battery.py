@@ -146,6 +146,15 @@ name = args.algorithm + '-' + args.environment + \
 if args.seed:
     name += '-seed_' + str(args.seed)
 name += '(' + experiment_date + ')'
+# Check if MLFLOW_TRACKING_URI is defined
+if os.environ.get('MLFLOW_TRACKING_URI') is not None:
+    # Check ping to server
+    mlflow_ip = os.environ.get(
+        'MLFLOW_TRACKING_URI').split('/')[-1].split(':')[0]
+    # If server is not valid, setting default local path to mlflow
+    response = os.system("ping -c 1 " + mlflow_ip)
+    if response != 0:
+        mlflow.set_tracking_uri('file://' + os.getcwd() + '/mlruns')
 # MLflow track
 with mlflow.start_run(run_name=name):
     # Log experiment params
@@ -164,7 +173,7 @@ with mlflow.start_run(run_name=name):
     mlflow.log_param('evaluation-length', args.eval_length)
     mlflow.log_param('log-interval', args.log_interval)
     mlflow.log_param('seed', args.seed)
-    mlflow.log_param('remote-store', bool(args.seed))
+    mlflow.log_param('remote-store', bool(args.remote_store))
 
     mlflow.log_param('learning_rate', args.learning_rate)
     mlflow.log_param('n_steps', args.n_steps)
