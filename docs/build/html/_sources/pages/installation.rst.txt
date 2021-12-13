@@ -4,13 +4,15 @@ Installation
 
 To install *sinergym*, follow these steps:
 
-* First, it is recommended to create a virtual environment. You can do so by:
+* First, it is recommended to create a **virtual environment**. You can do so by:
 
 .. code:: sh
 
     $ sudo apt-get install python-virtualenv virtualenv
     $ virtualenv env_sinergym --python=python3.7
     $ source env_sinergym/bin/activate
+
+There are other alternatives like **conda environments**, for example.
 
 * Then, clone this repository using this command:
 
@@ -117,10 +119,10 @@ In any case, they are not a requirement of the package.
 Cloud Computing
 *******************
 
-1. First steps
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1. First steps (configuration)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can run your experiments in cloud too. We are using `Google Cloud <https://cloud.google.com/>`__ in order to make it possible. Our team aim to set up
+You can run your experiments in the Cloud too. We are using `Google Cloud <https://cloud.google.com/>`__ in order to make it possible. Our team aim to set up
 a managed instance group (`MIG <https://cloud.google.com/compute/docs/instance-groups/getting-info-about-migs?hl=es-419>`__) in which execute our Sinergym container.
 
 Firstly, it is necessary that you have a Google Cloud account set up and SDK configured (auth, invoicing, project ID, etc). If you don't have this, it is recommended to check `their documentation <https://cloud.google.com/sdk/docs/install>`__.
@@ -132,8 +134,14 @@ You can link **gcloud** with **docker** accounts using the next (see `authentica
 
     $ gcloud auth configure-docker
 
-If you don't want to have several problems in the future with the image build, we recommend you to allow permissions for google cloud build at the beginning (see `this documentation <https://cloud.google.com/build/docs/securing-builds/configure-access-for-cloud-build-service-account>`__).
-On the other hand, we are going to use specifically this services in **Google Cloud Platform**:
+If you don't want to have several problems in the future with the image build and Google Cloud functionality in general, we recommend you to **allow permissions for google cloud build** at the beginning (see `this documentation <https://cloud.google.com/build/docs/securing-builds/configure-access-for-cloud-build-service-account>`__).
+
+.. image:: /_static/service-account-permissions.png
+  :width: 500
+  :alt: Permissions required for cloud build.
+  :align: center
+
+On the other hand, we are going to enable **Google Cloud services** in *API library*. These are API's which we need currently:
 
     - Google Container Registry API.
     - Artifact Registry API
@@ -151,22 +159,44 @@ On the other hand, we are going to use specifically this services in **Google Cl
     - Gmail API
 
 Hence, you will have to allow this services into your **Google account**.
+You can do it using **gcloud client SDK**:
 
-.. image:: /_static/service-account-permissions.png
-  :width: 500
-  :alt: Permissions required for cloud build.
-  :align: center
+.. code:: sh
+
+    $ gcloud services list
+    $ gcloud services enable artifactregistry.googleapis.com \
+                             cloudapis.googleapis.com \
+                             cloudbuild.googleapis.com \
+                             containerregistry.googleapis.com \
+                             gmail.googleapis.com \
+                             sql-component.googleapis.com \
+                             sqladmin.googleapis.com \
+                             storage-component.googleapis.com \
+                             storage.googleapis.com \
+                             cloudfunctions.googleapis.com \
+                             pubsub.googleapis.com \
+                             run.googleapis.com \
+                             serviceusage.googleapis.com \
+                             drive.googleapis.com \
+                             appengine.googleapis.com
+
+Or you can use **Google Cloud Platform Console**:
 
 .. image:: /_static/service-account-APIs.png
   :width: 800
   :alt: API's required for cloud build.
   :align: center
 
+If you have installed *Sinergym* and *Sinergym extras*. **Google Cloud SDK must be linked with other python modules** in order to some functionality works in the future (for example, tensorboard). Please, execute the next in your terminal:
 
-1. Use our container in Google Cloud Platform
+.. code:: sh
+
+    $ gcloud auth application-default login
+
+2. Use our container in Google Cloud Platform
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Our Sinergym container is uploaded in container registry as a public one currently. You can use it **locally**:
+Our Sinergym container is uploaded in **Container Registry** as a public one currently. You can use it **locally**:
 
 .. code:: sh
 
@@ -194,10 +224,10 @@ We have available containers in Docker Hub too. Please, visit our `repository <h
 .. warning:: ``--boot-disk-size`` is really important, by default VM set 10GB and it isn't enough at all for Sinergym container.
               This derive in a silence error for Google Cloud Build (and you would need to check logs, which incident is not clear).
 
-1. Use your own container
-~~~~~~~~~~~~~~~~~~~~~~~~~
+3. Use your own container
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Suppose you have this repository forked and you want to upload your own container on Google Cloud and to use it. You can use **cloudbuild.yaml** 
+Suppose you have this repository forked and you want to upload **your own container on Google Cloud** and to use it. You can use **cloudbuild.yaml** 
 with our **Dockerfile** for this purpose:
 
 .. literalinclude:: ../../../cloudbuild.yaml
@@ -205,13 +235,15 @@ with our **Dockerfile** for this purpose:
 
 This file does the next:
 
-    1. Write in cache for quick updates (if a older container was uploaded already).
-    2. Build image (using cache if it's available)
-    3. Push image built to Container Registry
+    1. Write in **cache** for quick updates (if a older container was uploaded already).
+    2. **Build** image (using cache if it's available)
+    3. **Push** image built to Container Registry
     4. Make container public inner Container Registry.
 
 There is an option section at the end of the file. Do not confuse this part with the virtual machine configuration. 
-Google Cloud uses a helper VM to build everything mentioned above.
+Google Cloud uses a helper VM to build everything mentioned above. At the same time, we are using this YAML file in order to
+upgrade our container because of *PROJECT_ID* environment variable is defined by Google Cloud SDK, so its value is your current
+project in Google Cloud global config.
 
 .. warning:: In the same way VM needs more memory, Google Cloud Build needs at least 10GB to work correctly. In other case it may fail.
 
@@ -263,8 +295,8 @@ To create a **MIG**, you need to create a machine set up **template** firstly, f
     --container-image gcr.io/sinergym/sinergym \
     --container-privileged \
     --service-account storage-account@sinergym.iam.gserviceaccount.com \
-    --scopes https://www.googleapis.com/auth/cloud-platform, https://www.googleapis.com/auth/devstorage.full_control \
-    --container-env=gce_zone=europe-west1-b, gce_project_id=sinergym, MLFLOW_TRACKING_URI=http://$(gcloud compute addresses describe mlflow-ip --format='get(address)'):5000 \
+    --scopes https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/devstorage.full_control \
+    --container-env=gce_zone=europe-west1-b,gce_project_id=sinergym,MLFLOW_TRACKING_URI=http://$(gcloud compute addresses describe mlflow-ip --format='get(address)'):5000 \
     --container-restart-policy never \
     --container-stdin \
     --container-tty \

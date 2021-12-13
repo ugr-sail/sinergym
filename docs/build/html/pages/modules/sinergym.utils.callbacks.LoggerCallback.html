@@ -105,7 +105,6 @@
 <dt class="sig sig-object py" id="sinergym.utils.callbacks.LoggerCallback">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.callbacks.</span></span><span class="sig-name descname"><span class="pre">LoggerCallback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sinergym_logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.callbacks.LoggerCallback" title="Permalink to this definition"></a></dt>
 <dd><p>Custom callback for plotting additional values in tensorboard.
-:param sinergym_logger: Boolean, indicate if CSVLogger inner Sinergym will be activated or not.
 :param ep_rewards: Here will be stored all rewards during episode.
 :param ep_powers: Here will be stored all consumption data during episode.
 :param ep_term_comfort: Here will be stored all comfort terms (reward component) during episode.
@@ -115,7 +114,13 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.callbacks.LoggerCallback.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sinergym_logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.callbacks.LoggerCallback.__init__" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Custom callback for plotting additional values in tensorboard.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sinergym_logger</strong> (<em>boolean</em>) – Indicate if CSVLogger inner Sinergym will be activated or not.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -125,7 +130,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.callbacks.LoggerCallback.__init__" title="sinergym.utils.callbacks.LoggerCallback.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([sinergym_logger, verbose])</p></td>
-<td><p></p></td>
+<td><p>Custom callback for plotting additional values in tensorboard.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_callback</span></code>(model)</p></td>
 <td><p>Initialize the callback by saving references to the RL model and the training environment for convenience.</p></td>
