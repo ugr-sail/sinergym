@@ -51,6 +51,14 @@
 <li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Sinergym Google Cloud API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#preparing-google-cloud">Preparing Google Cloud</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#first-steps-configuration">1. First steps (configuration)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-our-container-in-google-cloud-platform">2. Use our container in Google Cloud Platform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-your-own-container">3. Use your own container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-your-vm-or-mig">4. Create your VM or MIG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#init-your-vm">5. Init your VM</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#executing-api">Executing API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#receiving-experiments-in-remote-containers">Receiving experiments in remote containers</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#containers-permission-to-bucket-storage-output">Containers permission to bucket storage output</a></li>
@@ -96,16 +104,260 @@
 <p>In this project, an API based on RESTfull API for gcloud has been designed and developed in order to use Google Cloud infrastructure directly writing experiments definition ir our personal computer.</p>
 <a class="reference internal image-reference" href="../_images/Sinergym_cloud_API.png"><img alt="Sinergym cloud API diagram" class="align-center" src="../_images/Sinergym_cloud_API.png" style="width: 1000px;" /></a>
 <p>From our personal computer, we send a list of experiments we want to be executed in Google Cloud, using <strong>cloud_manager.py</strong> script for that purpose. An instance will be created for every experiment defined.
-Each VM send MLFlow logs to <strong>MLFlow tracking server</strong>. On the other hand, Sinergym output and Tensorboard output are sent to a <strong>Google Cloud Bucket</strong> (see <a class="reference internal" href="#remote-tensorboard-log"><span class="std std-ref">Remote Tensorboard log</span></a>), like <strong>Mlflow artifact</strong> (see <a class="reference internal" href="#mlflow-tracking-server-set-up"><span class="std std-ref">Mlflow tracking server set up</span></a>) and/or <strong>local VM storage</strong> depending on the experiment configuration.</p>
+Each VM send MLFlow logs to <strong>MLFlow tracking server</strong>. On the other hand, Sinergym output and Tensorboard output are sent to a <strong>Google Cloud Bucket</strong> (see <a class="reference internal" href="#remote-tensorboard-log"><span class="std std-ref">Remote Tensorboard log</span></a>), like <strong>Mlflow artifact</strong> (see <a class="reference internal" href="#mlflow-tracking-server-set-up"><span class="std std-ref">Mlflow tracking server set up</span></a>)
+and/or <strong>local VM storage</strong> depending on the experiment configuration.</p>
 <p>When an instance has finished its job, container <strong>auto-remove</strong> its host instance from Google Cloud Platform if experiments has been configured with this option. Whether an instance is the last in the MIG, that container auto-remove the empty MIG too.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Don’t try to remove an instance inner MIG directly using Google Cloud API REST, it needs to be executed from MIG to work. Some other problems (like wrong API REST documentation) have been solved in our API. We recommend you use this API directly.</p>
 </div>
 <p>Let’s see a detailed explanation above.</p>
+<section id="preparing-google-cloud">
+<h2>Preparing Google Cloud<a class="headerlink" href="#preparing-google-cloud" title="Permalink to this headline"></a></h2>
+<section id="first-steps-configuration">
+<h3>1. First steps (configuration)<a class="headerlink" href="#first-steps-configuration" title="Permalink to this headline"></a></h3>
+<p>Firstly, it is necessary that you have a Google Cloud account set up and SDK configured (auth, invoicing, project ID, etc). If you don’t have this, it is recommended to check <a class="reference external" href="https://cloud.google.com/sdk/docs/install">their documentation</a>.
+Secondly, It is important to have installed <a class="reference external" href="https://www.docker.com/">Docker</a> in order to be able to manage these containers in Google Cloud.</p>
+<p>You can link <strong>gcloud</strong> with <strong>docker</strong> accounts using the next (see <a class="reference external" href="https://cloud.google.com/container-registry/docs/advanced-authentication">authentication methods</a>):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud auth configure-docker
+</pre></div>
+</div>
+<p>If you don’t want to have several problems in the future with the image build and Google Cloud functionality in general, we recommend you to <strong>allow permissions for google cloud build</strong> at the beginning (see <a class="reference external" href="https://cloud.google.com/build/docs/securing-builds/configure-access-for-cloud-build-service-account">this documentation</a>).</p>
+<a class="reference internal image-reference" href="../_images/service-account-permissions.png"><img alt="Permissions required for cloud build." class="align-center" src="../_images/service-account-permissions.png" style="width: 500px;" /></a>
+<p>On the other hand, we are going to enable <strong>Google Cloud services</strong> in <em>API library</em>. These are API’s which we need currently:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Google Container Registry API.</p></li>
+<li><p>Artifact Registry API</p></li>
+<li><p>Cloud Run API</p></li>
+<li><p>Compute Engine API</p></li>
+<li><p>Cloud Logging API</p></li>
+<li><p>Cloud Monitoring API</p></li>
+<li><p>Cloud Functions API</p></li>
+<li><p>Cloud Pub/Sub API</p></li>
+<li><p>Cloud SQL Admin API</p></li>
+<li><p>Cloud Firestore API</p></li>
+<li><p>Cloud Datastore API</p></li>
+<li><p>Service Usage API</p></li>
+<li><p>Cloud storage</p></li>
+<li><p>Gmail API</p></li>
+</ul>
+</div></blockquote>
+<p>Hence, you will have to allow this services into your <strong>Google account</strong>.
+You can do it using <strong>gcloud client SDK</strong>:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud services list
+$ gcloud services <span class="nb">enable</span> artifactregistry.googleapis.com <span class="se">\</span>
+                         cloudapis.googleapis.com <span class="se">\</span>
+                         cloudbuild.googleapis.com <span class="se">\</span>
+                         containerregistry.googleapis.com <span class="se">\</span>
+                         gmail.googleapis.com <span class="se">\</span>
+                         sql-component.googleapis.com <span class="se">\</span>
+                         sqladmin.googleapis.com <span class="se">\</span>
+                         storage-component.googleapis.com <span class="se">\</span>
+                         storage.googleapis.com <span class="se">\</span>
+                         cloudfunctions.googleapis.com <span class="se">\</span>
+                         pubsub.googleapis.com <span class="se">\</span>
+                         run.googleapis.com <span class="se">\</span>
+                         serviceusage.googleapis.com <span class="se">\</span>
+                         drive.googleapis.com <span class="se">\</span>
+                         appengine.googleapis.com
+</pre></div>
+</div>
+<p>Or you can use <strong>Google Cloud Platform Console</strong>:</p>
+<a class="reference internal image-reference" href="../_images/service-account-APIs.png"><img alt="API's required for cloud build." class="align-center" src="../_images/service-account-APIs.png" style="width: 800px;" /></a>
+<p>If you have installed <em>Sinergym</em> and <em>Sinergym extras</em>. <strong>Google Cloud SDK must be linked with other python modules</strong> in order to some functionality works in the future (for example, tensorboard). Please, execute the next in your terminal:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud auth application-default login
+</pre></div>
+</div>
+</section>
+<section id="use-our-container-in-google-cloud-platform">
+<h3>2. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Permalink to this headline"></a></h3>
+<p>Our Sinergym container is uploaded in <strong>Container Registry</strong> as a public one currently. You can use it <strong>locally</strong>:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ docker run -it gcr.io/sinergym/sinergym:latest
+</pre></div>
+</div>
+<p>If you want to use it in a <strong>GCE VM</strong>, you can execute the next:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud compute instances create-with-container sinergym <span class="se">\</span>
+    --container-image gcr.io/sinergym/sinergym <span class="se">\</span>
+    --zone europe-west1-b <span class="se">\</span>
+    --container-privileged <span class="se">\</span>
+    --container-restart-policy never <span class="se">\</span>
+    --container-stdin <span class="se">\</span>
+    --container-tty <span class="se">\</span>
+    --boot-disk-size 20GB <span class="se">\</span>
+    --boot-disk-type pd-ssd <span class="se">\</span>
+    --machine-type n2-highcpu-8
+</pre></div>
+</div>
+<p>We have available containers in Docker Hub too. Please, visit our <a class="reference external" href="https://hub.docker.com/repository/docker/alejandrocn7/sinergym">repository</a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is possible to change parameters in order to set up your own VM with your preferences (see <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/compute/instances/create-with-container">create-with-container</a>).</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">--boot-disk-size</span></code> is really important, by default VM set 10GB and it isn’t enough at all for Sinergym container.
+This derive in a silence error for Google Cloud Build (and you would need to check logs, which incident is not clear).</p>
+</div>
+</section>
+<section id="use-your-own-container">
+<h3>3. Use your own container<a class="headerlink" href="#use-your-own-container" title="Permalink to this headline"></a></h3>
+<p>Suppose you have this repository forked and you want to upload <strong>your own container on Google Cloud</strong> and to use it. You can use <strong>cloudbuild.yaml</strong>
+with our <strong>Dockerfile</strong> for this purpose:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">steps</span><span class="p">:</span>
+  <span class="c1"># Write in cache for quick updates</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;gcr.io/google.com/cloudsdktool/cloud-sdk&quot;</span>
+    <span class="nt">entrypoint</span><span class="p">:</span> <span class="s">&quot;bash&quot;</span>
+    <span class="nt">args</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;docker</span><span class="nv"> </span><span class="s">pull</span><span class="nv"> </span><span class="s">gcr.io/${PROJECT_ID}/sinergym:latest</span><span class="nv"> </span><span class="s">||</span><span class="nv"> </span><span class="s">exit</span><span class="nv"> </span><span class="s">0&quot;</span><span class="p p-Indicator">]</span>
+    <span class="c1"># Build image (using cache if it&#39;s possible)</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;gcr.io/google.com/cloudsdktool/cloud-sdk&quot;</span>
+    <span class="nt">entrypoint</span><span class="p">:</span> <span class="s">&quot;docker&quot;</span>
+    <span class="nt">args</span><span class="p">:</span>
+      <span class="p p-Indicator">[</span>
+        <span class="s">&quot;build&quot;</span><span class="p p-Indicator">,</span>
+        <span class="s">&quot;-t&quot;</span><span class="p p-Indicator">,</span>
+        <span class="s">&quot;gcr.io/${PROJECT_ID}/sinergym:latest&quot;</span><span class="p p-Indicator">,</span>
+        <span class="s">&quot;--cache-from&quot;</span><span class="p p-Indicator">,</span>
+        <span class="s">&quot;gcr.io/${PROJECT_ID}/sinergym:latest&quot;</span><span class="p p-Indicator">,</span>
+        <span class="s">&quot;--build-arg&quot;</span><span class="p p-Indicator">,</span>
+        <span class="s">&quot;SINERGYM_EXTRAS=[DRL,gcloud]&quot;</span><span class="p p-Indicator">,</span>
+        <span class="s">&quot;.&quot;</span><span class="p p-Indicator">,</span>
+      <span class="p p-Indicator">]</span>
+
+    <span class="c1"># Push image built to container registry</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;gcr.io/google.com/cloudsdktool/cloud-sdk&quot;</span>
+    <span class="nt">entrypoint</span><span class="p">:</span> <span class="s">&quot;docker&quot;</span>
+    <span class="nt">args</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;push&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;gcr.io/${PROJECT_ID}/sinergym:latest&quot;</span><span class="p p-Indicator">]</span>
+
+    <span class="c1"># This container is going to be public (Change command in other case)</span>
+  <span class="c1"># - name: &quot;gcr.io/cloud-builders/gsutil&quot;</span>
+  <span class="c1">#   args:</span>
+  <span class="c1">#     [</span>
+  <span class="c1">#       &quot;iam&quot;,</span>
+  <span class="c1">#       &quot;ch&quot;,</span>
+  <span class="c1">#       &quot;AllUsers:objectViewer&quot;,</span>
+  <span class="c1">#       &quot;gs://artifacts.${PROJECT_ID}.appspot.com&quot;,</span>
+  <span class="c1">#     ]</span>
+<span class="c1">#Other options for execute build (not container)</span>
+<span class="nt">options</span><span class="p">:</span>
+  <span class="nt">diskSizeGb</span><span class="p">:</span> <span class="s">&quot;10&quot;</span>
+  <span class="nt">machineType</span><span class="p">:</span> <span class="s">&quot;E2_HIGHCPU_8&quot;</span>
+<span class="nt">timeout</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">86400s</span>
+<span class="nt">images</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;gcr.io/${PROJECT_ID}/sinergym:latest&quot;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>This file does the next:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Write in <strong>cache</strong> for quick updates (if a older container was uploaded already).</p></li>
+<li><p><strong>Build</strong> image (using cache if it’s available)</p></li>
+<li><p><strong>Push</strong> image built to Container Registry</p></li>
+<li><p>Make container public inner Container Registry.</p></li>
+</ol>
+</div></blockquote>
+<p>There is an option section at the end of the file. Do not confuse this part with the virtual machine configuration.
+Google Cloud uses a helper VM to build everything mentioned above. At the same time, we are using this YAML file in order to
+upgrade our container because of <em>PROJECT_ID</em> environment variable is defined by Google Cloud SDK, so its value is your current
+project in Google Cloud global config.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In the same way VM needs more memory, Google Cloud Build needs at least 10GB to work correctly. In other case it may fail.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If your local computer doesn’t have enough free space it might report the same error (there isn’t difference by Google cloud error manager),
+so be careful.</p>
+</div>
+<p>In order to execute <strong>cloudbuild.yaml</strong>, you have to do the next:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud builds submit <span class="se">\</span>
+    --config ./cloudbuild.yaml .
+</pre></div>
+</div>
+<p><em>–substitutions</em> can be used in order to configure build parameters if they are needed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>“.” in <code class="docutils literal notranslate"><span class="pre">--config</span></code> refers to <strong>Dockerfile</strong>, which is necessary to build container image (see <a class="reference external" href="https://cloud.google.com/build/docs/build-config">build-config</a>).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In <strong>cloudbuild.yaml</strong> there is a variable named <em>PROJECT_ID</em>. However, it is not defined in substitutions. This is because it’s a predetermined
+variable by Google Cloud. When build begins <em>“$PROJECT_ID”</em> is set to current value in gcloud configuration (see <a class="reference external" href="https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values">substitutions-variables</a>).</p>
+</div>
+</section>
+<section id="create-your-vm-or-mig">
+<h3>4. Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Permalink to this headline"></a></h3>
+<p>To create a <strong>VM</strong> that uses this container, here there is an example:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud compute instances create-with-container sinergym <span class="se">\</span>
+    --container-image gcr.io/sinergym/sinergym <span class="se">\</span>
+    --zone europe-west1-b <span class="se">\</span>
+    --container-privileged <span class="se">\</span>
+    --container-restart-policy never <span class="se">\</span>
+    --container-stdin <span class="se">\</span>
+    --container-tty <span class="se">\</span>
+    --boot-disk-size 20GB <span class="se">\</span>
+    --boot-disk-type pd-ssd <span class="se">\</span>
+    --machine-type n2-highcpu-8
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">--container-restart-policy</span> <span class="pre">never</span></code> it’s really important for a correct functionality.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you decide enter in VM after create it immediately, it is possible container hasn’t been created yet.
+You can think that is an error, Google cloud should notify this. If this issue happens, you should wait for a several minutes.</p>
+</div>
+<p>To create a <strong>MIG</strong>, you need to create a machine set up <strong>template</strong> firstly, for example:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud compute instance-templates create-with-container sinergym-template <span class="se">\</span>
+--container-image gcr.io/sinergym/sinergym <span class="se">\</span>
+--container-privileged <span class="se">\</span>
+--service-account storage-account@sinergym.iam.gserviceaccount.com <span class="se">\</span>
+--scopes https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/devstorage.full_control <span class="se">\</span>
+--container-env<span class="o">=</span><span class="nv">gce_zone</span><span class="o">=</span>europe-west1-b,gce_project_id<span class="o">=</span>sinergym,MLFLOW_TRACKING_URI<span class="o">=</span>http://<span class="k">$(</span>gcloud compute addresses describe mlflow-ip --format<span class="o">=</span><span class="s1">&#39;get(address)&#39;</span><span class="k">)</span>:5000 <span class="se">\</span>
+--container-restart-policy never <span class="se">\</span>
+--container-stdin <span class="se">\</span>
+--container-tty <span class="se">\</span>
+--boot-disk-size 20GB <span class="se">\</span>
+--boot-disk-type pd-ssd <span class="se">\</span>
+--machine-type n2-highcpu-8
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">--service-account</span></code>, <code class="docutils literal notranslate"><span class="pre">--scopes</span></code> and <code class="docutils literal notranslate"><span class="pre">--container-env</span></code> parameters will be explained in <a class="reference internal" href="#containers-permission-to-bucket-storage-output"><span class="std std-ref">Containers permission to bucket storage output</span></a>. Please, read that documentation before using these parameters, since they require a previous configuration.</p>
+</div>
+<p>Then, you can create a group-instances as large as you want:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud compute instance-groups managed create example-group <span class="se">\</span>
+    --base-instance-name sinergym-vm <span class="se">\</span>
+    --size <span class="m">3</span> <span class="se">\</span>
+    --template sinergym-template
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is possible that quote doesn’t let you have more than one VM at the same time. Hence, the rest of VM’s probably will be <em>initializing</em> always but never ready. If it is your case, we recommend you check your quotes <a class="reference external" href="https://console.cloud.google.com/iam-admin/quotas">here</a></p>
+</div>
+</section>
+<section id="init-your-vm">
+<h3>5. Init your VM<a class="headerlink" href="#init-your-vm" title="Permalink to this headline"></a></h3>
+<p>Your virtual machine is ready! To connect you can use ssh (see <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh">gcloud-ssh</a>):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud compute ssh &lt;machine-name&gt;
+</pre></div>
+</div>
+<p>Google Cloud use a <strong>Container-Optimized OS</strong> (see <a class="reference external" href="https://cloud.google.com/container-optimized-os/docs">documentation</a>) in VM. This SO have docker pre-installed with sinergym container.</p>
+<a class="reference internal image-reference" href="../_images/container1.png"><img alt="GCE VM containers list" class="align-center" src="../_images/container1.png" style="width: 800px;" /></a>
+<p>To use this container in our machine you only have to do:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ docker attach &lt;container-name-or-ID&gt;
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/container2.png"><img alt="GCE VM container usage." class="align-center" src="../_images/container2.png" style="width: 800px;" /></a>
+<p>And now you can execute your own experiments in Google Cloud! If you are interested in using our API specifically for Gcloud (automated experiments using remotes containers generation). Please, visit our section <a class="reference internal" href="#executing-api"><span class="std std-ref">Executing API</span></a></p>
+</section>
+</section>
 <section id="executing-api">
 <h2>Executing API<a class="headerlink" href="#executing-api" title="Permalink to this headline"></a></h2>
-<p>Our objective is defining a set of experiments in order to execute them in a Google Cloud remote container each one. For this, <em>cloud_manager.py</em> has been created in repository root. This file must be used in our local computer:</p>
+<p>Our objective is defining a set of experiments in order to execute them in a Google Cloud remote container each one automatically. For this, <em>cloud_manager.py</em> has been created in repository root. This file must be used in our local computer:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
@@ -194,7 +446,7 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong>. On the othe
         <span class="s1">&#39;Bucket {} found, this storage will be used when experiments finish.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
 <span class="k">except</span><span class="p">(</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Any bucket found into your Google account, generating new one...&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;No bucket found into your Google account, generating new one...&#39;</span><span class="p">)</span>
     <span class="n">bucket</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span>
         <span class="n">client</span><span class="p">,</span>
         <span class="n">bucket_name</span><span class="o">=</span><span class="s1">&#39;experiments-storage&#39;</span><span class="p">,</span>
@@ -246,7 +498,7 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong>. On the othe
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">--project_id</span></code> or <code class="docutils literal notranslate"><span class="pre">-id</span></code>: Your Google Cloud project id must be specified.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--zone</span></code> or <code class="docutils literal notranslate"><span class="pre">-zo</span></code>: Zone for your project (default is <em>europe-west1-b</em>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--template_name</span></code> or <code class="docutils literal notranslate"><span class="pre">-tem</span></code>: Template used to generate VM’s clones, defined in your project previously (see <a class="reference internal" href="installation.html#create-your-vm-or-mig"><span class="std std-ref">4. Create your VM or MIG</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--template_name</span></code> or <code class="docutils literal notranslate"><span class="pre">-tem</span></code>: Template used to generate VM’s clones, defined in your project previously (see <a class="reference internal" href="#create-your-vm-or-mig"><span class="std std-ref">4. Create your VM or MIG</span></a>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--group_name</span></code> or <code class="docutils literal notranslate"><span class="pre">-group</span></code>: Instance group name you want. All instances inner MIG will have this name concatenated with a random str.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--experiment_commands</span></code> or <code class="docutils literal notranslate"><span class="pre">-cmds</span></code>: Experiment definitions list using python command format (for information about its format, see <a class="reference internal" href="#receiving-experiments-in-remote-containers"><span class="std std-ref">Receiving experiments in remote containers</span></a>).</p></li>
 </ul>
@@ -710,7 +962,7 @@ Remember to configure Google Cloud account correctly before use this functionali
 </div></blockquote>
 <section id="containers-permission-to-bucket-storage-output">
 <h3>Containers permission to bucket storage output<a class="headerlink" href="#containers-permission-to-bucket-storage-output" title="Permalink to this headline"></a></h3>
-<p>As you see in sinergym template explained in <a class="reference internal" href="installation.html#create-your-vm-or-mig"><span class="std std-ref">4. Create your VM or MIG</span></a>, it is specified <code class="docutils literal notranslate"><span class="pre">--scope</span></code>, <code class="docutils literal notranslate"><span class="pre">--service-account</span></code> and <code class="docutils literal notranslate"><span class="pre">--container-env</span></code>. This aim to <em>remote_store</em> option in <em>DRL_battery.py</em> works correctly.
+<p>As you see in sinergym template explained in <a class="reference internal" href="#create-your-vm-or-mig"><span class="std std-ref">4. Create your VM or MIG</span></a>, it is specified <code class="docutils literal notranslate"><span class="pre">--scope</span></code>, <code class="docutils literal notranslate"><span class="pre">--service-account</span></code> and <code class="docutils literal notranslate"><span class="pre">--container-env</span></code>. This aim to <em>remote_store</em> option in <em>DRL_battery.py</em> works correctly.
 Those parameters provide each container with permissions to write in the bucket and manage Google Cloud Platform (auto instance remove function).
 Container environment variables indicate zone, project_id and mlflow tracking server uri need it in <a class="reference internal" href="#mlflow-tracking-server-set-up"><span class="std std-ref">Mlflow tracking server set up</span></a>.</p>
 <p>Hence, it is <strong>necessary</strong> to <strong>set up this service account</strong> and give privileges in order to that objective. Then, following <a class="reference external" href="https://cloud.google.com/docs/authentication/getting-started">Google authentication documentation</a> we will do the next:</p>
@@ -867,7 +1119,7 @@ gcloud compute firewall-rules create allow-mlflow-tracking --network default --p
 </ol>
 </div></blockquote>
 <p>Step 8 is very important, this allows you to delete server instance and create again when you need it without redefining server ip in sinergym-template for remote container experiments.
-Notice that server instance creation use service account for mlflow, with this configuration mlflow can read from SQL server. In <a class="reference internal" href="installation.html#create-your-vm-or-mig"><span class="std std-ref">4. Create your VM or MIG</span></a> it is specified MLFLOW_TRACKING_URI container environment variable using that external static ip.</p>
+Notice that server instance creation use service account for mlflow, with this configuration mlflow can read from SQL server. In <a class="reference internal" href="#create-your-vm-or-mig"><span class="std std-ref">4. Create your VM or MIG</span></a> it is specified MLFLOW_TRACKING_URI container environment variable using that external static ip.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>It is important execute this script before create sinergym-template instances in order to anotate mlflow-server-ip.</p>
