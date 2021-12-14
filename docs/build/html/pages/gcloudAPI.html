@@ -96,8 +96,8 @@
 <p>In this project, an API based on RESTfull API for gcloud has been designed and developed in order to use Google Cloud infrastructure directly writing experiments definition ir our personal computer.</p>
 <a class="reference internal image-reference" href="../_images/Sinergym_cloud_API.png"><img alt="Sinergym cloud API diagram" class="align-center" src="../_images/Sinergym_cloud_API.png" style="width: 1000px;" /></a>
 <p>From our personal computer, we send a list of experiments we want to be executed in Google Cloud, using <strong>cloud_manager.py</strong> script for that purpose. An instance will be created for every experiment defined.
-Each VM send MLFlow logs to <strong>MLFlow tracking server</strong> (see <a class="reference internal" href="#mlflow-tracking-server-set-up"><span class="std std-ref">Mlflow tracking server set up</span></a> for details). On the other hand, Sinergym output and Tensorboard output are sent to a <strong>Google Cloud Bucket</strong> (see <a class="reference internal" href="#remote-tensorboard-log"><span class="std std-ref">Remote Tensorboard log</span></a> for details)</p>
-<p>When an instance has finished its job, container <strong>auto-remove</strong> its host instance from Google Cloud Platform. Whether an instance is the last in the MIG, that container auto-remove the empty MIG too.</p>
+Each VM send MLFlow logs to <strong>MLFlow tracking server</strong>. On the other hand, Sinergym output and Tensorboard output are sent to a <strong>Google Cloud Bucket</strong> (see <a class="reference internal" href="#remote-tensorboard-log"><span class="std std-ref">Remote Tensorboard log</span></a>), like <strong>Mlflow artifact</strong> (see <a class="reference internal" href="#mlflow-tracking-server-set-up"><span class="std std-ref">Mlflow tracking server set up</span></a>) and/or <strong>local VM storage</strong> depending on the experiment configuration.</p>
+<p>When an instance has finished its job, container <strong>auto-remove</strong> its host instance from Google Cloud Platform if experiments has been configured with this option. Whether an instance is the last in the MIG, that container auto-remove the empty MIG too.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Don’t try to remove an instance inner MIG directly using Google Cloud API REST, it needs to be executed from MIG to work. Some other problems (like wrong API REST documentation) have been solved in our API. We recommend you use this API directly.</p>
@@ -257,8 +257,8 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong> (see <a clas
     --template_name sinergym-template <span class="se">\</span>
     --group_name sinergym-group <span class="se">\</span>
     --experiment_commands <span class="se">\</span>
-    <span class="s1">&#39;python3 DRL_battery.py --environment Eplus-5Zone-hot-discrete-v1 --episodes 2 --algorithm DQN --logger --log_interval 1 --seed 58 --evaluation --eval_freq 1 --eval_length 1 --tensorboard ./tensorboard_log --remote_store&#39;</span> <span class="se">\</span>
-    <span class="s1">&#39;python3 DRL_battery.py --environment Eplus-5Zone-hot-continuous-v1 --episodes 3 --algorithm PPO --logger --log_interval 300 --seed 52 --evaluation --eval_freq 1 --eval_length 1 --tensorboard ./tensorboard_log --remote_store&#39;</span>
+    <span class="s1">&#39;python3 DRL_battery.py --environment Eplus-5Zone-hot-discrete-v1 --episodes 2 --algorithm DQN --logger --log_interval 1 --seed 58 --evaluation --eval_freq 1 --eval_length 1 --tensorboard gs://experiments-storage/tensorboard_log --remote_store --auto_delete&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;python3 DRL_battery.py --environment Eplus-5Zone-hot-continuous-v1 --episodes 3 --algorithm PPO --logger --log_interval 300 --seed 52 --evaluation --eval_freq 1 --eval_length 1 --tensorboard gs://experiments-storage/tensorboard_log --remote_store --mlflow_store --auto_delete&#39;</span>
 </pre></div>
 </div>
 <p>This example generates only 2 machines inner an instance group in your Google Cloud Platform because of you have defined two experiments. If you defined more experiments, more machines will be created by API.</p>
@@ -267,11 +267,11 @@ Each VM send MLFlow logs to <strong>MLFlow tracking server</strong> (see <a clas
 <div><ol class="arabic simple">
 <li><p>Counting commands list in <code class="docutils literal notranslate"><span class="pre">--experiment_commands</span></code> parameter and generate an Managed Instance Group (MIG) with the same size.</p></li>
 <li><p>Waiting for <strong>process 1</strong> finishes.</p></li>
-<li><p>If <em>experiments-storage</em> Bucket doesn’t exist, this script create one to store experiment result, else use the current one.</p></li>
+<li><p>If <em>experiments-storage</em> Bucket doesn’t exist, this script create one to store experiment result called <strong>experiemnts-storage</strong> (if you want other name you have to change this name in script), else use the current one.</p></li>
 <li><p>Looking for instance names generated randomly by Google cloud once MIG is created (waiting for instances generation if they haven’t been created yet).</p></li>
 <li><p>To each commands experiment, it is added <code class="docutils literal notranslate"><span class="pre">--group_name</span></code> option in order to each container see what is its own MIG (useful to auto-remove them).</p></li>
-<li><p>Looking for <em>id container</em> about each instance. This process waits for containers are initialize, since instance is initialize earlier than inner container.</p></li>
-<li><p>Sending each experiment command in containers from each instance using an SSH connection.</p></li>
+<li><p>Looking for <em>id container</em> about each instance. This process waits for containers are initialize, since instance is initialize earlier than inner container (this could take several minutes).</p></li>
+<li><p>Sending each experiment command in containers from each instance using an SSH connection (parallel).</p></li>
 </ol>
 </div></blockquote>
 <div class="admonition note">
@@ -666,6 +666,10 @@ Remember to configure Google Cloud account correctly before use this functionali
         <span class="n">gcloud</span><span class="o">.</span><span class="n">delete_instance_MIG_from_container</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">group_name</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>DRL_battery.py</strong> is able to be used to local experiments into client computer. For example, <code class="docutils literal notranslate"><span class="pre">--auto_delete</span></code> parameter will have no effect in experiment. This experiments results could be sent to bucket and mlflow artifacts if it is specified. We will see it.</p>
+</div>
 <p>The list of parameter is pretty large. Let’s see it:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">--environment</span></code> or <code class="docutils literal notranslate"><span class="pre">-env</span></code>: Environment name you want to use (see <a class="reference internal" href="environments.html#environments"><span class="std std-ref">Environments</span></a>)</p></li>
@@ -675,21 +679,23 @@ Remember to configure Google Cloud account correctly before use this functionali
 <li><p><code class="docutils literal notranslate"><span class="pre">--normalization</span></code> or <code class="docutils literal notranslate"><span class="pre">-norm</span></code>: Apply normalization wrapper to observations during training. If it isn’t specified wrapper will not be applied (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--multiobs</span></code> or <code class="docutils literal notranslate"><span class="pre">-mobs</span></code>: Apply Multi-Observation wrapper to observations during training. If it isn’t specified wrapper will not be applied (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--logger</span></code> or <code class="docutils literal notranslate"><span class="pre">-log</span></code>: Apply Sinergym logger wrapper during training. If it isn’t specified wrapper will not be applied (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a> and <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> or <code class="docutils literal notranslate"><span class="pre">-tens</span></code>: This parameter will contain a path-file to allocate tensorboard training logs. If it isn’t specified this log will be deactivate (see <a class="reference internal" href="deep-reinforcement-learning.html#drl-logger"><span class="std std-ref">DRL Logger</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> or <code class="docutils literal notranslate"><span class="pre">-tens</span></code>: This parameter will contain a <strong>path-file</strong> or <strong>path-remote-bucket</strong> to allocate tensorboard training logs. If it isn’t specified this log will be deactivate (see <a class="reference internal" href="deep-reinforcement-learning.html#drl-logger"><span class="std std-ref">DRL Logger</span></a>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--evaluation</span></code> or <code class="docutils literal notranslate"><span class="pre">-eval</span></code>: If it is specified, evaluation callback will be activate, else model evaluation will be deactivate during training (see <a class="reference internal" href="deep-reinforcement-learning.html#deep-reinforcement-learning-integration"><span class="std std-ref">Deep Reinforcement Learning Integration</span></a>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--eval_freq</span></code> or <code class="docutils literal notranslate"><span class="pre">-evalf</span></code>: Only if <code class="docutils literal notranslate"><span class="pre">--evaluation</span></code> flag has been written. Episode frequency for evaluation.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--eval_length</span></code> or <code class="docutils literal notranslate"><span class="pre">-evall</span></code>: Only if <code class="docutils literal notranslate"><span class="pre">--evaluation</span></code> flag has been written. Number of episodes for each evaluation.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--log_interval</span></code> or <code class="docutils literal notranslate"><span class="pre">-inter</span></code>: This parameter is used for <code class="docutils literal notranslate"><span class="pre">learn()</span></code> method in each algorithm. It is important specify a correct value.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--seed</span></code> or <code class="docutils literal notranslate"><span class="pre">-sd</span></code>: Seed for training, random components in process will be able to be recreated.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--remote_store</span></code> or <code class="docutils literal notranslate"><span class="pre">-sto</span></code>: Determine if sinergym output will be sent to a common resource (Bucket), else will be allocate in remote container memory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--remote_store</span></code> or <code class="docutils literal notranslate"><span class="pre">-sto</span></code>: Determine if sinergym output and tensorboard log (when a local path is specified and not a remote bucket path) will be sent to a common resource (Bucket), else will be allocate in remote container memory only.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--mlflow_store</span></code> or <code class="docutils literal notranslate"><span class="pre">-mlflow</span></code>: Determine if sinergym output and tensorboard log (when a local path is specified and not a remote bucket path) will be sent to a Mlflow Artifact, else will be allocate in remote container memory only.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--group_name</span></code> or <code class="docutils literal notranslate"><span class="pre">-group</span></code>: Added by <em>cloud_manager.py</em> automatically. It specify to which MIG the host instance belongs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--auto_delete</span></code> or <code class="docutils literal notranslate"><span class="pre">-del</span></code>: Whether this parameter is specified, remote instance will be auto removed when its job has finished.</p></li>
 <li><p><strong>algorithm hyperparameters</strong>: Execute <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">DRL_battery</span> <span class="pre">--help</span></code> for more information.</p></li>
 </ul>
 <p>This script do the next:</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>Setting an appropriate name for the experiment. Following the next format: <code class="docutils literal notranslate"><span class="pre">&lt;algorithm&gt;-&lt;environment_name&gt;-episodes&lt;episodes_int&gt;-seed&lt;seed_value&gt;(&lt;experiment_date&gt;)</span></code></p></li>
-<li><p>Starting Mlflow track experiment with that name.</p></li>
+<li><p>Starting Mlflow track experiment with that name, if mlflow server is not available, it will be used an local path (<em>./mlruns</em>) in remote container.</p></li>
 <li><p>Log all MlFlow parameters (including <em>sinergym.__version__</em>).</p></li>
 <li><p>Setting reward function specified in <code class="docutils literal notranslate"><span class="pre">--reward</span></code> parameter.</p></li>
 <li><p>Setting wrappers specified in environment.</p></li>
@@ -698,8 +704,8 @@ Remember to configure Google Cloud account correctly before use this functionali
 <li><p>Setting up evaluation callback if it has been specified.</p></li>
 <li><p>Setting up Tensorboard logger callback if it has been specified.</p></li>
 <li><p>Training with environment.</p></li>
-<li><p>If <code class="docutils literal notranslate"><span class="pre">--remote_store</span></code> has been specified, saving all outputs in Google Cloud Bucket.</p></li>
-<li><p>Auto-delete remote container in Google Cloud Platform.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">--remote_store</span></code> has been specified, saving all outputs in Google Cloud Bucket. If <code class="docutils literal notranslate"><span class="pre">--mlflow_store</span></code> has been specified, saving all outputs in Mlflow run artifact.</p></li>
+<li><p>Auto-delete remote container in Google Cloud Platform if script has been called from <strong>cloud_manager.py</strong> and parameter <code class="docutils literal notranslate"><span class="pre">--auto_delete</span></code> has been specified.</p></li>
 </ol>
 </div></blockquote>
 <section id="containers-permission-to-bucket-storage-output">
@@ -720,10 +726,18 @@ Finally, we export this file in <strong>GOOGLE_CLOUD_CREDENTIALS</strong> in ord
 </section>
 <section id="remote-tensorboard-log">
 <h2>Remote Tensorboard log<a class="headerlink" href="#remote-tensorboard-log" title="Permalink to this headline"></a></h2>
-<p>In <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> parameter we have to specify a <strong>local path</strong> in order to read this logs data in real-time.
-However, we want to send this data to <em>experiments-storage</em> bucket created in Google Cloud Platform by <em>cloud_manager.py</em> process (see <a class="reference internal" href="#executing-api"><span class="std std-ref">Executing API</span></a>).
-Hence, Tensorboard has added support to do this recently (<a class="reference external" href="https://github.com/ContinualAI/avalanche/pull/628">#628</a>).
-You have to write <cite>gs://&lt;bucket_name&gt;/&lt;tensorboard_log_path&gt;</cite> in <em>DRL_battery.py</em> <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> parameter directly.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> parameter we have to specify a <strong>local path</strong> or a <strong>Bucket path</strong>.</p>
+<p>If we specify a <strong>local path</strong>, tensorboard logs will be stored in remote containers memory. If you have specified <code class="docutils literal notranslate"><span class="pre">remote_store</span></code> or <code class="docutils literal notranslate"><span class="pre">mlflow_store</span></code>, this logs will be sent to those remote storages when experiment finishes.
+One of the strengths of Tensorboard is the ability to see the data in real time as the training is running. Thus, it is recommended to define in <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> the <strong>bucket path</strong> directly in order to send that information
+as the training is generating it (see <a class="reference external" href="https://github.com/ContinualAI/avalanche/pull/628">this issue</a> for more information). In our project we have <em>gs://experiments-storage/tensorboard_log</em> but you can have whatever you want.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If in <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> you have specified a gs path, <code class="docutils literal notranslate"><span class="pre">--remote_store</span></code> or <code class="docutils literal notranslate"><span class="pre">--mlflow_store</span></code> parameters don’t store tensorboard logs.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Whether you have written a bucket path, don’t write <code class="docutils literal notranslate"><span class="pre">/</span></code> at the end (<em>gs://experiments-storage/tensorboard_log/</em>), this causes that real-time remote storage doesn’t work correctly.</p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>In the case that gs URI isn’t recognized. Maybe is due to your tensorboard installation hasn’t got access your google account. Try <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login">gcloud auth application-default login</a> command.</p>
@@ -836,7 +850,7 @@ gcloud compute --project<span class="o">=</span><span class="nv">$PROJECT_ID</sp
 gcloud compute firewall-rules create allow-mlflow-tracking --network default --priority <span class="m">1000</span> --direction ingress --action allow --target-tags mlflow-tracking-server --source-ranges <span class="m">0</span>.0.0.0/0 --rules tcp:5000 --enable-logging
 </pre></div>
 </div>
-<p>This bash script define all the process to configure this functionality automatically. (Once you execute it you don’t have to use this script anymore). The arguments it needs are:
+<p>This bash script defines all the process to configure this functionality automatically. (Once you execute it you don’t have to use this script anymore). The arguments it needs are:
 <em>PROJECT_ID</em>, <em>BUCKET_NAME</em>, <em>ZONE</em> and <em>DB_ROOT_PASSWORD</em>.</p>
 <p>This script do the next for you:</p>
 <blockquote>
@@ -846,7 +860,7 @@ gcloud compute firewall-rules create allow-mlflow-tracking --network default --p
 <li><p>Creating sql instance with root password specified in argument 4.</p></li>
 <li><p>Creating mlflow database inner SQL instance.</p></li>
 <li><p>Creating service account privileges to use Back-end [roles/cloudsql.editor]</p></li>
-<li><p>Generating an automatic script called <strong>start_mlflow_tracking.sh</strong> and sending to <cite>gs://&lt;BUCKET_NAME&gt;/scripts/</cite></p></li>
+<li><p>Generating an automatic script called <strong>start_mlflow_tracking.sh</strong> and sending to <code class="docutils literal notranslate"><span class="pre">gs://&lt;BUCKET_NAME&gt;/scripts/</span></code></p></li>
 <li><p>Deleting local <strong>start_mlflow_tracking.sh</strong> file.</p></li>
 <li><p>Creating static external ip for mlflow-tracking-server</p></li>
 <li><p>Deploying remote server [mlflow-tracking-server]</p></li>
@@ -861,6 +875,10 @@ Notice that server instance creation use service account for mlflow, with this c
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If you want to change any backend configuration, you can change any parameter of the script bellow.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Whether you have written <code class="docutils literal notranslate"><span class="pre">--mlflow_store</span></code>, Sinergym outputs will be sent to mlflow server as artifacts. These artifacts will be stored in the same bucket where is allocated <code class="docutils literal notranslate"><span class="pre">gs://&lt;BUCKET_NAME&gt;</span></code></p>
 </div>
 </section>
 <section id="google-cloud-alerts">

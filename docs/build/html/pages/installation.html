@@ -50,9 +50,9 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#cloud-computing">Cloud Computing</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#first-steps">1. First steps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#use-our-container-in-google-cloud-platform">1. Use our container in Google Cloud Platform</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#use-your-own-container">1. Use your own container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#first-steps-configuration">1. First steps (configuration)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-our-container-in-google-cloud-platform">2. Use our container in Google Cloud Platform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-your-own-container">3. Use your own container</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#create-your-vm-or-mig">4. Create your VM or MIG</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#init-your-vm">1. Init your VM</a></li>
 </ul>
@@ -100,13 +100,14 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
 <p>To install <em>sinergym</em>, follow these steps:</p>
 <ul class="simple">
-<li><p>First, it is recommended to create a virtual environment. You can do so by:</p></li>
+<li><p>First, it is recommended to create a <strong>virtual environment</strong>. You can do so by:</p></li>
 </ul>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install python-virtualenv virtualenv
 $ virtualenv env_sinergym --python<span class="o">=</span>python3.7
 $ <span class="nb">source</span> env_sinergym/bin/activate
 </pre></div>
 </div>
+<p>There are other alternatives like <strong>conda environments</strong>, for example.</p>
 <ul class="simple">
 <li><p>Then, clone this repository using this command:</p></li>
 </ul>
@@ -204,9 +205,9 @@ It’s possible to select a subset of these libraries instead of ‘extras’ ta
 </section>
 <section id="cloud-computing">
 <h2>Cloud Computing<a class="headerlink" href="#cloud-computing" title="Permalink to this headline"></a></h2>
-<section id="first-steps">
-<h3>1. First steps<a class="headerlink" href="#first-steps" title="Permalink to this headline"></a></h3>
-<p>You can run your experiments in cloud too. We are using <a class="reference external" href="https://cloud.google.com/">Google Cloud</a> in order to make it possible. Our team aim to set up
+<section id="first-steps-configuration">
+<h3>1. First steps (configuration)<a class="headerlink" href="#first-steps-configuration" title="Permalink to this headline"></a></h3>
+<p>You can run your experiments in the Cloud too. We are using <a class="reference external" href="https://cloud.google.com/">Google Cloud</a> in order to make it possible. Our team aim to set up
 a managed instance group (<a class="reference external" href="https://cloud.google.com/compute/docs/instance-groups/getting-info-about-migs?hl=es-419">MIG</a>) in which execute our Sinergym container.</p>
 <p>Firstly, it is necessary that you have a Google Cloud account set up and SDK configured (auth, invoicing, project ID, etc). If you don’t have this, it is recommended to check <a class="reference external" href="https://cloud.google.com/sdk/docs/install">their documentation</a>.
 Secondly, It is important to have installed <a class="reference external" href="https://www.docker.com/">Docker</a> in order to be able to manage these containers in Google Cloud.</p>
@@ -214,8 +215,9 @@ Secondly, It is important to have installed <a class="reference external" href="
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud auth configure-docker
 </pre></div>
 </div>
-<p>If you don’t want to have several problems in the future with the image build, we recommend you to allow permissions for google cloud build at the beginning (see <a class="reference external" href="https://cloud.google.com/build/docs/securing-builds/configure-access-for-cloud-build-service-account">this documentation</a>).
-On the other hand, we are going to use specifically this services in <strong>Google Cloud Platform</strong>:</p>
+<p>If you don’t want to have several problems in the future with the image build and Google Cloud functionality in general, we recommend you to <strong>allow permissions for google cloud build</strong> at the beginning (see <a class="reference external" href="https://cloud.google.com/build/docs/securing-builds/configure-access-for-cloud-build-service-account">this documentation</a>).</p>
+<a class="reference internal image-reference" href="../_images/service-account-permissions.png"><img alt="Permissions required for cloud build." class="align-center" src="../_images/service-account-permissions.png" style="width: 500px;" /></a>
+<p>On the other hand, we are going to enable <strong>Google Cloud services</strong> in <em>API library</em>. These are API’s which we need currently:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Google Container Registry API.</p></li>
@@ -234,13 +236,36 @@ On the other hand, we are going to use specifically this services in <strong>Goo
 <li><p>Gmail API</p></li>
 </ul>
 </div></blockquote>
-<p>Hence, you will have to allow this services into your <strong>Google account</strong>.</p>
-<a class="reference internal image-reference" href="../_images/service-account-permissions.png"><img alt="Permissions required for cloud build." class="align-center" src="../_images/service-account-permissions.png" style="width: 500px;" /></a>
+<p>Hence, you will have to allow this services into your <strong>Google account</strong>.
+You can do it using <strong>gcloud client SDK</strong>:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud services list
+$ gcloud services <span class="nb">enable</span> artifactregistry.googleapis.com <span class="se">\</span>
+                         cloudapis.googleapis.com <span class="se">\</span>
+                         cloudbuild.googleapis.com <span class="se">\</span>
+                         containerregistry.googleapis.com <span class="se">\</span>
+                         gmail.googleapis.com <span class="se">\</span>
+                         sql-component.googleapis.com <span class="se">\</span>
+                         sqladmin.googleapis.com <span class="se">\</span>
+                         storage-component.googleapis.com <span class="se">\</span>
+                         storage.googleapis.com <span class="se">\</span>
+                         cloudfunctions.googleapis.com <span class="se">\</span>
+                         pubsub.googleapis.com <span class="se">\</span>
+                         run.googleapis.com <span class="se">\</span>
+                         serviceusage.googleapis.com <span class="se">\</span>
+                         drive.googleapis.com <span class="se">\</span>
+                         appengine.googleapis.com
+</pre></div>
+</div>
+<p>Or you can use <strong>Google Cloud Platform Console</strong>:</p>
 <a class="reference internal image-reference" href="../_images/service-account-APIs.png"><img alt="API's required for cloud build." class="align-center" src="../_images/service-account-APIs.png" style="width: 800px;" /></a>
+<p>If you have installed <em>Sinergym</em> and <em>Sinergym extras</em>. <strong>Google Cloud SDK must be linked with other python modules</strong> in order to some functionality works in the future (for example, tensorboard). Please, execute the next in your terminal:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud auth application-default login
+</pre></div>
+</div>
 </section>
 <section id="use-our-container-in-google-cloud-platform">
-<h3>1. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Permalink to this headline"></a></h3>
-<p>Our Sinergym container is uploaded in container registry as a public one currently. You can use it <strong>locally</strong>:</p>
+<h3>2. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Permalink to this headline"></a></h3>
+<p>Our Sinergym container is uploaded in <strong>Container Registry</strong> as a public one currently. You can use it <strong>locally</strong>:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ docker run -it gcr.io/sinergym/sinergym:latest
 </pre></div>
 </div>
@@ -269,8 +294,8 @@ This derive in a silence error for Google Cloud Build (and you would need to che
 </div>
 </section>
 <section id="use-your-own-container">
-<h3>1. Use your own container<a class="headerlink" href="#use-your-own-container" title="Permalink to this headline"></a></h3>
-<p>Suppose you have this repository forked and you want to upload your own container on Google Cloud and to use it. You can use <strong>cloudbuild.yaml</strong>
+<h3>3. Use your own container<a class="headerlink" href="#use-your-own-container" title="Permalink to this headline"></a></h3>
+<p>Suppose you have this repository forked and you want to upload <strong>your own container on Google Cloud</strong> and to use it. You can use <strong>cloudbuild.yaml</strong>
 with our <strong>Dockerfile</strong> for this purpose:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">steps</span><span class="p">:</span>
   <span class="c1"># Write in cache for quick updates</span>
@@ -317,14 +342,16 @@ with our <strong>Dockerfile</strong> for this purpose:</p>
 <p>This file does the next:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>Write in cache for quick updates (if a older container was uploaded already).</p></li>
-<li><p>Build image (using cache if it’s available)</p></li>
-<li><p>Push image built to Container Registry</p></li>
+<li><p>Write in <strong>cache</strong> for quick updates (if a older container was uploaded already).</p></li>
+<li><p><strong>Build</strong> image (using cache if it’s available)</p></li>
+<li><p><strong>Push</strong> image built to Container Registry</p></li>
 <li><p>Make container public inner Container Registry.</p></li>
 </ol>
 </div></blockquote>
 <p>There is an option section at the end of the file. Do not confuse this part with the virtual machine configuration.
-Google Cloud uses a helper VM to build everything mentioned above.</p>
+Google Cloud uses a helper VM to build everything mentioned above. At the same time, we are using this YAML file in order to
+upgrade our container because of <em>PROJECT_ID</em> environment variable is defined by Google Cloud SDK, so its value is your current
+project in Google Cloud global config.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>In the same way VM needs more memory, Google Cloud Build needs at least 10GB to work correctly. In other case it may fail.</p>
@@ -379,8 +406,8 @@ You can think that is an error, Google cloud should notify this. If this issue h
 --container-image gcr.io/sinergym/sinergym <span class="se">\</span>
 --container-privileged <span class="se">\</span>
 --service-account storage-account@sinergym.iam.gserviceaccount.com <span class="se">\</span>
---scopes https://www.googleapis.com/auth/cloud-platform, https://www.googleapis.com/auth/devstorage.full_control <span class="se">\</span>
---container-env<span class="o">=</span><span class="nv">gce_zone</span><span class="o">=</span>europe-west1-b, <span class="nv">gce_project_id</span><span class="o">=</span>sinergym, <span class="nv">MLFLOW_TRACKING_URI</span><span class="o">=</span>http://<span class="k">$(</span>gcloud compute addresses describe mlflow-ip --format<span class="o">=</span><span class="s1">&#39;get(address)&#39;</span><span class="k">)</span>:5000 <span class="se">\</span>
+--scopes https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/devstorage.full_control <span class="se">\</span>
+--container-env<span class="o">=</span><span class="nv">gce_zone</span><span class="o">=</span>europe-west1-b,gce_project_id<span class="o">=</span>sinergym,MLFLOW_TRACKING_URI<span class="o">=</span>http://<span class="k">$(</span>gcloud compute addresses describe mlflow-ip --format<span class="o">=</span><span class="s1">&#39;get(address)&#39;</span><span class="k">)</span>:5000 <span class="se">\</span>
 --container-restart-policy never <span class="se">\</span>
 --container-stdin <span class="se">\</span>
 --container-tty <span class="se">\</span>

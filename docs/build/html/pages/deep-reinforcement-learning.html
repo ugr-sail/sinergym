@@ -143,7 +143,6 @@ Therefore, <a class="reference external" href="https://github.com/jajimer/sinerg
 Each algorithm has its own differences about how information is extracted which is why its implementation. <code class="docutils literal notranslate"><span class="pre">LoggerCallback</span></code> can deal with those subtleties.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LoggerCallback</span><span class="p">(</span><span class="n">BaseCallback</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Custom callback for plotting additional values in tensorboard.</span>
-<span class="sd">        :param sinergym_logger: Boolean, indicate if CSVLogger inner Sinergym will be activated or not.</span>
 <span class="sd">        :param ep_rewards: Here will be stored all rewards during episode.</span>
 <span class="sd">        :param ep_powers: Here will be stored all consumption data during episode.</span>
 <span class="sd">        :param ep_term_comfort: Here will be stored all comfort terms (reward component) during episode.</span>
@@ -153,6 +152,11 @@ Each algorithm has its own differences about how information is extracted which 
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sinergym_logger</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Custom callback for plotting additional values in tensorboard.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sinergym_logger (boolean): Indicate if CSVLogger inner Sinergym will be activated or not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LoggerCallback</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sinergym_logger</span> <span class="o">=</span> <span class="n">sinergym_logger</span>
@@ -312,7 +316,7 @@ Some features like actions and observations are set up in each timestep. Thus, O
 <h3>Tensorboard structure<a class="headerlink" href="#tensorboard-structure" title="Permalink to this headline"></a></h3>
 <p>The main structure for Sinergym with Tensorboard is:</p>
 <ul class="simple">
-<li><p><strong>action</strong>: This section has action values during training. When algorithm is On Policy will appear <strong>action_simulation</strong> too. This is because algorithms
+<li><p><strong>action</strong>: This section has action values during training. When algorithm is On Policy, it will appear <strong>action_simulation</strong> too. This is because algorithms
 in continuous environments has their own output and clipped with gym action space. Then, this output is parse to simulation action space (See <a class="reference internal" href="environments.html#observation-action-spaces"><span class="std std-ref">Observation/action spaces</span></a>).</p></li>
 <li><dl class="simple">
 <dt><strong>episode</strong>: Here is stored all information about entires episodes. It is equivalent to progress.csv in Sinergym logger (see Sinergym <a class="reference internal" href="output.html#output-format"><span class="std std-ref">Output format</span></a>):</dt><dd><ul>
