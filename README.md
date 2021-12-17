@@ -12,7 +12,7 @@ The goal of this project is to create an environment following OpenAI Gym interf
 
 The main functionalities of Sinergym are the following :
 
-  - **Benchmark environments**. Similarly to Atari or Mujoco environments for RL community, we are designing a set of environments for benchmarking and testing deep RL algorithms. These environments may include different buildings, weathers or action spaces.
+  - **Benchmark environments**. Similarly to Atari or Mujoco environments for RL community, we are designing a set of environments for benchmarking and testing deep RL algorithms. These environments may include different buildings, weathers or action/observation spaces.
   - **Develop different experimental settings**. We aim to provide a package that allows to modify experimental settings in an easy manner. For example, several reward functions or observation variables may be defined. 
   - **Include different simulation engines**. Communication between Python and [EnergyPlus](https://energyplus.net/) is established using [BCVTB](https://simulationresearch.lbl.gov/bcvtb/FrontPage). Since this tool allows for interacting with several simulation engines, more of them (e.g. [OpenModelica](https://openmodelica.org/)) could be included in the backend while maintaining the Gym API.
   -  **Stable Baseline 3 Integration**. Some functionalities like callbacks
@@ -21,6 +21,10 @@ The main functionalities of Sinergym are the following :
   -  **Google Cloud Integration**. Whether you have a Google Cloud account and you want to
    use your infrastructure with Sinergym, it has been designed a complete functionality
    in order to facilitate this work.
+  - **Mlflow tracking server**. `Mlflow <https://mlflow.org/>`__ is an open source platform for the machine
+   learning lifecycle. This can be used with Google Cloud remote server (if you have Google Cloud account) 
+   or using local store. This will help you to manage and store your runs and artifacts generated in an orderly
+   manner.
   -  **Data Visualization**. Using Sinergym logger or Tensorboard server to visualize training information
    in real-time.
   - Many more!
