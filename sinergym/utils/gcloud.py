@@ -1,3 +1,5 @@
+"""Utilities to use Google Cloud Python API and Google Cloud API REST easier."""
+
 import subprocess
 import os
 import time

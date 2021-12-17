@@ -1,3 +1,5 @@
+"""Custom Callbacks for stable baselines 3 algorithms."""
+
 from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
 import numpy as np
 import gym
@@ -15,7 +17,6 @@ from stable_baselines3.common.env_util import is_wrapped
 
 class LoggerCallback(BaseCallback):
     """Custom callback for plotting additional values in tensorboard.
-        :param sinergym_logger: Boolean, indicate if CSVLogger inner Sinergym will be activated or not.
         :param ep_rewards: Here will be stored all rewards during episode.
         :param ep_powers: Here will be stored all consumption data during episode.
         :param ep_term_comfort: Here will be stored all comfort terms (reward component) during episode.
@@ -25,6 +26,11 @@ class LoggerCallback(BaseCallback):
     """
 
     def __init__(self, sinergym_logger=False, verbose=0):
+        """Custom callback for plotting additional values in tensorboard.
+
+        Args:
+            sinergym_logger (boolean): Indicate if CSVLogger inner Sinergym will be activated or not.
+        """
         super(LoggerCallback, self).__init__(verbose)
 
         self.sinergym_logger = sinergym_logger

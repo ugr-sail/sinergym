@@ -106,9 +106,9 @@
 <dt>Within these directories, you have always the same structure:</dt><dd><ul>
 <li><p>A copy of <strong>variables.cfg</strong> and <strong>environment.idf</strong> which are being used during simulation.</p></li>
 <li><p>A copy of <strong>socket.cfg</strong> and <strong>utilSocket.idf</strong> which are being used in order to  establish communication interface with Energyplus during simulation.</p></li>
-<li><p><strong>monitor.csv</strong>: This records all interactions Agent-Environment during the episode timestep by timestep, the format is: <em>timestep, observation_values, action_values, simulation_time (seconds), reward, done</em>.</p></li>
-<li><p><strong>monitor_normalized.csv</strong>: This file is only generated when environment is wrapped with normalization (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>). The structure is the same than <strong>monitor.csv</strong> but <code class="docutils literal notranslate"><span class="pre">observation_values</span></code> are normalized.</p></li>
-<li><p><strong>output/</strong>: This directory has EnergyPlus environment output.</p></li>
+<li><p><strong>monitor.csv</strong>: This records all interactions Agent-Environment during the episode timestep by timestep, the format is: <em>timestep, observation_values, action_values, simulation_time (seconds), reward, done</em>. This file only exists when environment has been wrapped with <strong>Logger</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a> for more information).</p></li>
+<li><p><strong>monitor_normalized.csv</strong>: This file is only generated when environment is wrapped with <strong>logger and normalization</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>). The structure is the same than <strong>monitor.csv</strong> but <code class="docutils literal notranslate"><span class="pre">observation_values</span></code> are normalized.</p></li>
+<li><p><strong>output/</strong>: This directory has <strong>EnergyPlus environment output</strong>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -116,7 +116,7 @@
 <li><p><strong>progress.csv</strong>: This file has information about general simulation results. There is a row per episode and it records most important data. Currently, the format is: <em>episode_num,cumulative_reward,mean_reward,cumulative_power_consumption,
 mean_power_consumption,cumulative_comfort_penalty,mean_comfort_penalty,
 cumulative_power_penalty,mean_power_penalty,comfort_violation (%),length(timesteps),
-time_elapsed(seconds)</em>.</p></li>
+time_elapsed(seconds)</em>. This file only exists when environment has been wrapped with <strong>Logger</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a> for more information).</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -379,7 +379,7 @@ regardless of the training technique which may be being used or any other extern
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Note that you can activate and deactivate logger from environment when you want it using methods activate and deactivate, so you don’t need to unwrap environment.</p>
+<p>Note that you can activate and deactivate logger from environment when you want it, using methods activate and deactivate, so you don’t need to unwrap environment.</p>
 </div>
 </section>
 </section>

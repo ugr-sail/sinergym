@@ -74,3 +74,5 @@ Inner each environment it is known what configuration file must read and spaces 
 In order to make environments more generic in DRL solutions. We have updated action space for continuous problem. Gym action space is defined always between [-1,1] and Sinergym parse this values to action space defined in configuration file internally.
 
 The function in charge of reading those configuration files is ``parse_observation_action_space(space_file)`` in *sinergym/sinergym/utils/common.py*
+
+.. note:: *Set up observation and action spaces in environment constructor dynamically could be upgrade in the future. Stay tuned for upcoming releases!*

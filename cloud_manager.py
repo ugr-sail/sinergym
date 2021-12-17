@@ -86,7 +86,7 @@ try:
         'Bucket {} found, this storage will be used when experiments finish.'.format(
             bucket.name))
 except(google.api_core.exceptions.NotFound):
-    print('Any bucket found into your Google account, generating new one...')
+    print('No bucket found into your Google account, generating new one...')
     bucket = gcloud.create_bucket(
         client,
         bucket_name='experiments-storage',

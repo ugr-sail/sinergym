@@ -400,6 +400,10 @@ values in order to add stochastic.</p>
 Inner each environment it is known what configuration file must read and spaces will be defined automatically, so you should not worry about anything.</p>
 <p>In order to make environments more generic in DRL solutions. We have updated action space for continuous problem. Gym action space is defined always between [-1,1] and Sinergym parse this values to action space defined in configuration file internally.</p>
 <p>The function in charge of reading those configuration files is <code class="docutils literal notranslate"><span class="pre">parse_observation_action_space(space_file)</span></code> in <em>sinergym/sinergym/utils/common.py</em></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>Set up observation and action spaces in environment constructor dynamically could be upgrade in the future. Stay tuned for upcoming releases!</em></p>
+</div>
 </section>
 </section>
 
