@@ -87,7 +87,7 @@ How use
 ****************
 
 You can try your own experiments and benefit from this functionality. `sinergym/examples/DRL_usage.py <https://github.com/jajimer/sinergym/blob/main/examples/DRL_usage.py>`__
-is a example code to use it.
+is a example code to use it. You can use directly DRL_battery.py directly from your local computer specifying ``--tensorboard`` flag in execution.
 
 The most important information you must keep in mind when you try your own experiments are:
 
@@ -96,7 +96,7 @@ The most important information you must keep in mind when you try your own exper
 * Callbacks can be concatenated in a ``CallbackList`` instance from Stable Baselines 3.
 * Neural network will not train until you execute ``model.learn()`` method. Here is where you
   specify train ``timesteps``, ``callbacks`` and ``log_interval`` as we commented in type algorithms (On and Off Policy).
-* ``DRL_usage.py`` requires some extra arguments to being executed like ``-env`` and ``-ep``.
+* ``DRL_usage.py`` or ``DRL_battery.py`` requires some extra arguments to being executed like ``-env`` and ``-ep``.
 
 Code example:
 

@@ -19,8 +19,7 @@ The main functionalities of Sinergym are the following :
    have been developed by our team in order to test easily these environments
    with deep reinforcement learning algorithms.
   -  **Google Cloud Integration**. Whether you have a Google Cloud account and you want to
-   use your infrastructure with Sinergym, it has been designed a complete functionality
-   in order to facilitate this work.
+   use your infrastructure with Sinergym, we tell you some details about how doing it.
   - **Mlflow tracking server**. `Mlflow <https://mlflow.org/>`__ is an open source platform for the machine
    learning lifecycle. This can be used with Google Cloud remote server (if you have Google Cloud account) 
    or using local store. This will help you to manage and store your runs and artifacts generated in an orderly
@@ -165,10 +164,6 @@ Notice that a folder will be created in the working directory after creating the
 
 ## Google Cloud Platform support
 
-In this project, an API based on RESTfull API for **Google Cloud** has been designed and developed in order to use Google Cloud infrastructure directly writing experiments definition ir our personal computer.
+Cloud Computing 
 
-<div align="center">
-  <img src="images/Sinergym_cloud_API.png" width=100%><br><br>
-</div>
-
-For more information about this functionality, please, visit our documentation [here](https://jajimer.github.io/sinergym/build/html/pages/gcloudAPI.html)
+For more information about this functionality, please, visit our documentation [here](https://jajimer.github.io/sinergym/build/html/pages/gcloudAPI.html).
