@@ -19,7 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Sinergym Google Cloud API" href="gcloudAPI.html" />
+    <link rel="next" title="Sinergym with Google Cloud" href="gcloudAPI.html" />
     <link rel="prev" title="Wrappers" href="wrappers.html" /> 
 </head>
 
@@ -58,7 +58,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#mlflow">Mlflow</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Sinergym Google Cloud API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Sinergym with Google Cloud</a></li>
 <li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
 </ul>
 
@@ -349,7 +349,7 @@ in continuous environments has their own output and clipped with gym action spac
 <section id="how-use">
 <h2>How use<a class="headerlink" href="#how-use" title="Permalink to this headline"></a></h2>
 <p>You can try your own experiments and benefit from this functionality. <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/examples/DRL_usage.py">sinergym/examples/DRL_usage.py</a>
-is a example code to use it.</p>
+is a example code to use it. You can use directly DRL_battery.py directly from your local computer specifying <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> flag in execution.</p>
 <p>The most important information you must keep in mind when you try your own experiments are:</p>
 <ul class="simple">
 <li><p>Model is constructed with a algorithm constructor. Each algorithm can use its particular parameters.</p></li>
@@ -357,7 +357,7 @@ is a example code to use it.</p>
 <li><p>Callbacks can be concatenated in a <code class="docutils literal notranslate"><span class="pre">CallbackList</span></code> instance from Stable Baselines 3.</p></li>
 <li><p>Neural network will not train until you execute <code class="docutils literal notranslate"><span class="pre">model.learn()</span></code> method. Here is where you
 specify train <code class="docutils literal notranslate"><span class="pre">timesteps</span></code>, <code class="docutils literal notranslate"><span class="pre">callbacks</span></code> and <code class="docutils literal notranslate"><span class="pre">log_interval</span></code> as we commented in type algorithms (On and Off Policy).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DRL_usage.py</span></code> requires some extra arguments to being executed like <code class="docutils literal notranslate"><span class="pre">-env</span></code> and <code class="docutils literal notranslate"><span class="pre">-ep</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DRL_usage.py</span></code> or <code class="docutils literal notranslate"><span class="pre">DRL_battery.py</span></code> requires some extra arguments to being executed like <code class="docutils literal notranslate"><span class="pre">-env</span></code> and <code class="docutils literal notranslate"><span class="pre">-ep</span></code>.</p></li>
 </ul>
 <p>Code example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
@@ -466,7 +466,7 @@ Here is an example:</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="wrappers.html" class="btn btn-neutral float-left" title="Wrappers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="gcloudAPI.html" class="btn btn-neutral float-right" title="Sinergym Google Cloud API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="gcloudAPI.html" class="btn btn-neutral float-right" title="Sinergym with Google Cloud" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
