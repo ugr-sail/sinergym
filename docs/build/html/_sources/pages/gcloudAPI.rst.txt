@@ -1,21 +1,12 @@
-#########################
-Sinergym Google Cloud API 
-#########################
+###########################
+Sinergym with Google Cloud
+###########################
 
-In this project, an API based on RESTfull API for gcloud has been designed and developed in order to use Google Cloud infrastructure directly writing experiments definition ir our personal computer.
+In this project, we are defined some functionality based in gcloud API python in `sinergym/utils/gcloud.py`. Our time aim to configure a Google Cloud account and combine with Sinergym easily.
 
-.. image:: /_static/Sinergym_cloud_API.png
-  :width: 1000
-  :alt: Sinergym cloud API diagram
-  :align: center
+The main idea is to construct a **virtual machine** (VM) using **Google Cloud Engine** (GCE) in order to execute our **Sinergym container** on it. At the same time, this remote container will update a Google Cloud Bucket with experiments results and mlflow tracking server with artifacts if we configure that experiment with those options.
 
-From our personal computer, we send a list of experiments we want to be executed in Google Cloud, using **cloud_manager.py** script for that purpose. An instance will be created for every experiment defined.
-Each VM send MLFlow logs to **MLFlow tracking server**. On the other hand, Sinergym output and Tensorboard output are sent to a **Google Cloud Bucket** (see :ref:`Remote Tensorboard log`), like **Mlflow artifact** (see :ref:`Mlflow tracking server set up`) 
-and/or **local VM storage** depending on the experiment configuration.
-
-When an instance has finished its job, container **auto-remove** its host instance from Google Cloud Platform if experiments has been configured with this option. Whether an instance is the last in the MIG, that container auto-remove the empty MIG too.
-
-.. warning:: Don't try to remove an instance inner MIG directly using Google Cloud API REST, it needs to be executed from MIG to work. Some other problems (like wrong API REST documentation) have been solved in our API. We recommend you use this API directly.
+When an instance has finished its job, container **auto-remove** its host instance from Google Cloud Platform if experiments has been configured with this option.
 
 Let’s see a detailed explanation above.
 
@@ -246,60 +237,13 @@ To use this container in our machine you only have to do:
   :alt: GCE VM container usage.
   :align: center
 
-And now you can execute your own experiments in Google Cloud! If you are interested in using our API specifically for Gcloud (automated experiments using remotes containers generation). Please, visit our section :ref:`Executing API`
-
-****************
-Executing API
-****************
-
-Our objective is defining a set of experiments in order to execute them in a Google Cloud remote container each one automatically. For this, *cloud_manager.py* has been created in repository root. This file must be used in our local computer:
-
-.. literalinclude:: ../../../cloud_manager.py
-    :language: python
-
-This script uses the following parameters:
-
-- ``--project_id`` or ``-id``: Your Google Cloud project id must be specified.
-- ``--zone`` or ``-zo``: Zone for your project (default is *europe-west1-b*).
-- ``--template_name`` or ``-tem``: Template used to generate VM's clones, defined in your project previously (see :ref:`4. Create your VM or MIG`).
-- ``--group_name`` or ``-group``: Instance group name you want. All instances inner MIG will have this name concatenated with a random str.
-- ``--experiment_commands`` or ``-cmds``: Experiment definitions list using python command format (for information about its format, see :ref:`Receiving experiments in remote containers`).
-
-Here is an example bash code to execute the script:
-
-.. code:: sh
-
-    $ python cloud_manager.py \
-        --project_id sinergym \
-        --zone europe-west1-b \
-        --template_name sinergym-template \
-        --group_name sinergym-group \
-        --experiment_commands \
-        'python3 DRL_battery.py --environment Eplus-5Zone-hot-discrete-v1 --episodes 2 --algorithm DQN --logger --log_interval 1 --seed 58 --evaluation --eval_freq 1 --eval_length 1 --tensorboard gs://experiments-storage/tensorboard_log --remote_store --auto_delete' \
-        'python3 DRL_battery.py --environment Eplus-5Zone-hot-continuous-v1 --episodes 3 --algorithm PPO --logger --log_interval 300 --seed 52 --evaluation --eval_freq 1 --eval_length 1 --tensorboard gs://experiments-storage/tensorboard_log --remote_store --mlflow_store --auto_delete'
-
-This example generates only 2 machines inner an instance group in your Google Cloud Platform because of you have defined two experiments. If you defined more experiments, more machines will be created by API.
-
-This script do the next:
-
-    1. Counting commands list in ``--experiment_commands`` parameter and generate an Managed Instance Group (MIG) with the same size.
-    2. Waiting for **process 1** finishes.
-    3. If *experiments-storage* Bucket doesn't exist, this script create one to store experiment result called **experiemnts-storage** (if you want other name you have to change this name in script), else use the current one.
-    4. Looking for instance names generated randomly by Google cloud once MIG is created (waiting for instances generation if they haven't been created yet).
-    5. To each commands experiment, it is added ``--group_name`` option in order to each container see what is its own MIG (useful to auto-remove them).
-    6. Looking for *id container* about each instance. This process waits for containers are initialize, since instance is initialize earlier than inner container (this could take several minutes).
-    7. Sending each experiment command in containers from each instance using an SSH connection (parallel). 
-
-.. note:: Because of its real-time process. Some containers, instance list action and others could take time. In that case, the API wait a process finish to execute the next (when it is necessary).
-
-.. note:: This script uses gcloud API in background. Methods developed and used to this issues can be seen in `sinergym/sinergym/utils/gcloud.py <https://github.com/jajimer/sinergym/blob/main/sinergym/utils/gcloud.py>`__ or in :ref:`API reference`.
-    Remember to configure Google Cloud account correctly before use this functionality.
+And now you can execute your own experiments in Google Cloud! For example, you can enter in remote container with *gcloud ssh* and execute *DRL_battery.py* for the experiment you want.
 
 ********************************************
-Receiving experiments in remote containers
+Executing experiments in remote containers
 ********************************************
 
-This script, called *DRL_battery.py*, will be allocated in every remote container and it is used to understand experiments command exposed above by *cloud_manager.py* (``--experiment_commands``):
+This script, called *DRL_battery.py*, will be allocated in every remote container and it is used to execute experiments and combine it with **Google Cloud Bucket**, **Mlflow Artifacts**, **auto-remove**, etc:
 
 .. literalinclude:: ../../../DRL_battery.py
     :language: python
@@ -323,10 +267,12 @@ The list of parameter is pretty large. Let's see it:
 - ``--seed`` or ``-sd``: Seed for training, random components in process will be able to be recreated.
 - ``--remote_store`` or ``-sto``: Determine if sinergym output and tensorboard log (when a local path is specified and not a remote bucket path) will be sent to a common resource (Bucket), else will be allocate in remote container memory only.
 - ``--mlflow_store`` or ``-mlflow``: Determine if sinergym output and tensorboard log (when a local path is specified and not a remote bucket path) will be sent to a Mlflow Artifact, else will be allocate in remote container memory only.
-- ``--group_name`` or ``-group``: Added by *cloud_manager.py* automatically. It specify to which MIG the host instance belongs.
+- ``--group_name`` or ``-group``: It specify to which MIG the host instance belongs, it is important if --auto-delete is activated.
 - ``--auto_delete`` or ``-del``: Whether this parameter is specified, remote instance will be auto removed when its job has finished.
   
 - **algorithm hyperparameters**: Execute ``python DRL_battery --help`` for more information.
+
+.. warning:: For a correct auto_delete functionality, please, use MIG's instead of individual instances.
 
 This script do the next:
 
@@ -341,7 +287,7 @@ This script do the next:
     9. Setting up Tensorboard logger callback if it has been specified.
     10. Training with environment.
     11. If ``--remote_store`` has been specified, saving all outputs in Google Cloud Bucket. If ``--mlflow_store`` has been specified, saving all outputs in Mlflow run artifact.
-    12. Auto-delete remote container in Google Cloud Platform if script has been called from **cloud_manager.py** and parameter ``--auto_delete`` has been specified.
+    12. Auto-delete remote container in Google Cloud Platform when parameter ``--auto_delete`` has been specified.
 
 Containers permission to bucket storage output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -360,7 +306,7 @@ Hence, it is **necessary** to **set up this service account** and give privilege
     $ export GOOGLE_CLOUD_CREDENTIALS= PROJECT_PATH/google-storage.json
 
 In short, we create a new service account called **storage-account**. Then, we dote this account with *roles/owner* permission. The next step is create a file key (json) called **google-storage.json** in our project root (gitignore will ignore this file in remote).
-Finally, we export this file in **GOOGLE_CLOUD_CREDENTIALS** in order to gcloud SDK knows that it has to use that token to authenticate.
+Finally, we export this file in **GOOGLE_CLOUD_CREDENTIALS** in our local computer in order to gcloud SDK knows that it has to use that token to authenticate.
 
 ***********************
 Remote Tensorboard log
@@ -368,7 +314,7 @@ Remote Tensorboard log
 
 In ``--tensorboard`` parameter we have to specify a **local path** or a **Bucket path**.
 
-If we specify a **local path**, tensorboard logs will be stored in remote containers memory. If you have specified ``remote_store`` or ``mlflow_store``, this logs will be sent to those remote storages when experiment finishes.
+If we specify a **local path**, tensorboard logs will be stored in remote containers memory. If you have specified ``--remote_store`` or ``--mlflow_store``, this logs will be sent to those remote storages when experiment finishes.
 One of the strengths of Tensorboard is the ability to see the data in real time as the training is running. Thus, it is recommended to define in ``--tensorboard`` the **bucket path** directly in order to send that information
 as the training is generating it (see `this issue <https://github.com/ContinualAI/avalanche/pull/628>`__ for more information). In our project we have *gs://experiments-storage/tensorboard_log* but you can have whatever you want.
 

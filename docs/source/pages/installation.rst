@@ -120,5 +120,5 @@ Cloud Computing
 ****************
 
 You can run your experiments in the Cloud too. We are using `Google Cloud <https://cloud.google.com/>`__ in order to make it possible. Our team aim to set up
-a managed instance group (`MIG <https://cloud.google.com/compute/docs/instance-groups/getting-info-about-migs?hl=es-419>`__) in which execute our Sinergym container.
+an account in which execute our Sinergym container with **remote storage** and **mlflow tracking**.
 For more detail about installation and getting Google Cloud SDK ready to run your experiments, visit our section :ref:`Preparing Google Cloud`.
