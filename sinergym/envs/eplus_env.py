@@ -213,9 +213,9 @@ class EplusEnv(gym.Env):
         """
         # Create new random weather file
         # noise always from original EPW
-        weather_data_aux = deepcopy(self.weather_data)
+        weather_data_old = deepcopy(self.weather_data)
         new_weather = create_variable_weather(
-            weather_data_aux,
+            weather_data_old,
             self.weather_path,
             variation=self.weather_variability)
 
