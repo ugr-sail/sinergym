@@ -182,8 +182,8 @@ def test_disassembleMsg(simulator):
     assert [num for num in range(16)] == Dblist
 
 
-def test_get_eplus_run_info(simulator, idf_path):
-    info = simulator._get_eplus_run_info(idf_path)
+def test_get_eplus_run_info(simulator):
+    info = simulator._get_eplus_run_info()
     assert info == (1, 1, 0, 3, 31, 0, 0, 4)
 
 
