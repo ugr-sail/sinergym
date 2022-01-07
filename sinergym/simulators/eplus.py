@@ -17,6 +17,8 @@ import subprocess
 import threading
 import numpy as np
 
+from opyplus import Epm, WeatherData, Idd
+
 from shutil import copyfile, rmtree
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
@@ -67,16 +69,16 @@ class EnergyPlus(object):
         os.environ['BCVTB_HOME'] = bcvtb_path
         # Create a socket for communication with the EnergyPlus
         self.logger_main.debug('Creating socket for communication...')
-        s = socket.socket()
+        self._socket = socket.socket()
         # Get local machine name
-        host = socket.gethostname()
+        self._host = socket.gethostname()
         # Bind to the host and any available port
-        s.bind((host, 0))
-        sockname = s.getsockname()
+        self._socket.bind((self._host, 0))
         # Get the port number
-        port = sockname[1]
+        sockname = self._socket.getsockname()
+        self._port = sockname[1]
         # Listen on request
-        s.listen(60)
+        self._socket.listen(60)
 
         self.logger_main.debug(
             'Socket is listening on host %s port %d' % (sockname))
@@ -84,14 +86,21 @@ class EnergyPlus(object):
             CWD, '-%s-res' % (env_name))
         os.makedirs(self._env_working_dir_parent)
 
-        self._host = host
-        self._port = port
-        self._socket = s
+        #Path attributes
         self._eplus_path = eplus_path
         self._weather_path = weather_path
         self._variable_path = variable_path
         self._idf_path = idf_path
+        # Episode existed
         self._episode_existed = False
+        # Epm object to read IDF information
+        idd = Idd(os.path.join(self._eplus_path, 'Energy+.idd'))
+        self._epm = Epm.from_idf(
+            self._idf_path,
+            idd_or_version=idd,
+            check_length=False)
+
+        # Eplus run info
         (self._eplus_run_st_mon,
          self._eplus_run_st_day,
          self._eplus_run_st_year,
@@ -99,10 +108,10 @@ class EnergyPlus(object):
          self._eplus_run_ed_day,
          self._eplus_run_ed_year,
          self._eplus_run_st_weekday,
-         self._eplus_run_stepsize) = self._get_eplus_run_info(idf_path)
+         self._eplus_n_steps_per_hour) = self._get_eplus_run_info()
 
         # Stepsize in seconds
-        self._eplus_run_stepsize = 3600 / self._eplus_run_stepsize
+        self._eplus_run_stepsize = 3600 / self._eplus_n_steps_per_hour
         self._eplus_one_epi_len = self._get_one_epi_len(self._eplus_run_st_mon,
                                                         self._eplus_run_st_day,
                                                         self._eplus_run_ed_mon,
@@ -487,75 +496,31 @@ class EnergyPlus(object):
 
         return (version, flag, nDb, nIn, nBl, curSimTim, Dblist)
 
-    def _get_eplus_run_info(self, idf_path):
-        """This method read the .idf file and finds the running start month, start date, start year, end month, end date, end year, start weekday and the step size. If any value is Unknown, then value will be 0.
-
-        Args:
-            idf_path (str): The .idf file path.
+    def _get_eplus_run_info(self):
+        """This method read the .idf file and finds the running start month, start day, start year, end month, end day, end year, start weekday and the number of steps in a hour simulation. If any value is Unknown, then value will be 0. If step per hour is < 1, then default value will be 4.
 
         Returns:
-            (int, int, int, int, int, int, int, int): A tuple with: the start month, start date, start year, end month, end date, end year, start weekday and step size.
+            (int, int, int, int, int, int, int, int): A tuple with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.
         """
 
-        ret = []
+        ret = ()
+        
+        #Get runperiod object inner IDF
+        runperiod=self._epm.RunPeriod[0]
 
-        with open(idf_path, encoding='ISO-8859-1') as idf:
-            contents = idf.readlines()
+        start_month=int(0 if runperiod.begin_month is None else runperiod.begin_month)
+        start_day=int(0 if runperiod.begin_day_of_month is None else runperiod.begin_day_of_month)
+        start_year=int(0 if runperiod.begin_year is None else runperiod.begin_year)
+        end_month=int(0 if runperiod.end_month is None else runperiod.end_month)
+        end_day=int(0 if runperiod.end_day_of_month is None else runperiod.end_day_of_month)
+        end_year=int(0 if runperiod.end_year is None else runperiod.end_year)
+        start_weekday=WEEKDAY_ENCODING[runperiod.day_of_week_for_start_day.lower()]
+        n_steps_per_hour=self._epm.timestep[0].number_of_timesteps_per_hour
+        if n_steps_per_hour < 1 or n_steps_per_hour is None:
+            n_steps_per_hour = 4 # default value
 
-        # Run period
-        tgtIndex = None
-
-        for i in range(len(contents)):
-            line = contents[i]
-            effectiveContent = line.strip().split(
-                '!')[0]  # Ignore contents after '!'
-            effectiveContent = effectiveContent.strip().split(',')[0]
-            # Remove tailing ','
-            if effectiveContent.lower() == 'runperiod':
-                tgtIndex = i
-                break
-
-        for i in range(2, 8):
-            try:
-                ret.append(int(contents[tgtIndex + i].strip()
-                               .split('!')[0]
-                               .strip()
-                               .split(',')[0]
-                               .strip()
-                               .split(';')[0]))
-            except ValueError:
-                ret.append(0)
-        # Start weekday
-        ret.append(WEEKDAY_ENCODING[contents[tgtIndex + i + 1].strip()
-                                    .split('!')[0]
-                                    .strip()
-                                    .split(',')[0]
-                                    .strip()
-                                    .split(';')[0]
-                                    .strip()
-                                    .lower()])
-        # Step size
-        line_count = 0
-        for line in contents:
-            effectiveContent = line.strip().split(
-                '!')[0]  # Ignore contents after '!'
-            effectiveContent = effectiveContent.strip().split(',')
-            if effectiveContent[0].strip().lower() == 'timestep':
-                if len(effectiveContent) > 1 and len(effectiveContent[1]) > 0:
-                    ret.append(int(effectiveContent[1]
-                                   .split(';')[0]
-                                   .strip()))
-                else:
-                    ret.append(int(contents[line_count + 1].strip()
-                                   .split('!')[0]
-                                   .strip()
-                                   .split(',')[0]
-                                   .strip()
-                                   .split(';')[0]))
-                break
-            line_count += 1
-
-        return tuple(ret)
+        return (start_month, start_day, start_year, end_month, end_day, end_year, start_weekday, n_steps_per_hour)
+        
 
     def _get_one_epi_len(self, st_mon, st_day, ed_mon, ed_day):
         """Gets the length of one episode (an EnergyPlus process run to the end).
