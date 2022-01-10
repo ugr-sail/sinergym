@@ -22,7 +22,7 @@ from opyplus import Epm, WeatherData, Idd
 from shutil import copyfile, rmtree
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
-from ..utils.common import *
+from sinergym.utils.common import *
 
 
 YEAR = 1991  # Non leap year
@@ -46,7 +46,8 @@ class EnergyPlus(object):
             idf_path,
             env_name,
             act_repeat=1,
-            max_ep_data_store_num=10):
+            max_ep_data_store_num=10,
+            extras: dict = None):
         """EnergyPlus simulation class.
 
         Args:
@@ -64,6 +65,9 @@ class EnergyPlus(object):
         self.logger_main = Logger().getLogger(
             'EPLUS_ENV_%s_%s_ROOT' %
             (env_name, self._thread_name), LOG_LEVEL_MAIN, LOG_FMT)
+
+        # Anotate extra configuration as attribute of simulation
+        self._extras = extras
 
         # Set the environment variable for bcvtb
         os.environ['BCVTB_HOME'] = bcvtb_path
@@ -86,7 +90,7 @@ class EnergyPlus(object):
             CWD, '-%s-res' % (env_name))
         os.makedirs(self._env_working_dir_parent)
 
-        #Path attributes
+        # Path attributes
         self._eplus_path = eplus_path
         self._weather_path = weather_path
         self._variable_path = variable_path
@@ -99,6 +103,10 @@ class EnergyPlus(object):
             self._idf_path,
             idd_or_version=idd,
             check_length=False)
+
+        # Set extra configuration for simulation if exists
+        if self._extras:
+            self._set_conf()
 
         # Eplus run info
         (self._eplus_run_st_mon,
@@ -504,23 +512,36 @@ class EnergyPlus(object):
         """
 
         ret = ()
-        
-        #Get runperiod object inner IDF
-        runperiod=self._epm.RunPeriod[0]
 
-        start_month=int(0 if runperiod.begin_month is None else runperiod.begin_month)
-        start_day=int(0 if runperiod.begin_day_of_month is None else runperiod.begin_day_of_month)
-        start_year=int(0 if runperiod.begin_year is None else runperiod.begin_year)
-        end_month=int(0 if runperiod.end_month is None else runperiod.end_month)
-        end_day=int(0 if runperiod.end_day_of_month is None else runperiod.end_day_of_month)
-        end_year=int(0 if runperiod.end_year is None else runperiod.end_year)
-        start_weekday=WEEKDAY_ENCODING[runperiod.day_of_week_for_start_day.lower()]
-        n_steps_per_hour=self._epm.timestep[0].number_of_timesteps_per_hour
+        # Get runperiod object inner IDF
+        runperiod = self._epm.RunPeriod[0]
+
+        start_month = int(
+            0 if runperiod.begin_month is None else runperiod.begin_month)
+        start_day = int(
+            0 if runperiod.begin_day_of_month is None else runperiod.begin_day_of_month)
+        start_year = int(
+            0 if runperiod.begin_year is None else runperiod.begin_year)
+        end_month = int(
+            0 if runperiod.end_month is None else runperiod.end_month)
+        end_day = int(
+            0 if runperiod.end_day_of_month is None else runperiod.end_day_of_month)
+        end_year = int(0 if runperiod.end_year is None else runperiod.end_year)
+        start_weekday = WEEKDAY_ENCODING[runperiod.day_of_week_for_start_day.lower(
+        )]
+        n_steps_per_hour = self._epm.timestep[0].number_of_timesteps_per_hour
         if n_steps_per_hour < 1 or n_steps_per_hour is None:
-            n_steps_per_hour = 4 # default value
+            n_steps_per_hour = 4  # default value
 
-        return (start_month, start_day, start_year, end_month, end_day, end_year, start_weekday, n_steps_per_hour)
-        
+        return (
+            start_month,
+            start_day,
+            start_year,
+            end_month,
+            end_day,
+            end_year,
+            start_weekday,
+            n_steps_per_hour)
 
     def _get_one_epi_len(self, st_mon, st_day, ed_mon, ed_day):
         """Gets the length of one episode (an EnergyPlus process run to the end).
@@ -536,6 +557,19 @@ class EnergyPlus(object):
         """
 
         return get_delta_seconds(YEAR, st_mon, st_day, ed_mon, ed_day)
+
+    # Esto debe ser llamado al principio del reset del simulador antes de
+    # incluir los archivos en el subproceso de eplus para correr el episodio
+    def _set_conf(self):
+        for key, value in self._extras.items():
+            if key == 'step_per_hour':
+                self._epm.timestep[0].number_of_timesteps_per_hour = value
+
+        # change original idf_path simulation to this version modified with
+        # extra configuration
+        new_idf_path = self._idf_path.split('.idf')[0] + '_extra.idf'
+        self._epm.save(new_idf_path)
+        self._idf_path = new_idf_path
 
     @property
     def start_year(self):

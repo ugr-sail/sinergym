@@ -7,7 +7,6 @@ Funcionalities:
     - Raw observations, defined in the variables.cfg file
 """
 
-
 import gym
 import os
 import opyplus
@@ -39,7 +38,8 @@ class EplusEnv(gym.Env):
         env_name='eplus-env-v1',
         discrete_actions=True,
         weather_variability=None,
-        reward=LinearReward()
+        reward=LinearReward(),
+        extras: dict = None
     ):
         """Environment with EnergyPlus simulator.
 
@@ -54,7 +54,6 @@ class EplusEnv(gym.Env):
             weather_variability (tuple, optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Reward instance): Reward function instance used for agent feedback. Defaults to LinearReward.
         """
-
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
         self.pkg_data_path = pkg_resources.resource_filename(
@@ -67,6 +66,7 @@ class EplusEnv(gym.Env):
             self.pkg_data_path, 'variables', variables_file)
         self.spaces_path = os.path.join(
             self.pkg_data_path, 'variables', spaces_file)
+        self._extras = extras
 
         self.simulator = EnergyPlus(
             env_name=env_name,
@@ -74,7 +74,8 @@ class EplusEnv(gym.Env):
             bcvtb_path=bcvtb_path,
             idf_path=self.idf_path,
             weather_path=self.weather_path,
-            variable_path=self.variables_path
+            variable_path=self.variables_path,
+            extras=self._extras
         )
 
         # Utils for getting time info, weather and variable names
