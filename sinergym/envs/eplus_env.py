@@ -13,8 +13,6 @@ import opyplus
 import pkg_resources
 import numpy as np
 
-from copy import deepcopy
-
 from sinergym.utils.config import Config
 from sinergym.utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space, setpoints_transform
 from sinergym.simulators import EnergyPlus
@@ -204,16 +202,8 @@ class EplusEnv(gym.Env):
         Returns:
             np.array: Current observation.
         """
-        # Create new random weather file
-        # noise always from original EPW
-        weather_data_old = deepcopy(self.weather_data)
-        new_weather = create_variable_weather(
-            weather_data_old,
-            self.weather_path,
-            variation=self.weather_variability)
-
         # Change to next episode
-        time_info, obs, done = self.simulator.reset(new_weather)
+        time_info, obs, done = self.simulator.reset(self.weather_variability)
         obs_dict = dict(zip(self.variables['observation'], obs))
 
         obs_dict['day'] = time_info[0]

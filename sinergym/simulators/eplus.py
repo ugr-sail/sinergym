@@ -18,7 +18,7 @@ import threading
 import numpy as np
 
 from opyplus import Epm, WeatherData, Idd
-
+from copy import deepcopy
 from shutil import copyfile, rmtree
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
@@ -99,12 +99,13 @@ class EnergyPlus(object):
         self._idf_path = idf_path
         # Episode existed
         self._episode_existed = False
-        # Epm object to read IDF information
+        # Epm object to read IDF information and WeatherData object to read EPW
         idd = Idd(os.path.join(self._eplus_path, 'Energy+.idd'))
         self._epm = Epm.from_idf(
             self._idf_path,
             idd_or_version=idd,
             check_length=False)
+        self._weather_data = WeatherData.from_epw(self._weather_path)
 
         # Set extra configuration for simulation if exists
         if self._config:
@@ -131,11 +132,11 @@ class EnergyPlus(object):
         self._max_ep_data_store_num = max_ep_data_store_num
         self._last_action = [21.0, 25.0]
 
-    def reset(self, new_weather: str = None):
+    def reset(self, weather_variability: tuple = None):
         """Resets the environment.
 
         Args:
-            new_weather (str, optional): New weather file, if passed. Defaults to None.
+            weather_variability (tuple, optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
 
         Returns:
             ([float], [float], boolean): The first element is a float tuple with day, month, hour and simulation time elapsed in that order in that step;
@@ -186,6 +187,13 @@ class EnergyPlus(object):
         # Create the socket.cfg file in the working dir
         self.logger_main.info('EnergyPlus working directory is in %s'
                               % (eplus_working_dir))
+        # Create new random weather file
+        # noise always from original EPW
+        weather_data_old = deepcopy(self._weather_data)
+        new_weather = create_variable_weather(
+            weather_data_old,
+            self._weather_path,
+            variation=weather_variability)
         # Select new weather if it is passed into the method
         weather_path = self._weather_path if new_weather is None else new_weather
         eplus_process = self._create_eplus(self._eplus_path, weather_path,
