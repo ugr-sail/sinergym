@@ -13,6 +13,9 @@ bcvtb/
 # Simulation outputs
 Eplus-env*/
 
+# Extra config simulation idf generated
+sinergym/data/buildings/*_extra.idf
+
 #Socket.cfg in tests
 socket.cfg
 
