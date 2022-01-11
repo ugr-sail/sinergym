@@ -388,6 +388,38 @@ def setpoints_transform(action, action_space: gym.spaces.Box, setpoints_space):
     return action_
 
 
+def adapt_idf_to_epw(epm, weather):
+    """Given an opyplus Epm object (building from Idf) and an opyplus WeatherData object (weather from EPW), this function modify IDF Location and DesingDay's in order to adapt IDF to EPW.
+
+     Args:
+        epm (opyplus.Epm): IDF building Python object from opyplus module.
+        weather (opyplus.WeatherData): EPW weather Python object from opyplus module.
+
+     Returns:
+        opyplus.Epm: epm modified and adapted to weather.
+
+    """
+
+    info = weather._headers
+    old_location = epm.site_location[0]
+    # Adding the new location based on weather
+    epm.site_location.add(
+        name=info['city'] +
+        '_' +
+        info['state_province_region'] +
+        '_' +
+        info['country'],
+        latitude=info['latitude'],
+        longitude=info['longitude'],
+        time_zone=info['timezone_offset'],
+        elevation=info['elevation']
+    )
+    # Deleting the old location from Epm
+    old_location.delete()
+
+    return epm
+
+
 class Logger():
     """Sinergym terminal logger for simulation executions.
     """
