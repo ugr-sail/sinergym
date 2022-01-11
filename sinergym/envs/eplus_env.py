@@ -181,7 +181,7 @@ class EplusEnv(gym.Env):
         # Extra info
         info = {
             'timestep': int(
-                t / self.simulator._eplus_run_stepsize),
+                time_info[3] / self.simulator._eplus_run_stepsize),
             'time_elapsed': int(time_info[3]),
             'day': obs_dict['day'],
             'month': obs_dict['month'],
