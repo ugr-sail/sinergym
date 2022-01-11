@@ -138,7 +138,7 @@ class EnergyPlus(object):
             new_weather (str, optional): New weather file, if passed. Defaults to None.
 
         Returns:
-            ([float], [float], boolean): The first element is a float list with day, month, hour simulation in that order in that moment;
+            ([float], [float], boolean): The first element is a float tuple with day, month, hour and simulation time elapsed in that order in that step;
             the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
             variables.cfg. The last element is a boolean indicating whether the episode terminates.
 
@@ -217,8 +217,8 @@ class EnergyPlus(object):
             'Got the first message successfully: ' + rcv_1st)
         version, flag, nDb, nIn, nBl, curSimTim, Dblist \
             = self._disassembleMsg(rcv_1st)
-        sim_date = get_current_time_info(self._epm, curSimTim)
-        ret.append(sim_date)
+        time_info = get_current_time_info(self._epm, curSimTim)
+        ret.append(time_info)
         ret.append(Dblist)
         # Remember the message header, useful when send data back to EnergyPlus
         self._eplus_msg_header = [version, flag]

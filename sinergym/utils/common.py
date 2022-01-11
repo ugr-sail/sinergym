@@ -150,7 +150,11 @@ def get_current_time_info(epm, sec_elapsed, sim_year=1991):
 
     current_date = start_date + timedelta(seconds=sec_elapsed)
 
-    return (current_date.day, current_date.month, current_date.hour)
+    return (
+        current_date.day,
+        current_date.month,
+        current_date.hour,
+        sec_elapsed)
 
 
 def parse_variables(var_file):

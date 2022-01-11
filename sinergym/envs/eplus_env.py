@@ -169,11 +169,10 @@ class EplusEnv(gym.Env):
 
         # Send action to the simulator
         self.simulator.logger_main.debug(action_)
-        t, obs, done = self.simulator.step(action_)
+        time_info, obs, done = self.simulator.step(action_)
         # Create dictionary with observation
         obs_dict = dict(zip(self.variables['observation'], obs))
         # Add current timestep information
-        time_info = get_current_time_info(self.epm, t)
         obs_dict['day'] = time_info[0]
         obs_dict['month'] = time_info[1]
         obs_dict['hour'] = time_info[2]
@@ -192,7 +191,7 @@ class EplusEnv(gym.Env):
         info = {
             'timestep': int(
                 t / self.simulator._eplus_run_stepsize),
-            'time_elapsed': int(t),
+            'time_elapsed': int(time_info[3]),
             'day': obs_dict['day'],
             'month': obs_dict['month'],
             'hour': obs_dict['hour'],
