@@ -13,7 +13,6 @@ import opyplus
 import pkg_resources
 import numpy as np
 
-from opyplus import Epm, WeatherData
 from copy import deepcopy
 
 from sinergym.utils.config import Config
@@ -78,14 +77,8 @@ class EplusEnv(gym.Env):
             config_params=config_params
         )
 
-        # Utils for getting time info, weather and variable names
-        idd = opyplus.Idd(os.path.join(eplus_path, 'Energy+.idd'))
-        self.epm = Epm.from_idf(
-            self.idf_path,
-            idd_or_version=idd,
-            check_length=False)
+        # parse variables (observation and action) from cfg file
         self.variables = parse_variables(self.variables_path)
-        self.weather_data = WeatherData.from_epw(self.weather_path)
 
         # Random noise to apply for weather series
         self.weather_variability = weather_variability
@@ -220,10 +213,9 @@ class EplusEnv(gym.Env):
             variation=self.weather_variability)
 
         # Change to next episode
-        t, obs, done = self.simulator.reset(new_weather)
+        time_info, obs, done = self.simulator.reset(new_weather)
         obs_dict = dict(zip(self.variables['observation'], obs))
 
-        time_info = get_current_time_info(self.epm, t)
         obs_dict['day'] = time_info[0]
         obs_dict['month'] = time_info[1]
         obs_dict['hour'] = time_info[2]
