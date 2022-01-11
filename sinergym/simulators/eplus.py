@@ -107,6 +107,10 @@ class EnergyPlus(object):
             check_length=False)
         self._weather_data = WeatherData.from_epw(self._weather_path)
 
+        # Updating IDF file (Location and DesignDays) with EPW file
+        self._epm = adapt_idf_to_epw(self._epm, self._weather_data)
+        self._epm.save(self._idf_path)
+
         # Set extra configuration for simulation if exists
         if hasattr(self, '_config'):
             self._config.set_conf()
