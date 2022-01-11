@@ -225,6 +225,7 @@ class EnergyPlus(object):
             'Got the first message successfully: ' + rcv_1st)
         version, flag, nDb, nIn, nBl, curSimTim, Dblist \
             = self._disassembleMsg(rcv_1st)
+        # get time info in simulation
         time_info = get_current_time_info(self._epm, curSimTim)
         ret.append(time_info)
         ret.append(Dblist)
@@ -253,7 +254,7 @@ class EnergyPlus(object):
             action (float or list): Control actions that will be passed to EnergyPlus.
 
         Returns:
-            (float, [float], boolean): The first element is the *current_simulation_time* in seconds;
+            ([float], [float], boolean): The first element is a float tuple with day, month, hour and simulation time elapsed in that order in that step;
             the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
             variables.cfg. The last element is a boolean indicating whether the episode terminates.
 
@@ -292,7 +293,9 @@ class EnergyPlus(object):
             act_repeat_i += 1
         # Construct the return, which is the state observation of the last step
         # plus the integral item
-        ret.append(curSimTim)
+        # get time info in simulation
+        time_info = get_current_time_info(self._epm, curSimTim)
+        ret.append(time_info)
         ret.append(Dblist)
         # Add terminal state
         ret.append(is_terminal)
