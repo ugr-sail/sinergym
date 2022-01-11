@@ -16,6 +16,7 @@ import numpy as np
 from opyplus import Epm, WeatherData
 from copy import deepcopy
 
+from sinergym.utils.config import Config
 from sinergym.utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space, setpoints_transform
 from sinergym.simulators import EnergyPlus
 from sinergym.utils.rewards import ExpReward, LinearReward
@@ -39,7 +40,7 @@ class EplusEnv(gym.Env):
         discrete_actions=True,
         weather_variability=None,
         reward=LinearReward(),
-        extras: dict = None
+        config_params: dict = None
     ):
         """Environment with EnergyPlus simulator.
 
@@ -66,7 +67,6 @@ class EplusEnv(gym.Env):
             self.pkg_data_path, 'variables', variables_file)
         self.spaces_path = os.path.join(
             self.pkg_data_path, 'variables', spaces_file)
-        self._extras = extras
 
         self.simulator = EnergyPlus(
             env_name=env_name,
@@ -75,7 +75,7 @@ class EplusEnv(gym.Env):
             idf_path=self.idf_path,
             weather_path=self.weather_path,
             variable_path=self.variables_path,
-            extras=self._extras
+            config_params=config_params
         )
 
         # Utils for getting time info, weather and variable names

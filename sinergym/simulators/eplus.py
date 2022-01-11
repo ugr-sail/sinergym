@@ -23,6 +23,7 @@ from shutil import copyfile, rmtree
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
 from sinergym.utils.common import *
+from sinergym.utils.config import Config
 
 
 YEAR = 1991  # Non leap year
@@ -47,7 +48,7 @@ class EnergyPlus(object):
             env_name,
             act_repeat=1,
             max_ep_data_store_num=10,
-            extras: dict = None):
+            config_params: dict = None):
         """EnergyPlus simulation class.
 
         Args:
@@ -66,8 +67,9 @@ class EnergyPlus(object):
             'EPLUS_ENV_%s_%s_ROOT' %
             (env_name, self._thread_name), LOG_LEVEL_MAIN, LOG_FMT)
 
-        # Anotate extra configuration as attribute of simulation
-        self._extras = extras
+        # Anotate extra configuration as attribute of simulation if exists
+        if config_params is not None:
+            self._config = Config(self._idf_path, config_params)
 
         # Set the environment variable for bcvtb
         os.environ['BCVTB_HOME'] = bcvtb_path
@@ -105,8 +107,8 @@ class EnergyPlus(object):
             check_length=False)
 
         # Set extra configuration for simulation if exists
-        if self._extras:
-            self._set_conf()
+        if self._config:
+            self._config.set_conf()
 
         # Eplus run info
         (self._eplus_run_st_mon,
@@ -557,19 +559,6 @@ class EnergyPlus(object):
         """
 
         return get_delta_seconds(YEAR, st_mon, st_day, ed_mon, ed_day)
-
-    # Esto debe ser llamado al principio del reset del simulador antes de
-    # incluir los archivos en el subproceso de eplus para correr el episodio
-    def _set_conf(self):
-        for key, value in self._extras.items():
-            if key == 'step_per_hour':
-                self._epm.timestep[0].number_of_timesteps_per_hour = value
-
-        # change original idf_path simulation to this version modified with
-        # extra configuration
-        new_idf_path = self._idf_path.split('.idf')[0] + '_extra.idf'
-        self._epm.save(new_idf_path)
-        self._idf_path = new_idf_path
 
     @property
     def start_year(self):
