@@ -108,7 +108,7 @@ class EnergyPlus(object):
         self._weather_data = WeatherData.from_epw(self._weather_path)
 
         # Set extra configuration for simulation if exists
-        if self._config:
+        if hasattr(self, '_config'):
             self._config.set_conf()
 
         # Eplus run info
