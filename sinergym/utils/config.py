@@ -24,14 +24,14 @@ class Config(object):
         self.config = kwargs
 
         # Opyplus objects
-        idd = Idd(os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd'))
+        self._idd = Idd(os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd'))
         self.building = Epm.from_idf(
             self._idf_path,
-            idd_or_version=idd,
+            idd_or_version=self._idd,
             check_length=False)
         self.ddy_model = Epm.from_idf(
             self._ddy_path,
-            idd_or_version=idd,
+            idd_or_version=self._idd,
             check_length=False)
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
