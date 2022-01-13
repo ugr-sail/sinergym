@@ -1,7 +1,9 @@
-"""Class and utilities for set up extra configuration in experiments with Sinergym"""
+"""Class and utilities for set up extra configuration in experiments with Sinergym (extra params, weather_variability, building model modification and files management)"""
+from copy import deepcopy
 import os
 from opyplus import Epm, WeatherData, Idd
 from sinergym.utils.common import get_record_keys, prepare_batch_from_records
+import numpy as np
 
 
 class Config(object):
@@ -10,6 +12,7 @@ class Config(object):
         :param _idf_path: IDF path origin for apply extra configuration.
         :param _weather_path: EPW path origin for apply weather to simulation.
         :param _ddy_path: DDY path origin for get DesignDays and weather Location
+        :param weather_variability: Variability of the weather using Ornstein-Uhlenbeck process: (sigma,mean, tau) tuple. Default None.
         :param config: Dict config with extra configuration which is required to modify IDF model (may be None)
         :param _idd: IDD opyplus object to set up Epm
         :param building: opyplus Epm object with IDF model
@@ -21,13 +24,17 @@ class Config(object):
             self,
             idf_path,
             weather_path,
-            **kwargs):
+            env_working_dir_parent,
+            extra_config):
 
         self._idf_path = idf_path
         self._weather_path = weather_path
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
-        self.config = kwargs
+        self._env_working_dir_parent = env_working_dir_parent
+        self._env_working_dir = None
+
+        self.config = extra_config
 
         # Opyplus objects
         self._idd = Idd(os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd'))
@@ -41,11 +48,71 @@ class Config(object):
             check_length=False)
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
-    def set_extra_conf(self):
+    def apply_weather_variability(
+            self,
+            columns: list = ['drybulb'],
+            variation: tuple = None):
+        """Modify weather data using Ornstein-Uhlenbeck process.
+
+        Args:
+            weather_data (opyplus.WeatherData): Opyplus object with the weather for the simulation.
+            original_epw_file (str): Path to the original EPW file.
+            columns (list, optional): List of columns to be affected. Defaults to ['drybulb'].
+            variation (tuple, optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
+
+        Returns:
+            str: New EPW file path generated in simulator working path in that episode
+        """
+        if variation is None:
+            return self._weather_path
+        else:
+            # deepcopy for weather_data
+            weather_data_mod = deepcopy(self.weather_data)
+            # Get dataframe with weather series
+            df = weather_data_mod.get_weather_series()
+
+            sigma = self.weather_variability[0]  # Standard deviation.
+            mu = self.weather_variability[1]  # Mean.
+            tau = self.weather_variability[2]  # Time constant.
+
+            T = 1.  # Total time.
+            # All the columns are going to have the same num of rows since they are
+            # in the same dataframe
+            n = len(df[columns[0]])
+            dt = T / n
+            # t = np.linspace(0., T, n)  # Vector of times.
+
+            sigma_bis = sigma * np.sqrt(2. / tau)
+            sqrtdt = np.sqrt(dt)
+
+            x = np.zeros(n)
+
+            # Create noise
+            for i in range(n - 1):
+                x[i + 1] = x[i] + dt * (-(x[i] - mu) / tau) + \
+                    sigma_bis * sqrtdt * np.random.randn()
+
+            for column in columns:
+                # Add noise
+                df[column] += x
+
+            # Save new weather data
+            weather_data_mod.set_weather_series(df)
+
+            filename = self._weather_path.split('/')[-1]
+            filename = filename.split('.epw')[0]
+            filename += '_Random_%s_%s_%s.epw' % (
+                str(sigma), str(mu), str(tau))
+            episode_weather_path = self._env_working_dir + '/' + filename
+            weather_data_mod.to_epw(episode_weather_path)
+            return episode_weather_path
+
+    def apply_extra_conf(self):
         """Set configuration and store idf in a new path.
         """
-        if self.config.get('timesteps_per_hour'):
-            self.building.timestep[0].number_of_timesteps_per_hour = self.config['timesteps_per_hour']
+        if self.config is not None:
+            if self.config.get('timesteps_per_hour'):
+                self.building.timestep[0].number_of_timesteps_per_hour = self.config['timesteps_per_hour']
 
     def adapt_idf_to_epw(self,
                          summerday: str = 'Afb Ann Clg .4% Condns DB=>MWB',
@@ -80,12 +147,23 @@ class Config(object):
         self.building.site_location.batch_add(new_location)
         self.building.SizingPeriod_DesignDay.batch_add(new_designdays)
 
-    def save_building_model(self, working_dir_path: str = None):
+    def save_building_model(self):
 
         # If no path specified, then use idf_path to save it.
-        if working_dir_path is None:
-            new_idf_path = self._idf_path
+        if self._env_working_dir is not None:
+            episode_idf_path = self._env_working_dir + \
+                '/' + self._idf_path.split('/')[-1]
+            self.building.save(episode_idf_path)
+            return episode_idf_path
         else:
-            new_idf_path = self._idf_path.split('.idf')[0] + '_extra.idf'
-            self.building.save(new_idf_path)
-            self._idf_path = new_idf_path
+            raise Exception
+
+    def save_weather_data(self, workingblabla: str = None):
+        pass
+
+    @property
+    def set_working_dir(self, new_env_working_dir: str):
+        # Create the Eplus working directory
+        os.makedirs(new_env_working_dir)
+        # Set attribute config
+        self._env_working_dir = new_env_working_dir

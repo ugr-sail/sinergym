@@ -17,7 +17,6 @@ import subprocess
 import threading
 import numpy as np
 
-from opyplus import Epm, WeatherData, Idd
 from copy import deepcopy
 from shutil import copyfile, rmtree
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
@@ -67,10 +66,6 @@ class EnergyPlus(object):
             'EPLUS_ENV_%s_%s_ROOT' %
             (env_name, self._thread_name), LOG_LEVEL_MAIN, LOG_FMT)
 
-        # Anotate extra configuration as attribute of simulation if exists
-        if config_params is not None:
-            self._config = Config(self._idf_path, config_params)
-
         # Set the environment variable for bcvtb
         os.environ['BCVTB_HOME'] = bcvtb_path
         # Create a socket for communication with the EnergyPlus
@@ -97,32 +92,23 @@ class EnergyPlus(object):
         self._weather_path = weather_path
         self._variable_path = variable_path
         self._idf_path = idf_path
-        # Obtain ddy path from weather_path (only changing .epw extension by
-        # .ddy)
-        self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
         # Episode existed
         self._episode_existed = False
-        # Epm object to read IDF information and WeatherData object to read EPW
-        idd = Idd(os.path.join(self._eplus_path, 'Energy+.idd'))
-        self._epm = Epm.from_idf(
-            self._idf_path,
-            idd_or_version=idd,
-            check_length=False)
-        self._weather_data = WeatherData.from_epw(self._weather_path)
-        ddy = Epm.from_idf(
-            self._ddy_path,
-            idd_or_version=idd,
-            check_length=False)
+        # Creating models config (with extra params if exits)
+        self._config = Config(
+            idf_path=self._idf_path,
+            weather_path=self._weather_path,
+            env_working_dir_parent=self._env_working_dir_parent,
+            extra_config=config_params)
 
         # Updating IDF file (Location and DesignDays) with EPW file
         self.logger_main.info(
             'Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...')
-        self._epm = adapt_idf_to_epw(self._epm, ddy)
-        self._epm.save(self._idf_path)
-
-        # Set extra configuration for simulation if exists
-        if hasattr(self, '_config'):
-            self._config.set_conf()
+        self._config.adapt_idf_to_epw()
+        # Setting up extra configuration if exists
+        self.logger_main.info(
+            'Setting up extra configuration in building model if exists...')
+        self._config.apply_extra_conf()
 
         # Eplus run info
         (self._eplus_run_st_mon,
@@ -177,42 +163,35 @@ class EnergyPlus(object):
         self.logger_main.info('Creating EnergyPlus simulation environment...')
         eplus_working_dir = self._get_eplus_working_folder(
             self._env_working_dir_parent, '-sub_run')
-        os.makedirs(eplus_working_dir)  # Create the Eplus working directory
+        # Set working dir for simulation config in current episode
+        self._config.set_working_dir(eplus_working_dir)
         # Remove redundant past working directories
         self._rm_past_history_dir(eplus_working_dir, '-sub_run')
-        eplus_working_idf_path = (eplus_working_dir +
-                                  '/' +
-                                  self._get_file_name(self._idf_path))
-        eplus_working_var_path = (eplus_working_dir +
-                                  '/' +
-                                  'variables.cfg')
-        eplus_working_out_path = (eplus_working_dir +
-                                  '/' +
-                                  'output')
-        copyfile(self._idf_path, eplus_working_idf_path)
-
-        # Copy the idf file to the working directory
-        copyfile(self._variable_path, eplus_working_var_path)
+        # Getting IDF, WEATHER, VARIABLES and OUTPUT path for current episode
+        eplus_working_idf_path = self._config.save_building_model()
+        eplus_working_var_path = (eplus_working_dir + '/' + 'variables.cfg')
+        eplus_working_out_path = (eplus_working_dir + '/' + 'output')
+        eplus_working_weather_path = self._config.apply_weather_variability(
+            variation=weather_variability)
         # Copy the variable.cfg file to the working dir
+        copyfile(self._variable_path, eplus_working_var_path)
+
         self._create_socket_cfg(self._host,
                                 self._port,
                                 eplus_working_dir)
         # Create the socket.cfg file in the working dir
         self.logger_main.info('EnergyPlus working directory is in %s'
                               % (eplus_working_dir))
-        # Create new random weather file
+        # Create new random weather file in case variability was specified
         # noise always from original EPW
-        weather_data_old = deepcopy(self._weather_data)
-        new_weather = create_variable_weather(
-            weather_data_old,
-            self._weather_path,
-            variation=weather_variability)
+
         # Select new weather if it is passed into the method
-        weather_path = self._weather_path if new_weather is None else new_weather
-        eplus_process = self._create_eplus(self._eplus_path, weather_path,
-                                           eplus_working_idf_path,
-                                           eplus_working_out_path,
-                                           eplus_working_dir)
+        eplus_process = self._create_eplus(
+            self._eplus_path,
+            eplus_working_weather_path,
+            eplus_working_idf_path,
+            eplus_working_out_path,
+            eplus_working_dir)
         self.logger_main.debug(
             'EnergyPlus process is still running ? %r' %
             self._get_is_subprocess_running(eplus_process))
@@ -239,7 +218,7 @@ class EnergyPlus(object):
         version, flag, nDb, nIn, nBl, curSimTim, Dblist \
             = self._disassembleMsg(rcv_1st)
         # get time info in simulation
-        time_info = get_current_time_info(self._epm, curSimTim)
+        time_info = get_current_time_info(self._config.building, curSimTim)
         ret.append(time_info)
         ret.append(Dblist)
         # Remember the message header, useful when send data back to EnergyPlus
@@ -307,7 +286,7 @@ class EnergyPlus(object):
         # Construct the return, which is the state observation of the last step
         # plus the integral item
         # get time info in simulation
-        time_info = get_current_time_info(self._epm, curSimTim)
+        time_info = get_current_time_info(self._config.building, curSimTim)
         ret.append(time_info)
         ret.append(Dblist)
         # Add terminal state
@@ -541,7 +520,7 @@ class EnergyPlus(object):
         ret = ()
 
         # Get runperiod object inner IDF
-        runperiod = self._epm.RunPeriod[0]
+        runperiod = self._config.building.RunPeriod[0]
 
         start_month = int(
             0 if runperiod.begin_month is None else runperiod.begin_month)
@@ -556,7 +535,7 @@ class EnergyPlus(object):
         end_year = int(0 if runperiod.end_year is None else runperiod.end_year)
         start_weekday = WEEKDAY_ENCODING[runperiod.day_of_week_for_start_day.lower(
         )]
-        n_steps_per_hour = self._epm.timestep[0].number_of_timesteps_per_hour
+        n_steps_per_hour = self._config.building.timestep[0].number_of_timesteps_per_hour
         if n_steps_per_hour < 1 or n_steps_per_hour is None:
             n_steps_per_hour = 4  # default value
 
