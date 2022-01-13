@@ -97,6 +97,9 @@ class EnergyPlus(object):
         self._weather_path = weather_path
         self._variable_path = variable_path
         self._idf_path = idf_path
+        # Obtain ddy path from weather_path (only changing .epw extension by
+        # .ddy)
+        self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
         # Episode existed
         self._episode_existed = False
         # Epm object to read IDF information and WeatherData object to read EPW
@@ -106,9 +109,15 @@ class EnergyPlus(object):
             idd_or_version=idd,
             check_length=False)
         self._weather_data = WeatherData.from_epw(self._weather_path)
+        ddy = Epm.from_idf(
+            self._ddy_path,
+            idd_or_version=idd,
+            check_length=False)
 
         # Updating IDF file (Location and DesignDays) with EPW file
-        self._epm = adapt_idf_to_epw(self._epm, self._weather_data)
+        self.logger_main.info(
+            'Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...')
+        self._epm = adapt_idf_to_epw(self._epm, ddy)
         self._epm.save(self._idf_path)
 
         # Set extra configuration for simulation if exists
