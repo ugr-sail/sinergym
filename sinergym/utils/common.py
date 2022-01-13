@@ -394,7 +394,7 @@ def setpoints_transform(action, action_space: gym.spaces.Box, setpoints_space):
     return action_
 
 
-def _get_record_keys(record: Record):
+def get_record_keys(record: Record):
     """Given an opyplus Epm Record (one element from opyplus.epm object) this function returns list of keys (opyplus hasn't got this functionality explicitly)
 
      Args:
@@ -424,49 +424,6 @@ def prepare_batch_from_records(records: list):
         batch.append(aux_dict)
 
     return batch
-
-
-def adapt_idf_to_epw(
-        epm: Epm,
-        ddy: Epm,
-        summerday: str = 'Afb Ann Clg .4% Condns DB=>MWB',
-        winterday: str = 'Afb Ann Htg 99.6% Condns DB'):
-    """Given an opyplus Epm object (building from Idf) and an opyplus WeatherData object (weather from EPW), this function modify IDF Location and DesingDay's in order to adapt IDF to EPW.
-
-     Args:
-        epm (opyplus.Epm): IDF building Python object from opyplus module.
-        ddy (opyplus.EPM): DDY file where location and designdays are located for a weather specifically.
-        summerday (str): Design day for summer day specifically (DDY has several of them).
-        winterday (str): Design day for winter day specifically (DDY has several of them).
-     Returns:
-        opyplus.Epm: epm modified and adapted to weather (Location and DesignDay adapted).
-
-    """
-
-    old_location = epm.site_location[0]
-    old_designdays = epm.SizingPeriod_DesignDay
-
-    # Adding the new location and designdays based on ddy file
-    # LOCATION
-    new_location = prepare_batch_from_records([ddy.site_location[0]])
-    # DESIGNDAYS
-    winter_designday = ddy.SizingPeriod_DesignDay.one(
-        lambda designday: winterday.lower() in designday.name.lower())
-    summer_designday = ddy.SizingPeriod_DesignDay.one(
-        lambda designday: summerday.lower() in designday.name.lower())
-    new_designdays = prepare_batch_from_records(
-        [winter_designday, summer_designday])
-
-    # Deleting the old location and old DesignDays from Epm
-    old_location.delete()
-    old_designdays.delete()
-
-    # Added New Location and DesignDays to Epm
-    epm.site_location.batch_add(new_location)
-    epm.SizingPeriod_DesignDay.batch_add(new_designdays)
-
-    # Return building updated
-    return epm
 
 
 class Logger():
