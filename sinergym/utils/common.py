@@ -8,6 +8,8 @@ from pydoc import locate
 import csv
 import pandas as pd
 import gym
+from opyplus.epm.record import Record
+from opyplus import Epm
 
 from datetime import datetime, timedelta
 
@@ -392,35 +394,78 @@ def setpoints_transform(action, action_space: gym.spaces.Box, setpoints_space):
     return action_
 
 
-def adapt_idf_to_epw(epm, weather):
+def _get_record_keys(record: Record):
+    """Given an opyplus Epm Record (one element from opyplus.epm object) this function returns list of keys (opyplus hasn't got this functionality explicitly)
+
+     Args:
+        record (opyplus.Epm.record): Element from Epm object.
+
+     Returns:
+        list(str): Key list from record.
+    """
+    return [field.ref for field in record._table._dev_descriptor._field_descriptors]
+
+
+def prepare_batch_from_records(records: list):
+    """Prepare a list of dictionaries in order to use Epm.add_batch directly
+
+    Args:
+        records (list): List of records which will be converted to dictionary batch
+
+    Returns:
+        list (dict): List of dicts where each dictionary is a record element
+    """
+
+    batch = []
+    for record in records:
+        aux_dict = {}
+        for key in _get_record_keys(record):
+            aux_dict[key] = record[key]
+        batch.append(aux_dict)
+
+    return batch
+
+
+def adapt_idf_to_epw(
+        epm: Epm,
+        ddy: Epm,
+        summerday: str = 'Afb Ann Clg .4% Condns DB=>MWB',
+        winterday: str = 'Afb Ann Htg 99.6% Condns DB'):
     """Given an opyplus Epm object (building from Idf) and an opyplus WeatherData object (weather from EPW), this function modify IDF Location and DesingDay's in order to adapt IDF to EPW.
 
      Args:
         epm (opyplus.Epm): IDF building Python object from opyplus module.
-        weather (opyplus.WeatherData): EPW weather Python object from opyplus module.
-
+        ddy (opyplus.EPM): DDY file where location and designdays are located for a weather specifically.
+        summerday (str): Design day for summer day specifically (DDY has several of them).
+        winterday (str): Design day for winter day specifically (DDY has several of them).
      Returns:
-        opyplus.Epm: epm modified and adapted to weather.
+        opyplus.Epm: epm modified and adapted to weather (Location and DesignDay adapted).
 
     """
 
-    info = weather._headers
     old_location = epm.site_location[0]
-    # Adding the new location based on weather
-    epm.site_location.add(
-        name=info['city'] +
-        '_' +
-        info['state_province_region'] +
-        '_' +
-        info['country'],
-        latitude=info['latitude'],
-        longitude=info['longitude'],
-        time_zone=info['timezone_offset'],
-        elevation=info['elevation']
-    )
-    # Deleting the old location from Epm
-    old_location.delete()
+    old_designdays = epm.SizingPeriod_DesignDay
 
+    # Adding the new location and designdays based on ddy file
+    # LOCATION
+    new_location = prepare_batch_from_records([ddy.site_location[0]])
+    # DESIGNDAYS
+    winter_designday = ddy.SizingPeriod_DesignDay.one(
+        lambda designday: winterday.lower() in designday.name.lower())
+    summer_designday = ddy.SizingPeriod_DesignDay.one(
+        lambda designday: summerday.lower() in designday.name.lower())
+    new_designdays = prepare_batch_from_records(
+        [winter_designday, summer_designday])
+
+    # Deleting the old location and old DesignDays from Epm
+    old_location.delete()
+    old_designdays.delete()
+
+    # Added New Location and DesignDays to Epm
+    epm.site_location.batch_add(new_location)
+    epm.SizingPeriod_DesignDay.batch_add(new_designdays)
+
+    # Return building updated
     return epm
 
 
@@ -514,7 +559,7 @@ class CSVLogger(object):
             total_power_no_units (float): Power consumption penalty depending on reward function.
             comfort_penalty (float): Temperature comfort penalty depending on reward function.
             power (float): Power consumption in current step (W).
-            done (bool): Spicifies if this step terminates episode or not.
+            done (bool): Specifies if this step terminates episode or not.
 
         """
         if self.flag:
