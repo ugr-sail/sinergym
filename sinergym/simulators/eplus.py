@@ -9,15 +9,12 @@ Class for connecting EnergyPlus with Python using Ptolomy server.
 import socket
 import os
 import time
-import copy
 import signal
 import _thread
-import logging
 import subprocess
 import threading
 import numpy as np
 
-from copy import deepcopy
 from shutil import copyfile, rmtree
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
