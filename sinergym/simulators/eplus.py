@@ -21,10 +21,7 @@ from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 from sinergym.utils.common import *
 from sinergym.utils.config import Config
 
-
 YEAR = 1991  # Non leap year
-WEEKDAY_ENCODING = {'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
-                    'friday': 4, 'saturday': 5, 'sunday': 6}
 
 CWD = os.getcwd()
 LOG_LEVEL_MAIN = 'INFO'
@@ -106,6 +103,7 @@ class EnergyPlus(object):
         self.logger_main.info(
             'Setting up extra configuration in building model if exists...')
         self._config.apply_extra_conf()
+        # In this lines Epm model is modified but no IDF is stored anywhere yet
 
         # Eplus run info
         (self._eplus_run_st_mon,
@@ -115,7 +113,7 @@ class EnergyPlus(object):
          self._eplus_run_ed_day,
          self._eplus_run_ed_year,
          self._eplus_run_st_weekday,
-         self._eplus_n_steps_per_hour) = self._get_eplus_run_info()
+         self._eplus_n_steps_per_hour) = self._config._get_eplus_run_info()
 
         # Stepsize in seconds
         self._eplus_run_stepsize = 3600 / self._eplus_n_steps_per_hour
@@ -506,45 +504,6 @@ class EnergyPlus(object):
             Dblist.append(float(rcv[i]))
 
         return (version, flag, nDb, nIn, nBl, curSimTim, Dblist)
-
-    def _get_eplus_run_info(self):
-        """This method read the .idf file and finds the running start month, start day, start year, end month, end day, end year, start weekday and the number of steps in a hour simulation. If any value is Unknown, then value will be 0. If step per hour is < 1, then default value will be 4.
-
-        Returns:
-            (int, int, int, int, int, int, int, int): A tuple with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.
-        """
-
-        ret = ()
-
-        # Get runperiod object inner IDF
-        runperiod = self._config.building.RunPeriod[0]
-
-        start_month = int(
-            0 if runperiod.begin_month is None else runperiod.begin_month)
-        start_day = int(
-            0 if runperiod.begin_day_of_month is None else runperiod.begin_day_of_month)
-        start_year = int(
-            0 if runperiod.begin_year is None else runperiod.begin_year)
-        end_month = int(
-            0 if runperiod.end_month is None else runperiod.end_month)
-        end_day = int(
-            0 if runperiod.end_day_of_month is None else runperiod.end_day_of_month)
-        end_year = int(0 if runperiod.end_year is None else runperiod.end_year)
-        start_weekday = WEEKDAY_ENCODING[runperiod.day_of_week_for_start_day.lower(
-        )]
-        n_steps_per_hour = self._config.building.timestep[0].number_of_timesteps_per_hour
-        if n_steps_per_hour < 1 or n_steps_per_hour is None:
-            n_steps_per_hour = 4  # default value
-
-        return (
-            start_month,
-            start_day,
-            start_year,
-            end_month,
-            end_day,
-            end_year,
-            start_weekday,
-            n_steps_per_hour)
 
     def _get_one_epi_len(self, st_mon, st_day, ed_mon, ed_day):
         """Gets the length of one episode (an EnergyPlus process run to the end).

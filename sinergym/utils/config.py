@@ -5,6 +5,8 @@ from opyplus import Epm, WeatherData, Idd
 from sinergym.utils.common import get_record_keys, prepare_batch_from_records
 import numpy as np
 
+WEEKDAY_ENCODING = {'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
+                    'friday': 4, 'saturday': 5, 'sunday': 6}
 
 class Config(object):
     """Config object to manage extra configuration in Sinergym experiments.
@@ -158,10 +160,45 @@ class Config(object):
         else:
             raise Exception
 
-    def save_weather_data(self, workingblabla: str = None):
-        pass
+    def _get_eplus_run_info(self):
+        """This method read the building model from config and finds the running start month, start day, start year, end month, end day, end year, start weekday and the number of steps in a hour simulation. If any value is Unknown, then value will be 0. If step per hour is < 1, then default value will be 4.
 
-    @property
+        Returns:
+            (int, int, int, int, int, int, int, int): A tuple with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.
+        """
+
+        ret = ()
+
+        # Get runperiod object inner IDF
+        runperiod = self.building.RunPeriod[0]
+
+        start_month = int(
+            0 if runperiod.begin_month is None else runperiod.begin_month)
+        start_day = int(
+            0 if runperiod.begin_day_of_month is None else runperiod.begin_day_of_month)
+        start_year = int(
+            0 if runperiod.begin_year is None else runperiod.begin_year)
+        end_month = int(
+            0 if runperiod.end_month is None else runperiod.end_month)
+        end_day = int(
+            0 if runperiod.end_day_of_month is None else runperiod.end_day_of_month)
+        end_year = int(0 if runperiod.end_year is None else runperiod.end_year)
+        start_weekday = WEEKDAY_ENCODING[runperiod.day_of_week_for_start_day.lower(
+        )]
+        n_steps_per_hour = self.building.timestep[0].number_of_timesteps_per_hour
+        if n_steps_per_hour < 1 or n_steps_per_hour is None:
+            n_steps_per_hour = 4  # default value
+
+        return (
+            start_month,
+            start_day,
+            start_year,
+            end_month,
+            end_day,
+            end_year,
+            start_weekday,
+            n_steps_per_hour)
+
     def set_working_dir(self, new_env_working_dir: str):
         # Create the Eplus working directory
         os.makedirs(new_env_working_dir)
