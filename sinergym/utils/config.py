@@ -14,7 +14,8 @@ class Config(object):
         :param _idf_path: IDF path origin for apply extra configuration.
         :param _weather_path: EPW path origin for apply weather to simulation.
         :param _ddy_path: DDY path origin for get DesignDays and weather Location
-        :param weather_variability: Variability of the weather using Ornstein-Uhlenbeck process: (sigma,mean, tau) tuple. Default None.
+        :param _env_working_dir_parent: Path for Sinergym experiment output
+        :param _env_working_dir: Path for Sinergym specific episode (before first simulator reset this param is None)
         :param config: Dict config with extra configuration which is required to modify IDF model (may be None)
         :param _idd: IDD opyplus object to set up Epm
         :param building: opyplus Epm object with IDF model
@@ -50,6 +51,69 @@ class Config(object):
             check_length=False)
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
+    # ---------------------------------------------------------------------------- #
+    #                       IDF and Building model management                      #
+    # ---------------------------------------------------------------------------- #
+
+    def adapt_idf_to_epw(self,
+                         summerday: str = 'Ann Clg .4% Condns DB=>MWB',
+                         winterday: str = 'Ann Htg 99.6% Condns DB'):
+        """Given a summer day name and winter day name from DDY file, this method modify IDF Location and DesingDay's in order to adapt IDF to EPW.
+
+        Args:
+            summerday (str): Design day for summer day specifically (DDY has several of them).
+            winterday (str): Design day for winter day specifically (DDY has several of them).
+        """
+
+        old_location = self.building.site_location[0]
+        old_designdays = self.building.SizingPeriod_DesignDay
+
+        # Adding the new location and designdays based on ddy file
+        # LOCATION
+        new_location = prepare_batch_from_records(
+            [self.ddy_model.site_location[0]])
+        # DESIGNDAYS
+        winter_designday = self.ddy_model.SizingPeriod_DesignDay.one(
+            lambda designday: winterday.lower() in designday.name.lower())
+        summer_designday = self.ddy_model.SizingPeriod_DesignDay.one(
+            lambda designday: summerday.lower() in designday.name.lower())
+        new_designdays = prepare_batch_from_records(
+            [winter_designday, summer_designday])
+
+        # Deleting the old location and old DesignDays from Epm
+        old_location.delete()
+        old_designdays.delete()
+
+        # Added New Location and DesignDays to Epm
+        self.building.site_location.batch_add(new_location)
+        self.building.SizingPeriod_DesignDay.batch_add(new_designdays)
+
+    def apply_extra_conf(self):
+        """Set extra configuration in building model
+        """
+        if self.config is not None:
+            if self.config.get('timesteps_per_hour'):
+                self.building.timestep[0].number_of_timesteps_per_hour = self.config['timesteps_per_hour']
+
+    def save_building_model(self):
+        """Take current building model and save as IDF in current env_working_dir episode folder.
+
+        Returns:
+            str: Path of IDF file stored (episode folder).
+        """
+        # If no path specified, then use idf_path to save it.
+        if self._env_working_dir is not None:
+            episode_idf_path = self._env_working_dir + \
+                '/' + self._idf_path.split('/')[-1]
+            self.building.save(episode_idf_path)
+            return episode_idf_path
+        else:
+            raise Exception
+
+    # ---------------------------------------------------------------------------- #
+    #                        EPW and Weather Data management                       #
+    # ---------------------------------------------------------------------------- #
+
     def apply_weather_variability(
             self,
             columns: list = ['drybulb'],
@@ -57,8 +121,6 @@ class Config(object):
         """Modify weather data using Ornstein-Uhlenbeck process.
 
         Args:
-            weather_data (opyplus.WeatherData): Opyplus object with the weather for the simulation.
-            original_epw_file (str): Path to the original EPW file.
             columns (list, optional): List of columns to be affected. Defaults to ['drybulb'].
             variation (tuple, optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
 
@@ -109,56 +171,9 @@ class Config(object):
             weather_data_mod.to_epw(episode_weather_path)
             return episode_weather_path
 
-    def apply_extra_conf(self):
-        """Set configuration and store idf in a new path.
-        """
-        if self.config is not None:
-            if self.config.get('timesteps_per_hour'):
-                self.building.timestep[0].number_of_timesteps_per_hour = self.config['timesteps_per_hour']
-
-    def adapt_idf_to_epw(self,
-                         summerday: str = 'Ann Clg .4% Condns DB=>MWB',
-                         winterday: str = 'Ann Htg 99.6% Condns DB'):
-        """Given a summer day name and winter day name from DDY file, this method modify IDF Location and DesingDay's in order to adapt IDF to EPW.
-
-        Args:
-            summerday (str): Design day for summer day specifically (DDY has several of them).
-            winterday (str): Design day for winter day specifically (DDY has several of them).
-        """
-
-        old_location = self.building.site_location[0]
-        old_designdays = self.building.SizingPeriod_DesignDay
-
-        # Adding the new location and designdays based on ddy file
-        # LOCATION
-        new_location = prepare_batch_from_records(
-            [self.ddy_model.site_location[0]])
-        # DESIGNDAYS
-        winter_designday = self.ddy_model.SizingPeriod_DesignDay.one(
-            lambda designday: winterday.lower() in designday.name.lower())
-        summer_designday = self.ddy_model.SizingPeriod_DesignDay.one(
-            lambda designday: summerday.lower() in designday.name.lower())
-        new_designdays = prepare_batch_from_records(
-            [winter_designday, summer_designday])
-
-        # Deleting the old location and old DesignDays from Epm
-        old_location.delete()
-        old_designdays.delete()
-
-        # Added New Location and DesignDays to Epm
-        self.building.site_location.batch_add(new_location)
-        self.building.SizingPeriod_DesignDay.batch_add(new_designdays)
-
-    def save_building_model(self):
-
-        # If no path specified, then use idf_path to save it.
-        if self._env_working_dir is not None:
-            episode_idf_path = self._env_working_dir + \
-                '/' + self._idf_path.split('/')[-1]
-            self.building.save(episode_idf_path)
-            return episode_idf_path
-        else:
-            raise Exception
+    # ---------------------------------------------------------------------------- #
+    #                        Model and Config Functionality                        #
+    # ---------------------------------------------------------------------------- #
 
     def _get_eplus_run_info(self):
         """This method read the building model from config and finds the running start month, start day, start year, end month, end day, end year, start weekday and the number of steps in a hour simulation. If any value is Unknown, then value will be 0. If step per hour is < 1, then default value will be 4.
@@ -166,9 +181,6 @@ class Config(object):
         Returns:
             (int, int, int, int, int, int, int, int): A tuple with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.
         """
-
-        ret = ()
-
         # Get runperiod object inner IDF
         runperiod = self.building.RunPeriod[0]
 
@@ -200,6 +212,11 @@ class Config(object):
             n_steps_per_hour)
 
     def set_working_dir(self, new_env_working_dir: str):
+        """Set env_working_dir attribute in conf for current episode, this method is called in simulator reset.
+
+        Args:
+            new_env_working_dir (str): New path working dir for new simulator episode.
+        """
         # Create the Eplus working directory
         os.makedirs(new_env_working_dir)
         # Set attribute config
