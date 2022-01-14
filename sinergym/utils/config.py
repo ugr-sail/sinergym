@@ -73,9 +73,9 @@ class Config(object):
             # Get dataframe with weather series
             df = weather_data_mod.get_weather_series()
 
-            sigma = self.weather_variability[0]  # Standard deviation.
-            mu = self.weather_variability[1]  # Mean.
-            tau = self.weather_variability[2]  # Time constant.
+            sigma = variation[0]  # Standard deviation.
+            mu = variation[1]  # Mean.
+            tau = variation[2]  # Time constant.
 
             T = 1.  # Total time.
             # All the columns are going to have the same num of rows since they are
