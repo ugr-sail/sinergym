@@ -117,8 +117,8 @@ class Config(object):
                 self.building.timestep[0].number_of_timesteps_per_hour = self.config['timesteps_per_hour']
 
     def adapt_idf_to_epw(self,
-                         summerday: str = 'Afb Ann Clg .4% Condns DB=>MWB',
-                         winterday: str = 'Afb Ann Htg 99.6% Condns DB'):
+                         summerday: str = 'Ann Clg .4% Condns DB=>MWB',
+                         winterday: str = 'Ann Htg 99.6% Condns DB'):
         """Given a summer day name and winter day name from DDY file, this method modify IDF Location and DesingDay's in order to adapt IDF to EPW.
 
         Args:
