@@ -419,7 +419,7 @@ def prepare_batch_from_records(records: list):
     batch = []
     for record in records:
         aux_dict = {}
-        for key in _get_record_keys(record):
+        for key in get_record_keys(record):
             aux_dict[key] = record[key]
         batch.append(aux_dict)
 
