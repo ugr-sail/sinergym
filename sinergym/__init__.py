@@ -26,7 +26,7 @@ register(
     id='Eplus-5Zone-hot-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '5ZoneAutoDXVAV_AZ.idf',
+        'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
         'variables_file': 'variablesDXVAV.cfg',
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
@@ -41,7 +41,7 @@ register(
     id='Eplus-5Zone-mixed-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '5ZoneAutoDXVAV_NY.idf',
+        'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_NY_New.York-Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesDXVAV.cfg',
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
@@ -54,7 +54,7 @@ register(
     id='Eplus-5Zone-cool-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '5ZoneAutoDXVAV_WA.idf',
+        'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_WA_Port.Angeles-Fairchild.Intl.AP.727885_TMY3.epw',
         'variables_file': 'variablesDXVAV.cfg',
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
@@ -67,7 +67,7 @@ register(
     id='Eplus-5Zone-hot-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '5ZoneAutoDXVAV_AZ.idf',
+        'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
         'variables_file': 'variablesDXVAV.cfg',
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
@@ -83,7 +83,7 @@ register(
     id='Eplus-5Zone-mixed-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '5ZoneAutoDXVAV_NY.idf',
+        'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_NY_New.York-Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesDXVAV.cfg',
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
@@ -100,7 +100,7 @@ register(
     id='Eplus-5Zone-cool-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '5ZoneAutoDXVAV_WA.idf',
+        'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_WA_Port.Angeles-Fairchild.Intl.AP.727885_TMY3.epw',
         'variables_file': 'variablesDXVAV.cfg',
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
@@ -117,7 +117,7 @@ register(
     id='Eplus-5Zone-hot-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '5ZoneAutoDXVAV_AZ.idf',
+        'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
         'variables_file': 'variablesDXVAV.cfg',
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
@@ -132,7 +132,7 @@ register(
     id='Eplus-5Zone-mixed-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '5ZoneAutoDXVAV_NY.idf',
+        'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_NY_New.York-Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesDXVAV.cfg',
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
@@ -145,7 +145,7 @@ register(
     id='Eplus-5Zone-cool-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '5ZoneAutoDXVAV_WA.idf',
+        'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_WA_Port.Angeles-Fairchild.Intl.AP.727885_TMY3.epw',
         'variables_file': 'variablesDXVAV.cfg',
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
@@ -158,7 +158,7 @@ register(
     id='Eplus-5Zone-hot-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '5ZoneAutoDXVAV_AZ.idf',
+        'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
         'variables_file': 'variablesDXVAV.cfg',
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
@@ -174,7 +174,7 @@ register(
     id='Eplus-5Zone-mixed-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '5ZoneAutoDXVAV_NY.idf',
+        'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_NY_New.York-Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesDXVAV.cfg',
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
@@ -191,7 +191,7 @@ register(
     id='Eplus-5Zone-cool-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '5ZoneAutoDXVAV_WA.idf',
+        'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_WA_Port.Angeles-Fairchild.Intl.AP.727885_TMY3.epw',
         'variables_file': 'variablesDXVAV.cfg',
         'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
@@ -209,7 +209,7 @@ register(
     id='Eplus-datacenter-hot-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_AZ.idf',
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
         'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
@@ -224,7 +224,7 @@ register(
     id='Eplus-datacenter-hot-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_AZ.idf',
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
         'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
@@ -239,7 +239,7 @@ register(
     id='Eplus-datacenter-hot-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_AZ.idf',
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
         'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
@@ -255,7 +255,7 @@ register(
     id='Eplus-datacenter-hot-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_AZ.idf',
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
         'weather_file': 'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw',
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
@@ -271,7 +271,7 @@ register(
     id='Eplus-datacenter-mixed-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_NY.idf',
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
         'weather_file': 'USA_NY_New.York-Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
@@ -284,7 +284,7 @@ register(
     id='Eplus-datacenter-mixed-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_NY.idf',
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
         'weather_file': 'USA_NY_New.York-Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
@@ -297,7 +297,7 @@ register(
     id='Eplus-datacenter-mixed-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_NY.idf',
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
         'weather_file': 'USA_NY_New.York-Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
@@ -314,7 +314,7 @@ register(
     id='Eplus-datacenter-mixed-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': '2ZoneDataCenterHVAC_wEconomizer_NY.idf',
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
         'weather_file': 'USA_NY_New.York-Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
@@ -333,7 +333,7 @@ register(
     id='Eplus-IWMullion-mixed-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': 'IW_Mullion_NY.idf',
+        'idf_file': 'IW_Mullion.idf',
         'weather_file': 'USA_NY_New.York-Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesIW.cfg',
         'spaces_file': 'IW_Mullion_spaces.cfg',
@@ -346,7 +346,7 @@ register(
     id='Eplus-IWMullion-mixed-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': 'IW_Mullion_NY.idf',
+        'idf_file': 'IW_Mullion.idf',
         'weather_file': 'USA_NY_New.York-Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesIW.cfg',
         'spaces_file': 'IW_Mullion_spaces.cfg',
@@ -363,7 +363,7 @@ register(
     id='Eplus-IWMullion-mixed-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': 'IW_Mullion_NY.idf',
+        'idf_file': 'IW_Mullion.idf',
         'weather_file': 'USA_NY_New.York-Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesIW.cfg',
         'spaces_file': 'IW_Mullion_spaces.cfg',
@@ -376,7 +376,7 @@ register(
     id='Eplus-IWMullion-mixed-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': 'IW_Mullion_NY.idf',
+        'idf_file': 'IW_Mullion.idf',
         'weather_file': 'USA_NY_New.York-Kennedy.Intl.AP.744860_TMY3.epw',
         'variables_file': 'variablesIW.cfg',
         'spaces_file': 'IW_Mullion_spaces.cfg',
@@ -393,7 +393,7 @@ register(
     id='Eplus-IWMullion-cool-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': 'IW_Mullion_WA.idf',
+        'idf_file': 'IW_Mullion.idf',
         'weather_file': 'USA_WA_Port.Angeles-Fairchild.Intl.AP.727885_TMY3.epw',
         'variables_file': 'variablesIW.cfg',
         'spaces_file': 'IW_Mullion_spaces.cfg',
@@ -406,7 +406,7 @@ register(
     id='Eplus-IWMullion-cool-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': 'IW_Mullion_WA.idf',
+        'idf_file': 'IW_Mullion.idf',
         'weather_file': 'USA_WA_Port.Angeles-Fairchild.Intl.AP.727885_TMY3.epw',
         'variables_file': 'variablesIW.cfg',
         'spaces_file': 'IW_Mullion_spaces.cfg',
@@ -423,7 +423,7 @@ register(
     id='Eplus-IWMullion-cool-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': 'IW_Mullion_WA.idf',
+        'idf_file': 'IW_Mullion.idf',
         'weather_file': 'USA_WA_Port.Angeles-Fairchild.Intl.AP.727885_TMY3.epw',
         'variables_file': 'variablesIW.cfg',
         'spaces_file': 'IW_Mullion_spaces.cfg',
@@ -436,7 +436,7 @@ register(
     id='Eplus-IWMullion-cool-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': 'IW_Mullion_WA.idf',
+        'idf_file': 'IW_Mullion.idf',
         'weather_file': 'USA_WA_Port.Angeles-Fairchild.Intl.AP.727885_TMY3.epw',
         'variables_file': 'variablesIW.cfg',
         'spaces_file': 'IW_Mullion_spaces.cfg',
