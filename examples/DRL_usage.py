@@ -181,16 +181,16 @@ with mlflow.start_run(run_name=name):
     if args.normalization:
         # We have to know what dictionary ranges to use
         norm_range = None
-        env_type = args.environment.split('-')[2]
+        env_type = args.environment.split('-')[1]
         if env_type == 'datacenter':
-            range = RANGES_5ZONE
+            norm_range = RANGES_DATACENTER
         elif env_type == '5Zone':
-            range = RANGES_IW
+            norm_range = RANGES_5ZONE
         elif env_type == 'IWMullion':
-            range = RANGES_DATACENTER
+            norm_range = RANGES_IW
         else:
             raise NameError('env_type is not valid, check environment name')
-        env = NormalizeObservation(env)
+        env = NormalizeObservation(env, ranges=norm_range)
     if args.logger:
         env = LoggerWrapper(env)
     if args.multiobs:
