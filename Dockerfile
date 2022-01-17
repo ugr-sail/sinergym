@@ -15,6 +15,9 @@ ARG ENERGYPLUS_SHA=de239b2e5f
 # Argument for Sinergym extras libraries
 ARG SINERGYM_EXTRAS=[extras]
 
+# Argument for choose Python version
+ARG PYTHON_VERSION=3.9
+
 ENV ENERGYPLUS_VERSION=$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_SHA=$ENERGYPLUS_SHA
@@ -47,9 +50,15 @@ RUN apt-get update \
 RUN cd /usr/local/bin find -L . -type l -delete
 
 # Install Python
-RUN apt-get update && echo "Y\r" | apt-get install python3.6 && echo "Y\r" | apt-get install python3-pip
-
+RUN apt update
+RUN apt install software-properties-common -y
+RUN add-apt-repository ppa:deadsnakes/ppa
+RUN ln -s /usr/bin/pip3 /usr/bin/pip
+RUN ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
+RUN apt install python${PYTHON_VERSION} python${PYTHON_VERSION}-distutils -y
+RUN apt install python3-pip -y
 # Install OpenJDK-8
+
 RUN apt-get update && echo "Y\r" | apt-get install default-jre openjdk-8-jdk
 
 # Install BCVTB
@@ -60,7 +69,9 @@ RUN apt-get install wget \
     && cp -R 1/ $BCVTB_PATH && rm -R 1/
 
 # Working directory and copy files
-RUN pip3 install --upgrade pip
+RUN python -m pip install --upgrade pip
+# Upgrade setuptools for possible errors (depending on python version)
+RUN pip install --upgrade setuptools
 RUN apt-get update && apt-get upgrade -y && apt-get install -y git
 WORKDIR /code
 COPY requirements.txt .
@@ -70,7 +81,7 @@ COPY sinergym /code/sinergym
 COPY tests /code/tests
 COPY examples /code/examples
 COPY check_run_times.py .
-RUN pip3 install -e .${SINERGYM_EXTRAS}
+RUN pip install -e .${SINERGYM_EXTRAS}
 
 CMD ["/bin/bash"]
 
