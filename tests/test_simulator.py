@@ -15,7 +15,11 @@ def test_reset(simulator):
     output = simulator.reset()
 
     # Checking output
-    assert output[0] == 0
+    # Fist element is a tuple with simulation date + time_elapsed
+    assert isinstance(output[0], tuple)
+    assert len(output[0]) == 4
+    # Last element in first tuple must be time_elapsed 0
+    assert output[0][-1] == 0
     assert isinstance(output[1], list)
     assert len(output[1]) == 16
     assert output[2] == False
@@ -58,15 +62,35 @@ def test_get_eplus_working_folder(simulator):
 def test_step(simulator):
     output = simulator.step(action=[20.0, 24.0])
 
+    # Checking output
+    # Fist element is a tuple with simulation date + time_elapsed
+    assert isinstance(output[0], tuple)
+    assert len(output[0]) == 4
+    # Last element in first tuple must be time_elapsed > 0 (since we have a
+    # step executed)
+    assert output[0][-1] > 0
+    assert isinstance(output[1], list)
+    assert len(output[1]) == 16
+
+    # Check simulation advance with step
     assert simulator._curSimTim > 0
     # Simulation time elapsed at each timestep is defined in the simulator
     assert simulator._curSimTim == simulator._eplus_run_stepsize
-    assert simulator._curSimTim == output[0]
+    assert simulator._curSimTim == output[0][-1]
     assert isinstance(output[1], list)
     assert len(output[1]) == 16
     assert (simulator._curSimTim >= simulator._eplus_one_epi_len) == output[2]
 
     assert simulator._last_action == [20.0, 24.0]
+
+    # Another step
+    output = simulator.step(action=[20.0, 24.0])
+
+    # Check simulation advance with step
+    assert simulator._curSimTim == output[0][-1]
+    assert simulator._curSimTim > 0
+    # Simulation time elapsed at each timestep is defined in the simulator
+    assert simulator._curSimTim == simulator._eplus_run_stepsize * 2
 
 
 def test_episode_transition_with_steps(simulator):
@@ -180,11 +204,6 @@ def test_disassembleMsg(simulator):
     assert nBl == 0
     assert curSimTim == 0
     assert [num for num in range(16)] == Dblist
-
-
-def test_get_eplus_run_info(simulator):
-    info = simulator._get_eplus_run_info()
-    assert info == (1, 1, 0, 3, 31, 0, 0, 4)
 
 
 def test_get_one_epi_len(simulator):
