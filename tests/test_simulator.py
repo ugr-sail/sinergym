@@ -204,10 +204,3 @@ def test_disassembleMsg(simulator):
     assert nBl == 0
     assert curSimTim == 0
     assert [num for num in range(16)] == Dblist
-
-
-def test_get_one_epi_len(simulator):
-    (st_mon, st_day, ed_mon, ed_day) = (1, 1, 3, 31)
-    total_time = simulator._get_one_epi_len(st_mon, st_day, ed_mon, ed_day)
-    assert total_time == simulator._eplus_one_epi_len
-    assert total_time == 7776000
