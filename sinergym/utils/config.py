@@ -2,11 +2,13 @@
 from copy import deepcopy
 import os
 from opyplus import Epm, WeatherData, Idd
-from sinergym.utils.common import get_record_keys, prepare_batch_from_records
+from sinergym.utils.common import prepare_batch_from_records, get_delta_seconds
 import numpy as np
 
 WEEKDAY_ENCODING = {'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
                     'friday': 4, 'saturday': 5, 'sunday': 6}
+YEAR = 1991  # Non leap year
+
 
 class Config(object):
     """Config object to manage extra configuration in Sinergym experiments.
@@ -211,6 +213,30 @@ class Config(object):
             start_weekday,
             n_steps_per_hour)
 
+    def _get_one_epi_len(self):
+        """Gets the length of one episode (an EnergyPlus process run to the end) depending on the config of simulation.
+
+        Returns:
+            int: The simulation time step in which the simulation ends.
+        """
+        # Get runperiod object inner IDF
+        runperiod = self.building.RunPeriod[0]
+        start_month = int(
+            0 if runperiod.begin_month is None else runperiod.begin_month)
+        start_day = int(
+            0 if runperiod.begin_day_of_month is None else runperiod.begin_day_of_month)
+        end_month = int(
+            0 if runperiod.end_month is None else runperiod.end_month)
+        end_day = int(
+            0 if runperiod.end_day_of_month is None else runperiod.end_day_of_month)
+
+        return get_delta_seconds(
+            YEAR,
+            start_month,
+            start_day,
+            end_month,
+            end_day)
+
     def set_working_dir(self, new_env_working_dir: str):
         """Set env_working_dir attribute in conf for current episode, this method is called in simulator reset.
 
@@ -221,3 +247,13 @@ class Config(object):
         os.makedirs(new_env_working_dir)
         # Set attribute config
         self._env_working_dir = new_env_working_dir
+
+    @property
+    def start_year(self):
+        """Returns the EnergyPlus simulation year.
+
+        Returns:
+            int: Simulation year.
+        """
+
+        return self.YEAR

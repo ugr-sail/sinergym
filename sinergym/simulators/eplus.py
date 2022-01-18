@@ -21,8 +21,6 @@ from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 from sinergym.utils.common import *
 from sinergym.utils.config import Config
 
-YEAR = 1991  # Non leap year
-
 CWD = os.getcwd()
 LOG_LEVEL_MAIN = 'INFO'
 LOG_LEVEL_EPLS = 'ERROR'
@@ -117,10 +115,11 @@ class EnergyPlus(object):
 
         # Stepsize in seconds
         self._eplus_run_stepsize = 3600 / self._eplus_n_steps_per_hour
-        self._eplus_one_epi_len = self._get_one_epi_len(self._eplus_run_st_mon,
-                                                        self._eplus_run_st_day,
-                                                        self._eplus_run_ed_mon,
-                                                        self._eplus_run_ed_day)
+        self._eplus_one_epi_len = self._config._get_one_epi_len(
+            self._eplus_run_st_mon,
+            self._eplus_run_st_day,
+            self._eplus_run_ed_mon,
+            self._eplus_run_ed_day)
         self._epi_num = 0
         self._act_repeat = act_repeat
         self._max_ep_data_store_num = max_ep_data_store_num
@@ -505,21 +504,6 @@ class EnergyPlus(object):
 
         return (version, flag, nDb, nIn, nBl, curSimTim, Dblist)
 
-    def _get_one_epi_len(self, st_mon, st_day, ed_mon, ed_day):
-        """Gets the length of one episode (an EnergyPlus process run to the end).
-
-        Args:
-            st_mon (str): Simulation start month.
-            st_day (str): Simulation start day.
-            ed_mon (str): Simulation end month.
-            ed_day (str): Simulation end day.]
-
-        Returns:
-            int: The simulation time step in which the simulation ends.
-        """
-
-        return get_delta_seconds(YEAR, st_mon, st_day, ed_mon, ed_day)
-
     @property
     def start_year(self):
         """Returns the EnergyPlus simulation year.
@@ -528,7 +512,7 @@ class EnergyPlus(object):
             int: Simulation year.
         """
 
-        return YEAR
+        return self._config.start_year()
 
     @property
     def start_mon(self):
