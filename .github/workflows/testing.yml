@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - main
+      - develop
 
 env:
   DOCKER_USER: ${{ secrets.DOCKER_USER }}
