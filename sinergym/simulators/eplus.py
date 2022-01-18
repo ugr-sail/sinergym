@@ -115,11 +115,7 @@ class EnergyPlus(object):
 
         # Stepsize in seconds
         self._eplus_run_stepsize = 3600 / self._eplus_n_steps_per_hour
-        self._eplus_one_epi_len = self._config._get_one_epi_len(
-            self._eplus_run_st_mon,
-            self._eplus_run_st_day,
-            self._eplus_run_ed_mon,
-            self._eplus_run_ed_day)
+        self._eplus_one_epi_len = self._config._get_one_epi_len()
         self._epi_num = 0
         self._act_repeat = act_repeat
         self._max_ep_data_store_num = max_ep_data_store_num
