@@ -49,16 +49,6 @@ def test_reset(simulator):
         simulator._env_name + '-res1/Eplus-env-sub_run' + str(simulator._epi_num + 1)
 
 
-def test_get_eplus_working_folder(simulator):
-    # +1 for get current Subrun number and +1 because this function return the next directory name for the next episode
-    expected = 'Eplus-env-TEST-res1/Eplus-env-sub_run' + \
-        str(simulator._epi_num + 2)
-    parent_dir = 'Eplus-env-TEST-res1'
-    dir_sig = '-sub_run'
-    path = simulator._get_eplus_working_folder(parent_dir, dir_sig)
-    assert expected == path
-
-
 def test_step(simulator):
     output = simulator.step(action=[20.0, 24.0])
 
