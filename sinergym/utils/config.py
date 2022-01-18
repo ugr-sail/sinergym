@@ -3,11 +3,14 @@ from copy import deepcopy
 import os
 from opyplus import Epm, WeatherData, Idd
 from sinergym.utils.common import prepare_batch_from_records, get_delta_seconds
+from shutil import rmtree
 import numpy as np
 
 WEEKDAY_ENCODING = {'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
                     'friday': 4, 'saturday': 5, 'sunday': 6}
 YEAR = 1991  # Non leap year
+
+CWD = os.getcwd()
 
 
 class Config(object):
@@ -16,8 +19,9 @@ class Config(object):
         :param _idf_path: IDF path origin for apply extra configuration.
         :param _weather_path: EPW path origin for apply weather to simulation.
         :param _ddy_path: DDY path origin for get DesignDays and weather Location
-        :param _env_working_dir_parent: Path for Sinergym experiment output
-        :param _env_working_dir: Path for Sinergym specific episode (before first simulator reset this param is None)
+        :param experiment_path: Path for Sinergym experiment output
+        :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None)
+        :param extra_config: Number of episodes directories will be stored in experiment_path
         :param config: Dict config with extra configuration which is required to modify IDF model (may be None)
         :param _idd: IDD opyplus object to set up Epm
         :param building: opyplus Epm object with IDF model
@@ -29,15 +33,17 @@ class Config(object):
             self,
             idf_path,
             weather_path,
-            env_working_dir_parent,
+            env_name,
+            max_ep_store,
             extra_config):
 
         self._idf_path = idf_path
         self._weather_path = weather_path
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
-        self._env_working_dir_parent = env_working_dir_parent
-        self._env_working_dir = None
+        self.experiment_path = self.set_experiment_working_dir(env_name)
+        self.episode_path = None
+        self.max_ep_store = max_ep_store
 
         self.config = extra_config
 
@@ -104,8 +110,8 @@ class Config(object):
             str: Path of IDF file stored (episode folder).
         """
         # If no path specified, then use idf_path to save it.
-        if self._env_working_dir is not None:
-            episode_idf_path = self._env_working_dir + \
+        if self.episode_path is not None:
+            episode_idf_path = self.episode_path + \
                 '/' + self._idf_path.split('/')[-1]
             self.building.save(episode_idf_path)
             return episode_idf_path
@@ -169,7 +175,7 @@ class Config(object):
             filename = filename.split('.epw')[0]
             filename += '_Random_%s_%s_%s.epw' % (
                 str(sigma), str(mu), str(tau))
-            episode_weather_path = self._env_working_dir + '/' + filename
+            episode_weather_path = self.episode_path + '/' + filename
             weather_data_mod.to_epw(episode_weather_path)
             return episode_weather_path
 
@@ -237,16 +243,108 @@ class Config(object):
             end_month,
             end_day)
 
-    def set_working_dir(self, new_env_working_dir: str):
-        """Set env_working_dir attribute in conf for current episode, this method is called in simulator reset.
+    # ---------------------------------------------------------------------------- #
+    #                  Working Folder for Simulation Management                    #
+    # ---------------------------------------------------------------------------- #
+
+    def set_experiment_working_dir(self, env_name):
+        """Set experiment working dir path like config attribute for current simulation.
 
         Args:
-            new_env_working_dir (str): New path working dir for new simulator episode.
+            env_name (str): simulation env name to define a name in directory
+
+        Returns:
+            [str]: Experiment path for directory created.
         """
-        # Create the Eplus working directory
-        os.makedirs(new_env_working_dir)
-        # Set attribute config
-        self._env_working_dir = new_env_working_dir
+        # Generate experiment dir path
+        experiment_path = self._get_working_folder(
+            directory_path=CWD,
+            base_name='-%s-res' %
+            (env_name))
+        # Create dir
+        os.makedirs(experiment_path)
+        # set path like config attribute
+        self.experiment_path = experiment_path
+        return experiment_path
+
+    def set_episode_working_dir(self):
+        """Set episode working dir path like config attribute for current simulation execution.
+
+        Raises:
+            Exception: If experiment path (parent folder) has not be created previously.
+
+        Returns:
+            [srt]: Episode path for directory created.
+        """
+        # Generate episode dir path if experiment dir path has been created
+        # previously
+        if self.experiment_path is None:
+            raise Exception
+        else:
+            episode_path = self._get_working_folder(
+                directory_path=self.experiment_path,
+                base_name='-sub_run')
+            # Create directoy
+            os.makedirs(episode_path)
+            # set path like config attribute
+            self.episode_path = episode_path
+
+            # Remove redundant past working directories
+            self._rm_past_history_dir(episode_path, '-sub_run')
+            return episode_path
+
+    def _get_working_folder(self, directory_path, base_name='-run'):
+        """Create a working folder path from path_folder using base_name, returning the absolute result path.
+
+        Args:
+            path_folder (str): Path when working dir will be created.
+            base_name (str, optional): Base name used to name the new folder inner path_folder. Defaults to '-run'.
+
+        Returns:
+            str: Path to the working directory.
+
+        Assumes folders in *parent_dir* have suffix *-run{run_number}*. Finds the highest run number and sets the output folder to that number + 1.
+        """
+
+        # Create de rute if not exists
+        os.makedirs(directory_path, exist_ok=True)
+        experiment_id = 0
+        # Iterate all elements inner path
+        for folder_name in os.listdir(directory_path):
+            if not os.path.isdir(os.path.join(directory_path, folder_name)):
+                continue
+            try:
+                # Detect if there is another directory with the same base_name
+                # and get number at final of the name
+                folder_name = int(folder_name.split(base_name)[-1])
+                if folder_name > experiment_id:
+                    experiment_id = folder_name
+            except BaseException:
+                pass
+        # experiment_id number will be +1 from last name found out.
+        experiment_id += 1
+
+        working_dir = os.path.join(directory_path, 'Eplus-env')
+        working_dir = working_dir + '%s%d' % (base_name, experiment_id)
+        return working_dir
+
+    def _rm_past_history_dir(
+            self,
+            episode_path,
+            base_name):
+        """Removes the past simulation results from episode
+
+        Args:
+            episode_path ([str]): path for the current episide output
+            base_name ([type]): base name for detect episode output id
+        """
+
+        cur_dir_name, cur_dir_id = episode_path.split(base_name)
+        cur_dir_id = int(cur_dir_id)
+        if cur_dir_id - self.max_ep_store > 0:
+            rm_dir_id = cur_dir_id - self.max_ep_store
+            rm_dir_full_name = cur_dir_name + base_name + str(rm_dir_id)
+            rmtree(rm_dir_full_name)
 
     @property
     def start_year(self):

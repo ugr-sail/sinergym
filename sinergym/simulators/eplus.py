@@ -15,13 +15,12 @@ import subprocess
 import threading
 import numpy as np
 
-from shutil import copyfile, rmtree
+from shutil import copyfile
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
 from sinergym.utils.common import *
 from sinergym.utils.config import Config
 
-CWD = os.getcwd()
 LOG_LEVEL_MAIN = 'INFO'
 LOG_LEVEL_EPLS = 'ERROR'
 LOG_FMT = "[%(asctime)s] %(name)s %(levelname)s:%(message)s"
@@ -75,9 +74,6 @@ class EnergyPlus(object):
 
         self.logger_main.debug(
             'Socket is listening on host %s port %d' % (sockname))
-        self._env_working_dir_parent = self._get_eplus_working_folder(
-            CWD, '-%s-res' % (env_name))
-        os.makedirs(self._env_working_dir_parent)
 
         # Path attributes
         self._eplus_path = eplus_path
@@ -86,13 +82,22 @@ class EnergyPlus(object):
         self._idf_path = idf_path
         # Episode existed
         self._episode_existed = False
+
+        self._epi_num = 0
+        self._act_repeat = act_repeat
+        self._max_ep_data_store_num = max_ep_data_store_num
+        self._last_action = [21.0, 25.0]
+
         # Creating models config (with extra params if exits)
         self._config = Config(
             idf_path=self._idf_path,
             weather_path=self._weather_path,
-            env_working_dir_parent=self._env_working_dir_parent,
+            env_name=self._env_name,
+            max_ep_store=self._max_ep_data_store_num,
             extra_config=config_params)
 
+        # Annotate experiment path in simulator
+        self._env_working_dir_parent = self._config.experiment_path
         # Updating IDF file (Location and DesignDays) with EPW file
         self.logger_main.info(
             'Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...')
@@ -113,13 +118,10 @@ class EnergyPlus(object):
          self._eplus_run_st_weekday,
          self._eplus_n_steps_per_hour) = self._config._get_eplus_run_info()
 
+        # Eplus one epi len
+        self._eplus_one_epi_len = self._config._get_one_epi_len()
         # Stepsize in seconds
         self._eplus_run_stepsize = 3600 / self._eplus_n_steps_per_hour
-        self._eplus_one_epi_len = self._config._get_one_epi_len()
-        self._epi_num = 0
-        self._act_repeat = act_repeat
-        self._max_ep_data_store_num = max_ep_data_store_num
-        self._last_action = [21.0, 25.0]
 
     def reset(self, weather_variability: tuple = None):
         """Resets the environment.
@@ -151,12 +153,8 @@ class EnergyPlus(object):
 
         # Create EnergyPlus simulaton process
         self.logger_main.info('Creating EnergyPlus simulation environment...')
-        eplus_working_dir = self._get_eplus_working_folder(
-            self._env_working_dir_parent, '-sub_run')
-        # Set working dir for simulation config in current episode
-        self._config.set_working_dir(eplus_working_dir)
-        # Remove redundant past working directories
-        self._rm_past_history_dir(eplus_working_dir, '-sub_run')
+        # Creating episode working dir
+        eplus_working_dir = self._config.set_episode_working_dir()
         # Getting IDF, WEATHER, VARIABLES and OUTPUT path for current episode
         eplus_working_idf_path = self._config.save_building_model()
         eplus_working_var_path = (eplus_working_dir + '/' + 'variables.cfg')
@@ -287,21 +285,6 @@ class EnergyPlus(object):
 
         return ret
 
-    def _rm_past_history_dir(self, cur_eplus_working_dir, dir_sig):
-        """Removes the past simulation results.
-
-        Args:
-            cur_eplus_working_dir (str): The current eplus working directory.
-            dir_sig (str): The directory split signature.
-        """
-
-        cur_dir_name, cur_dir_id = cur_eplus_working_dir.split(dir_sig)
-        cur_dir_id = int(cur_dir_id)
-        if cur_dir_id - self._max_ep_data_store_num > 0:
-            rm_dir_id = cur_dir_id - self._max_ep_data_store_num
-            rm_dir_full_name = cur_dir_name + dir_sig + str(rm_dir_id)
-            rmtree(rm_dir_full_name)
-
     def _create_eplus(self, eplus_path, weather_path,
                       idf_path, out_path, eplus_working_dir):
         """Creates the EnergyPlus process.
@@ -330,36 +313,6 @@ class EnergyPlus(object):
             stderr=subprocess.PIPE,
             preexec_fn=os.setsid)
         return eplus_process
-
-    def _get_eplus_working_folder(self, parent_dir, dir_sig='-run'):
-        """Returns the EnergyPlus output folder.
-
-        Args:
-            parent_dir (str): Parent directory of the EnergyPlus output directory.
-            dir_sig (str, optional): Path to EnergyPlus save directory. Defaults to '-run'.
-
-        Returns:
-            str: Path to the EnergyPlus saving directory.
-
-        Assumes folders in *parent_dir* have suffix *-run{run_number}*. Finds the highest run number and sets the output folder to that number + 1.
-        """
-
-        os.makedirs(parent_dir, exist_ok=True)
-        experiment_id = 0
-        for folder_name in os.listdir(parent_dir):
-            if not os.path.isdir(os.path.join(parent_dir, folder_name)):
-                continue
-            try:
-                folder_name = int(folder_name.split(dir_sig)[-1])
-                if folder_name > experiment_id:
-                    experiment_id = folder_name
-            except BaseException:
-                pass
-        experiment_id += 1
-
-        parent_dir = os.path.join(parent_dir, 'Eplus-env')
-        parent_dir = parent_dir + '%s%d' % (dir_sig, experiment_id)
-        return parent_dir
 
     def _create_socket_cfg(self, host, port, write_dir):
         """Creates the socket required by BCVTB
