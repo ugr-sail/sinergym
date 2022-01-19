@@ -105,7 +105,7 @@ def simulator(eplus_path, bcvtb_path, idf_path, variable_path, weather_path):
         max_ep_data_store_num=10)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def config(idf_path, weather_path2):
     env_name = 'TESTCONFIG'
     max_ep_store = 10
