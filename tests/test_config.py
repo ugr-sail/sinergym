@@ -1,24 +1,7 @@
 import pytest
 import sinergym.utils.config as config
-from opyplus import Epm
-
-
-def test_get_eplus_run_info(config):
-    info = config._get_eplus_run_info()
-    assert info == (1, 1, 0, 3, 31, 0, 0, 4)
-
-
-def test_get_one_epi_len(config):
-    total_time = config._get_one_epi_len()
-    assert total_time == 7776000
-
-
-def test_get_working_folder(config):
-    expected = 'Eplus-env-TESTCONFIG-res1/Eplus-env-sub_run1'
-    parent_dir = 'Eplus-env-TESTCONFIG-res1'
-    dir_sig = '-sub_run'
-    path = config._get_working_folder(parent_dir, dir_sig)
-    assert expected == path
+from opyplus import Epm, Idd
+import os
 
 
 def test_adapt_idf_to_epw(config):
@@ -105,3 +88,92 @@ def test_apply_extra_conf(config):
 
     # Check new config
     assert int(config.building.timestep[0].number_of_timesteps_per_hour) == 2
+
+
+def test_save_building_model(config, eplus_path, idf_path):
+    assert config.episode_path is None
+    # Create episode path before save (else a exception will happen)
+    config.set_episode_working_dir()
+    assert config.episode_path is not None
+    # save current model
+    path_save = config.save_building_model()
+    # Read the path save idf and check IDF saved
+    idd = Idd(os.path.join(eplus_path, 'Energy+.idd'))
+    building = Epm.from_idf(idf_path, idd_or_version=idd)
+    assert (building.get_info() is not None) or (building.get_info() != '')
+
+
+def test_apply_weather_variability(config):
+    # First set a epìsode dir in experiment
+    assert config.episode_path is None
+    config.set_episode_working_dir()
+    assert config.episode_path is not None
+    # Check apply None variation return original weather_path
+    path_result = config.apply_weather_variability(variation=None)
+    assert path_result == config._weather_path
+    # Check with a variation
+    variation = (1.0, 0.0, 0.001)
+    path_result = config.apply_weather_variability(variation=variation)
+    filename = config._weather_path.split('/')[-1]
+    filename = filename.split('.epw')[0]
+    filename += '_Random_%s_%s_%s.epw' % (
+        str(variation[0]), str(variation[1]), str(variation[2]))
+    path_expected = config.episode_path + '/' + filename
+    assert path_result == path_expected
+    assert os.path.exists(path_result)
+
+
+def test_get_eplus_run_info(config):
+    info = config._get_eplus_run_info()
+    assert info == (1, 1, 0, 3, 31, 0, 0, 4)
+
+
+def test_get_one_epi_len(config):
+    total_time = config._get_one_epi_len()
+    assert total_time == 7776000
+
+
+def test_set_experiment_working_dir(config):
+    # Check current config experiment working dir and if exists
+    current_experiment_path = config.experiment_path
+    assert 'sinergym/Eplus-env-TESTCONFIG-res' in current_experiment_path
+    assert os.path.isdir(current_experiment_path)
+    # Set a new experiment_path
+    new_experiment_path = config.set_experiment_working_dir(
+        env_name='TESTCONFIG')
+    # The name should be the same except last number id
+    assert current_experiment_path[:-1] == new_experiment_path[:-1]
+    assert int(current_experiment_path[-1]) < int(new_experiment_path[-1])
+    # Check if new experiment path exists
+    assert os.path.isdir(new_experiment_path)
+
+
+def test_set_episode_working_dir(config):
+    # Check config has no episode path set up yet
+    assert config.episode_path is None
+    # Creating episode dir
+    episode_path = config.set_episode_working_dir()
+    # Check if new episode dir exists
+    assert os.path.isdir(episode_path)
+
+
+def test_get_working_folder(config):
+    expected = 'Eplus-env-TESTCONFIG-res1/Eplus-env-sub_run1'
+    parent_dir = 'Eplus-env-TESTCONFIG-res1'
+    dir_sig = '-sub_run'
+    path = config._get_working_folder(parent_dir, dir_sig)
+    assert expected == path
+
+
+def test_rm_past_history_dir(config):
+    # Check num of dir in experiment path is less than 10
+    n_dir = len([i for i in os.listdir(config.experiment_path)
+                if os.path.isdir(os.path.join(config.experiment_path, i))])
+    assert n_dir < 10
+    # Create more than 10 episodes dir
+    for _ in range(15):
+        config.set_episode_working_dir()
+    # Check number of dirs is 10 (no more)
+    n_dir = len([i for i in os.listdir(config.experiment_path)
+                if os.path.isdir(os.path.join(config.experiment_path, i))])
+    assert n_dir == 10
