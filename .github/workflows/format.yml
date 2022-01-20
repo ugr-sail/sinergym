@@ -1,5 +1,5 @@
 name: Python code format (autopep8)
-on: pull_request
+on: pull_request_target
 
 jobs:
   autopep8:
@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Copy code
         uses: actions/checkout@v2
 
