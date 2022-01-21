@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Rewards" href="rewards.html" />
-    <link rel="prev" title="Usage example" href="usage-example.html" /> 
+    <link rel="prev" title="Extra Configuration in Sinergym simulations" href="extra-configuration.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,6 +45,7 @@
 <li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Output format</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#logger">Logger</a></li>
 </ul>
@@ -95,6 +96,7 @@
 │   ├── socket.cfg
 │   ├── utilSocket.cfg
 │   ├── environment.idf
+|   ├── weather.epw
 │   ├── monitor.csv
 |   └── monitor_normalized.csv (optional)
 └── progress.csv
@@ -104,7 +106,8 @@
 <li><p><strong>Eplus-env-sub_run&lt;num_episode&gt;</strong> records the results of each episode in simulation. The number of these directories depends on the number of episodes.</p></li>
 <li><dl class="simple">
 <dt>Within these directories, you have always the same structure:</dt><dd><ul>
-<li><p>A copy of <strong>variables.cfg</strong> and <strong>environment.idf</strong> which are being used during simulation.</p></li>
+<li><p>A copy of <strong>variables.cfg</strong> and <strong>environment.idf</strong> which are being used during simulation. <strong>Environment.idf</strong> does not have to be the same as the original hosted in the repository. Since the simulation can be modified to suit the specific weather or apply extra user-defined settings when building the gym environment.</p></li>
+<li><p>A copy of <strong>Weather.epw</strong> appears only when the weather change for one episode to another (using variability, for example). If weather does not change, original repository <em>.epw</em> will be used in each episode.</p></li>
 <li><p>A copy of <strong>socket.cfg</strong> and <strong>utilSocket.idf</strong> which are being used in order to  establish communication interface with Energyplus during simulation.</p></li>
 <li><p><strong>monitor.csv</strong>: This records all interactions Agent-Environment during the episode timestep by timestep, the format is: <em>timestep, observation_values, action_values, simulation_time (seconds), reward, done</em>. This file only exists when environment has been wrapped with <strong>Logger</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a> for more information).</p></li>
 <li><p><strong>monitor_normalized.csv</strong>: This file is only generated when environment is wrapped with <strong>logger and normalization</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>). The structure is the same than <strong>monitor.csv</strong> but <code class="docutils literal notranslate"><span class="pre">observation_values</span></code> are normalized.</p></li>
@@ -388,7 +391,7 @@ regardless of the training technique which may be being used or any other extern
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="usage-example.html" class="btn btn-neutral float-left" title="Usage example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="extra-configuration.html" class="btn btn-neutral float-left" title="Extra Configuration in Sinergym simulations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="rewards.html" class="btn btn-neutral float-right" title="Rewards" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
