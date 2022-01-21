@@ -136,7 +136,7 @@ def test_get_one_epi_len(config):
 def test_set_experiment_working_dir(config):
     # Check current config experiment working dir and if exists
     current_experiment_path = config.experiment_path
-    assert 'sinergym/Eplus-env-TESTCONFIG-res' in current_experiment_path
+    assert 'Eplus-env-TESTCONFIG-res' in current_experiment_path
     assert os.path.isdir(current_experiment_path)
     # Set a new experiment_path
     new_experiment_path = config.set_experiment_working_dir(

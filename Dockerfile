@@ -73,13 +73,13 @@ RUN python -m pip install --upgrade pip
 # Upgrade setuptools for possible errors (depending on python version)
 RUN pip install --upgrade setuptools
 RUN apt-get update && apt-get upgrade -y && apt-get install -y git
-WORKDIR /code
+WORKDIR /sinergym
 COPY requirements.txt .
 COPY setup.py .
 COPY DRL_battery.py .
-COPY sinergym /code/sinergym
-COPY tests /code/tests
-COPY examples /code/examples
+COPY sinergym /sinergym/sinergym
+COPY tests /sinergym/tests
+COPY examples /sinergym/examples
 COPY check_run_times.py .
 RUN pip install -e .${SINERGYM_EXTRAS}
 
