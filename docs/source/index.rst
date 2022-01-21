@@ -12,6 +12,7 @@ Welcome to **sinergym**!
    pages/github-actions.rst
    pages/tests.rst
    pages/usage-example.rst
+   pages/extra-configuration.rst
    pages/output.rst
    pages/rewards.rst
    pages/controllers.rst

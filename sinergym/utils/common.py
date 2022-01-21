@@ -8,6 +8,8 @@ from pydoc import locate
 import csv
 import pandas as pd
 import gym
+from opyplus.epm.record import Record
+from opyplus import Epm
 
 from datetime import datetime, timedelta
 
@@ -150,7 +152,11 @@ def get_current_time_info(epm, sec_elapsed, sim_year=1991):
 
     current_date = start_date + timedelta(seconds=sec_elapsed)
 
-    return (current_date.day, current_date.month, current_date.hour)
+    return (
+        current_date.day,
+        current_date.month,
+        current_date.hour,
+        sec_elapsed)
 
 
 def parse_variables(var_file):
@@ -388,6 +394,38 @@ def setpoints_transform(action, action_space: gym.spaces.Box, setpoints_space):
     return action_
 
 
+def get_record_keys(record: Record):
+    """Given an opyplus Epm Record (one element from opyplus.epm object) this function returns list of keys (opyplus hasn't got this functionality explicitly)
+
+     Args:
+        record (opyplus.Epm.record): Element from Epm object.
+
+     Returns:
+        list(str): Key list from record.
+    """
+    return [field.ref for field in record._table._dev_descriptor._field_descriptors]
+
+
+def prepare_batch_from_records(records: list):
+    """Prepare a list of dictionaries in order to use Epm.add_batch directly
+
+    Args:
+        records (list): List of records which will be converted to dictionary batch
+
+    Returns:
+        list (dict): List of dicts where each dictionary is a record element
+    """
+
+    batch = []
+    for record in records:
+        aux_dict = {}
+        for key in get_record_keys(record):
+            aux_dict[key] = record[key]
+        batch.append(aux_dict)
+
+    return batch
+
+
 class Logger():
     """Sinergym terminal logger for simulation executions.
     """
@@ -478,7 +516,7 @@ class CSVLogger(object):
             total_power_no_units (float): Power consumption penalty depending on reward function.
             comfort_penalty (float): Temperature comfort penalty depending on reward function.
             power (float): Power consumption in current step (W).
-            done (bool): Spicifies if this step terminates episode or not.
+            done (bool): Specifies if this step terminates episode or not.
 
         """
         if self.flag:

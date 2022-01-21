@@ -30,15 +30,16 @@ def test_get_delta_seconds(
 @pytest.mark.parametrize(
     'sec_elapsed,expected_tuple',
     [
-        (2764800, (2, 2, 0)),
-        (0, (1, 1, 0)),
-        ((2764800 * 4) + (3600 * 10), (9, 5, 10)),
+        (2764800, (2, 2, 0, 2764800)),
+        (0, (1, 1, 0, 0)),
+        ((2764800 * 4) + (3600 * 10), (9, 5, 10, (2764800 * 4) + (3600 * 10))),
     ]
 )
 def test_get_current_time_info(epm, sec_elapsed, expected_tuple):
     output = common.get_current_time_info(epm, sec_elapsed)
+    print(output)
     assert isinstance(output, tuple)
-    assert len(output) == 3
+    assert len(output) == 4
     assert output == expected_tuple
 
 

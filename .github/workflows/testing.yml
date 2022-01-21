@@ -3,24 +3,15 @@ on:
   pull_request:
     branches:
       - main
-      - develop
-
-env:
-  DOCKER_USER: ${{ secrets.DOCKER_USER }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
+      
 jobs:
   test:
-    name: Container build, testing and upload in Docker Hub
+    name: build container and execute pytest
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build the latest Docker image
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[DRL,test] --tag $DOCKER_USER/sinergym:latest
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[DRL,test] --tag pullrequest/sinergym:latest
       - name: Execute tests from container
-        run: docker run -t $DOCKER_USER/sinergym:latest /bin/bash -c 'pytest tests/ -vv'
-      - name: Login in Docker Hub account
-        run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      - name: Push container used with test
-        run: docker push $DOCKER_USER/sinergym:latest
+        run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'pytest tests/ -vv'

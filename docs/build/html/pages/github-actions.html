@@ -45,6 +45,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Github Actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
@@ -85,7 +86,7 @@ for testing, releasing and deploying software without the use of third-party web
 <p>Currently, we have developed the next procedures for this project:</p>
 <ul>
 <li><p><strong>Python Code format</strong>: Python code format is checked in every pull request following <strong>Pep8</strong> <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">standard</a> (Level 2 aggressive).</p></li>
-<li><p><strong>Installation, Testing and Updating</strong>: There is another action which builds a remote container using <em>Dockerfile</em>, executes pytest inner and, if tests have been passed, uploads our <strong>Docker Hub</strong> repository using <em>latest</em> tag.</p></li>
+<li><p><strong>Testing</strong>: There is another action which builds a remote container using <em>Dockerfile</em> and executes pytest inner.</p></li>
 <li><p>When a <strong>release</strong> is <em>published</em> or <em>edited</em> manually in the repository, there is an action which catches release tag version and uses it to build a container and upload/update on Docker Hub with that tag version.</p></li>
 <li><p><strong>Docs Checks and Update Github-Pages</strong>: This action compile documentation <em>source</em> in every pull-request, verify if documentation built is updated and commit and push automatically from a bot account.
 If you want to ignore <em>docs/build</em> files while you are working. You can ignore files although files are in repository executing next in local:</p>
@@ -95,6 +96,7 @@ If you want to ignore <em>docs/build</em> files while you are working. You can i
 </div>
 </div></blockquote>
 </li>
+<li><p><strong>Update our Docker Hub repository</strong>: When main branch is <strong>pushed</strong> (it is always from a pull request merge), there is a workflow which build container with all extra requires and it is pushed to our <a class="reference external" href="https://hub.docker.com/r/alejandrocn7/sinergym">Docker Hub repository</a> using <em>latest</em> tag automatically.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
