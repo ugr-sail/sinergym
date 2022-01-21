@@ -168,12 +168,12 @@ def test_get_working_folder(config):
 def test_rm_past_history_dir(config):
     # Check num of dir in experiment path is less than 10
     n_dir = len([i for i in os.listdir(config.experiment_path)
-                if os.path.isdir(os.path.join(config.experiment_path, i))])
+                 if os.path.isdir(os.path.join(config.experiment_path, i))])
     assert n_dir < 10
     # Create more than 10 episodes dir
     for _ in range(15):
         config.set_episode_working_dir()
     # Check number of dirs is 10 (no more)
     n_dir = len([i for i in os.listdir(config.experiment_path)
-                if os.path.isdir(os.path.join(config.experiment_path, i))])
+                 if os.path.isdir(os.path.join(config.experiment_path, i))])
     assert n_dir == 10
