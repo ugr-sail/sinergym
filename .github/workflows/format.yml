@@ -1,5 +1,5 @@
 name: Python code format (autopep8)
-on: pull_request_target
+on: pull_request
 
 jobs:
   autopep8:

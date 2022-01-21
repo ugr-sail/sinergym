@@ -1,6 +1,6 @@
 name: Pull Request Docs Check and Update Github Pages
 
-on: pull_request_target
+on: pull_request
 jobs:
   docs:
     runs-on: ubuntu-latest
