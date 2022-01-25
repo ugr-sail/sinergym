@@ -27,11 +27,3 @@ jobs:
           echo "Forked repositories have no permission to modify workflows or projects tests. Please, contact with Sinergym administrator"
           exit 1
 
-  branchpr:
-    # If source is a branch repo
-    if: github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: ubuntu-latest
-    steps:
-      - name: Administrator message
-        run: echo "This is a pull requests from a source branch, workflows and tests can be modified by administrators."
-
