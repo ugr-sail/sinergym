@@ -1,0 +1,37 @@
+name: Protection check
+on: pull_request
+
+jobs:
+  forkedpr:
+    # If source is a forked repo
+    if: github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Copy code
+        uses: actions/checkout@v2
+
+      - name: check workflows and tests changes
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            tests:
+              - 'tests/**'
+            workflows:
+              - '.github/workflows/**'
+
+      - name: Throw exception
+        if: steps.changes.outputs.tests == 'true' || steps.changes.outputs.workflows == 'true'
+        run: |
+          echo "Forked repositories have no permission to modify workflows or projects tests. Please, contact with Sinergym administrator"
+          exit 1
+
+  branchpr:
+    # If source is a branch repo
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Administrator message
+        run: echo "This is a pull requests from a source branch, workflows and tests can be modified by administrators."
+
