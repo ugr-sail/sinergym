@@ -2,7 +2,7 @@ name: Python code format (autopep8)
 on: [pull_request, pull_request_target]
 
 jobs:
-  autopep:
+  autopep8:
     runs-on: ubuntu-latest
 
     steps:
