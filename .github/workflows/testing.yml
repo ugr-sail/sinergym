@@ -1,5 +1,5 @@
 name: "Testing"
-on: [pull_request, pull_request_target]
+on: pull_request
       
 jobs:
   test:
@@ -8,8 +8,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
       - name: Build the latest Docker image
         run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[DRL,test] --tag pullrequest/sinergym:latest
       - name: Execute tests from container
