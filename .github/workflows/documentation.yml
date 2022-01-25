@@ -1,6 +1,6 @@
 name: Pull Request Docs Check and Update Github Pages
 
-on: pull_request
+on: [pull_request, pull_request_target]
 jobs:
   docs:
     runs-on: ubuntu-latest
@@ -8,8 +8,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with: 
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.head_ref }}
       - name: Upgrade pip
         run: "python -m pip install --upgrade pip"
       - name: Install dependencies [sinergym extras]
@@ -30,48 +29,7 @@ jobs:
 
       - name: Commit and push changes if exists
         if: steps.verify-documentation-update.outputs.files_changed == 'true'
-        uses: EndBug/add-and-commit@v7 # You can change this to use a specific version.
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          add: "docs/build"
-
-          # The name of the user that will be displayed as the author of the commit.
-          # Default: depends on the default_author input
-          author_name: GitHub Action
-
-          # The email of the user that will be displayed as the author of the commit.
-          # Default: depends on the default_author input
-          author_email: action@github.com
-
-          # The name of the custom committer you want to use, if different from the author of the commit.
-          # Default: the name of the author (set with either author_name or default_author)
-          committer_name: GitHub Action
-
-          # The email of the custom committer you want to use, if different from the author of the commit.
-          # Default: the email of the author (set with either author_email or default_author)
-          committer_email: action@github.com
-
-          # Determines the way the action fills missing author name and email. Three options are available:
-          # - github_actor -> UserName <UserName@users.noreply.github.com>
-          # - user_info -> Your Display Name <your-actual@email.com>
-          # - github_actions -> github-actions <email associated with the github logo>
-          # Default: github_actor
-          default_author: github_actor
-
-          # The message for the commit.
-          # Default: 'Commit from GitHub Actions (name of the workflow)'
-          message: "Documentation update detected and pushed build directory for Github Pages"
-
-          # The way the action should handle pathspec errors from the add and remove commands. Three options are available:
-          # - ignore -> errors will be logged but the step won't fail
-          # - exitImmediately -> the action will stop right away, and the step will fail
-          # - exitAtEnd -> the action will go on, every pathspec error will be logged at the end, the step will fail.
-          # Default: ignore
-          pathspec_error_handling: ignore
-
-          # Arguments for the git pull command. Use NO-PULL to avoid the action pulling at all.
-          # Default: '--no-rebase'
-          pull: "NO-PULL"
-
-          # Whether to push the commit and, if any, its tags to the repo. It can also be used to set the git push arguments (see the paragraph below for more info)
-          # Default: true
-          push: true
+          file_pattern: docs/build/*
+          commit_message: Documentation update detected and pushed build directory for Github Pages

@@ -1,5 +1,5 @@
 name: Python code format (autopep8)
-on: pull_request
+on: [pull_request, pull_request_target]
 
 jobs:
   autopep8:
@@ -9,8 +9,7 @@ jobs:
       - name: Copy code
         uses: actions/checkout@v2
         with: 
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.head_ref }}
 
       - name: autopep8 check and fix
         id: autopep8

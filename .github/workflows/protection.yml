@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Copy code
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: check workflows and tests changes
         uses: dorny/paths-filter@v2
