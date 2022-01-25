@@ -114,6 +114,7 @@ Another option is to copy the ``bcvtb`` folder from [this repository](https://gi
 
 #### 3. Set environment variables
 
+example
 Two environment variables must be set: ``EPLUS_PATH`` and ``BCVTB_PATH``, with the locations where EnergyPlus and BCVTB are installed respectively.
 
 #### 4. Install the package
