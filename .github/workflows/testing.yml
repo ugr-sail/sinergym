@@ -8,8 +8,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with: 
-          ref: ${{ github.head_ref }}
       - name: Build the latest Docker image
         run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[DRL,test] --tag pullrequest/sinergym:latest
       - name: Execute tests from container
