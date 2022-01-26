@@ -8,6 +8,8 @@ env:
 
 jobs:
   upload-release-container:
+    # If you don't have secrets configured with docker credential, skip this job
+    if: "${{ env.DOCKER_USER == '' || env.DOCKER_PASSWORD == '' }}"
     name: Upload Docker hub container with release tag
     runs-on: ubuntu-latest
     steps:
