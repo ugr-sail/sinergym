@@ -1,11 +1,8 @@
 name: "Testing"
-on:
-  pull_request:
-    branches:
-      - main
+on: pull_request
       
 jobs:
-  test:
+  tests:
     name: build container and execute pytest
     runs-on: ubuntu-latest
     steps:

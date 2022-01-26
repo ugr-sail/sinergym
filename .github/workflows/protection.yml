@@ -1,0 +1,29 @@
+name: Protection check
+on: pull_request_target
+
+jobs:
+  forkedpr-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Copy code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: check workflows and tests changes
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            tests:
+              - 'tests/**'
+            workflows:
+              - '.github/workflows/**'
+
+      - name: Throw exception
+        if: steps.changes.outputs.tests == 'true' || steps.changes.outputs.workflows == 'true'
+        run: |
+          echo "Forked repositories have no permission to modify workflows or projects tests. Please, contact with Sinergym administrator"
+          exit 1
+
