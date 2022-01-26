@@ -52,7 +52,7 @@ jobs:
       - name: Install dependencies [sinergym extras]
         run: "pip install -e .[extras]"
       - name: Compile documentation
-        run: "cd docs && make html"
+        run: "cd docs && sphinx-build -W source build"
       - name: Verify documentation update
         uses: tj-actions/verify-changed-files@v7.2
         id: verify-documentation-update
