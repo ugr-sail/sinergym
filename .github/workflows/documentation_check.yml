@@ -1,0 +1,31 @@
+name: Pull Request Docs Check and Update Github Pages
+
+on: pull_request
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Upgrade pip
+        run: "python -m pip install --upgrade pip"
+      - name: Install dependencies [sinergym extras]
+        run: "pip install -e .[extras]"
+      - name: Compile documentation
+        run: "cd docs && make html"
+
+      # - name: Verify documentation update
+      #   uses: tj-actions/verify-changed-files@v7.2
+      #   id: verify-documentation-update
+      #   with:
+      #     files: |
+      #       docs/build/doctrees/pages
+      #       docs/build/doctrees/index.doctree
+      #       docs/build/html
+
+      # - name: Commit and push changes if exists
+      #   if: steps.verify-documentation-update.outputs.files_changed == 'true'
+      #   uses: stefanzweifel/git-auto-commit-action@v4
+      #   with:
+      #     file_pattern: docs/build/*
+      #     commit_message: Documentation update detected and pushed build directory for Github Pages
