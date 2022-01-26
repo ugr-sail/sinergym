@@ -13,7 +13,7 @@ jobs:
         id: autopep8
         uses: peter-evans/autopep8@v1
         with:
-          args: --exit-code --recursive --diff --in-place --aggressive --aggressive .
+          args: --exit-code --recursive --diff --aggressive --aggressive .
 
       - name: warning autopep8
         if: steps.autopep8.outputs.exit-code == 2
