@@ -2,7 +2,7 @@ name: Protection check
 on: pull_request_target
 
 jobs:
-  forkedpr:
+  forkedpr-check:
     runs-on: ubuntu-latest
 
     steps:
