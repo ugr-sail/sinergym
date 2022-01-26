@@ -51,7 +51,7 @@ Recording is managed by a instance of the class ``CSVLogger`` which is present a
     :language: python
     :pyobject: CSVLogger
 
-.. notepodewjod:: Normalized observation methods are only used when environment is wrapped with normalization previously (see :ref:`Wrappers`).
+.. note:: Normalized observation methods are only used when environment is wrapped with normalization previously (see :ref:`Wrappers`).
 
 .. note:: Note that you can activate and deactivate logger from environment when you want it, using methods activate and deactivate, so you don't need to unwrap environment.
 
