@@ -4,26 +4,8 @@ on:
     branches:
       - main
 
-env:
-  DOCKER_USER: ${{ secrets.DOCKER_USER }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
 jobs:
-  update-dockerhub:
-    # If you don't have secrets configured with docker credential, skip this job
-    if: "${{ env.DOCKER_USER == '' || env.DOCKER_PASSWORD == '' }}"
-    name: Container build and upload in Docker Hub
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build the latest Docker image
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extra] --tag $DOCKER_USER/sinergym:latest
-      - name: Login in Docker Hub account
-        run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      - name: Push container used with test
-        run: docker push $DOCKER_USER/sinergym:latest
-  
+
   apply-autopep8:
     name: Autopep8 auto-format by bot
     runs-on: ubuntu-latest
@@ -68,4 +50,24 @@ jobs:
           file_pattern: docs/build/*
           commit_message: Documentation source update detected and pushed compilation build directory for Github Pages
 
-  
+  update-dockerhub:
+    needs: [apply-autopep8, apply-documentation]
+    env:
+      DOCKER_USER: ${{ secrets.DOCKER_USER }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    # If you don't have secrets configured with docker credential, skip this job
+    name: Container build and upload in Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        uses: actions/checkout@v2
+      - name: Build the latest Docker image
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extra] --tag $DOCKER_USER/sinergym:latest
+      - name: Login in Docker Hub account
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: Push container used with test
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        run: docker push $DOCKER_USER/sinergym:latest
