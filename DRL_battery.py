@@ -96,7 +96,13 @@ parser.add_argument(
     default=2,
     dest='eval_length',
     help='Episodes executed during evaluation (if evaluation flag is not specified, this value is useless).')
-parser.add_argument('--log_interval','-inter',type=int,default=1,dest='log_interval',help='model training log_interval parameter. See documentation since this value is different in every algorithm.')
+parser.add_argument(
+    '--log_interval',
+    '-inter',
+    type=int,
+    default=1,
+    dest='log_interval',
+    help='model training log_interval parameter. See documentation since this value is different in every algorithm.')
 parser.add_argument(
     '--seed',
     '-sd',
