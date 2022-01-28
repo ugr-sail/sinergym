@@ -575,16 +575,16 @@ You can think that is an error, Google cloud should notify this. If this issue h
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">normalization</span><span class="p">:</span>
         <span class="c1"># We have to know what dictionary ranges to use</span>
         <span class="n">norm_range</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="n">env_type</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">env_type</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">env_type</span> <span class="o">==</span> <span class="s1">&#39;datacenter&#39;</span><span class="p">:</span>
-            <span class="nb">range</span> <span class="o">=</span> <span class="n">RANGES_5ZONE</span>
+            <span class="n">norm_range</span> <span class="o">=</span> <span class="n">RANGES_DATACENTER</span>
         <span class="k">elif</span> <span class="n">env_type</span> <span class="o">==</span> <span class="s1">&#39;5Zone&#39;</span><span class="p">:</span>
-            <span class="nb">range</span> <span class="o">=</span> <span class="n">RANGES_IW</span>
+            <span class="n">norm_range</span> <span class="o">=</span> <span class="n">RANGES_5ZONE</span>
         <span class="k">elif</span> <span class="n">env_type</span> <span class="o">==</span> <span class="s1">&#39;IWMullion&#39;</span><span class="p">:</span>
-            <span class="nb">range</span> <span class="o">=</span> <span class="n">RANGES_DATACENTER</span>
+            <span class="n">norm_range</span> <span class="o">=</span> <span class="n">RANGES_IW</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s1">&#39;env_type is not valid, check environment name&#39;</span><span class="p">)</span>
-        <span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">ranges</span><span class="o">=</span><span class="nb">range</span><span class="p">)</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">ranges</span><span class="o">=</span><span class="n">norm_range</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">logger</span><span class="p">:</span>
         <span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">multiobs</span><span class="p">:</span>
