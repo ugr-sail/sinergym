@@ -48,4 +48,4 @@ The main functionalities of *sinergym* are the following:
    in real-time.
 -  Many more!
 
-.. note:: *This is a work in progress project. Stay tuned for upcoming releases!*
+.. noiosdnfinsiodte:: *This is a work in progress project. Stay tuned for upcoming releases!*
