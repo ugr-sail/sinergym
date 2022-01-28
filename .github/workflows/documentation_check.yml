@@ -12,5 +12,5 @@ jobs:
       - name: Install dependencies [sinergym extras]
         run: "pip install -e .[extras]"
       - name: Compile documentation
-        run: "cd docs && sphinx-build -W source build"
+        run: "cd docs && sphinx-build -M html source build -W"
 
