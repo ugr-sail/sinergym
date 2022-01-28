@@ -17,8 +17,10 @@ sinergym.utils.common
       create_variable_weather
       get_current_time_info
       get_delta_seconds
+      get_record_keys
       parse_observation_action_space
       parse_variables
+      prepare_batch_from_records
       ranges_getter
       setpoints_transform
    

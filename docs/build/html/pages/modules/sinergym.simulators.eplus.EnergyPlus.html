@@ -45,6 +45,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github Actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
@@ -98,10 +99,10 @@
 <h1>sinergym.simulators.eplus.EnergyPlus<a class="headerlink" href="#sinergym-simulators-eplus-energyplus" title="Permalink to this headline"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.simulators.eplus.EnergyPlus">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.simulators.eplus.</span></span><span class="sig-name descname"><span class="pre">EnergyPlus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eplus_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bcvtb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idf_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_data_store_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.simulators.eplus.EnergyPlus" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.simulators.eplus.</span></span><span class="sig-name descname"><span class="pre">EnergyPlus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eplus_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bcvtb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idf_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_data_store_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.simulators.eplus.EnergyPlus" title="Permalink to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="sinergym.simulators.eplus.EnergyPlus.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eplus_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bcvtb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idf_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_data_store_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.simulators.eplus.EnergyPlus.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eplus_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bcvtb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idf_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_repeat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_data_store_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.simulators.eplus.EnergyPlus.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>EnergyPlus simulation class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -138,7 +139,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.get_is_eplus_running" title="sinergym.simulators.eplus.EnergyPlus.get_is_eplus_running"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_is_eplus_running</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.reset" title="sinergym.simulators.eplus.EnergyPlus.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>([new_weather])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.reset" title="sinergym.simulators.eplus.EnergyPlus.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>([weather_variability])</p></td>
 <td><p>Resets the environment.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.simulators.eplus.EnergyPlus.step" title="sinergym.simulators.eplus.EnergyPlus.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
@@ -202,19 +203,19 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.simulators.eplus.EnergyPlus.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_weather</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.simulators.eplus.EnergyPlus.reset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weather_variability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.simulators.eplus.EnergyPlus.reset" title="Permalink to this definition"></a></dt>
 <dd><p>Resets the environment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>new_weather</strong> (<em>str</em><em>, </em><em>optional</em>) – New weather file, if passed. Defaults to None.</p>
+<dd class="field-odd"><p><strong>weather_variability</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Tuple with the sigma, mean and tau for OU process. Defaults to None.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The first element is the <em>current_simulation_time</em> in seconds;
+<dd class="field-even"><p>The first element is a float tuple with day, month, hour and simulation time elapsed in that order in that step;
 the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
 variables.cfg. The last element is a boolean indicating whether the episode terminates.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(float, [float], boolean)</p>
+<dd class="field-odd"><p>([float], [float], boolean)</p>
 </dd>
 </dl>
 <p>This method does the following:
@@ -292,12 +293,12 @@ variables.cfg. The last element is a boolean indicating whether the episode term
 <dd class="field-odd"><p><strong>action</strong> (<em>float</em><em> or </em><em>list</em>) – Control actions that will be passed to EnergyPlus.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The first element is the <em>current_simulation_time</em> in seconds;
+<dd class="field-even"><p>The first element is a float tuple with day, month, hour and simulation time elapsed in that order in that step;
 the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
 variables.cfg. The last element is a boolean indicating whether the episode terminates.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(float, [float], boolean)</p>
+<dd class="field-odd"><p>([float], [float], boolean)</p>
 </dd>
 </dl>
 <p>This method does the following:

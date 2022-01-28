@@ -26,6 +26,15 @@ The main functionalities of *sinergym* are the following:
    engines, more of them (e.g.
    `OpenModelica <https://openmodelica.org/>`__) could be included in
    the backend while maintaining the Gym API.
+-  **Building Models configuration automatically**: Building models will be
+   adapted to specification of each simulation. For example, *Designdays* and 
+   *Location* from IDF files will be adapted to weather file specified in
+   Sinergym simulator backend without any intervention by the user.
+-  **Extra configuration facilities**: Our team aim to provide extra parameters
+   in order to amplify the context space for the experiments with this tool.
+   Sinergym will modify building model automatically based on parameters set.
+   For example: People occupant, timesteps per simulation hour, observation
+   and action spaces, etc.
 -  **Stable Baseline 3 Integration**. Some functionalities like callbacks
    have been developed by our team in order to test easily these environments
    with deep reinforcement learning algorithms.

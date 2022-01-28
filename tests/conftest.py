@@ -3,6 +3,7 @@ from sinergym.simulators.eplus import EnergyPlus
 from sinergym.envs.eplus_env import EplusEnv
 import sinergym.utils.rewards as R
 from sinergym.utils.wrappers import NormalizeObservation, MultiObsWrapper, LoggerWrapper
+from sinergym.utils.config import Config
 
 from opyplus import Epm, WeatherData, Idd
 import os
@@ -67,6 +68,30 @@ def weather_path(pkg_data_path):
 
 
 @pytest.fixture(scope='session')
+def ddy_path(pkg_data_path):
+    return os.path.join(
+        pkg_data_path,
+        'weather',
+        'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.ddy')
+
+
+@pytest.fixture(scope='session')
+def weather_path2(pkg_data_path):
+    return os.path.join(
+        pkg_data_path,
+        'weather',
+        'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw')
+
+
+@pytest.fixture(scope='session')
+def ddy_path2(pkg_data_path):
+    return os.path.join(
+        pkg_data_path,
+        'weather',
+        'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.ddy')
+
+
+@pytest.fixture(scope='session')
 def simulator(eplus_path, bcvtb_path, idf_path, variable_path, weather_path):
     env_name = 'TEST'
     return EnergyPlus(
@@ -78,6 +103,19 @@ def simulator(eplus_path, bcvtb_path, idf_path, variable_path, weather_path):
         env_name,
         act_repeat=1,
         max_ep_data_store_num=10)
+
+
+@pytest.fixture(scope='function')
+def config(idf_path, weather_path2):
+    env_name = 'TESTCONFIG'
+    max_ep_store = 10
+    extra_config = {'timesteps_per_hour': 2}
+    return Config(
+        idf_path=idf_path,
+        weather_path=weather_path2,
+        env_name=env_name,
+        max_ep_store=max_ep_store,
+        extra_config=extra_config)
 
 ############### ENVIRONMENTS, WRAPPERS AND RULE BASED CONTROLLER AGENT####
 

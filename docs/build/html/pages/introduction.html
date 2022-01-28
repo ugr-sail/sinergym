@@ -43,6 +43,7 @@
 <li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
@@ -101,6 +102,15 @@ Since this tool allows for interacting with several simulation
 engines, more of them (e.g.
 <a class="reference external" href="https://openmodelica.org/">OpenModelica</a>) could be included in
 the backend while maintaining the Gym API.</p></li>
+<li><p><strong>Building Models configuration automatically</strong>: Building models will be
+adapted to specification of each simulation. For example, <em>Designdays</em> and
+<em>Location</em> from IDF files will be adapted to weather file specified in
+Sinergym simulator backend without any intervention by the user.</p></li>
+<li><p><strong>Extra configuration facilities</strong>: Our team aim to provide extra parameters
+in order to amplify the context space for the experiments with this tool.
+Sinergym will modify building model automatically based on parameters set.
+For example: People occupant, timesteps per simulation hour, observation
+and action spaces, etc.</p></li>
 <li><p><strong>Stable Baseline 3 Integration</strong>. Some functionalities like callbacks
 have been developed by our team in order to test easily these environments
 with deep reinforcement learning algorithms.</p></li>

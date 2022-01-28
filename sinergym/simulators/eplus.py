@@ -9,25 +9,18 @@ Class for connecting EnergyPlus with Python using Ptolomy server.
 import socket
 import os
 import time
-import copy
 import signal
 import _thread
-import logging
 import subprocess
 import threading
 import numpy as np
 
-from shutil import copyfile, rmtree
+from shutil import copyfile
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
-from ..utils.common import *
+from sinergym.utils.common import *
+from sinergym.utils.config import Config
 
-
-YEAR = 1991  # Non leap year
-WEEKDAY_ENCODING = {'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
-                    'friday': 4, 'saturday': 5, 'sunday': 6}
-
-CWD = os.getcwd()
 LOG_LEVEL_MAIN = 'INFO'
 LOG_LEVEL_EPLS = 'ERROR'
 LOG_FMT = "[%(asctime)s] %(name)s %(levelname)s:%(message)s"
@@ -44,7 +37,8 @@ class EnergyPlus(object):
             idf_path,
             env_name,
             act_repeat=1,
-            max_ep_data_store_num=10):
+            max_ep_data_store_num=10,
+            config_params: dict = None):
         """EnergyPlus simulation class.
 
         Args:
@@ -67,31 +61,54 @@ class EnergyPlus(object):
         os.environ['BCVTB_HOME'] = bcvtb_path
         # Create a socket for communication with the EnergyPlus
         self.logger_main.debug('Creating socket for communication...')
-        s = socket.socket()
+        self._socket = socket.socket()
         # Get local machine name
-        host = socket.gethostname()
+        self._host = socket.gethostname()
         # Bind to the host and any available port
-        s.bind((host, 0))
-        sockname = s.getsockname()
+        self._socket.bind((self._host, 0))
         # Get the port number
-        port = sockname[1]
+        sockname = self._socket.getsockname()
+        self._port = sockname[1]
         # Listen on request
-        s.listen(60)
+        self._socket.listen(60)
 
         self.logger_main.debug(
             'Socket is listening on host %s port %d' % (sockname))
-        self._env_working_dir_parent = self._get_eplus_working_folder(
-            CWD, '-%s-res' % (env_name))
-        os.makedirs(self._env_working_dir_parent)
 
-        self._host = host
-        self._port = port
-        self._socket = s
+        # Path attributes
         self._eplus_path = eplus_path
         self._weather_path = weather_path
         self._variable_path = variable_path
         self._idf_path = idf_path
+        # Episode existed
         self._episode_existed = False
+
+        self._epi_num = 0
+        self._act_repeat = act_repeat
+        self._max_ep_data_store_num = max_ep_data_store_num
+        self._last_action = [21.0, 25.0]
+
+        # Creating models config (with extra params if exits)
+        self._config = Config(
+            idf_path=self._idf_path,
+            weather_path=self._weather_path,
+            env_name=self._env_name,
+            max_ep_store=self._max_ep_data_store_num,
+            extra_config=config_params)
+
+        # Annotate experiment path in simulator
+        self._env_working_dir_parent = self._config.experiment_path
+        # Updating IDF file (Location and DesignDays) with EPW file
+        self.logger_main.info(
+            'Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...')
+        self._config.adapt_idf_to_epw()
+        # Setting up extra configuration if exists
+        self.logger_main.info(
+            'Setting up extra configuration in building model if exists...')
+        self._config.apply_extra_conf()
+        # In this lines Epm model is modified but no IDF is stored anywhere yet
+
+        # Eplus run info
         (self._eplus_run_st_mon,
          self._eplus_run_st_day,
          self._eplus_run_st_year,
@@ -99,27 +116,21 @@ class EnergyPlus(object):
          self._eplus_run_ed_day,
          self._eplus_run_ed_year,
          self._eplus_run_st_weekday,
-         self._eplus_run_stepsize) = self._get_eplus_run_info(idf_path)
+         self._eplus_n_steps_per_hour) = self._config._get_eplus_run_info()
 
+        # Eplus one epi len
+        self._eplus_one_epi_len = self._config._get_one_epi_len()
         # Stepsize in seconds
-        self._eplus_run_stepsize = 3600 / self._eplus_run_stepsize
-        self._eplus_one_epi_len = self._get_one_epi_len(self._eplus_run_st_mon,
-                                                        self._eplus_run_st_day,
-                                                        self._eplus_run_ed_mon,
-                                                        self._eplus_run_ed_day)
-        self._epi_num = 0
-        self._act_repeat = act_repeat
-        self._max_ep_data_store_num = max_ep_data_store_num
-        self._last_action = [21.0, 25.0]
+        self._eplus_run_stepsize = 3600 / self._eplus_n_steps_per_hour
 
-    def reset(self, new_weather: str = None):
+    def reset(self, weather_variability: tuple = None):
         """Resets the environment.
 
         Args:
-            new_weather (str, optional): New weather file, if passed. Defaults to None.
+            weather_variability (tuple, optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
 
         Returns:
-            (float, [float], boolean): The first element is the *current_simulation_time* in seconds;
+            ([float], [float], boolean): The first element is a float tuple with day, month, hour and simulation time elapsed in that order in that step;
             the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
             variables.cfg. The last element is a boolean indicating whether the episode terminates.
 
@@ -142,37 +153,33 @@ class EnergyPlus(object):
 
         # Create EnergyPlus simulaton process
         self.logger_main.info('Creating EnergyPlus simulation environment...')
-        eplus_working_dir = self._get_eplus_working_folder(
-            self._env_working_dir_parent, '-sub_run')
-        os.makedirs(eplus_working_dir)  # Create the Eplus working directory
-        # Remove redundant past working directories
-        self._rm_past_history_dir(eplus_working_dir, '-sub_run')
-        eplus_working_idf_path = (eplus_working_dir +
-                                  '/' +
-                                  self._get_file_name(self._idf_path))
-        eplus_working_var_path = (eplus_working_dir +
-                                  '/' +
-                                  'variables.cfg')
-        eplus_working_out_path = (eplus_working_dir +
-                                  '/' +
-                                  'output')
-        copyfile(self._idf_path, eplus_working_idf_path)
-
-        # Copy the idf file to the working directory
-        copyfile(self._variable_path, eplus_working_var_path)
+        # Creating episode working dir
+        eplus_working_dir = self._config.set_episode_working_dir()
+        # Getting IDF, WEATHER, VARIABLES and OUTPUT path for current episode
+        eplus_working_idf_path = self._config.save_building_model()
+        eplus_working_var_path = (eplus_working_dir + '/' + 'variables.cfg')
+        eplus_working_out_path = (eplus_working_dir + '/' + 'output')
+        eplus_working_weather_path = self._config.apply_weather_variability(
+            variation=weather_variability)
         # Copy the variable.cfg file to the working dir
+        copyfile(self._variable_path, eplus_working_var_path)
+
         self._create_socket_cfg(self._host,
                                 self._port,
                                 eplus_working_dir)
         # Create the socket.cfg file in the working dir
         self.logger_main.info('EnergyPlus working directory is in %s'
                               % (eplus_working_dir))
+        # Create new random weather file in case variability was specified
+        # noise always from original EPW
+
         # Select new weather if it is passed into the method
-        weather_path = self._weather_path if new_weather is None else new_weather
-        eplus_process = self._create_eplus(self._eplus_path, weather_path,
-                                           eplus_working_idf_path,
-                                           eplus_working_out_path,
-                                           eplus_working_dir)
+        eplus_process = self._create_eplus(
+            self._eplus_path,
+            eplus_working_weather_path,
+            eplus_working_idf_path,
+            eplus_working_out_path,
+            eplus_working_dir)
         self.logger_main.debug(
             'EnergyPlus process is still running ? %r' %
             self._get_is_subprocess_running(eplus_process))
@@ -198,7 +205,9 @@ class EnergyPlus(object):
             'Got the first message successfully: ' + rcv_1st)
         version, flag, nDb, nIn, nBl, curSimTim, Dblist \
             = self._disassembleMsg(rcv_1st)
-        ret.append(curSimTim)
+        # get time info in simulation
+        time_info = get_current_time_info(self._config.building, curSimTim)
+        ret.append(time_info)
         ret.append(Dblist)
         # Remember the message header, useful when send data back to EnergyPlus
         self._eplus_msg_header = [version, flag]
@@ -225,7 +234,7 @@ class EnergyPlus(object):
             action (float or list): Control actions that will be passed to EnergyPlus.
 
         Returns:
-            (float, [float], boolean): The first element is the *current_simulation_time* in seconds;
+            ([float], [float], boolean): The first element is a float tuple with day, month, hour and simulation time elapsed in that order in that step;
             the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
             variables.cfg. The last element is a boolean indicating whether the episode terminates.
 
@@ -264,7 +273,9 @@ class EnergyPlus(object):
             act_repeat_i += 1
         # Construct the return, which is the state observation of the last step
         # plus the integral item
-        ret.append(curSimTim)
+        # get time info in simulation
+        time_info = get_current_time_info(self._config.building, curSimTim)
+        ret.append(time_info)
         ret.append(Dblist)
         # Add terminal state
         ret.append(is_terminal)
@@ -273,21 +284,6 @@ class EnergyPlus(object):
         self._last_action = action
 
         return ret
-
-    def _rm_past_history_dir(self, cur_eplus_working_dir, dir_sig):
-        """Removes the past simulation results.
-
-        Args:
-            cur_eplus_working_dir (str): The current eplus working directory.
-            dir_sig (str): The directory split signature.
-        """
-
-        cur_dir_name, cur_dir_id = cur_eplus_working_dir.split(dir_sig)
-        cur_dir_id = int(cur_dir_id)
-        if cur_dir_id - self._max_ep_data_store_num > 0:
-            rm_dir_id = cur_dir_id - self._max_ep_data_store_num
-            rm_dir_full_name = cur_dir_name + dir_sig + str(rm_dir_id)
-            rmtree(rm_dir_full_name)
 
     def _create_eplus(self, eplus_path, weather_path,
                       idf_path, out_path, eplus_working_dir):
@@ -317,36 +313,6 @@ class EnergyPlus(object):
             stderr=subprocess.PIPE,
             preexec_fn=os.setsid)
         return eplus_process
-
-    def _get_eplus_working_folder(self, parent_dir, dir_sig='-run'):
-        """Returns the EnergyPlus output folder.
-
-        Args:
-            parent_dir (str): Parent directory of the EnergyPlus output directory.
-            dir_sig (str, optional): Path to EnergyPlus save directory. Defaults to '-run'.
-
-        Returns:
-            str: Path to the EnergyPlus saving directory.
-
-        Assumes folders in *parent_dir* have suffix *-run{run_number}*. Finds the highest run number and sets the output folder to that number + 1.
-        """
-
-        os.makedirs(parent_dir, exist_ok=True)
-        experiment_id = 0
-        for folder_name in os.listdir(parent_dir):
-            if not os.path.isdir(os.path.join(parent_dir, folder_name)):
-                continue
-            try:
-                folder_name = int(folder_name.split(dir_sig)[-1])
-                if folder_name > experiment_id:
-                    experiment_id = folder_name
-            except BaseException:
-                pass
-        experiment_id += 1
-
-        parent_dir = os.path.join(parent_dir, 'Eplus-env')
-        parent_dir = parent_dir + '%s%d' % (dir_sig, experiment_id)
-        return parent_dir
 
     def _create_socket_cfg(self, host, port, write_dir):
         """Creates the socket required by BCVTB
@@ -487,91 +453,6 @@ class EnergyPlus(object):
 
         return (version, flag, nDb, nIn, nBl, curSimTim, Dblist)
 
-    def _get_eplus_run_info(self, idf_path):
-        """This method read the .idf file and finds the running start month, start date, start year, end month, end date, end year, start weekday and the step size. If any value is Unknown, then value will be 0.
-
-        Args:
-            idf_path (str): The .idf file path.
-
-        Returns:
-            (int, int, int, int, int, int, int, int): A tuple with: the start month, start date, start year, end month, end date, end year, start weekday and step size.
-        """
-
-        ret = []
-
-        with open(idf_path, encoding='ISO-8859-1') as idf:
-            contents = idf.readlines()
-
-        # Run period
-        tgtIndex = None
-
-        for i in range(len(contents)):
-            line = contents[i]
-            effectiveContent = line.strip().split(
-                '!')[0]  # Ignore contents after '!'
-            effectiveContent = effectiveContent.strip().split(',')[0]
-            # Remove tailing ','
-            if effectiveContent.lower() == 'runperiod':
-                tgtIndex = i
-                break
-
-        for i in range(2, 8):
-            try:
-                ret.append(int(contents[tgtIndex + i].strip()
-                               .split('!')[0]
-                               .strip()
-                               .split(',')[0]
-                               .strip()
-                               .split(';')[0]))
-            except ValueError:
-                ret.append(0)
-        # Start weekday
-        ret.append(WEEKDAY_ENCODING[contents[tgtIndex + i + 1].strip()
-                                    .split('!')[0]
-                                    .strip()
-                                    .split(',')[0]
-                                    .strip()
-                                    .split(';')[0]
-                                    .strip()
-                                    .lower()])
-        # Step size
-        line_count = 0
-        for line in contents:
-            effectiveContent = line.strip().split(
-                '!')[0]  # Ignore contents after '!'
-            effectiveContent = effectiveContent.strip().split(',')
-            if effectiveContent[0].strip().lower() == 'timestep':
-                if len(effectiveContent) > 1 and len(effectiveContent[1]) > 0:
-                    ret.append(int(effectiveContent[1]
-                                   .split(';')[0]
-                                   .strip()))
-                else:
-                    ret.append(int(contents[line_count + 1].strip()
-                                   .split('!')[0]
-                                   .strip()
-                                   .split(',')[0]
-                                   .strip()
-                                   .split(';')[0]))
-                break
-            line_count += 1
-
-        return tuple(ret)
-
-    def _get_one_epi_len(self, st_mon, st_day, ed_mon, ed_day):
-        """Gets the length of one episode (an EnergyPlus process run to the end).
-
-        Args:
-            st_mon (str): Simulation start month.
-            st_day (str): Simulation start day.
-            ed_mon (str): Simulation end month.
-            ed_day (str): Simulation end day.]
-
-        Returns:
-            int: The simulation time step in which the simulation ends.
-        """
-
-        return get_delta_seconds(YEAR, st_mon, st_day, ed_mon, ed_day)
-
     @property
     def start_year(self):
         """Returns the EnergyPlus simulation year.
@@ -580,7 +461,7 @@ class EnergyPlus(object):
             int: Simulation year.
         """
 
-        return YEAR
+        return self._config.start_year()
 
     @property
     def start_mon(self):
