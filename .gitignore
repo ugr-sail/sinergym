@@ -33,3 +33,6 @@ start_mlflow_tracking.sh
 
 # Source docs _build directory generation using RST preview in Visual Studio Code
 docs/source/_build/
+
+#dist folder for pypi packages
+dist/

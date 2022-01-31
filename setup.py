@@ -1,5 +1,5 @@
 import os
-from setuptools import setup
+from setuptools import find_packages, setup
 
 with open(os.path.join("sinergym", "version.txt"), "r") as file_handler:
     __version__ = file_handler.read().strip()
@@ -9,6 +9,14 @@ with open('requirements.txt') as f:
 
 setup(name='sinergym',
       version=__version__,
+      packages=[package for package in find_packages(
+      ) if package.startswith("sinergym")],
+      license='MIT',
+      author='J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy',
+      author_email='alejandroac79@gmail.com',
+      description='The goal of sinergym is to create an environment following OpenAI Gym interface for wrapping simulation engines for building control using deep reinforcement learning.',
+      url='https://github.com/jajimer/sinergym',
+      keywords='control reinforcement-learning buildings reinforcement-learning-environments',
       install_requires=reqs,
       include_package_data=True,
       extras_require={

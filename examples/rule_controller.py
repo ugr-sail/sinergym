@@ -3,7 +3,7 @@ import numpy as np
 
 from sinergym.utils.controllers import RuleBasedController
 
-env = gym.make('Eplus-continuous-mixed-v1')
+env = gym.make('Eplus-5Zone-mixed-continuous-v1')
 
 # create rule-controlled agent
 agent = RuleBasedController(env)
