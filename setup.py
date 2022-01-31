@@ -1,14 +1,17 @@
 import os
-from setuptools import setup
+from setuptools import find_packages, setup
 
 with open(os.path.join("sinergym", "version.txt"), "r") as file_handler:
     __version__ = file_handler.read().strip()
 
 with open('requirements.txt') as f:
     reqs = f.read().splitlines()
-    
+
 setup(name='sinergym',
       version=__version__,
+      packages=[package for package in find_packages(
+      ) if package.startswith("sinergym")],
+      package_data={"sinergym": ["version.txt"]},
       license='MIT',
       author='J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy',
       author_email='alejandroac79@gmail.com',
@@ -53,4 +56,4 @@ setup(name='sinergym',
               'google-cloud-storage'
           ]
       }
-    )
+      )
