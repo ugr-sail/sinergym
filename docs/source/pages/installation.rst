@@ -105,15 +105,19 @@ root folder:
 Extra libraries can be installed by typing ``pip install -e .[extras]``.
 *extras* include all optional libraries which have been considered in this project such as 
 testing, visualization, Deep Reinforcement Learning, monitoring , etc.
-It's possible to select a subset of these libraries instead of 'extras' tag in which we select all optional libaries, for example:
+It's possible to select a subset of these libraries instead of 'extras' tag in which we select all optional libraries, for example:
 
 .. code:: sh
 
     $ pip install -e .[test,doc]
 
-In order to check all our tag list, visit `setup.py <https://github.com/jajimer/sinergym/blob/main/setup.py>`__ in Sinergym root repository.
+In order to check all our tag list, visit `setup.py <https://github.com/jajimer/sinergym/blob/main/setup.py>`__ in Sinergym root repository. In any case, they are not a requirement of the package.
 
-In any case, they are not a requirement of the package.
+You can also install from `oficial pypi repository <https://pypi.org/project/sinergym/>`__:
+
+.. code:: sh
+
+    $ pip install sinergym[extras]
 
 ****************
 Cloud Computing
