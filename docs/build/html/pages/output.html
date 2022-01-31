@@ -152,8 +152,8 @@ regardless of the training technique which may be being used or any other extern
             <span class="n">monitor_header</span><span class="p">,</span>
             <span class="n">progress_header</span><span class="p">,</span>
             <span class="n">log_progress_file</span><span class="p">,</span>
-            <span class="n">log_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-            <span class="n">flag</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+            <span class="n">log_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span> <span class="o">=</span> <span class="n">monitor_header</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">progress_header</span> <span class="o">=</span> <span class="n">progress_header</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
@@ -339,13 +339,13 @@ regardless of the training technique which may be being used or any other extern
 <span class="sd">            simulation_time (float): Total time elapsed in current episode (seconds).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">reward</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">reward</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">power</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">power</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">powers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">power</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">comfort_penalty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">comfort_penalty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">comfort_penalties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">comfort_penalty</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">power_penalty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">power_penalty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">power_penalties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">power_penalty</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">comfort_penalty</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">comfort_violation_timesteps</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -368,12 +368,12 @@ regardless of the training technique which may be being used or any other extern
     <span class="k">def</span> <span class="nf">activate_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Activate Sinergym CSV logger</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">deactivate_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deactivate Sinergym CSV logger</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
 </pre></div>
 </div>
 <div class="admonition note">

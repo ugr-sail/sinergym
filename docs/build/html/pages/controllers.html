@@ -104,7 +104,7 @@ it is very useful in order to perform benchmarks as a reference point to study D
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
 
-    <span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Selects a random action from the environment&#39;s `action_space`.</span>
 
 <span class="sd">        Args:</span>
@@ -173,11 +173,11 @@ it is very useful in order to perform benchmarks as a reference point to study D
 <p>The functionality is very simple; given an environment observation, these instances return an action to interact with the environment. You can develop your own
 controllers or modify rules of <code class="docutils literal notranslate"><span class="pre">RuleBasedController</span></code>, for example. An usage of these controllers could be the next:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">sinergym.utils.controllers</span> <span class="kn">import</span> <span class="n">RuleBasedController</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-continuous-mixed-v1&#39;</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-mixed-continuous-v1&#39;</span><span class="p">)</span>
 
 <span class="c1"># create rule-controlled agent</span>
 <span class="n">agent</span> <span class="o">=</span> <span class="n">RuleBasedController</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
@@ -185,7 +185,7 @@ controllers or modify rules of <code class="docutils literal notranslate"><span 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
     <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">done</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
     <span class="n">action</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">act</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
@@ -193,8 +193,8 @@ controllers or modify rules of <code class="docutils literal notranslate"><span 
     <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
         <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
-        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
     <span class="s1">&#39;Episode &#39;</span><span class="p">,</span>
     <span class="n">i</span><span class="p">,</span>
     <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span>

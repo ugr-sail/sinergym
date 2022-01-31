@@ -86,7 +86,7 @@
 You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some of its variants:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Implementation of custom Gym environments.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">gym</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
@@ -105,7 +105,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <span class="sd">            ranges: Observation variables ranges to apply normalization (rely on environment)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">NormalizeObservation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">unwrapped_observation</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unwrapped_observation</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span> <span class="o">=</span> <span class="n">ranges</span>
 
     <span class="k">def</span> <span class="nf">observation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs</span><span class="p">):</span>
@@ -153,7 +153,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 
 <span class="k">class</span> <span class="nc">MultiObsWrapper</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Stack of observations.</span>
 
 <span class="sd">        Args:</span>
@@ -202,7 +202,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 
 <span class="k">class</span> <span class="nc">LoggerWrapper</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">flag</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;CSVLogger to log interactions with environment.</span>
 
 <span class="sd">        Args:</span>
@@ -306,14 +306,14 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                              <span class="n">date</span><span class="o">=</span><span class="p">[</span><span class="n">obs</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">obs</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span> <span class="n">obs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
                              <span class="n">observation</span><span class="o">=</span><span class="n">obs</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span>
-                             <span class="n">action</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+                             <span class="n">action</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
                                  <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]))],</span>
                              <span class="n">simulation_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                             <span class="n">reward</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                             <span class="n">total_power_no_units</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                             <span class="n">comfort_penalty</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                             <span class="n">power</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                             <span class="n">done</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+                             <span class="n">reward</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">total_power_no_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">comfort_penalty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">power</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">done</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">obs</span>
 
@@ -342,7 +342,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <p>An usage of these wrappers could be the next:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">sinergym</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">MultiObsWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span><span class="p">,</span> <span class="n">LoggerWrapper</span>
 
@@ -354,7 +354,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
     <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">done</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
@@ -362,8 +362,8 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
             <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
-            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Episode &#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Episode &#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
         <span class="n">rewards</span><span class="p">),</span> <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
 <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
