@@ -9,6 +9,21 @@ with open('requirements.txt') as f:
 
 setup(name='sinergym',
       version=__version__,
+      license='MIT',
+      author='J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy',
+      description='The goal of sinergym is to create an environment following OpenAI Gym interface for wrapping simulation engines for building control using deep reinforcement learning.',
+      url='https://github.com/jajimer/sinergym',
+      classifiers=['Development Status :: 5 - Production/Stable',
+                   'Intended Audience :: Developers',
+                   'Topic :: Software Development :: Build Tools',
+                   'License :: OSI Approved :: MIT License',
+                   'Programming Language :: Python :: 3.9'],
+      keywords='control reinforcement-learning buildings reinforcement-learning-environments',
+      project_urls={
+          'Documentation':'jajimer.github.io/sinergym',
+          'Source':'https://github.com/jajimer/sinergym',
+          'Tracker':'https://github.com/jajimer/sinergym/issues',
+          'Laboratory':'https://investigacion.ugr.es/ugrinvestiga/static/Buscador/*/grupos/ficha/TIC111'},
       install_requires=reqs,
       include_package_data=True,
       extras_require={
@@ -47,4 +62,4 @@ setup(name='sinergym',
               'google-cloud-storage'
           ]
       }
-      )
+    )
