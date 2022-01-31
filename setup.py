@@ -11,7 +11,6 @@ setup(name='sinergym',
       version=__version__,
       packages=[package for package in find_packages(
       ) if package.startswith("sinergym")],
-      package_data={"sinergym": ["version.txt"]},
       license='MIT',
       author='J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy',
       author_email='alejandroac79@gmail.com',
