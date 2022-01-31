@@ -6,11 +6,12 @@ with open(os.path.join("sinergym", "version.txt"), "r") as file_handler:
 
 with open('requirements.txt') as f:
     reqs = f.read().splitlines()
-
+    
 setup(name='sinergym',
       version=__version__,
       license='MIT',
       author='J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy',
+      author_email='alejandroac79@gmail.com',
       description='The goal of sinergym is to create an environment following OpenAI Gym interface for wrapping simulation engines for building control using deep reinforcement learning.',
       url='https://github.com/jajimer/sinergym',
       classifiers=['Development Status :: 5 - Production/Stable',
@@ -19,11 +20,6 @@ setup(name='sinergym',
                    'License :: OSI Approved :: MIT License',
                    'Programming Language :: Python :: 3.9'],
       keywords='control reinforcement-learning buildings reinforcement-learning-environments',
-      project_urls={
-          'Documentation':'jajimer.github.io/sinergym',
-          'Source':'https://github.com/jajimer/sinergym',
-          'Tracker':'https://github.com/jajimer/sinergym/issues',
-          'Laboratory':'https://investigacion.ugr.es/ugrinvestiga/static/Buscador/*/grupos/ficha/TIC111'},
       install_requires=reqs,
       include_package_data=True,
       extras_require={
