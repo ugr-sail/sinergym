@@ -19,30 +19,30 @@ If you are not familiar with creating a Pull Request, here are some guides:
 
 ## Developing Sinergym
 
-To develop Sinergym on your machine, here are some tips:
+To develop Sinergym on your machine, here are some alternatives:
 
-1. Local computer
+- Local computer
 
-    - Clone a copy of Sinergym from source:
+    1. Clone a copy of Sinergym from source (your forked repository):
 
     ```bash
     git clone https://github.com/jajimer/sinergym.git
     cd sinergym/
     ```
 
-    - Install Sinergym in extra mode, with support for building the docs, running tests, execute DRL algorithms, etc:
+    2. Install Sinergym in extra mode, with support for building the docs, running tests, execute DRL algorithms, etc:
 
     ```bash
     pip install -e .[extra]
     ```
 
-    - Install Energyplus and BCVTB into your computer (see [README.md](https://github.com/jajimer/sinergym/blob/main/README.md) for more information about this).
+    3. Install Energyplus and BCVTB into your computer (see [README.md](https://github.com/jajimer/sinergym/blob/main/README.md) for more information about this).
 
-2. Local docker container (**recommended**)
+- Local docker container (**recommended**)
 
-    - This is our recommendation, since you have not to care of Python version, dependencies, Energyplus engine, etc.
-    - If you are using [Visual Studio Code](https://code.visualstudio.com/) you can build a container and develop with Github from there using [remote container extension](https://code.visualstudio.com/docs/remote/containers) (very comfortable).
-    - If you don't want to use that editor extension, you can build a container using Dockerfile traditionally and init github credentials manually into container.
+    1. This is our recommendation, since you have not to care of Python version, dependencies, Energyplus engine, etc.
+    2. If you are using [Visual Studio Code](https://code.visualstudio.com/) you can build a container and develop with Github from there using [remote container extension](https://code.visualstudio.com/docs/remote/containers) (very comfortable).
+    3. If you don't want to use that editor extension, you can build a container using Dockerfile traditionally and init github credentials manually into container.
 
 ## Codestyle
 
