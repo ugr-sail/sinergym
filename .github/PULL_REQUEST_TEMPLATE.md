@@ -28,6 +28,8 @@ Fixes #(issue or issues)
 - [ ] I have reformatted the code using `autopep8` second level aggressive.
 - [ ] I have ensured `pytest tests/ -vv` pass. (**required**).
 
-Note: we are using a maximum length of 79 characters per line
+## Changelog:
+
+- List changes here.
 
 <!--- This Template is an edited version of the one from https://github.com/evilsocket/pwnagotchi/-->
