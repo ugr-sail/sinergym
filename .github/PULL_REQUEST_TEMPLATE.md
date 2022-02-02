@@ -20,14 +20,12 @@
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 - [ ] I've read the [CONTRIBUTION](https://github.com/jajimer/sinergym/blob/main/CONTRIBUTING.md) guide (**required**)
-- [ ] I have updated the changelog accordingly (**required**).
 - [ ] My change requires a change to the documentation.
-- [ ] I have updated the tests accordingly (*required for a bug fix or a new feature*).
+- [ ] I have updated the tests.
 - [ ] I have updated the documentation accordingly.
-- [ ] I have reformatted the code using `autopep8` (**required**)
-- [ ] I have ensured `pytest tests/ -vv` pass. (**required**)
-- [ ] I have checked that the documentation builds using `make html` in docs (**required**)
+- [ ] I have reformatted the code using `autopep8` second level aggressive.
+- [ ] I have ensured `pytest tests/ -vv` pass. (**required**).
 
 Note: we are using a maximum length of 79 characters per line
 
-<!--- This Template is an edited version of the one from https://github.com/evilsocket/pwnagotchi/ and -->
+<!--- This Template is an edited version of the one from https://github.com/evilsocket/pwnagotchi/-->
