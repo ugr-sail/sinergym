@@ -1,13 +1,15 @@
 <!--- Provide a general summary of your changes in the Title above -->
 
 ## Description
-<!--- Describe your changes in detail -->
+Describe your changes in detail
 
 ## Motivation and Context
-<!--- Why is this change required? What problem does it solve? -->
-<!--- If it fixes an open issue, please link to the issue here. -->
-<!--- You can use the syntax `closes #100` if this solves the issue #100 -->
+
 - [ ] I have raised an issue to propose this change ([required](https://github.com/jajimer/sinergym/blob/main/CONTRIBUTING.md) for new features and bug fixes)
+
+Why is this change required? What problem does it solve? Please, reference issue or issues opened previously.
+<!--- e.g You can use the syntax `fixes #100` if this solves the issue #100 -->
+Fixes #(issue or issues)
 
 ## Types of changes
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->

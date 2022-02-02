@@ -3,7 +3,7 @@
 If you are interested in contributing to Sinergym, your contributions will fall
 into two categories:
 1. You want to propose a new Feature and implement it
-    - Create an issue about your intended feature, and we shall discuss the design and
+    - Create an issue about your intended feature (use our issue template), and we shall discuss the design and
     implementation. Once we agree that the plan looks good, go ahead and implement it.
 2. You want to implement a feature or bug-fix for an outstanding issue
     - Look at the outstanding issues here: https://github.com/jajimer/sinergym/issues
@@ -11,11 +11,16 @@ into two categories:
     - If you need more context on a particular issue, please ask and we shall provide.
 
 Once you finish implementing a feature or bug-fix, please send a Pull Request to
-https://github.com/jajimer/sinergym
+https://github.com/jajimer/sinergym main branch. Please, follow our pull request template for this purpose
+(it will appear in text box so you only have to complete it).
 
 If you are not familiar with creating a Pull Request, here are some guides:
 - http://stackoverflow.com/questions/14680711/how-to-do-a-github-pull-request
 - https://help.github.com/articles/creating-a-pull-request/
+
+## Create Issues
+
+Please, follow the issue templates whenever possible (GitHub interface will offer you those templates). If your issue does not fit any of the templates, then you can generate a blank issue and provide the information as clearly and concisely as possible.
 
 ## Developing Sinergym
 
