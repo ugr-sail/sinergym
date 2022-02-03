@@ -7,7 +7,7 @@ on:
 jobs:
 
   apply-autopep8:
-    name: Autopep8 auto-format by bot
+    name: Autopep8 auto-format by a bot
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,6 +22,42 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Automated autopep8 fixes
+
+  apply-isort:
+    name: isort modules format by a bot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Apply isort
+        id: isort-step
+        # default configuration use --check-only and --diff instead of --in-place options.
+        uses: isort/isort-action@master
+        with:
+          requirementsFiles: "requirements.txt"
+          configuration: --show-config --show-files
+
+      - name: Detect changes by isort
+        uses: tj-actions/verify-changed-files@v7.2
+        id: verify-isort-update
+        with:
+          files: |
+            tests/
+            sinergym/
+            examples/
+            *.py
+
+      - name: Commit isort changes
+        if: steps.verify-isort-update.outputs.files_changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automated isort fixes
 
   apply-documentation:
     name: Documentation compilation update by bot
