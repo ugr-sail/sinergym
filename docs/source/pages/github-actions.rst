@@ -12,7 +12,7 @@ Pull Request
 *************
 
 - **Python Code format check**: Python code format is checked in every pull request following **Pep8** `standard <https://www.python.org/dev/peps/pep-0008/>`__ (Level 2 aggressive). If format is incorrect, a bot will comment in pull request advising that issue and notifying it will be correct merging with main.
-- **Documentation Checks**: This action compile documentation *source* in every pull-request, verify if documentation build is successful.
+- **Documentation Checks**: This action checks whether source documentation has been modified in every pull-request. If source documentation has been updated, it will compile documentation with Sphinx and raise errors if exist.
 
 .. warning:: Sphinx Warning messages behave like errors for workflow status.
 
