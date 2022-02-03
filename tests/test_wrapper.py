@@ -1,9 +1,11 @@
-from sinergym.utils.wrappers import NormalizeObservation
-import pytest
-import numpy as np
-import os
 import csv
+import os
+
+import numpy as np
+import pytest
 from stable_baselines3.common.env_util import is_wrapped
+
+from sinergym.utils.wrappers import NormalizeObservation
 
 
 @pytest.mark.parametrize('env_name',

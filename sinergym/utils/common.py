@@ -1,17 +1,17 @@
 """Common utilities."""
 
-import os
-import logging
-import numpy as np
-import xml.etree.ElementTree as ET
-from pydoc import locate
 import csv
-import pandas as pd
-import gym
-from opyplus.epm.record import Record
-from opyplus import Epm
-
+import logging
+import os
+import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
+from pydoc import locate
+
+import gym
+import numpy as np
+import pandas as pd
+from opyplus import Epm
+from opyplus.epm.record import Record
 
 # NORMALIZATION RANGES
 RANGES_5ZONE = {'Facility Total HVAC Electricity Demand Rate (Whole Building)': [173.6583692738386,

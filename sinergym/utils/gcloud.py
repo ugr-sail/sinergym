@@ -1,14 +1,13 @@
 """Utilities to use Google Cloud Python API and Google Cloud API REST easier."""
 
+import glob
 import os
 import time
-import glob
-import requests
 
 import googleapiclient.discovery
-from oauth2client.client import GoogleCredentials
+import requests
 from google.cloud import storage
-
+from oauth2client.client import GoogleCredentials
 
 ####################### GCLOUD SERVICE OWNER #######################
 

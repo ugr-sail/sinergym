@@ -1,10 +1,12 @@
 """Class and utilities for set up extra configuration in experiments with Sinergym (extra params, weather_variability, building model modification and files management)"""
-from copy import deepcopy
 import os
-from opyplus import Epm, WeatherData, Idd
-from sinergym.utils.common import prepare_batch_from_records, get_delta_seconds
+from copy import deepcopy
 from shutil import rmtree
+
 import numpy as np
+from opyplus import Epm, Idd, WeatherData
+
+from sinergym.utils.common import get_delta_seconds, prepare_batch_from_records
 
 WEEKDAY_ENCODING = {'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
                     'friday': 4, 'saturday': 5, 'sunday': 6}

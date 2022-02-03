@@ -2,9 +2,10 @@
 
 import os
 import socket
+from datetime import datetime
 
 from eppy.modeleditor import IDF
-from datetime import datetime
+
 from .base import BaseSimulator
 
 

@@ -12,15 +12,17 @@ is applied to a simple DQN algorithm with the hot discrete sinergym environment.
 """
 
 
-import gym
-import sinergym
 import argparse
+from typing import Optional, Tuple, Union
+
+import gym
 import numpy as np
 import torch as th
-from torch.nn import functional as F
 from stable_baselines3 import DQN
 from stable_baselines3.common import logger
-from typing import Optional, Tuple, Union
+from torch.nn import functional as F
+
+import sinergym
 from sinergym.utils.wrappers import NormalizeObservation
 
 
