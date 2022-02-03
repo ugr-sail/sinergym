@@ -52,12 +52,44 @@ jobs:
           file_pattern: docs/build/*
           commit_message: Documentation source update detected and pushed compilation build directory for Github Pages
 
+  update-pypi:
+    needs: [apply-autopep8, apply-documentation]
+    env:
+      PYPI_USER: ${{ secrets.PYPI_USER }}
+      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+    # If you don't have secrets configured with pypi credential, this job will be skipped
+    name: PyPi package update
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        if: "${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}"
+        uses: actions/checkout@v2
+      - name: Checking Sinergym version is updated
+        if: "${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}"
+        uses: dorny/paths-filter@v2
+        id: verify-version-update
+        with:
+          filters: |
+            version:
+              - 'sinergym/version.txt'
+      - name: Publish a Python distribution to PyPi
+        if: "${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}"
+        if: steps.verify-version-update.outputs.version == 'true'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: ${{ env.PYPI_USER }}
+          password: ${{ env.PYPI_API_TOKEN }}
+          skip_existing: true
+          verbose: true
+      
+
+
   update-dockerhub:
     needs: [apply-autopep8, apply-documentation]
     env:
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-    # If you don't have secrets configured with docker credential, skip this job
+    # If you don't have secrets configured with docker credential, this job will be skipped
     name: Container build and upload in Docker Hub
     runs-on: ubuntu-latest
     steps:
