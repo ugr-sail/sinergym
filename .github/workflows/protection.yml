@@ -20,9 +20,13 @@ jobs:
             workflows:
               - '.github/workflows/**'
 
-      - name: Throw exception
-        if: steps.changes.outputs.tests == 'true' || steps.changes.outputs.workflows == 'true'
+      - name: Throw tests warning 
+        if: steps.changes.outputs.tests == 'true'
+        run: echo "::warning ::There are some changes in Sinergym tests."
+
+      - name: Throw workflows exception
+        if: steps.changes.outputs.workflows == 'true'
         run: |
-          echo "Forked repositories have no permission to modify workflows or projects tests. Please, contact with Sinergym administrator"
+          echo "Forked repositories have no permission to modify workflows. Please, contact with Sinergym administrator."
           exit 1
 
