@@ -1,24 +1,24 @@
-from stable_baselines3.common.logger import configure
-from stable_baselines3.common.vec_env import DummyVecEnv
-from stable_baselines3.common.callbacks import CallbackList
-from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC
-from stable_baselines3.common.noise import NormalActionNoise
-import sinergym.utils.gcloud as gcloud
-from sinergym.utils.common import RANGES_5ZONE, RANGES_IW, RANGES_DATACENTER
-import gym
-import sinergym
 import argparse
-import uuid
-import mlflow
 import os
+import uuid
 from datetime import datetime
 
+import gym
+import mlflow
 import numpy as np
+from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC
+from stable_baselines3.common.callbacks import CallbackList
+from stable_baselines3.common.logger import configure
+from stable_baselines3.common.noise import NormalActionNoise
+from stable_baselines3.common.vec_env import DummyVecEnv
 
+import sinergym
+import sinergym.utils.gcloud as gcloud
 from sinergym.utils.callbacks import LoggerCallback, LoggerEvalCallback
-from sinergym.utils.wrappers import MultiObsWrapper, NormalizeObservation, LoggerWrapper
+from sinergym.utils.common import RANGES_5ZONE, RANGES_DATACENTER, RANGES_IW
 from sinergym.utils.rewards import *
-
+from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
+                                     NormalizeObservation)
 
 #--------------------------------BATTERY ARGUMENTS DEFINITION---------------------------------#
 parser = argparse.ArgumentParser()
