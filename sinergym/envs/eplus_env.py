@@ -1,10 +1,5 @@
-"""Gym environment for simulation with EnergyPlus.
-
-Funcionalities:
-    - Both discrete and continuous action spaces
-    - Add variability into the weather series
-    - Reward is computed with absolute difference to comfort range
-    - Raw observations, defined in the variables.cfg file
+"""
+Gym environment for simulation with EnergyPlus.
 """
 
 import gym
@@ -36,11 +31,11 @@ class EplusEnv(gym.Env):
         env_name='eplus-env-v1',
         discrete_actions=True,
         weather_variability=None,
-        reward=LinearReward(),
+        reward=LinearReward,
+        reward_kwargs=dict(),
         config_params: dict = None
     ):
         """Environment with EnergyPlus simulator.
-
 
         Args:
             idf_file (str): Name of the IDF file with the building definition.
@@ -51,6 +46,8 @@ class EplusEnv(gym.Env):
             discrete_actions (bool, optional): Whether the actions are discrete (True) or continuous (False). Defaults to True.
             weather_variability (tuple, optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Reward instance): Reward function instance used for agent feedback. Defaults to LinearReward.
+            rewarg_kwargs (dict, optional): Parameters to be passed to the reward function.
+            config_params (dict, optional): Parameters to configure the simulation.
         """
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
@@ -118,7 +115,8 @@ class EplusEnv(gym.Env):
             )
 
         # Reward class
-        self.cls_reward = reward
+        self.reward_fn = reward(self, **reward_kwargs)
+        self.obs_dict = None
 
     def step(self, action):
         """Sends action to the environment.
@@ -132,6 +130,67 @@ class EplusEnv(gym.Env):
             bool: Whether the episode has ended or not.
             dict: A dictionary with extra information.
         """
+
+        action_ = self._get_action(action)
+
+        # Send action to the simulator
+        self.simulator.logger_main.debug(action_)
+        time_info, obs, done = self.simulator.step(action_)
+        # Create dictionary with observation
+        self.obs_dict = dict(zip(self.variables['observation'], obs))
+        # Add current timestep information
+        self.obs_dict['day'] = time_info[0]
+        self.obs_dict['month'] = time_info[1]
+        self.obs_dict['hour'] = time_info[2]
+
+        # Calculate reward
+        reward, terms = self.reward_fn()
+
+        # Extra info
+        info = {
+            'timestep': int(
+                time_info[3] / self.simulator._eplus_run_stepsize),
+            'time_elapsed': int(time_info[3]),
+            'day': self.obs_dict['day'],
+            'month': self.obs_dict['month'],
+            'hour': self.obs_dict['hour'],
+            'total_power': terms['total_energy'],
+            'total_power_no_units': terms['reward_energy'],
+            'comfort_penalty': terms['reward_comfort'],
+            'temperatures': terms['temperatures'],
+            'out_temperature': self.obs_dict['Site Outdoor Air Drybulb Temperature (Environment)'],
+            'action_': action_}
+
+        return np.array(list(self.obs_dict.values()),
+                        dtype=np.float32), reward, done, info
+
+    def reset(self):
+        """Reset the environment.
+
+        Returns:
+            np.array: Current observation.
+        """
+        # Change to next episode
+        time_info, obs, _ = self.simulator.reset(self.weather_variability)
+        self.obs_dict = dict(zip(self.variables['observation'], obs))
+
+        self.obs_dict['day'] = time_info[0]
+        self.obs_dict['month'] = time_info[1]
+        self.obs_dict['hour'] = time_info[2]
+
+        return np.array(list(self.obs_dict.values()), dtype=np.float32)
+
+    def render(self, mode='human'):
+        """Environment rendering."""
+        pass
+
+    def close(self):
+        """End simulation."""
+
+        self.simulator.end_env()
+
+    def _get_action(self, action):
+        """Transform the action for sending it to the simulator."""
 
         # Get action depending on flag_discrete
         if self.flag_discrete:
@@ -158,65 +217,4 @@ class EplusEnv(gym.Env):
             action_ = setpoints_transform(
                 action, self.action_space, self.action_setpoints)
 
-        # Send action to the simulator
-        self.simulator.logger_main.debug(action_)
-        time_info, obs, done = self.simulator.step(action_)
-        # Create dictionary with observation
-        obs_dict = dict(zip(self.variables['observation'], obs))
-        # Add current timestep information
-        obs_dict['day'] = time_info[0]
-        obs_dict['month'] = time_info[1]
-        obs_dict['hour'] = time_info[2]
-
-        # Calculate reward
-
-        # Calculate temperature mean for all building zones
-        temp_values = [value for key, value in obs_dict.items(
-        ) if key.startswith('Zone Air Temperature')]
-
-        power = obs_dict['Facility Total HVAC Electricity Demand Rate (Whole Building)']
-        reward, terms = self.cls_reward.calculate(
-            power, temp_values, time_info[1], time_info[0])
-
-        # Extra info
-        info = {
-            'timestep': int(
-                time_info[3] / self.simulator._eplus_run_stepsize),
-            'time_elapsed': int(time_info[3]),
-            'day': obs_dict['day'],
-            'month': obs_dict['month'],
-            'hour': obs_dict['hour'],
-            'total_power': power,
-            'total_power_no_units': terms['reward_energy'],
-            'comfort_penalty': terms['reward_comfort'],
-            'temperatures': temp_values,
-            'out_temperature': obs_dict['Site Outdoor Air Drybulb Temperature (Environment)'],
-            'action_': action_}
-
-        return np.array(list(obs_dict.values()),
-                        dtype=np.float32), reward, done, info
-
-    def reset(self):
-        """Reset the environment.
-
-        Returns:
-            np.array: Current observation.
-        """
-        # Change to next episode
-        time_info, obs, done = self.simulator.reset(self.weather_variability)
-        obs_dict = dict(zip(self.variables['observation'], obs))
-
-        obs_dict['day'] = time_info[0]
-        obs_dict['month'] = time_info[1]
-        obs_dict['hour'] = time_info[2]
-
-        return np.array(list(obs_dict.values()), dtype=np.float32)
-
-    def render(self, mode='human'):
-        """Environment rendering."""
-        pass
-
-    def close(self):
-        """End simulation."""
-
-        self.simulator.end_env()
+        return action_
