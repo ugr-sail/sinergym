@@ -24,8 +24,6 @@ jobs:
         id: isort-step
         # default configuration use --check-only and --diff instead of --in-place options.
         uses: isort/isort-action@master
-        with:
-          requirementsFiles: "requirements.txt"
 
       - name: warning format
         if: steps.autopep8.outputs.exit-code == 2 || steps.isort-step.outputs.isort-result == 1 
