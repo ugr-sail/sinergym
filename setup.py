@@ -32,8 +32,7 @@ setup(name='sinergym',
               'sphinx-rtd-theme',  # documentation theme
               'google-api-python-client',
               'oauth2client',
-              'google-cloud-storage',
-              'isort'
+              'google-cloud-storage'
           ],
           'test': [
               'pytest'
@@ -55,9 +54,6 @@ setup(name='sinergym',
               'google-api-python-client',
               'oauth2client',
               'google-cloud-storage'
-          ],
-          'others': [
-              'isort'
           ]
       }
       )
