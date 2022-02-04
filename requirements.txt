@@ -4,5 +4,5 @@ gym
 eppy
 opyplus
 autopep8
-isort[requirements_deprecated_finder,pipfile_deprecated_finder]
+isort==4.3.20
 twine

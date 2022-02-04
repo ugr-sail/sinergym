@@ -12,7 +12,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.6
+          python-version: 3.9
 
       - name: autopep8 check
         id: autopep8
