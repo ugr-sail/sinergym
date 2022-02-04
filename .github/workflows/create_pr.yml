@@ -27,12 +27,12 @@ jobs:
         continue-on-error: true
 
       - name: warning format
-        if: steps.autopep8.outputs.exit-code == 2 || steps.isort-step.outputs.isort-result == 1 
+        if: steps.autopep8.outputs.exit-code == 2 || steps.isort-step.outcome != 'success'
         run: echo "::warning ::There are some formats error (autopep8 2 level agressive + isort) in pull request. A bot will fix this issue when pull request is merged."
 
    
       - name: Comment PR warning
-        if: steps.autopep8.outputs.exit-code == 2 || steps.isort-step.outputs.isort-result == 1
+        if: steps.autopep8.outputs.exit-code == 2 || steps.isort-step.outcome != 'success'
         uses: thollander/actions-comment-pull-request@v1
         with:
           message: ':warning: There are some formats error (autopep8 2 level agressive + isort) in pull request. A bot will fix this issue when pull request is merged. See workflow log to see future changes.'
