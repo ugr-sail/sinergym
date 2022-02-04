@@ -3,53 +3,41 @@ on: pull_request
 
 jobs:
 
-  autopep8-check:
+  format-check:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: autopep8 check and fix
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: autopep8 check
         id: autopep8
         uses: peter-evans/autopep8@v1
         with:
           args: --exit-code --recursive --diff --aggressive --aggressive .
 
-      - name: warning autopep8
-        if: steps.autopep8.outputs.exit-code == 2
-        run: echo "::warning ::There are some formats error (autopep8 2 level agressive) in pull request. A bot will fix this issue when pull request is merged."
+      - name: isort check
+        id: isort-step
+        # default configuration use --check-only and --diff instead of --in-place options.
+        uses: isort/isort-action@master
+        with:
+          requirementsFiles: "requirements.txt"
+
+      - name: warning format
+        if: steps.autopep8.outputs.exit-code == 2 || steps.isort-step.outputs.isort-result == 1 
+        run: echo "::warning ::There are some formats error (autopep8 2 level agressive + isort) in pull request. A bot will fix this issue when pull request is merged."
 
    
       - name: Comment PR warning
-        if: steps.autopep8.outputs.exit-code == 2
+        if: steps.autopep8.outputs.exit-code == 2 || steps.isort-step.outputs.isort-result == 1
         uses: thollander/actions-comment-pull-request@v1
         with:
-          message: ':warning: There are some formats error (autopep8 2 level agressive) in pull request. A bot will fix this issue when pull request is merged. See workflow log to see future changes.'
+          message: ':warning: There are some formats error (autopep8 2 level agressive + isort) in pull request. A bot will fix this issue when pull request is merged. See workflow log to see future changes.'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  isort-check:
-    runs-on: ubuntu-latest
-
-    steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
-
-        - name: Setup Python
-          uses: actions/setup-python@v2
-          with:
-            python-version: 3.9
-
-        - name: isort check
-          id: isort-step
-          # default configuration use --check-only and --diff instead of --in-place options.
-          uses: isort/isort-action@master
-          with:
-            requirementsFiles: "requirements.txt"
-
-      - name: warning isort
-        if: steps.isort-step.outputs.isort-result == 1
-        run: echo "::warning ::Isort detect some import changes in order to follow the standard. This changes will be applied in main branch during merging by a bot."
 
 
   documentation-check:
@@ -69,9 +57,11 @@ jobs:
       - name: Upgrade pip
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: "python -m pip install --upgrade pip"
+
       - name: Install dependencies [sinergym extras]
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: "pip install -e .[extras]"
+
       - name: Compile documentation
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: "cd docs && sphinx-build -M html source build -W"
@@ -82,8 +72,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Build the latest Docker image
         run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[DRL,test] --tag pullrequest/sinergym:latest
+
       - name: Execute tests from container
         run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'pytest tests/ -vv'
 
