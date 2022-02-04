@@ -4,5 +4,4 @@ gym
 eppy
 opyplus
 autopep8
-isort
 twine
