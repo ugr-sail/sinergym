@@ -92,7 +92,7 @@ for testing, releasing and deploying software without the use of third-party web
 <section id="pull-request">
 <h2>Pull Request<a class="headerlink" href="#pull-request" title="Permalink to this headline"></a></h2>
 <ul class="simple">
-<li><p><strong>Python Code format check</strong>: Python code format is checked in every pull request following <strong>Pep8</strong> <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">standard</a> (Level 2 aggressive). If format is incorrect, a bot will comment in pull request advising that issue and notifying it will be correct merging with main.</p></li>
+<li><p><strong>Python Code format check</strong>: Python code format is checked in every pull request following <strong>Pep8</strong> <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">standard</a> (Level 2 aggressive) and <a class="reference external" href="https://github.com/PyCQA/isort">isort</a> to sort imports. If format is incorrect, a bot will comment in pull request advising that issue and notifying it will be correct merging with main.</p></li>
 <li><p><strong>Documentation Checks</strong>: This action checks whether source documentation has been modified in every pull-request. If source documentation has been updated, it will compile documentation with Sphinx and raise errors if exist.</p></li>
 </ul>
 <div class="admonition warning">
@@ -116,7 +116,7 @@ for testing, releasing and deploying software without the use of third-party web
 <section id="push-main-or-merge-a-pull-request">
 <h2>Push main (or merge a pull request)<a class="headerlink" href="#push-main-or-merge-a-pull-request" title="Permalink to this headline"></a></h2>
 <ul class="simple">
-<li><p><strong>Apply format autopep8</strong>: A bot generates a commit in main branch applying format changes when it is necessary.</p></li>
+<li><p><strong>Apply format</strong>: A bot generates a commit in main branch applying format changes when it is necessary (autopep8 2 level aggressive and/or isort module).</p></li>
 <li><p><strong>Update Documentation build to GitHub pages</strong>: A bot generates a commit in main branch applying new documentation build when it is necessary.</p></li>
 <li><p><strong>Update our Docker Hub repository</strong>: This job builds container with all extra requires and it is pushed to our <a class="reference external" href="https://hub.docker.com/r/alejandrocn7/sinergym">Docker Hub repository</a> using <em>latest</em> tag automatically. It needs format and documentation jobs finish for possible changes.</p></li>
 </ul>
