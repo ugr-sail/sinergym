@@ -125,6 +125,7 @@ for testing, releasing and deploying software without the use of third-party web
 <h2>New release created or modified<a class="headerlink" href="#new-release-created-or-modified" title="Permalink to this headline"></a></h2>
 <ul class="simple">
 <li><p>When a <strong>release</strong> is <em>published</em> or <em>edited</em> manually in the repository, there is an action which catches release tag version and uses it to build a container and upload/update on Docker Hub with that tag version.</p></li>
+<li><p>At the same time, another job will update the <strong>PyPi</strong> Sinergym repository with its current version tag.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

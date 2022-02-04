@@ -40,6 +40,7 @@ New release created or modified
 ********************************
 
 - When a **release** is *published* or *edited* manually in the repository, there is an action which catches release tag version and uses it to build a container and upload/update on Docker Hub with that tag version.
+- At the same time, another job will update the **PyPi** Sinergym repository with its current version tag.
 
 .. note:: See `.github/workflows YML files <https://github.com/jajimer/sinergym/tree/develop/.github/workflows>`__ to see code used.
 
