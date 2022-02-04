@@ -1,18 +1,18 @@
 """Custom Callbacks for stable baselines 3 algorithms."""
 
-from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
-import numpy as np
-import gym
 import os
-from sinergym.utils.wrappers import NormalizeObservation, LoggerWrapper
-
-from pprint import pprint
-
 import warnings
+from pprint import pprint
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+
+import gym
+import numpy as np
 from stable_baselines3.common import base_class
-from stable_baselines3.common.vec_env import VecEnv, sync_envs_normalization
+from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
 from stable_baselines3.common.env_util import is_wrapped
+from stable_baselines3.common.vec_env import VecEnv, sync_envs_normalization
+
+from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
 
 
 class LoggerCallback(BaseCallback):

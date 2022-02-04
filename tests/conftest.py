@@ -1,15 +1,17 @@
-import pytest
-from sinergym.simulators.eplus import EnergyPlus
-from sinergym.envs.eplus_env import EplusEnv
-import sinergym.utils.rewards as R
-from sinergym.utils.wrappers import NormalizeObservation, MultiObsWrapper, LoggerWrapper
-from sinergym.utils.config import Config
-
-from opyplus import Epm, WeatherData, Idd
 import os
-import pkg_resources
-from glob import glob  # to find directories with patterns
 import shutil
+from glob import glob  # to find directories with patterns
+
+import pkg_resources
+import pytest
+from opyplus import Epm, Idd, WeatherData
+
+import sinergym.utils.rewards as R
+from sinergym.envs.eplus_env import EplusEnv
+from sinergym.simulators.eplus import EnergyPlus
+from sinergym.utils.config import Config
+from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
+                                     NormalizeObservation)
 
 ############### ROOT DIRECTORY ###############
 

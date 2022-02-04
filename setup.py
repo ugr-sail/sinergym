@@ -1,4 +1,5 @@
 import os
+
 from setuptools import find_packages, setup
 
 with open(os.path.join("sinergym", "version.txt"), "r") as file_handler:

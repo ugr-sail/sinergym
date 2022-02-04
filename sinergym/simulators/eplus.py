@@ -6,17 +6,17 @@ Class for connecting EnergyPlus with Python using Ptolomy server.
 """
 
 
-import socket
-import os
-import time
-import signal
 import _thread
+import os
+import signal
+import socket
 import subprocess
 import threading
-import numpy as np
-
+import time
 from shutil import copyfile
-from xml.etree.ElementTree import Element, SubElement, Comment, tostring
+from xml.etree.ElementTree import Comment, Element, SubElement, tostring
+
+import numpy as np
 
 from sinergym.utils.common import *
 from sinergym.utils.config import Config

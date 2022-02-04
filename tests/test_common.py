@@ -1,7 +1,9 @@
-import pytest
-import sinergym.utils.common as common
-from opyplus import Epm, WeatherData
 import shutil
+
+import pytest
+from opyplus import Epm, WeatherData
+
+import sinergym.utils.common as common
 
 
 @pytest.mark.parametrize(

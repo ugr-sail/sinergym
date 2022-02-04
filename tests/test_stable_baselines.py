@@ -1,13 +1,14 @@
 import argparse
+import pprint
 
 import gym
-import sinergym
 import numpy as np
-import pprint
 import pytest
-
 import stable_baselines3
-from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
+from stable_baselines3.common.noise import (NormalActionNoise,
+                                            OrnsteinUhlenbeckActionNoise)
+
+import sinergym
 
 TIMESTEPS = 1000
 

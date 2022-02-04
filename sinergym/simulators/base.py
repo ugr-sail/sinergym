@@ -1,9 +1,8 @@
 """
 Base simulator class.
 """
-
-
 import os
+
 import numpy as np
 
 
