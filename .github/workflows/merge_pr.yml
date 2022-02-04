@@ -75,13 +75,13 @@ jobs:
         with:
           file_pattern: docs/build/*
           commit_message: Documentation source update detected and pushed compilation build directory for Github Pages
-
+      
   update-dockerhub:
     needs: [apply-autopep8, apply-documentation]
     env:
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-    # If you don't have secrets configured with docker credential, skip this job
+    # If you don't have secrets configured with docker credential, this job will be skipped
     name: Container build and upload in Docker Hub
     runs-on: ubuntu-latest
     steps:
