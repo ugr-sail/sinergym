@@ -23,7 +23,6 @@ jobs:
         # default configuration use --check-only and --diff instead of --in-place options.
         uses: isort/isort-action@master
         with:
-          requirementsFiles: "requirements.txt"
           configuration: --show-config --show-files
 
       - name: autopep8 check and fix
