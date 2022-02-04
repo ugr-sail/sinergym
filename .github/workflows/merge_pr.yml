@@ -12,23 +12,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: autopep8 check and fix
-        id: autopep8
-        uses: peter-evans/autopep8@v1
-        with:
-          args: --exit-code --recursive --in-place --aggressive --aggressive .
-      - name: Commit autopep8 changes
-        if: steps.autopep8.outputs.exit-code == 2
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Automated autopep8 fixes
-
-  apply-isort:
-    name: isort modules format by a bot
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -43,6 +26,12 @@ jobs:
           requirementsFiles: "requirements.txt"
           configuration: --show-config --show-files
 
+      - name: autopep8 check and fix
+        id: autopep8
+        uses: peter-evans/autopep8@v1
+        with:
+          args: --exit-code --recursive --in-place --aggressive --aggressive .
+        
       - name: Detect changes by isort
         uses: tj-actions/verify-changed-files@v7.2
         id: verify-isort-update
@@ -53,11 +42,11 @@ jobs:
             examples/
             *.py
 
-      - name: Commit isort changes
-        if: steps.verify-isort-update.outputs.files_changed == 'true'
+      - name: Commit format changes
+        if: steps.autopep8.outputs.exit-code == 2 || steps.verify-isort-update.outputs.files_changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Automated isort fixes
+          commit_message: Automated format fixes (autopep8 + isort)
 
   apply-documentation:
     name: Documentation compilation update by bot
