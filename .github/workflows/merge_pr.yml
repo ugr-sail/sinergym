@@ -7,21 +7,45 @@ on:
 jobs:
 
   apply-autopep8:
-    name: Autopep8 auto-format by bot
+    name: Autopep8 auto-format by a bot
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Apply isort
+        id: isort-step
+        # default configuration use --check-only and --diff instead of --in-place options.
+        uses: isort/isort-action@master
+        with:
+          configuration: --show-config --show-files
+
       - name: autopep8 check and fix
         id: autopep8
         uses: peter-evans/autopep8@v1
         with:
           args: --exit-code --recursive --in-place --aggressive --aggressive .
-      - name: Commit autopep8 changes
-        if: steps.autopep8.outputs.exit-code == 2
+        
+      - name: Detect changes by isort
+        uses: tj-actions/verify-changed-files@v7.2
+        id: verify-isort-update
+        with:
+          files: |
+            tests/
+            sinergym/
+            examples/
+            *.py
+
+      - name: Commit format changes
+        if: steps.autopep8.outputs.exit-code == 2 || steps.verify-isort-update.outputs.files_changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Automated autopep8 fixes
+          commit_message: Automated format fixes (autopep8 + isort)
 
   apply-documentation:
     name: Documentation compilation update by bot

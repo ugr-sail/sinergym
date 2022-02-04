@@ -1,7 +1,9 @@
-import pytest
-import sinergym.utils.config as config
-from opyplus import Epm, Idd
 import os
+
+import pytest
+from opyplus import Epm, Idd
+
+import sinergym.utils.config as config
 
 
 def test_adapt_idf_to_epw(config):

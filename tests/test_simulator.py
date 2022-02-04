@@ -1,12 +1,13 @@
-import pytest
-from sinergym.simulators.eplus import EnergyPlus
-import xml.etree.ElementTree as ET
+import os
+import signal
 import subprocess
 import threading
-import pkg_resources
-import signal
+import xml.etree.ElementTree as ET
 
-import os
+import pkg_resources
+import pytest
+
+from sinergym.simulators.eplus import EnergyPlus
 
 
 def test_reset(simulator):

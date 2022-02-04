@@ -1,12 +1,12 @@
 """Implementation of custom Gym environments."""
 
-import numpy as np
-import gym
-
 from collections import deque
-from sinergym.utils.common import CSVLogger
-from sinergym.utils.common import RANGES_5ZONE
+
+import gym
+import numpy as np
 from stable_baselines3.common.env_util import is_wrapped
+
+from sinergym.utils.common import RANGES_5ZONE, CSVLogger
 
 
 class NormalizeObservation(gym.ObservationWrapper):

@@ -1,5 +1,7 @@
 import os
+
 from gym.envs.registration import register
+
 from sinergym.utils.rewards import LinearReward
 
 # Set __version__ in module

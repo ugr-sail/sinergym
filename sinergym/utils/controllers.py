@@ -1,9 +1,9 @@
 """Implementation of basic controllers."""
 
 import os
-import pkg_resources
-
 from datetime import datetime
+
+import pkg_resources
 
 from ..utils.common import parse_variables
 

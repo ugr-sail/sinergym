@@ -1,10 +1,13 @@
-import gym
-from sinergym.utils.wrappers import NormalizeObservation, LoggerWrapper, MultiObsWrapper
-from datetime import datetime
 import argparse
 import os
 import shutil
+from datetime import datetime
 from glob import glob
+
+import gym
+
+from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
+                                     NormalizeObservation)
 
 envs_id = [env_spec.id for env_spec in gym.envs.registry.all()
            if env_spec.id.startswith('Eplus')]

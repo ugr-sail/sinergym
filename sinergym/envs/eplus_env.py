@@ -7,17 +7,21 @@ Funcionalities:
     - Raw observations, defined in the variables.cfg file
 """
 
-import gym
 import os
+from pprint import pprint
+
+import gym
+import numpy as np
 import opyplus
 import pkg_resources
-import numpy as np
 
-from sinergym.utils.config import Config
-from sinergym.utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space, setpoints_transform
 from sinergym.simulators import EnergyPlus
+from sinergym.utils.common import (create_variable_weather,
+                                   get_current_time_info,
+                                   parse_observation_action_space,
+                                   parse_variables, setpoints_transform)
+from sinergym.utils.config import Config
 from sinergym.utils.rewards import ExpReward, LinearReward
-from pprint import pprint
 
 
 class EplusEnv(gym.Env):
