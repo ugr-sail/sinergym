@@ -9,9 +9,11 @@ Funcionalities:
 
 import os
 from pprint import pprint
+from typing import Any, Dict, Optional, Tuple, Union
 
 import gym
 import numpy as np
+import numpy.typing as npt
 import opyplus
 import pkg_resources
 
@@ -33,15 +35,15 @@ class EplusEnv(gym.Env):
 
     def __init__(
         self,
-        idf_file,
-        weather_file,
-        variables_file,
-        spaces_file,
-        env_name='eplus-env-v1',
-        discrete_actions=True,
-        weather_variability=None,
-        reward=LinearReward(),
-        config_params: dict = None
+        idf_file: str,
+        weather_file: str,
+        variables_file: str,
+        spaces_file: str,
+        env_name: str = 'eplus-env-v1',
+        discrete_actions: bool = True,
+        weather_variability: Optional[Tuple[float]] = None,
+        reward: Any = LinearReward(),
+        config_params: Optional[Dict[str, Any]] = None
     ):
         """Environment with EnergyPlus simulator.
 
@@ -124,7 +126,8 @@ class EplusEnv(gym.Env):
         # Reward class
         self.cls_reward = reward
 
-    def step(self, action):
+    def step(self, action: Union[int, npt.ArrayLike]
+             ) -> Tuple[np.ndarray, float, bool, Dict[str, Any]]:
         """Sends action to the environment.
 
         Args:
@@ -200,7 +203,7 @@ class EplusEnv(gym.Env):
         return np.array(list(obs_dict.values()),
                         dtype=np.float32), reward, done, info
 
-    def reset(self):
+    def reset(self) -> np.ndarray:
         """Reset the environment.
 
         Returns:
@@ -216,11 +219,11 @@ class EplusEnv(gym.Env):
 
         return np.array(list(obs_dict.values()), dtype=np.float32)
 
-    def render(self, mode='human'):
+    def render(self, mode: str = 'human') -> None:
         """Environment rendering."""
         pass
 
-    def close(self):
+    def close(self) -> None:
         """End simulation."""
 
         self.simulator.end_env()
