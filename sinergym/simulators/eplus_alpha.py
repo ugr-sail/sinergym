@@ -3,6 +3,7 @@
 import os
 import socket
 from datetime import datetime
+from typing import Any, Tuple
 
 from eppy.modeleditor import IDF
 
@@ -11,7 +12,12 @@ from .base import BaseSimulator
 
 class EnergyPlus(BaseSimulator):
 
-    def __init__(self, idf_file, weather_file, variables_file, env_name):
+    def __init__(
+            self,
+            idf_file: str,
+            weather_file: str,
+            variables_file: str,
+            env_name: str):
         """EnergyPlus simulator connector.
 
         Args:
@@ -50,23 +56,23 @@ class EnergyPlus(BaseSimulator):
         # Create socket for communication with EnergyPlus
         self._socket, self._host, self._port = self._create_socket()
 
-    def start_simulation(self):
+    def start_simulation(self) -> bool:
         """Starts the simulation."""
         return True
 
-    def end_simulation(self):
+    def end_simulation(self) -> bool:
         """Ends the simulation."""
         return True
 
-    def send_action(self):
+    def send_action(self) -> bool:
         """Sends a new action to the simulator."""
         return True
 
-    def receive_observation(self):
+    def receive_observation(self) -> bool:
         """Receive a new observation from the environment."""
         return True
 
-    def _create_socket(self):
+    def _create_socket(self) -> Tuple[Any, str, str]:
         """Create socket, host and port."""
 
         s = socket.socket()
@@ -81,7 +87,7 @@ class EnergyPlus(BaseSimulator):
         s.listen(60)
         return s, host, port
 
-    def _get_run_period(self):
+    def _get_run_period(self) -> int:
         """Get the length of the run in timesteps."""
 
         self.timestep = self.idf.idfobjects['Timestep'][0]['Number_of_Timesteps_per_Hour']
