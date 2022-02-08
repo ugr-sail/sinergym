@@ -5,6 +5,7 @@ from shutil import rmtree
 
 import numpy as np
 from opyplus import Epm, Idd, WeatherData
+from typing import Any, Dict, List, Tuple, Optional
 
 from sinergym.utils.common import get_delta_seconds, prepare_batch_from_records
 
@@ -33,11 +34,11 @@ class Config(object):
 
     def __init__(
             self,
-            idf_path,
-            weather_path,
-            env_name,
-            max_ep_store,
-            extra_config):
+            idf_path: str,
+            weather_path: str,
+            env_name: str,
+            max_ep_store: int,
+            extra_config: Dict[str, Any]):
 
         self._idf_path = idf_path
         self._weather_path = weather_path
@@ -67,7 +68,7 @@ class Config(object):
 
     def adapt_idf_to_epw(self,
                          summerday: str = 'Ann Clg .4% Condns DB=>MWB',
-                         winterday: str = 'Ann Htg 99.6% Condns DB'):
+                         winterday: str = 'Ann Htg 99.6% Condns DB') -> None:
         """Given a summer day name and winter day name from DDY file, this method modify IDF Location and DesingDay's in order to adapt IDF to EPW.
 
         Args:
@@ -98,14 +99,14 @@ class Config(object):
         self.building.site_location.batch_add(new_location)
         self.building.SizingPeriod_DesignDay.batch_add(new_designdays)
 
-    def apply_extra_conf(self):
+    def apply_extra_conf(self) -> None:
         """Set extra configuration in building model
         """
         if self.config is not None:
             if self.config.get('timesteps_per_hour'):
                 self.building.timestep[0].number_of_timesteps_per_hour = self.config['timesteps_per_hour']
 
-    def save_building_model(self):
+    def save_building_model(self) -> str:
         """Take current building model and save as IDF in current env_working_dir episode folder.
 
         Returns:
@@ -118,7 +119,8 @@ class Config(object):
             self.building.save(episode_idf_path)
             return episode_idf_path
         else:
-            raise Exception
+            raise RuntimeError(
+                '[Simulator Config] Episode path should be set before saving building model.')
 
     # ---------------------------------------------------------------------------- #
     #                        EPW and Weather Data management                       #
@@ -126,8 +128,8 @@ class Config(object):
 
     def apply_weather_variability(
             self,
-            columns: list = ['drybulb'],
-            variation: tuple = None):
+            columns: List[str] = ['drybulb'],
+            variation: Optional[Tuple[float, float, float]] = None) -> str:
         """Modify weather data using Ornstein-Uhlenbeck process.
 
         Args:
@@ -135,7 +137,7 @@ class Config(object):
             variation (tuple, optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
 
         Returns:
-            str: New EPW file path generated in simulator working path in that episode
+            str: New EPW file path generated in simulator working path in that episode or current EPW path if variation is not defined.
         """
         if variation is None:
             return self._weather_path
@@ -185,7 +187,8 @@ class Config(object):
     #                        Model and Config Functionality                        #
     # ---------------------------------------------------------------------------- #
 
-    def _get_eplus_run_info(self):
+    def _get_eplus_run_info(
+            self) -> Tuple[int, int, int, int, int, int, int, int]:
         """This method read the building model from config and finds the running start month, start day, start year, end month, end day, end year, start weekday and the number of steps in a hour simulation. If any value is Unknown, then value will be 0. If step per hour is < 1, then default value will be 4.
 
         Returns:
@@ -221,7 +224,7 @@ class Config(object):
             start_weekday,
             n_steps_per_hour)
 
-    def _get_one_epi_len(self):
+    def _get_one_epi_len(self) -> float:
         """Gets the length of one episode (an EnergyPlus process run to the end) depending on the config of simulation.
 
         Returns:
@@ -249,7 +252,7 @@ class Config(object):
     #                  Working Folder for Simulation Management                    #
     # ---------------------------------------------------------------------------- #
 
-    def set_experiment_working_dir(self, env_name):
+    def set_experiment_working_dir(self, env_name: str) -> str:
         """Set experiment working dir path like config attribute for current simulation.
 
         Args:
@@ -269,7 +272,7 @@ class Config(object):
         self.experiment_path = experiment_path
         return experiment_path
 
-    def set_episode_working_dir(self):
+    def set_episode_working_dir(self) -> str:
         """Set episode working dir path like config attribute for current simulation execution.
 
         Raises:
@@ -295,7 +298,10 @@ class Config(object):
             self._rm_past_history_dir(episode_path, '-sub_run')
             return episode_path
 
-    def _get_working_folder(self, directory_path, base_name='-run'):
+    def _get_working_folder(
+            self,
+            directory_path: str,
+            base_name: str = '-run') -> str:
         """Create a working folder path from path_folder using base_name, returning the absolute result path.
 
         Args:
@@ -332,13 +338,13 @@ class Config(object):
 
     def _rm_past_history_dir(
             self,
-            episode_path,
-            base_name):
+            episode_path: str,
+            base_name: str) -> None:
         """Removes the past simulation results from episode
 
         Args:
             episode_path ([str]): path for the current episide output
-            base_name ([type]): base name for detect episode output id
+            base_name ([str]): base name for detect episode output id
         """
 
         cur_dir_name, cur_dir_id = episode_path.split(base_name)
@@ -349,7 +355,7 @@ class Config(object):
             rmtree(rm_dir_full_name)
 
     @property
-    def start_year(self):
+    def start_year(self) -> int:
         """Returns the EnergyPlus simulation year.
 
         Returns:
