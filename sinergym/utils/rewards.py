@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from math import exp
+from typing import Tuple, List, Dict, Optional
 
 YEAR = 2021
 
@@ -9,11 +10,11 @@ YEAR = 2021
 class LinearReward():
 
     def __init__(self,
-                 range_comfort_winter=(20.0, 23.5),
-                 range_comfort_summer=(23.0, 26.0),
-                 energy_weight=0.5,
-                 lambda_energy=1e-4,
-                 lambda_temperature=1.0
+                 range_comfort_winter: Tuple[float, float] = (20.0, 23.5),
+                 range_comfort_summer: Tuple[float, float] = (23.0, 26.0),
+                 energy_weight: float = 0.5,
+                 lambda_energy: float = 1e-4,
+                 lambda_temperature: float = 1.0
                  ):
         """Simple reward considering absolute difference to temperature comfort.
 
@@ -39,7 +40,12 @@ class LinearReward():
         self.summer_start_date = datetime(YEAR, 6, 1)
         self.summer_final_date = datetime(YEAR, 9, 30)
 
-    def calculate(self, power, temperatures, month, day):
+    def calculate(self,
+                  power: float,
+                  temperatures: List[float],
+                  month: int,
+                  day: int) \
+            -> Tuple[float, Dict[str, float]]:
         """Reward calculus.
 
         Args:
@@ -75,11 +81,11 @@ class LinearReward():
 class ExpReward():
 
     def __init__(self,
-                 range_comfort_winter=(20.0, 23.5),
-                 range_comfort_summer=(23.0, 26.0),
-                 energy_weight=0.5,
-                 lambda_energy=1e-4,
-                 lambda_temperature=1.0
+                 range_comfort_winter: Tuple[float, float] = (20.0, 23.5),
+                 range_comfort_summer: Tuple[float, float] = (23.0, 26.0),
+                 energy_weight: float = 0.5,
+                 lambda_energy: float = 1e-4,
+                 lambda_temperature: float = 1.0
                  ):
         """Reward considering exponential absolute difference to temperature comfort.
 
@@ -105,7 +111,8 @@ class ExpReward():
         self.summer_start_date = datetime(YEAR, 6, 1)
         self.summer_final_date = datetime(YEAR, 9, 30)
 
-    def calculate(self, power, temperatures, month, day):
+    def calculate(self, power: float, temperatures: List[float],
+                  month: int, day: int) -> Tuple[float, Dict[str, float]]:
         """Reward calculus.
 
         Args:
