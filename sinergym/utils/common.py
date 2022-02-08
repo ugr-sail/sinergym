@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from pydoc import locate
 
-from typing import Any, Union, Dict, List, Tuple, Optional
+from typing import Any, Union, Dict, List, Tuple, Optional, Sequence
 
 import gym
 import numpy as np
@@ -236,7 +236,7 @@ def parse_observation_action_space(space_file: str) -> Dict[str, Any]:
     dtype = observation_space.find('dtype')
     assert dtype is not None
     dtype = locate(dtype.attrib['value'])
-    assert dtype != '' or dtype is not None
+    assert callable(dtype)
     low = observation_space.find('low')
     high = observation_space.find('high')
     shape = observation_space.find('shape')
@@ -282,7 +282,7 @@ def create_variable_weather(
         weather_data: WeatherData,
         original_epw_file: str,
         columns: List[str] = ['drybulb'],
-        variation: Optional[Tuple[float, float, float]] = None) -> str:
+        variation: Optional[Tuple[float, float, float]] = None) -> Optional[str]:
     """Create a new weather file using Ornstein-Uhlenbeck process.
 
     Args:
@@ -387,7 +387,7 @@ def ranges_getter(output_path: str,
 
 def setpoints_transform(action: List[Union[int, float]],
                         action_space: gym.spaces.Box,
-                        setpoints_space: List[Union[int, float]]) -> \
+                        setpoints_space: List[List[Union[int, float]]]) -> \
         List[Union[int, float]]:
     """Given an action inner gym action_space, this will be converted into an action inner setpoints_space (Sinergym Simulation).
 
@@ -525,7 +525,7 @@ class CSVLogger(object):
     def log_step(
             self,
             timestep: int,
-            date: List[int, int, int],
+            date: List[int],
             observation: List[Any],
             action: List[Union[int, float]],
             simulation_time: float,
@@ -569,7 +569,7 @@ class CSVLogger(object):
     def log_step_normalize(
             self,
             timestep: int,
-            date: List[int, int, int],
+            date: List[int],
             observation: List[Any],
             action: List[Union[int, float]],
             simulation_time: float,
