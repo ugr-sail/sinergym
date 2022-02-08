@@ -527,12 +527,12 @@ class CSVLogger(object):
             timestep: int,
             date: List[int],
             observation: List[Any],
-            action: List[Union[int, float]],
+            action: Union[List[Union[int, float]], List[None]],
             simulation_time: float,
-            reward: float,
-            total_power_no_units: float,
-            comfort_penalty: float,
-            power: float,
+            reward: Optional[float],
+            total_power_no_units: Optional[float],
+            comfort_penalty: Optional[float],
+            power: Optional[float],
             done: bool) -> None:
         """Log step information and store it in steps_data attribute.
 
@@ -571,11 +571,11 @@ class CSVLogger(object):
             timestep: int,
             date: List[int],
             observation: List[Any],
-            action: List[Union[int, float]],
+            action: Union[List[Union[int, float]], List[None]],
             simulation_time: float,
-            reward: float,
-            total_power_no_units: float,
-            comfort_penalty: float,
+            reward: Optional[float],
+            total_power_no_units: Optional[float],
+            comfort_penalty: Optional[float],
             done: bool) -> None:
         """Log step information and store it in steps_data_normalized attribute.
 
