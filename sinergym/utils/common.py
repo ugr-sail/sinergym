@@ -219,7 +219,7 @@ def parse_observation_action_space(space_file: str) -> Dict[str, Any]:
 
     # Observation and action spaces
     observation_space = root.find('observation-space')
-    action_space = root.find('observation-space')
+    action_space = root.find('action-space')
     assert observation_space is not None and action_space is not None
 
     discrete_action_space = action_space.find('discrete')
