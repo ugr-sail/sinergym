@@ -53,6 +53,7 @@ To develop Sinergym on your machine, here are some alternatives:
 
 - We are using [autopep8 codestyle](https://github.com/hhatto/autopep8) (max line length of 79 characters) 2 level aggressive.
 - We are using [isort](https://github.com/PyCQA/isort) to sort imports in our code.
+- We are using [pytype](https://github.com/google/pytype) to control input and output types in our code, check that your contribution pass this or pull request will be denied automatically by a workflow (`pytest -d import-error sinergym/`).
 
 **Please run `autopep8`** to reformat your code, if you are using [Visual Studio Code](https://code.visualstudio.com/) editor you can auto-format code on save file automatically: https://code.visualstudio.com/docs/python/editing#_formatting.
 
