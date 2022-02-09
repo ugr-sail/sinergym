@@ -126,8 +126,8 @@ class EnergyPlus(object):
         self._eplus_run_stepsize = 3600 / self._eplus_n_steps_per_hour
 
     def reset(
-        self, weather_variability: Optional[Tuple[float, float, float]] = None) \
-            -> Tuple[Tuple[int, int, int, float], Tuple[float, ...], bool]:
+        self, weather_variability: Optional[Tuple[float, float, float]] = None
+    ) -> Tuple[Tuple[int, int, int, float], List[float], bool]:
         """Resets the environment.
 
         Args:
@@ -228,7 +228,8 @@ class EnergyPlus(object):
         return (time_info, Dblist, is_terminal)
 
     def step(self, action: Union[int, float, np.integer, np.ndarray, List[Any],
-             Tuple[Any]]) -> Tuple[Tuple[int, int, int, float], Tuple[float, ...], bool]:
+             Tuple[Any]]
+             ) -> Tuple[Tuple[int, int, int, float], List[float], bool]:
         """Executes a given action.
 
         Args:
@@ -495,8 +496,14 @@ class EnergyPlus(object):
         ret += '\n'
         return ret
 
-    def _disassembleMsg(
-            self, rcv: str) -> Tuple[int, int, int, int, int, float, Tuple[float, ...]]:
+    def _disassembleMsg(self,
+                        rcv: str) -> Tuple[int,
+                                           int,
+                                           int,
+                                           int,
+                                           int,
+                                           float,
+                                           List[float]]:
         """Disassembles the received message from EnergyPlus (convert raw str in Energyplus protocol).
         The message will be transformed to a Tuple with message field separated.
 
@@ -518,7 +525,7 @@ class EnergyPlus(object):
         for i in range(6, len(rcv) - 1):
             Dblist.append(float(rcv[i]))
 
-        return (version, flag, nDb, nIn, nBl, curSimTim, tuple(Dblist))
+        return (version, flag, nDb, nIn, nBl, curSimTim, Dblist)
 
     @property
     def start_year(self) -> int:
