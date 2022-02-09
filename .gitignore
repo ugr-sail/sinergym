@@ -36,3 +36,9 @@ docs/source/_build/
 
 #dist folder for pypi packages
 dist/
+
+#.pytest_cache
+.pytest_cache/
+
+#.pytype
+.pytype/
