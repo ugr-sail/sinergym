@@ -8,21 +8,15 @@ Funcionalities:
 """
 
 import os
-from pprint import pprint
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import gym
 import numpy as np
-import numpy.typing as npt
-import opyplus
 import pkg_resources
 
 from sinergym.simulators import EnergyPlus
-from sinergym.utils.common import (create_variable_weather,
-                                   get_current_time_info,
-                                   parse_observation_action_space,
+from sinergym.utils.common import (parse_observation_action_space,
                                    parse_variables, setpoints_transform)
-from sinergym.utils.config import Config
 from sinergym.utils.rewards import ExpReward, LinearReward
 
 

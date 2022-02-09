@@ -15,8 +15,8 @@ import subprocess
 import threading
 import time
 from shutil import copyfile
-from typing import Any, Dict, Optional, Tuple, Union, List
-from xml.etree.ElementTree import Comment, Element, SubElement, tostring
+from typing import Any, Dict, List, Optional, Tuple, Union
+from xml.etree.ElementTree import Element, SubElement, tostring
 
 import numpy as np
 

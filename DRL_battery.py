@@ -1,6 +1,5 @@
 import argparse
 import os
-import uuid
 from datetime import datetime
 
 import gym

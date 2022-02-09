@@ -12,9 +12,9 @@ import argparse
 import gym
 import mlflow
 import numpy as np
-from stable_baselines import PPO2
-from stable_baselines.common.callbacks import StopTrainingOnRewardThreshold
-from stable_baselines.common.policies import MlpPolicy
+from stable_baselines3 import PPO2
+from stable_baselines3.common.callbacks import StopTrainingOnRewardThreshold
+from stable_baselines3.common.policies import MlpPolicy
 
 import sinergym
 

@@ -2,12 +2,9 @@
 
 import glob
 import os
-import time
 
-import googleapiclient.discovery
 import requests
 from google.cloud import storage
-from oauth2client.client import GoogleCredentials
 
 ####################### GCLOUD SERVICE OWNER #######################
 

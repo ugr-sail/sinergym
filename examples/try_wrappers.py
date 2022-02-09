@@ -1,7 +1,6 @@
 import gym
 import numpy as np
 
-import sinergym
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
                                      NormalizeObservation)
 
