@@ -384,10 +384,15 @@ def ranges_getter(output_path: str,
     return result
 
 
-def setpoints_transform(action: List[Union[int, float]],
+def setpoints_transform(action: Union[int,
+                                      float,
+                                      np.integer,
+                                      np.ndarray,
+                                      List[Any],
+                                      Tuple[Any]],
                         action_space: gym.spaces.Box,
-                        setpoints_space: List[List[Union[int, float]]]) -> \
-        List[Union[int, float]]:
+                        setpoints_space: List[List[Union[int, float]]]
+                        ) -> List[Union[int, float]]:
     """Given an action inner gym action_space, this will be converted into an action inner setpoints_space (Sinergym Simulation).
 
      Args:

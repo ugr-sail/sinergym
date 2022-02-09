@@ -23,7 +23,7 @@ class BaseSimulator(object):
         """Stop the current simulation."""
         raise NotImplementedError
 
-    def send_action(self, action: Union[int, npt.ArrayLike]) -> None:
+    def send_action(self, action: Union[int, np.ndarray]) -> None:
         """Send a control action to the simulator."""
         raise NotImplementedError
 

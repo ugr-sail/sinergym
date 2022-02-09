@@ -15,11 +15,10 @@ import subprocess
 import threading
 import time
 from shutil import copyfile
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, Dict, Optional, Tuple, Union, List
 from xml.etree.ElementTree import Comment, Element, SubElement, tostring
 
 import numpy as np
-import numpy.typing as npt
 
 from sinergym.utils.common import *
 from sinergym.utils.config import Config
@@ -228,8 +227,8 @@ class EnergyPlus(object):
 
         return (time_info, Dblist, is_terminal)
 
-    def step(self, action: Union[float, npt.ArrayLike]) \
-            -> Tuple[Tuple[int, int, int, float], Tuple[float, ...], bool]:
+    def step(self, action: Union[int, float, np.integer, np.ndarray, List[Any],
+             Tuple[Any]]) -> Tuple[Tuple[int, int, int, float], Tuple[float, ...], bool]:
         """Executes a given action.
 
         Args:
@@ -460,7 +459,7 @@ class EnergyPlus(object):
             nIn: int,
             nBl: int,
             curSimTim: float,
-            Dblist: Union[float, npt.ArrayLike]) -> str:
+            Dblist: Union[float, np.ndarray]) -> str:
         """Assembles the sent message to EnergyPlus based on the protocol.
         The message must be a blank space separated string set with the fields defined as arguments.
 

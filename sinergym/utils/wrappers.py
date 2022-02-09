@@ -5,7 +5,6 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
 import gym
 import numpy as np
-import numpy.typing as npt
 from stable_baselines3.common.env_util import is_wrapped
 
 from sinergym.utils.common import RANGES_5ZONE, CSVLogger
@@ -100,7 +99,7 @@ class MultiObsWrapper(gym.Wrapper):
             self.history.append(obs)
         return self._get_obs()
 
-    def step(self, action: Union[int, npt.Arraylike]
+    def step(self, action: Union[int, np.ndarray]
              ) -> Tuple[np.ndarray, float, bool, Dict[str, Any]]:
         """Performs the action in the new environment."""
 
@@ -148,7 +147,7 @@ class LoggerWrapper(gym.Wrapper):
             '/progress.csv',
             flag=flag)
 
-    def step(self, action: Union[int, npt.ArrayLike]
+    def step(self, action: Union[int, np.ndarray]
              ) -> Tuple[np.ndarray, float, bool, Dict[str, Any]]:
         """Step the environment. Logging new information
 

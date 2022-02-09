@@ -9,7 +9,7 @@ Funcionalities:
 
 import os
 from pprint import pprint
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import gym
 import numpy as np
@@ -126,7 +126,13 @@ class EplusEnv(gym.Env):
         # Reward class
         self.cls_reward = reward
 
-    def step(self, action: Union[int, npt.ArrayLike]
+    def step(self,
+             action: Union[int,
+                           float,
+                           np.integer,
+                           np.ndarray,
+                           List[Any],
+                           Tuple[Any]]
              ) -> Tuple[np.ndarray, float, bool, Dict[str, Any]]:
         """Sends action to the environment.
 
