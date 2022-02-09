@@ -3,6 +3,14 @@ Welcome to **sinergym**!
 
 .. include:: pages/introduction.rst
 
+############
+Contributing
+############
+
+To any interested in making Sinergym better, there are still some improvements that need to be done. You can check `issues <https://github.com/jajimer/sinergym/issues>`__ in the repo.
+
+If you want to contribute, please read `CONTRIBUTING.md <https://github.com/jajimer/sinergym/blob/main/CONTRIBUTING.md>`__ first.
+
 .. toctree::
    :maxdepth: 2
    :hidden:

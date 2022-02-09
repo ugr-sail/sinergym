@@ -11,7 +11,10 @@ Currently, we have developed the next procedures for this project:
 Pull Request
 *************
 
-- **Python Code format check**: Python code format is checked in every pull request following **Pep8** `standard <https://www.python.org/dev/peps/pep-0008/>`__ (Level 2 aggressive) and `isort <https://github.com/PyCQA/isort>`__ to sort imports. If format is incorrect, a bot will comment in pull request advising that issue and notifying it will be correct merging with main.
+- **Python Code format check**: Python code format is checked in every pull request following **Pep8** `standard <https://www.python.org/dev/peps/pep-0008/>`__ (Level 2 aggressive) and `isort <https://github.com/PyCQA/isort>`__ to sort imports. 
+  If format is incorrect, a bot will comment in pull request advising that issue and notifying it will be correct merging with main.
+- **Code type check**: We are using `pytype <https://github.com/google/pytype>`__ in Sinergym module. This let dynamic types in Python like it is usual, but controlling input and output types in functions and methods. This workflow ignore `import-error` type using command `pytype -d import-error sinergym/`.
+  For example, **pytype** cannot include google cloud storage module, so this option specification is necessary. If some type error happens, the workflow show error until user fix it.
 - **Documentation Checks**: This action checks whether source documentation has been modified in every pull-request. If source documentation has been updated, it will compile documentation with Sphinx and raise errors if exist.
 
 .. warning:: Sphinx Warning messages behave like errors for workflow status.
