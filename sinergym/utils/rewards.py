@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from math import exp
-from typing import Tuple, List, Dict, Optional
+from typing import Dict, List, Optional, Tuple
 
 YEAR = 2021
 

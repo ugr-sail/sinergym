@@ -1,12 +1,12 @@
 """Implementation of custom Gym environments."""
 
 from collections import deque
+from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
 import gym
 import numpy as np
 import numpy.typing as npt
 from stable_baselines3.common.env_util import is_wrapped
-from typing import Optional, List, Tuple, Dict, Any, Sequence, Union
 
 from sinergym.utils.common import RANGES_5ZONE, CSVLogger
 

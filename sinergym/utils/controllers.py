@@ -1,7 +1,7 @@
 """Implementation of basic controllers."""
 
-from ctypes import Union
 import os
+from ctypes import Union
 from datetime import datetime
 from typing import Any, List, Optional, Sequence, Tuple
 

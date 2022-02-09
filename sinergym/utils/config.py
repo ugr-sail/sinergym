@@ -2,10 +2,10 @@
 import os
 from copy import deepcopy
 from shutil import rmtree
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 from opyplus import Epm, Idd, WeatherData
-from typing import Any, Dict, List, Tuple, Optional
 
 from sinergym.utils.common import get_delta_seconds, prepare_batch_from_records
 
@@ -362,4 +362,4 @@ class Config(object):
             int: Simulation year.
         """
 
-        return self.YEAR
+        return YEAR

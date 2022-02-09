@@ -159,10 +159,10 @@ if args.seed:
     name += '-seed_' + str(args.seed)
 name += '(' + experiment_date + ')'
 # Check if MLFLOW_TRACKING_URI is defined
-if os.environ.get('MLFLOW_TRACKING_URI') is not None:
+mlflow_tracking_uri = os.environ.get('MLFLOW_TRACKING_URI')
+if mlflow_tracking_uri is not None:
     # Check ping to server
-    mlflow_ip = os.environ.get(
-        'MLFLOW_TRACKING_URI').split('/')[-1].split(':')[0]
+    mlflow_ip = mlflow_tracking_uri.split('/')[-1].split(':')[0]
     # If server is not valid, setting default local path to mlflow
     response = os.system("ping -c 1 " + mlflow_ip)
     if response != 0:

@@ -2,10 +2,10 @@
 Base simulator class.
 """
 import os
+from typing import Union
 
 import numpy as np
 import numpy.typing as npt
-from typing import Union
 
 
 class BaseSimulator(object):

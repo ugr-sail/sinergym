@@ -229,7 +229,7 @@ class EnergyPlus(object):
         return (time_info, Dblist, is_terminal)
 
     def step(self, action: Union[float, npt.ArrayLike]) \
-            -> Union[Tuple[Tuple[int, int, int, float], Tuple[float, ...], bool], None]:
+            -> Tuple[Tuple[int, int, int, float], Tuple[float, ...], bool]:
         """Executes a given action.
 
         Args:
@@ -248,8 +248,8 @@ class EnergyPlus(object):
 
         # Check if terminal
         if self._curSimTim >= self._eplus_one_epi_len:
-            return None
-
+            raise RuntimeError(
+                'You are trying to step in a terminated episode (do reset before).')
         # Send to EnergyPlus
         act_repeat_i = 0
         is_terminal = False
@@ -529,7 +529,7 @@ class EnergyPlus(object):
             int: Simulation year.
         """
 
-        return self._config.start_year()
+        return self._config.start_year
 
     @property
     def start_mon(self) -> int:
