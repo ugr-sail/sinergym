@@ -1,6 +1,7 @@
 """Implementation of custom Gym environments."""
 
 from collections import deque
+from typing import Any, Dict, Optional, Sequence, Tuple, Union
 
 import gym
 import numpy as np
@@ -11,7 +12,10 @@ from sinergym.utils.common import RANGES_5ZONE, CSVLogger
 
 class NormalizeObservation(gym.ObservationWrapper):
 
-    def __init__(self, env, ranges=RANGES_5ZONE):
+    def __init__(self,
+                 env: Any,
+                 ranges: Dict[str,
+                              Sequence[Any]] = RANGES_5ZONE):
         """Observations normalized to range [0, 1].
 
         Args:
@@ -22,7 +26,7 @@ class NormalizeObservation(gym.ObservationWrapper):
         self.unwrapped_observation = None
         self.ranges = ranges
 
-    def observation(self, obs):
+    def observation(self, obs: np.ndarray) -> np.ndarray:
         """Applies normalization to observation.
 
         Args:
@@ -56,7 +60,7 @@ class NormalizeObservation(gym.ObservationWrapper):
         # Return obs values in the SAME ORDER than obs argument.
         return np.array(obs)
 
-    def get_unwrapped_obs(self):
+    def get_unwrapped_obs(self) -> Optional[np.ndarray]:
         """Get last environment observation without normalization.
 
         Returns:
@@ -67,7 +71,7 @@ class NormalizeObservation(gym.ObservationWrapper):
 
 class MultiObsWrapper(gym.Wrapper):
 
-    def __init__(self, env, n=5, flatten=True):
+    def __init__(self, env: Any, n: int = 5, flatten: bool = True) -> None:
         """Stack of observations.
 
         Args:
@@ -84,7 +88,7 @@ class MultiObsWrapper(gym.Wrapper):
         self.observation_space = gym.spaces.Box(
             low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
 
-    def reset(self):
+    def reset(self) -> np.ndarray:
         """Resets the environment.
 
         Returns:
@@ -95,14 +99,15 @@ class MultiObsWrapper(gym.Wrapper):
             self.history.append(obs)
         return self._get_obs()
 
-    def step(self, action):
+    def step(self, action: Union[int, np.ndarray]
+             ) -> Tuple[np.ndarray, float, bool, Dict[str, Any]]:
         """Performs the action in the new environment."""
 
         observation, reward, done, info = self.env.step(action)
         self.history.append(observation)
         return self._get_obs(), reward, done, info
 
-    def _get_obs(self):
+    def _get_obs(self) -> np.ndarray:
         """Get observation history.
 
         Returns:
@@ -116,7 +121,7 @@ class MultiObsWrapper(gym.Wrapper):
 
 class LoggerWrapper(gym.Wrapper):
 
-    def __init__(self, env, flag=True):
+    def __init__(self, env: Any, flag: bool = True):
         """CSVLogger to log interactions with environment.
 
         Args:
@@ -142,7 +147,8 @@ class LoggerWrapper(gym.Wrapper):
             '/progress.csv',
             flag=flag)
 
-    def step(self, action):
+    def step(self, action: Union[int, np.ndarray]
+             ) -> Tuple[np.ndarray, float, bool, Dict[str, Any]]:
         """Step the environment. Logging new information
 
         Args:
@@ -198,7 +204,7 @@ class LoggerWrapper(gym.Wrapper):
 
         return obs, reward, done, info
 
-    def reset(self):
+    def reset(self) -> np.ndarray:
         """Resets the environment. Recording episode summary in logger
         """
         # It isn't first episode simulation, so we can logger last episode
@@ -231,7 +237,7 @@ class LoggerWrapper(gym.Wrapper):
 
         return obs
 
-    def close(self):
+    def close(self) -> None:
         """Close env. Recording last episode summary.
         """
         # Record last episode summary before end simulation
@@ -242,12 +248,12 @@ class LoggerWrapper(gym.Wrapper):
         # Then, close env
         self.env.close()
 
-    def activate_logger(self):
+    def activate_logger(self) -> None:
         """Activate logger if its flag False.
         """
         self.logger.activate_flag()
 
-    def deactivate_logger(self):
+    def deactivate_logger(self) -> None:
         """Deactivate logger if its flag True.
         """
         self.logger.deactivate_flag()

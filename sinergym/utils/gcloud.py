@@ -2,17 +2,14 @@
 
 import glob
 import os
-import time
 
-import googleapiclient.discovery
 import requests
 from google.cloud import storage
-from oauth2client.client import GoogleCredentials
 
 ####################### GCLOUD SERVICE OWNER #######################
 
 
-def init_storage_client():
+def init_storage_client() -> storage.Client:
     """Init gcloud storage client to send petitions.
 
     Returns:
@@ -25,7 +22,11 @@ def init_storage_client():
 ####################### GCLOUD BUCKETS MANIPULATION #######################
 
 
-def upload_to_bucket(client, src_path, dest_bucket_name, dest_path):
+def upload_to_bucket(
+        client: storage.Client,
+        src_path: str,
+        dest_bucket_name: str,
+        dest_path: str):
     """Upload a file or a directory (recursively) from local file system to specified bucket.
 
     Args:
@@ -51,7 +52,7 @@ def upload_to_bucket(client, src_path, dest_bucket_name, dest_path):
 ######## OPERATION DESIGNED TO BE EXECUTED FROM REMOTE CONTAINER ########
 
 
-def get_service_account_token():
+def get_service_account_token() -> str:
     """Get token authorization if container has a valid service account.
 
     Returns:
@@ -64,7 +65,9 @@ def get_service_account_token():
     return token
 
 
-def _get_instance_group_len(instance_group_name, token):
+def _get_instance_group_len(
+        instance_group_name: str,
+        token: str) -> int:
     """Get number of instances in a specific Managed Instance Groups (MIG).
 
     Args:
@@ -84,7 +87,9 @@ def _get_instance_group_len(instance_group_name, token):
     return len(response.json()['managedInstances'])
 
 
-def delete_instance_MIG_from_container(instance_group_name, token):
+def delete_instance_MIG_from_container(
+        instance_group_name: str,
+        token: str) -> requests.Response:
     """Delete the instance group inner Managed Instance Groups where container is executing. Whether this vm is alone in MIG, MIG will be removed too.
 
     Args:

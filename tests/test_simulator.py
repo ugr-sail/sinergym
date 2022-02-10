@@ -98,11 +98,8 @@ def test_episode_transition_with_steps(simulator):
 
     # If we try to do one step more, it shouldn't change environment
     # One step more...
-    output = simulator.step(action=[23.0, 25.0])
-    # Let's see
-    assert output is None
-    # Last action shouldn't change too
-    assert simulator._last_action == [20.0, 24.0]
+    with pytest.raises(RuntimeError):
+        output = simulator.step(action=[23.0, 25.0])
 
 
 def test_get_file_name(simulator, idf_path):

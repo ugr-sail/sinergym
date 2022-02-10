@@ -22,7 +22,6 @@ from stable_baselines3 import DQN
 from stable_baselines3.common import logger
 from torch.nn import functional as F
 
-import sinergym
 from sinergym.utils.wrappers import NormalizeObservation
 
 
