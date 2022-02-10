@@ -144,13 +144,12 @@ def get_current_time_info(epm: Epm, sec_elapsed: float,
     Args:
         epm (opyplus.Epm): EnergyPlus model object.
         sec_elapsed (float): Seconds elapsed since the start of the simulation
-        sim_year (int): Year of the simulation. Defaults to 1991.
+        sim_year (int, optional): Year of the simulation. Defaults to 1991.
 
     Returns:
-        (int, int, int, float): A tuple composed by the current day, month and hour in the simulation and time elapsed.
+        Tuple[int, int, int, float]: A tuple composed by the current day, month and hour in the simulation and time elapsed.
 
     """
-
     start_date = datetime(
         year=sim_year,  # epm.RunPeriod[0]['start_year'],
         month=epm.RunPeriod[0]['begin_month'],
@@ -173,10 +172,7 @@ def parse_variables(var_file: str) -> Dict[str, List[str]]:
         var_file (str): Variables file path.
 
     Returns:
-        dict:
-            {'observation': A list with the name of the observation <variables> (<zone>) \n
-            'action'      : A list with the name og the action <variables>}.
-
+        Dict[str, List[str]]: 'observation' and 'action' keys; a list with the name of the observation <variables> (<zone>) and a list with the name og the action <variables> respectively.
     """
 
     tree = ET.parse(var_file)
@@ -204,13 +200,13 @@ def parse_observation_action_space(space_file: str) -> Dict[str, Any]:
     Args:
         space_file (str): Observation space definition file path.
 
-    Returns:
-        dictionary:
-                {'observation'     : tuple for gym.spaces.Box() arguments, \n
-                'discrete_action'  : dictionary action mapping for gym.spaces.Discrete(), \n
-                'continuos_action' : tuple for gym.spaces.Box()}
+    Raises:
+        RuntimeError: If root XML tag is not 'space'.
 
+    Returns:
+        Dict[str, Any]: 'observation', 'discrete_action' and 'continuos_action' keys. tuple for gym.spaces.Box() arguments, dictionary action mapping for gym.spaces.Discrete() and tuple for gym.spaces.Box()
     """
+
     tree = ET.parse(space_file)
     root = tree.getroot()
     if(root.tag != 'space'):
@@ -286,12 +282,11 @@ def create_variable_weather(
     Args:
         weather_data (opyplus.WeatherData): Opyplus object with the weather for the simulation.
         original_epw_file (str): Path to the original EPW file.
-        columns (list, optional): List of columns to be affected. Defaults to ['drybulb'].
-        variation (tuple, optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
+        columns (List[str], optional): List of columns to be affected. Defaults to ['drybulb'].
+        variation (Optional[Tuple[float, float, float]], optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
 
     Returns:
-        str: Name of the file created in the same location as the original one.
-
+        Optional[str]: Name of the file created in the same location as the original one.
     """
 
     if variation is None:
@@ -334,16 +329,16 @@ def create_variable_weather(
 
 
 def ranges_getter(output_path: str,
-                  last_result: Optional[Dict[str, List[float]]] = None) -> \
-        Dict[str, List[float]]:
+                  last_result: Optional[Dict[str, List[float]]] = None
+                  ) -> Dict[str, List[float]]:
     """Given a path with simulations outputs, this function is used to extract max and min absolute valors of all episodes in each variable. If a dict ranges is given, will be updated.
 
     Args:
         output_path (str): path with simulations directories (Eplus-env-\\*).
-        last_result (dict, optional): Last ranges dict to be updated. This will be created if it is not given.
+        last_result (Optional[Dict[str, List[float]]], optional): Last ranges dict to be updated. This will be created if it is not given.
 
     Returns:
-        dict: list min,max of each variable as a key.
+        Dict[str, List[float]]: list min,max of each variable as a key.
 
     """
 
@@ -395,12 +390,12 @@ def setpoints_transform(action: Union[int,
     """Given an action inner gym action_space, this will be converted into an action inner setpoints_space (Sinergym Simulation).
 
      Args:
-        action (list): Action of a step in gym simulation.
+        action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action of a step in gym simulation.
         action_space (gym.spaces.Box): Gym action space
-        setpoints_space (list): Sinergym simulation action space
+        setpoints_space (List[List[Union[int, float]]]): Sinergym simulation action space
 
      Returns:
-        list: Action transformed into simulation action space.
+        List[Union[int, float]]: Action transformed into simulation action space.
 
     """
 
@@ -427,10 +422,10 @@ def get_record_keys(record: Record) -> List[str]:
     """Given an opyplus Epm Record (one element from opyplus.epm object) this function returns list of keys (opyplus hasn't got this functionality explicitly)
 
      Args:
-        record (opyplus.Epm.record): Element from Epm object.
+        record (opyplus.Epm.Record): Element from Epm object.
 
      Returns:
-        list(str): Key list from record.
+        List[str]: Key list from record.
     """
     return [field.ref for field in record._table._dev_descriptor._field_descriptors]
 
@@ -439,10 +434,10 @@ def prepare_batch_from_records(records: List[Record]) -> List[Dict[str, Any]]:
     """Prepare a list of dictionaries in order to use Epm.add_batch directly
 
     Args:
-        records (list): List of records which will be converted to dictionary batch
+        records List[opyplus.Epm.Record]: List of records which will be converted to dictionary batch.
 
     Returns:
-        list (dict): List of dicts where each dictionary is a record element
+        List[Dict[str, Any]]: List of dicts where each dictionary is a record element.
     """
 
     batch = []

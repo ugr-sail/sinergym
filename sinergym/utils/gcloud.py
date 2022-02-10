@@ -13,7 +13,7 @@ def init_storage_client() -> storage.Client:
     """Init gcloud storage client to send petitions.
 
     Returns:
-        client: Google Cloud storage client object to ask resources.
+        storage.Client: Google Cloud storage client object to ask resources.
 
     """
     client = storage.Client()
@@ -30,10 +30,10 @@ def upload_to_bucket(
     """Upload a file or a directory (recursively) from local file system to specified bucket.
 
     Args:
-        client: Google Cloud storage client object to ask resources.
-        src_path: Path to the local file or directory you want to send
-        dest_bucket_name: Destination bucket name
-        dest_path: Path where you want to store data inner the bucket
+        client (storage.Client): Google Cloud storage client object to ask resources.
+        src_path (str): Path to the local file or directory you want to send
+        dest_bucket_name (str): Destination bucket name
+        dest_path (str): Path where you want to store data inner the bucket
     """
     bucket = client.get_bucket(dest_bucket_name)
     if os.path.isfile(src_path):
@@ -71,8 +71,8 @@ def _get_instance_group_len(
     """Get number of instances in a specific Managed Instance Groups (MIG).
 
     Args:
-        instance_group_name: Instance group name you want to know number of instances.
-        token: str to auth in Google Cloud Account service from container
+        instance_group_name (str): Instance group name you want to know number of instances.
+        token (str): str to auth in Google Cloud Account service from container
 
     Returns:
         int: Number of instances inner Managed Instance Groups
@@ -93,11 +93,11 @@ def delete_instance_MIG_from_container(
     """Delete the instance group inner Managed Instance Groups where container is executing. Whether this vm is alone in MIG, MIG will be removed too.
 
     Args:
-        instance_group_name: Instance group name where container is executing.
-        token: str to auth in Google Cloud Account service from container
+        instance_group_name (str): Instance group name where container is executing.
+        token (str): str to auth in Google Cloud Account service from container
 
     Returns:
-        Request object: REST reponse
+        requests.Response: REST reponse
     """
     header_auth = {'Authorization': 'Bearer ' + token}
     if _get_instance_group_len(instance_group_name, token) == 1:

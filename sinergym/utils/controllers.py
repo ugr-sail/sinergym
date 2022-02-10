@@ -11,7 +11,7 @@ class RandomController(object):
         """Random agent. It selects available actions randomly.
 
         Args:
-            env (object): Simulation environment.
+            env (Any): Simulation environment.
         """
         self.env = env
 
@@ -19,10 +19,10 @@ class RandomController(object):
         """Selects a random action from the environment's `action_space`.
 
         Args:
-            observation (object, optional): Perceived observation. Defaults to None.
+            observation (Optional[List[Any]], optional): Perceived observation. Defaults to None.
 
         Returns:
-            object: Action chosen.
+            Sequence[Any]: Action chosen.
         """
         action = self.env.action_space.sample()
         return action
@@ -37,9 +37,9 @@ class RuleBasedController(object):
         """Agent whose actions are based on static rules.
 
         Args:
-            env (object): Simulation environment.
-            range_comfort_winter (tuple, optional): Comfort temperature range for cool season. Defaults to (20.0, 23.5).
-            range_comfort_summer (tuple, optional): Comfort temperature range for hot season. Defaults to (23.0, 26.0).
+            env (Any): Simulation environment.
+            range_comfort_winter (Tuple[float, float], optional): Comfort temperature range for cool season. Defaults to (20.0, 23.5).
+            range_comfort_summer (Tuple[float, float], optional): Comfort temperature range for hot season. Defaults to (23.0, 26.0).
         """
 
         year = 2021
@@ -59,10 +59,10 @@ class RuleBasedController(object):
         """Select action based on outdoor air drybulb temperature.
 
         Args:
-            observation (object): Perceived observation.
+            observation (List[Any]): Perceived observation.
 
         Returns:
-            object: Action chosen.
+            Sequence[Any]: Action chosen.
         """
         obs_dict = dict(zip(self.variables['observation'], observation))
         out_temp = obs_dict['Site Outdoor Air Drybulb Temperature (Environment)']
