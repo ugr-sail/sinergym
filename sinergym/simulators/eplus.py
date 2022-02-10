@@ -228,7 +228,7 @@ class EnergyPlus(object):
         return (time_info, Dblist, is_terminal)
 
     def step(self, action: Union[int, float, np.integer, np.ndarray, List[Any],
-             Tuple[Any]]
+                                 Tuple[Any]]
              ) -> Tuple[Tuple[int, int, int, float], List[float], bool]:
         """Executes a given action.
 
