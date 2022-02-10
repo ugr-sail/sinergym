@@ -133,8 +133,8 @@ class Config(object):
         """Modify weather data using Ornstein-Uhlenbeck process.
 
         Args:
-            columns (list, optional): List of columns to be affected. Defaults to ['drybulb'].
-            variation (tuple, optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
+            columns (List[str], optional): List of columns to be affected. Defaults to ['drybulb'].
+            variation (Optional[Tuple[float, float, float]], optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
 
         Returns:
             str: New EPW file path generated in simulator working path in that episode or current EPW path if variation is not defined.
@@ -192,7 +192,7 @@ class Config(object):
         """This method read the building model from config and finds the running start month, start day, start year, end month, end day, end year, start weekday and the number of steps in a hour simulation. If any value is Unknown, then value will be 0. If step per hour is < 1, then default value will be 4.
 
         Returns:
-            (int, int, int, int, int, int, int, int): A tuple with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.
+            Tuple[int, int, int, int, int, int, int, int]: A tuple with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.
         """
         # Get runperiod object inner IDF
         runperiod = self.building.RunPeriod[0]
@@ -228,7 +228,7 @@ class Config(object):
         """Gets the length of one episode (an EnergyPlus process run to the end) depending on the config of simulation.
 
         Returns:
-            int: The simulation time step in which the simulation ends.
+            float: The simulation time step in which the simulation ends.
         """
         # Get runperiod object inner IDF
         runperiod = self.building.RunPeriod[0]
@@ -259,7 +259,7 @@ class Config(object):
             env_name (str): simulation env name to define a name in directory
 
         Returns:
-            [str]: Experiment path for directory created.
+            str: Experiment path for directory created.
         """
         # Generate experiment dir path
         experiment_path = self._get_working_folder(
@@ -279,7 +279,7 @@ class Config(object):
             Exception: If experiment path (parent folder) has not be created previously.
 
         Returns:
-            [srt]: Episode path for directory created.
+            srt: Episode path for directory created.
         """
         # Generate episode dir path if experiment dir path has been created
         # previously
@@ -303,6 +303,7 @@ class Config(object):
             directory_path: str,
             base_name: str = '-run') -> str:
         """Create a working folder path from path_folder using base_name, returning the absolute result path.
+           Assumes folders in *parent_dir* have suffix *-run{run_number}*. Finds the highest run number and sets the output folder to that number + 1.
 
         Args:
             path_folder (str): Path when working dir will be created.
@@ -311,7 +312,6 @@ class Config(object):
         Returns:
             str: Path to the working directory.
 
-        Assumes folders in *parent_dir* have suffix *-run{run_number}*. Finds the highest run number and sets the output folder to that number + 1.
         """
 
         # Create de rute if not exists
@@ -343,8 +343,8 @@ class Config(object):
         """Removes the past simulation results from episode
 
         Args:
-            episode_path ([str]): path for the current episide output
-            base_name ([str]): base name for detect episode output id
+            episode_path (str): path for the current episide output
+            base_name (str): base name for detect episode output id
         """
 
         cur_dir_name, cur_dir_id = episode_path.split(base_name)

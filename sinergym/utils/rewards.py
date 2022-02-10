@@ -22,8 +22,8 @@ class LinearReward():
             R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))
 
         Args:
-            range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).
-            range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
+            range_comfort_winter (Tuple[float, float], optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).
+            range_comfort_summer (Tuple[float, float], optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
@@ -50,12 +50,12 @@ class LinearReward():
 
         Args:
             power (float): Power consumption.
-            temperatures (list): Indoor temperatures (one per zone).
+            temperatures (List[float]): Indoor temperatures (one per zone).
             month (int): Current month.
             day (int): Current day.
 
         Returns:
-            float: Reward value.
+            Tuple[float, Dict[str, float]]: Reward value.
         """
         # Energy term
         reward_energy = - self.lambda_energy * power
@@ -93,8 +93,8 @@ class ExpReward():
             R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T - T_{low}, 0) + max(T_{up} - T, 0)) )
 
         Args:
-            range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).
-            range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
+            range_comfort_winter (Tuple[float, float], optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).
+            range_comfort_summer (Tuple[float, float], optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
@@ -117,12 +117,12 @@ class ExpReward():
 
         Args:
             power (float): Power consumption.
-            temperatures (list): Indoor temperatures (one per zone).
+            temperatures (List[float]): Indoor temperatures (one per zone).
             month (int): Current month.
             day (int): Current day.
 
         Returns:
-            float: Reward value.
+            Tuple[float, Dict[str, float]]: Reward value.
         """
         # Energy term
         reward_energy = - self.lambda_energy * power

@@ -19,8 +19,8 @@ class NormalizeObservation(gym.ObservationWrapper):
         """Observations normalized to range [0, 1].
 
         Args:
-            env (object): Original Sinergym environment.
-            ranges: Observation variables ranges to apply normalization (rely on environment)
+            env (Any): Original Sinergym environment.
+            ranges (Dict[str, Sequence[Any]], optional): Observation variables ranges to apply normalization (rely on environment). Defaults to RANGES_5ZONE.
         """
         super(NormalizeObservation, self).__init__(env)
         self.unwrapped_observation = None
@@ -30,10 +30,10 @@ class NormalizeObservation(gym.ObservationWrapper):
         """Applies normalization to observation.
 
         Args:
-            obs (object): Original observation.
+            obs (np.ndarray): Original observation.
 
         Returns:
-            object: Normalized observation.
+            np.ndarray: Normalized observation.
         """
         # Save original obs in class attribute
         self.unwrapped_observation = obs.copy()
@@ -64,7 +64,7 @@ class NormalizeObservation(gym.ObservationWrapper):
         """Get last environment observation without normalization.
 
         Returns:
-            object: Last original observation.
+            Optional[np.ndarray]: Last original observation. If it is the first observation, this value is None.
         """
         return self.unwrapped_observation
 
@@ -75,7 +75,7 @@ class MultiObsWrapper(gym.Wrapper):
         """Stack of observations.
 
         Args:
-            env (object): Original Gym environment.
+            env (Any): Original Gym environment.
             n (int, optional): Number of observations to be stacked. Defaults to 5.
             flatten (bool, optional): Whether or not flat the observation vector. Defaults to True.
         """
@@ -92,7 +92,7 @@ class MultiObsWrapper(gym.Wrapper):
         """Resets the environment.
 
         Returns:
-            list: Stacked previous observations.
+            np.ndarray: Stacked previous observations.
         """
         obs = self.env.reset()
         for _ in range(self.n):
@@ -101,7 +101,14 @@ class MultiObsWrapper(gym.Wrapper):
 
     def step(self, action: Union[int, np.ndarray]
              ) -> Tuple[np.ndarray, float, bool, Dict[str, Any]]:
-        """Performs the action in the new environment."""
+        """Performs the action in the new environment.
+
+        Args:
+            action (Union[int, np.ndarray]): Action to be executed in environment.
+
+        Returns:
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated episode and dict with extra information.
+        """
 
         observation, reward, done, info = self.env.step(action)
         self.history.append(observation)
@@ -125,8 +132,8 @@ class LoggerWrapper(gym.Wrapper):
         """CSVLogger to log interactions with environment.
 
         Args:
-            env (object): Original Gym environment.
-            flag (bool, optional): State of logger (activate or deactivate).
+            env (Any): Original Gym environment.
+            flag (bool, optional): State of logger (activate or deactivate). Defaults to True.
         """
         gym.Wrapper.__init__(self, env)
         # Headers for csv logger
@@ -152,10 +159,10 @@ class LoggerWrapper(gym.Wrapper):
         """Step the environment. Logging new information
 
         Args:
-            action: Action executed in step
+            action (Union[int, np.ndarray]): Action executed in step
 
         Returns:
-            (np.array(),float,bool,dict) tuple
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated episode and dict with extra information.
         """
         obs, reward, done, info = self.env.step(action)
         # We added some extra values (month,day,hour) manually in env, so we
@@ -206,6 +213,9 @@ class LoggerWrapper(gym.Wrapper):
 
     def reset(self) -> np.ndarray:
         """Resets the environment. Recording episode summary in logger
+
+        Returns:
+            np.ndarray: First observation given
         """
         # It isn't first episode simulation, so we can logger last episode
         if self.env.simulator._episode_existed:

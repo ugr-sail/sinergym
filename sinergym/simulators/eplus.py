@@ -44,7 +44,7 @@ class EnergyPlus(object):
         """EnergyPlus simulation class.
 
         Args:
-            eplus_path (str): EnergyPlus installation path.
+            eplus_path (str):  EnergyPlus installation path.
             weather_path (str): EnergyPlus weather file (.epw) path.
             bcvtb_path (str): BCVTB installation path.
             variable_path (str): Path to variables file.
@@ -52,6 +52,7 @@ class EnergyPlus(object):
             env_name (str): The environment name.
             act_repeat (int, optional): The number of times to repeat the control action. Defaults to 1.
             max_ep_data_store_num (int, optional): The number of simulation results to keep. Defaults to 10.
+            config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
         """
         self._env_name = env_name
         self._thread_name = threading.current_thread().getName()
@@ -129,15 +130,6 @@ class EnergyPlus(object):
         self, weather_variability: Optional[Tuple[float, float, float]] = None
     ) -> Tuple[Tuple[int, int, int, float], List[float], bool]:
         """Resets the environment.
-
-        Args:
-            weather_variability (tuple, optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
-
-        Returns:
-            Tuple[Tuple[int, int, int, float], Tuple[float, ...], bool]: The first element is a float tuple with day, month, hour and simulation time elapsed in that order in that step;
-            the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
-            variables.cfg. The last element is a boolean indicating whether the episode terminates.
-
         This method does the following:
         1. Makes a new EnergyPlus working directory.
         2. Copies .idf and variables.cfg file to the working directory.
@@ -146,8 +138,15 @@ class EnergyPlus(object):
         5. Establishes the socket connection with EnergyPlus.
         6. Reads the first sensor data from the EnergyPlus.
         7. Uses a new weather file if passed.
-        """
 
+        Args:
+            weather_variability (Optional[Tuple[float, float, float]], optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
+
+        Returns:
+            Tuple[Tuple[int, int, int, float], List[float], bool]: The first element is a tuple with day, month, hour and simulation time elapsed in that order in that step;
+            the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
+            variables.cfg. The last element is a boolean indicating whether the episode terminates.
+        """
         # End the last episode if exists
         if self._episode_existed:
             self._end_episode()
@@ -231,21 +230,21 @@ class EnergyPlus(object):
                                  Tuple[Any]]
              ) -> Tuple[Tuple[int, int, int, float], List[float], bool]:
         """Executes a given action.
-
-        Args:
-            action (float or list): Control actions that will be passed to EnergyPlus.
-
-        Returns:
-            Union[Tuple[Tuple[int, int, int, float], Tuple[float, ...], bool], None]: The first element is a float tuple with day, month, hour and simulation time elapsed in that order in that step;
-            the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
-            variables.cfg. The last element is a boolean indicating whether the episode terminates.
-            Whether time elapsed is bigger tan episode length, this method will return None value.
-
         This method does the following:
         1. Sends a list of floats to EnergyPlus.
         2. Recieves EnergyPlus results for the next step (state).
-        """
 
+        Args:
+            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Control actions that will be passed to EnergyPlus.
+
+        Raises:
+            RuntimeError: When you try to step in an terminated episode (you should be reset before).
+
+        Returns:
+            Tuple[Tuple[int, int, int, float], List[float], bool]: The first element is a tuple with day, month, hour and simulation time elapsed in that order in that step;
+            the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
+            variables.cfg. The last element is a boolean indicating whether the episode terminates.
+        """
         # Check if terminal
         if self._curSimTim >= self._eplus_one_epi_len:
             raise RuntimeError(
@@ -353,7 +352,7 @@ class EnergyPlus(object):
 
         Args:
             out (Any): stdout type
-            logger (Type): Simulator Logger running currently
+            logger (logging.Logger): Simulator Logger running currently
         """
         for line in iter(out.readline, b''):
             logger.info(line.decode())
@@ -363,7 +362,7 @@ class EnergyPlus(object):
 
         Args:
             out (Any): stdout type
-            logger (Type): Simulator Logger running currently
+            logger (logging.Logger): Simulator Logger running currently
         """
         for line in iter(out.readline, b''):
             logger.error(line.decode())
@@ -471,10 +470,10 @@ class EnergyPlus(object):
             nIn (str): --
             nBl (str): --
             curSimTim (str): Current simulation time.
-            Dblist (str): --
+            Dblist (str): State of enviroment (depending on variables:output fixed in IDF file).
 
         Returns:
-            str: --
+            str: All values concatenated in correct format to send to EnergyPlus subprocess.
         """
 
         ret = ''
