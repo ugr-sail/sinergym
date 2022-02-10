@@ -14,6 +14,8 @@ Once you finish implementing a feature or bug-fix, please send a Pull Request to
 https://github.com/jajimer/sinergym main branch. Please, follow our pull request template for this purpose
 (it will appear in text box so you only have to complete it).
 
+You can create a pull request when the issue is not finished yet and work on it. If you prefer to work in this way, please, select [Draft pull request](https://github.blog/2019-02-14-introducing-draft-pull-requests/) and select *ready for review* when you are ready.
+
 If you are not familiar with creating a Pull Request, here are some guides:
 - http://stackoverflow.com/questions/14680711/how-to-do-a-github-pull-request
 - https://help.github.com/articles/creating-a-pull-request/
@@ -57,7 +59,7 @@ To develop Sinergym on your machine, here are some alternatives:
 
 **Please run `autopep8`** to reformat your code, if you are using [Visual Studio Code](https://code.visualstudio.com/) editor you can auto-format code on save file automatically: https://code.visualstudio.com/docs/python/editing#_formatting.
 
-Please document each function/method using docstring format:
+Please document each function/method using docstring Google standard format (called [napoleon](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)):
 
 ```python
 
