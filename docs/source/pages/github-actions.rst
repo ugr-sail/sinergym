@@ -47,4 +47,4 @@ New release created or modified
 
 .. note:: See `.github/workflows YML files <https://github.com/jajimer/sinergym/tree/develop/.github/workflows>`__ to see code used.
 
-.. note:: Wether you have a forked repository from Sinergym, we recommend you to **enable Github Action in your project** in order to take advantage of this functionality in your developments.
+.. note:: Whether you have a forked repository from Sinergym, we recommend you to **enable Github Action in your project** in order to take advantage of this functionality in your developments.

@@ -279,7 +279,7 @@ class Config(object):
             Exception: If experiment path (parent folder) has not be created previously.
 
         Returns:
-            srt: Episode path for directory created.
+            str: Episode path for directory created.
         """
         # Generate episode dir path if experiment dir path has been created
         # previously

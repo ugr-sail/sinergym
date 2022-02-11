@@ -10,7 +10,7 @@ from google.cloud import storage
 
 
 def init_storage_client() -> storage.Client:
-    """Init gcloud storage client to send petitions.
+    """Initiate gcloud storage client to send petitions.
 
     Returns:
         storage.Client: Google Cloud storage client object to ask resources.
@@ -90,14 +90,14 @@ def _get_instance_group_len(
 def delete_instance_MIG_from_container(
         instance_group_name: str,
         token: str) -> requests.Response:
-    """Delete the instance group inner Managed Instance Groups where container is executing. Whether this vm is alone in MIG, MIG will be removed too.
+    """Delete the instance group inner Managed Instance Groups where container is executing. Whether this VM is alone in MIG, MIG will be removed too.
 
     Args:
         instance_group_name (str): Instance group name where container is executing.
         token (str): str to auth in Google Cloud Account service from container
 
     Returns:
-        requests.Response: REST reponse
+        requests.Response: REST response
     """
     header_auth = {'Authorization': 'Bearer ' + token}
     if _get_instance_group_len(instance_group_name, token) == 1:

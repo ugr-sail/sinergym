@@ -18,7 +18,7 @@ These tests running under `pytest <https://docs.pytest.org/en/6.2.x/>`__ framewo
 Install Pytest
 ****************
 
-This project has already established this dependency if you have installed *extras* libreries or *test* librery specifically (see :ref:`4. Install the package`). However, to install it independently:
+This project has already established this dependency if you have installed *extras* libraries or *test* library specifically (see :ref:`4. Install the package`). However, to install it independently:
 
 .. code:: sh
 

@@ -144,7 +144,7 @@ class EnergyPlus(object):
 
         Returns:
             Tuple[Tuple[int, int, int, float], List[float], bool]: The first element is a tuple with day, month, hour and simulation time elapsed in that order in that step;
-            the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
+            the second element consist on EnergyPlus results in a 1-D list corresponding to the variables in
             variables.cfg. The last element is a boolean indicating whether the episode terminates.
         """
         # End the last episode if exists
@@ -153,7 +153,7 @@ class EnergyPlus(object):
             self.logger_main.info('Last EnergyPlus process has been closed. ')
             self._epi_num += 1
 
-        # Create EnergyPlus simulaton process
+        # Create EnergyPlus simulation process
         self.logger_main.info('Creating EnergyPlus simulation environment...')
         # Creating episode working dir
         eplus_working_dir = self._config.set_episode_working_dir()
@@ -232,7 +232,7 @@ class EnergyPlus(object):
         """Executes a given action.
         This method does the following:
         1. Sends a list of floats to EnergyPlus.
-        2. Recieves EnergyPlus results for the next step (state).
+        2. Receives EnergyPlus results for the next step (state).
 
         Args:
             action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Control actions that will be passed to EnergyPlus.
@@ -242,7 +242,7 @@ class EnergyPlus(object):
 
         Returns:
             Tuple[Tuple[int, int, int, float], List[float], bool]: The first element is a tuple with day, month, hour and simulation time elapsed in that order in that step;
-            the second element consist on EnergyPlus results in a 1-D list correponding to the variables in
+            the second element consist on EnergyPlus results in a 1-D list corresponding to the variables in
             variables.cfg. The last element is a boolean indicating whether the episode terminates.
         """
         # Check if terminal
@@ -547,7 +547,7 @@ class EnergyPlus(object):
 
     @property
     def start_day(self) -> int:
-        """Returns the EnergyPlus simulaton start day of the month.
+        """Returns the EnergyPlus simulation start day of the month.
 
         Returns:
             int: Simulation start day of the month.
@@ -556,7 +556,7 @@ class EnergyPlus(object):
 
     @property
     def start_weekday(self) -> int:
-        """Returns the EnergyPlus simulaton start weekday. From 0 (Monday) to 6 (Sunday).
+        """Returns the EnergyPlus simulation start weekday. From 0 (Monday) to 6 (Sunday).
 
         Returns:
             int: Simulation start weekday.
