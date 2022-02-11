@@ -28,6 +28,7 @@ Fixes #(issue or issues)
 - [ ] I have updated the documentation accordingly.
 - [ ] I have reformatted the code using `autopep8` second level aggressive.
 - [ ] I have reformatted the code using `isort`.
+- [ ] I have ensured `cd docs && make spelling && make html` pass (**required** if documentation has been updated.)
 - [ ] I have ensured `pytest tests/ -vv` pass. (**required**).
 - [ ] I have ensured `pytype -d import-error sinergym/` pass. (**required**)
 
