@@ -30,6 +30,8 @@ setup(name='sinergym',
               'pytest',  # Unit test repository
               'sphinx',  # documentation
               'sphinx-rtd-theme',  # documentation theme
+              'sphinxcontrib-spelling',  # documentation spelling
+              'pyenchant',
               'google-api-python-client',
               'oauth2client',
               'google-cloud-storage'
@@ -45,7 +47,9 @@ setup(name='sinergym',
           ],
           'doc': [
               'sphinx',
-              'sphinx-rtd-theme'
+              'sphinx-rtd-theme',
+              'sphinxcontrib-spelling',
+              'pyenchant'
           ],
           'visualization': [
               'matplotlib',
