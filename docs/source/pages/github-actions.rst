@@ -16,8 +16,12 @@ Pull Request
 - **Code type check**: We are using `pytype <https://github.com/google/pytype>`__ in Sinergym module. This let dynamic types in Python like it is usual, but controlling input and output types in functions and methods. This workflow ignore `import-error` type using command `pytype -d import-error sinergym/`.
   For example, **pytype** cannot include google cloud storage module, so this option specification is necessary. If some type error happens, the workflow show error until user fix it.
 - **Documentation Checks**: This action checks whether source documentation has been modified in every pull-request. If source documentation has been updated, it will compile documentation with Sphinx and raise errors if exist.
+  This workflow checks **vocabulary spelling** too. If you have a mistake and sphinx finds a unknown word, this workflow will return an error. Writing documentation
+  about this topic is very possible that you want to use a word that is not in default dictionary. In that case, you have to add that word to `docs/source/spelling_wordlist.txt` (please, respect alphabetical order) and Sphinx-spelling will accept words allocated in the list.
 
 .. warning:: Sphinx Warning messages behave like errors for workflow status.
+
+.. note:: Sphinx Spelling works on code docstring too.
 
 .. note::
 
@@ -34,8 +38,10 @@ Pull Request
 Push main (or merge a pull request)
 ************************************
 
-- **Apply format**: A bot generates a commit in main branch applying format changes when it is necessary (autopep8 2 level aggressive and/or isort module).
-- **Update Documentation build to GitHub pages**: A bot generates a commit in main branch applying new documentation build when it is necessary.
+This workflows will be executed in sequential order:
+
+- **Apply format**: A bot generates a commit in main branch applying format changes when it is necessary (autopep8 2 level aggressive and/or `isort` module).
+- **Update Documentation build to GitHub pages**: A bot generates a commit in main branch applying new documentation build when it is necessary (spelling check included here too).
 - **Update our Docker Hub repository**: This job builds container with all extra requires and it is pushed to our `Docker Hub repository <https://hub.docker.com/r/alejandrocn7/sinergym>`__ using *latest* tag automatically. It needs format and documentation jobs finish for possible changes.
 
 ********************************
@@ -47,4 +53,4 @@ New release created or modified
 
 .. note:: See `.github/workflows YML files <https://github.com/jajimer/sinergym/tree/develop/.github/workflows>`__ to see code used.
 
-.. note:: Wether you have a forked repository from Sinergym, we recommend you to **enable Github Action in your project** in order to take advantage of this functionality in your developments.
+.. note:: Whether you have a forked repository from Sinergym, we recommend you to **enable Github Action in your project** in order to take advantage of this functionality in your developments.

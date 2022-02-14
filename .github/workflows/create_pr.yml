@@ -81,6 +81,10 @@ jobs:
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: "cd docs && sphinx-build -M html source build -W"
 
+      - name: Check sphinx spelling
+        if: steps.verify-documentation-update.outputs.doc == 'true'
+        run: "cd docs && sphinx-build -M spelling source build -W"
+
   tests:
     name: build container and execute pytest
     runs-on: ubuntu-latest

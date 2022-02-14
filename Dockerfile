@@ -57,8 +57,10 @@ RUN ln -s /usr/bin/pip3 /usr/bin/pip
 RUN ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
 RUN apt install python${PYTHON_VERSION} python${PYTHON_VERSION}-distutils -y
 RUN apt install python3-pip -y
-# Install OpenJDK-8
 
+# Install enchant for sinergym documentation
+RUN apt-get update && echo "Y\r" | apt-get install enchant --fix-missing -y
+# Install OpenJDK-8
 RUN apt-get update && echo "Y\r" | apt-get install default-jre openjdk-8-jdk
 
 # Install BCVTB

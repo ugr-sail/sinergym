@@ -27,19 +27,19 @@ Docker container
 We include a **Dockerfile** for installing all dependencies and setting
 up the image for running *sinergym*. 
 
-By default, Dockerfile will do `pip install -e .[extras]`, if you want to install a diffetent setup, you will have to do in root repository:
+By default, Dockerfile will do `pip install -e .[extras]`, if you want to install a different setup, you will have to do in root repository:
 
 .. code:: sh
 
     $ docker build -t <tag_name> --build-arg SINERGYM_EXTRAS=[<setup_tag(s)>] .
 
-For example, if you want a container with only documentation libaries and testing:
+For example, if you want a container with only documentation libraries and testing:
 
 .. code:: sh
 
     $ docker build -t example1/sinergym:latest --build-arg SINERGYM_EXTRAS=[doc,test] .
 
-On the other hand, if you don't want any extra library, it's neccesary to write an empty value like this:
+On the other hand, if you don't want any extra library, it's necessary to write an empty value like this:
 
 .. code:: sh
 
@@ -58,7 +58,7 @@ If you prefer installing *sinergym* manually, follow the steps below:
 1. Install EnergyPlus 9.5.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Firstly, install EnergyPlus. Currently it has been update compability to 9.5.0 and it has
+Firstly, install EnergyPlus. Currently it has been update compatibility to 9.5.0 and it has
 been tested, but code may also work with other versions. Sinergym ensure this support:
 
 +------------------+--------------------+

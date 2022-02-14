@@ -1,6 +1,6 @@
 """Gym environment for simulation with EnergyPlus.
 
-Funcionalities:
+Functionalities:
     - Both discrete and continuous action spaces
     - Add variability into the weather series
     - Reward is computed with absolute difference to comfort range

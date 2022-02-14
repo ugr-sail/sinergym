@@ -2,7 +2,7 @@
 Output format
 ###############
 
-When a simulation is run, this generate a directory called ``Eplus-env-<env_name>-res<num_simulation>``. The content of this directory is the result of the simulation and we have:
+When a simulation is running, this generates a directory called ``Eplus-env-<env_name>-res<num_simulation>``. The content of this directory is the result of the simulation and we have:
 
 ::
 

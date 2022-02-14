@@ -172,7 +172,7 @@ def parse_variables(var_file: str) -> Dict[str, List[str]]:
         var_file (str): Variables file path.
 
     Returns:
-        Dict[str, List[str]]: 'observation' and 'action' keys; a list with the name of the observation <variables> (<zone>) and a list with the name og the action <variables> respectively.
+        Dict[str, List[str]]: 'observation' and 'action' keys; a list with the name of the observation <variables> (<zone>) and a list with the name of the action <variables> respectively.
     """
 
     tree = ET.parse(var_file)
@@ -204,7 +204,7 @@ def parse_observation_action_space(space_file: str) -> Dict[str, Any]:
         RuntimeError: If root XML tag is not 'space'.
 
     Returns:
-        Dict[str, Any]: 'observation', 'discrete_action' and 'continuos_action' keys. tuple for gym.spaces.Box() arguments, dictionary action mapping for gym.spaces.Discrete() and tuple for gym.spaces.Box()
+        Dict[str, Any]: 'observation', 'discrete_action' and 'continuous_action' keys. tuple for gym.spaces.Box() arguments, dictionary action mapping for gym.spaces.Discrete() and tuple for gym.spaces.Box()
     """
 
     tree = ET.parse(space_file)
@@ -331,7 +331,7 @@ def create_variable_weather(
 def ranges_getter(output_path: str,
                   last_result: Optional[Dict[str, List[float]]] = None
                   ) -> Dict[str, List[float]]:
-    """Given a path with simulations outputs, this function is used to extract max and min absolute valors of all episodes in each variable. If a dict ranges is given, will be updated.
+    """Given a path with simulations outputs, this function is used to extract max and min absolute values of all episodes in each variable. If a dict ranges is given, will be updated.
 
     Args:
         output_path (str): path with simulations directories (Eplus-env-\\*).

@@ -23,7 +23,7 @@ class LinearReward():
 
         Args:
             range_comfort_winter (Tuple[float, float], optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).
-            range_comfort_summer (Tuple[float, float], optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
+            range_comfort_summer (Tuple[float, float], optional): Temperature comfort range for hot season. Defaults to (23.0, 26.0).
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
@@ -94,7 +94,7 @@ class ExpReward():
 
         Args:
             range_comfort_winter (Tuple[float, float], optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).
-            range_comfort_summer (Tuple[float, float], optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
+            range_comfort_summer (Tuple[float, float], optional): Temperature comfort range for hot season. Defaults to (23.0, 26.0).
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.

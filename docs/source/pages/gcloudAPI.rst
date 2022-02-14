@@ -2,7 +2,7 @@
 Sinergym with Google Cloud
 ###########################
 
-In this project, we are defined some functionality based in gcloud API python in `sinergym/utils/gcloud.py`. Our time aim to configure a Google Cloud account and combine with Sinergym easily.
+In this project, we have defined some functionality based in gcloud API python in `sinergym/utils/gcloud.py`. Our time aim to configure a Google Cloud account and combine with Sinergym easily.
 
 The main idea is to construct a **virtual machine** (VM) using **Google Cloud Engine** (GCE) in order to execute our **Sinergym container** on it. At the same time, this remote container will update a Google Cloud Bucket with experiments results and mlflow tracking server with artifacts if we configure that experiment with those options.
 
@@ -135,7 +135,7 @@ This file does the next:
 There is an option section at the end of the file. Do not confuse this part with the virtual machine configuration. 
 Google Cloud uses a helper VM to build everything mentioned above. At the same time, we are using this YAML file in order to
 upgrade our container because of *PROJECT_ID* environment variable is defined by Google Cloud SDK, so its value is your current
-project in Google Cloud global config.
+project in Google Cloud global configuration.
 
 .. warning:: In the same way VM needs more memory, Google Cloud Build needs at least 10GB to work correctly. In other case it may fail.
 
@@ -209,8 +209,8 @@ Then, you can create a group-instances as large as you want:
 
 .. warning:: It is possible that quote doesn't let you have more than one VM at the same time. Hence, the rest of VM's probably will be *initializing* always but never ready. If it is your case, we recommend you check your quotes `here <https://console.cloud.google.com/iam-admin/quotas>`__
 
-5. Init your VM
-~~~~~~~~~~~~~~~~
+5. Initiate your VM
+~~~~~~~~~~~~~~~~~~~~
 
 Your virtual machine is ready! To connect you can use ssh (see `gcloud-ssh <https://cloud.google.com/sdk/gcloud/reference/compute/ssh>`__):
 
@@ -314,7 +314,7 @@ Remote Tensorboard log
 
 In ``--tensorboard`` parameter we have to specify a **local path** or a **Bucket path**.
 
-If we specify a **local path**, tensorboard logs will be stored in remote containers memory. If you have specified ``--remote_store`` or ``--mlflow_store``, this logs will be sent to those remote storages when experiment finishes.
+If we specify a **local path**, tensorboard logs will be stored in remote containers memory. If you have specified ``--remote_store`` or ``--mlflow_store``, this logs will be sent to those remote storage when experiment finishes.
 One of the strengths of Tensorboard is the ability to see the data in real time as the training is running. Thus, it is recommended to define in ``--tensorboard`` the **bucket path** directly in order to send that information
 as the training is generating it (see `this issue <https://github.com/ContinualAI/avalanche/pull/628>`__ for more information). In our project we have *gs://experiments-storage/tensorboard_log* but you can have whatever you want.
 
@@ -329,7 +329,7 @@ Visualize remote Tensorboard log in real-time
 
 You have two options:
     1. Create a remote server with tensorboard service deployed.
-    2. Init that service in your local computer, reading from the bucket log, and access to the visualization in *http://localhost:6006*
+    2. Initiate that service in your local computer, reading from the bucket log, and access to the visualization in *http://localhost:6006*
 
 The second options is enough since we can read from bucket when we need directly and shut down local service when we finish.
 
@@ -353,20 +353,20 @@ This bash script defines all the process to configure this functionality automat
 
 This script do the next for you:
 
-    1. Creating Service account for mlflow service [mlflow-tracking-sa].
+    1. Creating Service account for mlflow service `[mlflow-tracking-sa]`.
     2. Creating Back-end artifact bucket.
-    3. Creating sql instance with root password specified in argument 4.
+    3. Creating SQL instance with root password specified in argument 4.
     4. Creating mlflow database inner SQL instance.
-    5. Creating service account privileges to use Back-end [roles/cloudsql.editor]
+    5. Creating service account privileges to use Back-end `[roles/cloudsql.editor]`
     6. Generating an automatic script called **start_mlflow_tracking.sh** and sending to ``gs://<BUCKET_NAME>/scripts/``
     7. Deleting local **start_mlflow_tracking.sh** file.
-    8. Creating static external ip for mlflow-tracking-server
-    9. Deploying remote server [mlflow-tracking-server]
+    8. Creating static external IP for `mlflow-tracking-server`
+    9. Deploying remote server `[mlflow-tracking-server]`
 
-Step 8 is very important, this allows you to delete server instance and create again when you need it without redefining server ip in sinergym-template for remote container experiments.
-Notice that server instance creation use service account for mlflow, with this configuration mlflow can read from SQL server. In :ref:`4. Create your VM or MIG` it is specified MLFLOW_TRACKING_URI container environment variable using that external static ip.
+Step 8 is very important, this allows you to delete server instance and create again when you need it without redefining server IP in sinergym-template for remote container experiments.
+Notice that server instance creation use service account for mlflow, with this configuration mlflow can read from SQL server. In :ref:`4. Create your VM or MIG` it is specified MLFLOW_TRACKING_URI container environment variable using that external static IP.
 
-.. warning:: It is important execute this script before create sinergym-template instances in order to anotate mlflow-server-ip.
+.. warning:: It is important execute this script before create sinergym-template instances in order to annotate `mlflow-server-ip`.
 
 .. note:: If you want to change any backend configuration, you can change any parameter of the script bellow.
 
@@ -378,6 +378,6 @@ Google Cloud Alerts
 
 **Google Cloud Platform** include functionality in order to trigger some events and generate alerts in consequence. 
 Then, a trigger has been created in our gcloud project which aim to advertise when an experiment has finished.
-This alert can be captured in several ways (slack, sms, email, etc).
+This alert can be captured in several ways (Slack, SMS, Email, etc).
 If you want to do the same, please, check Google Cloud Alerts documentation `here <https://cloud.google.com/monitoring/alerts>`__.
 

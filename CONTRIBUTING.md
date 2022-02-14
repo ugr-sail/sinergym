@@ -51,6 +51,10 @@ To develop Sinergym on your machine, here are some alternatives:
     2. If you are using [Visual Studio Code](https://code.visualstudio.com/) you can build a container and develop with Github from there using [remote container extension](https://code.visualstudio.com/docs/remote/containers) (very comfortable).
     3. If you don't want to use that editor extension, you can build a container using Dockerfile traditionally and init github credentials manually into container.
 
+## Documentation
+
+If you want to update our documentation, you have to pass sphinx build and spelling compilation. Workflows will check that and report errors in Pull Request. If spelling doesn't pass due to a word that is not in default dictionary, you have to add in `docs/sources/spelling_wordlist.txt` (Please, respect alphabetical order).
+
 ## Codestyle
 
 - We are using [autopep8 codestyle](https://github.com/hhatto/autopep8) (max line length of 79 characters) 2 level aggressive.
