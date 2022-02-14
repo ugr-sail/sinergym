@@ -21,6 +21,8 @@ Pull Request
 
 .. warning:: Sphinx Warning messages behave like errors for workflow status.
 
+.. note:: Sphinx Spelling works on code docstring too.
+
 .. note::
 
   If you want to ignore *docs/build* files while you are working locally. You can ignore files although files are in repository executing next in local:
