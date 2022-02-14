@@ -81,12 +81,13 @@
              
   <section id="wrappers">
 <h1>Wrappers<a class="headerlink" href="#wrappers" title="Permalink to this headline"></a></h1>
-<p>Sinergym has several wrappers in order to add some functionality in the environment that it doesn’t have by default. Currently, we have developed a <strong>normalization wrapper</strong>,
+<p>Sinergym has several wrappers in order to add some functionality in the environment that it doesn't have by default. Currently, we have developed a <strong>normalization wrapper</strong>,
 <strong>multi-observation wrapper</strong> and <strong>Logger wrapper</strong>. The code can be found in <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/wrappers.py">sinergym/sinergym/utils/wrappers.py</a>.
 You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some of its variants:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Implementation of custom Gym environments.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -97,25 +98,28 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 
 <span class="k">class</span> <span class="nc">NormalizeObservation</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">ObservationWrapper</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">ranges</span><span class="o">=</span><span class="n">RANGES_5ZONE</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">env</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+                 <span class="n">ranges</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span>
+                              <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="n">RANGES_5ZONE</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Observations normalized to range [0, 1].</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            env (object): Original Sinergym environment.</span>
-<span class="sd">            ranges: Observation variables ranges to apply normalization (rely on environment)</span>
+<span class="sd">            env (Any): Original Sinergym environment.</span>
+<span class="sd">            ranges (Dict[str, Sequence[Any]], optional): Observation variables ranges to apply normalization (rely on environment). Defaults to RANGES_5ZONE.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">NormalizeObservation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unwrapped_observation</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span> <span class="o">=</span> <span class="n">ranges</span>
 
-    <span class="k">def</span> <span class="nf">observation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">observation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Applies normalization to observation.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            obs (object): Original observation.</span>
+<span class="sd">            obs (np.ndarray): Original observation.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            object: Normalized observation.</span>
+<span class="sd">            np.ndarray: Normalized observation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Save original obs in class attribute</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unwrapped_observation</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -142,22 +146,22 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="c1"># Return obs values in the SAME ORDER than obs argument.</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_unwrapped_obs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_unwrapped_obs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Get last environment observation without normalization.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            object: Last original observation.</span>
+<span class="sd">            Optional[np.ndarray]: Last original observation. If it is the first observation, this value is None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unwrapped_observation</span>
 
 
 <span class="k">class</span> <span class="nc">MultiObsWrapper</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">flatten</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Stack of observations.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            env (object): Original Gym environment.</span>
+<span class="sd">            env (Any): Original Gym environment.</span>
 <span class="sd">            n (int, optional): Number of observations to be stacked. Defaults to 5.</span>
 <span class="sd">            flatten (bool, optional): Whether or not flat the observation vector. Defaults to True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -170,25 +174,33 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
             <span class="n">low</span><span class="o">=-</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Resets the environment.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            list: Stacked previous observations.</span>
+<span class="sd">            np.ndarray: Stacked previous observations.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_obs</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Performs the action in the new environment.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+             <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Performs the action in the new environment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            action (Union[int, np.ndarray]): Action to be executed in environment.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated episode and dict with extra information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_obs</span><span class="p">(),</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span>
 
-    <span class="k">def</span> <span class="nf">_get_obs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_obs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Get observation history.</span>
 
 <span class="sd">        Returns:</span>
@@ -202,12 +214,12 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 
 <span class="k">class</span> <span class="nc">LoggerWrapper</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">flag</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;CSVLogger to log interactions with environment.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            env (object): Original Gym environment.</span>
-<span class="sd">            flag (bool, optional): State of logger (activate or deactivate).</span>
+<span class="sd">            env (Any): Original Gym environment.</span>
+<span class="sd">            flag (bool, optional): State of logger (activate or deactivate). Defaults to True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
         <span class="c1"># Headers for csv logger</span>
@@ -228,14 +240,15 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
             <span class="s1">&#39;/progress.csv&#39;</span><span class="p">,</span>
             <span class="n">flag</span><span class="o">=</span><span class="n">flag</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+             <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Step the environment. Logging new information</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            action: Action executed in step</span>
+<span class="sd">            action (Union[int, np.ndarray]): Action executed in step</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            (np.array(),float,bool,dict) tuple</span>
+<span class="sd">            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated episode and dict with extra information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
         <span class="c1"># We added some extra values (month,day,hour) manually in env, so we</span>
@@ -284,8 +297,11 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 
         <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span>
 
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Resets the environment. Recording episode summary in logger</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: First observation given</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># It isn&#39;t first episode simulation, so we can logger last episode</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_episode_existed</span><span class="p">:</span>
@@ -317,7 +333,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 
         <span class="k">return</span> <span class="n">obs</span>
 
-    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Close env. Recording last episode summary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Record last episode summary before end simulation</span>
@@ -328,12 +344,12 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="c1"># Then, close env</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">activate_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">activate_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Activate logger if its flag False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">activate_flag</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">deactivate_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">deactivate_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Deactivate logger if its flag True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">deactivate_flag</span><span class="p">()</span>
@@ -343,7 +359,6 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">sinergym</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">MultiObsWrapper</span><span class="p">,</span>
                                      <span class="n">NormalizeObservation</span><span class="p">)</span>
 

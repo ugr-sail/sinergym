@@ -87,6 +87,7 @@ reward class or defining a new one and integrate in available environments if yo
 
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">exp</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="n">YEAR</span> <span class="o">=</span> <span class="mi">2021</span>
 
@@ -94,11 +95,11 @@ reward class or defining a new one and integrate in available environments if yo
 <span class="k">class</span> <span class="nc">LinearReward</span><span class="p">():</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">range_comfort_winter</span><span class="o">=</span><span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
-                 <span class="n">range_comfort_summer</span><span class="o">=</span><span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">),</span>
-                 <span class="n">energy_weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                 <span class="n">lambda_energy</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-                 <span class="n">lambda_temperature</span><span class="o">=</span><span class="mf">1.0</span>
+                 <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
+                 <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">),</span>
+                 <span class="n">energy_weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+                 <span class="n">lambda_energy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
+                 <span class="n">lambda_temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
                  <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Simple reward considering absolute difference to temperature comfort.</span>
 
@@ -106,8 +107,8 @@ reward class or defining a new one and integrate in available environments if yo
 <span class="sd">            R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).</span>
-<span class="sd">            range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).</span>
+<span class="sd">            range_comfort_winter (Tuple[float, float], optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).</span>
+<span class="sd">            range_comfort_summer (Tuple[float, float], optional): Temperature comfort range for hot season. Defaults to (23.0, 26.0).</span>
 <span class="sd">            energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.</span>
 <span class="sd">            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.</span>
 <span class="sd">            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</span>
@@ -124,17 +125,22 @@ reward class or defining a new one and integrate in available environments if yo
         <span class="bp">self</span><span class="o">.</span><span class="n">summer_start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">YEAR</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">summer_final_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">YEAR</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">power</span><span class="p">,</span> <span class="n">temperatures</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                  <span class="n">power</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                  <span class="n">temperatures</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+                  <span class="n">month</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                  <span class="n">day</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Reward calculus.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            power (float): Power consumption.</span>
-<span class="sd">            temperatures (list): Indoor temperatures (one per zone).</span>
+<span class="sd">            temperatures (List[float]): Indoor temperatures (one per zone).</span>
 <span class="sd">            month (int): Current month.</span>
 <span class="sd">            day (int): Current day.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            float: Reward value.</span>
+<span class="sd">            Tuple[float, Dict[str, float]]: Reward value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Energy term</span>
         <span class="n">reward_energy</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_energy</span> <span class="o">*</span> <span class="n">power</span>
@@ -160,11 +166,11 @@ reward class or defining a new one and integrate in available environments if yo
 <span class="k">class</span> <span class="nc">ExpReward</span><span class="p">():</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">range_comfort_winter</span><span class="o">=</span><span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
-                 <span class="n">range_comfort_summer</span><span class="o">=</span><span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">),</span>
-                 <span class="n">energy_weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                 <span class="n">lambda_energy</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-                 <span class="n">lambda_temperature</span><span class="o">=</span><span class="mf">1.0</span>
+                 <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
+                 <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">),</span>
+                 <span class="n">energy_weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+                 <span class="n">lambda_energy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
+                 <span class="n">lambda_temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
                  <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reward considering exponential absolute difference to temperature comfort.</span>
 
@@ -172,8 +178,8 @@ reward class or defining a new one and integrate in available environments if yo
 <span class="sd">            R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T - T_{low}, 0) + max(T_{up} - T, 0)) )</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).</span>
-<span class="sd">            range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).</span>
+<span class="sd">            range_comfort_winter (Tuple[float, float], optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).</span>
+<span class="sd">            range_comfort_summer (Tuple[float, float], optional): Temperature comfort range for hot season. Defaults to (23.0, 26.0).</span>
 <span class="sd">            energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.</span>
 <span class="sd">            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.</span>
 <span class="sd">            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</span>
@@ -190,17 +196,18 @@ reward class or defining a new one and integrate in available environments if yo
         <span class="bp">self</span><span class="o">.</span><span class="n">summer_start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">YEAR</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">summer_final_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">YEAR</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">power</span><span class="p">,</span> <span class="n">temperatures</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">power</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">temperatures</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+                  <span class="n">month</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">day</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Reward calculus.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            power (float): Power consumption.</span>
-<span class="sd">            temperatures (list): Indoor temperatures (one per zone).</span>
+<span class="sd">            temperatures (List[float]): Indoor temperatures (one per zone).</span>
 <span class="sd">            month (int): Current month.</span>
 <span class="sd">            day (int): Current day.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            float: Reward value.</span>
+<span class="sd">            Tuple[float, Dict[str, float]]: Reward value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Energy term</span>
         <span class="n">reward_energy</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_energy</span> <span class="o">*</span> <span class="n">power</span>

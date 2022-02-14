@@ -84,7 +84,7 @@
              
   <section id="output-format">
 <h1>Output format<a class="headerlink" href="#output-format" title="Permalink to this headline"></a></h1>
-<p>When a simulation is run, this generate a directory called <code class="docutils literal notranslate"><span class="pre">Eplus-env-&lt;env_name&gt;-res&lt;num_simulation&gt;</span></code>. The content of this directory is the result of the simulation and we have:</p>
+<p>When a simulation is running, this generates a directory called <code class="docutils literal notranslate"><span class="pre">Eplus-env-&lt;env_name&gt;-res&lt;num_simulation&gt;</span></code>. The content of this directory is the result of the simulation and we have:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Eplus-env-&lt;env_name&gt;-res&lt;num_simulation&gt;
 ├── Eplus-env-sub_run1
 ├── Eplus-env-sub_run2
@@ -149,11 +149,11 @@ regardless of the training technique which may be being used or any other extern
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">monitor_header</span><span class="p">,</span>
-            <span class="n">progress_header</span><span class="p">,</span>
-            <span class="n">log_progress_file</span><span class="p">,</span>
-            <span class="n">log_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">monitor_header</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">progress_header</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">log_progress_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">log_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">flag</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span> <span class="o">=</span> <span class="n">monitor_header</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">progress_header</span> <span class="o">=</span> <span class="n">progress_header</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
@@ -174,17 +174,17 @@ regardless of the training technique which may be being used or any other extern
 
     <span class="k">def</span> <span class="nf">log_step</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">timestep</span><span class="p">,</span>
-            <span class="n">date</span><span class="p">,</span>
-            <span class="n">observation</span><span class="p">,</span>
-            <span class="n">action</span><span class="p">,</span>
-            <span class="n">simulation_time</span><span class="p">,</span>
-            <span class="n">reward</span><span class="p">,</span>
-            <span class="n">total_power_no_units</span><span class="p">,</span>
-            <span class="n">comfort_penalty</span><span class="p">,</span>
-            <span class="n">power</span><span class="p">,</span>
-            <span class="n">done</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Log step information and store it in steps_data param.</span>
+            <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">date</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+            <span class="n">observation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+            <span class="n">action</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]],</span>
+            <span class="n">simulation_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">reward</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+            <span class="n">total_power_no_units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+            <span class="n">comfort_penalty</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+            <span class="n">power</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+            <span class="n">done</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Log step information and store it in steps_data attribute.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            timestep (int): Current episode timestep in simulation.</span>
@@ -196,7 +196,7 @@ regardless of the training technique which may be being used or any other extern
 <span class="sd">            total_power_no_units (float): Power consumption penalty depending on reward function.</span>
 <span class="sd">            comfort_penalty (float): Temperature comfort penalty depending on reward function.</span>
 <span class="sd">            power (float): Power consumption in current step (W).</span>
-<span class="sd">            done (bool): Specifies if this step terminates episode or not.</span>
+<span class="sd">            done (bool): It specifies if this step terminates episode or not.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
@@ -218,15 +218,28 @@ regardless of the training technique which may be being used or any other extern
 
     <span class="k">def</span> <span class="nf">log_step_normalize</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">timestep</span><span class="p">,</span>
-            <span class="n">date</span><span class="p">,</span>
-            <span class="n">observation</span><span class="p">,</span>
-            <span class="n">action</span><span class="p">,</span>
-            <span class="n">simulation_time</span><span class="p">,</span>
-            <span class="n">reward</span><span class="p">,</span>
-            <span class="n">total_power_no_units</span><span class="p">,</span>
-            <span class="n">comfort_penalty</span><span class="p">,</span>
-            <span class="n">done</span><span class="p">):</span>
+            <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">date</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+            <span class="n">observation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+            <span class="n">action</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]],</span>
+            <span class="n">simulation_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">reward</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+            <span class="n">total_power_no_units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+            <span class="n">comfort_penalty</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+            <span class="n">done</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Log step information and store it in steps_data_normalized attribute.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            timestep (int): Current episode timestep in simulation.</span>
+<span class="sd">            date (List[int, int, int]): Current date [month,day,hour] in simulation.</span>
+<span class="sd">            observation (List[Any]): Values that belong to current observation.</span>
+<span class="sd">            action (List[Union[int, float]]): Values that belong to current action.</span>
+<span class="sd">            simulation_time (float): Total time elapsed in current episode (seconds).</span>
+<span class="sd">            reward (float): Current reward achieved.</span>
+<span class="sd">            total_power_no_units (float): Power consumption penalty depending on reward function.</span>
+<span class="sd">            comfort_penalty (float): Temperature comfort penalty depending on reward function.</span>
+<span class="sd">            done (bool): It specifies if this step terminates episode or not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
             <span class="n">row_contents</span> <span class="o">=</span> <span class="p">[</span><span class="n">timestep</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span> <span class="o">+</span> \
                 <span class="nb">list</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">simulation_time</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span>
@@ -235,7 +248,7 @@ regardless of the training technique which may be being used or any other extern
         <span class="k">else</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">log_episode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">episode</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">log_episode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">episode</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Log episode main information using steps_data param.</span>
 
 <span class="sd">        Args:</span>
@@ -305,7 +318,7 @@ regardless of the training technique which may be being used or any other extern
         <span class="k">else</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">set_log_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_log_file</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_log_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_log_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Change log_file path for monitor.csv when an episode ends.</span>
 
 <span class="sd">        Args:</span>
@@ -322,12 +335,12 @@ regardless of the training technique which may be being used or any other extern
 
     <span class="k">def</span> <span class="nf">_store_step_information</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">reward</span><span class="p">,</span>
-            <span class="n">power</span><span class="p">,</span>
-            <span class="n">comfort_penalty</span><span class="p">,</span>
-            <span class="n">power_penalty</span><span class="p">,</span>
-            <span class="n">timestep</span><span class="p">,</span>
-            <span class="n">simulation_time</span><span class="p">):</span>
+            <span class="n">reward</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">power</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">comfort_penalty</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">power_penalty</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">simulation_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Store relevant data to episode summary in progress.csv.</span>
 
 <span class="sd">        Args:</span>
@@ -352,7 +365,7 @@ regardless of the training technique which may be being used or any other extern
         <span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span> <span class="o">=</span> <span class="n">timestep</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total_time_elapsed</span> <span class="o">=</span> <span class="n">simulation_time</span>
 
-    <span class="k">def</span> <span class="nf">_reset_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_reset_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Reset relevant data to next episode summary in progress.csv.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">steps_data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
@@ -365,12 +378,12 @@ regardless of the training technique which may be being used or any other extern
         <span class="bp">self</span><span class="o">.</span><span class="n">total_time_elapsed</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">comfort_violation_timesteps</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">activate_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">activate_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Activate Sinergym CSV logger</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">deactivate_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">deactivate_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Deactivate Sinergym CSV logger</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
@@ -382,7 +395,7 @@ regardless of the training technique which may be being used or any other extern
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Note that you can activate and deactivate logger from environment when you want it, using methods activate and deactivate, so you don’t need to unwrap environment.</p>
+<p>Note that you can activate and deactivate logger from environment when you want it, using methods activate and deactivate, so you don't need to unwrap environment.</p>
 </div>
 </section>
 </section>

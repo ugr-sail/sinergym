@@ -106,20 +106,20 @@
 <h1>sinergym.utils.gcloud.delete_instance_MIG_from_container<a class="headerlink" href="#sinergym-utils-gcloud-delete-instance-mig-from-container" title="Permalink to this headline"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="sinergym.utils.gcloud.delete_instance_MIG_from_container">
-<span class="sig-prename descclassname"><span class="pre">sinergym.utils.gcloud.</span></span><span class="sig-name descname"><span class="pre">delete_instance_MIG_from_container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_group_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.gcloud.delete_instance_MIG_from_container" title="Permalink to this definition"></a></dt>
-<dd><p>Delete the instance group inner Managed Instance Groups where container is executing. Whether this vm is alone in MIG, MIG will be removed too.</p>
+<span class="sig-prename descclassname"><span class="pre">sinergym.utils.gcloud.</span></span><span class="sig-name descname"><span class="pre">delete_instance_MIG_from_container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_group_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">requests.models.Response</span></span></span><a class="headerlink" href="#sinergym.utils.gcloud.delete_instance_MIG_from_container" title="Permalink to this definition"></a></dt>
+<dd><p>Delete the instance group inner Managed Instance Groups where container is executing. Whether this VM is alone in MIG, MIG will be removed too.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>instance_group_name</strong> – Instance group name where container is executing.</p></li>
-<li><p><strong>token</strong> – str to auth in Google Cloud Account service from container</p></li>
+<li><p><strong>instance_group_name</strong> (<em>str</em>) -- Instance group name where container is executing.</p></li>
+<li><p><strong>token</strong> (<em>str</em>) -- str to auth in Google Cloud Account service from container</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>REST reponse</p>
+<dd class="field-even"><p>REST response</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Request object</p>
+<dd class="field-odd"><p>requests.Response</p>
 </dd>
 </dl>
 </dd></dl>
