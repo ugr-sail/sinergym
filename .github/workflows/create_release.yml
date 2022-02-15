@@ -57,7 +57,7 @@ jobs:
       #         - 'sinergym/version.txt'
 
       - name: Publish a Python distribution to PyPi
-        if: ${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }} && steps.verify-version-update.outputs.version == 'true'
+        if: ${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: ${{ env.PYPI_USER }}
