@@ -55,7 +55,7 @@ def test_adapt_idf_to_epw(config):
         lambda designday: summerday.lower() in designday.name.lower())[0]
     # Check new location is correct
     assert location.name.lower(
-    ) == 'tucscon-davis-monthan afb_az_usa design_conditions'.lower()
+    ) == 'davis monthan afb_az_usa design_conditions'.lower()
     assert float(location.latitude) == 32.17
     assert float(location.longitude) == -110.88
     assert float(location.time_zone) == -7.0
@@ -63,22 +63,22 @@ def test_adapt_idf_to_epw(config):
 
     # Check new Designday is correct
     assert winter_day.name.lower(
-    ) == 'tucscon-davis-monthan afb ann htg 99.6% condns db'.lower()
+    ) == 'davis monthan afb ann htg 99.6% condns db'.lower()
     assert winter_day.day_type.lower() == 'winterdesignday'.lower()
     assert int(winter_day.month) == 12
     assert int(winter_day.day_of_month) == 21
-    assert float(winter_day.maximum_dry_bulb_temperature) == 0.2
+    assert float(winter_day.maximum_dry_bulb_temperature) == 0.5
     assert float(winter_day.barometric_pressure) == 91976.0
-    assert float(winter_day.wind_speed) == 2.4
+    assert float(winter_day.wind_speed) == 2.1
 
     assert summer_day.name.lower(
-    ) == 'tucscon-davis-monthan afb ann clg .4% condns db=>mwb'.lower()
+    ) == 'davis monthan afb ann clg .4% condns db=>mwb'.lower()
     assert summer_day.day_type.lower() == 'summerdesignday'.lower()
     assert int(summer_day.month) == 7
     assert int(summer_day.day_of_month) == 21
-    assert float(summer_day.maximum_dry_bulb_temperature) == 40.7
+    assert float(summer_day.maximum_dry_bulb_temperature) == 40.8
     assert float(summer_day.barometric_pressure) == 91976.0
-    assert float(summer_day.wind_speed) == 5.0
+    assert float(summer_day.wind_speed) == 4.8
 
 
 def test_apply_extra_conf(config):
