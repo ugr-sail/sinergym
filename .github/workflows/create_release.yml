@@ -56,8 +56,12 @@ jobs:
       #       version:
       #         - 'sinergym/version.txt'
 
+      - name: Preparing dist directory
+        if: ${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}
+        run: python setup.py sdist
+
       - name: Publish a Python distribution to PyPi
-        if: ${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }} && steps.verify-version-update.outputs.version == 'true'
+        if: ${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: ${{ env.PYPI_USER }}

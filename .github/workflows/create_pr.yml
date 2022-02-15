@@ -4,6 +4,8 @@ on: pull_request
 jobs:
 
   format-check:
+    # Skip CI if [ci skip] in the commit message
+    if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]')"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -39,6 +41,8 @@ jobs:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   type-check:
+    # Skip CI if [ci skip] in the commit message
+    if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]')"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -56,6 +60,8 @@ jobs:
         run: pytype -d import-error sinergym/
 
   documentation-check:
+    # Skip CI if [ci skip] in the commit message
+    if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]')"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -86,6 +92,8 @@ jobs:
         run: "cd docs && sphinx-build -M spelling source build -W"
 
   tests:
+    # Skip CI if [ci skip] in the commit message
+    if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]')"
     name: build container and execute pytest
     runs-on: ubuntu-latest
     steps:

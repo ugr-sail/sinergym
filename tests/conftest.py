@@ -82,7 +82,7 @@ def weather_path2(pkg_data_path):
     return os.path.join(
         pkg_data_path,
         'weather',
-        'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw')
+        'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw')
 
 
 @pytest.fixture(scope='session')
@@ -90,7 +90,7 @@ def ddy_path2(pkg_data_path):
     return os.path.join(
         pkg_data_path,
         'weather',
-        'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.ddy')
+        'USA_AZ_Davis-Monthan.AFB.722745_TMY3.ddy')
 
 
 @pytest.fixture(scope='session')
