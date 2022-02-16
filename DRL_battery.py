@@ -5,7 +5,7 @@ from datetime import datetime
 import gym
 import mlflow
 import numpy as np
-from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC
+from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
 from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import configure
 from stable_baselines3.common.noise import NormalActionNoise
@@ -42,7 +42,7 @@ parser.add_argument(
     type=str,
     default='PPO',
     dest='algorithm',
-    help='Algorithm used to train (possible values: PPO, A2C, DQN, DDPG, SAC).')
+    help='Algorithm used to train (possible values: PPO, A2C, DQN, DDPG, SAC, TD3).')
 parser.add_argument(
     '--reward',
     '-rw',
@@ -311,6 +311,33 @@ with mlflow.start_run(run_name=name):
                     env=env,
                     seed=args.seed,
                     tensorboard_log=args.tensorboard)
+    #--------------------------------------------------------#
+
+    #--------------------------TD3---------------------------#
+    elif args.algorithm == 'TD3':
+        model = TD3(policy='MlpPolicy',
+                    env=env, seed=args.seed,
+                    tensorboard_log=args.tensorboard,
+                    learning_rate=args.learning_rate,
+                    buffer_size=args.buffer_size,
+                    learning_starts=args.learning_starts,
+                    batch_size=100,
+                    tau=args.tau,
+                    gamma=args.gamma,
+                    train_freq=(1, 'episode'),
+                    gradient_steps=-1,
+                    action_noise=None,
+                    replay_buffer_class=None,
+                    replay_buffer_kwargs=None,
+                    optimize_memory_usage=False,
+                    policy_delay=2,
+                    target_policy_noise=0.2,
+                    target_noise_clip=0.5,
+                    create_eval_env=False,
+                    policy_kwargs=None,
+                    verbose=0,
+                    device='auto',
+                    _init_setup_model=True)
     #--------------------------------------------------------#
 
     #-------------------------ERROR?-------------------------#
