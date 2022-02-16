@@ -1,0 +1,15 @@
+{
+    "python.linting.pep8Enabled": true,
+    "python.formatting.provider": "autopep8",
+    "python.formatting.autopep8Args": [
+        "--aggressive",
+        "--aggressive"
+    ],
+    "editor.formatOnSave": true,
+    "window.zoomLevel": 2,
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+}

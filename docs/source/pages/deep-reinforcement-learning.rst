@@ -20,6 +20,8 @@ Current algorithms checked by Sinergym are:
 +-----------+----------+------------+--------------------+
 | SAC       |    NO    |     YES    | OffPolicyAlgorithm |
 +-----------+----------+------------+--------------------+
+| TD3       |    NO    |     YES    | OffPolicyAlgorithm |
++-----------+----------+------------+--------------------+
 
 ``Type`` column has been specified due to its importance about *Stable Baselines callback* functionality.
 
