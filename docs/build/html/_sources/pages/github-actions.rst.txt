@@ -34,6 +34,8 @@ Pull Request
 - **Testing**: There is another action which builds a remote container using *Dockerfile* and executes pytest inner.
 - **Repository security**: There is a workflow which compare differences in workflows and tests from source to base. It execute that functionality only in forked repositories in order to prevent malicious software in workflow or ignore tests. Event is *pull_request_target*, this means workflow is checkout from base repository (our main branch) and it cannot be manipulate by third-parties.
 
+.. note:: These checks can be skipped in a specific commit writing `[ci skip]` string in commit message. For more information, see issue `#161 <https://github.com/jajimer/sinergym/issues/161>`__.
+
 ************************************
 Push main (or merge a pull request)
 ************************************
