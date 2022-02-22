@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+from xml.dom import minidom
 
 config_params = {
     'observation_variables': [
@@ -17,9 +18,18 @@ config_params = {
         'Zone Thermal Comfort Fanger Model PPD (SPACE1-1 PEOPLE 1)',
         'Zone People Occupant Count (SPACE1-1)',
         'People Air Temperature (SPACE1-1 PEOPLE 1)',
-        'Facility Total HVAC Electricity Demand Rate (Whole Building)']}
+        'Facility Total HVAC Electricity Demand Rate (Whole Building)'],
+    'action_variables': [
+        'West-HtgSetP-RL',
+        'West-ClgSetP-RL',
+        'East-HtgSetP-RL',
+        'East-ClgSetP-RL']}
+
+config_params = {}
 
 variables_custom = ET.Element('BCVTB-variables')
+
+variables_custom.append(ET.Comment('Receivedjeje from EnergyPlus'))
 
 if 'observation_variables' in config_params:
     for variable in config_params['observation_variables']:
@@ -36,5 +46,19 @@ if 'observation_variables' in config_params:
             name=variable_zone,
             type=variable_name)
 
-arbol = ET.ElementTree(variables_custom)
-arbol.write("./prueba.xml")
+else:
+    # Copy default variables.cfg
+    tree = ET.parse('./sinergym/data/variables/variablesDXVAV.cfg')
+    default_variables = tree.getroot()
+    for var in default_variables.findall('variable'):
+        if var.attrib['source'] == 'EnergyPlus':
+            variables_custom.append(var)
+
+xmlstr = minidom.parseString(
+    ET.tostring(variables_custom)).toprettyxml(
+        indent="   ")
+with open("prueba.cfg", "w") as f:
+    f.write(xmlstr)
+
+# arbol = ET.ElementTree(variables_custom)
+# arbol.write("./prueba.xml")

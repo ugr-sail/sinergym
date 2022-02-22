@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 from opyplus import Epm, Idd, WeatherData
+import xml.etree.ElementTree as ET
 
 from sinergym.utils.common import get_delta_seconds, prepare_batch_from_records
 
@@ -22,10 +23,12 @@ class Config(object):
         :param _idf_path: IDF path origin for apply extra configuration.
         :param _weather_path: EPW path origin for apply weather to simulation.
         :param _ddy_path: DDY path origin for get DesignDays and weather Location
+        :param _variable_path: variable.cfg path for default Energyplus variable conf.
         :param experiment_path: Path for Sinergym experiment output
         :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None)
         :param extra_config: Number of episodes directories will be stored in experiment_path
         :param config: Dict config with extra configuration which is required to modify IDF model (may be None)
+        :param variables: variables XML tree used for Config to read/write in variables.conf custom.
         :param _idd: IDD opyplus object to set up Epm
         :param building: opyplus Epm object with IDF model
         :param ddy_model: opyplus Epm object with DDY model
@@ -36,6 +39,7 @@ class Config(object):
             self,
             idf_path: str,
             weather_path: str,
+            variables_path: str,
             env_name: str,
             max_ep_store: int,
             extra_config: Dict[str, Any]):
@@ -44,9 +48,12 @@ class Config(object):
         self._weather_path = weather_path
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
+        self._variables_path = variables_path
         self.experiment_path = self.set_experiment_working_dir(env_name)
         self.episode_path = None
         self.max_ep_store = max_ep_store
+
+        self.variables_custom = ET.Element('BCVTB-variables')
 
         self.config = extra_config
 
@@ -103,8 +110,49 @@ class Config(object):
         """Set extra configuration in building model
         """
         if self.config is not None:
+            # TIMESTEPS PER HOUR
             if self.config.get('timesteps_per_hour'):
                 self.building.timestep[0].number_of_timesteps_per_hour = self.config['timesteps_per_hour']
+
+            # OBSERVATION SPACE
+            self.variables_custom.append(
+                ET.Comment('Observation variables: Received from EnergyPlus'))
+
+            if 'observation_variables' in self.config or 'observation_space' in self.config:
+                assert 'observation_variables' in self.config and 'observation_space' in self.config, 'If you define the observation variables in config_params you must define the observation space too and vice versa.'
+                for variable in self.config['observation_variables']:
+                    # variable = "<variable_name> (<variable_zone>)"
+                    variable_elements = variable.split('(')
+                    variable_name = variable_elements[0]
+                    variable_zone = variable_elements[1][:-1]
+
+                    new_xml_variable = ET.SubElement(
+                        self.variables_custom, 'variable', source='EnergyPlus')
+                    ET.SubElement(
+                        new_xml_variable,
+                        'EnergyPlus',
+                        name=variable_zone,
+                        type=variable_name)
+            else:
+                # Copy default variables.cfg
+                tree = ET.parse(self._variables_path)
+                default_variables = tree.getroot()
+                for var in default_variables.findall('variable'):
+                    if var.attrib['source'] == 'EnergyPlus':
+                        self.variables_custom.append(var)
+
+            # ACTION SPACE
+            self.variables_custom.append(
+                ET.Comment('Action variables: Sent to EnergyPlus'))
+            if 'action_variables' in self.config or 'action_space' in self.config:
+                assert 'action_variables' in self.config and 'action_space' in self.config, 'If you define the action variables in config_params you must define the action space too and vice versa.'
+                for variable in self.config['action_variables']:
+                    new_xml_variable = ET.SubElement(
+                        self.variables_custom, 'variable', source='Ptolomy')
+                    ET.SubElement(
+                        new_xml_variable,
+                        'EnergyPlus',
+                        schedule=variable)
 
     def save_building_model(self) -> str:
         """Take current building model and save as IDF in current env_working_dir episode folder.
@@ -121,6 +169,9 @@ class Config(object):
         else:
             raise RuntimeError(
                 '[Simulator Config] Episode path should be set before saving building model.')
+
+    def save_variables_conf(self) -> str:
+        pass
 
     # ---------------------------------------------------------------------------- #
     #                        EPW and Weather Data management                       #
