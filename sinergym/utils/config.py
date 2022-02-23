@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 from opyplus import Epm, Idd, WeatherData
 import xml.etree.ElementTree as ET
+from xml.dom import minidom
 
 from sinergym.utils.common import get_delta_seconds, prepare_batch_from_records
 
@@ -134,7 +135,7 @@ class Config(object):
                         name=variable_zone,
                         type=variable_name)
             else:
-                # Copy default variables.cfg
+                # Copy default variables.cfg observations
                 tree = ET.parse(self._variables_path)
                 default_variables = tree.getroot()
                 for var in default_variables.findall('variable'):
@@ -144,6 +145,7 @@ class Config(object):
             # ACTION SPACE
             self.variables_custom.append(
                 ET.Comment('Action variables: Sent to EnergyPlus'))
+
             if 'action_variables' in self.config or 'action_space' in self.config:
                 assert 'action_variables' in self.config and 'action_space' in self.config, 'If you define the action variables in config_params you must define the action space too and vice versa.'
                 for variable in self.config['action_variables']:
@@ -154,8 +156,19 @@ class Config(object):
                         'EnergyPlus',
                         schedule=variable)
 
+            else:
+                # Copy default variables.cfg actions.
+                ET.parse(self._variables_path)
+                default_variables = tree.getroot()
+                for var in default_variables.findall('variable'):
+                    if var.attrib['source'] == 'Ptolemy':
+                        self.variables_custom.append(var)
+
     def save_building_model(self) -> str:
         """Take current building model and save as IDF in current env_working_dir episode folder.
+
+        Raises:
+            RuntimeError: If episode is not initialize previously, it raises RuntimeError.
 
         Returns:
             str: Path of IDF file stored (episode folder).
@@ -171,7 +184,25 @@ class Config(object):
                 '[Simulator Config] Episode path should be set before saving building model.')
 
     def save_variables_conf(self) -> str:
-        pass
+        """Take current variables_custom attribute (XML tree) and save in current env_working_dir episode folder as variables.cfg
+
+        Raises:
+            RuntimeError: If episode path is not initialize previously, this method raises this exception.
+
+        Returns:
+            str: Path of variables.cfg file stored (episode folder).
+        """
+        if self.episode_path is not None:
+            xmlstr = minidom.parseString(
+                ET.tostring(self.variables_custom)).toprettyxml(
+                indent="   ")
+            new_variable_path = self.episode_path + '/variables.cfg'
+            with open(new_variable_path, "w") as f:
+                f.write(xmlstr)
+        else:
+            raise RuntimeError(
+                '[Simulator Config] Episode path should be set before saving variables.cfg.'
+            )
 
     # ---------------------------------------------------------------------------- #
     #                        EPW and Weather Data management                       #
