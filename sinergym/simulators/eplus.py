@@ -35,7 +35,7 @@ class EnergyPlus(object):
             eplus_path: str,
             weather_path: str,
             bcvtb_path: str,
-            variable_path: str,
+            variables_path: str,
             idf_path: str,
             env_name: str,
             act_repeat: int = 1,
@@ -47,7 +47,7 @@ class EnergyPlus(object):
             eplus_path (str):  EnergyPlus installation path.
             weather_path (str): EnergyPlus weather file (.epw) path.
             bcvtb_path (str): BCVTB installation path.
-            variable_path (str): Path to variables file.
+            variables_path (str): Path to variables file.
             idf_path (str): EnergyPlus input description file (.idf) path.
             env_name (str): The environment name.
             act_repeat (int, optional): The number of times to repeat the control action. Defaults to 1.
@@ -81,7 +81,7 @@ class EnergyPlus(object):
         # Path attributes
         self._eplus_path = eplus_path
         self._weather_path = weather_path
-        self._variable_path = variable_path
+        self._variables_path = variables_path
         self._idf_path = idf_path
         # Episode existed
         self._episode_existed = False
@@ -95,6 +95,7 @@ class EnergyPlus(object):
         self._config = Config(
             idf_path=self._idf_path,
             weather_path=self._weather_path,
+            variables_path=self._variables_path,
             env_name=self._env_name,
             max_ep_store=self._max_ep_data_store_num,
             extra_config=config_params)

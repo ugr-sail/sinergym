@@ -196,9 +196,10 @@ class Config(object):
             xmlstr = minidom.parseString(
                 ET.tostring(self.variables_custom)).toprettyxml(
                 indent="   ")
-            new_variable_path = self.episode_path + '/variables.cfg'
-            with open(new_variable_path, "w") as f:
+            episode_variables_path = self.episode_path + '/variables.cfg'
+            with open(episode_variables_path, "w") as f:
                 f.write(xmlstr)
+            return episode_variables_path
         else:
             raise RuntimeError(
                 '[Simulator Config] Episode path should be set before saving variables.cfg.'
