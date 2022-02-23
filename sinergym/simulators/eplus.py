@@ -40,7 +40,7 @@ class EnergyPlus(object):
             env_name: str,
             act_repeat: int = 1,
             max_ep_data_store_num: int = 10,
-            config_params: Optional[Dict[str, Any]] = None):
+            config_params: Dict[str, Any] = {}):
         """EnergyPlus simulation class.
 
         Args:
@@ -52,7 +52,7 @@ class EnergyPlus(object):
             env_name (str): The environment name.
             act_repeat (int, optional): The number of times to repeat the control action. Defaults to 1.
             max_ep_data_store_num (int, optional): The number of simulation results to keep. Defaults to 10.
-            config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
+            config_params (Dict[str, Any]): Dictionary with all extra configuration for simulator. Defaults to empty Dict.
         """
         self._env_name = env_name
         self._thread_name = threading.current_thread().getName()
