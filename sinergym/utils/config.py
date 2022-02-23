@@ -43,7 +43,7 @@ class Config(object):
             variables_path: str,
             env_name: str,
             max_ep_store: int,
-            extra_config: Dict[str, Any]):
+            extra_config: Dict[str, Any] = {}):
 
         self._idf_path = idf_path
         self._weather_path = weather_path
@@ -110,59 +110,58 @@ class Config(object):
     def apply_extra_conf(self) -> None:
         """Set extra configuration in building model
         """
-        if self.config is not None:
-            # TIMESTEPS PER HOUR
-            if self.config.get('timesteps_per_hour'):
-                self.building.timestep[0].number_of_timesteps_per_hour = self.config['timesteps_per_hour']
+        # TIMESTEPS PER HOUR
+        if self.config.get('timesteps_per_hour'):
+            self.building.timestep[0].number_of_timesteps_per_hour = self.config['timesteps_per_hour']
 
-            # OBSERVATION SPACE
-            self.variables_custom.append(
-                ET.Comment('Observation variables: Received from EnergyPlus'))
+        # OBSERVATION SPACE
+        self.variables_custom.append(
+            ET.Comment('Observation variables: Received from EnergyPlus'))
 
-            if 'observation_variables' in self.config or 'observation_space' in self.config:
-                assert 'observation_variables' in self.config and 'observation_space' in self.config, 'If you define the observation variables in config_params you must define the observation space too and vice versa.'
-                for variable in self.config['observation_variables']:
-                    # variable = "<variable_name> (<variable_zone>)"
-                    variable_elements = variable.split('(')
-                    variable_name = variable_elements[0]
-                    variable_zone = variable_elements[1][:-1]
+        if 'observation_variables' in self.config or 'observation_space' in self.config:
+            assert 'observation_variables' in self.config and 'observation_space' in self.config, 'If you define the observation variables in config_params you must define the observation space too and vice versa.'
+            for variable in self.config['observation_variables']:
+                # variable = "<variable_name> (<variable_zone>)"
+                variable_elements = variable.split('(')
+                variable_name = variable_elements[0]
+                variable_zone = variable_elements[1][:-1]
 
-                    new_xml_variable = ET.SubElement(
-                        self.variables_custom, 'variable', source='EnergyPlus')
-                    ET.SubElement(
-                        new_xml_variable,
-                        'EnergyPlus',
-                        name=variable_zone,
-                        type=variable_name)
-            else:
-                # Copy default variables.cfg observations
-                tree = ET.parse(self._variables_path)
-                default_variables = tree.getroot()
-                for var in default_variables.findall('variable'):
-                    if var.attrib['source'] == 'EnergyPlus':
-                        self.variables_custom.append(var)
+                new_xml_variable = ET.SubElement(
+                    self.variables_custom, 'variable', source='EnergyPlus')
+                ET.SubElement(
+                    new_xml_variable,
+                    'EnergyPlus',
+                    name=variable_zone,
+                    type=variable_name)
+        else:
+            # Copy default variables.cfg observations
+            tree = ET.parse(self._variables_path)
+            default_variables = tree.getroot()
+            for var in default_variables.findall('variable'):
+                if var.attrib['source'] == 'EnergyPlus':
+                    self.variables_custom.append(var)
 
-            # ACTION SPACE
-            self.variables_custom.append(
-                ET.Comment('Action variables: Sent to EnergyPlus'))
+        # ACTION SPACE
+        self.variables_custom.append(
+            ET.Comment('Action variables: Sent to EnergyPlus'))
 
-            if 'action_variables' in self.config or 'action_space' in self.config:
-                assert 'action_variables' in self.config and 'action_space' in self.config, 'If you define the action variables in config_params you must define the action space too and vice versa.'
-                for variable in self.config['action_variables']:
-                    new_xml_variable = ET.SubElement(
-                        self.variables_custom, 'variable', source='Ptolomy')
-                    ET.SubElement(
-                        new_xml_variable,
-                        'EnergyPlus',
-                        schedule=variable)
+        if 'action_variables' in self.config or 'action_space' in self.config:
+            assert 'action_variables' in self.config and 'action_space' in self.config, 'If you define the action variables in config_params you must define the action space too and vice versa.'
+            for variable in self.config['action_variables']:
+                new_xml_variable = ET.SubElement(
+                    self.variables_custom, 'variable', source='Ptolomy')
+                ET.SubElement(
+                    new_xml_variable,
+                    'EnergyPlus',
+                    schedule=variable)
 
-            else:
-                # Copy default variables.cfg actions.
-                ET.parse(self._variables_path)
-                default_variables = tree.getroot()
-                for var in default_variables.findall('variable'):
-                    if var.attrib['source'] == 'Ptolemy':
-                        self.variables_custom.append(var)
+        else:
+            # Copy default variables.cfg actions.
+            ET.parse(self._variables_path)
+            default_variables = tree.getroot()
+            for var in default_variables.findall('variable'):
+                if var.attrib['source'] == 'Ptolemy':
+                    self.variables_custom.append(var)
 
     def save_building_model(self) -> str:
         """Take current building model and save as IDF in current env_working_dir episode folder.
