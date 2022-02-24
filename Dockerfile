@@ -43,7 +43,6 @@ RUN apt-get update \
     && echo "y\r" | ./$ENERGYPLUS_DOWNLOAD_FILENAME \
     && rm $ENERGYPLUS_DOWNLOAD_FILENAME \
     && cd /usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION \
-    && rm -rf DataSets Documentation ExampleFiles WeatherData MacroDataSets PostProcess/convertESOMTRpgm \
     PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater
 
 # Remove the broken symlinks
