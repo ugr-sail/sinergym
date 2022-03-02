@@ -735,3 +735,31 @@ class CSVLogger(object):
         """Deactivate Sinergym CSV logger
         """
         self.flag = False
+
+
+def get_season_comfort_range(month, day):
+    """Get comfort temperature range depending on season. The comfort ranges are those 
+    defined by ASHRAE in Standard 55—Thermal Environmental Conditions for Human Occupancy (2004).
+
+    Args:
+        year (int): current year
+        month (int): current month
+        day (int): current day
+    """
+    
+    year = 2022
+
+    summer_start_date = datetime(year, 6, 1)
+    summer_final_date = datetime(year, 9, 30)
+
+    range_comfort_summer = (23.0, 26.0)
+    range_comfort_winter = (20.0, 23.5)
+
+    current_dt = datetime(year, month, day)
+    
+    if current_dt >= summer_start_date and current_dt <= summer_final_date:
+        comfort = range_comfort_summer  
+    else:
+        comfort = range_comfort_winter
+
+    return comfort

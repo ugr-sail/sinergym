@@ -2,7 +2,9 @@
 from datetime import datetime
 from typing import Any, List, Optional, Sequence, Tuple
 
-from ..utils.common import parse_variables
+from ..utils.common import parse_variables, get_season_comfort_range
+
+from numpy import arange
 
 
 class RandomController(object):
@@ -30,33 +32,21 @@ class RandomController(object):
 
 class RuleBasedController(object):
 
-    def __init__(
-        self, env: Any, range_comfort_winter: Tuple[float, float] = (
-            20.0, 23.5), range_comfort_summer: Tuple[float, float] = (
-            23.0, 26.0)) -> None:
-        """Agent whose actions are based on static rules.
+    def __init__(self, env: Any) -> None:
+        """Agent based on static rules.
 
         Args:
-            env (Any): Simulation environment.
-            range_comfort_winter (Tuple[float, float], optional): Comfort temperature range for cool season. Defaults to (20.0, 23.5).
-            range_comfort_summer (Tuple[float, float], optional): Comfort temperature range for hot season. Defaults to (23.0, 26.0).
+            env (Any): Simulation environment
         """
 
-        year = 2021
-
         self.env = env
-        self.range_comfort_winter = range_comfort_winter
-        self.range_comfort_summer = range_comfort_summer
 
         self.variables_path = self.env.variables_path
         self.variables = parse_variables(self.variables_path)
         self.variables['observation'].extend(['day', 'month', 'hour'])
 
-        self.summer_start_date = datetime(year, 6, 1)
-        self.summer_final_date = datetime(year, 9, 30)
-
     def act(self, observation: List[Any]) -> Sequence[Any]:
-        """Select action based on outdoor air drybulb temperature.
+        """Select action based on outdoor air drybulb temperature and daytime.
 
         Args:
             observation (List[Any]): Perceived observation.
@@ -65,17 +55,25 @@ class RuleBasedController(object):
             Sequence[Any]: Action chosen.
         """
         obs_dict = dict(zip(self.variables['observation'], observation))
+
         out_temp = obs_dict['Site Outdoor Air Drybulb Temperature (Environment)']
 
-        if out_temp < 15:  # t < 15
-            action = (19, 21)
-        elif out_temp < 20:  # 15 <= t < 20
-            action = (20, 22)
-        elif out_temp < 26:  # 20 <= t < 26
-            action = (21, 23)
-        elif out_temp < 30:  # 26 <= t < 30
-            action = (26, 30)
-        else:  # t >= 30
-            action = (24, 26)
+        day = int(obs_dict['day'])
+        month = int(obs_dict['month'])
+        hour = int(obs_dict['hour'])
+
+        season_comfort_range = get_season_comfort_range(month, day)
+
+        if out_temp not in arange(season_comfort_range[0], season_comfort_range[1], .1):
+            if hour in range(6, 18): # day
+                action = (19.44, 25.0)
+            elif hour in range(18, 22): # evening
+                action = (20.0, 24.44)
+            else: # night
+                action = (18.33, 23.33)
+        else: # maintain setpoints if comfort requirements are already met
+            current_cool_setpoint = obs_dict['Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)']
+            current_heat_setpoint = obs_dict['Zone Thermostat Heating Setpoint Temperature (SPACE1-1)']
+            action = (current_heat_setpoint, current_cool_setpoint)
 
         return action
