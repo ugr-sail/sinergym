@@ -1,5 +1,5 @@
 {
-    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pycodestyleEnabled": false,
     "python.formatting.provider": "autopep8",
     "python.formatting.autopep8Args": [
         "--aggressive",

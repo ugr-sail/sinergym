@@ -273,10 +273,9 @@ class LoggerEvalCallback(EvalCallback):
             mean_ep_length, std_ep_length = np.mean(
                 episodes_lengths), np.std(episodes_lengths)
 
-            self.evaluation_metrics['cumulative_reward'] = np.mean(
-                mean_reward)
-            self.evaluation_metrics['ep_length'] = mean_ep_length
-            self.evaluation_metrics['power_consumption'] = np.mean(
+            self.evaluation_metrics['mean_rewards'] = mean_reward
+            self.evaluation_metrics['mean_ep_length'] = mean_ep_length
+            self.evaluation_metrics['mean_power_consumption'] = np.mean(
                 episodes_powers)
             self.evaluation_metrics['comfort_violation(%)'] = np.mean(
                 episodes_comfort_violations)
