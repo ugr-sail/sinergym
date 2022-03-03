@@ -4,14 +4,12 @@ from datetime import datetime
 from math import exp
 from typing import Dict, List, Tuple
 
-YEAR = 2021
+from ..utils.common import get_season_comfort_range
 
 
 class LinearReward():
 
     def __init__(self,
-                 range_comfort_winter: Tuple[float, float] = (20.0, 23.5),
-                 range_comfort_summer: Tuple[float, float] = (23.0, 26.0),
                  energy_weight: float = 0.5,
                  lambda_energy: float = 1e-4,
                  lambda_temperature: float = 1.0
@@ -22,23 +20,15 @@ class LinearReward():
             R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))
 
         Args:
-            range_comfort_winter (Tuple[float, float], optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).
-            range_comfort_summer (Tuple[float, float], optional): Temperature comfort range for hot season. Defaults to (23.0, 26.0).
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
         """
 
         # Variables
-        self.range_comfort_winter = range_comfort_winter
-        self.range_comfort_summer = range_comfort_summer
         self.W_energy = energy_weight
         self.lambda_energy = lambda_energy
         self.lambda_temp = lambda_temperature
-
-        # Periods
-        self.summer_start_date = datetime(YEAR, 6, 1)
-        self.summer_final_date = datetime(YEAR, 9, 30)
 
     def calculate(self,
                   power: float,
@@ -61,8 +51,7 @@ class LinearReward():
         reward_energy = - self.lambda_energy * power
 
         # Comfort term
-        current_dt = datetime(YEAR, month, day)
-        range_T = self.range_comfort_summer if current_dt >= self.summer_start_date and current_dt <= self.summer_final_date else self.range_comfort_winter
+        range_T = get_season_comfort_range(month, day)
         delta_T = 0.0
         for temperature in temperatures:
             delta_T += 0.0 if temperature >= range_T[0] and temperature <= range_T[1] else min(
@@ -81,8 +70,6 @@ class LinearReward():
 class ExpReward():
 
     def __init__(self,
-                 range_comfort_winter: Tuple[float, float] = (20.0, 23.5),
-                 range_comfort_summer: Tuple[float, float] = (23.0, 26.0),
                  energy_weight: float = 0.5,
                  lambda_energy: float = 1e-4,
                  lambda_temperature: float = 1.0
@@ -93,23 +80,15 @@ class ExpReward():
             R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T - T_{low}, 0) + max(T_{up} - T, 0)) )
 
         Args:
-            range_comfort_winter (Tuple[float, float], optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).
-            range_comfort_summer (Tuple[float, float], optional): Temperature comfort range for hot season. Defaults to (23.0, 26.0).
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
         """
 
         # Variables
-        self.range_comfort_winter = range_comfort_winter
-        self.range_comfort_summer = range_comfort_summer
         self.W_energy = energy_weight
         self.lambda_energy = lambda_energy
         self.lambda_temp = lambda_temperature
-
-        # Periods
-        self.summer_start_date = datetime(YEAR, 6, 1)
-        self.summer_final_date = datetime(YEAR, 9, 30)
 
     def calculate(self, power: float, temperatures: List[float],
                   month: int, day: int) -> Tuple[float, Dict[str, float]]:
@@ -128,8 +107,7 @@ class ExpReward():
         reward_energy = - self.lambda_energy * power
 
         # Comfort term
-        current_dt = datetime(YEAR, month, day)
-        range_T = self.range_comfort_summer if current_dt >= self.summer_start_date and current_dt <= self.summer_final_date else self.range_comfort_winter
+        range_T = get_season_comfort_range(month, day)
         delta_T = 0.0
         for temperature in temperatures:
             delta_T += 0.0 if temperature >= range_T[0] and temperature <= range_T[1] else exp(

@@ -248,8 +248,6 @@ def weather_data(weather_path):
 @pytest.fixture(scope='session')
 def simple_reward():
     return R.LinearReward(
-        range_comfort_winter=(20.0, 23.5),
-        range_comfort_summer=(23.0, 26.0),
         energy_weight=0.5,
         lambda_energy=1e-4,
         lambda_temperature=1.0
