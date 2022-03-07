@@ -340,7 +340,7 @@ with mlflow.start_run(run_name=name):
     # Calculating n_timesteps_episode for training
     n_timesteps_episode = env.simulator._eplus_one_epi_len / \
         env.simulator._eplus_run_stepsize
-    timesteps = args.episodes * n_timesteps_episode
+    timesteps = args.episodes * n_timesteps_episode - 1
 
     # For callbacks processing
     env_vec = DummyVecEnv([lambda: env])
