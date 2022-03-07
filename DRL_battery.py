@@ -207,14 +207,6 @@ with mlflow.start_run(run_name=name):
     else:
         raise RuntimeError('Reward function specified is not registered.')
 
-    # env wrappers (optionals)
-    if args.normalization:
-        env = NormalizeObservation(env)
-    if args.logger:
-        env = LoggerWrapper(env)
-    if args.multiobs:
-        env = MultiObsWrapper(env)
-
     ######################## TRAINING ########################
 
     # env wrappers (optionals)

@@ -155,7 +155,7 @@ class EnergyPlus(object):
             self._epi_num += 1
 
         # Create EnergyPlus simulation process
-        self.logger_main.info('Creating EnergyPlus simulation environment...')
+        self.logger_main.info('Creating new EnergyPlus simulation episode...')
         # Creating episode working dir
         eplus_working_dir = self._config.set_episode_working_dir()
         # Getting IDF, WEATHER, VARIABLES and OUTPUT path for current episode
