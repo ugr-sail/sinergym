@@ -379,6 +379,11 @@ with mlflow.start_run(run_name=name):
         log_interval=args.log_interval)
     model.save(env.simulator._env_working_dir_parent + '/' + name)
 
+    # If Algorithm doesn't reset or close environment, this script will do in
+    # order to log correctly all simulation data (Energyplus + Sinergym logs)
+    if env.simulator._episode_existed:
+        env.close()
+
     # If mlflow artifacts store is active
     if args.mlflow_store:
         # Code for send output and tensorboard to mlflow artifacts.

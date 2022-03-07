@@ -402,6 +402,8 @@ class EnergyPlus(object):
         self._end_episode()
         # self._socket.shutdown(socket.SHUT_RDWR);
         self._socket.close()
+        self.logger_main.info(
+            'EnergyPlus simulation closed successfully. ')
 
     def end_episode(self) -> None:
         """It ends current simulator episode."""
