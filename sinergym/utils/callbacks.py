@@ -375,7 +375,9 @@ def evaluate_policy(model: "base_class.BaseAlgorithm",
         # played, if underlying wrappers modify episode lengths.
         # Avoid double reset, as VecEnv are reset automatically.
         if not isinstance(env, VecEnv) or not_reseted:
-            obs = env.reset()
+            obs = list(map(
+                lambda obs_dict: np.array(list(obs_dict.values()), dtype=np.float32),
+                env.get_attr('obs_dict')))
             not_reseted = False
         done, state = False, None
         episode_reward = 0.0
