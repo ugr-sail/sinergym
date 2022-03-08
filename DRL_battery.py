@@ -205,7 +205,7 @@ with mlflow.start_run(run_name=name):
     elif args.reward == 'exponential':
         env = gym.make(args.environment, reward=ExpReward())
     else:
-        raise RuntimeError('Reward function specified is not registered.')
+        raise RuntimeError('Reward function [{}] specified is not registered.'.format(args.reward))
 
     # env wrappers (optionals)
     if args.normalization:
@@ -229,7 +229,7 @@ with mlflow.start_run(run_name=name):
         elif env_type == 'IWMullion':
             norm_range = RANGES_IW
         else:
-            raise NameError('env_type is not valid, check environment name')
+            raise NameError('Normalization cant be use on environment :"{}", check environment name or disable normalization'.format(args.environment))
         env = NormalizeObservation(env, ranges=norm_range)
     if args.logger:
         env = LoggerWrapper(env)
@@ -342,7 +342,7 @@ with mlflow.start_run(run_name=name):
 
     #-------------------------ERROR?-------------------------#
     else:
-        raise RuntimeError('Algorithm specified is not registered.')
+        raise RuntimeError('Algorithm specified [{}] is not registered.'.format(args.algorithm))
     #--------------------------------------------------------#
 
     # Calculating n_timesteps_episode for training
