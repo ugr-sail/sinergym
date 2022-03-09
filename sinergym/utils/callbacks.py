@@ -1,8 +1,7 @@
 """Custom Callbacks for stable baselines 3 algorithms."""
 
 import os
-import warnings
-from typing import Any, Callable, Dict, Optional, Union
+from typing import Optional, Union
 
 import gym
 import numpy as np
@@ -11,7 +10,7 @@ from stable_baselines3.common.env_util import is_wrapped
 from stable_baselines3.common.vec_env import VecEnv, sync_envs_normalization
 
 from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
-from sinergym.utils.evaluations import evaluate_policy
+from sinergym.utils.evaluation import evaluate_policy
 
 
 class LoggerCallback(BaseCallback):
@@ -26,7 +25,6 @@ class LoggerCallback(BaseCallback):
 
     def __init__(self, sinergym_logger=False, verbose=0):
         """Custom callback for plotting additional values in tensorboard.
-
         Args:
             sinergym_logger (boolean): Indicate if CSVLogger inner Sinergym will be activated or not.
         """
@@ -184,7 +182,6 @@ class LoggerEvalCallback(EvalCallback):
         :param render: Whether to render or not the environment during evaluation
         :param verbose:
         :param warn: Passed to ``evaluate_policy`` (warns if ``eval_env`` has not been wrapped with a Monitor wrapper)
-
     """
 
     def __init__(
@@ -227,28 +224,30 @@ class LoggerEvalCallback(EvalCallback):
 
             # Reset success rate buffer
             self._is_success_buffer = []
-
-            episodes_rewards, episodes_lengths, episodes_powers, episodes_comfort_violations, episodes_comfort_penalties, episodes_power_penalties = evaluate_policy(
+            #episodes_rewards, episodes_lengths, episodes_powers, episodes_comfort_violations, episodes_comfort_penalties, episodes_power_penalties
+            episodes_data = evaluate_policy(
                 self.model,
                 self.eval_env,
                 n_eval_episodes=self.n_eval_episodes,
                 render=self.render,
                 deterministic=self.deterministic,
-                return_episode_rewards=True,
-                warn=self.warn,
                 callback=None,
             )
 
             if self.log_path is not None:
                 self.evaluations_timesteps.append(self.num_timesteps)
-                self.evaluations_results.append(episodes_rewards)
-                self.evaluations_length.append(episodes_lengths)
-                self.evaluations_power_consumption.append(episodes_powers)
+                self.evaluations_results.append(
+                    episodes_data['episodes_rewards'])
+                self.evaluations_length.append(
+                    episodes_data['episodes_lengths'])
+                self.evaluations_power_consumption.append(
+                    episodes_data['episodes_powers'])
                 self.evaluations_comfort_violation.append(
-                    episodes_comfort_violations)
+                    episodes_data['episodes_comfort_violations'])
                 self.evaluations_comfort_penalty.append(
-                    episodes_comfort_penalties)
-                self.evaluations_power_penalty.append(episodes_power_penalties)
+                    episodes_data['episodes_comfort_penalties'])
+                self.evaluations_power_penalty.append(
+                    episodes_data['episodes_power_penalties'])
 
                 kwargs = {}
                 # Save success log if present
@@ -269,20 +268,23 @@ class LoggerEvalCallback(EvalCallback):
                 )
 
             mean_reward, std_reward = np.mean(
-                episodes_rewards), np.std(episodes_rewards)
+                episodes_data['episodes_rewards']), np.std(
+                episodes_data['episodes_rewards'])
             mean_ep_length, std_ep_length = np.mean(
-                episodes_lengths), np.std(episodes_lengths)
+                episodes_data['episodes_lengths']), np.std(
+                episodes_data['episodes_lengths'])
 
             self.evaluation_metrics['mean_rewards'] = mean_reward
+            self.evaluation_metrics['std_rewards'] = std_reward
             self.evaluation_metrics['mean_ep_length'] = mean_ep_length
             self.evaluation_metrics['mean_power_consumption'] = np.mean(
-                episodes_powers)
+                episodes_data['episodes_powers'])
             self.evaluation_metrics['comfort_violation(%)'] = np.mean(
-                episodes_comfort_violations)
+                episodes_data['episodes_comfort_violations'])
             self.evaluation_metrics['comfort_penalty'] = np.mean(
-                episodes_comfort_penalties)
+                episodes_data['episodes_comfort_penalties'])
             self.evaluation_metrics['power_penalty'] = np.mean(
-                episodes_power_penalties)
+                episodes_data['episodes_power_penalties'])
 
             if self.verbose > 0:
                 print(
