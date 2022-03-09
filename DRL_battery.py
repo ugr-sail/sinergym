@@ -19,7 +19,9 @@ from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
                                      NormalizeObservation)
 
-#--------------------------------BATTERY ARGUMENTS DEFINITION---------------------------------#
+# ---------------------------------------------------------------------------- #
+#                             Parameters definition                            #
+# ---------------------------------------------------------------------------- #
 parser = argparse.ArgumentParser()
 # commons arguments for battery
 parser.add_argument(
@@ -149,15 +151,20 @@ parser.add_argument('--tau', '-tu', type=float, default=0.005)
 parser.add_argument('--sigma', '-sig', type=float, default=0.1)
 
 args = parser.parse_args()
-#---------------------------------------------------------------------------------------------#
-# register run name
+#------------------------------------------------------------------------------#
+
+# ---------------------------------------------------------------------------- #
+#                               Register run name                              #
+# ---------------------------------------------------------------------------- #
 experiment_date = datetime.today().strftime('%Y-%m-%d %H:%M')
 name = args.algorithm + '-' + args.environment + \
     '-episodes_' + str(args.episodes)
 if args.seed:
     name += '-seed_' + str(args.seed)
 name += '(' + experiment_date + ')'
-# Check if MLFLOW_TRACKING_URI is defined
+# ---------------------------------------------------------------------------- #
+#                    Check if MLFLOW_TRACKING_URI is defined                   #
+# ---------------------------------------------------------------------------- #
 mlflow_tracking_uri = os.environ.get('MLFLOW_TRACKING_URI')
 if mlflow_tracking_uri is not None:
     # Check ping to server
@@ -199,17 +206,25 @@ with mlflow.start_run(run_name=name):
     mlflow.log_param('tau', args.tau)
     mlflow.log_param('sigma', args.sigma)
 
-    # Environment construction (with reward specified)
+    # ---------------------------------------------------------------------------- #
+    #               Environment construction (with reward specified)               #
+    # ---------------------------------------------------------------------------- #
     if args.reward == 'linear':
-        env = gym.make(args.environment, reward=LinearReward())
+        reward = LinearReward()
     elif args.reward == 'exponential':
-        env = gym.make(args.environment, reward=ExpReward())
+        reward = ExpReward()
     else:
         raise RuntimeError('Reward function specified is not registered.')
 
-    ######################## TRAINING ########################
+    env = gym.make(args.environment, reward=reward)
+    # env for evaluation if is enabled
+    eval_env = None
+    if args.evaluation:
+        eval_env = gym.make(args.environment, reward=reward)
 
-    # env wrappers (optionals)
+    # ---------------------------------------------------------------------------- #
+    #                                   Wrappers                                   #
+    # ---------------------------------------------------------------------------- #
     if args.normalization:
         # We have to know what dictionary ranges to use
         norm_range = None
@@ -223,11 +238,19 @@ with mlflow.start_run(run_name=name):
         else:
             raise NameError('env_type is not valid, check environment name')
         env = NormalizeObservation(env, ranges=norm_range)
+        if eval_env is not None:
+            eval_env = NormalizeObservation(eval_env, ranges=norm_range)
     if args.logger:
         env = LoggerWrapper(env)
+        if eval_env is not None:
+            eval_env = LoggerWrapper(eval_env)
     if args.multiobs:
         env = MultiObsWrapper(env)
-    # Defining model(algorithm)
+        if eval_env is not None:
+            eval_env = MultiObsWrapper(eval_env)
+    # ---------------------------------------------------------------------------- #
+    #                           Defining model(algorithm)                          #
+    # ---------------------------------------------------------------------------- #
     model = None
     #--------------------------DQN---------------------------#
     if args.algorithm == 'DQN':
@@ -337,21 +360,22 @@ with mlflow.start_run(run_name=name):
         raise RuntimeError('Algorithm specified is not registered.')
     #--------------------------------------------------------#
 
-    # Calculating n_timesteps_episode for training
+    # ---------------------------------------------------------------------------- #
+    #       Calculating total training timesteps based on number of episodes       #
+    # ---------------------------------------------------------------------------- #
     n_timesteps_episode = env.simulator._eplus_one_epi_len / \
         env.simulator._eplus_run_stepsize
     timesteps = args.episodes * n_timesteps_episode - 1
 
-    # For callbacks processing
-    env_vec = DummyVecEnv([lambda: env])
-
-    # Using Callbacks for training
+    # ---------------------------------------------------------------------------- #
+    #                                   CALLBACKS                                  #
+    # ---------------------------------------------------------------------------- #
     callbacks = []
 
     # Set up Evaluation and saving best model
     if args.evaluation:
         eval_callback = LoggerEvalCallback(
-            env_vec,
+            eval_env,
             best_model_save_path='best_model/' + name + '/',
             log_path='best_model/' + name + '/',
             eval_freq=n_timesteps_episode *
@@ -372,7 +396,9 @@ with mlflow.start_run(run_name=name):
 
     callback = CallbackList(callbacks)
 
-    # Training
+    # ---------------------------------------------------------------------------- #
+    #                                   TRAINING                                   #
+    # ---------------------------------------------------------------------------- #
     model.learn(
         total_timesteps=timesteps,
         callback=callback,
@@ -384,7 +410,9 @@ with mlflow.start_run(run_name=name):
     if env.simulator._episode_existed:
         env.close()
 
-    # If mlflow artifacts store is active
+    # ---------------------------------------------------------------------------- #
+    #                           Mlflow artifacts storege                           #
+    # ---------------------------------------------------------------------------- #
     if args.mlflow_store:
         # Code for send output and tensorboard to mlflow artifacts.
         mlflow.log_artifacts(
@@ -400,8 +428,9 @@ with mlflow.start_run(run_name=name):
                 local_dir=args.tensorboard + '/' + name + '/',
                 artifact_path=os.path.abspath(args.tensorboard).split('/')[-1] + '/' + name + '/')
 
-    # Store all results if remote_store flag is True (Google Cloud Bucket for
-    # experiments)
+    # ---------------------------------------------------------------------------- #
+    #                          Google Cloud Bucket Storage                         #
+    # ---------------------------------------------------------------------------- #
     if args.remote_store:
         # Initiate Google Cloud client
         client = gcloud.init_storage_client()
@@ -433,8 +462,9 @@ with mlflow.start_run(run_name=name):
     # End mlflow run
     mlflow.end_run()
 
-    # If it is a Google Cloud VM and experiment flag auto_delete has been
-    # activated, shutdown remote machine when ends
+    # ---------------------------------------------------------------------------- #
+    #                   Autodelete option if is a cloud resource                   #
+    # ---------------------------------------------------------------------------- #
     if args.group_name and args.auto_delete:
         token = gcloud.get_service_account_token()
         gcloud.delete_instance_MIG_from_container(args.group_name, token)
