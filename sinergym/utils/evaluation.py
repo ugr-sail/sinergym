@@ -1,7 +1,7 @@
 """Custom policy evaluations for Evaluation Callbacks."""
 
-from itertools import accumulate
 import warnings
+from itertools import accumulate
 from typing import Any, Callable, Dict, Optional, Union
 
 import gym

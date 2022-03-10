@@ -9,8 +9,8 @@ from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
 from stable_baselines3.common.env_util import is_wrapped
 from stable_baselines3.common.vec_env import VecEnv, sync_envs_normalization
 
-from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
 from sinergym.utils.evaluation import evaluate_policy
+from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
 
 
 class LoggerCallback(BaseCallback):
