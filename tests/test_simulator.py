@@ -27,7 +27,7 @@ def test_reset(simulator):
 
     # Checking simulator state
     assert simulator._eplus_run_stepsize == 900
-    assert simulator._eplus_one_epi_len == 7776000
+    assert simulator._eplus_one_epi_len == 31536000
     assert simulator._curSimTim == 0
     assert simulator._env_working_dir_parent.split(
         '/')[-1] == 'Eplus-env-' + simulator._env_name + '-res1'

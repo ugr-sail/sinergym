@@ -127,12 +127,12 @@ def test_apply_weather_variability(config):
 
 def test_get_eplus_run_info(config):
     info = config._get_eplus_run_info()
-    assert info == (1, 1, 0, 3, 31, 0, 0, 4)
+    assert info == (1, 1, 0, 12, 31, 0, 0, 4)
 
 
 def test_get_one_epi_len(config):
     total_time = config._get_one_epi_len()
-    assert total_time == 7776000
+    assert total_time == 31536000
 
 
 def test_set_experiment_working_dir(config):
