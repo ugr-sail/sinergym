@@ -100,7 +100,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Build the latest Docker image
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extra] --tag $DOCKER_USER/sinergym:latest
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extras] --tag $DOCKER_USER/sinergym:latest
       - name: Login in Docker Hub account
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD

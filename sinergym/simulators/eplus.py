@@ -24,7 +24,7 @@ from sinergym.utils.common import *
 from sinergym.utils.config import Config
 
 LOG_LEVEL_MAIN = 'INFO'
-LOG_LEVEL_EPLS = 'ERROR'
+LOG_LEVEL_EPLS = 'FATAL'
 LOG_FMT = "[%(asctime)s] %(name)s %(levelname)s:%(message)s"
 
 
@@ -150,11 +150,12 @@ class EnergyPlus(object):
         # End the last episode if exists
         if self._episode_existed:
             self._end_episode()
-            self.logger_main.info('Last EnergyPlus process has been closed. ')
+            self.logger_main.info(
+                'EnergyPlus episode completed successfully. ')
             self._epi_num += 1
 
         # Create EnergyPlus simulation process
-        self.logger_main.info('Creating EnergyPlus simulation environment...')
+        self.logger_main.info('Creating new EnergyPlus simulation episode...')
         # Creating episode working dir
         eplus_working_dir = self._config.set_episode_working_dir()
         # Getting IDF, WEATHER, VARIABLES and OUTPUT path for current episode
@@ -401,6 +402,8 @@ class EnergyPlus(object):
         self._end_episode()
         # self._socket.shutdown(socket.SHUT_RDWR);
         self._socket.close()
+        self.logger_main.info(
+            'EnergyPlus simulation closed successfully. ')
 
     def end_episode(self) -> None:
         """It ends current simulator episode."""
