@@ -90,7 +90,11 @@ class LoggerCallback(BaseCallback):
             try:
                 action = self.locals['action'][-1]
             except KeyError:
-                print('Algorithm action key in locals dict unknown')
+                try:
+                    action = self.locals['actions'][-1]
+                except KeyError:
+                    raise KeyError(
+                        'Algorithm action key in locals dict unknown.')
 
         if self.training_env.get_attr('flag_discrete')[0]:
             action = self.training_env.get_attr('action_mapping')[0][action]
