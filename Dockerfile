@@ -43,7 +43,6 @@ RUN apt-get update \
     && echo "y\r" | ./$ENERGYPLUS_DOWNLOAD_FILENAME \
     && rm $ENERGYPLUS_DOWNLOAD_FILENAME \
     && cd /usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION \
-    && rm -rf DataSets Documentation ExampleFiles WeatherData MacroDataSets PostProcess/convertESOMTRpgm \
     PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater
 
 # Remove the broken symlinks
@@ -55,10 +54,12 @@ RUN apt install software-properties-common -y
 RUN add-apt-repository ppa:deadsnakes/ppa
 RUN ln -s /usr/bin/pip3 /usr/bin/pip
 RUN ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
-RUN apt install python${PYTHON_VERSION} python${PYTHON_VERSION}-distutils -y
+RUN apt install python${PYTHON_VERSION} python${PYTHON_VERSION}-distutils python${PYTHON_VERSION}-dev -y
 RUN apt install python3-pip -y
-# Install OpenJDK-8
 
+# Install enchant for sinergym documentation
+RUN apt-get update && echo "Y\r" | apt-get install enchant --fix-missing -y
+# Install OpenJDK-8
 RUN apt-get update && echo "Y\r" | apt-get install default-jre openjdk-8-jdk
 
 # Install BCVTB
@@ -75,6 +76,7 @@ RUN pip install --upgrade setuptools
 RUN apt-get update && apt-get upgrade -y && apt-get install -y git
 WORKDIR /sinergym
 COPY requirements.txt .
+COPY MANIFEST.in .
 COPY setup.py .
 COPY DRL_battery.py .
 COPY sinergym /sinergym/sinergym
