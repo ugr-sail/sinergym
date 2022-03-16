@@ -10,13 +10,13 @@ Execution in localhost:5000 by default
 import argparse
 
 import gym
-import sinergym
 import mlflow
 import numpy as np
+from stable_baselines3 import PPO2
+from stable_baselines3.common.callbacks import StopTrainingOnRewardThreshold
+from stable_baselines3.common.policies import MlpPolicy
 
-from stable_baselines.common.callbacks import StopTrainingOnRewardThreshold
-from stable_baselines.common.policies import MlpPolicy
-from stable_baselines import PPO2
+import sinergym
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--gamma', '-g', type=float, default=.99)

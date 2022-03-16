@@ -113,20 +113,20 @@
 <h1>sinergym.utils.common.parse_observation_action_space<a class="headerlink" href="#sinergym-utils-common-parse-observation-action-space" title="Permalink to this headline"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="sinergym.utils.common.parse_observation_action_space">
-<span class="sig-prename descclassname"><span class="pre">sinergym.utils.common.</span></span><span class="sig-name descname"><span class="pre">parse_observation_action_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">space_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.common.parse_observation_action_space" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sinergym.utils.common.</span></span><span class="sig-name descname"><span class="pre">parse_observation_action_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">space_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.common.parse_observation_action_space" title="Permalink to this definition"></a></dt>
 <dd><p>Parse observation space definition to gym env.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>space_file</strong> (<em>str</em>) – Observation space definition file path.</p>
+<dd class="field-odd"><p><strong>space_file</strong> (<em>str</em>) -- Observation space definition file path.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p>{‘observation’     : tupple for gym.spaces.Box() arguments,</p>
-<p>’discrete_action’  : dictionary action mapping for gym.spaces.Discrete(),</p>
-<p>’continuos_action’ : tuple for gym.spaces.Box()}</p>
-</p>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- If root XML tag is not 'space'.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dictionary</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>'observation', 'discrete_action' and 'continuous_action' keys. tuple for gym.spaces.Box() arguments, dictionary action mapping for gym.spaces.Discrete() and tuple for gym.spaces.Box()</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[str, Any]</p>
 </dd>
 </dl>
 </dd></dl>

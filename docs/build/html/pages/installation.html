@@ -112,15 +112,15 @@ $ <span class="nb">source</span> env_sinergym/bin/activate
 <h2>Docker container<a class="headerlink" href="#docker-container" title="Permalink to this headline"></a></h2>
 <p>We include a <strong>Dockerfile</strong> for installing all dependencies and setting
 up the image for running <em>sinergym</em>.</p>
-<p>By default, Dockerfile will do <cite>pip install -e .[extras]</cite>, if you want to install a diffetent setup, you will have to do in root repository:</p>
+<p>By default, Dockerfile will do <cite>pip install -e .[extras]</cite>, if you want to install a different setup, you will have to do in root repository:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ docker build -t &lt;tag_name&gt; --build-arg <span class="nv">SINERGYM_EXTRAS</span><span class="o">=[</span>&lt;setup_tag<span class="o">(</span>s<span class="o">)</span>&gt;<span class="o">]</span> .
 </pre></div>
 </div>
-<p>For example, if you want a container with only documentation libaries and testing:</p>
+<p>For example, if you want a container with only documentation libraries and testing:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ docker build -t example1/sinergym:latest --build-arg <span class="nv">SINERGYM_EXTRAS</span><span class="o">=[</span>doc,test<span class="o">]</span> .
 </pre></div>
 </div>
-<p>On the other hand, if you don’t want any extra library, it’s neccesary to write an empty value like this:</p>
+<p>On the other hand, if you don't want any extra library, it's necessary to write an empty value like this:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ docker build -t example1/sinergym:latest --build-arg <span class="nv">SINERGYM_EXTRAS</span><span class="o">=</span> .
 </pre></div>
 </div>
@@ -130,7 +130,7 @@ up the image for running <em>sinergym</em>.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you use <a class="reference external" href="https://code.visualstudio.com/">Visual Studio Code</a>, by simply opening the root directory and clicking on the pop-up button “<em>Reopen in container</em>“, all the dependencies will be installed automatically and you will be able to run <em>sinergym</em> in an isolated environment.</p>
+<p>If you use <a class="reference external" href="https://code.visualstudio.com/">Visual Studio Code</a>, by simply opening the root directory and clicking on the pop-up button &quot;<em>Reopen in container</em>&quot;, all the dependencies will be installed automatically and you will be able to run <em>sinergym</em> in an isolated environment.</p>
 </div>
 </section>
 <section id="manual-installation">
@@ -138,7 +138,7 @@ up the image for running <em>sinergym</em>.</p>
 <p>If you prefer installing <em>sinergym</em> manually, follow the steps below:</p>
 <section id="install-energyplus-9-5-0">
 <h3>1. Install EnergyPlus 9.5.0<a class="headerlink" href="#install-energyplus-9-5-0" title="Permalink to this headline"></a></h3>
-<p>Firstly, install EnergyPlus. Currently it has been update compability to 9.5.0 and it has
+<p>Firstly, install EnergyPlus. Currently it has been update compatibility to 9.5.0 and it has
 been tested, but code may also work with other versions. Sinergym ensure this support:</p>
 <table class="docutils align-default">
 <colgroup>
@@ -159,7 +159,7 @@ been tested, but code may also work with other versions. Sinergym ensure this su
 </tr>
 </tbody>
 </table>
-<p>Other combination may works, but they don’t have been tested.</p>
+<p>Other combination may works, but they don't have been tested.</p>
 <p>Follow the instructions <a class="reference external" href="https://energyplus.net/downloads">here</a> and
 install it for Linux (only Ubuntu is supported). Choose any location
 to install the software. Once installed, a folder called
@@ -189,12 +189,15 @@ root folder:</p>
 <p>Extra libraries can be installed by typing <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.[extras]</span></code>.
 <em>extras</em> include all optional libraries which have been considered in this project such as
 testing, visualization, Deep Reinforcement Learning, monitoring , etc.
-It’s possible to select a subset of these libraries instead of ‘extras’ tag in which we select all optional libaries, for example:</p>
+It's possible to select a subset of these libraries instead of 'extras' tag in which we select all optional libraries, for example:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ pip install -e .<span class="o">[</span>test,doc<span class="o">]</span>
 </pre></div>
 </div>
-<p>In order to check all our tag list, visit <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/setup.py">setup.py</a> in Sinergym root repository.</p>
-<p>In any case, they are not a requirement of the package.</p>
+<p>In order to check all our tag list, visit <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/setup.py">setup.py</a> in Sinergym root repository. In any case, they are not a requirement of the package.</p>
+<p>You can also install from <a class="reference external" href="https://pypi.org/project/sinergym/">oficial pypi repository</a>:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ pip install sinergym<span class="o">[</span>extras<span class="o">]</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="cloud-computing">

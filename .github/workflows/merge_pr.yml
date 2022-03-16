@@ -1,0 +1,109 @@
+name: "PR merge workflow"
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  apply-autopep8:
+    name: Autopep8 auto-format by a bot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Apply isort
+        id: isort-step
+        # default configuration use --check-only and --diff instead of --in-place options.
+        uses: isort/isort-action@master
+        with:
+          configuration: --only-modified
+
+      - name: autopep8 check and fix
+        id: autopep8
+        uses: peter-evans/autopep8@v1
+        with:
+          args: --exit-code --recursive --in-place --aggressive --aggressive .
+        
+      - name: Detect changes by isort
+        uses: tj-actions/verify-changed-files@v7.2
+        id: verify-isort-update
+        with:
+          files: |
+            tests/
+            sinergym/
+            examples/
+            *.py
+
+      - name: Commit format changes
+        if: steps.autopep8.outputs.exit-code == 2 || steps.verify-isort-update.outputs.files_changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automated format fixes (autopep8 + isort)
+
+  apply-documentation:
+    name: Documentation compilation update by bot
+    needs: [apply-autopep8]
+    runs-on: ubuntu-latest    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Verify documentation update
+        uses: dorny/paths-filter@v2
+        id: verify-documentation-update
+        with:
+          filters: |
+            doc:
+              - 'docs/source/**'
+      - name: Upgrade pip
+        if: steps.verify-documentation-update.outputs.doc == 'true'
+        run: "python -m pip install --upgrade pip"
+      - name: Install dependencies [sinergym extras]
+        if: steps.verify-documentation-update.outputs.doc == 'true'
+        run: "pip install -e .[extras]"
+      - name: Check sphinx spelling
+        if: steps.verify-documentation-update.outputs.doc == 'true'
+        run: "cd docs && make spelling"
+      - name: Compile documentation
+        if: steps.verify-documentation-update.outputs.doc == 'true'
+        run: "cd docs && sphinx-build -M html source build -W"
+      - name: Check sphinx spelling
+        if: steps.verify-documentation-update.outputs.doc == 'true'
+        run: "cd docs && sphinx-build -M spelling source build -W"
+      - name: Pull local repository (for possible format commit)
+        if: steps.verify-documentation-update.outputs.doc == 'true'
+        run: git pull origin main
+      - name: Commit and push changes if exists
+        if: steps.verify-documentation-update.outputs.doc == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: docs/build/*
+          commit_message: Documentation source update detected and pushed compilation build directory for Github Pages
+      
+  update-dockerhub:
+    needs: [apply-autopep8, apply-documentation]
+    env:
+      DOCKER_USER: ${{ secrets.DOCKER_USER }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    # If you don't have secrets configured with docker credential, this job will be skipped
+    name: Container build and upload in Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        uses: actions/checkout@v2
+      - name: Build the latest Docker image
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extras] --tag $DOCKER_USER/sinergym:latest
+      - name: Login in Docker Hub account
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: Push container used with test
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        run: docker push $DOCKER_USER/sinergym:latest

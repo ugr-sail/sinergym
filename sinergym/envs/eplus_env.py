@@ -2,17 +2,17 @@
 Gym environment for simulation with EnergyPlus.
 """
 
-import gym
 import os
-import opyplus
-import pkg_resources
-import numpy as np
+from typing import Any, Dict, List, Optional, Tuple, Union
 
-from sinergym.utils.config import Config
-from sinergym.utils.common import get_current_time_info, parse_variables, create_variable_weather, parse_observation_action_space, setpoints_transform
+import gym
+import numpy as np
+import pkg_resources
+
 from sinergym.simulators import EnergyPlus
+from sinergym.utils.common import (parse_observation_action_space,
+                                   parse_variables, setpoints_transform)
 from sinergym.utils.rewards import ExpReward, LinearReward
-from pprint import pprint
 
 
 class EplusEnv(gym.Env):
@@ -42,7 +42,7 @@ class EplusEnv(gym.Env):
             weather_file (str): Name of the EPW file for weather conditions.
             variables_file (str): Variables defined in environment to be observation and action (see sinergym/data/variables/ for examples).
             spaces_file (str): Action and observation space defined in a xml (see sinergym/data/variables/ for examples).
-            env_name: Env name used for working directory generation.
+            env_name (str, optional): Env name used for working directory generation. Defaults to 'eplus-env-v1'.
             discrete_actions (bool, optional): Whether the actions are discrete (True) or continuous (False). Defaults to True.
             weather_variability (tuple, optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Reward instance): Reward function instance used for agent feedback. Defaults to LinearReward.
@@ -122,13 +122,10 @@ class EplusEnv(gym.Env):
         """Sends action to the environment.
 
         Args:
-            action (int or np.array): Action selected by the agent.
+            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
 
         Returns:
-            np.array: Observation for next timestep.
-            float: Reward obtained.
-            bool: Whether the episode has ended or not.
-            dict: A dictionary with extra information.
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not and a dictionary with extra information
         """
 
         action_ = self._get_action(action)
@@ -164,11 +161,11 @@ class EplusEnv(gym.Env):
         return np.array(list(self.obs_dict.values()),
                         dtype=np.float32), reward, done, info
 
-    def reset(self):
+    def reset(self) -> np.ndarray:
         """Reset the environment.
 
         Returns:
-            np.array: Current observation.
+            np.ndarray: Current observation.
         """
         # Change to next episode
         time_info, obs, _ = self.simulator.reset(self.weather_variability)
@@ -180,11 +177,7 @@ class EplusEnv(gym.Env):
 
         return np.array(list(self.obs_dict.values()), dtype=np.float32)
 
-    def render(self, mode='human'):
-        """Environment rendering."""
-        pass
-
-    def close(self):
+    def close(self) -> None:
         """End simulation."""
 
         self.simulator.end_env()

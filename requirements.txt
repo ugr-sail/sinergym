@@ -4,3 +4,6 @@ gym
 eppy
 opyplus
 autopep8
+isort[requirements_deprecated_finder,pipfile_deprecated_finder]
+twine
+pytype

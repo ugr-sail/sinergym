@@ -1,0 +1,3 @@
+include requirements.txt
+include sinergym/version.txt
+recursive-include sinergym/data *

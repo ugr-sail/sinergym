@@ -1,4 +1,5 @@
 import pytest
+
 from sinergym.utils.controllers import RuleBasedController
 
 

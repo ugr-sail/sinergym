@@ -1,0 +1,70 @@
+on:
+  release:
+    types: [published, edited]
+
+jobs:
+  upload-release-container:
+    env:
+      DOCKER_USER: ${{ secrets.DOCKER_USER }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    name: Upload Docker hub container with release tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        uses: actions/checkout@master
+      - name: Get tag Release
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        id: tag_version
+        uses: abatilo/release-info-action@v1.3.0
+        with:
+          owner: jajimer
+          repo: sinergym
+      - name: Build container image with release tag
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        env:
+          TAG: ${{ steps.tag_version.outputs.latest_tag }}
+          #TAG_DATE: ${{ steps.tag_version.outputs.latest_tag_published_at }}
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extras] --tag $DOCKER_USER/sinergym:$TAG
+      - name: Login Docker Hub
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: Push container built with release tag
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        env:
+          TAG: ${{ steps.tag_version.outputs.latest_tag }}
+        run: docker push $DOCKER_USER/sinergym:$TAG
+
+  update-pypi:
+    env:
+      PYPI_USER: ${{ secrets.PYPI_USER }}
+      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+    # If you don't have secrets configured with pypi credential, this job will be skipped
+    name: PyPi package update
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        if: "${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}"
+        uses: actions/checkout@v2
+
+      # - name: Checking Sinergym version is updated
+      #   if: "${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}"
+      #   uses: dorny/paths-filter@v2
+      #   id: verify-version-update
+      #   with:
+      #     filters: |
+      #       version:
+      #         - 'sinergym/version.txt'
+
+      - name: Preparing dist directory
+        if: ${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}
+        run: python setup.py sdist
+
+      - name: Publish a Python distribution to PyPi
+        if: ${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: ${{ env.PYPI_USER }}
+          password: ${{ env.PYPI_API_TOKEN }}
+          skip_existing: true
+          verbose: true

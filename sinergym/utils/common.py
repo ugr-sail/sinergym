@@ -1,17 +1,18 @@
 """Common utilities."""
 
-import os
-import logging
-import numpy as np
-import xml.etree.ElementTree as ET
-from pydoc import locate
 import csv
-import pandas as pd
-import gym
-from opyplus.epm.record import Record
-from opyplus import Epm
-
+import logging
+import os
+import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
+from pydoc import locate
+from typing import Any, Dict, List, Optional, Tuple, Union
+
+import gym
+import numpy as np
+import pandas as pd
+from opyplus import Epm, WeatherData
+from opyplus.epm.record import Record
 
 # NORMALIZATION RANGES
 RANGES_5ZONE = {'Facility Total HVAC Electricity Demand Rate (Whole Building)': [173.6583692738386,
@@ -109,7 +110,12 @@ RANGES_DATACENTER = {
 }
 
 
-def get_delta_seconds(year, st_mon, st_day, end_mon, end_day):
+def get_delta_seconds(
+        year: int,
+        st_mon: int,
+        st_day: int,
+        end_mon: int,
+        end_day: int) -> float:
     """Returns the delta seconds between `year:st_mon:st_day:0:0:0` and
     `year:end_mon:end_day:24:0:0`.
 
@@ -131,19 +137,19 @@ def get_delta_seconds(year, st_mon, st_day, end_mon, end_day):
     return delta_sec
 
 
-def get_current_time_info(epm, sec_elapsed, sim_year=1991):
+def get_current_time_info(epm: Epm, sec_elapsed: float,
+                          sim_year: int = 1991) -> Tuple[int, int, int, float]:
     """Returns the current day, month and hour given the seconds elapsed since the simulation started.
 
     Args:
         epm (opyplus.Epm): EnergyPlus model object.
-        sec_elapsed (int): Seconds elapsed since the start of the simulation
+        sec_elapsed (float): Seconds elapsed since the start of the simulation
         sim_year (int, optional): Year of the simulation. Defaults to 1991.
 
     Returns:
-        (int, int, int): A tuple composed by the current day, month and hour in the simulation.
+        Tuple[int, int, int, float]: A tuple composed by the current day, month and hour in the simulation and time elapsed.
 
     """
-
     start_date = datetime(
         year=sim_year,  # epm.RunPeriod[0]['start_year'],
         month=epm.RunPeriod[0]['begin_month'],
@@ -159,17 +165,14 @@ def get_current_time_info(epm, sec_elapsed, sim_year=1991):
         sec_elapsed)
 
 
-def parse_variables(var_file):
+def parse_variables(var_file: str) -> Dict[str, List[str]]:
     """Parse observation and action to dictionary.
 
     Args:
         var_file (str): Variables file path.
 
     Returns:
-        dict:
-            {'observation': A list with the name of the observation <variables> (<zone>) \n
-            'action'      : A list with the name og the action <variables>}.
-
+        Dict[str, List[str]]: 'observation' and 'action' keys; a list with the name of the observation <variables> (<zone>) and a list with the name of the action <variables> respectively.
     """
 
     tree = ET.parse(var_file)
@@ -191,19 +194,19 @@ def parse_variables(var_file):
     return variables
 
 
-def parse_observation_action_space(space_file):
+def parse_observation_action_space(space_file: str) -> Dict[str, Any]:
     """Parse observation space definition to gym env.
 
     Args:
         space_file (str): Observation space definition file path.
 
-    Returns:
-        dictionary:
-                {'observation'     : tupple for gym.spaces.Box() arguments, \n
-                'discrete_action'  : dictionary action mapping for gym.spaces.Discrete(), \n
-                'continuos_action' : tuple for gym.spaces.Box()}
+    Raises:
+        RuntimeError: If root XML tag is not 'space'.
 
+    Returns:
+        Dict[str, Any]: 'observation', 'discrete_action' and 'continuous_action' keys. tuple for gym.spaces.Box() arguments, dictionary action mapping for gym.spaces.Discrete() and tuple for gym.spaces.Box()
     """
+
     tree = ET.parse(space_file)
     root = tree.getroot()
     if(root.tag != 'space'):
@@ -213,16 +216,28 @@ def parse_observation_action_space(space_file):
     # Observation and action spaces
     observation_space = root.find('observation-space')
     action_space = root.find('action-space')
+    assert observation_space is not None and action_space is not None
+
     discrete_action_space = action_space.find('discrete')
     continuous_action_space = action_space.find('continuous')
+    assert discrete_action_space is not None and continuous_action_space is not None
 
-    action_shape = int(action_space.find('shape').attrib['value'])
+    action_shape = action_space.find('shape')
+    assert action_shape is not None
+    action_shape = int(action_shape.attrib['value'])
 
     # Observation space values
-    dtype = locate(observation_space.find('dtype').attrib['value'])
-    low = dtype(observation_space.find('low').attrib['value'])
-    high = dtype(observation_space.find('high').attrib['value'])
-    shape = int(observation_space.find('shape').attrib['value'])
+    dtype = observation_space.find('dtype')
+    assert dtype is not None
+    dtype = locate(dtype.attrib['value'])
+    assert callable(dtype)
+    low = observation_space.find('low')
+    high = observation_space.find('high')
+    shape = observation_space.find('shape')
+    assert low is not None and high is not None and shape is not None
+    low = dtype(low.attrib['value'])
+    high = dtype(high.attrib['value'])
+    shape = int(shape.attrib['value'])
     observation = (low, high, (shape,), dtype)
 
     # discrete action values
@@ -258,21 +273,20 @@ def parse_observation_action_space(space_file):
 
 
 def create_variable_weather(
-        weather_data,
-        original_epw_file,
-        columns: list = ['drybulb'],
-        variation: tuple = None):
+        weather_data: WeatherData,
+        original_epw_file: str,
+        columns: List[str] = ['drybulb'],
+        variation: Optional[Tuple[float, float, float]] = None) -> Optional[str]:
     """Create a new weather file using Ornstein-Uhlenbeck process.
 
     Args:
         weather_data (opyplus.WeatherData): Opyplus object with the weather for the simulation.
         original_epw_file (str): Path to the original EPW file.
-        columns (list, optional): List of columns to be affected. Defaults to ['drybulb'].
-        variation (tuple, optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
+        columns (List[str], optional): List of columns to be affected. Defaults to ['drybulb'].
+        variation (Optional[Tuple[float, float, float]], optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
 
     Returns:
-        str: Name of the file created in the same location as the original one.
-
+        Optional[str]: Name of the file created in the same location as the original one.
     """
 
     if variation is None:
@@ -314,15 +328,17 @@ def create_variable_weather(
         return filename
 
 
-def ranges_getter(output_path, last_result=None):
-    """Given a path with simulations outputs, this function is used to extract max and min absolute valors of all episodes in each variable. If a dict ranges is given, will be updated.
+def ranges_getter(output_path: str,
+                  last_result: Optional[Dict[str, List[float]]] = None
+                  ) -> Dict[str, List[float]]:
+    """Given a path with simulations outputs, this function is used to extract max and min absolute values of all episodes in each variable. If a dict ranges is given, will be updated.
 
     Args:
         output_path (str): path with simulations directories (Eplus-env-\\*).
-        last_result (dict): Last ranges dict to be updated. This will be created if it is not given.
+        last_result (Optional[Dict[str, List[float]]], optional): Last ranges dict to be updated. This will be created if it is not given.
 
     Returns:
-        dict: list min,max of each variable as a key.
+        Dict[str, List[float]]: list min,max of each variable as a key.
 
     """
 
@@ -362,16 +378,24 @@ def ranges_getter(output_path, last_result=None):
     return result
 
 
-def setpoints_transform(action, action_space: gym.spaces.Box, setpoints_space):
+def setpoints_transform(action: Union[int,
+                                      float,
+                                      np.integer,
+                                      np.ndarray,
+                                      List[Any],
+                                      Tuple[Any]],
+                        action_space: gym.spaces.Box,
+                        setpoints_space: List[List[Union[int, float]]]
+                        ) -> List[Union[int, float]]:
     """Given an action inner gym action_space, this will be converted into an action inner setpoints_space (Sinergym Simulation).
 
      Args:
-        action (list): Action of a step in gym simulation.
+        action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action of a step in gym simulation.
         action_space (gym.spaces.Box): Gym action space
-        setpoints_space (list): Sinergym simulation action space
+        setpoints_space (List[List[Union[int, float]]]): Sinergym simulation action space
 
      Returns:
-        tuple: Action transformed into simulation action space.
+        List[Union[int, float]]: Action transformed into simulation action space.
 
     """
 
@@ -394,26 +418,26 @@ def setpoints_transform(action, action_space: gym.spaces.Box, setpoints_space):
     return action_
 
 
-def get_record_keys(record: Record):
+def get_record_keys(record: Record) -> List[str]:
     """Given an opyplus Epm Record (one element from opyplus.epm object) this function returns list of keys (opyplus hasn't got this functionality explicitly)
 
      Args:
-        record (opyplus.Epm.record): Element from Epm object.
+        record (opyplus.Epm.Record): Element from Epm object.
 
      Returns:
-        list(str): Key list from record.
+        List[str]: Key list from record.
     """
     return [field.ref for field in record._table._dev_descriptor._field_descriptors]
 
 
-def prepare_batch_from_records(records: list):
+def prepare_batch_from_records(records: List[Record]) -> List[Dict[str, Any]]:
     """Prepare a list of dictionaries in order to use Epm.add_batch directly
 
     Args:
-        records (list): List of records which will be converted to dictionary batch
+        records List[opyplus.Epm.Record]: List of records which will be converted to dictionary batch.
 
     Returns:
-        list (dict): List of dicts where each dictionary is a record element
+        List[Dict[str, Any]]: List of dicts where each dictionary is a record element.
     """
 
     batch = []
@@ -430,7 +454,11 @@ class Logger():
     """Sinergym terminal logger for simulation executions.
     """
 
-    def getLogger(self, name, level, formatter):
+    def getLogger(
+            self,
+            name: str,
+            level: str,
+            formatter: str) -> logging.Logger:
         """Return Sinergym logger for the progress output in terminal.
 
         Args:
@@ -469,11 +497,11 @@ class CSVLogger(object):
 
     def __init__(
             self,
-            monitor_header,
-            progress_header,
-            log_progress_file,
-            log_file=None,
-            flag=True):
+            monitor_header: str,
+            progress_header: str,
+            log_progress_file: str,
+            log_file: Optional[str] = None,
+            flag: bool = True):
 
         self.monitor_header = monitor_header
         self.progress_header = progress_header + '\n'
@@ -494,17 +522,17 @@ class CSVLogger(object):
 
     def log_step(
             self,
-            timestep,
-            date,
-            observation,
-            action,
-            simulation_time,
-            reward,
-            total_power_no_units,
-            comfort_penalty,
-            power,
-            done):
-        """Log step information and store it in steps_data param.
+            timestep: int,
+            date: List[int],
+            observation: List[Any],
+            action: Union[List[Union[int, float]], List[None]],
+            simulation_time: float,
+            reward: Optional[float],
+            total_power_no_units: Optional[float],
+            comfort_penalty: Optional[float],
+            power: Optional[float],
+            done: bool) -> None:
+        """Log step information and store it in steps_data attribute.
 
         Args:
             timestep (int): Current episode timestep in simulation.
@@ -516,7 +544,7 @@ class CSVLogger(object):
             total_power_no_units (float): Power consumption penalty depending on reward function.
             comfort_penalty (float): Temperature comfort penalty depending on reward function.
             power (float): Power consumption in current step (W).
-            done (bool): Specifies if this step terminates episode or not.
+            done (bool): It specifies if this step terminates episode or not.
 
         """
         if self.flag:
@@ -538,15 +566,28 @@ class CSVLogger(object):
 
     def log_step_normalize(
             self,
-            timestep,
-            date,
-            observation,
-            action,
-            simulation_time,
-            reward,
-            total_power_no_units,
-            comfort_penalty,
-            done):
+            timestep: int,
+            date: List[int],
+            observation: List[Any],
+            action: Union[List[Union[int, float]], List[None]],
+            simulation_time: float,
+            reward: Optional[float],
+            total_power_no_units: Optional[float],
+            comfort_penalty: Optional[float],
+            done: bool) -> None:
+        """Log step information and store it in steps_data_normalized attribute.
+
+        Args:
+            timestep (int): Current episode timestep in simulation.
+            date (List[int, int, int]): Current date [month,day,hour] in simulation.
+            observation (List[Any]): Values that belong to current observation.
+            action (List[Union[int, float]]): Values that belong to current action.
+            simulation_time (float): Total time elapsed in current episode (seconds).
+            reward (float): Current reward achieved.
+            total_power_no_units (float): Power consumption penalty depending on reward function.
+            comfort_penalty (float): Temperature comfort penalty depending on reward function.
+            done (bool): It specifies if this step terminates episode or not.
+        """
         if self.flag:
             row_contents = [timestep] + list(date) + list(observation) + \
                 list(action) + [simulation_time, reward,
@@ -555,7 +596,7 @@ class CSVLogger(object):
         else:
             pass
 
-    def log_episode(self, episode):
+    def log_episode(self, episode: int) -> None:
         """Log episode main information using steps_data param.
 
         Args:
@@ -625,7 +666,7 @@ class CSVLogger(object):
         else:
             pass
 
-    def set_log_file(self, new_log_file):
+    def set_log_file(self, new_log_file: str) -> None:
         """Change log_file path for monitor.csv when an episode ends.
 
         Args:
@@ -642,12 +683,12 @@ class CSVLogger(object):
 
     def _store_step_information(
             self,
-            reward,
-            power,
-            comfort_penalty,
-            power_penalty,
-            timestep,
-            simulation_time):
+            reward: float,
+            power: float,
+            comfort_penalty: float,
+            power_penalty: float,
+            timestep: int,
+            simulation_time: float) -> None:
         """Store relevant data to episode summary in progress.csv.
 
         Args:
@@ -672,7 +713,7 @@ class CSVLogger(object):
         self.total_timesteps = timestep
         self.total_time_elapsed = simulation_time
 
-    def _reset_logger(self):
+    def _reset_logger(self) -> None:
         """Reset relevant data to next episode summary in progress.csv.
         """
         self.steps_data = [self.monitor_header.split(',')]
@@ -685,12 +726,40 @@ class CSVLogger(object):
         self.total_time_elapsed = 0
         self.comfort_violation_timesteps = 0
 
-    def activate_flag(self):
+    def activate_flag(self) -> None:
         """Activate Sinergym CSV logger
         """
         self.flag = True
 
-    def deactivate_flag(self):
+    def deactivate_flag(self) -> None:
         """Deactivate Sinergym CSV logger
         """
         self.flag = False
+
+
+def get_season_comfort_range(month, day):
+    """Get comfort temperature range depending on season. The comfort ranges are those
+    defined by ASHRAE in Standard 55—Thermal Environmental Conditions for Human Occupancy (2004).
+
+    Args:
+        year (int): current year
+        month (int): current month
+        day (int): current day
+    """
+
+    year = 2022
+
+    summer_start_date = datetime(year, 6, 1)
+    summer_final_date = datetime(year, 9, 30)
+
+    range_comfort_summer = (23.0, 26.0)
+    range_comfort_winter = (20.0, 23.5)
+
+    current_dt = datetime(year, month, day)
+
+    if current_dt >= summer_start_date and current_dt <= summer_final_date:
+        comfort = range_comfort_summer
+    else:
+        comfort = range_comfort_winter
+
+    return comfort

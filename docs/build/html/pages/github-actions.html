@@ -42,7 +42,12 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Github Actions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Github Actions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pull-request">Pull Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#push-main-or-merge-a-pull-request">Push main (or merge a pull request)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#new-release-created-or-modified">New release created or modified</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
@@ -84,24 +89,67 @@
 <p>This project is automatically processed using <a class="reference external" href="https://docs.github.com/es/actions/">Github Action</a> which allows building continuous integration and continuous deployment pipelines
 for testing, releasing and deploying software without the use of third-party websites/platforms.</p>
 <p>Currently, we have developed the next procedures for this project:</p>
-<ul>
-<li><p><strong>Python Code format</strong>: Python code format is checked in every pull request following <strong>Pep8</strong> <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">standard</a> (Level 2 aggressive).</p></li>
-<li><p><strong>Testing</strong>: There is another action which builds a remote container using <em>Dockerfile</em> and executes pytest inner.</p></li>
-<li><p>When a <strong>release</strong> is <em>published</em> or <em>edited</em> manually in the repository, there is an action which catches release tag version and uses it to build a container and upload/update on Docker Hub with that tag version.</p></li>
-<li><p><strong>Docs Checks and Update Github-Pages</strong>: This action compile documentation <em>source</em> in every pull-request, verify if documentation built is updated and commit and push automatically from a bot account.
-If you want to ignore <em>docs/build</em> files while you are working. You can ignore files although files are in repository executing next in local:</p>
+<section id="pull-request">
+<h2>Pull Request<a class="headerlink" href="#pull-request" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><strong>Python Code format check</strong>: Python code format is checked in every pull request following <strong>Pep8</strong> <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">standard</a> (Level 2 aggressive) and <a class="reference external" href="https://github.com/PyCQA/isort">isort</a> to sort imports.
+If format is incorrect, a bot will comment in pull request advising that issue and notifying it will be correct merging with main.</p></li>
+<li><p><strong>Code type check</strong>: We are using <a class="reference external" href="https://github.com/google/pytype">pytype</a> in Sinergym module. This let dynamic types in Python like it is usual, but controlling input and output types in functions and methods. This workflow ignore <cite>import-error</cite> type using command <cite>pytype -d import-error sinergym/</cite>.
+For example, <strong>pytype</strong> cannot include google cloud storage module, so this option specification is necessary. If some type error happens, the workflow show error until user fix it.</p></li>
+<li><p><strong>Documentation Checks</strong>: This action checks whether source documentation has been modified in every pull-request. If source documentation has been updated, it will compile documentation with Sphinx and raise errors if exist.
+This workflow checks <strong>vocabulary spelling</strong> too. If you have a mistake and sphinx finds a unknown word, this workflow will return an error. Writing documentation
+about this topic is very possible that you want to use a word that is not in default dictionary. In that case, you have to add that word to <cite>docs/source/spelling_wordlist.txt</cite> (please, respect alphabetical order) and Sphinx-spelling will accept words allocated in the list.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Sphinx Warning messages behave like errors for workflow status.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sphinx Spelling works on code docstring too.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to ignore <em>docs/build</em> files while you are working locally. You can ignore files although files are in repository executing next in local:</p>
 <blockquote>
 <div><div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git ls-files -z docs/build/ <span class="p">|</span> xargs -0 git update-index --assume-unchanged
 </pre></div>
 </div>
 </div></blockquote>
-</li>
-<li><p><strong>Update our Docker Hub repository</strong>: When main branch is <strong>pushed</strong> (it is always from a pull request merge), there is a workflow which build container with all extra requires and it is pushed to our <a class="reference external" href="https://hub.docker.com/r/alejandrocn7/sinergym">Docker Hub repository</a> using <em>latest</em> tag automatically.</p></li>
+</div>
+<ul class="simple">
+<li><p><strong>Testing</strong>: There is another action which builds a remote container using <em>Dockerfile</em> and executes pytest inner.</p></li>
+<li><p><strong>Repository security</strong>: There is a workflow which compare differences in workflows and tests from source to base. It execute that functionality only in forked repositories in order to prevent malicious software in workflow or ignore tests. Event is <em>pull_request_target</em>, this means workflow is checkout from base repository (our main branch) and it cannot be manipulate by third-parties.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These checks can be skipped in a specific commit writing <cite>[ci skip]</cite> string in commit message. For more information, see issue <a class="reference external" href="https://github.com/jajimer/sinergym/issues/161">#161</a>.</p>
+</div>
+</section>
+<section id="push-main-or-merge-a-pull-request">
+<h2>Push main (or merge a pull request)<a class="headerlink" href="#push-main-or-merge-a-pull-request" title="Permalink to this headline"></a></h2>
+<p>This workflows will be executed in sequential order:</p>
+<ul class="simple">
+<li><p><strong>Apply format</strong>: A bot generates a commit in main branch applying format changes when it is necessary (autopep8 2 level aggressive and/or <cite>isort</cite> module).</p></li>
+<li><p><strong>Update Documentation build to GitHub pages</strong>: A bot generates a commit in main branch applying new documentation build when it is necessary (spelling check included here too).</p></li>
+<li><p><strong>Update our Docker Hub repository</strong>: This job builds container with all extra requires and it is pushed to our <a class="reference external" href="https://hub.docker.com/r/alejandrocn7/sinergym">Docker Hub repository</a> using <em>latest</em> tag automatically. It needs format and documentation jobs finish for possible changes.</p></li>
+</ul>
+</section>
+<section id="new-release-created-or-modified">
+<h2>New release created or modified<a class="headerlink" href="#new-release-created-or-modified" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>When a <strong>release</strong> is <em>published</em> or <em>edited</em> manually in the repository, there is an action which catches release tag version and uses it to build a container and upload/update on Docker Hub with that tag version.</p></li>
+<li><p>At the same time, another job will update the <strong>PyPi</strong> Sinergym repository with its current version tag.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>See <a class="reference external" href="https://github.com/jajimer/sinergym/tree/develop/.github/workflows">.github/workflows YML files</a> to see code used.</p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Whether you have a forked repository from Sinergym, we recommend you to <strong>enable Github Action in your project</strong> in order to take advantage of this functionality in your developments.</p>
+</div>
+</section>
 </section>
 
 

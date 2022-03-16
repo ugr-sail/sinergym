@@ -1,12 +1,13 @@
-import pytest
-from sinergym.simulators.eplus import EnergyPlus
-import xml.etree.ElementTree as ET
+import os
+import signal
 import subprocess
 import threading
-import pkg_resources
-import signal
+import xml.etree.ElementTree as ET
 
-import os
+import pkg_resources
+import pytest
+
+from sinergym.simulators.eplus import EnergyPlus
 
 
 def test_reset(simulator):
@@ -26,7 +27,7 @@ def test_reset(simulator):
 
     # Checking simulator state
     assert simulator._eplus_run_stepsize == 900
-    assert simulator._eplus_one_epi_len == 7776000
+    assert simulator._eplus_one_epi_len == 31536000
     assert simulator._curSimTim == 0
     assert simulator._env_working_dir_parent.split(
         '/')[-1] == 'Eplus-env-' + simulator._env_name + '-res1'
@@ -97,11 +98,8 @@ def test_episode_transition_with_steps(simulator):
 
     # If we try to do one step more, it shouldn't change environment
     # One step more...
-    output = simulator.step(action=[23.0, 25.0])
-    # Let's see
-    assert output is None
-    # Last action shouldn't change too
-    assert simulator._last_action == [20.0, 24.0]
+    with pytest.raises(RuntimeError):
+        output = simulator.step(action=[23.0, 25.0])
 
 
 def test_get_file_name(simulator, idf_path):

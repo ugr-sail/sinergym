@@ -3,6 +3,7 @@
 
 from datetime import datetime
 from math import exp
+from typing import Dict, List, Tuple
 
 
 class BaseReward(object):
@@ -148,8 +149,6 @@ class ExpReward(LinearReward):
         self.energy_name = energy_variable
 
         # Variables
-        self.range_comfort_winter = range_comfort_winter
-        self.range_comfort_summer = range_comfort_summer
         self.W_energy = energy_weight
         self.lambda_energy = lambda_energy
         self.lambda_temp = lambda_temperature

@@ -20,6 +20,8 @@ Current algorithms checked by Sinergym are:
 +-----------+----------+------------+--------------------+
 | SAC       |    NO    |     YES    | OffPolicyAlgorithm |
 +-----------+----------+------------+--------------------+
+| TD3       |    NO    |     YES    | OffPolicyAlgorithm |
++-----------+----------+------------+--------------------+
 
 ``Type`` column has been specified due to its importance about *Stable Baselines callback* functionality.
 
@@ -63,7 +65,7 @@ The main structure for Sinergym with Tensorboard is:
 
 * **action**: This section has action values during training. When algorithm is On Policy, it will appear **action_simulation** too. This is because algorithms
   in continuous environments has their own output and clipped with gym action space. Then, this output is parse to simulation action space (See :ref:`Observation/action spaces`).
-* **episode**: Here is stored all information about entires episodes. It is equivalent to progress.csv in Sinergym logger (see Sinergym :ref:`Output format`):
+* **episode**: Here is stored all information about entire episodes. It is equivalent to progress.csv in Sinergym logger (see Sinergym :ref:`Output format`):
     - *comfort_violation_time(%)*: Percentage of time in episode simulation in which temperature has been out of bound comfort temperature ranges.
     - *cumulative_comfort_penalty*: Sum of comfort penalties (reward component) during whole episode.
     - *cumulative_power*: Sum of power consumption during whole episode.

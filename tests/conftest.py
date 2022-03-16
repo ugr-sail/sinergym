@@ -1,15 +1,17 @@
-import pytest
-from sinergym.simulators.eplus import EnergyPlus
-from sinergym.envs.eplus_env import EplusEnv
-import sinergym.utils.rewards as R
-from sinergym.utils.wrappers import NormalizeObservation, MultiObsWrapper, LoggerWrapper
-from sinergym.utils.config import Config
-
-from opyplus import Epm, WeatherData, Idd
 import os
-import pkg_resources
-from glob import glob  # to find directories with patterns
 import shutil
+from glob import glob  # to find directories with patterns
+
+import pkg_resources
+import pytest
+from opyplus import Epm, Idd, WeatherData
+
+import sinergym.utils.rewards as R
+from sinergym.envs.eplus_env import EplusEnv
+from sinergym.simulators.eplus import EnergyPlus
+from sinergym.utils.config import Config
+from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
+                                     NormalizeObservation)
 
 ############### ROOT DIRECTORY ###############
 
@@ -80,7 +82,7 @@ def weather_path2(pkg_data_path):
     return os.path.join(
         pkg_data_path,
         'weather',
-        'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.epw')
+        'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw')
 
 
 @pytest.fixture(scope='session')
@@ -88,7 +90,7 @@ def ddy_path2(pkg_data_path):
     return os.path.join(
         pkg_data_path,
         'weather',
-        'USA_AZ_Tucson-Davis-Monthan.AFB.722745_TMY3.ddy')
+        'USA_AZ_Davis-Monthan.AFB.722745_TMY3.ddy')
 
 
 @pytest.fixture(scope='session')
@@ -246,8 +248,6 @@ def weather_data(weather_path):
 @pytest.fixture(scope='session')
 def simple_reward():
     return R.LinearReward(
-        range_comfort_winter=(20.0, 23.5),
-        range_comfort_summer=(23.0, 26.0),
         energy_weight=0.5,
         lambda_energy=1e-4,
         lambda_temperature=1.0

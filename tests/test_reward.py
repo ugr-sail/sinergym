@@ -1,4 +1,5 @@
 import pytest
+
 import sinergym.utils.rewards as R
 
 

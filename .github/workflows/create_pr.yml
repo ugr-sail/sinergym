@@ -1,0 +1,109 @@
+name: Pull request workflows
+on: pull_request
+
+jobs:
+
+  format-check:
+    # Skip CI if [ci skip] in the commit message
+    if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: autopep8 check
+        id: autopep8
+        uses: peter-evans/autopep8@v1
+        with:
+          args: --exit-code --recursive --diff --aggressive --aggressive .
+
+      - name: isort check
+        id: isort-step
+        # default configuration use --check-only and --diff instead of --in-place options.
+        uses: isort/isort-action@master
+        continue-on-error: true
+
+      - name: warning format
+        if: steps.autopep8.outputs.exit-code == 2 || steps.isort-step.outcome != 'success'
+        run: echo "::warning ::There are some formats error (autopep8 2 level agressive + isort) in pull request. A bot will fix this issue when pull request is merged."
+
+   
+      # - name: Comment PR warning
+      #   if: steps.autopep8.outputs.exit-code == 2 || steps.isort-step.outcome != 'success'
+      #   uses: thollander/actions-comment-pull-request@v1
+      #   with:
+      #     message: ':warning: There are some formats error (autopep8 2 level agressive + isort) in pull request. A bot will fix this issue when pull request is merged. See workflow log to see future changes.'
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  type-check:
+    # Skip CI if [ci skip] in the commit message
+    if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2 
+      
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install pytype
+        run: pip install pytype
+      
+      - name: Check pytype
+        run: pytype -d import-error sinergym/
+
+  documentation-check:
+    # Skip CI if [ci skip] in the commit message
+    if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Verify documentation update
+        uses: dorny/paths-filter@v2
+        id: verify-documentation-update
+        with:
+          filters: |
+            doc:
+              - 'docs/source/**'
+
+      - name: Upgrade pip
+        if: steps.verify-documentation-update.outputs.doc == 'true'
+        run: "python -m pip install --upgrade pip"
+
+      - name: Install dependencies [sinergym extras]
+        if: steps.verify-documentation-update.outputs.doc == 'true'
+        run: "pip install -e .[extras]"
+
+      - name: Compile documentation
+        if: steps.verify-documentation-update.outputs.doc == 'true'
+        run: "cd docs && sphinx-build -M html source build -W"
+
+      - name: Check sphinx spelling
+        if: steps.verify-documentation-update.outputs.doc == 'true'
+        run: "cd docs && sphinx-build -M spelling source build -W"
+
+  tests:
+    # Skip CI if [ci skip] in the commit message
+    if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]')"
+    name: build container and execute pytest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build the latest Docker image
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[DRL,test] --tag pullrequest/sinergym:latest
+
+      - name: Execute tests from container
+        run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'pytest tests/ -vv'
+
+  
