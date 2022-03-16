@@ -119,6 +119,7 @@ class EplusEnv(gym.Env):
 
         # Reward class
         self.cls_reward = reward
+        self.obs_dict = None
 
     def step(self,
              action: Union[int,
@@ -166,19 +167,19 @@ class EplusEnv(gym.Env):
         self.simulator.logger_main.debug(action_)
         time_info, obs, done = self.simulator.step(action_)
         # Create dictionary with observation
-        obs_dict = dict(zip(self.variables['observation'], obs))
+        self.obs_dict = dict(zip(self.variables['observation'], obs))
         # Add current timestep information
-        obs_dict['day'] = time_info[0]
-        obs_dict['month'] = time_info[1]
-        obs_dict['hour'] = time_info[2]
+        self.obs_dict['day'] = time_info[0]
+        self.obs_dict['month'] = time_info[1]
+        self.obs_dict['hour'] = time_info[2]
 
         # Calculate reward
 
         # Calculate temperature mean for all building zones
-        temp_values = [value for key, value in obs_dict.items(
+        temp_values = [value for key, value in self.obs_dict.items(
         ) if key.startswith('Zone Air Temperature')]
 
-        power = obs_dict['Facility Total HVAC Electricity Demand Rate (Whole Building)']
+        power = self.obs_dict['Facility Total HVAC Electricity Demand Rate (Whole Building)']
         reward, terms = self.cls_reward.calculate(
             power, temp_values, time_info[1], time_info[0])
 
@@ -187,17 +188,17 @@ class EplusEnv(gym.Env):
             'timestep': int(
                 time_info[3] / self.simulator._eplus_run_stepsize),
             'time_elapsed': int(time_info[3]),
-            'day': obs_dict['day'],
-            'month': obs_dict['month'],
-            'hour': obs_dict['hour'],
+            'day': self.obs_dict['day'],
+            'month': self.obs_dict['month'],
+            'hour': self.obs_dict['hour'],
             'total_power': power,
             'total_power_no_units': terms['reward_energy'],
             'comfort_penalty': terms['reward_comfort'],
             'temperatures': temp_values,
-            'out_temperature': obs_dict['Site Outdoor Air Drybulb Temperature (Environment)'],
+            'out_temperature': self.obs_dict['Site Outdoor Air Drybulb Temperature (Environment)'],
             'action_': action_}
 
-        return np.array(list(obs_dict.values()),
+        return np.array(list(self.obs_dict.values()),
                         dtype=np.float32), reward, done, info
 
     def reset(self) -> np.ndarray:
@@ -208,13 +209,13 @@ class EplusEnv(gym.Env):
         """
         # Change to next episode
         time_info, obs, done = self.simulator.reset(self.weather_variability)
-        obs_dict = dict(zip(self.variables['observation'], obs))
+        self.obs_dict = dict(zip(self.variables['observation'], obs))
 
-        obs_dict['day'] = time_info[0]
-        obs_dict['month'] = time_info[1]
-        obs_dict['hour'] = time_info[2]
+        self.obs_dict['day'] = time_info[0]
+        self.obs_dict['month'] = time_info[1]
+        self.obs_dict['hour'] = time_info[2]
 
-        return np.array(list(obs_dict.values()), dtype=np.float32)
+        return np.array(list(self.obs_dict.values()), dtype=np.float32)
 
     def render(self, mode: str = 'human') -> None:
         """Environment rendering.

@@ -1,12 +1,12 @@
 {
-    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pycodestyleEnabled": false,
     "python.formatting.provider": "autopep8",
     "python.formatting.autopep8Args": [
         "--aggressive",
         "--aggressive"
     ],
     "editor.formatOnSave": true,
-    "window.zoomLevel": 2,
+    "window.zoomLevel": 0,
     "python.testing.pytestArgs": [
         "tests"
     ],
