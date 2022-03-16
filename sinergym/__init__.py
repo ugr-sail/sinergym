@@ -2,10 +2,6 @@ import os
 
 from gym.envs.registration import register
 
-<<<<<<< HEAD
-=======
-from sinergym.utils.rewards import LinearReward
->>>>>>> main
 
 # Set __version__ in module
 version_file = os.path.join(os.path.dirname(__file__), "version.txt")
