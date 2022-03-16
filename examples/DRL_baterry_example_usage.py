@@ -1,20 +1,20 @@
 import subprocess
 import sys
 
-"""
+
 ## Basic call (all default values)
 args = ["DRL_battery.py",
         "--environment", "Eplus-demo-v1"]
 subprocess.Popen([sys.executable or 'python'] + args)
-"""
+
 
 ## Complete call (all parameters)
 args = ["DRL_battery.py",
-        "--environment", "Eplus-demo-v1",
-        '--episodes', '3',
+        "--environment", "Eplus-5Zone-cool-discrete-v1",
+        '--episodes', '12',
         '--algorithm', 'DDPG',
         '--reward', 'exponential',
-        # '--normalization', #We cant use normalization on "Eplus-demo-v1"
+        '--normalization',
         '--multiobs',
         '--logger',
         '--tensorboard', './tensorboard_log',
@@ -25,18 +25,39 @@ args = ["DRL_battery.py",
         '--seed', '344561',
         '--remote_store',
         '--mlflow_store',
-        '--group_name', 'DRL',
+        '--group_name', 'DRL_DDPG',
+        '--auto_delete',
+        '--n_steps', '5',
+        '--learning_starts', '100',
+        '--sigma', '0.1']
+subprocess.Popen([sys.executable or 'python'] + args)
+
+
+## A2C
+args = ["DRL_battery.py",
+        "--environment", "Eplus-5Zone-cool-discrete-v1",
+        '--episodes', '12',
+        '--algorithm', 'A2C',
+        '--reward', 'exponential',
+        '--normalization',
+        '--multiobs',
+        '--logger',
+        '--tensorboard', './tensorboard_log',
+        '--evaluation',
+        '--eval_freq', '3',
+        '--eval_length', '3',
+        '--log_interval', '3',
+        '--seed', '55555',
+        '--remote_store',
+        '--mlflow_store',
+        '--group_name', 'DRL_A2C',
         '--auto_delete',
         '--learning_rate', '.02',
-        '--gamma', '.8',
-        '--n_steps', '10',
-        '--gae_lambda', '1',
-        '--ent_coef', '0.1',
-        '--vf_coef', '0.5',
-        '--max_grad_norm', '0.5',
+        '--gamma', '.9',
+        '--n_steps', '5',
+        '--gae_lambda', '1.5',
+        '--ent_coef', '0.15',
+        '--vf_coef', '0.9',
         '--rms_prop_eps', '1e-05',
-        '--buffer_size', '2000000',
-        '--learning_starts', '100',
-        '--tau', '0.005',
-        '--sigma', '0.1']
+        '--learning_starts', '100',]
 subprocess.Popen([sys.executable or 'python'] + args)
