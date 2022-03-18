@@ -48,6 +48,9 @@ RUN apt-get update \
 # Remove the broken symlinks
 RUN cd /usr/local/bin find -L . -type l -delete
 
+# Install ping dependency
+RUN apt update && apt install iputils-ping -y 
+
 # Install Python
 RUN apt update
 RUN apt install software-properties-common -y
