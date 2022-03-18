@@ -83,6 +83,7 @@ jobs:
         if: steps.verify-documentation-update.outputs.doc == 'true'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
+          branch: gh-pages
           file_pattern: docs/build/*
           commit_message: Documentation source update detected and pushed compilation build directory for Github Pages
       
