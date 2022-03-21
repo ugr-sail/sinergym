@@ -32,6 +32,7 @@
    sinergym.utils.common
    sinergym.utils.config
    sinergym.utils.controllers
+   sinergym.utils.evaluation
    sinergym.utils.gcloud
    sinergym.utils.rewards
    sinergym.utils.wrappers

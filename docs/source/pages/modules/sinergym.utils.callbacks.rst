@@ -9,13 +9,6 @@ sinergym.utils.callbacks
 
    
    
-   .. rubric:: Functions
-
-   .. autosummary::
-      :toctree:                                          
-   
-      evaluate_policy
-   
    
 
    
