@@ -23,14 +23,6 @@ Pull Request
 
 .. note:: Sphinx Spelling works on code docstring too.
 
-.. note::
-
-  If you want to ignore *docs/build* files while you are working locally. You can ignore files although files are in repository executing next in local:
-
-    .. code:: sh
-        
-        $ git ls-files -z docs/build/ | xargs -0 git update-index --assume-unchanged
-
 - **Testing**: There is another action which builds a remote container using *Dockerfile* and executes pytest inner.
 - **Repository security**: There is a workflow which compare differences in workflows and tests from source to base. It execute that functionality only in forked repositories in order to prevent malicious software in workflow or ignore tests. Event is *pull_request_target*, this means workflow is checkout from base repository (our main branch) and it cannot be manipulate by third-parties.
 
@@ -43,7 +35,7 @@ Push main (or merge a pull request)
 This workflows will be executed in sequential order:
 
 - **Apply format**: A bot generates a commit in main branch applying format changes when it is necessary (autopep8 2 level aggressive and/or `isort` module).
-- **Update Documentation build to GitHub pages**: A bot generates a commit in main branch applying new documentation build when it is necessary (spelling check included here too).
+- **Update Documentation build to GitHub pages**: A bot generates a commit in **gh-pages** branch applying new documentation build when it is necessary (spelling check included here too).
 - **Update our Docker Hub repository**: This job builds container with all extra requires and it is pushed to our `Docker Hub repository <https://hub.docker.com/r/alejandrocn7/sinergym>`__ using *latest* tag automatically. It needs format and documentation jobs finish for possible changes.
 
 ********************************
