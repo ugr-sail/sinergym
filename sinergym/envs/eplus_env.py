@@ -77,7 +77,7 @@ class EplusEnv(gym.Env):
             weather_path=self.weather_path,
             variable_path=self.variables_path,
             act_repeat=act_repeat,
-            max_ep_data_store_num=max_ep_data_store_num
+            max_ep_data_store_num=max_ep_data_store_num,
             config_params=config_params
         )
 
