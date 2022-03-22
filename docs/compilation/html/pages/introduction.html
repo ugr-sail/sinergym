@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+            <a href="../index.html" class="icon icon-home"> sinergym
+            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/introduction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>This is a project based on Zhiang Zhang and Khee Poh Lam <a class="reference external" href="https://github.com/zhangzhizza/Gym-Eplus">Gym-Eplus</a>.</p>
+</div>
+<p>The goal of <em>sinergym</em> is to create an environment following OpenAI
+Gym interface for wrapping simulation engines for building control using
+<strong>deep reinforcement learning</strong>.</p>
+<a class="reference internal image-reference" href="../_images/operation_diagram.jpg"><img alt="Sinergym diagram" class="align-center" src="../_images/operation_diagram.jpg" style="width: 800px;" /></a>
+<p>The main functionalities of <em>sinergym</em> are the following:</p>
+<ul class="simple">
+<li><p><strong>Benchmark environments</strong>. Similarly to Atari or Mujoco environments
+for RL community, we are designing a set of environments for
+benchmarking and testing deep RL algorithms. These environments may
+include different buildings, weathers or action/observation spaces.</p></li>
+<li><p><strong>Develop different experimental settings</strong>. We aim to provide a
+package that allows to modify experimental settings in an easy
+manner. For example, several reward functions or observation
+variables may be defined.</p></li>
+<li><p><strong>Include different simulation engines</strong>. Communication between
+Python and <a class="reference external" href="https://energyplus.net/">EnergyPlus</a> is established
+using <a class="reference external" href="https://simulationresearch.lbl.gov/bcvtb/FrontPage">BCVTB</a>.
+Since this tool allows for interacting with several simulation
+engines, more of them (e.g.
+<a class="reference external" href="https://openmodelica.org/">OpenModelica</a>) could be included in
+the backend while maintaining the Gym API.</p></li>
+<li><p><strong>Building Models configuration automatically</strong>: Building models will be
+adapted to specification of each simulation. For example, <em>Designdays</em> and
+<em>Location</em> from IDF files will be adapted to weather file specified in
+Sinergym simulator backend without any intervention by the user.</p></li>
+<li><p><strong>Extra configuration facilities</strong>: Our team aim to provide extra parameters
+in order to amplify the context space for the experiments with this tool.
+Sinergym will modify building model automatically based on parameters set.
+For example: People occupant, timesteps per simulation hour, observation
+and action spaces, etc.</p></li>
+<li><p><strong>Stable Baseline 3 Integration</strong>. Some functionalities like callbacks
+have been developed by our team in order to test easily these environments
+with deep reinforcement learning algorithms.</p></li>
+<li><p><strong>Google Cloud Integration</strong>. Whether you have a Google Cloud account and you want to
+use your infrastructure with Sinergym, we tell you some details about how doing it.</p></li>
+<li><p><strong>Mlflow tracking server</strong>. <a class="reference external" href="https://mlflow.org/">Mlflow</a> is an open source platform for the machine
+learning lifecycle. This can be used with Google Cloud remote server (if you have Google Cloud account)
+or using local store. This will help you to manage and store your runs and artifacts generated in an orderly
+manner.</p></li>
+<li><p><strong>Data Visualization</strong>. Using Sinergym logger or Tensorboard server to visualize training information
+in real-time.</p></li>
+<li><p>Many more!</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>This is a work in progress project. Stay tuned for upcoming releases!</em></p>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
