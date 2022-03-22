@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tests &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Usage example" href="usage-example.html" />
+    <link rel="prev" title="Github Actions" href="github-actions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+            <a href="../index.html" class="icon icon-home"> sinergym
+            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#install-pytest">Install Pytest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-tests">Running tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-new-tests">Create new tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Tests</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/tests.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tests">
+<h1>Tests<a class="headerlink" href="#tests" title="Permalink to this headline"></a></h1>
+<p>This project is automatically supervised using tests developed specifically for it. If you want to check sinergym has been installed successfully, run next command:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ pytest tests/ -vv
+</pre></div>
+</div>
+<p>Anyway, every time sinergym repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. <a class="reference external" href="https://docs.github.com/es/actions/">Github Action</a> will do that job.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See <a class="reference external" href="https://github.com/jajimer/sinergym/tree/develop/.github/workflows">.github/workflows YML files</a> and <a class="reference internal" href="github-actions.html#github-actions"><span class="std std-ref">Github Actions</span></a> section for more information.</p>
+</div>
+<p>These tests running under <a class="reference external" href="https://docs.pytest.org/en/6.2.x/">pytest</a> framework which makes it easy to write small tests, yet scales to support complex functional testing for applications and libraries.</p>
+<section id="install-pytest">
+<h2>Install Pytest<a class="headerlink" href="#install-pytest" title="Permalink to this headline"></a></h2>
+<p>This project has already established this dependency if you have installed <em>extras</em> libraries or <em>test</em> library specifically (see <a class="reference internal" href="installation.html#install-the-package"><span class="std std-ref">4. Install the package</span></a>). However, to install it independently:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ pip install pytest
+</pre></div>
+</div>
+</section>
+<section id="running-tests">
+<h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline"></a></h2>
+<p>In order to run current tests:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ pytest tests/ -vv
+</pre></div>
+</div>
+<p>This runs all tests within tests/ directory. If you want verbose use <cite>-v</cite> or <cite>-vv</cite> option. To run an unique module tests, for example:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ pytest tests/test_common.py -vv
+</pre></div>
+</div>
+</section>
+<section id="create-new-tests">
+<h2>Create new tests<a class="headerlink" href="#create-new-tests" title="Permalink to this headline"></a></h2>
+<p>These tests have been created in <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/tests">sinergym/tests</a> directory, they are organized by different modules:</p>
+<ul class="simple">
+<li><p><strong>test_common.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/common.py">sinergym/sinergym/utils/common.py</a>. Here will be all tests that check Sinergym common utils functionalities.</p></li>
+<li><p><strong>test_reward.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/rewards.py">sinergym/sinergym/utils/rewards.py</a>. Here will be all tests that check implementation(s) of reward function(s) applicable to sinergym environments.</p></li>
+<li><p><strong>test_wrapper.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/wrappers.py">sinergym/sinergym/utils/wrappers.py</a>. Here will be all tests that check wrappers to normalize Sinergym default environment observations.</p></li>
+<li><p><strong>test_simulator.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/simulators">sinergym/sinergym/simulators/*</a>. Here will be all tests that check low level Sinergym simulator and communication interface.</p></li>
+<li><p><strong>test_config.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/utils/config.py">sinergym/sinergym/utils/config.py</a>. Here will be all tests that check python building model, weather, directories tree for executions and extra configuration set up in simulator.</p></li>
+<li><p><strong>test_env.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/envs">sinergym/sinergym/envs/*</a>. Here will be all tests that check Sinergym simulation environments based on OpenAI Gym.</p></li>
+<li><p><strong>test_controller.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/controllers.py">sinergym/sinergym/utils/controllers.py</a>. Here will be all tests that check agent controller like Rule-Based-Controller for example.</p></li>
+<li><p><strong>test_stable_baselines.py</strong>: Tests for <a class="reference external" href="https://github.com/DLR-RM/stable-baselines3">Stable Baselines 3</a>. Here will be all tests that check Sinergym simulation environments can be used correctly with Stable Baselines 3 algorithms.</p></li>
+</ul>
+<p>If you want to make new tests, you can append to this modules or create a new one if the conceptual context is different.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information about Sinergym tests, visit our <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/tests/README.md">repository README</a>.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="github-actions.html" class="btn btn-neutral float-left" title="Github Actions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage-example.html" class="btn btn-neutral float-right" title="Usage example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
