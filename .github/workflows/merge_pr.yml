@@ -67,15 +67,12 @@ jobs:
       - name: Install dependencies [sinergym extras]
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: "pip install -e .[extras]"
-      - name: Check sphinx spelling
-        if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: "cd docs && make spelling"
       - name: Compile documentation
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: "cd docs && sphinx-build -M html source build -W"
+        run: "cd docs && sphinx-build -M html source compilation -W"
       - name: Check sphinx spelling
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: "cd docs && sphinx-build -M spelling source build -W"
+        run: "cd docs && sphinx-build -M spelling source compilation -W"
       - name: Pull local repository (for possible format commit)
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: git pull origin main
@@ -83,8 +80,7 @@ jobs:
         if: steps.verify-documentation-update.outputs.doc == 'true'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          branch: gh-pages
-          file_pattern: docs/build/*
+          file_pattern: docs/compilation/*
           commit_message: Documentation source update detected and pushed compilation build directory for Github Pages
       
   update-dockerhub:
