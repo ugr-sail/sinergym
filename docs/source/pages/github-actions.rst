@@ -35,7 +35,7 @@ Push main (or merge a pull request)
 This workflows will be executed in sequential order:
 
 - **Apply format**: A bot generates a commit in main branch applying format changes when it is necessary (autopep8 2 level aggressive and/or `isort` module).
-- **Update Documentation build to GitHub pages**: A bot generates a commit in **gh-pages** branch applying new documentation build when it is necessary (spelling check included here too).
+- **Update Documentation build to GitHub pages**: A bot generates a commit in **main** branch applying new documentation build when it is necessary (spelling check included here too) in a folder called *docs/compilation*. Repository ignore default folder name *build* in order to compile locally to check changes.
 - **Update our Docker Hub repository**: This job builds container with all extra requires and it is pushed to our `Docker Hub repository <https://hub.docker.com/r/alejandrocn7/sinergym>`__ using *latest* tag automatically. It needs format and documentation jobs finish for possible changes.
 
 ********************************
