@@ -156,12 +156,12 @@ args = parser.parse_args()
 # ---------------------------------------------------------------------------- #
 #                               Register run name                              #
 # ---------------------------------------------------------------------------- #
-experiment_date = datetime.today().strftime('%Y-%m-%d %H:%M')
+experiment_date = datetime.today().strftime('%Y-%m-%d_%H:%M')
 name = args.algorithm + '-' + args.environment + \
-    '-episodes_' + str(args.episodes)
+    '-episodes' + str(args.episodes)
 if args.seed:
-    name += '-seed_' + str(args.seed)
-name += '(' + experiment_date + ')'
+    name += '-seed' + str(args.seed)
+name += '_' + experiment_date
 # ---------------------------------------------------------------------------- #
 #                    Check if MLFLOW_TRACKING_URI is defined                   #
 # ---------------------------------------------------------------------------- #
