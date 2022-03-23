@@ -37,7 +37,8 @@ setup(name='sinergym',
               'google-cloud-storage'
           ],
           'test': [
-              'pytest'
+              'pytest',
+              'stable-baselines3'
           ],
           'DRL': [
               'stable-baselines3',

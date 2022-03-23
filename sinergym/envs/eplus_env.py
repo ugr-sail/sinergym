@@ -37,6 +37,8 @@ class EplusEnv(gym.Env):
         discrete_actions: bool = True,
         weather_variability: Optional[Tuple[float]] = None,
         reward: Any = LinearReward(),
+        act_repeat: int = 1,
+        max_ep_data_store_num: int = 10,
         config_params: Optional[Dict[str, Any]] = None
     ):
         """Environment with EnergyPlus simulator.
@@ -50,6 +52,8 @@ class EplusEnv(gym.Env):
             discrete_actions (bool, optional): Whether the actions are discrete (True) or continuous (False). Defaults to True.
             weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward().
+            act_repeat (int, optional): Number of timesteps that an action is repeated in the simulator, regardless of the actions it receives during that repetition interval.
+            max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
         """
         eplus_path = os.environ['EPLUS_PATH']
@@ -72,6 +76,8 @@ class EplusEnv(gym.Env):
             idf_path=self.idf_path,
             weather_path=self.weather_path,
             variable_path=self.variables_path,
+            act_repeat=act_repeat,
+            max_ep_data_store_num=max_ep_data_store_num,
             config_params=config_params
         )
 
