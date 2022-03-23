@@ -1,0 +1,533 @@
+ ! The following Location and Design Day data are produced as possible from the indicated data source.
+ ! Wind Speeds follow the indicated design conditions rather than traditional values (6.7 m/s heating, 3.35 m/s cooling)
+ ! No special attempts at re-creating or determining missing data parts (e.g. Wind speed or direction)
+ ! are done.  Therefore, you should look at the data and fill in any incorrect values as you desire.
+  
+ Site:Location,
+  BOGOTA_COL Design_Conditions,     !- Location Name
+       4.70,     !- Latitude {N+ S-}
+     -74.13,     !- Longitude {W- E+}
+      -5.00,     !- Time Zone Relative to GMT {GMT+/-}
+    2548.00;     !- Elevation {m}
+ 
+ !  WMO=802220 Time Zone=SAP: (GMT-05:00) Bogota, Lima, Quito
+ !  Data Source=ASHRAE 2009 Annual Design Conditions
+  
+ ! Using Design Conditions from "Climate Design Data 2009 ASHRAE Handbook"
+ ! BOGOTA_COL Extreme Annual Wind Speeds, 1%=8.4m/s, 2.5%=7m/s, 5%=6.1m/s
+ ! BOGOTA_COL Extreme Annual Temperatures, Max Drybulb=-0.5°C Min Drybulb=24.7°C
+  
+ ! BOGOTA_COL Annual Heating Design Conditions Wind Speed=0.4m/s Wind Dir=320
+ ! Coldest Month=JAN
+ ! BOGOTA_COL Annual Heating 99.6%, MaxDB=2.8°C
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Htg 99.6% Condns DB,     !- Name
+          1,      !- Month
+         21,      !- Day of Month
+  WinterDesignDay,!- Day Type
+        2.8,      !- Maximum Dry-Bulb Temperature {C}
+        0.0,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+        2.8,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        0.4,      !- Wind Speed {m/s} design conditions vs. traditional 6.71 m/s (15 mph)
+        320,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+  ASHRAEClearSky, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+       0.00;      !- Clearness {0.0 to 1.1}
+ 
+ ! BOGOTA_COL Annual Heating 99%, MaxDB=4.1°C
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Htg 99% Condns DB,     !- Name
+          1,      !- Month
+         21,      !- Day of Month
+  WinterDesignDay,!- Day Type
+        4.1,      !- Maximum Dry-Bulb Temperature {C}
+        0.0,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+        4.1,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        0.4,      !- Wind Speed {m/s} design conditions vs. traditional 6.71 m/s (15 mph)
+        320,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+  ASHRAEClearSky, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+       0.00;      !- Clearness {0.0 to 1.1}
+ 
+ ! BOGOTA_COL Annual Humidification 99.6% Design Conditions DP=>MCDB, DP=1.6°C
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Hum_n 99.6% Condns DP=>MCDB,     !- Name
+          1,      !- Month
+         21,      !- Day of Month
+  WinterDesignDay,!- Day Type
+        5.8,      !- Maximum Dry-Bulb Temperature {C}
+        0.0,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Dewpoint,     !- Humidity Condition Type
+        1.6,      !- Dewpoint at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        0.4,      !- Wind Speed {m/s} design conditions vs. traditional 6.71 m/s (15 mph)
+        320,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+  ASHRAEClearSky, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+       0.00;      !- Clearness {0.0 to 1.1}
+ 
+ ! BOGOTA_COL Annual Humidification 99% Design Conditions DP=>MCDB, DP=3.1°C
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Hum_n 99% Condns DP=>MCDB,     !- Name
+          1,      !- Month
+         21,      !- Day of Month
+  WinterDesignDay,!- Day Type
+        6.1,      !- Maximum Dry-Bulb Temperature {C}
+        0.0,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Dewpoint,     !- Humidity Condition Type
+        3.1,      !- Dewpoint at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        0.4,      !- Wind Speed {m/s} design conditions vs. traditional 6.71 m/s (15 mph)
+        320,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+  ASHRAEClearSky, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+       0.00;      !- Clearness {0.0 to 1.1}
+ 
+ ! BOGOTA_COL Annual Heating Wind 99.6% Design Conditions WS=>MCDB, WS=10.8m/s
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Htg Wind 99.6% Condns WS=>MCDB,     !- Name
+          1,      !- Month
+         21,      !- Day of Month
+  WinterDesignDay,!- Day Type
+       17.9,      !- Maximum Dry-Bulb Temperature {C}
+        0.0,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+       17.9,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+       10.8,      !- Wind Speed {m/s} design conditions vs. traditional 6.71 m/s (15 mph)
+        320,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+  ASHRAEClearSky, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+       0.00;      !- Clearness {0.0 to 1.1}
+ 
+ ! BOGOTA_COL Annual Heating Wind 99% Design Conditions WS=>MCDB, WS=8.8m/s
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Htg Wind 99% Condns WS=>MCDB,     !- Name
+          1,      !- Month
+         21,      !- Day of Month
+  WinterDesignDay,!- Day Type
+       17.9,      !- Maximum Dry-Bulb Temperature {C}
+        0.0,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+       17.9,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        8.8,      !- Wind Speed {m/s} design conditions vs. traditional 6.71 m/s (15 mph)
+        320,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+  ASHRAEClearSky, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+       0.00;      !- Clearness {0.0 to 1.1}
+ 
+ ! BOGOTA Annual Cooling Design Conditions Wind Speed=4.3m/s Wind Dir=90
+ ! Hottest Month=MAY
+ ! BOGOTA_COL Annual Cooling (DB=>MWB) .4%, MaxDB=21.2°C MWB=13.6°C
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Clg .4% Condns DB=>MWB,     !- Name
+          5,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       21.2,      !- Maximum Dry-Bulb Temperature {C}
+        9.4,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+       13.6,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        4.3,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+         90,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+       ASHRAETau, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+      0.339,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+      2.455;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+ 
+ ! BOGOTA_COL Annual Cooling (DB=>MWB) 1%, MaxDB=20.8°C MWB=13.5°C
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Clg 1% Condns DB=>MWB,     !- Name
+          5,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       20.8,      !- Maximum Dry-Bulb Temperature {C}
+        9.4,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+       13.5,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        4.3,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+         90,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+       ASHRAETau, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+      0.339,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+      2.455;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+ 
+ ! BOGOTA_COL Annual Cooling (DB=>MWB) 2%, MaxDB=20.1°C MWB=13.4°C
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Clg 2% Condns DB=>MWB,     !- Name
+          5,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       20.1,      !- Maximum Dry-Bulb Temperature {C}
+        9.4,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+       13.4,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        4.3,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+         90,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+       ASHRAETau, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+      0.339,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+      2.455;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+ 
+ ! BOGOTA_COL Annual Cooling (WB=>MDB) .4%, MDB=19°C WB=15.4°C
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Clg .4% Condns WB=>MDB,     !- Name
+          5,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+         19,      !- Maximum Dry-Bulb Temperature {C}
+        9.4,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+       15.4,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        4.3,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+         90,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+       ASHRAETau, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+      0.339,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+      2.455;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+ 
+ ! BOGOTA_COL Annual Cooling (WB=>MDB) 1%, MDB=18.5°C WB=15°C
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Clg 1% Condns WB=>MDB,     !- Name
+          5,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       18.5,      !- Maximum Dry-Bulb Temperature {C}
+        9.4,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+         15,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        4.3,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+         90,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+       ASHRAETau, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+      0.339,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+      2.455;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+ 
+ ! BOGOTA_COL Annual Cooling (WB=>MDB) 2%, MDB=18.2°C WB=14.6°C
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Clg 2% Condns WB=>MDB,     !- Name
+          5,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       18.2,      !- Maximum Dry-Bulb Temperature {C}
+        9.4,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+       14.6,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        4.3,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+         90,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+       ASHRAETau, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+      0.339,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+      2.455;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+ 
+ ! BOGOTA_COL Annual Cooling (DP=>MDB) .4%, MDB=17°C DP=14.2°C HR=0.0138
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Clg .4% Condns DP=>MDB,     !- Name
+          5,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+         17,      !- Maximum Dry-Bulb Temperature {C}
+        9.4,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Dewpoint,     !- Humidity Condition Type
+       14.2,      !- Dewpoint at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        4.3,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+         90,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+       ASHRAETau, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+      0.339,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+      2.455;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+ 
+ ! BOGOTA_COL Annual Cooling (DP=>MDB) 1%, MDB=16.7°C DP=13.8°C HR=0.0135
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Clg 1% Condns DP=>MDB,     !- Name
+          5,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       16.7,      !- Maximum Dry-Bulb Temperature {C}
+        9.4,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Dewpoint,     !- Humidity Condition Type
+       13.8,      !- Dewpoint at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        4.3,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+         90,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+       ASHRAETau, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+      0.339,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+      2.455;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+ 
+ ! BOGOTA_COL Annual Cooling (DP=>MDB) 2%, MDB=16.2°C DP=13.2°C HR=0.0130
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Clg 2% Condns DP=>MDB,     !- Name
+          5,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       16.2,      !- Maximum Dry-Bulb Temperature {C}
+        9.4,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+    Dewpoint,     !- Humidity Condition Type
+       13.2,      !- Dewpoint at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        4.3,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+         90,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+       ASHRAETau, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+      0.339,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+      2.455;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+ 
+ ! BOGOTA_COL Annual Cooling (Enthalpy=>MDB) .4%, MDB=19.2°C Enthalpy=53600.0J/kg
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Clg .4% Condns Enth=>MDB,     !- Name
+          5,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       19.2,      !- Maximum Dry-Bulb Temperature {C}
+        9.4,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+   Enthalpy,      !- Humidity Condition Type
+           ,      !- Wetbulb or Dewpoint at Maximum Dry-Bulb
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+    53600.0,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        4.3,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+         90,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+       ASHRAETau, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+      0.339,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+      2.455;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+ 
+ ! BOGOTA_COL Annual Cooling (Enthalpy=>MDB) 1%, MDB=18.7°C Enthalpy=52100.0J/kg
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Clg 1% Condns Enth=>MDB,     !- Name
+          5,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       18.7,      !- Maximum Dry-Bulb Temperature {C}
+        9.4,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+   Enthalpy,      !- Humidity Condition Type
+           ,      !- Wetbulb or Dewpoint at Maximum Dry-Bulb
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+    52100.0,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        4.3,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+         90,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+       ASHRAETau, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+      0.339,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+      2.455;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+ 
+ ! BOGOTA_COL Annual Cooling (Enthalpy=>MDB) 2%, MDB=18.3°C Enthalpy=50900.0J/kg
+ SizingPeriod:DesignDay,
+  BOGOTA Ann Clg 2% Condns Enth=>MDB,     !- Name
+          5,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       18.3,      !- Maximum Dry-Bulb Temperature {C}
+        9.4,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Schedule Name
+   Enthalpy,      !- Humidity Condition Type
+           ,      !- Wetbulb or Dewpoint at Maximum Dry-Bulb
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+    50900.0,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+     74233.,      !- Barometric Pressure {Pa}
+        4.3,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+         90,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+       ASHRAETau, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+      0.339,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+      2.455;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+ 
