@@ -1,14 +1,12 @@
-import gym
-import sinergym
 import argparse
 
+import gym
 import numpy as np
-
-from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
-from sinergym.utils.wrappers import NormalizeObservation, LoggerWrapper
-from sinergym.utils.rewards import LinearReward, ExpReward
-
 from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
+
+import sinergym
+from sinergym.utils.rewards import ExpReward, LinearReward
+from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
 
 # -------------------------------- Parameters -------------------------------- #
 
