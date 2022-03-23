@@ -509,12 +509,12 @@ You can think that is an error, Google cloud should notify this. If this issue h
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="c1">#                               Register run name                              #</span>
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
-<span class="n">experiment_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M&#39;</span><span class="p">)</span>
+<span class="n">experiment_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">_%H:%M&#39;</span><span class="p">)</span>
 <span class="n">name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">environment</span> <span class="o">+</span> \
-    <span class="s1">&#39;-episodes_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">episodes</span><span class="p">)</span>
+    <span class="s1">&#39;-episodes&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">episodes</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">:</span>
-    <span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;-seed_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
-<span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="n">experiment_date</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+    <span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;-seed&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+<span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">experiment_date</span>
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="c1">#                    Check if MLFLOW_TRACKING_URI is defined                   #</span>
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
