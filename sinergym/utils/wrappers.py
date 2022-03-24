@@ -7,20 +7,19 @@ import gym
 import numpy as np
 from stable_baselines3.common.env_util import is_wrapped
 
-from sinergym.utils.common import RANGES_5ZONE, CSVLogger
+from sinergym.utils.common import CSVLogger
 
 
 class NormalizeObservation(gym.ObservationWrapper):
 
     def __init__(self,
                  env: Any,
-                 ranges: Dict[str,
-                              Sequence[Any]] = RANGES_5ZONE):
+                 ranges: Dict[str, Sequence[Any]]):
         """Observations normalized to range [0, 1].
 
         Args:
             env (Any): Original Sinergym environment.
-            ranges (Dict[str, Sequence[Any]], optional): Observation variables ranges to apply normalization (rely on environment). Defaults to RANGES_5ZONE.
+            ranges (Dict[str, Sequence[Any]]): Observation variables ranges to apply normalization (rely on environment).
         """
         super(NormalizeObservation, self).__init__(env)
         self.unwrapped_observation = None
