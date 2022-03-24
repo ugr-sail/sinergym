@@ -60,6 +60,7 @@ To install *Sinergym* manually instead of through the container (recommended), f
 There are other alternatives like **conda environments** (recommended). Conda is very comfortable to use and we have a file to configure it automatically:
 
 .. code:: sh
+    
     $ cd sinergym
     $ conda env create -f python_environment.yml
     $ conda activate sinergym
