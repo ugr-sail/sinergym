@@ -16,24 +16,21 @@ from sinergym.utils.rewards import ExpReward, LinearReward
 
 
 class EplusEnv(gym.Env):
-    """
-    Environment with EnergyPlus simulator.
-    """
 
     metadata = {'render.modes': ['human']}
 
     def __init__(
         self,
-        idf_file,
-        weather_file,
-        variables_file,
-        spaces_file,
-        env_name='eplus-env-v1',
-        discrete_actions=True,
-        weather_variability=None,
-        reward=LinearReward,
-        reward_kwargs=dict(),
-        config_params: dict = None
+        idf_file: str,
+        weather_file: str,
+        variables_file: str,
+        spaces_file: str,
+        env_name: str = 'eplus-env-v1',
+        discrete_actions: bool = True,
+        weather_variability: Optional[Tuple[float]] = None,
+        reward: Any = LinearReward,
+        reward_kwargs: Optional[Dict[str, Any]] = {},
+        config_params: Optional[Dict[str, Any]] = {}
     ):
         """Environment with EnergyPlus simulator.
 
@@ -44,10 +41,10 @@ class EplusEnv(gym.Env):
             spaces_file (str): Action and observation space defined in a xml (see sinergym/data/variables/ for examples).
             env_name (str, optional): Env name used for working directory generation. Defaults to 'eplus-env-v1'.
             discrete_actions (bool, optional): Whether the actions are discrete (True) or continuous (False). Defaults to True.
-            weather_variability (tuple, optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
-            reward (Reward instance): Reward function instance used for agent feedback. Defaults to LinearReward.
-            rewarg_kwargs (dict, optional): Parameters to be passed to the reward function.
-            config_params (dict, optional): Parameters to configure the simulation.
+            weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
+            reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
+            reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to None.
+            config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
         """
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
@@ -118,8 +115,15 @@ class EplusEnv(gym.Env):
         self.reward_fn = reward(self, **reward_kwargs)
         self.obs_dict = None
 
-    def step(self, action):
-        """Sends action to the environment.
+    def step(self,
+             action: Union[int,
+                           float,
+                           np.integer,
+                           np.ndarray,
+                           List[Any],
+                           Tuple[Any]]
+             ) -> Tuple[np.ndarray, float, bool, Dict[str, Any]]:
+        """Sends action to the environment
 
         Args:
             action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
@@ -128,6 +132,7 @@ class EplusEnv(gym.Env):
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not and a dictionary with extra information
         """
 
+        # Get action
         action_ = self._get_action(action)
 
         # Send action to the simulator
@@ -177,12 +182,30 @@ class EplusEnv(gym.Env):
 
         return np.array(list(self.obs_dict.values()), dtype=np.float32)
 
+    def render(self, mode: str = 'human') -> None:
+        """Environment rendering.
+
+        Args:
+            mode (str, optional): Mode for rendering. Defaults to 'human'.
+        """
+        pass
+
     def close(self) -> None:
         """End simulation."""
 
         self.simulator.end_env()
 
-    def _get_action(self, action):
+    def _get_action(
+        self, 
+        action: Union[
+            int,
+            float,
+            np.integer,
+            np.ndarray,
+            List[Any],
+            Tuple[Any]
+            ]
+        ):
         """Transform the action for sending it to the simulator."""
 
         # Get action depending on flag_discrete
