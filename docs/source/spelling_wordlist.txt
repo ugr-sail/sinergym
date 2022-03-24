@@ -22,6 +22,8 @@ Cloudpickle
 cnn
 coef
 colab
+Conda
+conda
 Config
 config
 Contrib
