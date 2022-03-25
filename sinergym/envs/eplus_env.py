@@ -171,13 +171,15 @@ class EplusEnv(gym.Env):
 
         # Send action to the simulator
         self.simulator.logger_main.debug(action_)
+        # time_info = (current simulation year, month, day, hour, time_elapsed)
         time_info, obs, done = self.simulator.step(action_)
         # Create dictionary with observation
         self.obs_dict = dict(zip(self.variables['observation'], obs))
         # Add current timestep information
-        self.obs_dict['day'] = time_info[0]
+        self.obs_dict['year'] = time_info[0]
         self.obs_dict['month'] = time_info[1]
-        self.obs_dict['hour'] = time_info[2]
+        self.obs_dict['day'] = time_info[2]
+        self.obs_dict['hour'] = time_info[3]
 
         # Calculate reward
 
@@ -187,15 +189,16 @@ class EplusEnv(gym.Env):
 
         power = self.obs_dict['Facility Total HVAC Electricity Demand Rate (Whole Building)']
         reward, terms = self.cls_reward.calculate(
-            power, temp_values, time_info[1], time_info[0])
+            power, temp_values, time_info[0], time_info[1], time_info[2])
 
         # Extra info
         info = {
             'timestep': int(
-                time_info[3] / self.simulator._eplus_run_stepsize),
-            'time_elapsed': int(time_info[3]),
-            'day': self.obs_dict['day'],
+                time_info[4] / self.simulator._eplus_run_stepsize),
+            'time_elapsed': int(time_info[4]),
+            'year': self.obs_dict['year'],
             'month': self.obs_dict['month'],
+            'day': self.obs_dict['day'],
             'hour': self.obs_dict['hour'],
             'total_power': power,
             'total_power_no_units': terms['reward_energy'],
@@ -217,9 +220,10 @@ class EplusEnv(gym.Env):
         time_info, obs, done = self.simulator.reset(self.weather_variability)
         self.obs_dict = dict(zip(self.variables['observation'], obs))
 
-        self.obs_dict['day'] = time_info[0]
+        self.obs_dict['year'] = time_info[0]
         self.obs_dict['month'] = time_info[1]
-        self.obs_dict['hour'] = time_info[2]
+        self.obs_dict['day'] = time_info[2]
+        self.obs_dict['hour'] = time_info[3]
 
         return np.array(list(self.obs_dict.values()), dtype=np.float32)
 
