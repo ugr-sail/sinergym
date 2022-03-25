@@ -103,8 +103,24 @@ class Config(object):
         """Set extra configuration in building model
         """
         if self.config is not None:
+
+            # Timesteps processed in a simulation hour
             if self.config.get('timesteps_per_hour'):
+                assert self.config['timesteps_per_hour'] > 0, 'timestep_per_hour must be a positive int value.'
                 self.building.timestep[0].number_of_timesteps_per_hour = self.config['timesteps_per_hour']
+
+            # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
+            # end_day, end_month, end_year)
+            if self.config.get('runperiod'):
+                assert isinstance(self.config['runperiod'], tuple) and len(
+                    self.config['runperiod']) == 6, 'Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).'
+                runperiod = self.building.RunPeriod[0]
+                runperiod.begin_day_of_month = int(self.config['runperiod'][0])
+                runperiod.begin_month = int(self.config['runperiod'][1])
+                runperiod.begin_year = int(self.config['runperiod'][2])
+                runperiod.end_day_of_month = int(self.config['runperiod'][3])
+                runperiod.end_month = int(self.config['runperiod'][4])
+                runperiod.end_year = int(self.config['runperiod'][5])
 
     def save_building_model(self) -> str:
         """Take current building model and save as IDF in current env_working_dir episode folder.
@@ -202,12 +218,13 @@ class Config(object):
         start_day = int(
             0 if runperiod.begin_day_of_month is None else runperiod.begin_day_of_month)
         start_year = int(
-            0 if runperiod.begin_year is None else runperiod.begin_year)
+            YEAR if runperiod.begin_year is None else runperiod.begin_year)
         end_month = int(
             0 if runperiod.end_month is None else runperiod.end_month)
         end_day = int(
             0 if runperiod.end_day_of_month is None else runperiod.end_day_of_month)
-        end_year = int(0 if runperiod.end_year is None else runperiod.end_year)
+        end_year = int(
+            YEAR if runperiod.end_year is None else runperiod.end_year)
         start_weekday = WEEKDAY_ENCODING[runperiod.day_of_week_for_start_day.lower(
         )]
         n_steps_per_hour = self.building.timestep[0].number_of_timesteps_per_hour
@@ -232,19 +249,24 @@ class Config(object):
         """
         # Get runperiod object inner IDF
         runperiod = self.building.RunPeriod[0]
+        start_year = int(
+            YEAR if runperiod.begin_year is None else runperiod.begin_year)
         start_month = int(
             0 if runperiod.begin_month is None else runperiod.begin_month)
         start_day = int(
             0 if runperiod.begin_day_of_month is None else runperiod.begin_day_of_month)
+        end_year = int(
+            YEAR if runperiod.end_year is None else runperiod.end_year)
         end_month = int(
             0 if runperiod.end_month is None else runperiod.end_month)
         end_day = int(
             0 if runperiod.end_day_of_month is None else runperiod.end_day_of_month)
 
         return get_delta_seconds(
-            YEAR,
+            start_year,
             start_month,
             start_day,
+            end_year,
             end_month,
             end_day)
 
