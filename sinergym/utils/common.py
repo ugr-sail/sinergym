@@ -111,18 +111,20 @@ RANGES_DATACENTER = {
 
 
 def get_delta_seconds(
-        year: int,
+        st_year: int,
         st_mon: int,
         st_day: int,
+        end_year: int,
         end_mon: int,
         end_day: int) -> float:
-    """Returns the delta seconds between `year:st_mon:st_day:0:0:0` and
-    `year:end_mon:end_day:24:0:0`.
+    """Returns the delta seconds between `st_year:st_mon:st_day:0:0:0` and
+    `end_year:end_mon:end_day:24:0:0`.
 
     Args:
-        st_year (int): Year.
+        st_year (int): Start year.
         st_mon (int): Start month.
         st_day (int): Start day.
+        end_year (int): End year.
         end_mon (int): End month.
         end_day (int): End day.
 
@@ -130,39 +132,40 @@ def get_delta_seconds(
         float: Time difference in seconds.
 
     """
-
-    startTime = datetime(year, st_mon, st_day, 0, 0, 0)
-    endTime = datetime(year, end_mon, end_day, 23, 0, 0) + timedelta(0, 3600)
+    startTime = datetime(st_year, st_mon, st_day, 0, 0, 0)
+    endTime = datetime(end_year, end_mon, end_day,
+                       23, 0, 0) + timedelta(0, 3600)
     delta_sec = (endTime - startTime).total_seconds()
+    assert delta_sec >= 0, 'delta_sec obtained is negative (check start and end simulation datetimes).'
     return delta_sec
 
 
-def get_current_time_info(epm: Epm, sec_elapsed: float,
-                          sim_year: int = 1991) -> Tuple[int, int, int, float]:
+def get_current_time_info(
+        epm: Epm, sec_elapsed: float) -> Tuple[int, int, int, int, float]:
     """Returns the current day, month and hour given the seconds elapsed since the simulation started.
 
     Args:
         epm (opyplus.Epm): EnergyPlus model object.
         sec_elapsed (float): Seconds elapsed since the start of the simulation
-        sim_year (int, optional): Year of the simulation. Defaults to 1991.
 
     Returns:
-        Tuple[int, int, int, float]: A tuple composed by the current day, month and hour in the simulation and time elapsed.
+        Tuple[int, int, int, int, float]: A tuple composed by the current year, day, month and hour in the simulation and time elapsed.
 
     """
     start_date = datetime(
-        year=sim_year,  # epm.RunPeriod[0]['start_year'],
-        month=epm.RunPeriod[0]['begin_month'],
-        day=epm.RunPeriod[0]['begin_day_of_month']
+        year=int(epm.RunPeriod[0]['begin_year']),
+        month=int(epm.RunPeriod[0]['begin_month']),
+        day=int(epm.RunPeriod[0]['begin_day_of_month'])
     )
 
     current_date = start_date + timedelta(seconds=sec_elapsed)
 
     return (
-        current_date.day,
-        current_date.month,
-        current_date.hour,
-        sec_elapsed)
+        int(current_date.year),
+        int(current_date.month),
+        int(current_date.day),
+        int(current_date.hour),
+        float(sec_elapsed))
 
 
 def parse_variables(var_file: str) -> Dict[str, List[str]]:
@@ -737,7 +740,7 @@ class CSVLogger(object):
         self.flag = False
 
 
-def get_season_comfort_range(month, day):
+def get_season_comfort_range(year, month, day):
     """Get comfort temperature range depending on season. The comfort ranges are those
     defined by ASHRAE in Standard 55—Thermal Environmental Conditions for Human Occupancy (2004).
 
@@ -746,8 +749,6 @@ def get_season_comfort_range(month, day):
         month (int): current month
         day (int): current day
     """
-
-    year = 2022
 
     summer_start_date = datetime(year, 6, 1)
     summer_final_date = datetime(year, 9, 30)
