@@ -72,6 +72,8 @@ Gaussian
 gcloud
 getter
 Github
+Github
+github
 gitignore
 globals
 Gmail
@@ -152,6 +154,8 @@ rl
 rollout
 rollouts
 RuleBasedController
+runperiod
+Runperiod
 serializable
 setpoint
 setpoints

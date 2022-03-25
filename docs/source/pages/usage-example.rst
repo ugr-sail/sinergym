@@ -13,7 +13,7 @@ In this section we will see some examples of use to better understand how they c
 Simplest example
 *****************
 
-Let's start with the simplest use case for the Synergym tool. In the root repository we have the script **try_env.py**:
+Let's start with the simplest use case for the Sinergym tool. In the root repository we have the script **try_env.py**:
 
 .. literalinclude:: ../../../try_env.py
     :language: python
@@ -108,7 +108,7 @@ By default, the ID's of our environments do not include any wrapper, but we can 
             sum(rewards))
     env.close()
 
-With this, we have added normalizations to the observations returned by the environment and Sinergym will also store the outputs in a CSV. 
+With this, we have added normalization to the observations returned by the environment and Sinergym will also store the outputs in a CSV. 
 For more information about how Sinergym displays its output, please visit the section :ref:`Output format`.
 
 ******************************

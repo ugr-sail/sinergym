@@ -109,7 +109,7 @@ About Sinergym package
 ***********************
 
 As we have told you in section :ref:`Manual installation`, Python environment can be set up using *python_environment.yml* with *conda*.
-However, we can make an installation using the github repository itself:
+However, we can make an installation using the Github repository itself:
 
 .. code:: sh
 
