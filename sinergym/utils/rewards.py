@@ -33,6 +33,7 @@ class LinearReward():
     def calculate(self,
                   power: float,
                   temperatures: List[float],
+                  year: int,
                   month: int,
                   day: int) \
             -> Tuple[float, Dict[str, float]]:
@@ -41,6 +42,7 @@ class LinearReward():
         Args:
             power (float): Power consumption.
             temperatures (List[float]): Indoor temperatures (one per zone).
+            year (int): Current year.
             month (int): Current month.
             day (int): Current day.
 
@@ -51,7 +53,7 @@ class LinearReward():
         reward_energy = - self.lambda_energy * power
 
         # Comfort term
-        range_T = get_season_comfort_range(month, day)
+        range_T = get_season_comfort_range(year, month, day)
         delta_T = 0.0
         for temperature in temperatures:
             delta_T += 0.0 if temperature >= range_T[0] and temperature <= range_T[1] else min(
@@ -90,13 +92,20 @@ class ExpReward():
         self.lambda_energy = lambda_energy
         self.lambda_temp = lambda_temperature
 
-    def calculate(self, power: float, temperatures: List[float],
-                  month: int, day: int) -> Tuple[float, Dict[str, float]]:
+    def calculate(self,
+                  power: float,
+                  temperatures: List[float],
+                  year: int,
+                  month: int,
+                  day: int) -> Tuple[float,
+                                     Dict[str,
+                                          float]]:
         """Reward calculus.
 
         Args:
             power (float): Power consumption.
             temperatures (List[float]): Indoor temperatures (one per zone).
+            year (int): Current year.
             month (int): Current month.
             day (int): Current day.
 
@@ -107,7 +116,7 @@ class ExpReward():
         reward_energy = - self.lambda_energy * power
 
         # Comfort term
-        range_T = get_season_comfort_range(month, day)
+        range_T = get_season_comfort_range(year, month, day)
         delta_T = 0.0
         for temperature in temperatures:
             delta_T += 0.0 if temperature >= range_T[0] and temperature <= range_T[1] else exp(
