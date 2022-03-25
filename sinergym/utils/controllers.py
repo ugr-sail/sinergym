@@ -58,11 +58,12 @@ class RuleBasedController(object):
 
         out_temp = obs_dict['Site Outdoor Air Drybulb Temperature (Environment)']
 
-        day = int(obs_dict['day'])
+        year = int(obs_dict['year'])
         month = int(obs_dict['month'])
+        day = int(obs_dict['day'])
         hour = int(obs_dict['hour'])
 
-        season_comfort_range = get_season_comfort_range(month, day)
+        season_comfort_range = get_season_comfort_range(year, month, day)
 
         if out_temp not in arange(
                 season_comfort_range[0], season_comfort_range[1], .1):

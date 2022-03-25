@@ -128,7 +128,7 @@ class EnergyPlus(object):
 
     def reset(
         self, weather_variability: Optional[Tuple[float, float, float]] = None
-    ) -> Tuple[Tuple[int, int, int, float], List[float], bool]:
+    ) -> Tuple[Tuple[int, int, int, int, float], List[float], bool]:
         """Resets the environment.
         This method does the following:
         1. Makes a new EnergyPlus working directory.
@@ -229,7 +229,7 @@ class EnergyPlus(object):
 
     def step(self, action: Union[int, float, np.integer, np.ndarray, List[Any],
                                  Tuple[Any]]
-             ) -> Tuple[Tuple[int, int, int, float], List[float], bool]:
+             ) -> Tuple[Tuple[int, int, int, int, float], List[float], bool]:
         """Executes a given action.
         This method does the following:
         1. Sends a list of floats to EnergyPlus.
