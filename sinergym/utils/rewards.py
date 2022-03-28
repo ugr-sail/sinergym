@@ -16,14 +16,15 @@ class LinearReward():
                  ):
         """Simple reward considering absolute difference to temperature comfort.
 
-        .. math::
-            R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))
-
         Args:
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
         """
+
+        # .. math::
+        # R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low},
+        # 0) + max(T_{up} - T, 0))
 
         # Variables
         self.W_energy = energy_weight
@@ -78,14 +79,15 @@ class ExpReward():
                  ):
         """Reward considering exponential absolute difference to temperature comfort.
 
-        .. math::
-            R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T - T_{low}, 0) + max(T_{up} - T, 0)) )
-
         Args:
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
         """
+
+        # .. math::
+        # R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T -
+        # T_{low}, 0) + max(T_{up} - T, 0)) )
 
         # Variables
         self.W_energy = energy_weight
