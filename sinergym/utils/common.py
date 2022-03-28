@@ -44,6 +44,7 @@ RANGES_5ZONE = {'Facility Total HVAC Electricity Demand Rate (Whole Building)': 
                 'done': [False, True],
                 'hour': [0, 23],
                 'month': [1, 12],
+                'year': [1, 2022],
                 'reward': [-3.550779087370951, -0.0086829184636919],
                 'time (seconds)': [0, 31536000],
                 'timestep': [0, 35040],
@@ -62,7 +63,12 @@ RANGES_IW = {
     "IW North Zone Average Temperature": [18.0, 25.0],
     "IW Effective IAT Setpoint by Logics": [18.0, 25.0],
     "IW Occupy Mode Flag": [0.0, 1.0],
-    "IW Calculated Heating Demand": [0.0, 85.0]
+    "IW Calculated Heating Demand": [0.0, 85.0],
+    'day': [1.0, 31.0],
+    'done': [False, True],
+    'hour': [0.0, 23.0],
+    'month': [1.0, 12.0],
+    'year': [1.0, 2022.0],
 }
 
 RANGES_DATACENTER = {
@@ -103,6 +109,7 @@ RANGES_DATACENTER = {
     'done': [False, True],
     'hour': [0.0, 23.0],
     'month': [1.0, 12.0],
+    'year': [1.0, 2022.0],
     'power_penalty': [-7.68030164869835, -0.1763741508343818],
     'reward': [-9.090902680780722, -0.0881870754171909],
     'time (seconds)': [0, 31536000],
@@ -136,7 +143,6 @@ def get_delta_seconds(
     endTime = datetime(end_year, end_mon, end_day,
                        23, 0, 0) + timedelta(0, 3600)
     delta_sec = (endTime - startTime).total_seconds()
-    assert delta_sec >= 0, 'delta_sec obtained is negative (check start and end simulation datetimes).'
     return delta_sec
 
 
