@@ -124,8 +124,8 @@ def get_delta_seconds(
         end_year: int,
         end_mon: int,
         end_day: int) -> float:
-    """Returns the delta seconds between st_year:st_mon:st_day:0:0:0 and
-    end_year:end_mon:end_day:24:0:0.
+    """Returns the delta seconds between st year:st mon:st day:0:0:0 and
+    end year:end mon:end day:24:0:0.
 
     Args:
         st_year (int): Start year.
@@ -181,7 +181,7 @@ def parse_variables(var_file: str) -> Dict[str, List[str]]:
         var_file (str): Variables file path.
 
     Returns:
-        Dict[str, List[str]]: 'observation' and 'action' keys; a list with the name of the observation <variables> (<zone>) and a list with the name of the action <variables> respectively.
+        Dict[str, List[str]]: observation and action keys; a list with the name of the observation <variables> (<zone>) and a list with the name of the action <variables> respectively.
     """
 
     tree = ET.parse(var_file)

@@ -46,9 +46,9 @@ class EplusEnv(gym.Env):
         Args:
             idf_file (str): Name of the IDF file with the building definition.
             weather_file (str): Name of the EPW file for weather conditions.
-            variables_file (str): Variables defined in environment to be observation and action (see sinergym/data/variables/ for examples).
-            spaces_file (str): Action and observation space defined in a xml (see sinergym/data/variables/ for examples).
-            env_name (str, optional): Env name used for working directory generation. Defaults to 'eplus-env-v1'.
+            variables_file (str): Variables defined in environment to be observation and action.
+            spaces_file (str): Action and observation space defined in a xml.
+            env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
             discrete_actions (bool, optional): Whether the actions are discrete (True) or continuous (False). Defaults to True.
             weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward().
