@@ -9,6 +9,7 @@ from opyplus import Epm, Idd, WeatherData
 import sinergym.utils.rewards as R
 from sinergym.envs.eplus_env import EplusEnv
 from sinergym.simulators.eplus import EnergyPlus
+from sinergym.utils.common import RANGES_5ZONE
 from sinergym.utils.config import Config
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
                                      NormalizeObservation)
@@ -206,9 +207,8 @@ def env_all_wrappers(idf_path, weather_path, variable_path, space_path):
         spaces_file=spaces_file,
         discrete_actions=False,
         weather_variability=None)
-    env = NormalizeObservation(env=env)
+    env = NormalizeObservation(env=env, ranges=RANGES_5ZONE)
     env = LoggerWrapper(env=env, flag=True)
-    env = MultiObsWrapper(env=env, n=5)
     return env
 
 

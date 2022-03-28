@@ -43,7 +43,7 @@ class RuleBasedController(object):
 
         self.variables_path = self.env.variables_path
         self.variables = parse_variables(self.variables_path)
-        self.variables['observation'].extend(['day', 'month', 'hour'])
+        self.variables['observation'].extend(['year', 'month', 'day', 'hour'])
 
     def act(self, observation: List[Any]) -> Sequence[Any]:
         """Select action based on outdoor air drybulb temperature and daytime.
