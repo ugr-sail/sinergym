@@ -42,16 +42,16 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../API-reference.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="sinergym.envs.html">sinergym.envs</a><ul class="current">
@@ -108,9 +108,9 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>idf_file</strong> (<em>str</em>) – Name of the IDF file with the building definition.</p></li>
 <li><p><strong>weather_file</strong> (<em>str</em>) – Name of the EPW file for weather conditions.</p></li>
-<li><p><strong>variables_file</strong> (<em>str</em>) – Variables defined in environment to be observation and action (see sinergym/data/variables/ for examples).</p></li>
-<li><p><strong>spaces_file</strong> (<em>str</em>) – Action and observation space defined in a xml (see sinergym/data/variables/ for examples).</p></li>
-<li><p><strong>env_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Env name used for working directory generation. Defaults to ‘eplus-env-v1’.</p></li>
+<li><p><strong>variables_file</strong> (<em>str</em>) – Variables defined in environment to be observation and action.</p></li>
+<li><p><strong>spaces_file</strong> (<em>str</em>) – Action and observation space defined in a xml.</p></li>
+<li><p><strong>env_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Env name used for working directory generation. Defaults to eplus-env-v1.</p></li>
 <li><p><strong>discrete_actions</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the actions are discrete (True) or continuous (False). Defaults to True.</p></li>
 <li><p><strong>weather_variability</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.</p></li>
 <li><p><strong>reward</strong> (<em>Any</em><em>, </em><em>optional</em>) – Reward function instance used for agent feedback. Defaults to LinearReward().</p></li>
@@ -123,7 +123,7 @@
 </dd></dl>
 
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -150,7 +150,7 @@
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />

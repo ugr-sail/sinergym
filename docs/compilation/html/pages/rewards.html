@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Controllers" href="controllers.html" />
-    <link rel="prev" title="Output format" href="output.html" /> 
+    <link rel="prev" title="Environments" href="environments.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,16 +42,16 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
 </ul>
 
@@ -101,14 +101,15 @@ reward class or defining a new one and integrate in available environments if yo
                  <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Simple reward considering absolute difference to temperature comfort.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))</span>
-
 <span class="sd">        Args:</span>
 <span class="sd">            energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.</span>
 <span class="sd">            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.</span>
 <span class="sd">            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># .. math::</span>
+        <span class="c1"># R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low},</span>
+        <span class="c1"># 0) + max(T_{up} - T, 0))</span>
 
         <span class="c1"># Variables</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">W_energy</span> <span class="o">=</span> <span class="n">energy_weight</span>
@@ -118,6 +119,7 @@ reward class or defining a new one and integrate in available environments if yo
     <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                   <span class="n">power</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
                   <span class="n">temperatures</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+                  <span class="n">year</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                   <span class="n">month</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                   <span class="n">day</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> \
             <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
@@ -126,6 +128,7 @@ reward class or defining a new one and integrate in available environments if yo
 <span class="sd">        Args:</span>
 <span class="sd">            power (float): Power consumption.</span>
 <span class="sd">            temperatures (List[float]): Indoor temperatures (one per zone).</span>
+<span class="sd">            year (int): Current year.</span>
 <span class="sd">            month (int): Current month.</span>
 <span class="sd">            day (int): Current day.</span>
 
@@ -136,7 +139,7 @@ reward class or defining a new one and integrate in available environments if yo
         <span class="n">reward_energy</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_energy</span> <span class="o">*</span> <span class="n">power</span>
 
         <span class="c1"># Comfort term</span>
-        <span class="n">range_T</span> <span class="o">=</span> <span class="n">get_season_comfort_range</span><span class="p">(</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span>
+        <span class="n">range_T</span> <span class="o">=</span> <span class="n">get_season_comfort_range</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span>
         <span class="n">delta_T</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">temperature</span> <span class="ow">in</span> <span class="n">temperatures</span><span class="p">:</span>
             <span class="n">delta_T</span> <span class="o">+=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">temperature</span> <span class="o">&gt;=</span> <span class="n">range_T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">temperature</span> <span class="o">&lt;=</span> <span class="n">range_T</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="nb">min</span><span class="p">(</span>
@@ -161,27 +164,35 @@ reward class or defining a new one and integrate in available environments if yo
                  <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reward considering exponential absolute difference to temperature comfort.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T - T_{low}, 0) + max(T_{up} - T, 0)) )</span>
-
 <span class="sd">        Args:</span>
 <span class="sd">            energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.</span>
 <span class="sd">            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.</span>
 <span class="sd">            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="c1"># .. math::</span>
+        <span class="c1"># R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T -</span>
+        <span class="c1"># T_{low}, 0) + max(T_{up} - T, 0)) )</span>
+
         <span class="c1"># Variables</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">W_energy</span> <span class="o">=</span> <span class="n">energy_weight</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lambda_energy</span> <span class="o">=</span> <span class="n">lambda_energy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lambda_temp</span> <span class="o">=</span> <span class="n">lambda_temperature</span>
 
-    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">power</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">temperatures</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-                  <span class="n">month</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">day</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                  <span class="n">power</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                  <span class="n">temperatures</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+                  <span class="n">year</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                  <span class="n">month</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                  <span class="n">day</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span>
+                                     <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span>
+                                          <span class="nb">float</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Reward calculus.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            power (float): Power consumption.</span>
 <span class="sd">            temperatures (List[float]): Indoor temperatures (one per zone).</span>
+<span class="sd">            year (int): Current year.</span>
 <span class="sd">            month (int): Current month.</span>
 <span class="sd">            day (int): Current day.</span>
 
@@ -192,7 +203,7 @@ reward class or defining a new one and integrate in available environments if yo
         <span class="n">reward_energy</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_energy</span> <span class="o">*</span> <span class="n">power</span>
 
         <span class="c1"># Comfort term</span>
-        <span class="n">range_T</span> <span class="o">=</span> <span class="n">get_season_comfort_range</span><span class="p">(</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span>
+        <span class="n">range_T</span> <span class="o">=</span> <span class="n">get_season_comfort_range</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span>
         <span class="n">delta_T</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">temperature</span> <span class="ow">in</span> <span class="n">temperatures</span><span class="p">:</span>
             <span class="n">delta_T</span> <span class="o">+=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">temperature</span> <span class="o">&gt;=</span> <span class="n">range_T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">temperature</span> <span class="o">&lt;=</span> <span class="n">range_T</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="n">exp</span><span class="p">(</span>
@@ -228,7 +239,7 @@ two weights in the reward function, this allows you to adjust how important each
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="output.html" class="btn btn-neutral float-left" title="Output format" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="environments.html" class="btn btn-neutral float-left" title="Environments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="controllers.html" class="btn btn-neutral float-right" title="Controllers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

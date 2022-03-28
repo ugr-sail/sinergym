@@ -2,30 +2,12 @@
 Installation
 ############
 
-To install *sinergym*, follow these steps:
-
-* First, it is recommended to create a **virtual environment**. You can do so by:
-
-.. code:: sh
-
-    $ sudo apt-get install python-virtualenv virtualenv
-    $ virtualenv env_sinergym --python=python3.7
-    $ source env_sinergym/bin/activate
-
-There are other alternatives like **conda environments**, for example.
-
-* Then, clone this repository using this command:
-
-.. code:: sh
-
-    $ git clone https://github.com/jajimer/sinergym.git
-
 ****************
 Docker container
 ****************
 
 We include a **Dockerfile** for installing all dependencies and setting
-up the image for running *sinergym*. 
+up the image for running *Sinergym*. 
 
 By default, Dockerfile will do `pip install -e .[extras]`, if you want to install a different setup, you will have to do in root repository:
 
@@ -47,18 +29,48 @@ On the other hand, if you don't want any extra library, it's necessary to write 
 
 .. note:: You can install directly our container from `Docker Hub repository <https://hub.docker.com/repository/docker/alejandrocn7/sinergym>`__, all releases of this project are there.
 
-.. note:: If you use `Visual Studio Code <https://code.visualstudio.com/>`__, by simply opening the root directory and clicking on the pop-up button "*Reopen in container*\ ", all the dependencies will be installed automatically and you will be able to run *sinergym* in an isolated environment.
+.. note:: If you use `Visual Studio Code <https://code.visualstudio.com/>`__, by simply opening the root directory and clicking on the pop-up button *Reopen in container*, all the dependencies will be installed automatically and you will be able to run *Sinergym* in an isolated environment.
+          For more information about how to use this functionality, check `VSCode Containers extension documentation <https://code.visualstudio.com/docs/remote/containers>`__.
 
 *******************
 Manual installation
 *******************
 
-If you prefer installing *sinergym* manually, follow the steps below:
+To install *Sinergym* manually instead of through the container (recommended), follow these steps:
 
-1. Install EnergyPlus 9.5.0
+1. Configure Python environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* First, clone this repository:
+
+.. code:: sh
+
+    $ git clone https://github.com/jajimer/sinergym.git
+    $ cd sinergym
+
+* Then, it is recommended to create a **virtual environment**. You can do so by:
+
+.. code:: sh
+
+    $ sudo apt-get install python-virtualenv virtualenv
+    $ virtualenv env_sinergym --python=python3.9
+    $ source env_sinergym/bin/activate
+    $ pip install -e .[extras]
+
+There are other alternatives like **conda environments** (recommended). Conda is very comfortable to use and we have a file to configure it automatically:
+
+.. code:: sh
+    
+    $ cd sinergym
+    $ conda env create -f python_environment.yml
+    $ conda activate sinergym
+
+Now, we have a correct python version with required modules to run sinergym. Let's continue with the rest of the programs that are needed outside of Python to run the simulations:
+
+2. Install EnergyPlus 9.5.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Firstly, install EnergyPlus. Currently it has been update compatibility to 9.5.0 and it has
+Install EnergyPlus. Currently it has been update compatibility to 9.5.0 and it has
 been tested, but code may also work with other versions. Sinergym ensure this support:
 
 +------------------+--------------------+
@@ -76,7 +88,7 @@ install it for Linux (only Ubuntu is supported). Choose any location
 to install the software. Once installed, a folder called
 ``Energyplus-9-5-0`` should appear in the selected location.
 
-1. Install BCVTB software
+3. Install BCVTB software
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Follow the instructions
@@ -85,21 +97,23 @@ installing BCVTB software. Another option is to copy the ``bcvtb``
 folder from `this
 repository <https://github.com/zhangzhizza/Gym-Eplus/tree/master/eplus_env/envs>`__.
 
-3. Set environment variables
+4. Set environment variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Two environment variables must be set: ``EPLUS_PATH`` and
 ``BCVTB_PATH``, with the locations where EnergyPlus and BCVTB are
 installed respectively.
 
-4. Install the package
-~~~~~~~~~~~~~~~~~~~~~~
+***********************
+About Sinergym package
+***********************
 
-Finally, *sinergym* can be installed by running this command at the repo
-root folder:
+As we have told you in section :ref:`Manual installation`, Python environment can be set up using *python_environment.yml* with *conda*.
+However, we can make an installation using the Github repository itself:
 
 .. code:: sh
 
+    $ cd sinergym
     $ pip install -e .
 
 Extra libraries can be installed by typing ``pip install -e .[extras]``.
@@ -113,11 +127,23 @@ It's possible to select a subset of these libraries instead of 'extras' tag in w
 
 In order to check all our tag list, visit `setup.py <https://github.com/jajimer/sinergym/blob/main/setup.py>`__ in Sinergym root repository. In any case, they are not a requirement of the package.
 
-You can also install from `oficial pypi repository <https://pypi.org/project/sinergym/>`__:
+You can also install from `oficial pypi repository <https://pypi.org/project/sinergym/>`__ with last stable version by default:
 
 .. code:: sh
 
     $ pip install sinergym[extras]
+
+*******************
+Check Installation
+*******************
+
+This project is automatically supervised using tests developed specifically for it. If you want to check sinergym has been installed successfully, run next command:
+
+.. code::sh
+
+    $ pytest tests/ -vv
+
+Anyway, every time sinergym repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. `Github Action <https://docs.github.com/es/actions/>`__ will do that job (see our documentation for more information).
 
 ****************
 Cloud Computing
