@@ -248,7 +248,7 @@ class LoggerWrapper(gym.Wrapper):
         return obs
 
     def close(self) -> None:
-        """Close env. Recording last episode summary.
+        """Recording last episode summary and close env.
         """
         # Record last episode summary before end simulation
         self.env.simulator.logger_main.debug(

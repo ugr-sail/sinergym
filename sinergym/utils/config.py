@@ -325,7 +325,7 @@ class Config(object):
             directory_path: str,
             base_name: str = '-run') -> str:
         """Create a working folder path from path_folder using base_name, returning the absolute result path.
-           Assumes folders in *parent_dir* have suffix *-run{run_number}*. Finds the highest run number and sets the output folder to that number + 1.
+           Assumes folders in parent_dir have suffix <env_name>-run{run_number}. Finds the highest run number and sets the output folder to that number + 1.
 
         Args:
             path_folder (str): Path when working dir will be created.

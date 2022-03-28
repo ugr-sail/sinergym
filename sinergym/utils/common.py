@@ -343,7 +343,7 @@ def ranges_getter(output_path: str,
     """Given a path with simulations outputs, this function is used to extract max and min absolute values of all episodes in each variable. If a dict ranges is given, will be updated.
 
     Args:
-        output_path (str): path with simulations directories (Eplus-env-\\*).
+        output_path (str): path with simulations directories (Eplus-env-<env_name>).
         last_result (Optional[Dict[str, List[float]]], optional): Last ranges dict to be updated. This will be created if it is not given.
 
     Returns:
