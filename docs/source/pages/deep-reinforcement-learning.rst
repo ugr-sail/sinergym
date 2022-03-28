@@ -84,9 +84,9 @@ The main structure for Sinergym with Tensorboard is:
 
 .. note:: Evaluation of models can be recorded too, adding ``EvalLoggerCallback`` to model learn method.
 
-****************
+**********
 How use
-****************
+**********
 
 You can try your own experiments and benefit from this functionality. `sinergym/examples/DRL_usage.py <https://github.com/jajimer/sinergym/blob/main/examples/DRL_usage.py>`__
 is a example code to use it. You can use directly DRL_battery.py directly from your local computer specifying ``--tensorboard`` flag in execution.

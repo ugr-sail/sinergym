@@ -85,6 +85,7 @@ COPY sinergym /sinergym/sinergym
 COPY tests /sinergym/tests
 COPY examples /sinergym/examples
 COPY check_run_times.py .
+COPY try_env.py .
 RUN pip install -e .${SINERGYM_EXTRAS}
 
 CMD ["/bin/bash"]

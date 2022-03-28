@@ -5,6 +5,7 @@ import numpy as np
 from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
 
 import sinergym
+from sinergym.utils.common import RANGES_5ZONE, RANGES_DATACENTER, RANGES_IW
 from sinergym.utils.rewards import ExpReward, LinearReward
 from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
 
@@ -79,7 +80,18 @@ else:
 env = gym.make(args.environment, reward=reward)
 
 if args.normalization:
-    env = NormalizeObservation(env)
+    # We have to know what dictionary ranges to use
+    norm_range = None
+    env_type = args.environment.split('-')[1]
+    if env_type == 'datacenter':
+        norm_range = RANGES_DATACENTER
+    elif env_type == '5Zone':
+        norm_range = RANGES_5ZONE
+    elif env_type == 'IWMullion':
+        norm_range = RANGES_IW
+    else:
+        raise NameError('env_type is not valid, check environment name')
+    env = NormalizeObservation(env, ranges=norm_range)
 if args.logger:
     env = LoggerWrapper(env)
 

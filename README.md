@@ -43,106 +43,130 @@ _This is a work in progress project. Stay tuned for upcoming releases._
   <img src="images/operation_diagram.jpg"><br><br>
 </div>
 
-[## List of available environments]::
+## List of available environments
 
-[| Env. name                                  | Location        | IDF file                | Weather type (*)           | Action space | Simulation period |]::
-[|--------------------------------------------|-----------------|-------------------------|----------------------------|--------------|-------------------|]::
-[| Eplus-demo-v1                              | Pittsburgh, USA | 5ZoneAutoDXVAV.idf      |             -              | Discrete(10) |   01/01 - 31/03   |]::
-[| Eplus-5Zone-hot-discrete-v1                | Arizona, USA    | 5ZoneAutoDXVAV.idf      |        Hot dry (2B)        | Discrete(10) |   01/01 - 31/12   |]::
-[| Eplus-5Zone-mixed-discrete-v1              | New York, USA   | 5ZoneAutoDXVAV.idf      |      Mixed humid (4A)      | Discrete(10) |   01/01 - 31/12   |]::
-[| Eplus-5Zone-cool-discrete-v1               | Washington, USA | 5ZoneAutoDXVAV.idf      |      Cool marine (5C)      | Discrete(10) |   01/01 - 31/12   |]::
-[| Eplus-5Zone-hot-continuous-v1              | Arizona, USA    | 5ZoneAutoDXVAV.idf      |        Hot dry (2B)        | Box(2)       |   01/01 - 31/12   |]::
-[| Eplus-5Zone-mixed-continuous-v1            | New York, USA   | 5ZoneAutoDXVAV.idf      |      Mixed humid (4A)      | Box(2)       |   01/01 - 31/12   |]::
-[| Eplus-5Zone-cool-continuous-v1             | Washington, USA | 5ZoneAutoDXVAV.idf      |      Cool marine (5C)      | Box(2)       |   01/01 - 31/12   |]::
-[| Eplus-5Zone-hot-discrete-stochastic-v1     | Arizona, USA    | 5ZoneAutoDXVAV.idf      |        Hot dry (2B)(**)    | Discrete(10) |   01/01 - 31/12   |]::
-[| Eplus-5Zone-mixed-discrete-stochastic-v1   | New York, USA   | 5ZoneAutoDXVAV.idf      |      Mixed humid (4A)(**)  | Discrete(10) |   01/01 - 31/12   |]::
-[| Eplus-5Zone-cool-discrete-stochastic-v1    | Washington, USA | 5ZoneAutoDXVAV.idf      |      Cool marine (5C)(**)  | Discrete(10) |   01/01 - 31/12   |]::
-[| Eplus-5Zone-hot-continuous-stochastic-v1   | Arizona, USA    | 5ZoneAutoDXVAV.idf      |        Hot dry (2B)(**)    | Box(2)       |   01/01 - 31/12   |]::
-[| Eplus-5Zone-mixed-continuous-stochastic-v1 | New York, USA   | 5ZoneAutoDXVAV.idf      |      Mixed humid (4A)(**)  | Box(2)       |   01/01 - 31/12   |]::
-[| Eplus-5Zone-cool-continuous-stochastic-v1  | Washington, USA | 5ZoneAutoDXVAV.idf      |      Cool marine (5C)(**)  | Box(2)       |   01/01 - 31/12   |]::
-[| Eplus-datacenter-discrete-v1               | Chicago, USA    | 2ZoneDataCenterHVAC.idf |             -              | Discrete(10) |   01/01 - 31/12   |]::
-[| Eplus-datacenter-continuous-v1             | Chicago, USA    | 2ZoneDataCenterHVAC.idf |             -              | Box(4)       |   01/01 - 31/12   |]::
-[| Eplus-datacenter-discrete-stochastic-v1    | Chicago, USA    | 2ZoneDataCenterHVAC.idf |            (**)            | Discrete(10) |   01/01 - 31/12   |]::
-[| Eplus-datacenter-continuous-stochastic-v1  | Chicago, USA    | 2ZoneDataCenterHVAC.idf |            (**)            | Box(4)       |   01/01 - 31/12   |]::
-[| Eplus-IWMullion-discrete-v1                | Pittsburgh, USA | IWMullion.idf           |             -              | Discrete(10) |   01/01 - 31/03   |]::
-[| Eplus-IWMullion-continuous-v1              | Pittsburgh, USA | IWMullion.idf           |             -              | Box(2)       |   01/01 - 31/03   |]::
-[| Eplus-IWMullion-discrete-stochastic-v1     | Pittsburgh, USA | IWMullion.idf           |            (**)            | Discrete(10) |   01/01 - 31/03   |]::
-[| Eplus-IWMullion-continuous-stochastic-v1   | Pittsburgh, USA | IWMullion.idf           |            (**)            | Box(2)       |   01/01 - 31/03   |]::
+If you would like to see a complete and updated list of our available environments, please visit [our list](https://jajimer.github.io/sinergym/compilation/html/pages/environments.html) in the official Sinergym documentation.
 
-[(*) Weather types according to (DOE's classification)(https://www.energycodes.gov/development/commercial/prototype_models#TMY3).]::
+## Installation
 
-[(**) In these environments, weather series change from episode to episode. Gaussian noise with 0 mean and 2.5 std is added to the original values in order to add stochasticity.]::
-
-
-## Installation process
-
-To install sinergym, follow these steps.
-
-First, it is recommended to create a virtual environment. You can do so by:
-
-```sh
-$ sudo apt-get install python-virtualenv virtualenv
-$ virtualenv env_sinergym --python=python3.7
-$ source env_sinergym/bin/activate
-```
-
-Then, clone this repository using this command:
-```
-$ git clone https://github.com/jajimer/sinergym.git
-```
+For more detailed information, please visit our [documentation](https://jajimer.github.io/sinergym/compilation/html/index.html).
 
 ### Docker container
 
-We include a **Dockerfile** for installing all dependencies and setting up the image for running sinergym. If you use [Visual Studio Code](https://code.visualstudio.com/), by simply opening the root directory and clicking on the pop-up button "_Reopen in container_", dependencies will be installed automatically and you will be able to run sinergym in an isolated environment.
+We include a **Dockerfile** for installing all dependencies and setting
+up the image for running *Sinergym*. 
 
-You can also use our [Docker Hub repository](https://hub.docker.com/repository/docker/alejandrocn7/sinergym) with the desired version directly.
+By default, Dockerfile will do `pip install -e .[extras]`, if you want to install a different setup, you will have to do in root repository:
 
-However, if you prefer installing it manually, follow the steps below.
+```sh
+  $ docker build -t <tag_name> --build-arg SINERGYM_EXTRAS=[<setup_tag(s)>] .
+```
+
+For example, if you want a container with only documentation libraries and testing:
+
+```sh
+  $ docker build -t example1/sinergym:latest --build-arg SINERGYM_EXTRAS=[doc,test] .
+```
+
+On the other hand, if you don't want any extra library, it's necessary to write an empty value like this:
+
+```sh
+  $ docker build -t example1/sinergym:latest --build-arg SINERGYM_EXTRAS= .
+```
+
+:pencil: You can install directly our container from `Docker Hub repository <https://hub.docker.com/repository/docker/alejandrocn7/sinergym>`__, all releases of this project are there.
+
+:pencil: If you use [Visual Studio Code](https://code.visualstudio.com/), by simply opening the root directory and clicking on the pop-up button *Reopen in container*, all the dependencies will be installed automatically and you will be able to run *Sinergym* in an isolated environment. For more information about how to use this functionality, check [VSCode Containers extension documentation](https://code.visualstudio.com/docs/remote/containers).
 
 ### Manual installation
 
-#### 1. Install Energy Plus 9.5.0
+To install *Sinergym* manually instead of through the container (recommended), follow these steps:
 
-Firstly, install EnergyPlus. Currently it has been update compability to 9.5.0 and it has
+#### 1. Configure Python environment
+
+- First, clone this repository:
+
+```sh
+  $ git clone https://github.com/jajimer/sinergym.git
+  $ cd sinergym
+```
+
+- Then, it is recommended to create a **virtual environment**. You can do so by:
+
+```sh
+  $ sudo apt-get install python-virtualenv virtualenv
+  $ virtualenv env_sinergym --python=python3.9
+  $ source env_sinergym/bin/activate
+  $ pip install -e .[extras]
+```
+
+- There are other alternatives like **conda environments** (recommended). Conda is very comfortable to use and we have a file to configure it automatically:
+
+```sh
+  $ cd sinergym
+  $ conda env create -f python_environment.yml
+  $ conda activate sinergym
+```
+
+- Now, we have a correct python version with required modules to run sinergym. Let's continue with the rest of the programs that are needed outside of Python to run the simulations:
+
+#### 2. Install EnergyPlus 9.5.0
+
+Install EnergyPlus. Currently it has been update compatibility to 9.5.0 and it has
 been tested, but code may also work with other versions. Sinergym ensure this support:
 
 | Sinergym Version | EnergyPlus version |
-|------------------|--------------------|
-| 1.0.0  or before | 8.6.0              | 
-| 1.1.0 or later   | 9.5.0              | 
+|:----------------:|:------------------:|
+|  1.0.0 or before |        8.6.0       |
+|  1.1.0 or later  |        9.5.0       |
 
 Other combination may works, but they don't have been tested.
 
-Follow the instructions [here](https://energyplus.net/downloads) and install for Linux system (only Ubuntu is supported).
-Choose any location to install the software. Once installed, a folder called `Energyplus-9-5-0` should appear in the selected location.
+Follow the instructions [here](https://energyplus.net/downloads) and
+install it for Linux (only Ubuntu is supported). Choose any location
+to install the software. Once installed, a folder called
+`Energyplus-9-5-0` should appear in the selected location.
 
-#### 2. Install BCVTB software
+#### 3. Install BCVTB software
 
-Follow the instructions [here](https://simulationresearch.lbl.gov/bcvtb/Download) for installing BCVTB software.
-Another option is to copy the ``bcvtb`` folder from [this repository](https://github.com/zhangzhizza/Gym-Eplus/tree/master/eplus_env/envs).
+Follow the instructions
+[here](https://simulationresearch.lbl.gov/bcvtb/Download) for
+installing BCVTB software. Another option is to copy the `bcvtb`
+folder from [this repository](https://github.com/zhangzhizza/Gym-Eplus/tree/master/eplus_env/envs)
 
-#### 3. Set environment variables
+#### 4. Set environment variables
 
-Two environment variables must be set: ``EPLUS_PATH`` and ``BCVTB_PATH``, with the locations where EnergyPlus and BCVTB are installed respectively.
+Two environment variables must be set: `EPLUS_PATH` and
+`BCVTB_PATH`, with the locations where EnergyPlus and BCVTB are
+installed respectively.
 
-#### 4. Install the package
 
-Finally, sinergym can be installed by running this command at the repo root folder:
+## About Sinergym package
+
+As we have told you in section *Manual Installation*, Python environment can be set up using *python_environment.yml* with *conda*.
+However, we can make an installation using the Github repository itself:
 
 ```sh
-pip install -e .
+  $ cd sinergym
+  $ pip install -e .
 ```
 
-Extra libraries can be installed by typing ``pip install -e .[extras]``. They are intended for running and analyzing DRL algorithms over sinergym, but they are
-not a requirement of the package.
-
-You can also install from [oficial pypi repository](https://pypi.org/project/sinergym/):
+Extra libraries can be installed by typing ``pip install -e .[extras]``.
+*extras* include all optional libraries which have been considered in this project such as 
+testing, visualization, Deep Reinforcement Learning, monitoring , etc.
+It's possible to select a subset of these libraries instead of 'extras' tag in which we select all optional libraries, for example:
 
 ```sh
-pip install sinergym[extras]
+  $ pip install -e .[test,doc]
 ```
 
-And that's all!
+In order to check all our tag list, visit `setup.py <https://github.com/jajimer/sinergym/blob/main/setup.py>`__ in Sinergym root repository. In any case, they are not a requirement of the package.
+
+You can also install from `oficial pypi repository <https://pypi.org/project/sinergym/>`__ with last stable version by default:
+
+```sh
+  $ pip install sinergym[extras]
+```
 
 ## Check Installation
 
@@ -154,6 +178,8 @@ $ pytest tests/ -vv
 Anyway, every time sinergym repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. `Github Action <https://docs.github.com/es/actions/>`__ will do that job (see our documentation for more information).
 
 ## Usage example
+
+If you used our Dockerfile during installation, you should have the *try_env.py* file in your workspace as soon as you enter in. In case you have installed everything on your local machine directly, place it inside our cloned repository. In any case, we start from the point that you have at your disposal a terminal with the appropriate python version and Sinergym running correctly.
 
 Sinergym uses the standard OpenAI gym API. So basic loop should be something like:
 
@@ -177,11 +203,13 @@ env.close()
 
 Notice that a folder will be created in the working directory after creating the environment. It will contain the EnergyPlus outputs produced during the simulation.
 
+:pencil: For more examples and details, please visit our [usage examples](https://jajimer.github.io/sinergym/compilation/html/pages/usage-example.html) documentation section
+
 ## Google Cloud Platform support
 
 Cloud Computing 
 
-For more information about this functionality, please, visit our documentation [here](https://jajimer.github.io/sinergym/build/html/pages/gcloudAPI.html).
+For more information about this functionality, please, visit our documentation [here](https://jajimer.github.io/sinergym/compilation/html/pages/gcloudAPI.html).
 
 ## Citing Sinergym
 

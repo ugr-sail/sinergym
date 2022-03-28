@@ -18,7 +18,7 @@ def test_reset(simulator):
     # Checking output
     # Fist element is a tuple with simulation date + time_elapsed
     assert isinstance(output[0], tuple)
-    assert len(output[0]) == 4
+    assert len(output[0]) == 5
     # Last element in first tuple must be time_elapsed 0
     assert output[0][-1] == 0
     assert isinstance(output[1], list)
@@ -57,7 +57,7 @@ def test_step(simulator):
     # Checking output
     # Fist element is a tuple with simulation date + time_elapsed
     assert isinstance(output[0], tuple)
-    assert len(output[0]) == 4
+    assert len(output[0]) == 5
     # Last element in first tuple must be time_elapsed > 0 (since we have a
     # step executed)
     assert output[0][-1] > 0
