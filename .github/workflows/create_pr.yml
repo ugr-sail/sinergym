@@ -87,11 +87,11 @@ jobs:
 
       - name: Compile documentation
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: cd docs && sphinx-build -M html source build -W
+        run: cd docs && sphinx-build -M html source build 
 
       - name: Check sphinx spelling
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: cd docs && sphinx-build -M spelling source build -W
+        run: cd docs && sphinx-build -M spelling source build 
 
   tests:
     # Skip CI if [ci skip] in the commit message

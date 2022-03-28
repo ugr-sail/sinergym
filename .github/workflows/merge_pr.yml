@@ -71,10 +71,10 @@ jobs:
           pip install --upgrade requests
       - name: Compile documentation
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: cd docs && sphinx-build -M html source compilation -W
+        run: cd docs && sphinx-build -M html source compilation 
       - name: Check sphinx spelling
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: cd docs && sphinx-build -M spelling source compilation -W
+        run: cd docs && sphinx-build -M spelling source compilation 
       - name: Pull local repository (for possible format commit)
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: git pull origin main
