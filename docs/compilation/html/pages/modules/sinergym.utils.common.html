@@ -42,16 +42,16 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../API-reference.html">API reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
@@ -114,7 +114,7 @@
 <span id="sinergym-utils-common"></span><h1>sinergym.utils.common<a class="headerlink" href="#module-sinergym.utils.common" title="Permalink to this headline"></a></h1>
 <p>Common utilities.</p>
 <p class="rubric">Functions</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -123,16 +123,16 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.create_variable_weather.html#sinergym.utils.common.create_variable_weather" title="sinergym.utils.common.create_variable_weather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_variable_weather</span></code></a>(weather_data, ...[, ...])</p></td>
 <td><p>Create a new weather file using Ornstein-Uhlenbeck process.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.get_current_time_info.html#sinergym.utils.common.get_current_time_info" title="sinergym.utils.common.get_current_time_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_current_time_info</span></code></a>(epm, sec_elapsed[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.get_current_time_info.html#sinergym.utils.common.get_current_time_info" title="sinergym.utils.common.get_current_time_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_current_time_info</span></code></a>(epm, sec_elapsed)</p></td>
 <td><p>Returns the current day, month and hour given the seconds elapsed since the simulation started.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.get_delta_seconds.html#sinergym.utils.common.get_delta_seconds" title="sinergym.utils.common.get_delta_seconds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_delta_seconds</span></code></a>(year, st_mon, st_day, ...)</p></td>
-<td><p>Returns the delta seconds between <cite>year:st_mon:st_day:0:0:0</cite> and <cite>year:end_mon:end_day:24:0:0</cite>.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.get_delta_seconds.html#sinergym.utils.common.get_delta_seconds" title="sinergym.utils.common.get_delta_seconds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_delta_seconds</span></code></a>(st_year, st_mon, st_day, ...)</p></td>
+<td><p>Returns the delta seconds between st year:st mon:st day:0:0:0 and end year:end mon:end day:24:0:0.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.get_record_keys.html#sinergym.utils.common.get_record_keys" title="sinergym.utils.common.get_record_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_record_keys</span></code></a>(record)</p></td>
 <td><p>Given an opyplus Epm Record (one element from opyplus.epm object) this function returns list of keys (opyplus hasn't got this functionality explicitly)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.get_season_comfort_range.html#sinergym.utils.common.get_season_comfort_range" title="sinergym.utils.common.get_season_comfort_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_season_comfort_range</span></code></a>(month, day)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.get_season_comfort_range.html#sinergym.utils.common.get_season_comfort_range" title="sinergym.utils.common.get_season_comfort_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_season_comfort_range</span></code></a>(year, month, day)</p></td>
 <td><p>Get comfort temperature range depending on season.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.parse_observation_action_space.html#sinergym.utils.common.parse_observation_action_space" title="sinergym.utils.common.parse_observation_action_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_observation_action_space</span></code></a>(space_file)</p></td>
@@ -153,7 +153,7 @@
 </tbody>
 </table>
 <p class="rubric">Classes</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />

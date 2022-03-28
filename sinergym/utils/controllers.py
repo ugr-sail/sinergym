@@ -18,7 +18,7 @@ class RandomController(object):
         self.env = env
 
     def act(self, observation: Optional[List[Any]] = None) -> Sequence[Any]:
-        """Selects a random action from the environment's `action_space`.
+        """Selects a random action from the environment's action_space.
 
         Args:
             observation (Optional[List[Any]], optional): Perceived observation. Defaults to None.
@@ -43,7 +43,7 @@ class RuleBasedController(object):
 
         self.variables_path = self.env.variables_path
         self.variables = parse_variables(self.variables_path)
-        self.variables['observation'].extend(['day', 'month', 'hour'])
+        self.variables['observation'].extend(['year', 'month', 'day', 'hour'])
 
     def act(self, observation: List[Any]) -> Sequence[Any]:
         """Select action based on outdoor air drybulb temperature and daytime.
@@ -58,11 +58,12 @@ class RuleBasedController(object):
 
         out_temp = obs_dict['Site Outdoor Air Drybulb Temperature (Environment)']
 
-        day = int(obs_dict['day'])
+        year = int(obs_dict['year'])
         month = int(obs_dict['month'])
+        day = int(obs_dict['day'])
         hour = int(obs_dict['hour'])
 
-        season_comfort_range = get_season_comfort_range(month, day)
+        season_comfort_range = get_season_comfort_range(year, month, day)
 
         if out_temp not in arange(
                 season_comfort_range[0], season_comfort_range[1], .1):

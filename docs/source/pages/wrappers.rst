@@ -15,6 +15,6 @@ An usage of these wrappers could be the next:
     :language: python
 
 .. warning:: The order of wrappers if you are going to use several at the same time is really important.
-             The correct order is **Normalization - Logger - MultiObs** and subsets (for example, *Normalization - Multiobs* is valid).
+             The correct order is **Normalization - Logger - MultiObs** and subsets (for example, *Normalization* - *Multiobs* is valid).
 
-.. note:: For more information about Sinergym Logger, visit :ref:`Logger`
+.. note:: For more information about Sinergym Logger, visit :ref:`Logger`.

@@ -22,15 +22,15 @@ def evaluate_policy(model: "base_class.BaseAlgorithm",
                                                       Any]],
                                                 None]] = None,
                     ) -> Any:
-    """Runs policy for ``n_eval_episodes`` episodes and returns average reward. This is made to work only with one env.
-        .. note:: If environment has not been wrapped with ``Monitor`` wrapper, reward and
-        episode lengths are counted as it appears with ``env.step`` calls. If
+    """Runs policy for n_eval_episodes episodes and returns average reward. This is made to work only with one env.
+        .. note:: If environment has not been wrapped with Monitor wrapper, reward and
+        episode lengths are counted as it appears with env.step calls. If
         the environment contains wrappers that modify rewards or episode lengths
         (e.g. reward scaling, early episode reset), these will affect the evaluation
-        results as well. You can avoid this by wrapping environment with ``Monitor``
+        results as well. You can avoid this by wrapping environment with Monitor
         wrapper before anything else.
         :param model: The RL agent you want to evaluate.
-        :param env: The gym environment. In the case of a ``VecEnv`` this must contain only one environment.
+        :param env: The gym environment. In the case of a VecEnv this must contain only one environment.
         :param n_eval_episodes: Number of episode to evaluate the agent
         :param deterministic: Whether to use deterministic or stochastic actions
         :param render: Whether to render the environment or not
@@ -38,7 +38,7 @@ def evaluate_policy(model: "base_class.BaseAlgorithm",
         :param reward_threshold: Minimum expected reward per episode, this will raise an error if the performance is not met
         :param return_episode_rewards: If True, a list of rewards and episode lengths per episode will be returned instead of the mean.
         :return: Mean reward per episode, std of reward per episode.
-        Returns ([float], [int]) when ``return_episode_rewards`` is True, first
+        Returns ([float], [int]) when return_episode_rewards is True, first
         list containing per-episode rewards and second containing per-episode lengths
         (in number of steps).
 

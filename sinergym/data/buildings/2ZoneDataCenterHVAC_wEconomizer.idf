@@ -144,10 +144,10 @@
     RUNPERIOD 1,             !- Name
     1,                       !- Begin Month
     1,                       !- Begin Day of Month
-    ,                        !- Begin Year
+    1991,                        !- Begin Year
     12,                      !- End Month
     31,                      !- End Day of Month
-    ,                        !- End Year
+    1991,                        !- End Year
     Monday,                  !- Day of Week for Start Day
     Yes,                     !- Use Weather File Holidays and Special Days
     Yes,                     !- Use Weather File Daylight Saving Period
