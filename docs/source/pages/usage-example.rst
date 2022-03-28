@@ -2,7 +2,7 @@
 Usage example
 #############
 
-If you used our Dockerfile during installation, you should have the try_env.py file in your workspace as soon as you enter in. In case you have installed everything on your local machine directly, place it inside our cloned repository.
+If you used our Dockerfile during installation, you should have the *try_env.py* file in your workspace as soon as you enter in. In case you have installed everything on your local machine directly, place it inside our cloned repository.
 In any case, we start from the point that you have at your disposal a terminal with the appropriate python version and Sinergym running correctly.
 
 At this point of the documentation, we have explained how to install Sinergym, the environments it includes, the reward functions we can define, wrappers and controllers.

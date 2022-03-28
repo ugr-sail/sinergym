@@ -7,7 +7,7 @@ Docker container
 ****************
 
 We include a **Dockerfile** for installing all dependencies and setting
-up the image for running *sinergym*. 
+up the image for running *Sinergym*. 
 
 By default, Dockerfile will do `pip install -e .[extras]`, if you want to install a different setup, you will have to do in root repository:
 
@@ -29,7 +29,7 @@ On the other hand, if you don't want any extra library, it's necessary to write 
 
 .. note:: You can install directly our container from `Docker Hub repository <https://hub.docker.com/repository/docker/alejandrocn7/sinergym>`__, all releases of this project are there.
 
-.. note:: If you use `Visual Studio Code <https://code.visualstudio.com/>`__, by simply opening the root directory and clicking on the pop-up button "*Reopen in container*\ ", all the dependencies will be installed automatically and you will be able to run *sinergym* in an isolated environment.
+.. note:: If you use `Visual Studio Code <https://code.visualstudio.com/>`__, by simply opening the root directory and clicking on the pop-up button *Reopen in container*, all the dependencies will be installed automatically and you will be able to run *Sinergym* in an isolated environment.
           For more information about how to use this functionality, check `VSCode Containers extension documentation <https://code.visualstudio.com/docs/remote/containers>`__.
 
 *******************
@@ -127,11 +127,23 @@ It's possible to select a subset of these libraries instead of 'extras' tag in w
 
 In order to check all our tag list, visit `setup.py <https://github.com/jajimer/sinergym/blob/main/setup.py>`__ in Sinergym root repository. In any case, they are not a requirement of the package.
 
-You can also install from `oficial pypi repository <https://pypi.org/project/sinergym/>`__:
+You can also install from `oficial pypi repository <https://pypi.org/project/sinergym/>`__ with last stable version by default:
 
 .. code:: sh
 
     $ pip install sinergym[extras]
+
+*******************
+Check Installation
+*******************
+
+This project is automatically supervised using tests developed specifically for it. If you want to check sinergym has been installed successfully, run next command:
+
+.. code::sh
+
+    $ pytest tests/ -vv
+
+Anyway, every time sinergym repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. `Github Action <https://docs.github.com/es/actions/>`__ will do that job (see our documentation for more information).
 
 ****************
 Cloud Computing
