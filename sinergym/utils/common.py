@@ -124,8 +124,8 @@ def get_delta_seconds(
         end_year: int,
         end_mon: int,
         end_day: int) -> float:
-    """Returns the delta seconds between `st_year:st_mon:st_day:0:0:0` and
-    `end_year:end_mon:end_day:24:0:0`.
+    """Returns the delta seconds between st_year:st_mon:st_day:0:0:0 and
+    end_year:end_mon:end_day:24:0:0.
 
     Args:
         st_year (int): Start year.

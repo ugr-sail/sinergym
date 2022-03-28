@@ -18,7 +18,7 @@ class RandomController(object):
         self.env = env
 
     def act(self, observation: Optional[List[Any]] = None) -> Sequence[Any]:
-        """Selects a random action from the environment's `action_space`.
+        """Selects a random action from the environment's action_space.
 
         Args:
             observation (Optional[List[Any]], optional): Perceived observation. Defaults to None.
