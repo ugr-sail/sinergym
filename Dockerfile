@@ -81,6 +81,7 @@ WORKDIR /sinergym
 COPY requirements.txt .
 COPY setup.py .
 COPY DRL_battery.py .
+COPY load_agent.py .
 COPY sinergym /sinergym/sinergym
 COPY tests /sinergym/tests
 COPY examples /sinergym/examples
