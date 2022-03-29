@@ -1,4 +1,5 @@
 import argparse
+from datetime import datetime
 
 import gym
 import numpy as np
@@ -8,8 +9,11 @@ import sinergym
 from sinergym.utils.common import RANGES_5ZONE, RANGES_DATACENTER, RANGES_IW
 from sinergym.utils.rewards import ExpReward, LinearReward
 from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
+import sinergym.utils.gcloud as gcloud
 
-# -------------------------------- Parameters -------------------------------- #
+# ---------------------------------------------------------------------------- #
+#                                  Parameters                                  #
+# ---------------------------------------------------------------------------- #
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -67,9 +71,34 @@ parser.add_argument(
     default=None,
     dest='seed',
     help='Seed used to algorithm training.')
+parser.add_argument(
+    '--remote_store',
+    '-sto',
+    action='store_true',
+    dest='remote_store',
+    help='Determine if sinergym output will be sent to a Google Cloud Storage Bucket.')
+parser.add_argument(
+    '--group_name',
+    '-group',
+    type=str,
+    dest='group_name',
+    help='This field indicate instance group name')
+parser.add_argument(
+    '--auto_delete',
+    '-del',
+    action='store_true',
+    dest='auto_delete',
+    help='If is a GCE instance and this flag is active, that instance will be removed from GCP.')
 args = parser.parse_args()
 
-# -------------------------- Environment definition -------------------------- #
+# ---------------------------------------------------------------------------- #
+#                                Evaluation name                               #
+# ---------------------------------------------------------------------------- #
+name = args.model.split('/')[-1] + 'EVAL-episodes' + str(args.episodes)
+
+# ---------------------------------------------------------------------------- #
+#                            Environment definition                            #
+# ---------------------------------------------------------------------------- #
 if args.reward == 'linear':
     reward = LinearReward()
 elif args.reward == 'exponential':
@@ -78,6 +107,10 @@ else:
     raise RuntimeError('Reward function specified is not registered.')
 
 env = gym.make(args.environment, reward=reward)
+
+# ---------------------------------------------------------------------------- #
+#                                   Wrappers                                   #
+# ---------------------------------------------------------------------------- #
 
 if args.normalization:
     # We have to know what dictionary ranges to use
@@ -95,7 +128,9 @@ if args.normalization:
 if args.logger:
     env = LoggerWrapper(env)
 
-# ------------------- Load Model dependending on algorithm ------------------- #
+# ---------------------------------------------------------------------------- #
+#                                  Load Agent                                  #
+# ---------------------------------------------------------------------------- #
 model = None
 if args.algorithm == 'DQN':
     model = DQN.load(args.model)
@@ -112,7 +147,9 @@ elif args.algorithm == 'TD3':
 else:
     raise RuntimeError('Algorithm specified is not registered.')
 
-
+# ---------------------------------------------------------------------------- #
+#                             Execute loaded agent                             #
+# ---------------------------------------------------------------------------- #
 for i in range(args.episodes):
     obs = env.reset()
     rewards = []
@@ -133,3 +170,25 @@ for i in range(args.episodes):
         'Cumulative reward: ',
         sum(rewards))
 env.close()
+
+# ---------------------------------------------------------------------------- #
+#                                 Store results                                #
+# ---------------------------------------------------------------------------- #
+
+if args.remote_store:
+    # Initiate Google Cloud client
+    client = gcloud.init_storage_client()
+    # Code for send output and tensorboard to common resource here.
+    gcloud.upload_to_bucket(
+        client,
+        src_path=env.simulator._env_working_dir_parent,
+        dest_bucket_name='experiments-storage',
+        dest_path=name)
+
+# ---------------------------------------------------------------------------- #
+#                          Auto-delete remote container                        #
+# ---------------------------------------------------------------------------- #
+
+if args.group_name and args.auto_delete:
+    token = gcloud.get_service_account_token()
+    gcloud.delete_instance_MIG_from_container(args.group_name, token)
