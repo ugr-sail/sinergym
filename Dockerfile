@@ -57,6 +57,7 @@ RUN apt install software-properties-common -y
 RUN add-apt-repository ppa:deadsnakes/ppa
 RUN ln -s /usr/bin/pip3 /usr/bin/pip
 RUN ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
+RUN echo "alias python3=python" >> $HOME/.bash_profile
 RUN apt install python${PYTHON_VERSION} python${PYTHON_VERSION}-distutils -y
 RUN apt install python3-pip -y
 
