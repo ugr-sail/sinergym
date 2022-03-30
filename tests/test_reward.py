@@ -1,53 +1,29 @@
 import pytest
 
-import sinergym.utils.rewards as R
+
+def test_reward(env_linear_reward):
+    _ = env_linear_reward.reset()
+    a = env_linear_reward.action_space.sample()
+    _, R, _, info = env_linear_reward.step(a)
+    env_linear_reward.close()
+    assert R <= 0.0
+    assert env_linear_reward.reward_fn.W_energy == 0.5
+    assert info.get('comfort_penalty') <= 0.0
 
 
-@pytest.mark.parametrize(
-    'power,temperatures,month,day,reward,reward_energy,reward_comfort',
-    [
-        # Input 1
-        (
-            186.5929171535975,
-            [22.16742570092868],
-            3,
-            31,
-            -0.009329645857679876,
-            -0.018659291715359752,
-            -0.0
-        ),
-        # Input 2
-        (
-            688.0477550424935,
-            [26.7881162590194],
-            3,
-            30,
-            -1.6784605172618248,
-            -0.06880477550424935,
-            -3.2881162590194
-        ),
-        # Input 3
-        (
-            23168.30752221127,
-            [20.37505026953311],
-            2,
-            25,
-            -1.1584153761105636,
-            -2.316830752221127,
-            -0.0
-        ),
-    ]
-)
-def test_calculate(
-        simple_reward,
-        power,
-        temperatures,
-        month,
-        day,
-        reward,
-        reward_energy,
-        reward_comfort):
-    result = simple_reward.calculate(power, temperatures, month, day)
-    assert result[0] == reward
-    assert result[1]['reward_energy'] == reward_energy
-    assert result[1]['reward_comfort'] == reward_comfort
+def test_reward_kwargs(env_linear_reward_args):
+    _ = env_linear_reward_args.reset()
+    a = env_linear_reward_args.action_space.sample()
+    _, R, _, info = env_linear_reward_args.step(a)
+    env_linear_reward_args.close()
+    assert R <= 0.0
+    assert env_linear_reward_args.reward_fn.W_energy == 0.2
+    assert env_linear_reward_args.reward_fn.range_comfort_summer == (18.0, 20.0)
+    assert info.get('comfort_penalty') <= 0.0
+
+def test_custom_reward(env_custom_reward):
+    _ = env_custom_reward.reset()
+    a = env_custom_reward.action_space.sample()
+    _, R, _, _ = env_custom_reward.step(a)
+    env_custom_reward.close()
+    assert R == -1.0

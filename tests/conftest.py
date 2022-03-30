@@ -6,7 +6,7 @@ import pkg_resources
 import pytest
 from opyplus import Epm, Idd, WeatherData
 
-import sinergym.utils.rewards as R
+from sinergym.utils.rewards import BaseReward, LinearReward
 from sinergym.envs.eplus_env import EplusEnv
 from sinergym.simulators.eplus import EnergyPlus
 from sinergym.utils.config import Config
@@ -157,23 +157,6 @@ def env_demo_discrete(idf_path, weather_path, variable_path, space_path):
 
 
 @pytest.fixture(scope='function')
-def env_demo_discrete(idf_path, weather_path, variable_path, space_path):
-    idf_file = idf_path.split('/')[-1]
-    weather_file = weather_path.split('/')[-1]
-    variables_file = variable_path.split('/')[-1]
-    spaces_file = space_path.split('/')[-1]
-
-    return EplusEnv(
-        env_name='TESTGYM',
-        idf_file=idf_file,
-        weather_file=weather_file,
-        variables_file=variables_file,
-        spaces_file=spaces_file,
-        discrete_actions=True,
-        weather_variability=None)
-
-
-@pytest.fixture(scope='function')
 def env_demo_continuous(idf_path, weather_path, variable_path, space_path):
     idf_file = idf_path.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
@@ -244,14 +227,67 @@ def weather_data(weather_path):
 
 ############### REWARDS ###############
 
+@pytest.fixture(scope='session')
+def custom_reward():
+    class CustomReward(BaseReward):
+        def __init__(self, env):
+            super(CustomReward, self).__init__(env)
+        def __call__(self):
+            return -1.0, {}
+    return CustomReward
 
 @pytest.fixture(scope='session')
-def simple_reward():
-    return R.LinearReward(
-        energy_weight=0.5,
-        lambda_energy=1e-4,
-        lambda_temperature=1.0
-    )
+def env_custom_reward(idf_path, weather_path, variable_path, space_path, custom_reward):
+    idf_file = idf_path.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+    variables_file = variable_path.split('/')[-1]
+    spaces_file = space_path.split('/')[-1]
+
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=True,
+        reward=custom_reward,
+        weather_variability=None)
+
+@pytest.fixture(scope='session')
+def env_linear_reward(idf_path, weather_path, variable_path, space_path):
+    idf_file = idf_path.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+    variables_file = variable_path.split('/')[-1]
+    spaces_file = space_path.split('/')[-1]
+
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=True,
+        reward=LinearReward,
+        weather_variability=None)
+
+@pytest.fixture(scope='session')
+def env_linear_reward_args(idf_path, weather_path, variable_path, space_path):
+    idf_file = idf_path.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+    variables_file = variable_path.split('/')[-1]
+    spaces_file = space_path.split('/')[-1]
+
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=True,
+        reward=LinearReward,
+        reward_kwargs={'energy_weight': 0.2, 'range_comfort_summer': (18.0, 20.0)},
+        weather_variability=None)
+
 
 ############### WHEN TESTS HAVE FINISHED ###############
 

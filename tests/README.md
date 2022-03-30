@@ -27,13 +27,13 @@ $ pip install pytest
 In order to run our current tests:
 
 ```sh
-$ pytests tests/ -vv
+$ pytest tests/ -vv
 ```
 
 This runs all tests within tests/ directory. If we want verbose use `-v` or `-vv` option. To run an unique module tests, for example we can do: 
 
 ```sh
-$ pytests tests/test_common.py -vv
+$ pytest tests/test_common.py -vv
 ```
 
 ## Create new tests

@@ -2,26 +2,51 @@
 Rewards
 #######
 
-Defining a reward function is one of the most important things in reinforcement learning. Consequently, our team has designed an structure which let you use our
-reward class or defining a new one and integrate in available environments if you want:
+Defining a reward function is one of the most important things in reinforcement learning. Consequently, Sinergym allows you to define your own reward functions or use 
+the ones we have already implemented (see code below).
 
-.. literalinclude:: ../../../sinergym/utils/rewards.py
-    :language: python
+-  ``LinearReward`` implements a linear reward function, where both energy consumption and thermal discomfort are normalized and add together with different weights. The 
+   discomfort is calculated as the absolute difference between current temperature and comfort range (so if the temperature is inside that range, the discomfort would be 0).
+   This is a typically used function where thermal satisfaction of people inside the controlled building has been taken into account.
 
-``LinearReward()`` class implements an evaluation which consists in taking into account **power consumption** and **temperature comfort**. This class is used
-inner environment as an attribute.
+-  ``ExpReward`` is very similar, but in this case the discomfort is calculated using the exponential difference between current temperature and comfort ranges. That means 
+   that the penalty for the discomfort is higher is we are far from the target temperatures.
 
-``ExpReward()`` class is the same than ``LinearReward()`` class, but comfort penalty is exponential instead of lineal.
+-  ``HourlyLinearReward`` is a slight modification of the linear function, but the weight given to the discomfort depends on the hour of the day. If the current hour of the 
+   simulation is in working hours (by default, from 9 AM to 7 PM) both comfort and energy consumption weights equally, but outside those hours only energy is considered.
 
-Reward is always negative. This means that perfect reward would be 0 (perfect power consumption and perfect temperature comfort), we apply penalties in both factors.
-Notice there are two temperature comfort ranges in that class, those ranges are used rely on the specific date on the simulation. Moreover, notice there are
-two weights in the reward function, this allows you to adjust how important each aspect is when making a general evaluation of the environment.
 
-By default, all environments in gym register will use LinearReward() with default parameters. However, this configuration can be overwriting in ``gym.make()``, for example:
+These rewards are always negative, meaning that perfect behavior has a cumulative reward of 0. Notice also that there are two temperature comfort ranges defined, one for the 
+summer period and other for the winter period. The weights of each term in the reward allow to adjust the importance of each aspect when evaluating the environments.
+
+By default, all environments use ``LinearReward`` with default parameters. But you can change this configuration using ``gym.make()`` as follows:
 
 .. code:: python
     
-    env = gym.make('Eplus-discrete-stochastic-mixed-v1', reward=ExpReward(energy_weight=0.5))
+    from sinergym.utils.rewards import ExpReward
 
-.. note:: *Currently, it is only available these classes. However, more reward functions could be designed in the future!*
+    env = gym.make('Eplus-discrete-stochastic-mixed-v1', reward=ExpReward, reward_kwargs={'energy_weight': 0.1})
 
+
+It is also pretty simple to define your own classes. For example, imagine you want a reward signal which returns always -1 (however we do not recommend using it for training agents :)).
+The only requirement is that the calculation is performed using ``__call__`` method, which returns the reward and a dictionary with extra information. The below code implements this.
+
+.. code:: python
+
+    from sinergym.utils.rewards import BaseReward
+
+    class CustomReward(BaseReward):
+        """Naive reward function."""
+        def __init__(self, env):
+            super(CustomReward, self).__init__(env)
+        def __call__(self):
+            return -1.0, {}
+
+    env = gym.make('Eplus-discrete-stochastic-mixed-v1', reward=CustomReward)
+
+
+More reward functions will be included in the future, so stay tuned!
+
+
+.. literalinclude:: ../../../sinergym/utils/rewards.py
+    :language: python

@@ -156,10 +156,10 @@ class EplusEnv(gym.Env):
             'day': self.obs_dict['day'],
             'month': self.obs_dict['month'],
             'hour': self.obs_dict['hour'],
-            'total_power': terms['total_energy'],
-            'total_power_no_units': terms['reward_energy'],
-            'comfort_penalty': terms['reward_comfort'],
-            'temperatures': terms['temperatures'],
+            'total_power': terms.get('total_energy'),
+            'total_power_no_units': terms.get('reward_energy'),
+            'comfort_penalty': terms.get('reward_comfort'),
+            'temperatures': terms.get('temperatures'),
             'out_temperature': self.obs_dict['Site Outdoor Air Drybulb Temperature (Environment)'],
             'action_': action_}
 

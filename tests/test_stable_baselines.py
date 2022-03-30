@@ -10,7 +10,7 @@ from stable_baselines3.common.noise import (NormalActionNoise,
 
 import sinergym
 
-TIMESTEPS = 1000
+TIMESTEPS = 100
 
 
 @pytest.mark.parametrize(
