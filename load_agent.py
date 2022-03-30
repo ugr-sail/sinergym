@@ -94,7 +94,7 @@ args = parser.parse_args()
 # ---------------------------------------------------------------------------- #
 #                                Evaluation name                               #
 # ---------------------------------------------------------------------------- #
-name = args.model.split('/')[-1] + 'EVAL-episodes' + str(args.episodes)
+name = args.model.split('/')[-1] + '-EVAL-episodes' + str(args.episodes)
 
 # ---------------------------------------------------------------------------- #
 #                            Environment definition                            #
