@@ -16,11 +16,12 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.rewards.LinearReward" href="sinergym.utils.rewards.LinearReward.html" />
-    <link rel="prev" title="sinergym.utils.rewards" href="sinergym.utils.rewards.html" /> 
+    <link rel="next" title="sinergym.utils.rewards.HourlyLinearReward" href="sinergym.utils.rewards.HourlyLinearReward.html" />
+    <link rel="prev" title="sinergym.utils.rewards.BaseReward" href="sinergym.utils.rewards.BaseReward.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -61,7 +62,9 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.BaseReward.html">sinergym.utils.rewards.BaseReward</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.rewards.ExpReward</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.HourlyLinearReward.html">sinergym.utils.rewards.HourlyLinearReward</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.LinearReward.html">sinergym.utils.rewards.LinearReward</a></li>
 </ul>
 </li>
@@ -105,17 +108,24 @@
 <h1>sinergym.utils.rewards.ExpReward<a class="headerlink" href="#sinergym-utils-rewards-expreward" title="Permalink to this headline"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.rewards.ExpReward">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.rewards.</span></span><span class="sig-name descname"><span class="pre">ExpReward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.rewards.ExpReward" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.rewards.</span></span><span class="sig-name descname"><span class="pre">ExpReward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">gym.core.Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature_variable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Zone</span> <span class="pre">Air</span> <span class="pre">Temperature</span> <span class="pre">(SPACE1-1)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_variable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Facility</span> <span class="pre">Total</span> <span class="pre">HVAC</span> <span class="pre">Electricity</span> <span class="pre">Demand</span> <span class="pre">Rate</span> <span class="pre">(Whole</span> <span class="pre">Building)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_comfort_winter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(20.0,</span> <span class="pre">23.5)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_comfort_summer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(23.0,</span> <span class="pre">26.0)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.rewards.ExpReward" title="Permalink to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.rewards.ExpReward.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.rewards.ExpReward.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">gym.core.Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature_variable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Zone</span> <span class="pre">Air</span> <span class="pre">Temperature</span> <span class="pre">(SPACE1-1)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_variable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Facility</span> <span class="pre">Total</span> <span class="pre">HVAC</span> <span class="pre">Electricity</span> <span class="pre">Demand</span> <span class="pre">Rate</span> <span class="pre">(Whole</span> <span class="pre">Building)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_comfort_winter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(20.0,</span> <span class="pre">23.5)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_comfort_summer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(23.0,</span> <span class="pre">26.0)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.rewards.ExpReward.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Reward considering exponential absolute difference to temperature comfort.</p>
+<div class="math notranslate nohighlight">
+\[R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T - T_{low}, 0) + max(T_{up} - T, 0)) )\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> (<em>Env</em>) – Gym environment.</p></li>
+<li><p><strong>temperature_variable</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>list</em><em>]</em><em>, </em><em>optional</em>) – Name(s) of the temperature variable(s).</p></li>
+<li><p><strong>energy_variable</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the energy/power variable.</p></li>
 <li><p><strong>energy_weight</strong> (<em>float</em><em>, </em><em>optional</em>) – Weight given to the energy term. Defaults to 0.5.</p></li>
 <li><p><strong>lambda_energy</strong> (<em>float</em><em>, </em><em>optional</em>) – Constant for removing dimensions from power(1/W). Defaults to 1e-4.</p></li>
 <li><p><strong>lambda_temperature</strong> (<em>float</em><em>, </em><em>optional</em>) – Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</p></li>
+<li><p><strong>range_comfort_winter</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Temperature comfort range for cold season. Defaults to (20.0, 23.5).</p></li>
+<li><p><strong>range_comfort_summer</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Temperature comfort range fot hot season. Defaults to (23.0, 26.0).</p></li>
 </ul>
 </dd>
 </dl>
@@ -128,37 +138,11 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.rewards.ExpReward.__init__" title="sinergym.utils.rewards.ExpReward.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([energy_weight, lambda_energy, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.rewards.ExpReward.__init__" title="sinergym.utils.rewards.ExpReward.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env[, temperature_variable, ...])</p></td>
 <td><p>Reward considering exponential absolute difference to temperature comfort.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.rewards.ExpReward.calculate" title="sinergym.utils.rewards.ExpReward.calculate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate</span></code></a>(power, temperatures, year, month, day)</p></td>
-<td><p>Reward calculus.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="sinergym.utils.rewards.ExpReward.calculate">
-<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">power</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperatures</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.rewards.ExpReward.calculate" title="Permalink to this definition"></a></dt>
-<dd><p>Reward calculus.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>power</strong> (<em>float</em>) – Power consumption.</p></li>
-<li><p><strong>temperatures</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – Indoor temperatures (one per zone).</p></li>
-<li><p><strong>year</strong> (<em>int</em>) – Current year.</p></li>
-<li><p><strong>month</strong> (<em>int</em>) – Current month.</p></li>
-<li><p><strong>day</strong> (<em>int</em>) – Current day.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Reward value.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[float, Dict[str, float]]</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 </section>
@@ -167,8 +151,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sinergym.utils.rewards.html" class="btn btn-neutral float-left" title="sinergym.utils.rewards" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.rewards.LinearReward.html" class="btn btn-neutral float-right" title="sinergym.utils.rewards.LinearReward" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.rewards.BaseReward.html" class="btn btn-neutral float-left" title="sinergym.utils.rewards.BaseReward" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sinergym.utils.rewards.HourlyLinearReward.html" class="btn btn-neutral float-right" title="sinergym.utils.rewards.HourlyLinearReward" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

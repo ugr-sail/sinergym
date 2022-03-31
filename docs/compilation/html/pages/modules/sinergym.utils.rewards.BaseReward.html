@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sinergym.utils.rewards &mdash; sinergym  documentation</title>
+  <title>sinergym.utils.rewards.BaseReward &mdash; sinergym  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
@@ -19,8 +19,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.rewards.BaseReward" href="sinergym.utils.rewards.BaseReward.html" />
-    <link rel="prev" title="sinergym.utils.gcloud.upload_to_bucket" href="sinergym.utils.gcloud.upload_to_bucket.html" /> 
+    <link rel="next" title="sinergym.utils.rewards.ExpReward" href="sinergym.utils.rewards.ExpReward.html" />
+    <link rel="prev" title="sinergym.utils.rewards" href="sinergym.utils.rewards.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -60,8 +60,8 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">sinergym.utils.rewards</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.BaseReward.html">sinergym.utils.rewards.BaseReward</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.rewards.BaseReward</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.ExpReward.html">sinergym.utils.rewards.ExpReward</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.HourlyLinearReward.html">sinergym.utils.rewards.HourlyLinearReward</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.LinearReward.html">sinergym.utils.rewards.LinearReward</a></li>
@@ -92,9 +92,10 @@
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../API-reference.html">API reference</a> &raquo;</li>
           <li><a href="sinergym.utils.html">sinergym.utils</a> &raquo;</li>
-      <li>sinergym.utils.rewards</li>
+          <li><a href="sinergym.utils.rewards.html">sinergym.utils.rewards</a> &raquo;</li>
+      <li>sinergym.utils.rewards.BaseReward</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/pages/modules/sinergym.utils.rewards.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/pages/modules/sinergym.utils.rewards.BaseReward.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -102,38 +103,45 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-sinergym.utils.rewards">
-<span id="sinergym-utils-rewards"></span><h1>sinergym.utils.rewards<a class="headerlink" href="#module-sinergym.utils.rewards" title="Permalink to this headline"></a></h1>
-<p>Implementation of reward functions.</p>
-<p class="rubric">Classes</p>
+  <section id="sinergym-utils-rewards-basereward">
+<h1>sinergym.utils.rewards.BaseReward<a class="headerlink" href="#sinergym-utils-rewards-basereward" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="sinergym.utils.rewards.BaseReward">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.rewards.</span></span><span class="sig-name descname"><span class="pre">BaseReward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.rewards.BaseReward" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.rewards.BaseReward.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.rewards.BaseReward.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Base reward class.</p>
+<p>All reward functions should inherit from this class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>env</strong> (<em>Env</em>) – Gym environment.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.rewards.BaseReward.html#sinergym.utils.rewards.BaseReward" title="sinergym.utils.rewards.BaseReward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseReward</span></code></a>(env)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.rewards.ExpReward.html#sinergym.utils.rewards.ExpReward" title="sinergym.utils.rewards.ExpReward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpReward</span></code></a>(env[, temperature_variable, ...])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.rewards.HourlyLinearReward.html#sinergym.utils.rewards.HourlyLinearReward" title="sinergym.utils.rewards.HourlyLinearReward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HourlyLinearReward</span></code></a>(env[, ...])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.rewards.LinearReward.html#sinergym.utils.rewards.LinearReward" title="sinergym.utils.rewards.LinearReward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LinearReward</span></code></a>(env[, temperature_variable, ...])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.rewards.BaseReward.__init__" title="sinergym.utils.rewards.BaseReward.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env)</p></td>
+<td><p>Base reward class.</p></td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sinergym.utils.gcloud.upload_to_bucket.html" class="btn btn-neutral float-left" title="sinergym.utils.gcloud.upload_to_bucket" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.rewards.BaseReward.html" class="btn btn-neutral float-right" title="sinergym.utils.rewards.BaseReward" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.rewards.html" class="btn btn-neutral float-left" title="sinergym.utils.rewards" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sinergym.utils.rewards.ExpReward.html" class="btn btn-neutral float-right" title="sinergym.utils.rewards.ExpReward" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
