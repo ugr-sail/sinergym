@@ -43,7 +43,7 @@ RUN apt-get update \
     && echo "y\r" | ./$ENERGYPLUS_DOWNLOAD_FILENAME \
     && rm $ENERGYPLUS_DOWNLOAD_FILENAME \
     && cd /usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION \
-    PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater
+    && rm -rf PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater
 
 # Remove the broken symlinks
 RUN cd /usr/local/bin find -L . -type l -delete
