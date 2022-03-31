@@ -78,9 +78,6 @@ RUN python -m pip install --upgrade pip
 RUN pip install --upgrade setuptools
 RUN apt-get update && apt-get upgrade -y && apt-get install -y git
 
-#uninstall 3.6 python default version
-RUN apt-get remove --purge python3-pip python3 -y \
-    && apt-get autoremove -y && apt-get autoclean -y
 WORKDIR /sinergym
 COPY requirements.txt .
 COPY setup.py .
@@ -92,6 +89,11 @@ COPY examples /sinergym/examples
 COPY check_run_times.py .
 COPY try_env.py .
 RUN pip install -e .${SINERGYM_EXTRAS}
+
+
+#uninstall 3.6 python default version
+RUN apt-get remove --purge python3-pip python3 -y \
+    && apt-get autoremove -y && apt-get autoclean -y
 
 CMD ["/bin/bash"]
 
