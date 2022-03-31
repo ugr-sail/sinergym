@@ -1,10 +1,5 @@
-"""Gym environment for simulation with EnergyPlus.
-
-Functionalities:
-    - Both discrete and continuous action spaces
-    - Add variability into the weather series
-    - Reward is computed with absolute difference to comfort range
-    - Raw observations, defined in the variables.cfg file
+"""
+Gym environment for simulation with EnergyPlus.
 """
 
 import os
@@ -21,9 +16,6 @@ from sinergym.utils.rewards import ExpReward, LinearReward
 
 
 class EplusEnv(gym.Env):
-    """
-    Environment with EnergyPlus simulator.
-    """
 
     metadata = {'render.modes': ['human']}
 
@@ -36,7 +28,8 @@ class EplusEnv(gym.Env):
         env_name: str = 'eplus-env-v1',
         discrete_actions: bool = True,
         weather_variability: Optional[Tuple[float]] = None,
-        reward: Any = LinearReward(),
+        reward: Any = LinearReward,
+        reward_kwargs: Optional[Dict[str, Any]] = {},
         act_repeat: int = 1,
         max_ep_data_store_num: int = 10,
         config_params: Optional[Dict[str, Any]] = None
@@ -51,7 +44,8 @@ class EplusEnv(gym.Env):
             env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
             discrete_actions (bool, optional): Whether the actions are discrete (True) or continuous (False). Defaults to True.
             weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
-            reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward().
+            reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
+            reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
             act_repeat (int, optional): Number of timesteps that an action is repeated in the simulator, regardless of the actions it receives during that repetition interval.
             max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
@@ -124,7 +118,7 @@ class EplusEnv(gym.Env):
             )
 
         # Reward class
-        self.cls_reward = reward
+        self.reward_fn = reward(self, **reward_kwargs)
         self.obs_dict = None
 
     def step(self,
@@ -144,30 +138,8 @@ class EplusEnv(gym.Env):
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not and a dictionary with extra information
         """
 
-        # Get action depending on flag_discrete
-        if self.flag_discrete:
-            # Index for action_mapping
-            if np.issubdtype(type(action), np.integer):
-                if isinstance(action, int):
-                    setpoints = self.action_mapping[action]
-                else:
-                    setpoints = self.action_mapping[np.asscalar(action)]
-            # Manual action
-            elif isinstance(action, tuple) or isinstance(action, list):
-                # stable-baselines DQN bug prevention
-                if len(action) == 1:
-                    setpoints = self.action_mapping[np.asscalar(action)]
-                else:
-                    setpoints = action
-            elif isinstance(action, np.ndarray):
-                setpoints = self.action_mapping[np.asscalar(action)]
-            else:
-                print("ERROR: ", type(action))
-            action_ = list(setpoints)
-        else:
-            # transform action to setpoints simulation
-            action_ = setpoints_transform(
-                action, self.action_space, self.action_setpoints)
+        # Get action
+        action_ = self._get_action(action)
 
         # Send action to the simulator
         self.simulator.logger_main.debug(action_)
@@ -182,14 +154,7 @@ class EplusEnv(gym.Env):
         self.obs_dict['hour'] = time_info[3]
 
         # Calculate reward
-
-        # Calculate temperature mean for all building zones
-        temp_values = [value for key, value in self.obs_dict.items(
-        ) if key.startswith('Zone Air Temperature')]
-
-        power = self.obs_dict['Facility Total HVAC Electricity Demand Rate (Whole Building)']
-        reward, terms = self.cls_reward.calculate(
-            power, temp_values, time_info[0], time_info[1], time_info[2])
+        reward, terms = self.reward_fn()
 
         # Extra info
         info = {
@@ -200,10 +165,10 @@ class EplusEnv(gym.Env):
             'month': self.obs_dict['month'],
             'day': self.obs_dict['day'],
             'hour': self.obs_dict['hour'],
-            'total_power': power,
-            'total_power_no_units': terms['reward_energy'],
-            'comfort_penalty': terms['reward_comfort'],
-            'temperatures': temp_values,
+            'total_power': terms.get('total_energy'),
+            'total_power_no_units': terms.get('reward_energy'),
+            'comfort_penalty': terms.get('reward_comfort'),
+            'temperatures': terms.get('temperatures'),
             'out_temperature': self.obs_dict['Site Outdoor Air Drybulb Temperature (Environment)'],
             'action_': action_}
 
@@ -217,7 +182,7 @@ class EplusEnv(gym.Env):
             np.ndarray: Current observation.
         """
         # Change to next episode
-        time_info, obs, done = self.simulator.reset(self.weather_variability)
+        time_info, obs, _ = self.simulator.reset(self.weather_variability)
         self.obs_dict = dict(zip(self.variables['observation'], obs))
 
         self.obs_dict['year'] = time_info[0]
@@ -239,3 +204,33 @@ class EplusEnv(gym.Env):
         """End simulation."""
 
         self.simulator.end_env()
+
+    def _get_action(self, action: Any):
+        """Transform the action for sending it to the simulator."""
+
+        # Get action depending on flag_discrete
+        if self.flag_discrete:
+            # Index for action_mapping
+            if np.issubdtype(type(action), np.integer):
+                if isinstance(action, int):
+                    setpoints = self.action_mapping[action]
+                else:
+                    setpoints = self.action_mapping[action.item()]
+            # Manual action
+            elif isinstance(action, tuple) or isinstance(action, list):
+                # stable-baselines DQN bug prevention
+                if len(action) == 1:
+                    setpoints = self.action_mapping[action.item()]
+                else:
+                    setpoints = action
+            elif isinstance(action, np.ndarray):
+                setpoints = self.action_mapping[action.item()]
+            else:
+                print("ERROR: ", type(action))
+            action_ = list(setpoints)
+        else:
+            # transform action to setpoints simulation
+            action_ = setpoints_transform(
+                action, self.action_space, self.action_setpoints)
+
+        return action_

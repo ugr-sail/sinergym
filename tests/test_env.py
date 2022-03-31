@@ -86,3 +86,5 @@ def test_all_environments():
         # Rename directory with name TEST for future remove
         os.rename(env.simulator._env_working_dir_parent, 'Eplus-env-TEST' +
                   env.simulator._env_working_dir_parent.split('/')[-1])
+
+        env.close()

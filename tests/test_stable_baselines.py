@@ -10,14 +10,14 @@ from stable_baselines3.common.noise import (NormalActionNoise,
 
 import sinergym
 
-TIMESTEPS = 1000
+TIMESTEPS = 100
 
 
 @pytest.mark.parametrize(
     'env_name',
     [
         (
-            'env_demo_discrete'
+            'env_demo'
         ),
         (
             'env_demo_continuous'
@@ -66,7 +66,7 @@ def test_stable_PPO(env_name, request):
     'env_name',
     [
         (
-            'env_demo_discrete'
+            'env_demo'
         ),
         (
             'env_demo_continuous'
@@ -113,7 +113,7 @@ def test_stable_A2C(env_name, request):
     'env_name',
     [
         (
-            'env_demo_discrete'
+            'env_demo'
         ),
         (
             'env_demo_continuous'
@@ -184,7 +184,7 @@ def test_stable_DQN(env_name, request):
     'env_name',
     [
         (
-            'env_demo_discrete'
+            'env_demo'
         ),
         (
             'env_demo_continuous'
@@ -195,7 +195,7 @@ def test_stable_DDPG(env_name, request):
 
     env = request.getfixturevalue(env_name)
     # DDPG must fail in discrete environments
-    if env_name == 'env_demo_discrete':
+    if env_name == 'env_demo':
         with pytest.raises(IndexError):
             env.action_space.shape[-1]
         with pytest.raises(AssertionError):
@@ -238,7 +238,7 @@ def test_stable_DDPG(env_name, request):
     'env_name',
     [
         (
-            'env_demo_discrete'
+            'env_demo'
         ),
         (
             'env_demo_continuous'
@@ -248,7 +248,7 @@ def test_stable_DDPG(env_name, request):
 def test_stable_SAC(env_name, request):
     env = request.getfixturevalue(env_name)
     # SAC must fail in discrete environments
-    if env_name == 'env_demo_discrete':
+    if env_name == 'env_demo':
         with pytest.raises(AssertionError):
             model = stable_baselines3.SAC(
                 "MlpPolicy", env, verbose=1)

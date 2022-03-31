@@ -80,6 +80,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y git
 
 WORKDIR /sinergym
 COPY requirements.txt .
+COPY MANIFEST.in .
 COPY setup.py .
 COPY DRL_battery.py .
 COPY load_agent.py .
