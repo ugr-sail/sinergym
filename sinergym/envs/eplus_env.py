@@ -205,17 +205,7 @@ class EplusEnv(gym.Env):
 
         self.simulator.end_env()
 
-    def _get_action(
-        self, 
-        action: Union[
-            int,
-            float,
-            np.integer,
-            np.ndarray,
-            List[Any],
-            Tuple[Any]
-            ]
-        ):
+    def _get_action(self, action: Any):
         """Transform the action for sending it to the simulator."""
 
         # Get action depending on flag_discrete

@@ -51,14 +51,14 @@ RUN cd /usr/local/bin find -L . -type l -delete
 # Install ping dependency
 RUN apt update && apt install iputils-ping -y 
 
-# Install Python
-RUN apt update
-RUN apt install software-properties-common -y
-RUN add-apt-repository ppa:deadsnakes/ppa
-RUN ln -s /usr/bin/pip3 /usr/bin/pip
-RUN ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
-RUN apt install python${PYTHON_VERSION} python${PYTHON_VERSION}-distutils python${PYTHON_VERSION}-dev -y
-RUN apt install python3-pip -y
+# Install Python version PYTHON_VERSION
+RUN apt update \
+    && apt install software-properties-common -y \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt install python${PYTHON_VERSION} python${PYTHON_VERSION}-distutils -y \
+    && apt install python3-pip -y \
+    && ln -s /usr/bin/pip3 /usr/bin/pip \
+    && ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
 
 # Install enchant for sinergym documentation
 RUN apt-get update && echo "Y\r" | apt-get install enchant --fix-missing -y
