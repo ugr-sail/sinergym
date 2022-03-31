@@ -51,14 +51,14 @@ RUN cd /usr/local/bin find -L . -type l -delete
 # Install ping dependency
 RUN apt update && apt install iputils-ping -y 
 
-# Install Python
-RUN apt update
-RUN apt install software-properties-common -y
-RUN add-apt-repository ppa:deadsnakes/ppa
-RUN ln -s /usr/bin/pip3 /usr/bin/pip
-RUN ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
-RUN apt install python${PYTHON_VERSION} python${PYTHON_VERSION}-distutils -y
-RUN apt install python3-pip -y
+# Install Python version PYTHON_VERSION
+RUN apt update \
+    && apt install software-properties-common -y \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt install python${PYTHON_VERSION} python${PYTHON_VERSION}-distutils -y \
+    && apt install python3-pip -y \
+    && ln -s /usr/bin/pip3 /usr/bin/pip \
+    && ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
 
 # Install enchant for sinergym documentation
 RUN apt-get update && echo "Y\r" | apt-get install enchant --fix-missing -y
@@ -77,6 +77,7 @@ RUN python -m pip install --upgrade pip
 # Upgrade setuptools for possible errors (depending on python version)
 RUN pip install --upgrade setuptools
 RUN apt-get update && apt-get upgrade -y && apt-get install -y git
+
 WORKDIR /sinergym
 COPY requirements.txt .
 COPY setup.py .
@@ -88,6 +89,11 @@ COPY examples /sinergym/examples
 COPY check_run_times.py .
 COPY try_env.py .
 RUN pip install -e .${SINERGYM_EXTRAS}
+
+
+#uninstall 3.6 python default version
+RUN apt-get remove --purge python3-pip python3 -y \
+    && apt-get autoremove -y && apt-get autoclean -y
 
 CMD ["/bin/bash"]
 

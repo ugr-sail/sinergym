@@ -94,7 +94,7 @@ args = parser.parse_args()
 # ---------------------------------------------------------------------------- #
 #                                Evaluation name                               #
 # ---------------------------------------------------------------------------- #
-name = args.model.split('/')[-1] + 'EVAL-episodes' + str(args.episodes)
+name = args.model.split('/')[-1] + '-EVAL-episodes' + str(args.episodes)
 
 # ---------------------------------------------------------------------------- #
 #                            Environment definition                            #
@@ -131,19 +131,31 @@ if args.logger:
 # ---------------------------------------------------------------------------- #
 #                                  Load Agent                                  #
 # ---------------------------------------------------------------------------- #
+# If a model is from a bucket, download model
+if 'gs://' in args.model:
+    # Download from given bucket (gcloud configured with privileges)
+    client = gcloud.init_storage_client()
+    bucket_name = args.model.split('/')[2]
+    model_path = args.model.split(bucket_name + '/')[-1]
+    gcloud.read_from_bucket(client, bucket_name, model_path)
+    model_path = './' + model_path
+else:
+    model_path = args.model
+
+
 model = None
 if args.algorithm == 'DQN':
-    model = DQN.load(args.model)
+    model = DQN.load(model_path)
 elif args.algorithm == 'DDPG':
-    model = DDPG.load(args.model)
+    model = DDPG.load(model_path)
 elif args.algorithm == 'A2C':
-    model = A2C.load(args.model)
+    model = A2C.load(model_path)
 elif args.algorithm == 'PPO':
-    model = PPO.load(args.model)
+    model = PPO.load(model_path)
 elif args.algorithm == 'SAC':
-    model = SAC.load(args.model)
+    model = SAC.load(model_path)
 elif args.algorithm == 'TD3':
-    model = TD3.load(args.model)
+    model = TD3.load(model_path)
 else:
     raise RuntimeError('Algorithm specified is not registered.')
 

@@ -2,6 +2,7 @@
 
 import glob
 import os
+from pathlib import Path
 
 import requests
 from google.cloud import storage
@@ -20,6 +21,25 @@ def init_storage_client() -> storage.Client:
     return client
 
 ####################### GCLOUD BUCKETS MANIPULATION #######################
+
+
+def read_from_bucket(client, bucket_name, blob_prefix):
+    """Read a file or a directory (recursively) from specified bucket to local file system.
+
+    Args:
+        client: Google Cloud storage client object to ask resources.
+        bucket_name: Origin bucket name where reading.
+        blob_prefix: Path where you want to read data inner the bucket (excluding gs://<bucket_name>).
+    """
+    bucket = client.get_bucket(bucket_name)
+    blobs = bucket.list_blobs(prefix=blob_prefix)
+    for blob in blobs:
+        if blob.name.endswith("/"):
+            continue
+        file_split = blob.name.split("/")
+        directory = '/'.join(file_split[0:-1])
+        Path(directory).mkdir(parents=True, exist_ok=True)
+        blob.download_to_filename(blob.name)
 
 
 def upload_to_bucket(
