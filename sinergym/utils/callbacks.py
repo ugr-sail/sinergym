@@ -177,15 +177,15 @@ class LoggerCallback(BaseCallback):
 class LoggerEvalCallback(EvalCallback):
     """Callback for evaluating an agent.
         :param eval_env: The environment used for initialization
-        :param callback_on_new_best: Callback to trigger when there is a new best model according to the ``mean_reward``
+        :param callback_on_new_best: Callback to trigger when there is a new best model according to the mean reward
         :param n_eval_episodes: The number of episodes to test the agent
-        :param eval_freq: Evaluate the agent every eval_freq call of the callback.
-        :param log_path: Path to a folder where the evaluations (``evaluations.npz``) will be saved. It will be updated at each evaluation.
+        :param eval_freq: Evaluate the agent every eval freq call of the callback.
+        :param log_path: Path to a folder where the evaluations (evaluations.npz) will be saved. It will be updated at each evaluation.
         :param best_model_save_path: Path to a folder where the best model according to performance on the eval env will be saved.
         :param deterministic: Whether the evaluation should use a stochastic or deterministic actions.
         :param render: Whether to render or not the environment during evaluation
         :param verbose:
-        :param warn: Passed to ``evaluate_policy`` (warns if ``eval_env`` has not been wrapped with a Monitor wrapper)
+        :param warn: Passed to evaluate policy (warns if eval env has not been wrapped with a Monitor wrapper)
     """
 
     def __init__(

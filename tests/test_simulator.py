@@ -18,7 +18,7 @@ def test_reset(simulator):
     # Checking output
     # Fist element is a tuple with simulation date + time_elapsed
     assert isinstance(output[0], tuple)
-    assert len(output[0]) == 4
+    assert len(output[0]) == 5
     # Last element in first tuple must be time_elapsed 0
     assert output[0][-1] == 0
     assert isinstance(output[1], list)
@@ -51,12 +51,13 @@ def test_reset(simulator):
 
 
 def test_step(simulator):
+    simulator.reset()
     output = simulator.step(action=[20.0, 24.0])
 
     # Checking output
     # Fist element is a tuple with simulation date + time_elapsed
     assert isinstance(output[0], tuple)
-    assert len(output[0]) == 4
+    assert len(output[0]) == 5
     # Last element in first tuple must be time_elapsed > 0 (since we have a
     # step executed)
     assert output[0][-1] > 0
@@ -87,10 +88,9 @@ def test_step(simulator):
 def test_episode_transition_with_steps(simulator):
 
     is_terminal = False
-
+    simulator.reset()
     while(not is_terminal):
-        output = simulator.step(action=[20.0, 24.0])[2]
-        is_terminal = output
+        is_terminal = simulator.step(action=[20.0, 24.0])[2]
 
     # When we raise a terminal state it is only because our Current Simulation
     # Time is greater or equeal to episode length
@@ -99,7 +99,7 @@ def test_episode_transition_with_steps(simulator):
     # If we try to do one step more, it shouldn't change environment
     # One step more...
     with pytest.raises(RuntimeError):
-        output = simulator.step(action=[23.0, 25.0])
+        simulator.step(action=[23.0, 25.0])
 
 
 def test_get_file_name(simulator, idf_path):
@@ -141,15 +141,19 @@ def test_create_eplus(simulator, eplus_path, weather_path, idf_path):
 
 def test_get_is_eplus_running(simulator):
     # Like our simulator has an episode active, we should see True value
+    assert not simulator.get_is_eplus_running()
+    simulator.reset()
     assert simulator.get_is_eplus_running()
-
-# def test_get_is_eplus_running(self):
 
 
 def test_end_episode(simulator):
     # In this point, we have a simulation running second episode which is
     # terminated
+    assert not simulator._episode_existed
+    simulator.reset()
+    assert simulator._conn is not None
     assert simulator._episode_existed
+    assert simulator.get_is_eplus_running()
     simulator.end_episode()
     # Now, let's check simulator
     assert not simulator._episode_existed
@@ -158,7 +162,6 @@ def test_end_episode(simulator):
 
 
 def test_end_env(simulator):
-    # start new episode because we finished it in last test
     simulator.reset()
     assert simulator._episode_existed
     assert '[closed]' not in str(simulator._socket)
@@ -172,6 +175,7 @@ def test_end_env(simulator):
 
 
 def test_assembleMsg(simulator):
+    simulator.reset()
     header = 0
     action = simulator._last_action
     curSimTim = simulator._curSimTim
@@ -182,6 +186,7 @@ def test_assembleMsg(simulator):
 
 
 def test_disassembleMsg(simulator):
+    simulator.reset()
     msg = '0 0 2 0 0 0.000000000000000e+00 0.000000000000000e+00 1.000000000000000e+00 2.000000000000000e+00 3.000000000000000e+00 4.000000000000000e+00 5.000000000000000e+00 6.000000000000000e+00 7.000000000000000e+00 8.000000000000000e+00 9.000000000000000e+00 1.000000000000000e+01 1.100000000000000e+01 1.200000000000000e+01 1.300000000000000e+01 1.400000000000000e+01 1.500000000000000e+01 \n'
     (version, flag, nDb, nIn, nBl, curSimTim,
      Dblist) = simulator._disassembleMsg(msg)

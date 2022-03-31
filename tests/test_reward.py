@@ -10,7 +10,6 @@ def test_reward(env_linear_reward):
     assert env_linear_reward.reward_fn.W_energy == 0.5
     assert info.get('comfort_penalty') <= 0.0
 
-
 def test_reward_kwargs(env_linear_reward_args):
     _ = env_linear_reward_args.reset()
     a = env_linear_reward_args.action_space.sample()

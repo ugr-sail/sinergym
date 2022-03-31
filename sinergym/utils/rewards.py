@@ -43,7 +43,7 @@ class LinearReward(BaseReward):
         Linear reward function.
         
         It considers the energy consumption and the absolute difference to temperature comfort.
-
+        
         .. math::
             R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))
 
@@ -140,7 +140,7 @@ class ExpReward(LinearReward):
         ):
         """
         Reward considering exponential absolute difference to temperature comfort.
-
+        
         .. math::
             R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T - T_{low}, 0) + max(T_{up} - T, 0)) )
 

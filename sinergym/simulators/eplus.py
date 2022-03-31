@@ -128,7 +128,7 @@ class EnergyPlus(object):
 
     def reset(
         self, weather_variability: Optional[Tuple[float, float, float]] = None
-    ) -> Tuple[Tuple[int, int, int, float], List[float], bool]:
+    ) -> Tuple[Tuple[int, int, int, int, float], List[float], bool]:
         """Resets the environment.
         This method does the following:
         1. Makes a new EnergyPlus working directory.
@@ -143,7 +143,7 @@ class EnergyPlus(object):
             weather_variability (Optional[Tuple[float, float, float]], optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
 
         Returns:
-            Tuple[Tuple[int, int, int, float], List[float], bool]: The first element is a tuple with day, month, hour and simulation time elapsed in that order in that step;
+            Tuple[Tuple[int, int, int, float], List[float], bool]: The first element is a tuple with year, month, day, hour and simulation time elapsed in that order in that step;
             the second element consist on EnergyPlus results in a 1-D list corresponding to the variables in
             variables.cfg. The last element is a boolean indicating whether the episode terminates.
         """
@@ -229,7 +229,7 @@ class EnergyPlus(object):
 
     def step(self, action: Union[int, float, np.integer, np.ndarray, List[Any],
                                  Tuple[Any]]
-             ) -> Tuple[Tuple[int, int, int, float], List[float], bool]:
+             ) -> Tuple[Tuple[int, int, int, int, float], List[float], bool]:
         """Executes a given action.
         This method does the following:
         1. Sends a list of floats to EnergyPlus.
@@ -242,7 +242,7 @@ class EnergyPlus(object):
             RuntimeError: When you try to step in an terminated episode (you should be reset before).
 
         Returns:
-            Tuple[Tuple[int, int, int, float], List[float], bool]: The first element is a tuple with day, month, hour and simulation time elapsed in that order in that step;
+            Tuple[Tuple[int, int, int, float], List[float], bool]: The first element is a tuple with year, month, day, hour and simulation time elapsed in that order in that step;
             the second element consist on EnergyPlus results in a 1-D list corresponding to the variables in
             variables.cfg. The last element is a boolean indicating whether the episode terminates.
         """
@@ -337,7 +337,7 @@ class EnergyPlus(object):
             socket_file.write(xml_str)
 
     def _get_file_name(self, file_path: str) -> str:
-        """get filename from a given path (last / element)
+        """get filename from a given path (last element from that path)
 
         Args:
             file_path (str): path where we want to extract filename
@@ -411,7 +411,7 @@ class EnergyPlus(object):
 
     def _end_episode(self) -> None:
         """This process terminates the current EnergyPlus subprocess.
-        It is usually called by the *reset()* function before it resets the EnergyPlus environment.
+        It is usually called by the reset() function before it resets the EnergyPlus environment.
         """
         if self._episode_existed:
             # Send final msg to EnergyPlus
@@ -468,10 +468,10 @@ class EnergyPlus(object):
 
         Args:
             version (str): EnergyPlus version.
-            flag (str): --
-            nDb (str): --
-            nIn (str): --
-            nBl (str): --
+            flag (str):
+            nDb (str):
+            nIn (str):
+            nBl (str):
             curSimTim (str): Current simulation time.
             Dblist (str): State of enviroment (depending on variables:output fixed in IDF file).
 

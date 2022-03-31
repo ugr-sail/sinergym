@@ -9,6 +9,7 @@ from opyplus import Epm, Idd, WeatherData
 from sinergym.utils.rewards import BaseReward, LinearReward
 from sinergym.envs.eplus_env import EplusEnv
 from sinergym.simulators.eplus import EnergyPlus
+from sinergym.utils.common import RANGES_5ZONE
 from sinergym.utils.config import Config
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
                                      NormalizeObservation)
@@ -93,7 +94,7 @@ def ddy_path2(pkg_data_path):
         'USA_AZ_Davis-Monthan.AFB.722745_TMY3.ddy')
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def simulator(eplus_path, bcvtb_path, idf_path, variable_path, weather_path):
     env_name = 'TEST'
     return EnergyPlus(
@@ -122,25 +123,8 @@ def config(idf_path, weather_path2):
 ############### ENVIRONMENTS, WRAPPERS AND RULE BASED CONTROLLER AGENT####
 
 
-@pytest.fixture(scope='module')
-def env_demo(idf_path, weather_path, variable_path, space_path):
-    idf_file = idf_path.split('/')[-1]
-    weather_file = weather_path.split('/')[-1]
-    variables_file = variable_path.split('/')[-1]
-    spaces_file = space_path.split('/')[-1]
-
-    return EplusEnv(
-        env_name='TESTGYM',
-        idf_file=idf_file,
-        weather_file=weather_file,
-        variables_file=variables_file,
-        spaces_file=spaces_file,
-        discrete_actions=True,
-        weather_variability=None)
-
-
 @pytest.fixture(scope='function')
-def env_demo_discrete(idf_path, weather_path, variable_path, space_path):
+def env_demo(idf_path, weather_path, variable_path, space_path):
     idf_file = idf_path.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
     variables_file = variable_path.split('/')[-1]
@@ -206,9 +190,8 @@ def env_all_wrappers(idf_path, weather_path, variable_path, space_path):
         spaces_file=spaces_file,
         discrete_actions=False,
         weather_variability=None)
-    env = NormalizeObservation(env=env)
+    env = NormalizeObservation(env=env, ranges=RANGES_5ZONE)
     env = LoggerWrapper(env=env, flag=True)
-    env = MultiObsWrapper(env=env, n=5)
     return env
 
 

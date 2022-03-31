@@ -354,9 +354,69 @@ register(
         },
         'env_name': 'datacenter-mixed-continuous-stochastic-v1'})
 
+# 21) DC, cool weather, discrete actions
+register(
+    id='Eplus-datacenter-cool-discrete-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'variables_file': 'variablesDataCenter.cfg',
+        'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
+        'discrete_actions': True,
+        'reward': LinearReward(),
+        'env_name': 'datacenter-cool-discrete-v1'})
+
+# 22) DC, cool weather, continuous actions
+register(
+    id='Eplus-datacenter-cool-continuous-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'variables_file': 'variablesDataCenter.cfg',
+        'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
+        'discrete_actions': False,
+        'reward': LinearReward(),
+        'env_name': 'datacenter-cool-continuous-v1'})
+
+# 23) DC, cool weather, discrete actions and stochastic
+register(
+    id='Eplus-datacenter-cool-discrete-stochastic-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'variables_file': 'variablesDataCenter.cfg',
+        'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
+        'discrete_actions': True,
+        'weather_variability': (
+            1.0,
+            0.0,
+            0.001),
+        'reward': LinearReward(),
+        'env_name': 'datacenter-cool-discrete-stochastic-v1'})
+
+# 24) DC, cool weather, continuous actions and stochastic
+register(
+    id='Eplus-datacenter-cool-continuous-stochastic-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': '2ZoneDataCenterHVAC_wEconomizer.idf',
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'variables_file': 'variablesDataCenter.cfg',
+        'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
+        'discrete_actions': False,
+        'weather_variability': (
+            1.0,
+            0.0,
+            0.001),
+        'reward': LinearReward(),
+        'env_name': 'datacenter-cool-continuous-stochastic-v1'})
+
 #========================MULLION========================#
 #TODO Change temperature and energy names for reward calculation.
-# 21) IW, mixed weather, discrete actions
+# 25) IW, mixed weather, discrete actions
 register(
     id='Eplus-IWMullion-mixed-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
@@ -368,7 +428,7 @@ register(
         'discrete_actions': True,
         'env_name': 'IWMullion-mixed-discrete-v1'})
 
-# 22) IW, mixed weather, discrete actions and stochastic
+# 26) IW, mixed weather, discrete actions and stochastic
 register(
     id='Eplus-IWMullion-mixed-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
@@ -384,7 +444,7 @@ register(
             0.001),
         'env_name': 'IWMullion-mixed-discrete-stochastic-v1'})
 
-# 23) IW, mixed weather, continuous actions
+# 27) IW, mixed weather, continuous actions
 register(
     id='Eplus-IWMullion-mixed-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
@@ -396,7 +456,7 @@ register(
         'discrete_actions': False,
         'env_name': 'IWMullion-mixed-continuous-v1'})
 
-# 24) IW, mixed weather, continuous actions and stochastic
+# 28) IW, mixed weather, continuous actions and stochastic
 register(
     id='Eplus-IWMullion-mixed-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
@@ -412,7 +472,7 @@ register(
             0.001),
         'env_name': 'IWMullion-mixed-continuous-stochastic-v1'})
 
-# 25) IW, cool weather, discrete actions
+# 29) IW, cool weather, discrete actions
 register(
     id='Eplus-IWMullion-cool-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
@@ -424,7 +484,7 @@ register(
         'discrete_actions': True,
         'env_name': 'IWMullion-cool-discrete-v1'})
 
-# 26) IW, cool weather, discrete actions and stochastic
+# 30) IW, cool weather, discrete actions and stochastic
 register(
     id='Eplus-IWMullion-cool-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
@@ -440,7 +500,7 @@ register(
             0.001),
         'env_name': 'IWMullion-cool-discrete-stochastic-v1'})
 
-# 27) IW, cool weather, continuous actions
+# 31) IW, cool weather, continuous actions
 register(
     id='Eplus-IWMullion-cool-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
@@ -452,7 +512,7 @@ register(
         'discrete_actions': False,
         'env_name': 'IWMullion-cool-continuous-v1'})
 
-# 28) IW, cool weather, continuous actions and stochastic
+# 32) IW, cool weather, continuous actions and stochastic
 register(
     id='Eplus-IWMullion-cool-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',

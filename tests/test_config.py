@@ -127,7 +127,7 @@ def test_apply_weather_variability(config):
 
 def test_get_eplus_run_info(config):
     info = config._get_eplus_run_info()
-    assert info == (1, 1, 0, 12, 31, 0, 0, 4)
+    assert info == (1, 1, 1991, 12, 31, 1991, 0, 4)
 
 
 def test_get_one_epi_len(config):

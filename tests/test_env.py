@@ -7,23 +7,25 @@ from stable_baselines3.common.env_checker import check_env
 
 def test_reset(env_demo):
     obs = env_demo.reset()
-    assert len(obs) == 19
+    assert len(obs) == 20
     assert env_demo.simulator._episode_existed
 
 
 def test_step(env_demo):
+    env_demo.reset()
     action = randint(0, 9)
     obs, reward, done, info = env_demo.step(action)
 
-    assert len(obs) == 19
+    assert len(obs) == 20
     assert not isinstance(reward, type(None))
     assert not done
     assert list(
         info.keys()) == [
         'timestep',
         'time_elapsed',
-        'day',
+        'year',
         'month',
+        'day',
         'hour',
         'total_power',
         'total_power_no_units',
@@ -38,15 +40,16 @@ def test_step(env_demo):
     action = randint(0, 9)
     obs, reward, done, info = env_demo.step(action)
 
-    assert len(obs) == 19
+    assert len(obs) == 20
     assert not isinstance(reward, type(None))
     assert not done
     assert list(
         info.keys()) == [
         'timestep',
         'time_elapsed',
-        'day',
+        'year',
         'month',
+        'day',
         'hour',
         'total_power',
         'total_power_no_units',
@@ -60,6 +63,8 @@ def test_step(env_demo):
 
 
 def test_close(env_demo):
+    env_demo.reset()
+    assert env_demo.simulator._episode_existed
     env_demo.close()
     assert not env_demo.simulator._episode_existed
     assert env_demo.simulator._conn is None

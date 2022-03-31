@@ -30,20 +30,24 @@ class EplusEnv(gym.Env):
         weather_variability: Optional[Tuple[float]] = None,
         reward: Any = LinearReward,
         reward_kwargs: Optional[Dict[str, Any]] = {},
-        config_params: Optional[Dict[str, Any]] = {}
+        act_repeat: int = 1,
+        max_ep_data_store_num: int = 10,
+        config_params: Optional[Dict[str, Any]] = None
     ):
         """Environment with EnergyPlus simulator.
 
         Args:
             idf_file (str): Name of the IDF file with the building definition.
             weather_file (str): Name of the EPW file for weather conditions.
-            variables_file (str): Variables defined in environment to be observation and action (see sinergym/data/variables/ for examples).
-            spaces_file (str): Action and observation space defined in a xml (see sinergym/data/variables/ for examples).
-            env_name (str, optional): Env name used for working directory generation. Defaults to 'eplus-env-v1'.
+            variables_file (str): Variables defined in environment to be observation and action.
+            spaces_file (str): Action and observation space defined in a xml.
+            env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
             discrete_actions (bool, optional): Whether the actions are discrete (True) or continuous (False). Defaults to True.
             weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
-            reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to None.
+            reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
+            act_repeat (int, optional): Number of timesteps that an action is repeated in the simulator, regardless of the actions it receives during that repetition interval.
+            max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
         """
         eplus_path = os.environ['EPLUS_PATH']
@@ -66,6 +70,8 @@ class EplusEnv(gym.Env):
             idf_path=self.idf_path,
             weather_path=self.weather_path,
             variable_path=self.variables_path,
+            act_repeat=act_repeat,
+            max_ep_data_store_num=max_ep_data_store_num,
             config_params=config_params
         )
 
@@ -137,13 +143,15 @@ class EplusEnv(gym.Env):
 
         # Send action to the simulator
         self.simulator.logger_main.debug(action_)
+        # time_info = (current simulation year, month, day, hour, time_elapsed)
         time_info, obs, done = self.simulator.step(action_)
         # Create dictionary with observation
         self.obs_dict = dict(zip(self.variables['observation'], obs))
         # Add current timestep information
-        self.obs_dict['day'] = time_info[0]
+        self.obs_dict['year'] = time_info[0]
         self.obs_dict['month'] = time_info[1]
-        self.obs_dict['hour'] = time_info[2]
+        self.obs_dict['day'] = time_info[2]
+        self.obs_dict['hour'] = time_info[3]
 
         # Calculate reward
         reward, terms = self.reward_fn()
@@ -151,10 +159,11 @@ class EplusEnv(gym.Env):
         # Extra info
         info = {
             'timestep': int(
-                time_info[3] / self.simulator._eplus_run_stepsize),
-            'time_elapsed': int(time_info[3]),
-            'day': self.obs_dict['day'],
+                time_info[4] / self.simulator._eplus_run_stepsize),
+            'time_elapsed': int(time_info[4]),
+            'year': self.obs_dict['year'],
             'month': self.obs_dict['month'],
+            'day': self.obs_dict['day'],
             'hour': self.obs_dict['hour'],
             'total_power': terms.get('total_energy'),
             'total_power_no_units': terms.get('reward_energy'),
@@ -176,9 +185,10 @@ class EplusEnv(gym.Env):
         time_info, obs, _ = self.simulator.reset(self.weather_variability)
         self.obs_dict = dict(zip(self.variables['observation'], obs))
 
-        self.obs_dict['day'] = time_info[0]
+        self.obs_dict['year'] = time_info[0]
         self.obs_dict['month'] = time_info[1]
-        self.obs_dict['hour'] = time_info[2]
+        self.obs_dict['day'] = time_info[2]
+        self.obs_dict['hour'] = time_info[3]
 
         return np.array(list(self.obs_dict.values()), dtype=np.float32)
 
