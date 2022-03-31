@@ -62,6 +62,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#containers-permission-to-bucket-storage-output">Containers permission to bucket storage output</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#load-a-trained-model">Load a trained model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#remote-tensorboard-log">Remote Tensorboard log</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#visualize-remote-tensorboard-log-in-real-time">Visualize remote Tensorboard log in real-time</a></li>
 </ul>
@@ -884,6 +885,26 @@ $ <span class="nb">export</span> <span class="nv">GOOGLE_CLOUD_CREDENTIALS</span
 <p>In short, we create a new service account called <strong>storage-account</strong>. Then, we dote this account with <em>roles/owner</em> permission. The next step is create a file key (json) called <strong>google-storage.json</strong> in our project root (gitignore will ignore this file in remote).
 Finally, we export this file in <strong>GOOGLE_CLOUD_CREDENTIALS</strong> in our local computer in order to gcloud SDK knows that it has to use that token to authenticate.</p>
 </section>
+</section>
+<section id="load-a-trained-model">
+<h2>Load a trained model<a class="headerlink" href="#load-a-trained-model" title="Permalink to this headline"></a></h2>
+<p>For this purpose, we have a script called <em>load_agent.py</em> which can be used both on a remote machine and locally on our computer, just like <em>DRL_battery.py</em>.</p>
+<p>So, what this script does is to use the path that we pass as a parameter where our model is located. It loads the model and performs the evaluation that we want.</p>
+<p>The list of parameter is:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--environment</span></code> or <code class="docutils literal notranslate"><span class="pre">-env</span></code>: Environment name you want to use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--model</span></code> or <code class="docutils literal notranslate"><span class="pre">-mod</span></code>: Trained model (zip file) you want to use to execute the evaluation. This path can be a local path file into your computer (remote or host) or a Google Cloud Storage resource (bucket like <code class="docutils literal notranslate"><span class="pre">gs://&lt;bucket_name&gt;/&lt;model_path&gt;</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--episodes</span></code> or <code class="docutils literal notranslate"><span class="pre">-ep</span></code>: Number of episodes you want to evaluate agent in simulation (Depending on environment episode length can be different)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--algorithm</span></code> or <code class="docutils literal notranslate"><span class="pre">-alg</span></code>: Algorithm which model was trained (Currently, it is available <em>PPO</em>, <em>A2C</em>, <em>DQN</em>, <em>DDPG</em> and <em>SAC</em>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--reward</span></code> or <code class="docutils literal notranslate"><span class="pre">-rw</span></code>: Reward class you want to use for reward function (same reward than training model is recommended). Currently, possible values are “linear” and “exponential”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--normalization</span></code> or <code class="docutils literal notranslate"><span class="pre">-norm</span></code>: Apply normalization wrapper to observations during evaluation. If it isn’t specified wrapper will not be applied.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--logger</span></code> or <code class="docutils literal notranslate"><span class="pre">-log</span></code>: Apply Sinergym logger wrapper during evaluation. If it isn’t specified wrapper will not be applied.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--seed</span></code> or <code class="docutils literal notranslate"><span class="pre">-sd</span></code>: Seed for evaluation, random components in process will be able to be recreated.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--remote_store</span></code> or <code class="docutils literal notranslate"><span class="pre">-sto</span></code>: Determine if sinergym output will be sent to a common resource (Bucket), else will be allocate in container or host memory only.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--group_name</span></code> or <code class="docutils literal notranslate"><span class="pre">-group</span></code>: It specify to which MIG the host instance belongs, it is important if –auto-delete is activated.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--auto_delete</span></code> or <code class="docutils literal notranslate"><span class="pre">-del</span></code>: Whether this parameter is specified, remote instance will be auto removed when its job has finished.</p></li>
+</ul>
+<p>This script loads the model. Once the model is loaded, it predicts the actions from the states during the agreed episodes. The information is collected and sent to a cloud storage if it has been specified, otherwise it is stored in local memory.</p>
 </section>
 <section id="remote-tensorboard-log">
 <h2>Remote Tensorboard log<a class="headerlink" href="#remote-tensorboard-log" title="Permalink to this headline"></a></h2>
