@@ -10,6 +10,7 @@ def test_reward(env_linear_reward):
     assert env_linear_reward.reward_fn.W_energy == 0.5
     assert info.get('comfort_penalty') <= 0.0
 
+
 def test_reward_kwargs(env_linear_reward_args):
     _ = env_linear_reward_args.reset()
     a = env_linear_reward_args.action_space.sample()
@@ -17,8 +18,10 @@ def test_reward_kwargs(env_linear_reward_args):
     env_linear_reward_args.close()
     assert R <= 0.0
     assert env_linear_reward_args.reward_fn.W_energy == 0.2
-    assert env_linear_reward_args.reward_fn.range_comfort_summer == (18.0, 20.0)
+    assert env_linear_reward_args.reward_fn.range_comfort_summer == (
+        18.0, 20.0)
     assert info.get('comfort_penalty') <= 0.0
+
 
 def test_custom_reward(env_custom_reward):
     _ = env_custom_reward.reset()

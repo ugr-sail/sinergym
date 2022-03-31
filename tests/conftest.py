@@ -6,11 +6,11 @@ import pkg_resources
 import pytest
 from opyplus import Epm, Idd, WeatherData
 
-from sinergym.utils.rewards import BaseReward, LinearReward
 from sinergym.envs.eplus_env import EplusEnv
 from sinergym.simulators.eplus import EnergyPlus
 from sinergym.utils.common import RANGES_5ZONE
 from sinergym.utils.config import Config
+from sinergym.utils.rewards import BaseReward, LinearReward
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
                                      NormalizeObservation)
 
@@ -210,17 +210,25 @@ def weather_data(weather_path):
 
 ############### REWARDS ###############
 
+
 @pytest.fixture(scope='session')
 def custom_reward():
     class CustomReward(BaseReward):
         def __init__(self, env):
             super(CustomReward, self).__init__(env)
+
         def __call__(self):
             return -1.0, {}
     return CustomReward
 
+
 @pytest.fixture(scope='session')
-def env_custom_reward(idf_path, weather_path, variable_path, space_path, custom_reward):
+def env_custom_reward(
+        idf_path,
+        weather_path,
+        variable_path,
+        space_path,
+        custom_reward):
     idf_file = idf_path.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
     variables_file = variable_path.split('/')[-1]
@@ -235,6 +243,7 @@ def env_custom_reward(idf_path, weather_path, variable_path, space_path, custom_
         discrete_actions=True,
         reward=custom_reward,
         weather_variability=None)
+
 
 @pytest.fixture(scope='session')
 def env_linear_reward(idf_path, weather_path, variable_path, space_path):
@@ -253,6 +262,7 @@ def env_linear_reward(idf_path, weather_path, variable_path, space_path):
         reward=LinearReward,
         weather_variability=None)
 
+
 @pytest.fixture(scope='session')
 def env_linear_reward_args(idf_path, weather_path, variable_path, space_path):
     idf_file = idf_path.split('/')[-1]
@@ -268,7 +278,11 @@ def env_linear_reward_args(idf_path, weather_path, variable_path, space_path):
         spaces_file=spaces_file,
         discrete_actions=True,
         reward=LinearReward,
-        reward_kwargs={'energy_weight': 0.2, 'range_comfort_summer': (18.0, 20.0)},
+        reward_kwargs={
+            'energy_weight': 0.2,
+            'range_comfort_summer': (
+                18.0,
+                20.0)},
         weather_variability=None)
 
 

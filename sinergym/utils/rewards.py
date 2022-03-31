@@ -1,10 +1,11 @@
 """Implementation of reward functions."""
 
 
-from gym import Env
 from datetime import datetime
 from math import exp
 from typing import Dict, List, Tuple, Union
+
+from gym import Env
 
 
 class BaseReward(object):
@@ -19,15 +20,16 @@ class BaseReward(object):
             env (Env): Gym environment.
         """
         self.env = env
-        self.year = 2021 # just for datetime completion
+        self.year = 2021  # just for datetime completion
 
     def __call__(self):
         """Method for calculating the reward function."""
-        raise NotImplementedError("Reward class must have a `__call__` method.")
+        raise NotImplementedError(
+            "Reward class must have a `__call__` method.")
 
 
 class LinearReward(BaseReward):
- 
+
     def __init__(
         self,
         env: Env,
@@ -38,12 +40,12 @@ class LinearReward(BaseReward):
         lambda_temperature: float = 1.0,
         range_comfort_winter: tuple = (20.0, 23.5),
         range_comfort_summer: tuple = (23.0, 26.0)
-        ):
+    ):
         """
         Linear reward function.
-        
+
         It considers the energy consumption and the absolute difference to temperature comfort.
-        
+
         .. math::
             R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))
 
@@ -57,7 +59,7 @@ class LinearReward(BaseReward):
             range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).
             range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
         """
-        
+
         super(LinearReward, self).__init__(env)
 
         # Name of the variables
@@ -78,7 +80,7 @@ class LinearReward(BaseReward):
     def __call__(self):
         """
         Calculate the reward function.
-        
+
         Returns:
             Tuple[float, Dict[str, float]]: Reward value and dictionary with their individual components.
         """
@@ -93,7 +95,8 @@ class LinearReward(BaseReward):
         reward_comfort = - self.lambda_temp * comfort
 
         # Weighted sum of both terms
-        reward = self.W_energy * reward_energy + (1.0 - self.W_energy) * reward_comfort
+        reward = self.W_energy * reward_energy + \
+            (1.0 - self.W_energy) * reward_comfort
 
         reward_terms = {
             'reward_energy': reward_energy,
@@ -115,8 +118,8 @@ class LinearReward(BaseReward):
             temp_range = self.range_comfort_summer
         else:
             temp_range = self.range_comfort_winter
-        
-        temps = [v for k,v in obs_dict.items() if k in self.temp_name]
+
+        temps = [v for k, v in obs_dict.items() if k in self.temp_name]
         comfort = 0.0
         for T in temps:
             if T < temp_range[0] or T > temp_range[1]:
@@ -137,10 +140,10 @@ class ExpReward(LinearReward):
         lambda_temperature: float = 1.0,
         range_comfort_winter: tuple = (20.0, 23.5),
         range_comfort_summer: tuple = (23.0, 26.0),
-        ):
+    ):
         """
         Reward considering exponential absolute difference to temperature comfort.
-        
+
         .. math::
             R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T - T_{low}, 0) + max(T_{up} - T, 0)) )
 
@@ -177,12 +180,13 @@ class ExpReward(LinearReward):
             temp_range = self.range_comfort_summer
         else:
             temp_range = self.range_comfort_winter
-        
-        temps = [v for k,v in obs_dict.items() if k in self.temp_name]
+
+        temps = [v for k, v in obs_dict.items() if k in self.temp_name]
         comfort = 0.0
         for T in temps:
             if T < temp_range[0] or T > temp_range[1]:
-                comfort += exp(min(abs(temp_range[0] - T), abs(T - temp_range[1])))
+                comfort += exp(min(abs(temp_range[0] - T),
+                                   abs(T - temp_range[1])))
 
         return comfort, temps
 
@@ -200,7 +204,7 @@ class HourlyLinearReward(LinearReward):
         range_comfort_winter: tuple = (20.0, 23.5),
         range_comfort_summer: tuple = (23.0, 26.0),
         range_comfort_hours: tuple = (9, 19),
-        ):
+    ):
         """
         Linear reward function with a time-dependent weight for consumption and energy terms.
 
@@ -215,7 +219,7 @@ class HourlyLinearReward(LinearReward):
             range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
             range_comfort_hours (tuple, optional): Hours where thermal comfort is considered. Defaults to (9, 19).
         """
-        
+
         super(HourlyLinearReward, self).__init__(
             env,
             temperature_variable,
@@ -248,7 +252,7 @@ class HourlyLinearReward(LinearReward):
             weight = self.W_energy
         else:
             weight = 1.0
-        
+
         # Weighted sum of both terms
         reward = weight * reward_energy + (1.0 - weight) * reward_comfort
 

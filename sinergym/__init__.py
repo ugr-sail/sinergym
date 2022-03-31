@@ -2,7 +2,6 @@ import os
 
 from gym.envs.registration import register
 
-
 # Set __version__ in module
 version_file = os.path.join(os.path.dirname(__file__), "version.txt")
 with open(version_file, "r") as file_handler:
@@ -411,7 +410,7 @@ register(
         'env_name': 'datacenter-cool-continuous-stochastic-v1'})
 
 #========================MULLION========================#
-#TODO Change temperature and energy names for reward calculation.
+# TODO Change temperature and energy names for reward calculation.
 # 25) IW, mixed weather, discrete actions
 register(
     id='Eplus-IWMullion-mixed-discrete-v1',
