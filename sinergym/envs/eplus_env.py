@@ -225,16 +225,16 @@ class EplusEnv(gym.Env):
                 if isinstance(action, int):
                     setpoints = self.action_mapping[action]
                 else:
-                    setpoints = self.action_mapping[np.asscalar(action)]
+                    setpoints = self.action_mapping[action.item()]
             # Manual action
             elif isinstance(action, tuple) or isinstance(action, list):
                 # stable-baselines DQN bug prevention
                 if len(action) == 1:
-                    setpoints = self.action_mapping[np.asscalar(action)]
+                    setpoints = self.action_mapping[action.item()]
                 else:
                     setpoints = action
             elif isinstance(action, np.ndarray):
-                setpoints = self.action_mapping[np.asscalar(action)]
+                setpoints = self.action_mapping[action.item()]
             else:
                 print("ERROR: ", type(action))
             action_ = list(setpoints)

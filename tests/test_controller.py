@@ -7,7 +7,7 @@ from sinergym.utils.controllers import RuleBasedController
     'env_name',
     [
         (
-            'env_demo_discrete'
+            'env_demo'
         ),
         (
             'env_demo_continuous'
