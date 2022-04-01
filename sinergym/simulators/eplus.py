@@ -211,7 +211,7 @@ class EnergyPlus(object):
         # get time info in simulation
         time_info = get_current_time_info(self._config.building, curSimTim)
         # Add time_info date in the end of the Energyplus observation
-        Dblist.extend(time_info)
+        Dblist = time_info + Dblist
         # Remember the message header, useful when send data back to EnergyPlus
         self._eplus_msg_header = [version, flag]
         self._curSimTim = curSimTim
@@ -279,8 +279,9 @@ class EnergyPlus(object):
         # plus the integral item
         # get time info in simulation
         time_info = get_current_time_info(self._config.building, curSimTim)
-        # Add time_info to the observation (year,month,day and hour)
-        Dblist.extend(time_info)
+        # Add time_info to the observation (year,month,day and hour) at the
+        # beggining
+        Dblist = time_info + Dblist
         # Add terminal state
         # Change some attributes
         self._curSimTim = curSimTim

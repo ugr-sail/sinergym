@@ -78,7 +78,8 @@ class EplusEnv(gym.Env):
         # parse variables (observation and action) from cfg file
         self.variables = parse_variables(self.variables_path)
         # Add year, month, day and hour to observation variables
-        self.variables['observation'].extend(['year', 'month', 'day', 'hour'])
+        self.variables['observation'] = ['year', 'month',
+                                         'day', 'hour'] + self.variables['observation']
 
         # Random noise to apply for weather series
         self.weather_variability = weather_variability
