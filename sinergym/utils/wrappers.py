@@ -136,7 +136,7 @@ class LoggerWrapper(gym.Wrapper):
         """
         gym.Wrapper.__init__(self, env)
         # Headers for csv logger
-        monitor_header_list = ['timestep,year,month,day,hour'] + env.variables['observation'] + \
+        monitor_header_list = ['timestep'] + env.variables['observation'] + \
             env.variables['action'] + ['time (seconds)', 'reward',
                                        'power_penalty', 'comfort_penalty', 'done']
         self.monitor_header = ''
@@ -168,26 +168,19 @@ class LoggerWrapper(gym.Wrapper):
         # need to delete them.
         if is_wrapped(self, NormalizeObservation):
             # Record action and new observation in simulator's csv
-            self.logger.log_step_normalize(timestep=info['timestep'],
-                                           date=[info['year'], info['month'],
-                                                 info['day'], info['hour']],
-                                           observation=obs[:-4],
-                                           action=info['action_'],
-                                           simulation_time=info['time_elapsed'],
-                                           reward=reward,
-                                           total_power_no_units=info['total_power_no_units'],
-                                           comfort_penalty=info['comfort_penalty'],
-                                           done=done)
+            self.logger.log_step_normalize(
+                timestep=info['timestep'],
+                observation=obs,
+                action=info['action_'],
+                simulation_time=info['time_elapsed'],
+                reward=reward,
+                total_power_no_units=info['total_power_no_units'],
+                comfort_penalty=info['comfort_penalty'],
+                done=done)
             # Record original observation too
             self.logger.log_step(
                 timestep=info['timestep'],
-                date=[
-                    info['year'],
-                    info['month'],
-                    info['day'],
-                    info['hour']],
-                observation=self.env.get_unwrapped_obs()[
-                    :-4],
+                observation=self.env.get_unwrapped_obs(),
                 action=info['action_'],
                 simulation_time=info['time_elapsed'],
                 reward=reward,
@@ -197,17 +190,16 @@ class LoggerWrapper(gym.Wrapper):
                 done=done)
         else:
             # Only record observation without normalization
-            self.logger.log_step(timestep=info['timestep'],
-                                 date=[info['year'], info['month'],
-                                       info['day'], info['hour']],
-                                 observation=obs[:-4],
-                                 action=info['action_'],
-                                 simulation_time=info['time_elapsed'],
-                                 reward=reward,
-                                 total_power_no_units=info['total_power_no_units'],
-                                 comfort_penalty=info['comfort_penalty'],
-                                 power=info['total_power'],
-                                 done=done)
+            self.logger.log_step(
+                timestep=info['timestep'],
+                observation=obs,
+                action=info['action_'],
+                simulation_time=info['time_elapsed'],
+                reward=reward,
+                total_power_no_units=info['total_power_no_units'],
+                comfort_penalty=info['comfort_penalty'],
+                power=info['total_power'],
+                done=done)
 
         return obs, reward, done, info
 
@@ -234,8 +226,7 @@ class LoggerWrapper(gym.Wrapper):
             self.env.simulator._eplus_working_dir + '/monitor.csv')
         # Store initial state of simulation
         self.logger.log_step(timestep=0,
-                             date=[obs[-4], obs[-3], obs[-2], obs[-1]],
-                             observation=obs[:-4],
+                             observation=obs,
                              action=[None for _ in range(
                                  len(self.env.variables['action']))],
                              simulation_time=0,
