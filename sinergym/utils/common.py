@@ -147,7 +147,7 @@ def get_delta_seconds(
 
 
 def get_current_time_info(
-        epm: Epm, sec_elapsed: float) -> Tuple[int, int, int, int, float]:
+        epm: Epm, sec_elapsed: float) -> Tuple[int, int, int, int]:
     """Returns the current day, month and hour given the seconds elapsed since the simulation started.
 
     Args:
@@ -155,7 +155,7 @@ def get_current_time_info(
         sec_elapsed (float): Seconds elapsed since the start of the simulation
 
     Returns:
-        Tuple[int, int, int, int, float]: A tuple composed by the current year, day, month and hour in the simulation and time elapsed.
+        Tuple[int, int, int, int]: A tuple composed by the current year, day, month and hour in the simulation.
 
     """
     start_date = datetime(
@@ -171,7 +171,7 @@ def get_current_time_info(
         int(current_date.month),
         int(current_date.day),
         int(current_date.hour),
-        float(sec_elapsed))
+    )
 
 
 def parse_variables(var_file: str) -> Dict[str, List[str]]:
