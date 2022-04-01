@@ -128,7 +128,7 @@ class EnergyPlus(object):
 
     def reset(
         self, weather_variability: Optional[Tuple[float, float, float]] = None
-    ) -> Tuple[Tuple[int, int, int, int, float], List[float], bool]:
+    ) -> Tuple[float, List[float], bool]:
         """Resets the environment.
         This method does the following:
         1. Makes a new EnergyPlus working directory.
@@ -143,9 +143,9 @@ class EnergyPlus(object):
             weather_variability (Optional[Tuple[float, float, float]], optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
 
         Returns:
-            Tuple[Tuple[int, int, int, float], List[float], bool]: The first element is a tuple with year, month, day, hour and simulation time elapsed in that order in that step;
+            Tuple[float, List[float], bool]: The first element is a value with simulation time elapsed;
             the second element consist on EnergyPlus results in a 1-D list corresponding to the variables in
-            variables.cfg. The last element is a boolean indicating whether the episode terminates.
+            variables.cfg and year, month, day and hour in simulation. The last element is a boolean indicating whether the episode terminates.
         """
         # End the last episode if exists
         if self._episode_existed:
@@ -210,6 +210,8 @@ class EnergyPlus(object):
             = self._disassembleMsg(rcv_1st)
         # get time info in simulation
         time_info = get_current_time_info(self._config.building, curSimTim)
+        # Add time_info date in the end of the Energyplus observation
+        Dblist.extend(time_info)
         # Remember the message header, useful when send data back to EnergyPlus
         self._eplus_msg_header = [version, flag]
         self._curSimTim = curSimTim
@@ -225,11 +227,11 @@ class EnergyPlus(object):
         if is_terminal:
             self._end_episode()
 
-        return (time_info, Dblist, is_terminal)
+        return (curSimTim, Dblist, is_terminal)
 
     def step(self, action: Union[int, float, np.integer, np.ndarray, List[Any],
                                  Tuple[Any]]
-             ) -> Tuple[Tuple[int, int, int, int, float], List[float], bool]:
+             ) -> Tuple[float, List[float], bool]:
         """Executes a given action.
         This method does the following:
         1. Sends a list of floats to EnergyPlus.
@@ -242,7 +244,7 @@ class EnergyPlus(object):
             RuntimeError: When you try to step in an terminated episode (you should be reset before).
 
         Returns:
-            Tuple[Tuple[int, int, int, float], List[float], bool]: The first element is a tuple with year, month, day, hour and simulation time elapsed in that order in that step;
+            Tuple[float, List[float], bool]: The first element is a float with simulation time elapsed;
             the second element consist on EnergyPlus results in a 1-D list corresponding to the variables in
             variables.cfg. The last element is a boolean indicating whether the episode terminates.
         """
@@ -277,12 +279,14 @@ class EnergyPlus(object):
         # plus the integral item
         # get time info in simulation
         time_info = get_current_time_info(self._config.building, curSimTim)
+        # Add time_info to the observation (year,month,day and hour)
+        Dblist.extend(time_info)
         # Add terminal state
         # Change some attributes
         self._curSimTim = curSimTim
         self._last_action = action
 
-        return (time_info, Dblist, is_terminal)
+        return (curSimTim, Dblist, is_terminal)
 
     def _create_eplus(
             self,
