@@ -459,6 +459,32 @@ def prepare_batch_from_records(records: List[Record]) -> List[Dict[str, Any]]:
     return batch
 
 
+def get_season_comfort_range(year, month, day):
+    """Get comfort temperature range depending on season. The comfort ranges are those
+    defined by ASHRAE in Standard 55—Thermal Environmental Conditions for Human Occupancy (2004).
+
+    Args:
+        year (int): current year
+        month (int): current month
+        day (int): current day
+    """
+
+    summer_start_date = datetime(year, 6, 1)
+    summer_final_date = datetime(year, 9, 30)
+
+    range_comfort_summer = (23.0, 26.0)
+    range_comfort_winter = (20.0, 23.5)
+
+    current_dt = datetime(year, month, day)
+
+    if current_dt >= summer_start_date and current_dt <= summer_final_date:
+        comfort = range_comfort_summer
+    else:
+        comfort = range_comfort_winter
+
+    return comfort
+
+
 class Logger():
     """Sinergym terminal logger for simulation executions.
     """
@@ -532,7 +558,6 @@ class CSVLogger(object):
     def log_step(
             self,
             timestep: int,
-            date: List[int],
             observation: List[Any],
             action: Union[List[Union[int, float]], List[None]],
             simulation_time: float,
@@ -545,7 +570,6 @@ class CSVLogger(object):
 
         Args:
             timestep (int): Current episode timestep in simulation.
-            date (list): Current date [month,day,hour] in simulation.
             observation (list): Values that belong to current observation.
             action (list): Values that belong to current action.
             simulation_time (float): Total time elapsed in current episode (seconds).
@@ -557,7 +581,7 @@ class CSVLogger(object):
 
         """
         if self.flag:
-            row_contents = [timestep] + list(date) + list(observation) + \
+            row_contents = [timestep] + list(observation) + \
                 list(action) + [simulation_time, reward,
                                 total_power_no_units, comfort_penalty, done]
             self.steps_data.append(row_contents)
@@ -576,7 +600,6 @@ class CSVLogger(object):
     def log_step_normalize(
             self,
             timestep: int,
-            date: List[int],
             observation: List[Any],
             action: Union[List[Union[int, float]], List[None]],
             simulation_time: float,
@@ -588,7 +611,6 @@ class CSVLogger(object):
 
         Args:
             timestep (int): Current episode timestep in simulation.
-            date (List[int, int, int]): Current date [month,day,hour] in simulation.
             observation (List[Any]): Values that belong to current observation.
             action (List[Union[int, float]]): Values that belong to current action.
             simulation_time (float): Total time elapsed in current episode (seconds).
@@ -598,7 +620,7 @@ class CSVLogger(object):
             done (bool): It specifies if this step terminates episode or not.
         """
         if self.flag:
-            row_contents = [timestep] + list(date) + list(observation) + \
+            row_contents = [timestep] + list(observation) + \
                 list(action) + [simulation_time, reward,
                                 total_power_no_units, comfort_penalty, done]
             self.steps_data_normalized.append(row_contents)
@@ -744,29 +766,3 @@ class CSVLogger(object):
         """Deactivate Sinergym CSV logger
         """
         self.flag = False
-
-
-def get_season_comfort_range(year, month, day):
-    """Get comfort temperature range depending on season. The comfort ranges are those
-    defined by ASHRAE in Standard 55—Thermal Environmental Conditions for Human Occupancy (2004).
-
-    Args:
-        year (int): current year
-        month (int): current month
-        day (int): current day
-    """
-
-    summer_start_date = datetime(year, 6, 1)
-    summer_final_date = datetime(year, 9, 30)
-
-    range_comfort_summer = (23.0, 26.0)
-    range_comfort_winter = (20.0, 23.5)
-
-    current_dt = datetime(year, month, day)
-
-    if current_dt >= summer_start_date and current_dt <= summer_final_date:
-        comfort = range_comfort_summer
-    else:
-        comfort = range_comfort_winter
-
-    return comfort
