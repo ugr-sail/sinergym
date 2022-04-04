@@ -224,17 +224,41 @@ class LoggerWrapper(gym.Wrapper):
                 self.env.simulator._epi_num) + ') if logger is active')
         self.logger.set_log_file(
             self.env.simulator._eplus_working_dir + '/monitor.csv')
-        # Store initial state of simulation
-        self.logger.log_step(timestep=0,
-                             observation=obs,
-                             action=[None for _ in range(
-                                 len(self.env.variables['action']))],
-                             simulation_time=0,
-                             reward=None,
-                             total_power_no_units=None,
-                             comfort_penalty=None,
-                             power=None,
-                             done=False)
+
+        if is_wrapped(self, NormalizeObservation):
+            # Store initial state of simulation (normalized)
+            self.logger.log_step_normalize(timestep=0,
+                                           observation=obs,
+                                           action=[None for _ in range(
+                                               len(self.env.variables['action']))],
+                                           simulation_time=0,
+                                           reward=None,
+                                           total_power_no_units=None,
+                                           comfort_penalty=None,
+                                           done=False)
+            # And store original obs
+            self.logger.log_step(timestep=0,
+                                 observation=self.env.get_unwrapped_obs(),
+                                 action=[None for _ in range(
+                                     len(self.env.variables['action']))],
+                                 simulation_time=0,
+                                 reward=None,
+                                 total_power_no_units=None,
+                                 comfort_penalty=None,
+                                 power=None,
+                                 done=False)
+        else:
+            # Only store original step
+            self.logger.log_step(timestep=0,
+                                 observation=obs,
+                                 action=[None for _ in range(
+                                     len(self.env.variables['action']))],
+                                 simulation_time=0,
+                                 reward=None,
+                                 total_power_no_units=None,
+                                 comfort_penalty=None,
+                                 power=None,
+                                 done=False)
 
         return obs
 
