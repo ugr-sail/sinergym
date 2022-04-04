@@ -28,12 +28,12 @@ After all the executions we can check the result using a simple print like:
     :language: python
     :start-after: print('Reward: ', sum(rewards), info)
     :end-before: env.close()
-sum(rewards))
+
 And as always dont forget to close the environment:
 
 .. literalinclude:: ../../../examples/basic_example.py
     :language: python
-    :start-after: print('Reward: ', sum(rewards), info)
+    :start-after: sum(rewards))
 
 Notice that a folder will be created in the working directory after
 creating the environment. It will contain the EnergyPlus outputs
