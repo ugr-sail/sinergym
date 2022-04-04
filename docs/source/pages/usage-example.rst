@@ -40,14 +40,14 @@ creating the environment. It will contain the EnergyPlus outputs
 produced during the simulation.
 
 ****************
-Full code:
+Full code
 ****************
 
 .. literalinclude:: ../../../examples/basic_example.py
     :language: python
 
 ****************
-Example output:
+Example output
 ****************
 
 .. literalinclude:: ../../../examples/basic_example_output.txt
