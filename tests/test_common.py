@@ -30,32 +30,29 @@ def test_get_delta_seconds(
     assert delta_sec == expected
 
 
-@pytest.mark.parametrize('sec_elapsed,expected_tuple',
+@pytest.mark.parametrize('sec_elapsed,expected_list',
                          [(2764800,
-                           (1991,
+                           [1991,
                             2,
                             2,
-                            0,
-                            2764800)),
+                            0]),
                              (0,
-                              (1991,
+                              [1991,
                                1,
                                1,
-                               0,
-                               0)),
+                               0]),
                              ((2764800 * 4) + (3600 * 10),
-                              (1991,
+                              [1991,
                                  5,
                                  9,
-                                 10,
-                                 (2764800 * 4) + (3600 * 10))),
+                                 10]),
                           ])
-def test_get_current_time_info(epm, sec_elapsed, expected_tuple):
+def test_get_current_time_info(epm, sec_elapsed, expected_list):
     output = common.get_current_time_info(epm, sec_elapsed)
     print(output)
-    assert isinstance(output, tuple)
-    assert len(output) == 5
-    assert output == expected_tuple
+    assert isinstance(output, list)
+    assert len(output) == 4
+    assert output == expected_list
 
 
 def test_parse_variables(variable_path):
@@ -116,7 +113,7 @@ def test_parse_observation_action_space(space_path):
                ) == output['continuous_action'][2][0]
 
 
-@pytest.mark.parametrize(
+@ pytest.mark.parametrize(
     'variation',
     [
         (None),

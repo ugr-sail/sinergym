@@ -17,12 +17,12 @@ def test_reset(simulator):
 
     # Checking output
     # Fist element is a tuple with simulation date + time_elapsed
-    assert isinstance(output[0], tuple)
-    assert len(output[0]) == 5
-    # Last element in first tuple must be time_elapsed 0
-    assert output[0][-1] == 0
+    assert isinstance(output[0], float)
+    # time_elapsed must be 0
+    assert output[0] == 0
     assert isinstance(output[1], list)
-    assert len(output[1]) == 16
+    assert len(output[1]) == 20
+    assert isinstance(output[2], bool)
     assert output[2] == False
 
     # Checking simulator state
@@ -56,21 +56,19 @@ def test_step(simulator):
 
     # Checking output
     # Fist element is a tuple with simulation date + time_elapsed
-    assert isinstance(output[0], tuple)
-    assert len(output[0]) == 5
-    # Last element in first tuple must be time_elapsed > 0 (since we have a
-    # step executed)
-    assert output[0][-1] > 0
+    assert isinstance(output[0], float)
+    # must be time_elapsed > 0 (since we have a step executed)
+    assert output[0] > 0
     assert isinstance(output[1], list)
-    assert len(output[1]) == 16
+    assert len(output[1]) == 20
+    assert isinstance(output[2], bool)
 
     # Check simulation advance with step
     assert simulator._curSimTim > 0
     # Simulation time elapsed at each timestep is defined in the simulator
     assert simulator._curSimTim == simulator._eplus_run_stepsize
-    assert simulator._curSimTim == output[0][-1]
-    assert isinstance(output[1], list)
-    assert len(output[1]) == 16
+    assert simulator._curSimTim == output[0]
+    # Check if simulator return done flag correctly
     assert (simulator._curSimTim >= simulator._eplus_one_epi_len) == output[2]
 
     assert simulator._last_action == [20.0, 24.0]
@@ -79,7 +77,7 @@ def test_step(simulator):
     output = simulator.step(action=[20.0, 24.0])
 
     # Check simulation advance with step
-    assert simulator._curSimTim == output[0][-1]
+    assert simulator._curSimTim == output[0]
     assert simulator._curSimTim > 0
     # Simulation time elapsed at each timestep is defined in the simulator
     assert simulator._curSimTim == simulator._eplus_run_stepsize * 2

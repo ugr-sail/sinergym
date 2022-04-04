@@ -77,6 +77,9 @@ class EplusEnv(gym.Env):
 
         # parse variables (observation and action) from cfg file
         self.variables = parse_variables(self.variables_path)
+        # Add year, month, day and hour to observation variables
+        self.variables['observation'] = ['year', 'month',
+                                         'day', 'hour'] + self.variables['observation']
 
         # Random noise to apply for weather series
         self.weather_variability = weather_variability
@@ -144,14 +147,9 @@ class EplusEnv(gym.Env):
         # Send action to the simulator
         self.simulator.logger_main.debug(action_)
         # time_info = (current simulation year, month, day, hour, time_elapsed)
-        time_info, obs, done = self.simulator.step(action_)
+        time_elapsed, obs, done = self.simulator.step(action_)
         # Create dictionary with observation
         self.obs_dict = dict(zip(self.variables['observation'], obs))
-        # Add current timestep information
-        self.obs_dict['year'] = time_info[0]
-        self.obs_dict['month'] = time_info[1]
-        self.obs_dict['day'] = time_info[2]
-        self.obs_dict['hour'] = time_info[3]
 
         # Calculate reward
         reward, terms = self.reward_fn()
@@ -159,8 +157,8 @@ class EplusEnv(gym.Env):
         # Extra info
         info = {
             'timestep': int(
-                time_info[4] / self.simulator._eplus_run_stepsize),
-            'time_elapsed': int(time_info[4]),
+                time_elapsed / self.simulator._eplus_run_stepsize),
+            'time_elapsed': int(time_elapsed),
             'year': self.obs_dict['year'],
             'month': self.obs_dict['month'],
             'day': self.obs_dict['day'],
@@ -184,11 +182,6 @@ class EplusEnv(gym.Env):
         # Change to next episode
         time_info, obs, _ = self.simulator.reset(self.weather_variability)
         self.obs_dict = dict(zip(self.variables['observation'], obs))
-
-        self.obs_dict['year'] = time_info[0]
-        self.obs_dict['month'] = time_info[1]
-        self.obs_dict['day'] = time_info[2]
-        self.obs_dict['hour'] = time_info[3]
 
         return np.array(list(self.obs_dict.values()), dtype=np.float32)
 
