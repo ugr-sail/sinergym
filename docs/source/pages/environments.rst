@@ -92,6 +92,11 @@ This is a definition example for 5ZoneAutoDXVAV.idf and its variants:
 .. literalinclude:: ../../../sinergym/data/variables/5ZoneAutoDXVAV_spaces.cfg
     :language: xml
 
+As can be seen in *5ZoneAutoDXVAV_spaces.cfg*, for example, the **year, month, day and hour** of the simulation are not included for each timestep. 
+However, they do appear in the definition of the observation spaces in *5ZoneAutoDXVAV_spaces.cfg* and, therefore, as part of the state returned by the environment. 
+This is because they are not variables recognizable by the simulator as such (Energyplus) and Sinergym does the calculations and adds them in the states returned as 
+output by the environment. This feature is common to all environments available in Sinergym and all supported building designs.
+
 This gives you the possibility of playing with different observation/action spaces in discrete and continuous environments in order to study how this affects the resolution of a building problem.
 Inner each environment it is known what configuration file must read and spaces will be defined automatically, so you should not worry about anything.
 
@@ -99,6 +104,6 @@ In order to make environments more generic in DRL solutions. We have updated act
 
 The function in charge of reading those configuration files is ``parse_observation_action_space(space_file)`` in *sinergym/sinergym/utils/common.py*
 
-.. warning:: Note that the spaces defined here must be the same size as in variables.cfg. Except in the observation that we have to add the year, month, day and hour, since the environment is in charge of adding it once the simulator returns the information. 
+.. warning:: Remember that the spaces defined here must be the same size as in variables.cfg. Except in the observation due to the fact that we have to add the year, month, day and hour. 
 
 .. note:: *Set up observation and action spaces in environment constructor dynamically could be upgrade in the future. Stay tuned for upcoming releases!*
