@@ -1,10 +1,8 @@
 """Implementation of basic controllers."""
 from datetime import datetime
-from typing import Any, List, Optional, Sequence, Tuple
+from typing import Any, List, Sequence
 
-from numpy import arange
-
-from ..utils.common import get_season_comfort_range, parse_variables
+from ..utils.common import parse_variables
 
 
 class RandomController(object):
@@ -31,7 +29,7 @@ class RBC5Zone(object):
 
     def __init__(self, env: Any) -> None:
         """Agent based on static rules for controlling 5ZoneAutoDXVAV setpoints.
-        Follows the FSEC standard setpoints described in FSEC-CR-2010-13 (2013).
+        Follows the standard setpoints described in ASHRAE Standard 55-2004: Thermal Environmental Conditions for Human Occupancy.
 
         Args:
             env (Any): Simulation environment
@@ -43,8 +41,11 @@ class RBC5Zone(object):
         self.variables = parse_variables(self.variables_path)
         self.variables['observation'].extend(['year', 'month', 'day', 'hour'])
 
+        self.range_comfort_summer = (23.0, 26.0)
+        self.range_comfort_winter = (20.0, 23.5)
+
     def act(self, observation: List[Any]) -> Sequence[Any]:
-        """Select action based on outdoor air drybulb temperature and daytime.
+        """Select action based on indoor temperature.
 
         Args:
             observation (List[Any]): Perceived observation.
@@ -54,30 +55,38 @@ class RBC5Zone(object):
         """
         obs_dict = dict(zip(self.variables['observation'], observation))
 
-        out_temp = obs_dict['Site Outdoor Air Drybulb Temperature (Environment)']
-
         year = int(obs_dict['year'])
         month = int(obs_dict['month'])
         day = int(obs_dict['day'])
-        hour = int(obs_dict['hour'])
 
-        season_comfort_range = get_season_comfort_range(year, month, day)
+        summer_start_date = datetime(year, 6, 1)
+        summer_final_date = datetime(year, 9, 30)
+
+        current_dt = datetime(year, month, day)
+
+        # Get season comfort range
+        if current_dt >= summer_start_date and current_dt <= summer_final_date:
+            season_comfort_range = self.range_comfort_summer
+        else:
+            season_comfort_range = self.range_comfort_winter
         
-        if out_temp < season_comfort_range[0] or out_temp > season_comfort_range[1]:
-            if hour in range(6, 18): # day
-                action = (19.44, 25.0)
-            elif hour in range(18, 22): # evening
-                action = (20.0, 24.44)
-            else:  # night
-                action = (18.33, 23.33)
-        else: # maintain setpoints if comfort requirements are already met
-            current_cool_setpoint = obs_dict[
-                'Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)']
-            current_heat_setpoint = obs_dict[
-                'Zone Thermostat Heating Setpoint Temperature (SPACE1-1)']
-            action = (current_heat_setpoint, current_cool_setpoint)
+        # Update setpoints
+        in_temp = obs_dict['Zone Air Temperature (SPACE1-1)']
+        
+        current_heat_setpoint = obs_dict['Zone Thermostat Heating Setpoint Temperature (SPACE1-1)']
+        current_cool_setpoint = obs_dict['Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)']
 
-        return action
+        new_heat_setpoint = current_heat_setpoint
+        new_cool_setpoint = current_cool_setpoint
+
+        if in_temp < season_comfort_range[0]:
+            new_heat_setpoint = current_heat_setpoint + 1
+            new_cool_setpoint = current_cool_setpoint + 1
+        elif in_temp > season_comfort_range[1]:
+            new_cool_setpoint = current_cool_setpoint - 1
+            new_heat_setpoint = current_heat_setpoint - 1
+
+        return (new_heat_setpoint, new_cool_setpoint)
 
 class RBCDatacenter(object):
 
@@ -95,8 +104,11 @@ class RBCDatacenter(object):
         self.variables = parse_variables(self.variables_path)
         self.variables['observation'].extend(['year', 'month', 'day', 'hour'])
 
+        # ASHRAE recommended temperature range = [18, 27] Celsius
+        self.range_comfort_datacenter = (18, 27)
+
     def act(self, observation: List[Any]) -> Sequence[Any]:
-        """Select action based on outdoor air drybulb temperature.
+        """Select action based on indoor temperature.
 
         Args:
             observation (List[Any]): Perceived observation.
@@ -106,27 +118,36 @@ class RBCDatacenter(object):
         """
         obs_dict = dict(zip(self.variables['observation'], observation))
 
-        out_temp = obs_dict['Site Outdoor Air Drybulb Temperature (Environment)']
+        # West Zone
+        west_in_temp = obs_dict['Zone Air Temperature (West Zone)']
+        
+        west_current_heat_setpoint = obs_dict['Zone Thermostat Heating Setpoint Temperature (West Zone)']
+        west_current_cool_setpoint = obs_dict['Zone Thermostat Cooling Setpoint Temperature (West Zone)']
 
-        # ASHRAE recommended temperature range = [18, 27] Celsius
+        west_new_heat_setpoint = west_current_heat_setpoint
+        west_new_cool_setpoint = west_current_cool_setpoint
 
-        if out_temp < 10: # < 10
-            action = (18, 27, 18, 27) 
-        elif out_temp < 15: # [10, 15)
-            action = (19, 27, 19, 27)
-        elif out_temp < 18: # [15, 18)
-            action = (20, 27, 20, 27)
-        elif out_temp > 40: # > 40
-            action = (18, 27, 18, 27)
-        elif out_temp > 30: # (30, 40]
-            action = (18, 25, 18, 25)
-        elif out_temp > 27: # (27, 30]
-            action = (18, 23, 18, 23)
-        else:
-            west_heat = obs_dict['Zone Thermostat Heating Setpoint Temperature (West Zone)']
-            west_cool = obs_dict['Zone Thermostat Cooling Setpoint Temperature (West Zone)']
-            east_heat = obs_dict['Zone Thermostat Heating Setpoint Temperature (East Zone)']
-            east_cool = obs_dict['Zone Thermostat Cooling Setpoint Temperature (East Zone)']
-            action = (west_heat, west_cool, east_heat, east_cool)
+        if west_in_temp < self.range_comfort_datacenter[0]:
+            west_new_heat_setpoint = west_current_heat_setpoint + 1
+            west_new_cool_setpoint = west_current_cool_setpoint + 1
+        elif west_in_temp > self.range_comfort_datacenter[1]:
+            west_new_cool_setpoint = west_current_cool_setpoint - 1
+            west_new_heat_setpoint = west_current_heat_setpoint - 1
 
-        return action
+        # East Zone
+        east_in_temp = obs_dict['Zone Air Temperature (East Zone)']
+
+        east_current_heat_setpoint = obs_dict['Zone Thermostat Heating Setpoint Temperature (East Zone)']
+        east_current_cool_setpoint = obs_dict['Zone Thermostat Cooling Setpoint Temperature (East Zone)']
+
+        east_new_heat_setpoint = east_current_heat_setpoint
+        east_new_cool_setpoint = east_current_cool_setpoint
+
+        if east_in_temp < self.range_comfort_datacenter[0]:
+            east_new_heat_setpoint = east_current_heat_setpoint + 1
+            east_new_cool_setpoint = east_current_cool_setpoint + 1
+        elif east_in_temp > self.range_comfort_datacenter[1]:
+            east_new_cool_setpoint = east_current_cool_setpoint - 1
+            east_new_heat_setpoint = east_current_heat_setpoint - 1
+
+        return (west_new_heat_setpoint, west_new_cool_setpoint, east_new_heat_setpoint, east_new_cool_setpoint)
