@@ -1,4 +1,4 @@
-sinergym.utils.controllers
+﻿sinergym.utils.controllers
 ==========================
 
 .. automodule:: sinergym.utils.controllers
@@ -19,8 +19,9 @@ sinergym.utils.controllers
       :toctree:                                          
       :template: custom-class-template.rst               
    
+      RBC5Zone
+      RBCDatacenter
       RandomController
-      RuleBasedController
    
    
 

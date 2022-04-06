@@ -42,6 +42,9 @@ class RBC5Zone(object):
         self.range_comfort_summer = (23.0, 26.0)
         self.range_comfort_winter = (20.0, 23.5)
 
+        self.range_comfort_summer = (23.0, 26.0)
+        self.range_comfort_winter = (20.0, 23.5)
+
     def act(self, observation: List[Any]) -> Sequence[Any]:
         """Select action based on indoor temperature.
 
@@ -99,7 +102,6 @@ class RBCDatacenter(object):
         """
 
         self.env = env
-
         self.variables = env.variables
 
         # ASHRAE recommended temperature range = [18, 27] Celsius
