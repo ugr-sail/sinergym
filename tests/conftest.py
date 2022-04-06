@@ -178,6 +178,7 @@ def env_demo_continuous(idf_path, weather_path, variable_path, space_path):
         weather_variability=None)
 
 
+@pytest.fixture(scope='function')
 def env_datacenter(idf_path2, weather_path, variable_path2, space_path2):
     idf_file = idf_path2.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
