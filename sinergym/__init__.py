@@ -205,7 +205,9 @@ register(
             'temperature_variable': [
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
-            ]
+            ],
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-hot-discrete-v1'
     }
@@ -225,7 +227,9 @@ register(
             'temperature_variable': [
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
-            ]
+            ],
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-hot-continuous-v1'
     }
@@ -246,7 +250,9 @@ register(
             'temperature_variable': [
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
-            ]
+            ],
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-hot-discrete-stochastic-v1'
     }
@@ -267,7 +273,9 @@ register(
             'temperature_variable': [
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
-            ]
+            ],
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-hot-continuous-stochastic-v1'
     }
@@ -287,7 +295,9 @@ register(
             'temperature_variable': [
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
-            ]
+            ],
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-mixed-discrete-v1'})
 
@@ -305,7 +315,9 @@ register(
             'temperature_variable': [
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
-            ]
+            ],
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-mixed-continuous-v1'})
 
@@ -327,7 +339,9 @@ register(
             'temperature_variable': [
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
-            ]
+            ],
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-mixed-discrete-stochastic-v1'})
 
@@ -349,7 +363,9 @@ register(
             'temperature_variable': [
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
-            ]
+            ],
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-mixed-continuous-stochastic-v1'})
 
@@ -363,6 +379,10 @@ register(
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
         'discrete_actions': True,
+        'reward_kwargs': {
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
         'env_name': 'datacenter-cool-discrete-v1'})
 
 # 22) DC, cool weather, continuous actions
@@ -375,6 +395,10 @@ register(
         'variables_file': 'variablesDataCenter.cfg',
         'spaces_file': '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg',
         'discrete_actions': False,
+        'reward_kwargs': {
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
         'env_name': 'datacenter-cool-continuous-v1'})
 
 # 23) DC, cool weather, discrete actions and stochastic
@@ -391,6 +415,10 @@ register(
             1.0,
             0.0,
             0.001),
+        'reward_kwargs': {
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
         'env_name': 'datacenter-cool-discrete-stochastic-v1'})
 
 # 24) DC, cool weather, continuous actions and stochastic
@@ -407,6 +435,10 @@ register(
             1.0,
             0.0,
             0.001),
+        'reward_kwargs': {
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
         'env_name': 'datacenter-cool-continuous-stochastic-v1'})
 
 #========================MULLION========================#
