@@ -69,12 +69,14 @@ class RBC5Zone(object):
             season_comfort_range = self.range_comfort_summer
         else:
             season_comfort_range = self.range_comfort_winter
-        
+
         # Update setpoints
         in_temp = obs_dict['Zone Air Temperature (SPACE1-1)']
-        
-        current_heat_setpoint = obs_dict['Zone Thermostat Heating Setpoint Temperature (SPACE1-1)']
-        current_cool_setpoint = obs_dict['Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)']
+
+        current_heat_setpoint = obs_dict[
+            'Zone Thermostat Heating Setpoint Temperature (SPACE1-1)']
+        current_cool_setpoint = obs_dict[
+            'Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)']
 
         new_heat_setpoint = current_heat_setpoint
         new_cool_setpoint = current_cool_setpoint
@@ -88,10 +90,11 @@ class RBC5Zone(object):
 
         return (new_heat_setpoint, new_cool_setpoint)
 
+
 class RBCDatacenter(object):
 
     def __init__(self, env: Any) -> None:
-        """Agent based on static rules for controlling 2ZoneDataCenterHVAC setpoints. 
+        """Agent based on static rules for controlling 2ZoneDataCenterHVAC setpoints.
         Follows the ASHRAE recommended temperature ranges for data centers described in ASHRAE TC9.9 (2016).
 
         Args:
@@ -120,9 +123,11 @@ class RBCDatacenter(object):
 
         # West Zone
         west_in_temp = obs_dict['Zone Air Temperature (West Zone)']
-        
-        west_current_heat_setpoint = obs_dict['Zone Thermostat Heating Setpoint Temperature (West Zone)']
-        west_current_cool_setpoint = obs_dict['Zone Thermostat Cooling Setpoint Temperature (West Zone)']
+
+        west_current_heat_setpoint = obs_dict[
+            'Zone Thermostat Heating Setpoint Temperature (West Zone)']
+        west_current_cool_setpoint = obs_dict[
+            'Zone Thermostat Cooling Setpoint Temperature (West Zone)']
 
         west_new_heat_setpoint = west_current_heat_setpoint
         west_new_cool_setpoint = west_current_cool_setpoint
@@ -137,8 +142,10 @@ class RBCDatacenter(object):
         # East Zone
         east_in_temp = obs_dict['Zone Air Temperature (East Zone)']
 
-        east_current_heat_setpoint = obs_dict['Zone Thermostat Heating Setpoint Temperature (East Zone)']
-        east_current_cool_setpoint = obs_dict['Zone Thermostat Cooling Setpoint Temperature (East Zone)']
+        east_current_heat_setpoint = obs_dict[
+            'Zone Thermostat Heating Setpoint Temperature (East Zone)']
+        east_current_cool_setpoint = obs_dict[
+            'Zone Thermostat Cooling Setpoint Temperature (East Zone)']
 
         east_new_heat_setpoint = east_current_heat_setpoint
         east_new_cool_setpoint = east_current_cool_setpoint
@@ -150,4 +157,8 @@ class RBCDatacenter(object):
             east_new_cool_setpoint = east_current_cool_setpoint - 1
             east_new_heat_setpoint = east_current_heat_setpoint - 1
 
-        return (west_new_heat_setpoint, west_new_cool_setpoint, east_new_heat_setpoint, east_new_cool_setpoint)
+        return (
+            west_new_heat_setpoint,
+            west_new_cool_setpoint,
+            east_new_heat_setpoint,
+            east_new_cool_setpoint)
