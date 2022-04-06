@@ -1,6 +1,6 @@
 import pytest
 
-from sinergym.utils.controllers import RuleBasedController
+from sinergym.utils.controllers import RBC5Zone
 
 
 @pytest.mark.parametrize(
@@ -14,9 +14,9 @@ from sinergym.utils.controllers import RuleBasedController
         ),
     ]
 )
-def test_rule_based_controller(env_name, request):
+def test_rule_based_controller_5Zone(env_name, request):
     env = request.getfixturevalue(env_name)
-    rule_based_agent = RuleBasedController(env)
+    rule_based_agent = RBC5Zone(env)
     obs = env.reset()
 
     for i in range(3):
