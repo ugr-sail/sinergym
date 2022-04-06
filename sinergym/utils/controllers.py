@@ -37,9 +37,10 @@ class RBC5Zone(object):
 
         self.env = env
 
-        self.variables_path = self.env.variables_path
-        self.variables = parse_variables(self.variables_path)
-        self.variables['observation'].extend(['year', 'month', 'day', 'hour'])
+        self.variables = env.variables
+
+        self.range_comfort_summer = (23.0, 26.0)
+        self.range_comfort_winter = (20.0, 23.5)
 
         self.range_comfort_summer = (23.0, 26.0)
         self.range_comfort_winter = (20.0, 23.5)
@@ -54,7 +55,6 @@ class RBC5Zone(object):
             Sequence[Any]: Action chosen.
         """
         obs_dict = dict(zip(self.variables['observation'], observation))
-
         year = int(obs_dict['year'])
         month = int(obs_dict['month'])
         day = int(obs_dict['day'])
@@ -102,10 +102,7 @@ class RBCDatacenter(object):
         """
 
         self.env = env
-
-        self.variables_path = self.env.variables_path
-        self.variables = parse_variables(self.variables_path)
-        self.variables['observation'].extend(['year', 'month', 'day', 'hour'])
+        self.variables = env.variables
 
         # ASHRAE recommended temperature range = [18, 27] Celsius
         self.range_comfort_datacenter = (18, 27)

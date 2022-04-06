@@ -1,8 +1,7 @@
 import gym
 import numpy as np
 
-from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
-                                     NormalizeObservation)
+from sinergym.utils.wrappers import LoggerWrapper, MultiObsWrapper, NormalizeObservation
 
 default_env = gym.make('Eplus-demo-v1')
 
