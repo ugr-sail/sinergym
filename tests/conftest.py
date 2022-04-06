@@ -79,6 +79,27 @@ def ddy_path(pkg_data_path):
 
 
 @pytest.fixture(scope='session')
+def idf_path2(pkg_data_path):
+    return os.path.join(
+        pkg_data_path,
+        'buildings',
+        '2ZoneDataCenterHVAC_wEconomizer.idf')
+
+
+@pytest.fixture(scope='session')
+def variable_path2(pkg_data_path):
+    return os.path.join(pkg_data_path, 'variables', 'variablesDataCenter.cfg')
+
+
+@pytest.fixture(scope='session')
+def space_path2(pkg_data_path):
+    return os.path.join(
+        pkg_data_path,
+        'variables',
+        '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg')
+
+
+@pytest.fixture(scope='session')
 def weather_path2(pkg_data_path):
     return os.path.join(
         pkg_data_path,
@@ -146,6 +167,43 @@ def env_demo_continuous(idf_path, weather_path, variable_path, space_path):
     weather_file = weather_path.split('/')[-1]
     variables_file = variable_path.split('/')[-1]
     spaces_file = space_path.split('/')[-1]
+
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=False,
+        weather_variability=None)
+
+
+def env_datacenter(idf_path2, weather_path, variable_path2, space_path2):
+    idf_file = idf_path2.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+    variables_file = variable_path2.split('/')[-1]
+    spaces_file = space_path2.split('/')[-1]
+
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=True,
+        weather_variability=None)
+
+
+@pytest.fixture(scope='function')
+def env_datacenter_continuous(
+        idf_path2,
+        weather_path,
+        variable_path2,
+        space_path2):
+    idf_file = idf_path2.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+    variables_file = variable_path2.split('/')[-1]
+    spaces_file = space_path2.split('/')[-1]
 
     return EplusEnv(
         env_name='TESTGYM',
