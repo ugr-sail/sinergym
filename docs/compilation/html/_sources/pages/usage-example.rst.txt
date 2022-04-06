@@ -125,13 +125,13 @@ You can replace the random actions we have used in the previous examples with on
     import sinergym
     from sinergym.utils.rewards import LinearReward, ExpReward
     from sinergym.utils.wrapper import LoggerWrapper, NormalizeObservation
-    from sinergym.utils.controllers import RuleBasedController
+    from sinergym.utils.controllers import RBC5Zone
 
     env = gym.make('Eplus-5Zone-hot-continuous-v1', reward=ExpReward())
     env = NormalizeObservation(env)
     env = LoggerWrapper(env)
 
-    agent = RuleBasedController(env)
+    agent = RBC5Zone(env)
 
     for i in range(1):
         obs = env.reset()
@@ -153,6 +153,8 @@ You can replace the random actions we have used in the previous examples with on
             'Cumulative reward: ',
             sum(rewards))
     env.close()
+
+.. note:: You can also use our rule-based controller for Datacenter called **RBCDatacenter** if the environment is of that type or a random agent called **RandomController** in every environment.
 
 ***********************************************
 Adding extra configuration to our environments
