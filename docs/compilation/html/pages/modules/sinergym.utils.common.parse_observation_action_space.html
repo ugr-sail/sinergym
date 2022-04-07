@@ -119,13 +119,13 @@
 <dd><p>Parse observation space definition to gym env.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>space_file</strong> (<em>str</em>) – Observation space definition file path.</p>
+<dd class="field-odd"><p><strong>space_file</strong> (<em>str</em>) -- Observation space definition file path.</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>RuntimeError</strong> – If root XML tag is not ‘space’.</p>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- If root XML tag is not 'space'.</p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>‘observation’, ‘discrete_action’ and ‘continuous_action’ keys. tuple for gym.spaces.Box() arguments, dictionary action mapping for gym.spaces.Discrete() and tuple for gym.spaces.Box()</p>
+<dd class="field-odd"><p>'observation', 'discrete_action' and 'continuous_action' keys. tuple for gym.spaces.Box() arguments, dictionary action mapping for gym.spaces.Discrete() and tuple for gym.spaces.Box()</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>Dict[str, Any]</p>

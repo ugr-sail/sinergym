@@ -1,12 +1,12 @@
 import gym
 import numpy as np
 
-from sinergym.utils.controllers import RuleBasedController
+from sinergym.utils.controllers import RBC5Zone
 
 env = gym.make('Eplus-5Zone-mixed-continuous-v1')
 
-# create rule-controlled agent
-agent = RuleBasedController(env)
+# create rule-based controller
+agent = RBC5Zone(env)
 
 for i in range(1):
     obs = env.reset()

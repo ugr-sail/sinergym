@@ -175,7 +175,6 @@ regardless of the training technique which may be being used or any other extern
     <span class="k">def</span> <span class="nf">log_step</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-            <span class="n">date</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
             <span class="n">observation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
             <span class="n">action</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]],</span>
             <span class="n">simulation_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -188,7 +187,6 @@ regardless of the training technique which may be being used or any other extern
 
 <span class="sd">        Args:</span>
 <span class="sd">            timestep (int): Current episode timestep in simulation.</span>
-<span class="sd">            date (list): Current date [month,day,hour] in simulation.</span>
 <span class="sd">            observation (list): Values that belong to current observation.</span>
 <span class="sd">            action (list): Values that belong to current action.</span>
 <span class="sd">            simulation_time (float): Total time elapsed in current episode (seconds).</span>
@@ -200,7 +198,7 @@ regardless of the training technique which may be being used or any other extern
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
-            <span class="n">row_contents</span> <span class="o">=</span> <span class="p">[</span><span class="n">timestep</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span> <span class="o">+</span> \
+            <span class="n">row_contents</span> <span class="o">=</span> <span class="p">[</span><span class="n">timestep</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span> <span class="o">+</span> \
                 <span class="nb">list</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">simulation_time</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span>
                                 <span class="n">total_power_no_units</span><span class="p">,</span> <span class="n">comfort_penalty</span><span class="p">,</span> <span class="n">done</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">steps_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_contents</span><span class="p">)</span>
@@ -219,7 +217,6 @@ regardless of the training technique which may be being used or any other extern
     <span class="k">def</span> <span class="nf">log_step_normalize</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-            <span class="n">date</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
             <span class="n">observation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
             <span class="n">action</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]],</span>
             <span class="n">simulation_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -231,7 +228,6 @@ regardless of the training technique which may be being used or any other extern
 
 <span class="sd">        Args:</span>
 <span class="sd">            timestep (int): Current episode timestep in simulation.</span>
-<span class="sd">            date (List[int, int, int]): Current date [month,day,hour] in simulation.</span>
 <span class="sd">            observation (List[Any]): Values that belong to current observation.</span>
 <span class="sd">            action (List[Union[int, float]]): Values that belong to current action.</span>
 <span class="sd">            simulation_time (float): Total time elapsed in current episode (seconds).</span>
@@ -241,7 +237,7 @@ regardless of the training technique which may be being used or any other extern
 <span class="sd">            done (bool): It specifies if this step terminates episode or not.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
-            <span class="n">row_contents</span> <span class="o">=</span> <span class="p">[</span><span class="n">timestep</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span> <span class="o">+</span> \
+            <span class="n">row_contents</span> <span class="o">=</span> <span class="p">[</span><span class="n">timestep</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span> <span class="o">+</span> \
                 <span class="nb">list</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">simulation_time</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span>
                                 <span class="n">total_power_no_units</span><span class="p">,</span> <span class="n">comfort_penalty</span><span class="p">,</span> <span class="n">done</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">steps_data_normalized</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_contents</span><span class="p">)</span>
@@ -395,7 +391,7 @@ regardless of the training technique which may be being used or any other extern
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Note that you can activate and deactivate logger from environment when you want it, using methods activate and deactivate, so you don’t need to unwrap environment.</p>
+<p>Note that you can activate and deactivate logger from environment when you want it, using methods activate and deactivate, so you don't need to unwrap environment.</p>
 </div>
 </section>
 </section>

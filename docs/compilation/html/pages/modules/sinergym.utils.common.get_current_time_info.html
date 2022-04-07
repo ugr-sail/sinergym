@@ -115,20 +115,20 @@
 <h1>sinergym.utils.common.get_current_time_info<a class="headerlink" href="#sinergym-utils-common-get-current-time-info" title="Permalink to this headline"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="sinergym.utils.common.get_current_time_info">
-<span class="sig-prename descclassname"><span class="pre">sinergym.utils.common.</span></span><span class="sig-name descname"><span class="pre">get_current_time_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">opyplus.epm.epm.Epm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sec_elapsed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.common.get_current_time_info" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sinergym.utils.common.</span></span><span class="sig-name descname"><span class="pre">get_current_time_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">opyplus.epm.epm.Epm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sec_elapsed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.common.get_current_time_info" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the current day, month and hour given the seconds elapsed since the simulation started.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>epm</strong> (<em>opyplus.Epm</em>) – EnergyPlus model object.</p></li>
-<li><p><strong>sec_elapsed</strong> (<em>float</em>) – Seconds elapsed since the start of the simulation</p></li>
+<li><p><strong>epm</strong> (<em>opyplus.Epm</em>) -- EnergyPlus model object.</p></li>
+<li><p><strong>sec_elapsed</strong> (<em>float</em>) -- Seconds elapsed since the start of the simulation</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A tuple composed by the current year, day, month and hour in the simulation and time elapsed.</p>
+<dd class="field-even"><p>A List composed by the current year, day, month and hour in the simulation.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[int, int, int, int, float]</p>
+<dd class="field-odd"><p>List[int]</p>
 </dd>
 </dl>
 </dd></dl>

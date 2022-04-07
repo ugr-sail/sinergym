@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sinergym.utils.rewards.BaseReward &mdash; sinergym  documentation</title>
+  <title>sinergym.utils.controllers.RBCDatacenter &mdash; sinergym  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
@@ -19,8 +19,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.rewards.ExpReward" href="sinergym.utils.rewards.ExpReward.html" />
-    <link rel="prev" title="sinergym.utils.rewards" href="sinergym.utils.rewards.html" /> 
+    <link rel="next" title="sinergym.utils.controllers.RandomController" href="sinergym.utils.controllers.RandomController.html" />
+    <link rel="prev" title="sinergym.utils.controllers.RBC5Zone" href="sinergym.utils.controllers.RBC5Zone.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,16 +57,15 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.config.html">sinergym.utils.config</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.rewards.BaseReward</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.ExpReward.html">sinergym.utils.rewards.ExpReward</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.HourlyLinearReward.html">sinergym.utils.rewards.HourlyLinearReward</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.LinearReward.html">sinergym.utils.rewards.LinearReward</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.controllers.RBC5Zone.html">sinergym.utils.controllers.RBC5Zone</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.controllers.RBCDatacenter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.controllers.RandomController.html">sinergym.utils.controllers.RandomController</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
 </ul>
 </li>
@@ -92,10 +91,10 @@
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../API-reference.html">API reference</a> &raquo;</li>
           <li><a href="sinergym.utils.html">sinergym.utils</a> &raquo;</li>
-          <li><a href="sinergym.utils.rewards.html">sinergym.utils.rewards</a> &raquo;</li>
-      <li>sinergym.utils.rewards.BaseReward</li>
+          <li><a href="sinergym.utils.controllers.html">sinergym.utils.controllers</a> &raquo;</li>
+      <li>sinergym.utils.controllers.RBCDatacenter</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/pages/modules/sinergym.utils.rewards.BaseReward.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/pages/modules/sinergym.utils.controllers.RBCDatacenter.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -103,19 +102,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="sinergym-utils-rewards-basereward">
-<h1>sinergym.utils.rewards.BaseReward<a class="headerlink" href="#sinergym-utils-rewards-basereward" title="Permalink to this headline"></a></h1>
+  <section id="sinergym-utils-controllers-rbcdatacenter">
+<h1>sinergym.utils.controllers.RBCDatacenter<a class="headerlink" href="#sinergym-utils-controllers-rbcdatacenter" title="Permalink to this headline"></a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="sinergym.utils.rewards.BaseReward">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.rewards.</span></span><span class="sig-name descname"><span class="pre">BaseReward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.rewards.BaseReward" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="sinergym.utils.controllers.RBCDatacenter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.controllers.</span></span><span class="sig-name descname"><span class="pre">RBCDatacenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.controllers.RBCDatacenter" title="Permalink to this definition"></a></dt>
 <dd><dl class="py method">
-<dt class="sig sig-object py" id="sinergym.utils.rewards.BaseReward.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.rewards.BaseReward.__init__" title="Permalink to this definition"></a></dt>
-<dd><p>Base reward class.</p>
-<p>All reward functions should inherit from this class.</p>
+<dt class="sig sig-object py" id="sinergym.utils.controllers.RBCDatacenter.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.controllers.RBCDatacenter.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Agent based on static rules for controlling 2ZoneDataCenterHVAC setpoints.
+Follows the ASHRAE recommended temperature ranges for data centers described in ASHRAE TC9.9 (2016).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>env</strong> (<em>Env</em>) -- Gym environment.</p>
+<dd class="field-odd"><p><strong>env</strong> (<em>Any</em>) -- Simulation environment</p>
 </dd>
 </dl>
 </dd></dl>
@@ -127,11 +126,31 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.rewards.BaseReward.__init__" title="sinergym.utils.rewards.BaseReward.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env)</p></td>
-<td><p>Base reward class.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.controllers.RBCDatacenter.__init__" title="sinergym.utils.controllers.RBCDatacenter.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env)</p></td>
+<td><p>Agent based on static rules for controlling 2ZoneDataCenterHVAC setpoints.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.controllers.RBCDatacenter.act" title="sinergym.utils.controllers.RBCDatacenter.act"><code class="xref py py-obj docutils literal notranslate"><span class="pre">act</span></code></a>(observation)</p></td>
+<td><p>Select action based on indoor temperature.</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.controllers.RBCDatacenter.act">
+<span class="sig-name descname"><span class="pre">act</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.controllers.RBCDatacenter.act" title="Permalink to this definition"></a></dt>
+<dd><p>Select action based on indoor temperature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>observation</strong> (<em>List</em><em>[</em><em>Any</em><em>]</em>) -- Perceived observation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Action chosen.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Sequence[Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -140,8 +159,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sinergym.utils.rewards.html" class="btn btn-neutral float-left" title="sinergym.utils.rewards" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.rewards.ExpReward.html" class="btn btn-neutral float-right" title="sinergym.utils.rewards.ExpReward" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.controllers.RBC5Zone.html" class="btn btn-neutral float-left" title="sinergym.utils.controllers.RBC5Zone" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sinergym.utils.controllers.RandomController.html" class="btn btn-neutral float-right" title="sinergym.utils.controllers.RandomController" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

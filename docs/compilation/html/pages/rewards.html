@@ -118,10 +118,11 @@ The only requirement is that the calculation is performed using <code class="doc
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Implementation of reward functions.&quot;&quot;&quot;</span>
 
 
-<span class="kn">from</span> <span class="nn">gym</span> <span class="kn">import</span> <span class="n">Env</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">exp</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">gym</span> <span class="kn">import</span> <span class="n">Env</span>
 
 
 <span class="k">class</span> <span class="nc">BaseReward</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -136,15 +137,16 @@ The only requirement is that the calculation is performed using <code class="doc
 <span class="sd">            env (Env): Gym environment.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="mi">2021</span> <span class="c1"># just for datetime completion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="mi">2021</span>  <span class="c1"># just for datetime completion</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method for calculating the reward function.&quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Reward class must have a `__call__` method.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;Reward class must have a `__call__` method.&quot;</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">LinearReward</span><span class="p">(</span><span class="n">BaseReward</span><span class="p">):</span>
- 
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">env</span><span class="p">:</span> <span class="n">Env</span><span class="p">,</span>
@@ -155,12 +157,12 @@ The only requirement is that the calculation is performed using <code class="doc
         <span class="n">lambda_temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
         <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
         <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">)</span>
-        <span class="p">):</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Linear reward function.</span>
-<span class="sd">        </span>
+
 <span class="sd">        It considers the energy consumption and the absolute difference to temperature comfort.</span>
-<span class="sd">        </span>
+
 <span class="sd">        .. math::</span>
 <span class="sd">            R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))</span>
 
@@ -174,7 +176,7 @@ The only requirement is that the calculation is performed using <code class="doc
 <span class="sd">            range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).</span>
 <span class="sd">            range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        
+
         <span class="nb">super</span><span class="p">(</span><span class="n">LinearReward</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 
         <span class="c1"># Name of the variables</span>
@@ -195,7 +197,7 @@ The only requirement is that the calculation is performed using <code class="doc
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the reward function.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns:</span>
 <span class="sd">            Tuple[float, Dict[str, float]]: Reward value and dictionary with their individual components.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -210,7 +212,8 @@ The only requirement is that the calculation is performed using <code class="doc
         <span class="n">reward_comfort</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_temp</span> <span class="o">*</span> <span class="n">comfort</span>
 
         <span class="c1"># Weighted sum of both terms</span>
-        <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_energy</span> <span class="o">*</span> <span class="n">reward_energy</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_energy</span><span class="p">)</span> <span class="o">*</span> <span class="n">reward_comfort</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_energy</span> <span class="o">*</span> <span class="n">reward_energy</span> <span class="o">+</span> \
+            <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_energy</span><span class="p">)</span> <span class="o">*</span> <span class="n">reward_comfort</span>
 
         <span class="n">reward_terms</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;reward_energy&#39;</span><span class="p">:</span> <span class="n">reward_energy</span><span class="p">,</span>
@@ -232,8 +235,8 @@ The only requirement is that the calculation is performed using <code class="doc
             <span class="n">temp_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_summer</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">temp_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_winter</span>
-        
-        <span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">obs_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_name</span><span class="p">]</span>
+
+        <span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obs_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_name</span><span class="p">]</span>
         <span class="n">comfort</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">T</span> <span class="ow">in</span> <span class="n">temps</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">T</span> <span class="o">&lt;</span> <span class="n">temp_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">T</span> <span class="o">&gt;</span> <span class="n">temp_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
@@ -254,10 +257,10 @@ The only requirement is that the calculation is performed using <code class="doc
         <span class="n">lambda_temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
         <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
         <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">),</span>
-        <span class="p">):</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reward considering exponential absolute difference to temperature comfort.</span>
-<span class="sd">        </span>
+
 <span class="sd">        .. math::</span>
 <span class="sd">            R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T - T_{low}, 0) + max(T_{up} - T, 0)) )</span>
 
@@ -294,12 +297,13 @@ The only requirement is that the calculation is performed using <code class="doc
             <span class="n">temp_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_summer</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">temp_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_winter</span>
-        
-        <span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">obs_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_name</span><span class="p">]</span>
+
+        <span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obs_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_name</span><span class="p">]</span>
         <span class="n">comfort</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">T</span> <span class="ow">in</span> <span class="n">temps</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">T</span> <span class="o">&lt;</span> <span class="n">temp_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">T</span> <span class="o">&gt;</span> <span class="n">temp_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="n">comfort</span> <span class="o">+=</span> <span class="n">exp</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">temp_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">T</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">T</span> <span class="o">-</span> <span class="n">temp_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
+                <span class="n">comfort</span> <span class="o">+=</span> <span class="n">exp</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">temp_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">T</span><span class="p">),</span>
+                                   <span class="nb">abs</span><span class="p">(</span><span class="n">T</span> <span class="o">-</span> <span class="n">temp_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
 
         <span class="k">return</span> <span class="n">comfort</span><span class="p">,</span> <span class="n">temps</span>
 
@@ -317,7 +321,7 @@ The only requirement is that the calculation is performed using <code class="doc
         <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
         <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">),</span>
         <span class="n">range_comfort_hours</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span>
-        <span class="p">):</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Linear reward function with a time-dependent weight for consumption and energy terms.</span>
 
@@ -332,7 +336,7 @@ The only requirement is that the calculation is performed using <code class="doc
 <span class="sd">            range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).</span>
 <span class="sd">            range_comfort_hours (tuple, optional): Hours where thermal comfort is considered. Defaults to (9, 19).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        
+
         <span class="nb">super</span><span class="p">(</span><span class="n">HourlyLinearReward</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">env</span><span class="p">,</span>
             <span class="n">temperature_variable</span><span class="p">,</span>
@@ -365,7 +369,7 @@ The only requirement is that the calculation is performed using <code class="doc
             <span class="n">weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_energy</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">weight</span> <span class="o">=</span> <span class="mf">1.0</span>
-        
+
         <span class="c1"># Weighted sum of both terms</span>
         <span class="n">reward</span> <span class="o">=</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">reward_energy</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">weight</span><span class="p">)</span> <span class="o">*</span> <span class="n">reward_comfort</span>
 

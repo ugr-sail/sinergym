@@ -81,16 +81,14 @@
              
   <section id="controllers">
 <h1>Controllers<a class="headerlink" href="#controllers" title="Permalink to this headline"></a></h1>
-<p>Sinergym has a section to implement your own controllers. Currently, we have developed a <strong>random agent</strong> and a <strong>rule-based agent</strong>.
+<p>Sinergym has a section to implement your own controllers. Currently, we have developed a <strong>random agent</strong> and a <strong>rule-based agent</strong> to 5Zone and Datacenter buildings.
 You can find this code in <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/controllers.py">sinergym/sinergym/utils/controllers.py</a>.
 it is very useful in order to perform benchmarks as a reference point to study DRL algorithms:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Implementation of basic controllers.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Sequence</span>
 
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">arange</span>
-
-<span class="kn">from</span> <span class="nn">..utils.common</span> <span class="kn">import</span> <span class="n">get_season_comfort_range</span><span class="p">,</span> <span class="n">parse_variables</span>
+<span class="kn">from</span> <span class="nn">..utils.common</span> <span class="kn">import</span> <span class="n">parse_variables</span>
 
 
 <span class="k">class</span> <span class="nc">RandomController</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -103,11 +101,8 @@ it is very useful in order to perform benchmarks as a reference point to study D
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
 
-    <span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Selects a random action from the environment&#39;s action_space.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            observation (Optional[List[Any]], optional): Perceived observation. Defaults to None.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Sequence[Any]: Action chosen.</span>
@@ -116,10 +111,11 @@ it is very useful in order to perform benchmarks as a reference point to study D
         <span class="k">return</span> <span class="n">action</span>
 
 
-<span class="k">class</span> <span class="nc">RuleBasedController</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">RBC5Zone</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Agent based on static rules.</span>
+        <span class="sd">&quot;&quot;&quot;Agent based on static rules for controlling 5ZoneAutoDXVAV setpoints.</span>
+<span class="sd">        Follows the standard setpoints described in ASHRAE Standard 55-2004: Thermal Environmental Conditions for Human Occupancy.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            env (Any): Simulation environment</span>
@@ -127,12 +123,78 @@ it is very useful in order to perform benchmarks as a reference point to study D
 
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">variables_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">variables_path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">parse_variables</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables_path</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">variables</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_summer</span> <span class="o">=</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_winter</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_summer</span> <span class="o">=</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_winter</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Select action based on outdoor air drybulb temperature and daytime.</span>
+        <span class="sd">&quot;&quot;&quot;Select action based on indoor temperature.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            observation (List[Any]): Perceived observation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Sequence[Any]: Action chosen.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">obs_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">],</span> <span class="n">observation</span><span class="p">))</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">])</span>
+        <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">])</span>
+        <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">])</span>
+
+        <span class="n">summer_start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">summer_final_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+
+        <span class="n">current_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span>
+
+        <span class="c1"># Get season comfort range</span>
+        <span class="k">if</span> <span class="n">current_dt</span> <span class="o">&gt;=</span> <span class="n">summer_start_date</span> <span class="ow">and</span> <span class="n">current_dt</span> <span class="o">&lt;=</span> <span class="n">summer_final_date</span><span class="p">:</span>
+            <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_summer</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_winter</span>
+
+        <span class="c1"># Update setpoints</span>
+        <span class="n">in_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;Zone Air Temperature (SPACE1-1)&#39;</span><span class="p">]</span>
+
+        <span class="n">current_heat_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
+            <span class="s1">&#39;Zone Thermostat Heating Setpoint Temperature (SPACE1-1)&#39;</span><span class="p">]</span>
+        <span class="n">current_cool_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
+            <span class="s1">&#39;Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)&#39;</span><span class="p">]</span>
+
+        <span class="n">new_heat_setpoint</span> <span class="o">=</span> <span class="n">current_heat_setpoint</span>
+        <span class="n">new_cool_setpoint</span> <span class="o">=</span> <span class="n">current_cool_setpoint</span>
+
+        <span class="k">if</span> <span class="n">in_temp</span> <span class="o">&lt;</span> <span class="n">season_comfort_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">new_heat_setpoint</span> <span class="o">=</span> <span class="n">current_heat_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">new_cool_setpoint</span> <span class="o">=</span> <span class="n">current_cool_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">in_temp</span> <span class="o">&gt;</span> <span class="n">season_comfort_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">new_cool_setpoint</span> <span class="o">=</span> <span class="n">current_cool_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">new_heat_setpoint</span> <span class="o">=</span> <span class="n">current_heat_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">new_heat_setpoint</span><span class="p">,</span> <span class="n">new_cool_setpoint</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">RBCDatacenter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Agent based on static rules for controlling 2ZoneDataCenterHVAC setpoints.</span>
+<span class="sd">        Follows the ASHRAE recommended temperature ranges for data centers described in ASHRAE TC9.9 (2016).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            env (Any): Simulation environment</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">variables</span>
+
+        <span class="c1"># ASHRAE recommended temperature range = [18, 27] Celsius</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_datacenter</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Select action based on indoor temperature.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            observation (List[Any]): Perceived observation.</span>
@@ -142,68 +204,51 @@ it is very useful in order to perform benchmarks as a reference point to study D
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obs_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">],</span> <span class="n">observation</span><span class="p">))</span>
 
-        <span class="n">out_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;Site Outdoor Air Drybulb Temperature (Environment)&#39;</span><span class="p">]</span>
+        <span class="c1"># West Zone</span>
+        <span class="n">west_in_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;Zone Air Temperature (West Zone)&#39;</span><span class="p">]</span>
 
-        <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">])</span>
-        <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">])</span>
-        <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">])</span>
-        <span class="n">hour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">])</span>
+        <span class="n">west_current_heat_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
+            <span class="s1">&#39;Zone Thermostat Heating Setpoint Temperature (West Zone)&#39;</span><span class="p">]</span>
+        <span class="n">west_current_cool_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
+            <span class="s1">&#39;Zone Thermostat Cooling Setpoint Temperature (West Zone)&#39;</span><span class="p">]</span>
 
-        <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="n">get_season_comfort_range</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span>
+        <span class="n">west_new_heat_setpoint</span> <span class="o">=</span> <span class="n">west_current_heat_setpoint</span>
+        <span class="n">west_new_cool_setpoint</span> <span class="o">=</span> <span class="n">west_current_cool_setpoint</span>
 
-        <span class="k">if</span> <span class="n">out_temp</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">arange</span><span class="p">(</span>
-                <span class="n">season_comfort_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">season_comfort_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">.1</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">18</span><span class="p">):</span>  <span class="c1"># day</span>
-                <span class="n">action</span> <span class="o">=</span> <span class="p">(</span><span class="mf">19.44</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">22</span><span class="p">):</span>  <span class="c1"># evening</span>
-                <span class="n">action</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">24.44</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>  <span class="c1"># night</span>
-                <span class="n">action</span> <span class="o">=</span> <span class="p">(</span><span class="mf">18.33</span><span class="p">,</span> <span class="mf">23.33</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>  <span class="c1"># maintain setpoints if comfort requirements are already met</span>
-            <span class="n">current_cool_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
-                <span class="s1">&#39;Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)&#39;</span><span class="p">]</span>
-            <span class="n">current_heat_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
-                <span class="s1">&#39;Zone Thermostat Heating Setpoint Temperature (SPACE1-1)&#39;</span><span class="p">]</span>
-            <span class="n">action</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_heat_setpoint</span><span class="p">,</span> <span class="n">current_cool_setpoint</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">west_in_temp</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_datacenter</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">west_new_heat_setpoint</span> <span class="o">=</span> <span class="n">west_current_heat_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">west_new_cool_setpoint</span> <span class="o">=</span> <span class="n">west_current_cool_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">west_in_temp</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_datacenter</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">west_new_cool_setpoint</span> <span class="o">=</span> <span class="n">west_current_cool_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">west_new_heat_setpoint</span> <span class="o">=</span> <span class="n">west_current_heat_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
 
-        <span class="k">return</span> <span class="n">action</span>
+        <span class="c1"># East Zone</span>
+        <span class="n">east_in_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;Zone Air Temperature (East Zone)&#39;</span><span class="p">]</span>
+
+        <span class="n">east_current_heat_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
+            <span class="s1">&#39;Zone Thermostat Heating Setpoint Temperature (East Zone)&#39;</span><span class="p">]</span>
+        <span class="n">east_current_cool_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
+            <span class="s1">&#39;Zone Thermostat Cooling Setpoint Temperature (East Zone)&#39;</span><span class="p">]</span>
+
+        <span class="n">east_new_heat_setpoint</span> <span class="o">=</span> <span class="n">east_current_heat_setpoint</span>
+        <span class="n">east_new_cool_setpoint</span> <span class="o">=</span> <span class="n">east_current_cool_setpoint</span>
+
+        <span class="k">if</span> <span class="n">east_in_temp</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_datacenter</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">east_new_heat_setpoint</span> <span class="o">=</span> <span class="n">east_current_heat_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">east_new_cool_setpoint</span> <span class="o">=</span> <span class="n">east_current_cool_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">east_in_temp</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_datacenter</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">east_new_cool_setpoint</span> <span class="o">=</span> <span class="n">east_current_cool_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">east_new_heat_setpoint</span> <span class="o">=</span> <span class="n">east_current_heat_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">west_new_heat_setpoint</span><span class="p">,</span>
+            <span class="n">west_new_cool_setpoint</span><span class="p">,</span>
+            <span class="n">east_new_heat_setpoint</span><span class="p">,</span>
+            <span class="n">east_new_cool_setpoint</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The functionality is very simple; given an environment observation, these instances return an action to interact with the environment. You can develop your own
-controllers or modify rules of <code class="docutils literal notranslate"><span class="pre">RuleBasedController</span></code>, for example. An usage of these controllers could be the next:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="kn">from</span> <span class="nn">sinergym.utils.controllers</span> <span class="kn">import</span> <span class="n">RuleBasedController</span>
-
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-mixed-continuous-v1&#39;</span><span class="p">)</span>
-
-<span class="c1"># create rule-controlled agent</span>
-<span class="n">agent</span> <span class="o">=</span> <span class="n">RuleBasedController</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
-    <span class="n">action</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">act</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
-    <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-    <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
-        <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s1">&#39;Episode &#39;</span><span class="p">,</span>
-    <span class="n">i</span><span class="p">,</span>
-    <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span>
-    <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span>
-    <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
-
-<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
+controllers or modify current rules, for example. You can see an example of usage in section <a class="reference internal" href="usage-example.html#using-a-rule-based-controller"><span class="std std-ref">Using a rule-based controller</span></a>.</p>
 </section>
 
 
