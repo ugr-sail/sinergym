@@ -114,7 +114,6 @@ def test_logger_wrapper(env_name, request):
 
     # If env is wrapped with normalize obs...
     if is_wrapped(env, NormalizeObservation):
-        print(logger.log_file[:-4] + '_normalized.csv')
         assert os.path.isfile(tmp_log_file[:-4] + '_normalized.csv')
     else:
         assert not os.path.isfile(tmp_log_file[:-4] + '_normalized.csv')
@@ -141,19 +140,33 @@ def test_logger_wrapper(env_name, request):
 
 
 def test_env_wrappers(env_all_wrappers):
-    # env_wrapper history should be empty at the beginning
+    # Check history multiobs is empty
     assert env_all_wrappers.history == deque([])
-    for i in range(1):  # Only need 1 episode
-        obs = env_all_wrappers.reset()
-        # This obs should be normalize --> [0,1]
-        assert (obs >= 0).all() and (obs <= 1).all()
+    # Start env
+    obs = env_all_wrappers.reset()
+    # Check history has obs and any more
+    assert len(env_all_wrappers.history) == env_all_wrappers.n
+    assert (env_all_wrappers._get_obs() == obs).all()
 
-        done = False
-        while not done:
-            a = env_all_wrappers.action_space.sample()
-            obs, reward, done, info = env_all_wrappers.step(a)
+    # This obs should be normalize --> [0,1]
+    assert (obs >= 0).all() and (obs <= 1).all()
+
+    # Execute a short episode in order to check logger
+    logger = env_all_wrappers.logger
+    tmp_log_file = logger.log_file
+    for _ in range(10):
+        env_all_wrappers.step(env_all_wrappers.action_space.sample())
+    env_all_wrappers.reset()
 
     # Let's check if history has been completed succesfully
     assert len(env_all_wrappers.history) == 5
     assert isinstance(env_all_wrappers.history[0], np.ndarray)
+
+    # check logger
+    assert logger.log_progress_file == env_all_wrappers.simulator._env_working_dir_parent + '/progress.csv'
+    assert logger.log_file == env_all_wrappers.simulator._eplus_working_dir + '/monitor.csv'
+    assert os.path.isfile(logger.log_progress_file)
+    assert os.path.isfile(tmp_log_file)
+    assert os.path.isfile(tmp_log_file[:-4] + '_normalized.csv')
+    # Close env
     env_all_wrappers.close()
