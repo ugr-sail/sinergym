@@ -10,8 +10,8 @@ subprocess.Popen([sys.executable or 'python'] + args)
 
 ## Complete call (all parameters)
 args = ["DRL_battery.py",
-        "--environment", "Eplus-5Zone-cool-discrete-v1",
-        '--episodes', '12',
+        "--environment", "Eplus-5Zone-cool-continuous-v1",
+        '--episodes', '3',
         '--algorithm', 'DDPG',
         '--reward', 'exponential',
         '--normalization',
