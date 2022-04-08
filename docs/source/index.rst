@@ -40,7 +40,13 @@ If you want to contribute, please read `CONTRIBUTING.md <https://github.com/jaji
    :hidden:
    :caption: Tutorials and examples
 
-   pages/usage-example.rst
+   pages/tutorials/start-using-sinergym.rst
+   pages/tutorials/usage-example.rst
+   pages/tutorials/rbc-example.rst
+   pages/tutorials/drl-example.rst
+   pages/tutorials/tensorboard-tutorial.rst
+   pages/tutorials/mlflow-tutorial.rst
+
 
 
 

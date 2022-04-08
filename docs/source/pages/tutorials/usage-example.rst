@@ -7,6 +7,7 @@ Sinergym uses the standard OpenAI gym API. Lets see how to create a basic loop.
 
 First we need to include sinergym and create an environment, in our case using 'Eplus-demo-v1'
 
+
 .. literalinclude:: ../../../examples/basic_example.py
     :language: python
     :start-after: import numpy as np
