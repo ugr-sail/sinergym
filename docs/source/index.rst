@@ -38,6 +38,12 @@ If you want to contribute, please read `CONTRIBUTING.md <https://github.com/jaji
    pages/API-reference.rst
 
 
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Notebooks
+
+   pages/notebooks/rule_controller_example.ipynb
 
 
 

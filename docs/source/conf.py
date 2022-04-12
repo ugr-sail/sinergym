@@ -33,7 +33,8 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.mathjax',
     'sphinx.ext.autosectionlabel',
-    'sphinxcontrib.spelling']
+    'sphinxcontrib.spelling',
+    'nbsphinx']
 
 autosummary_generate = True
 
