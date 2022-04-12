@@ -14,26 +14,28 @@ If you want to contribute, please read `CONTRIBUTING.md <https://github.com/jaji
 .. toctree::
    :maxdepth: 2
    :hidden:
+   :caption: Start Here
 
    pages/installation.rst
+   pages/usage-example.rst
+
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: sinergym
+
    pages/environments.rst
    pages/rewards.rst
    pages/controllers.rst
    pages/wrappers.rst
    pages/extra-configuration.rst
-   pages/usage-example.rst
    pages/output.rst
    pages/deep-reinforcement-learning.rst
    pages/gcloudAPI.rst
    pages/github-actions.rst
    pages/tests.rst
    pages/API-reference.rst
-
-
-
-
-
-
 
 
 
