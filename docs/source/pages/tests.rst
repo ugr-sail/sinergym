@@ -18,7 +18,7 @@ These tests running under `pytest <https://docs.pytest.org/en/6.2.x/>`__ framewo
 Install Pytest
 ****************
 
-This project has already established this dependency if you have installed *extras* libraries or *test* library specifically (see :ref:`4. Install the package`). However, to install it independently:
+This project has already established this dependency if you have installed *extras* libraries or *test* library specifically. However, to install it independently:
 
 .. code:: sh
 
@@ -56,7 +56,9 @@ These tests have been created in `sinergym/tests <https://github.com/jajimer/sin
 - **test_config.py**: Tests for `sinergym/sinergym/utils/config.py <https://github.com/jajimer/sinergym/tree/main/sinergym/utils/config.py>`__. Here will be all tests that check python building model, weather, directories tree for executions and extra configuration set up in simulator.
 - **test_env.py**: Tests for `sinergym/sinergym/envs/\* <https://github.com/jajimer/sinergym/tree/main/sinergym/envs>`__. Here will be all tests that check Sinergym simulation environments based on OpenAI Gym.
 - **test_controller.py**: Tests for `sinergym/sinergym/utils/controllers.py <https://github.com/jajimer/sinergym/blob/main/sinergym/utils/controllers.py>`__. Here will be all tests that check agent controller like Rule-Based-Controller for example.
+- **test_config.py**: Tests for `sinergym/sinergym/utils/config.py <https://github.com/jajimer/sinergym/blob/main/tests/test_config.py>`__. Here will be all tests that check simulator configuration (IDF and EPW Python models and extra configuration functionality).
 - **test_stable_baselines.py**: Tests for `Stable Baselines 3 <https://github.com/DLR-RM/stable-baselines3>`__. Here will be all tests that check Sinergym simulation environments can be used correctly with Stable Baselines 3 algorithms.
+
 
 If you want to make new tests, you can append to this modules or create a new one if the conceptual context is different.
 

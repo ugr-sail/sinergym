@@ -156,10 +156,10 @@
     wholeyear,               !- Name
     1,                       !- Begin Month
     1,                       !- Begin Day of Month
-    ,                        !- Begin Year
+    1991,                        !- Begin Year
     3,                       !- End Month
     31,                      !- End Day of Month
-    ,                        !- End Year
+    1991,                        !- End Year
     Sunday,                  !- Day of Week for Start Day
     No,                      !- Use Weather File Holidays and Special Days
     No,                      !- Use Weather File Daylight Saving Period

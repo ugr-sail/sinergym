@@ -19,7 +19,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.rewards.ExpReward" href="sinergym.utils.rewards.ExpReward.html" />
+    <link rel="next" title="sinergym.utils.rewards.BaseReward" href="sinergym.utils.rewards.BaseReward.html" />
     <link rel="prev" title="sinergym.utils.gcloud.upload_to_bucket" href="sinergym.utils.gcloud.upload_to_bucket.html" /> 
 </head>
 
@@ -42,16 +42,16 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../API-reference.html">API reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
@@ -61,7 +61,9 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">sinergym.utils.rewards</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.BaseReward.html">sinergym.utils.rewards.BaseReward</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.ExpReward.html">sinergym.utils.rewards.ExpReward</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.HourlyLinearReward.html">sinergym.utils.rewards.HourlyLinearReward</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.rewards.LinearReward.html">sinergym.utils.rewards.LinearReward</a></li>
 </ul>
 </li>
@@ -102,18 +104,24 @@
              
   <section id="module-sinergym.utils.rewards">
 <span id="sinergym-utils-rewards"></span><h1>sinergym.utils.rewards<a class="headerlink" href="#module-sinergym.utils.rewards" title="Permalink to this headline"></a></h1>
-<p>Implementation of different types of rewards.</p>
+<p>Implementation of reward functions.</p>
 <p class="rubric">Classes</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.rewards.ExpReward.html#sinergym.utils.rewards.ExpReward" title="sinergym.utils.rewards.ExpReward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpReward</span></code></a>([energy_weight, lambda_energy, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.rewards.BaseReward.html#sinergym.utils.rewards.BaseReward" title="sinergym.utils.rewards.BaseReward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseReward</span></code></a>(env)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.rewards.LinearReward.html#sinergym.utils.rewards.LinearReward" title="sinergym.utils.rewards.LinearReward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LinearReward</span></code></a>([energy_weight, lambda_energy, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.rewards.ExpReward.html#sinergym.utils.rewards.ExpReward" title="sinergym.utils.rewards.ExpReward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpReward</span></code></a>(env[, temperature_variable, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.rewards.HourlyLinearReward.html#sinergym.utils.rewards.HourlyLinearReward" title="sinergym.utils.rewards.HourlyLinearReward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HourlyLinearReward</span></code></a>(env[, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.rewards.LinearReward.html#sinergym.utils.rewards.LinearReward" title="sinergym.utils.rewards.LinearReward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LinearReward</span></code></a>(env[, temperature_variable, ...])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -125,7 +133,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="sinergym.utils.gcloud.upload_to_bucket.html" class="btn btn-neutral float-left" title="sinergym.utils.gcloud.upload_to_bucket" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.rewards.ExpReward.html" class="btn btn-neutral float-right" title="sinergym.utils.rewards.ExpReward" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.rewards.BaseReward.html" class="btn btn-neutral float-right" title="sinergym.utils.rewards.BaseReward" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

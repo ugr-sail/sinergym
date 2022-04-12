@@ -22,6 +22,8 @@ Cloudpickle
 cnn
 coef
 colab
+Conda
+conda
 Config
 config
 Contrib
@@ -70,6 +72,8 @@ Gaussian
 gcloud
 getter
 Github
+Github
+github
 gitignore
 globals
 Gmail
@@ -150,6 +154,8 @@ rl
 rollout
 rollouts
 RuleBasedController
+runperiod
+Runperiod
 serializable
 setpoint
 setpoints

@@ -7,7 +7,7 @@ from stable_baselines3.common.env_checker import check_env
 
 def test_reset(env_demo):
     obs = env_demo.reset()
-    assert len(obs) == 19
+    assert len(obs) == 20
     assert env_demo.simulator._episode_existed
 
 
@@ -16,15 +16,16 @@ def test_step(env_demo):
     action = randint(0, 9)
     obs, reward, done, info = env_demo.step(action)
 
-    assert len(obs) == 19
+    assert len(obs) == 20
     assert not isinstance(reward, type(None))
     assert not done
     assert list(
         info.keys()) == [
         'timestep',
         'time_elapsed',
-        'day',
+        'year',
         'month',
+        'day',
         'hour',
         'total_power',
         'total_power_no_units',
@@ -39,15 +40,16 @@ def test_step(env_demo):
     action = randint(0, 9)
     obs, reward, done, info = env_demo.step(action)
 
-    assert len(obs) == 19
+    assert len(obs) == 20
     assert not isinstance(reward, type(None))
     assert not done
     assert list(
         info.keys()) == [
         'timestep',
         'time_elapsed',
-        'day',
+        'year',
         'month',
+        'day',
         'hour',
         'total_power',
         'total_power_no_units',
@@ -84,3 +86,5 @@ def test_all_environments():
         # Rename directory with name TEST for future remove
         os.rename(env.simulator._env_working_dir_parent, 'Eplus-env-TEST' +
                   env.simulator._env_working_dir_parent.split('/')[-1])
+
+        env.close()

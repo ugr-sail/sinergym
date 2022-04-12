@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Rewards" href="rewards.html" />
-    <link rel="prev" title="Extra Configuration in Sinergym simulations" href="extra-configuration.html" /> 
+    <link rel="next" title="Deep Reinforcement Learning Integration" href="deep-reinforcement-learning.html" />
+    <link rel="prev" title="Usage example" href="usage-example.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,19 +42,19 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Output format</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#logger">Logger</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
 </ul>
 
@@ -175,7 +175,6 @@ regardless of the training technique which may be being used or any other extern
     <span class="k">def</span> <span class="nf">log_step</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-            <span class="n">date</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
             <span class="n">observation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
             <span class="n">action</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]],</span>
             <span class="n">simulation_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -188,7 +187,6 @@ regardless of the training technique which may be being used or any other extern
 
 <span class="sd">        Args:</span>
 <span class="sd">            timestep (int): Current episode timestep in simulation.</span>
-<span class="sd">            date (list): Current date [month,day,hour] in simulation.</span>
 <span class="sd">            observation (list): Values that belong to current observation.</span>
 <span class="sd">            action (list): Values that belong to current action.</span>
 <span class="sd">            simulation_time (float): Total time elapsed in current episode (seconds).</span>
@@ -200,7 +198,7 @@ regardless of the training technique which may be being used or any other extern
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
-            <span class="n">row_contents</span> <span class="o">=</span> <span class="p">[</span><span class="n">timestep</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span> <span class="o">+</span> \
+            <span class="n">row_contents</span> <span class="o">=</span> <span class="p">[</span><span class="n">timestep</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span> <span class="o">+</span> \
                 <span class="nb">list</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">simulation_time</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span>
                                 <span class="n">total_power_no_units</span><span class="p">,</span> <span class="n">comfort_penalty</span><span class="p">,</span> <span class="n">done</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">steps_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_contents</span><span class="p">)</span>
@@ -219,7 +217,6 @@ regardless of the training technique which may be being used or any other extern
     <span class="k">def</span> <span class="nf">log_step_normalize</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-            <span class="n">date</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
             <span class="n">observation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
             <span class="n">action</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]],</span>
             <span class="n">simulation_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -231,7 +228,6 @@ regardless of the training technique which may be being used or any other extern
 
 <span class="sd">        Args:</span>
 <span class="sd">            timestep (int): Current episode timestep in simulation.</span>
-<span class="sd">            date (List[int, int, int]): Current date [month,day,hour] in simulation.</span>
 <span class="sd">            observation (List[Any]): Values that belong to current observation.</span>
 <span class="sd">            action (List[Union[int, float]]): Values that belong to current action.</span>
 <span class="sd">            simulation_time (float): Total time elapsed in current episode (seconds).</span>
@@ -241,7 +237,7 @@ regardless of the training technique which may be being used or any other extern
 <span class="sd">            done (bool): It specifies if this step terminates episode or not.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
-            <span class="n">row_contents</span> <span class="o">=</span> <span class="p">[</span><span class="n">timestep</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span> <span class="o">+</span> \
+            <span class="n">row_contents</span> <span class="o">=</span> <span class="p">[</span><span class="n">timestep</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span> <span class="o">+</span> \
                 <span class="nb">list</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">simulation_time</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span>
                                 <span class="n">total_power_no_units</span><span class="p">,</span> <span class="n">comfort_penalty</span><span class="p">,</span> <span class="n">done</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">steps_data_normalized</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_contents</span><span class="p">)</span>
@@ -395,7 +391,7 @@ regardless of the training technique which may be being used or any other extern
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Note that you can activate and deactivate logger from environment when you want it, using methods activate and deactivate, so you don’t need to unwrap environment.</p>
+<p>Note that you can activate and deactivate logger from environment when you want it, using methods activate and deactivate, so you don't need to unwrap environment.</p>
 </div>
 </section>
 </section>
@@ -404,8 +400,8 @@ regardless of the training technique which may be being used or any other extern
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="extra-configuration.html" class="btn btn-neutral float-left" title="Extra Configuration in Sinergym simulations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rewards.html" class="btn btn-neutral float-right" title="Rewards" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="usage-example.html" class="btn btn-neutral float-left" title="Usage example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deep-reinforcement-learning.html" class="btn btn-neutral float-right" title="Deep Reinforcement Learning Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

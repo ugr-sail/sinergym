@@ -14,38 +14,20 @@ If you want to contribute, please read `CONTRIBUTING.md <https://github.com/jaji
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: Start Here
 
    pages/installation.rst
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: sinergym
-
    pages/environments.rst
-   pages/github-actions.rst
-   pages/tests.rst
-   pages/extra-configuration.rst
-   pages/output.rst
    pages/rewards.rst
    pages/controllers.rst
    pages/wrappers.rst
+   pages/extra-configuration.rst
+   pages/usage-example.rst
+   pages/output.rst
    pages/deep-reinforcement-learning.rst
    pages/gcloudAPI.rst
+   pages/github-actions.rst
+   pages/tests.rst
    pages/API-reference.rst
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: Tutorials and examples
-
-   pages/tutorials/start-using-sinergym.rst
-   pages/tutorials/usage-example.rst
-   pages/tutorials/rbc-example.rst
-   pages/tutorials/drl-example.rst
-   pages/tutorials/tensorboard-tutorial.rst
-   pages/tutorials/mlflow-tutorial.rst
 
 
 

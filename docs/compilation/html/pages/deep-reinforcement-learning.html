@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Sinergym with Google Cloud" href="gcloudAPI.html" />
-    <link rel="prev" title="Wrappers" href="wrappers.html" /> 
+    <link rel="prev" title="Output format" href="output.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,14 +42,12 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Deep Reinforcement Learning Integration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#drl-logger">DRL Logger</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#tensorboard-structure">Tensorboard structure</a></li>
@@ -60,6 +58,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
 </ul>
 
@@ -143,7 +143,7 @@ Current algorithms checked by Sinergym are:</p>
 <h2>DRL Logger<a class="headerlink" href="#drl-logger" title="Permalink to this headline"></a></h2>
 <p><a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html">Callbacks</a> are a set of functions that will
 be called at given stages of the training procedure. You can use callbacks to access internal state of the RL model during training.
-It allows one to do monitoring, auto saving, model manipulation, progress bars, …</p>
+It allows one to do monitoring, auto saving, model manipulation, progress bars, ...</p>
 <p>This structure allows to custom our own logger for DRL executions. Our objective is to <strong>log all information about our custom environment</strong> specifically.
 Therefore, <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/callbacks.py">sinergym/sinergym/utils/callbacks.py</a> has been created with this proposal.
 Each algorithm has its own differences about how information is extracted which is why its implementation. <code class="docutils literal notranslate"><span class="pre">LoggerCallback</span></code> can deal with those subtleties.</p>
@@ -313,7 +313,7 @@ Each algorithm has its own differences about how information is extracted which 
 <p>You can specify if you want Sinergym logger (see <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>) to record simulation interactions during training at the same time using <code class="docutils literal notranslate"><span class="pre">sinergym_logger</span></code> attribute in constructor.</p>
 </div>
 <p>This callback derives <code class="docutils literal notranslate"><span class="pre">BaseCallback</span></code> from Stable Baselines 3 while <code class="docutils literal notranslate"><span class="pre">BaseCallBack</span></code> uses <a class="reference external" href="https://www.tensorflow.org/tensorboard?hl=es-419">Tensorboard</a> on the background at the same time.
-With Tensorboard, it’s possible to visualize all DRL training in real time and compare between different executions. This is an example:</p>
+With Tensorboard, it's possible to visualize all DRL training in real time and compare between different executions. This is an example:</p>
 <a class="reference internal image-reference" href="../_images/tensorboard_example.png"><img alt="Tensorboard example" class="align-center" src="../_images/tensorboard_example.png" style="width: 800px;" /></a>
 <p>There are tables which are in some algorithms and not in others and vice versa. It is important the difference between <code class="docutils literal notranslate"><span class="pre">OnPolicyAlgorithms</span></code> and <code class="docutils literal notranslate"><span class="pre">OffPolicyAlgorithms</span></code>:</p>
 <ul class="simple">
@@ -345,7 +345,7 @@ in continuous environments has their own output and clipped with gym action spac
 </li>
 <li><p><strong>observation</strong>: Here is recorded all observation values during simulation. This values depends on the environment which is being simulated (see <a class="reference internal" href="output.html#output-format"><span class="std std-ref">Output format</span></a>).</p></li>
 <li><p><strong>normalized_observation</strong> (optional): This section appear only when environment has been wrapped with normalization (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>). The model will train with this normalized values and they will be recorded both; original observation and normalized observation.</p></li>
-<li><p><strong>rollout</strong>: Algorithm metrics in Stable Baselines by default. For example, DQN has <em>exploration_rate</em> and this value doesn’t appear in other algorithms.</p></li>
+<li><p><strong>rollout</strong>: Algorithm metrics in Stable Baselines by default. For example, DQN has <em>exploration_rate</em> and this value doesn't appear in other algorithms.</p></li>
 <li><p><strong>time</strong>: Monitoring time of execution.</p></li>
 <li><p><strong>train</strong>: Record specific neural network information for each algorithm, provided by Stable baselines as well as rollout.</p></li>
 </ul>
@@ -474,7 +474,7 @@ Here is an example:</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="wrappers.html" class="btn btn-neutral float-left" title="Wrappers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="output.html" class="btn btn-neutral float-left" title="Output format" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="gcloudAPI.html" class="btn btn-neutral float-right" title="Sinergym with Google Cloud" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

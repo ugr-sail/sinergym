@@ -44,6 +44,7 @@ RANGES_5ZONE = {'Facility Total HVAC Electricity Demand Rate (Whole Building)': 
                 'done': [False, True],
                 'hour': [0, 23],
                 'month': [1, 12],
+                'year': [1, 2022],
                 'reward': [-3.550779087370951, -0.0086829184636919],
                 'time (seconds)': [0, 31536000],
                 'timestep': [0, 35040],
@@ -62,7 +63,12 @@ RANGES_IW = {
     "IW North Zone Average Temperature": [18.0, 25.0],
     "IW Effective IAT Setpoint by Logics": [18.0, 25.0],
     "IW Occupy Mode Flag": [0.0, 1.0],
-    "IW Calculated Heating Demand": [0.0, 85.0]
+    "IW Calculated Heating Demand": [0.0, 85.0],
+    'day': [1.0, 31.0],
+    'done': [False, True],
+    'hour': [0.0, 23.0],
+    'month': [1.0, 12.0],
+    'year': [1.0, 2022.0],
 }
 
 RANGES_DATACENTER = {
@@ -103,6 +109,7 @@ RANGES_DATACENTER = {
     'done': [False, True],
     'hour': [0.0, 23.0],
     'month': [1.0, 12.0],
+    'year': [1.0, 2022.0],
     'power_penalty': [-7.68030164869835, -0.1763741508343818],
     'reward': [-9.090902680780722, -0.0881870754171909],
     'time (seconds)': [0, 31536000],
@@ -111,18 +118,20 @@ RANGES_DATACENTER = {
 
 
 def get_delta_seconds(
-        year: int,
+        st_year: int,
         st_mon: int,
         st_day: int,
+        end_year: int,
         end_mon: int,
         end_day: int) -> float:
-    """Returns the delta seconds between `year:st_mon:st_day:0:0:0` and
-    `year:end_mon:end_day:24:0:0`.
+    """Returns the delta seconds between st year:st mon:st day:0:0:0 and
+    end year:end mon:end day:24:0:0.
 
     Args:
-        st_year (int): Year.
+        st_year (int): Start year.
         st_mon (int): Start month.
         st_day (int): Start day.
+        end_year (int): End year.
         end_mon (int): End month.
         end_day (int): End day.
 
@@ -130,39 +139,39 @@ def get_delta_seconds(
         float: Time difference in seconds.
 
     """
-
-    startTime = datetime(year, st_mon, st_day, 0, 0, 0)
-    endTime = datetime(year, end_mon, end_day, 23, 0, 0) + timedelta(0, 3600)
+    startTime = datetime(st_year, st_mon, st_day, 0, 0, 0)
+    endTime = datetime(end_year, end_mon, end_day,
+                       23, 0, 0) + timedelta(0, 3600)
     delta_sec = (endTime - startTime).total_seconds()
     return delta_sec
 
 
-def get_current_time_info(epm: Epm, sec_elapsed: float,
-                          sim_year: int = 1991) -> Tuple[int, int, int, float]:
+def get_current_time_info(
+        epm: Epm, sec_elapsed: float) -> List[int]:
     """Returns the current day, month and hour given the seconds elapsed since the simulation started.
 
     Args:
         epm (opyplus.Epm): EnergyPlus model object.
         sec_elapsed (float): Seconds elapsed since the start of the simulation
-        sim_year (int, optional): Year of the simulation. Defaults to 1991.
 
     Returns:
-        Tuple[int, int, int, float]: A tuple composed by the current day, month and hour in the simulation and time elapsed.
+        List[int]: A List composed by the current year, day, month and hour in the simulation.
 
     """
     start_date = datetime(
-        year=sim_year,  # epm.RunPeriod[0]['start_year'],
-        month=epm.RunPeriod[0]['begin_month'],
-        day=epm.RunPeriod[0]['begin_day_of_month']
+        year=int(epm.RunPeriod[0]['begin_year']),
+        month=int(epm.RunPeriod[0]['begin_month']),
+        day=int(epm.RunPeriod[0]['begin_day_of_month'])
     )
 
     current_date = start_date + timedelta(seconds=sec_elapsed)
 
-    return (
-        current_date.day,
-        current_date.month,
-        current_date.hour,
-        sec_elapsed)
+    return [
+        int(current_date.year),
+        int(current_date.month),
+        int(current_date.day),
+        int(current_date.hour),
+    ]
 
 
 def parse_variables(var_file: str) -> Dict[str, List[str]]:
@@ -172,7 +181,7 @@ def parse_variables(var_file: str) -> Dict[str, List[str]]:
         var_file (str): Variables file path.
 
     Returns:
-        Dict[str, List[str]]: 'observation' and 'action' keys; a list with the name of the observation <variables> (<zone>) and a list with the name of the action <variables> respectively.
+        Dict[str, List[str]]: observation and action keys; a list with the name of the observation <variables> (<zone>) and a list with the name of the action <variables> respectively.
     """
 
     tree = ET.parse(var_file)
@@ -334,7 +343,7 @@ def ranges_getter(output_path: str,
     """Given a path with simulations outputs, this function is used to extract max and min absolute values of all episodes in each variable. If a dict ranges is given, will be updated.
 
     Args:
-        output_path (str): path with simulations directories (Eplus-env-\\*).
+        output_path (str): path with simulations directories (Eplus-env-<env_name>).
         last_result (Optional[Dict[str, List[float]]], optional): Last ranges dict to be updated. This will be created if it is not given.
 
     Returns:
@@ -450,6 +459,32 @@ def prepare_batch_from_records(records: List[Record]) -> List[Dict[str, Any]]:
     return batch
 
 
+def get_season_comfort_range(year, month, day):
+    """Get comfort temperature range depending on season. The comfort ranges are those
+    defined by ASHRAE in Standard 55—Thermal Environmental Conditions for Human Occupancy (2004).
+
+    Args:
+        year (int): current year
+        month (int): current month
+        day (int): current day
+    """
+
+    summer_start_date = datetime(year, 6, 1)
+    summer_final_date = datetime(year, 9, 30)
+
+    range_comfort_summer = (23.0, 26.0)
+    range_comfort_winter = (20.0, 23.5)
+
+    current_dt = datetime(year, month, day)
+
+    if current_dt >= summer_start_date and current_dt <= summer_final_date:
+        comfort = range_comfort_summer
+    else:
+        comfort = range_comfort_winter
+
+    return comfort
+
+
 class Logger():
     """Sinergym terminal logger for simulation executions.
     """
@@ -523,7 +558,6 @@ class CSVLogger(object):
     def log_step(
             self,
             timestep: int,
-            date: List[int],
             observation: List[Any],
             action: Union[List[Union[int, float]], List[None]],
             simulation_time: float,
@@ -536,7 +570,6 @@ class CSVLogger(object):
 
         Args:
             timestep (int): Current episode timestep in simulation.
-            date (list): Current date [month,day,hour] in simulation.
             observation (list): Values that belong to current observation.
             action (list): Values that belong to current action.
             simulation_time (float): Total time elapsed in current episode (seconds).
@@ -548,7 +581,7 @@ class CSVLogger(object):
 
         """
         if self.flag:
-            row_contents = [timestep] + list(date) + list(observation) + \
+            row_contents = [timestep] + list(observation) + \
                 list(action) + [simulation_time, reward,
                                 total_power_no_units, comfort_penalty, done]
             self.steps_data.append(row_contents)
@@ -567,7 +600,6 @@ class CSVLogger(object):
     def log_step_normalize(
             self,
             timestep: int,
-            date: List[int],
             observation: List[Any],
             action: Union[List[Union[int, float]], List[None]],
             simulation_time: float,
@@ -579,7 +611,6 @@ class CSVLogger(object):
 
         Args:
             timestep (int): Current episode timestep in simulation.
-            date (List[int, int, int]): Current date [month,day,hour] in simulation.
             observation (List[Any]): Values that belong to current observation.
             action (List[Union[int, float]]): Values that belong to current action.
             simulation_time (float): Total time elapsed in current episode (seconds).
@@ -589,7 +620,7 @@ class CSVLogger(object):
             done (bool): It specifies if this step terminates episode or not.
         """
         if self.flag:
-            row_contents = [timestep] + list(date) + list(observation) + \
+            row_contents = [timestep] + list(observation) + \
                 list(action) + [simulation_time, reward,
                                 total_power_no_units, comfort_penalty, done]
             self.steps_data_normalized.append(row_contents)
@@ -735,31 +766,3 @@ class CSVLogger(object):
         """Deactivate Sinergym CSV logger
         """
         self.flag = False
-
-
-def get_season_comfort_range(month, day):
-    """Get comfort temperature range depending on season. The comfort ranges are those
-    defined by ASHRAE in Standard 55—Thermal Environmental Conditions for Human Occupancy (2004).
-
-    Args:
-        year (int): current year
-        month (int): current month
-        day (int): current day
-    """
-
-    year = 2022
-
-    summer_start_date = datetime(year, 6, 1)
-    summer_final_date = datetime(year, 9, 30)
-
-    range_comfort_summer = (23.0, 26.0)
-    range_comfort_winter = (20.0, 23.5)
-
-    current_dt = datetime(year, month, day)
-
-    if current_dt >= summer_start_date and current_dt <= summer_final_date:
-        comfort = range_comfort_summer
-    else:
-        comfort = range_comfort_winter
-
-    return comfort

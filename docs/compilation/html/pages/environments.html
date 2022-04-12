@@ -19,7 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Github Actions" href="github-actions.html" />
+    <link rel="next" title="Rewards" href="rewards.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
@@ -45,16 +45,16 @@
 <li class="toctree-l2"><a class="reference internal" href="#observation-action-spaces">Observation/action spaces</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
 </ul>
 
@@ -337,7 +337,7 @@
 </tr>
 </tbody>
 </table>
-<p>(*) Weather types according to <a class="reference external" href="https://www.energycodes.gov/development/commercial/prototype_models#TMY3">DOE’s
+<p>(*) Weather types according to <a class="reference external" href="https://www.energycodes.gov/development/commercial/prototype_models#TMY3">DOE's
 classification</a>.</p>
 <p>(**) In these environments, weather series change from episode to
 episode. Gaussian noise with 0 mean and 2.5 std is added to the original
@@ -390,18 +390,20 @@ values in order to add stochastic.</p>
 <span class="cm">      *****  *********************************************  ****  ****</span>
 <span class="cm">      15     Facility Total HVAC Electricity Demand Rate    -5e6  5e6  </span>
 <span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      16     Current day                                     1     31</span>
+<span class="cm">      16     Current year                                     1   2050 </span>
 <span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      17     Current month                                   1     12</span>
+<span class="cm">      17     Current month                                    1     31</span>
 <span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      18     Current hour                                    0     23</span>
+<span class="cm">      18     Current day                                      1     12</span>
+<span class="cm">      *****  *********************************************  ****  ****</span>
+<span class="cm">      19     Current hour                                     0     23</span>
 <span class="cm">      =====  =============================================  ====  ====</span>
 <span class="cm">  --&gt;</span>
 
   <span class="nt">&lt;observation-space&gt;</span>
     <span class="nt">&lt;low</span> <span class="na">value=</span><span class="s">&quot;-5e6&quot;</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;high</span> <span class="na">value=</span><span class="s">&quot;5e6&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;shape</span> <span class="na">value=</span><span class="s">&quot;19&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;shape</span> <span class="na">value=</span><span class="s">&quot;20&quot;</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;dtype</span> <span class="na">value=</span><span class="s">&quot;numpy.float32&quot;</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;/observation-space&gt;</span>
 
@@ -481,10 +483,18 @@ values in order to add stochastic.</p>
 <span class="nt">&lt;/space&gt;</span>
 </pre></div>
 </div>
+<p>As can be seen in <em>5ZoneAutoDXVAV_spaces.cfg</em>, for example, the <strong>year, month, day and hour</strong> of the simulation are not included for each timestep.
+However, they do appear in the definition of the observation spaces in <em>5ZoneAutoDXVAV_spaces.cfg</em> and, therefore, as part of the state returned by the environment.
+This is because they are not variables recognizable by the simulator as such (Energyplus) and Sinergym does the calculations and adds them in the states returned as
+output by the environment. This feature is common to all environments available in Sinergym and all supported building designs.</p>
 <p>This gives you the possibility of playing with different observation/action spaces in discrete and continuous environments in order to study how this affects the resolution of a building problem.
 Inner each environment it is known what configuration file must read and spaces will be defined automatically, so you should not worry about anything.</p>
 <p>In order to make environments more generic in DRL solutions. We have updated action space for continuous problem. Gym action space is defined always between [-1,1] and Sinergym parse this values to action space defined in configuration file internally.</p>
 <p>The function in charge of reading those configuration files is <code class="docutils literal notranslate"><span class="pre">parse_observation_action_space(space_file)</span></code> in <em>sinergym/sinergym/utils/common.py</em></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Remember that the spaces defined here must be the same size as in variables.cfg. Except in the observation due to the fact that we have to add the year, month, day and hour.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Set up observation and action spaces in environment constructor dynamically could be upgrade in the future. Stay tuned for upcoming releases!</em></p>
@@ -497,7 +507,7 @@ Inner each environment it is known what configuration file must read and spaces 
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="github-actions.html" class="btn btn-neutral float-right" title="Github Actions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="rewards.html" class="btn btn-neutral float-right" title="Rewards" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -19,7 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Deep Reinforcement Learning Integration" href="deep-reinforcement-learning.html" />
+    <link rel="next" title="Extra Configuration in Sinergym simulations" href="extra-configuration.html" />
     <link rel="prev" title="Controllers" href="controllers.html" /> 
 </head>
 
@@ -42,16 +42,16 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
 </ul>
 
@@ -81,7 +81,7 @@
              
   <section id="wrappers">
 <h1>Wrappers<a class="headerlink" href="#wrappers" title="Permalink to this headline"></a></h1>
-<p>Sinergym has several wrappers in order to add some functionality in the environment that it doesn’t have by default. Currently, we have developed a <strong>normalization wrapper</strong>,
+<p>Sinergym has several wrappers in order to add some functionality in the environment that it doesn't have by default. Currently, we have developed a <strong>normalization wrapper</strong>,
 <strong>multi-observation wrapper</strong> and <strong>Logger wrapper</strong>. The code can be found in <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/wrappers.py">sinergym/sinergym/utils/wrappers.py</a>.
 You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some of its variants:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Implementation of custom Gym environments.&quot;&quot;&quot;</span>
@@ -93,20 +93,19 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3.common.env_util</span> <span class="kn">import</span> <span class="n">is_wrapped</span>
 
-<span class="kn">from</span> <span class="nn">sinergym.utils.common</span> <span class="kn">import</span> <span class="n">RANGES_5ZONE</span><span class="p">,</span> <span class="n">CSVLogger</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.common</span> <span class="kn">import</span> <span class="n">CSVLogger</span>
 
 
 <span class="k">class</span> <span class="nc">NormalizeObservation</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">ObservationWrapper</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">env</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-                 <span class="n">ranges</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span>
-                              <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="n">RANGES_5ZONE</span><span class="p">):</span>
+                 <span class="n">ranges</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]]):</span>
         <span class="sd">&quot;&quot;&quot;Observations normalized to range [0, 1].</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            env (Any): Original Sinergym environment.</span>
-<span class="sd">            ranges (Dict[str, Sequence[Any]], optional): Observation variables ranges to apply normalization (rely on environment). Defaults to RANGES_5ZONE.</span>
+<span class="sd">            ranges (Dict[str, Sequence[Any]]): Observation variables ranges to apply normalization (rely on environment).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">NormalizeObservation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unwrapped_observation</span> <span class="o">=</span> <span class="kc">None</span>
@@ -223,7 +222,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
         <span class="c1"># Headers for csv logger</span>
-        <span class="n">monitor_header_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;timestep,month,day,hour&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span> <span class="o">+</span> \
+        <span class="n">monitor_header_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;timestep&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span> <span class="o">+</span> \
             <span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;time (seconds)&#39;</span><span class="p">,</span> <span class="s1">&#39;reward&#39;</span><span class="p">,</span>
                                        <span class="s1">&#39;power_penalty&#39;</span><span class="p">,</span> <span class="s1">&#39;comfort_penalty&#39;</span><span class="p">,</span> <span class="s1">&#39;done&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -255,25 +254,19 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="c1"># need to delete them.</span>
         <span class="k">if</span> <span class="n">is_wrapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">NormalizeObservation</span><span class="p">):</span>
             <span class="c1"># Record action and new observation in simulator&#39;s csv</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step_normalize</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestep&#39;</span><span class="p">],</span>
-                                           <span class="n">date</span><span class="o">=</span><span class="p">[</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">],</span>
-                                                 <span class="n">info</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">],</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">]],</span>
-                                           <span class="n">observation</span><span class="o">=</span><span class="n">obs</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span>
-                                           <span class="n">action</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;action_&#39;</span><span class="p">],</span>
-                                           <span class="n">simulation_time</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;time_elapsed&#39;</span><span class="p">],</span>
-                                           <span class="n">reward</span><span class="o">=</span><span class="n">reward</span><span class="p">,</span>
-                                           <span class="n">total_power_no_units</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power_no_units&#39;</span><span class="p">],</span>
-                                           <span class="n">comfort_penalty</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;comfort_penalty&#39;</span><span class="p">],</span>
-                                           <span class="n">done</span><span class="o">=</span><span class="n">done</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step_normalize</span><span class="p">(</span>
+                <span class="n">timestep</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestep&#39;</span><span class="p">],</span>
+                <span class="n">observation</span><span class="o">=</span><span class="n">obs</span><span class="p">,</span>
+                <span class="n">action</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;action_&#39;</span><span class="p">],</span>
+                <span class="n">simulation_time</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;time_elapsed&#39;</span><span class="p">],</span>
+                <span class="n">reward</span><span class="o">=</span><span class="n">reward</span><span class="p">,</span>
+                <span class="n">total_power_no_units</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power_no_units&#39;</span><span class="p">],</span>
+                <span class="n">comfort_penalty</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;comfort_penalty&#39;</span><span class="p">],</span>
+                <span class="n">done</span><span class="o">=</span><span class="n">done</span><span class="p">)</span>
             <span class="c1"># Record original observation too</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step</span><span class="p">(</span>
                 <span class="n">timestep</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestep&#39;</span><span class="p">],</span>
-                <span class="n">date</span><span class="o">=</span><span class="p">[</span>
-                    <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">],</span>
-                    <span class="n">info</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">],</span>
-                    <span class="n">info</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">]],</span>
-                <span class="n">observation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_unwrapped_obs</span><span class="p">()[</span>
-                    <span class="p">:</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span>
+                <span class="n">observation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_unwrapped_obs</span><span class="p">(),</span>
                 <span class="n">action</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;action_&#39;</span><span class="p">],</span>
                 <span class="n">simulation_time</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;time_elapsed&#39;</span><span class="p">],</span>
                 <span class="n">reward</span><span class="o">=</span><span class="n">reward</span><span class="p">,</span>
@@ -283,17 +276,16 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
                 <span class="n">done</span><span class="o">=</span><span class="n">done</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Only record observation without normalization</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestep&#39;</span><span class="p">],</span>
-                                 <span class="n">date</span><span class="o">=</span><span class="p">[</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">],</span>
-                                       <span class="n">info</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">],</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">]],</span>
-                                 <span class="n">observation</span><span class="o">=</span><span class="n">obs</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span>
-                                 <span class="n">action</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;action_&#39;</span><span class="p">],</span>
-                                 <span class="n">simulation_time</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;time_elapsed&#39;</span><span class="p">],</span>
-                                 <span class="n">reward</span><span class="o">=</span><span class="n">reward</span><span class="p">,</span>
-                                 <span class="n">total_power_no_units</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power_no_units&#39;</span><span class="p">],</span>
-                                 <span class="n">comfort_penalty</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;comfort_penalty&#39;</span><span class="p">],</span>
-                                 <span class="n">power</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power&#39;</span><span class="p">],</span>
-                                 <span class="n">done</span><span class="o">=</span><span class="n">done</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step</span><span class="p">(</span>
+                <span class="n">timestep</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestep&#39;</span><span class="p">],</span>
+                <span class="n">observation</span><span class="o">=</span><span class="n">obs</span><span class="p">,</span>
+                <span class="n">action</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;action_&#39;</span><span class="p">],</span>
+                <span class="n">simulation_time</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;time_elapsed&#39;</span><span class="p">],</span>
+                <span class="n">reward</span><span class="o">=</span><span class="n">reward</span><span class="p">,</span>
+                <span class="n">total_power_no_units</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power_no_units&#39;</span><span class="p">],</span>
+                <span class="n">comfort_penalty</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;comfort_penalty&#39;</span><span class="p">],</span>
+                <span class="n">power</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power&#39;</span><span class="p">],</span>
+                <span class="n">done</span><span class="o">=</span><span class="n">done</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span>
 
@@ -320,8 +312,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
             <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_eplus_working_dir</span> <span class="o">+</span> <span class="s1">&#39;/monitor.csv&#39;</span><span class="p">)</span>
         <span class="c1"># Store initial state of simulation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                             <span class="n">date</span><span class="o">=</span><span class="p">[</span><span class="n">obs</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">obs</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span> <span class="n">obs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
-                             <span class="n">observation</span><span class="o">=</span><span class="n">obs</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span>
+                             <span class="n">observation</span><span class="o">=</span><span class="n">obs</span><span class="p">,</span>
                              <span class="n">action</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
                                  <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]))],</span>
                              <span class="n">simulation_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -334,7 +325,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="k">return</span> <span class="n">obs</span>
 
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Close env. Recording last episode summary.</span>
+        <span class="sd">&quot;&quot;&quot;Recording last episode summary and close env.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Record last episode summary before end simulation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">logger_main</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
@@ -359,8 +350,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">MultiObsWrapper</span><span class="p">,</span>
-                                     <span class="n">NormalizeObservation</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">MultiObsWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
 
 <span class="n">default_env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
 
@@ -387,11 +377,11 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The order of wrappers if you are going to use several at the same time is really important.
-The correct order is <strong>Normalization - Logger - MultiObs</strong> and subsets (for example, <em>Normalization - Multiobs</em> is valid).</p>
+The correct order is <strong>Normalization - Logger - MultiObs</strong> and subsets (for example, <em>Normalization</em> - <em>Multiobs</em> is valid).</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For more information about Sinergym Logger, visit <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a></p>
+<p>For more information about Sinergym Logger, visit <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>.</p>
 </div>
 </section>
 
@@ -400,7 +390,7 @@ The correct order is <strong>Normalization - Logger - MultiObs</strong> and subs
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="controllers.html" class="btn btn-neutral float-left" title="Controllers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="deep-reinforcement-learning.html" class="btn btn-neutral float-right" title="Deep Reinforcement Learning Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="extra-configuration.html" class="btn btn-neutral float-right" title="Extra Configuration in Sinergym simulations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

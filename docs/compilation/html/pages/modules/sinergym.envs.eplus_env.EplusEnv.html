@@ -42,16 +42,16 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../API-reference.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="sinergym.envs.html">sinergym.envs</a><ul class="current">
@@ -97,33 +97,33 @@
 <h1>sinergym.envs.eplus_env.EplusEnv<a class="headerlink" href="#sinergym-envs-eplus-env-eplusenv" title="Permalink to this headline"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.envs.eplus_env.</span></span><span class="sig-name descname"><span class="pre">EplusEnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spaces_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'eplus-env-v1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_actions:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_variability:</span> <span class="pre">typing.Optional[typing.Tuple[float]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward:</span> <span class="pre">typing.Any</span> <span class="pre">=</span> <span class="pre">&lt;sinergym.utils.rewards.LinearReward</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_repeat:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_data_store_num:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_params:</span> <span class="pre">typing.Optional[typing.Dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typing.Any]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv" title="Permalink to this definition"></a></dt>
-<dd><p>Environment with EnergyPlus simulator.</p>
-<dl class="py method">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.envs.eplus_env.</span></span><span class="sig-name descname"><span class="pre">EplusEnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spaces_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'eplus-env-v1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_actions:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_variability:</span> <span class="pre">typing.Optional[typing.Tuple[float]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward:</span> <span class="pre">typing.Any</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.rewards.LinearReward'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward_kwargs:</span> <span class="pre">typing.Optional[typing.Dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typing.Any]]</span> <span class="pre">=</span> <span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_repeat:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_data_store_num:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_params:</span> <span class="pre">typing.Optional[typing.Dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typing.Any]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spaces_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'eplus-env-v1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_actions:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_variability:</span> <span class="pre">typing.Optional[typing.Tuple[float]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward:</span> <span class="pre">typing.Any</span> <span class="pre">=</span> <span class="pre">&lt;sinergym.utils.rewards.LinearReward</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_repeat:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_data_store_num:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_params:</span> <span class="pre">typing.Optional[typing.Dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typing.Any]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spaces_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'eplus-env-v1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_actions:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_variability:</span> <span class="pre">typing.Optional[typing.Tuple[float]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward:</span> <span class="pre">typing.Any</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.rewards.LinearReward'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward_kwargs:</span> <span class="pre">typing.Optional[typing.Dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typing.Any]]</span> <span class="pre">=</span> <span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_repeat:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_data_store_num:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_params:</span> <span class="pre">typing.Optional[typing.Dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typing.Any]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Environment with EnergyPlus simulator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>idf_file</strong> (<em>str</em>) – Name of the IDF file with the building definition.</p></li>
-<li><p><strong>weather_file</strong> (<em>str</em>) – Name of the EPW file for weather conditions.</p></li>
-<li><p><strong>variables_file</strong> (<em>str</em>) – Variables defined in environment to be observation and action (see sinergym/data/variables/ for examples).</p></li>
-<li><p><strong>spaces_file</strong> (<em>str</em>) – Action and observation space defined in a xml (see sinergym/data/variables/ for examples).</p></li>
-<li><p><strong>env_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Env name used for working directory generation. Defaults to ‘eplus-env-v1’.</p></li>
-<li><p><strong>discrete_actions</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the actions are discrete (True) or continuous (False). Defaults to True.</p></li>
-<li><p><strong>weather_variability</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.</p></li>
-<li><p><strong>reward</strong> (<em>Any</em><em>, </em><em>optional</em>) – Reward function instance used for agent feedback. Defaults to LinearReward().</p></li>
-<li><p><strong>act_repeat</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of timesteps that an action is repeated in the simulator, regardless of the actions it receives during that repetition interval.</p></li>
-<li><p><strong>max_ep_data_store_num</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of last sub-folders (one for each episode) generated during execution on the simulation.</p></li>
-<li><p><strong>config_params</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Dictionary with all extra configuration for simulator. Defaults to None.</p></li>
+<li><p><strong>idf_file</strong> (<em>str</em>) -- Name of the IDF file with the building definition.</p></li>
+<li><p><strong>weather_file</strong> (<em>str</em>) -- Name of the EPW file for weather conditions.</p></li>
+<li><p><strong>variables_file</strong> (<em>str</em>) -- Variables defined in environment to be observation and action.</p></li>
+<li><p><strong>spaces_file</strong> (<em>str</em>) -- Action and observation space defined in a xml.</p></li>
+<li><p><strong>env_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- Env name used for working directory generation. Defaults to eplus-env-v1.</p></li>
+<li><p><strong>discrete_actions</strong> (<em>bool</em><em>, </em><em>optional</em>) -- Whether the actions are discrete (True) or continuous (False). Defaults to True.</p></li>
+<li><p><strong>weather_variability</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) -- Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.</p></li>
+<li><p><strong>reward</strong> (<em>Any</em><em>, </em><em>optional</em>) -- Reward function instance used for agent feedback. Defaults to LinearReward.</p></li>
+<li><p><strong>reward_kwargs</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>, </em><em>optional</em>) -- Parameters to be passed to the reward function. Defaults to empty dict.</p></li>
+<li><p><strong>act_repeat</strong> (<em>int</em><em>, </em><em>optional</em>) -- Number of timesteps that an action is repeated in the simulator, regardless of the actions it receives during that repetition interval.</p></li>
+<li><p><strong>max_ep_data_store_num</strong> (<em>int</em><em>, </em><em>optional</em>) -- Number of last sub-folders (one for each episode) generated during execution on the simulation.</p></li>
+<li><p><strong>config_params</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>, </em><em>optional</em>) -- Dictionary with all extra configuration for simulator. Defaults to None.</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -150,7 +150,7 @@
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -193,7 +193,7 @@
 <dd><p>Environment rendering.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Mode for rendering. Defaults to ‘human’.</p>
+<dd class="field-odd"><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) -- Mode for rendering. Defaults to 'human'.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -218,7 +218,7 @@
 <dd><p>Sends action to the environment</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>action</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>float</em><em>, </em><em>np.integer</em><em>, </em><em>np.ndarray</em><em>, </em><em>List</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – Action selected by the agent.</p>
+<dd class="field-odd"><p><strong>action</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>float</em><em>, </em><em>np.integer</em><em>, </em><em>np.ndarray</em><em>, </em><em>List</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>Any</em><em>]</em><em>]</em>) -- Action selected by the agent.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Observation for next timestep, reward obtained, Whether the episode has ended or not and a dictionary with extra information</p>

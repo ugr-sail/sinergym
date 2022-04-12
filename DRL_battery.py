@@ -112,6 +112,13 @@ parser.add_argument(
     dest='seed',
     help='Seed used to algorithm training.')
 parser.add_argument(
+    '--id',
+    '-id',
+    type=str,
+    default=None,
+    dest='id',
+    help='Custom experiment identifier.')
+parser.add_argument(
     '--remote_store',
     '-sto',
     action='store_true',
@@ -136,18 +143,20 @@ parser.add_argument(
     dest='auto_delete',
     help='If is a GCE instance and this flag is active, that instance will be removed from GCP.')
 
-parser.add_argument('--learning_rate', '-lr', type=float, default=.0007)
+parser.add_argument('--learning_rate', '-lr', type=float, default=.0003)
+parser.add_argument('--n_steps', '-n', type=int, default=2048)
+parser.add_argument('--batch_size', '-bs', type=int, default=64)
+parser.add_argument('--n_epochs', '-ne', type=int, default=10)
 parser.add_argument('--gamma', '-g', type=float, default=.99)
-parser.add_argument('--n_steps', '-n', type=int, default=5)
-parser.add_argument('--gae_lambda', '-gl', type=float, default=1.0)
+parser.add_argument('--gae_lambda', '-gl', type=float, default=.95)
 parser.add_argument('--ent_coef', '-ec', type=float, default=0)
 parser.add_argument('--vf_coef', '-v', type=float, default=.5)
 parser.add_argument('--max_grad_norm', '-m', type=float, default=.5)
-parser.add_argument('--rms_prop_eps', '-rms', type=float, default=1e-05)
 parser.add_argument('--buffer_size', '-bfs', type=int, default=1000000)
 parser.add_argument('--learning_starts', '-ls', type=int, default=100)
 parser.add_argument('--tau', '-tu', type=float, default=0.005)
-# for DDPG noise only
+parser.add_argument('--gradient_steps', '-gs', type=int, default=1)
+parser.add_argument('--clip_range', '-cr', type=float, default=.2)
 parser.add_argument('--sigma', '-sig', type=float, default=0.1)
 
 args = parser.parse_args()
@@ -161,6 +170,8 @@ name = args.algorithm + '-' + args.environment + \
     '-episodes' + str(args.episodes)
 if args.seed:
     name += '-seed' + str(args.seed)
+if args.id:
+    name += '-id' + str(args.id)
 name += '_' + experiment_date
 # ---------------------------------------------------------------------------- #
 #                    Check if MLFLOW_TRACKING_URI is defined                   #
@@ -193,26 +204,30 @@ with mlflow.start_run(run_name=name):
     mlflow.log_param('seed', args.seed)
     mlflow.log_param('remote-store', bool(args.remote_store))
 
-    mlflow.log_param('learning_rate', args.learning_rate)
-    mlflow.log_param('n_steps', args.n_steps)
+    mlflow.log_param('learning-rate', args.learning_rate)
+    mlflow.log_param('n-steps', args.n_steps)
+    mlflow.log_param('batch-size', args.batch_size)
+    mlflow.log_param('n-epochs', args.n_epochs)
     mlflow.log_param('gamma', args.gamma)
-    mlflow.log_param('gae_lambda', args.gae_lambda)
-    mlflow.log_param('ent_coef', args.ent_coef)
-    mlflow.log_param('buffer_size', args.buffer_size)
-    mlflow.log_param('vf_coef', args.vf_coef)
-    mlflow.log_param('max_grad_norm', args.max_grad_norm)
-    mlflow.log_param('rms_prop_eps', args.rms_prop_eps)
-    mlflow.log_param('learning_starts', args.learning_starts)
+    mlflow.log_param('gae-lambda', args.gae_lambda)
+    mlflow.log_param('ent-coef', args.ent_coef)
+    mlflow.log_param('vf-coef', args.vf_coef)
+    mlflow.log_param('max-grad-norm', args.max_grad_norm)
+    mlflow.log_param('buffer-size', args.buffer_size)
+    mlflow.log_param('learning-starts', args.learning_starts)
     mlflow.log_param('tau', args.tau)
+    mlflow.log_param('gradient-steps', args.gradient_steps)
+    mlflow.log_param('clip-range', args.clip_range)
     mlflow.log_param('sigma', args.sigma)
+    mlflow.log_param('id', args.id)
 
     # ---------------------------------------------------------------------------- #
     #               Environment construction (with reward specified)               #
     # ---------------------------------------------------------------------------- #
     if args.reward == 'linear':
-        reward = LinearReward()
+        reward = LinearReward
     elif args.reward == 'exponential':
-        reward = ExpReward()
+        reward = ExpReward
     else:
         raise RuntimeError('Reward function [{}] specified is not registered.'.format(args.reward))
 
@@ -226,7 +241,7 @@ with mlflow.start_run(run_name=name):
     #                                   Wrappers                                   #
     # ---------------------------------------------------------------------------- #
     if args.normalization:
-        # We have to know what dictionary ranges to use
+        # dictionary ranges to use
         norm_range = None
         env_type = args.environment.split('-')[1]
         if env_type == 'datacenter':
@@ -257,12 +272,12 @@ with mlflow.start_run(run_name=name):
         model = DQN('MlpPolicy', env, verbose=1,
                     learning_rate=args.learning_rate,
                     buffer_size=args.buffer_size,
-                    learning_starts=50000,
-                    batch_size=32,
+                    learning_starts=args.learning_starts,
+                    batch_size=args.batch_size,
                     tau=args.tau,
                     gamma=args.gamma,
                     train_freq=4,
-                    gradient_steps=1,
+                    gradient_steps=args.gradient_steps,
                     target_update_interval=10000,
                     exploration_fraction=.1,
                     exploration_initial_eps=1.0,
@@ -271,9 +286,9 @@ with mlflow.start_run(run_name=name):
                     seed=args.seed,
                     tensorboard_log=args.tensorboard)
     #--------------------------------------------------------#
-
-    #--------------------------DDPG--------------------------#
-    # The noise objects for DDPG
+    #                           DDPG                         #
+    #--------------------------------------------------------#
+    # noise objects for DDPG
     elif args.algorithm == 'DDPG':
         if args.sigma:
             n_actions = env.action_space.shape[-1]
@@ -287,8 +302,8 @@ with mlflow.start_run(run_name=name):
                      seed=args.seed,
                      tensorboard_log=args.tensorboard)
     #--------------------------------------------------------#
-
-    #--------------------------A2C---------------------------#
+    #                           A2C                          #
+    #--------------------------------------------------------#
     elif args.algorithm == 'A2C':
         model = A2C('MlpPolicy', env, verbose=1,
                     learning_rate=args.learning_rate,
@@ -302,33 +317,33 @@ with mlflow.start_run(run_name=name):
                     seed=args.seed,
                     tensorboard_log=args.tensorboard)
     #--------------------------------------------------------#
-
-    #--------------------------PPO---------------------------#
+    #                           PPO                          #
+    #--------------------------------------------------------#
     elif args.algorithm == 'PPO':
         model = PPO('MlpPolicy', env, verbose=1,
                     learning_rate=args.learning_rate,
                     n_steps=args.n_steps,
-                    batch_size=64,
-                    n_epochs=10,
+                    batch_size=args.batch_size,
+                    n_epochs=args.n_epochs,
                     gamma=args.gamma,
                     gae_lambda=args.gae_lambda,
-                    clip_range=.2,
-                    ent_coef=0,
-                    vf_coef=.5,
+                    clip_range=args.clip_range,
+                    ent_coef=args.ent_coef,
+                    vf_coef=args.vf_coef,
                     max_grad_norm=args.max_grad_norm,
                     seed=args.seed,
                     tensorboard_log=args.tensorboard)
     #--------------------------------------------------------#
-
-    #--------------------------SAC---------------------------#
+    #                           SAC                          #
+    #--------------------------------------------------------#
     elif args.algorithm == 'SAC':
         model = SAC(policy='MlpPolicy',
                     env=env,
                     seed=args.seed,
                     tensorboard_log=args.tensorboard)
     #--------------------------------------------------------#
-
-    #--------------------------TD3---------------------------#
+    #                           TD3                          #
+    #--------------------------------------------------------#
     elif args.algorithm == 'TD3':
         model = TD3(policy='MlpPolicy',
                     env=env, seed=args.seed,
@@ -336,7 +351,7 @@ with mlflow.start_run(run_name=name):
                     learning_rate=args.learning_rate,
                     buffer_size=args.buffer_size,
                     learning_starts=args.learning_starts,
-                    batch_size=100,
+                    batch_size=args.batch_size,
                     tau=args.tau,
                     gamma=args.gamma,
                     train_freq=(1, 'episode'),
@@ -354,8 +369,8 @@ with mlflow.start_run(run_name=name):
                     device='auto',
                     _init_setup_model=True)
     #--------------------------------------------------------#
-
-    #-------------------------ERROR?-------------------------#
+    #                           Error                        #
+    #--------------------------------------------------------#
     else:
         raise RuntimeError('Algorithm specified [{}] is not registered.'.format(args.algorithm))
     #--------------------------------------------------------#

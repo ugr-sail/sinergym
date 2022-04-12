@@ -6,6 +6,8 @@ from glob import glob
 
 import gym
 
+import sinergym
+
 envs_id = [env_spec.id for env_spec in gym.envs.registry.all()
            if env_spec.id.startswith('Eplus')]
 

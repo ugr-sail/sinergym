@@ -6,14 +6,17 @@ import pkg_resources
 import pytest
 from opyplus import Epm, Idd, WeatherData
 
-import sinergym.utils.rewards as R
 from sinergym.envs.eplus_env import EplusEnv
 from sinergym.simulators.eplus import EnergyPlus
+from sinergym.utils.common import RANGES_5ZONE
 from sinergym.utils.config import Config
+from sinergym.utils.rewards import BaseReward, LinearReward
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
                                      NormalizeObservation)
 
-############### ROOT DIRECTORY ###############
+# ---------------------------------------------------------------------------- #
+#                                Root Directory                                #
+# ---------------------------------------------------------------------------- #
 
 
 @pytest.fixture(scope='session')
@@ -25,7 +28,9 @@ def sinergym_path():
                 ''),
             os.pardir))
 
-############### SIMULATORS ###############
+# ---------------------------------------------------------------------------- #
+#                                     Paths                                    #
+# ---------------------------------------------------------------------------- #
 
 
 @pytest.fixture(scope='session')
@@ -78,6 +83,27 @@ def ddy_path(pkg_data_path):
 
 
 @pytest.fixture(scope='session')
+def idf_path2(pkg_data_path):
+    return os.path.join(
+        pkg_data_path,
+        'buildings',
+        '2ZoneDataCenterHVAC_wEconomizer.idf')
+
+
+@pytest.fixture(scope='session')
+def variable_path2(pkg_data_path):
+    return os.path.join(pkg_data_path, 'variables', 'variablesDataCenter.cfg')
+
+
+@pytest.fixture(scope='session')
+def space_path2(pkg_data_path):
+    return os.path.join(
+        pkg_data_path,
+        'variables',
+        '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg')
+
+
+@pytest.fixture(scope='session')
 def weather_path2(pkg_data_path):
     return os.path.join(
         pkg_data_path,
@@ -91,6 +117,10 @@ def ddy_path2(pkg_data_path):
         pkg_data_path,
         'weather',
         'USA_AZ_Davis-Monthan.AFB.722745_TMY3.ddy')
+
+# ---------------------------------------------------------------------------- #
+#                                  Simulators                                  #
+# ---------------------------------------------------------------------------- #
 
 
 @pytest.fixture(scope='function')
@@ -106,6 +136,10 @@ def simulator(eplus_path, bcvtb_path, idf_path, variable_path, weather_path):
         act_repeat=1,
         max_ep_data_store_num=10)
 
+# ---------------------------------------------------------------------------- #
+#                            Simulator Config class                            #
+# ---------------------------------------------------------------------------- #
+
 
 @pytest.fixture(scope='function')
 def config(idf_path, weather_path2):
@@ -119,28 +153,13 @@ def config(idf_path, weather_path2):
         max_ep_store=max_ep_store,
         extra_config=extra_config)
 
-############### ENVIRONMENTS, WRAPPERS AND RULE BASED CONTROLLER AGENT####
+# ---------------------------------------------------------------------------- #
+#                                 Environments                                 #
+# ---------------------------------------------------------------------------- #
 
 
 @pytest.fixture(scope='function')
 def env_demo(idf_path, weather_path, variable_path, space_path):
-    idf_file = idf_path.split('/')[-1]
-    weather_file = weather_path.split('/')[-1]
-    variables_file = variable_path.split('/')[-1]
-    spaces_file = space_path.split('/')[-1]
-
-    return EplusEnv(
-        env_name='TESTGYM',
-        idf_file=idf_file,
-        weather_file=weather_file,
-        variables_file=variables_file,
-        spaces_file=spaces_file,
-        discrete_actions=True,
-        weather_variability=None)
-
-
-@pytest.fixture(scope='function')
-def env_demo_discrete(idf_path, weather_path, variable_path, space_path):
     idf_file = idf_path.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
     variables_file = variable_path.split('/')[-1]
@@ -174,31 +193,34 @@ def env_demo_continuous(idf_path, weather_path, variable_path, space_path):
 
 
 @pytest.fixture(scope='function')
-def env_wrapper_logger(idf_path, weather_path, variable_path, space_path):
-    idf_file = idf_path.split('/')[-1]
+def env_datacenter(idf_path2, weather_path, variable_path2, space_path2):
+    idf_file = idf_path2.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
-    variables_file = variable_path.split('/')[-1]
-    spaces_file = space_path.split('/')[-1]
+    variables_file = variable_path2.split('/')[-1]
+    spaces_file = space_path2.split('/')[-1]
 
-    env = EplusEnv(
+    return EplusEnv(
         env_name='TESTGYM',
         idf_file=idf_file,
         weather_file=weather_file,
         variables_file=variables_file,
         spaces_file=spaces_file,
-        discrete_actions=False,
+        discrete_actions=True,
         weather_variability=None)
-    return LoggerWrapper(env=env, flag=True)
 
 
 @pytest.fixture(scope='function')
-def env_all_wrappers(idf_path, weather_path, variable_path, space_path):
-    idf_file = idf_path.split('/')[-1]
+def env_datacenter_continuous(
+        idf_path2,
+        weather_path,
+        variable_path2,
+        space_path2):
+    idf_file = idf_path2.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
-    variables_file = variable_path.split('/')[-1]
-    spaces_file = space_path.split('/')[-1]
+    variables_file = variable_path2.split('/')[-1]
+    spaces_file = space_path2.split('/')[-1]
 
-    env = EplusEnv(
+    return EplusEnv(
         env_name='TESTGYM',
         idf_file=idf_file,
         weather_file=weather_file,
@@ -206,13 +228,38 @@ def env_all_wrappers(idf_path, weather_path, variable_path, space_path):
         spaces_file=spaces_file,
         discrete_actions=False,
         weather_variability=None)
-    env = NormalizeObservation(env=env)
+
+# ---------------------------------------------------------------------------- #
+#                          Environments with Wrappers                          #
+# ---------------------------------------------------------------------------- #
+
+
+@pytest.fixture(scope='function')
+def env_wrapper_normalization(env_demo_continuous):
+    return NormalizeObservation(env=env_demo_continuous, ranges=RANGES_5ZONE)
+
+
+@pytest.fixture(scope='function')
+def env_wrapper_logger(env_demo_continuous):
+    return LoggerWrapper(env=env_demo_continuous, flag=True)
+
+
+@pytest.fixture(scope='function')
+def env_wrapper_multiobs(env_demo_continuous):
+    return MultiObsWrapper(env=env_demo_continuous, n=5, flatten=True)
+
+
+@pytest.fixture(scope='function')
+def env_all_wrappers(env_demo_continuous):
+    env = NormalizeObservation(env=env_demo_continuous, ranges=RANGES_5ZONE)
     env = LoggerWrapper(env=env, flag=True)
-    env = MultiObsWrapper(env=env, n=5)
+    env = MultiObsWrapper(env=env, n=5, flatten=True)
     return env
 
 
-############### COMMONS ###############
+# ---------------------------------------------------------------------------- #
+#                      Building and weather python models                      #
+# ---------------------------------------------------------------------------- #
 
 
 @pytest.fixture(scope='session')
@@ -225,19 +272,89 @@ def epm(idf_path, eplus_path):
 def weather_data(weather_path):
     return WeatherData.from_epw(weather_path)
 
-############### REWARDS ###############
+# ---------------------------------------------------------------------------- #
+#                                    Rewards                                   #
+# ---------------------------------------------------------------------------- #
 
 
 @pytest.fixture(scope='session')
-def simple_reward():
-    return R.LinearReward(
-        energy_weight=0.5,
-        lambda_energy=1e-4,
-        lambda_temperature=1.0
-    )
+def custom_reward():
+    class CustomReward(BaseReward):
+        def __init__(self, env):
+            super(CustomReward, self).__init__(env)
 
-############### WHEN TESTS HAVE FINISHED ###############
+        def __call__(self):
+            return -1.0, {}
+    return CustomReward
 
+
+@pytest.fixture(scope='session')
+def env_custom_reward(
+        idf_path,
+        weather_path,
+        variable_path,
+        space_path,
+        custom_reward):
+    idf_file = idf_path.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+    variables_file = variable_path.split('/')[-1]
+    spaces_file = space_path.split('/')[-1]
+
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=True,
+        reward=custom_reward,
+        weather_variability=None)
+
+
+@pytest.fixture(scope='session')
+def env_linear_reward(idf_path, weather_path, variable_path, space_path):
+    idf_file = idf_path.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+    variables_file = variable_path.split('/')[-1]
+    spaces_file = space_path.split('/')[-1]
+
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=True,
+        reward=LinearReward,
+        weather_variability=None)
+
+
+@pytest.fixture(scope='session')
+def env_linear_reward_args(idf_path, weather_path, variable_path, space_path):
+    idf_file = idf_path.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+    variables_file = variable_path.split('/')[-1]
+    spaces_file = space_path.split('/')[-1]
+
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        variables_file=variables_file,
+        spaces_file=spaces_file,
+        discrete_actions=True,
+        reward=LinearReward,
+        reward_kwargs={
+            'energy_weight': 0.2,
+            'range_comfort_summer': (
+                18.0,
+                20.0)},
+        weather_variability=None)
+
+
+# ---------------------------------------------------------------------------- #
+#                         WHEN TESTS HAVE BEEN FINISHED                        #
+# ---------------------------------------------------------------------------- #
 
 def pytest_sessionfinish(session, exitstatus):
     """ whole test run finishes. """
