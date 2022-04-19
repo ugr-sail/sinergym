@@ -95,7 +95,7 @@ RUN pip install -e .${SINERGYM_EXTRAS}
 #uninstall 3.6 python default version
 RUN apt-get remove --purge python3-pip python3 -y \
     && apt-get autoremove -y && apt-get autoclean -y
-
+RUN pip install idna
 CMD ["/bin/bash"]
 
 # Build: docker build -t sinergym:1.1.0 --build-arg ENERGYPLUS_VERSION=9.5.0 --build-arg ENERGYPLUS_INSTALL_VERSION=9-5-0 --build-arg ENERGYPLUS_SHA=de239b2e5f .

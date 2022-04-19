@@ -1,9 +1,10 @@
-pandas
-numpy
-gym
-eppy
-opyplus
 autopep8
+eppy
+gym
+idna
 isort[requirements_deprecated_finder,pipfile_deprecated_finder]
-twine
+numpy
+opyplus
+pandas
 pytype
+twine
