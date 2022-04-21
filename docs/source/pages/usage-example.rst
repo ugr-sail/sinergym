@@ -41,7 +41,10 @@ By default, all our environment ID's make use of a default (linear) reward. But 
     import sinergym
     from sinergym.utils.rewards import LinearReward, ExpReward
 
-    env = gym.make('Eplus-5Zone-hot-continuous-v1', reward=ExpReward())
+    env = gym.make('Eplus-5Zone-hot-continuous-v1', reward=ExpReward, reward_kwargs={
+                                                                        'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
+                                                                        'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+                                                                        'energy_weight': 0.1, })
     for i in range(1):
         obs = env.reset()
         rewards = []
@@ -63,6 +66,8 @@ By default, all our environment ID's make use of a default (linear) reward. But 
             sum(rewards))
     env.close()
 
+.. note:: It is necessary to specify in any new reward that we want to put the name of the energy and temperature variables in its reward_kwargs, since they depend on the specific building (IDF) that we are using. Otherwise, an error will occur.
+
 This example is exactly the same as the previous one, except that it uses different criteria to determine the rewards in each step of the simulation. 
 If you run the code you can see the difference in the values obtained for the reward (using a seed for randomization).
 
@@ -82,7 +87,10 @@ By default, the ID's of our environments do not include any wrapper, but we can 
     from sinergym.utils.rewards import LinearReward, ExpReward
     from sinergym.utils.wrapper import LoggerWrapper, NormalizeObservation
 
-    env = gym.make('Eplus-5Zone-hot-continuous-v1', reward=ExpReward())
+    env = gym.make('Eplus-5Zone-hot-continuous-v1', reward=ExpReward, reward_kwargs={
+                                                                        'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
+                                                                        'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+                                                                        'energy_weight': 0.1, })
     env = NormalizeObservation(env)
     env = LoggerWrapper(env)
     ...
@@ -127,7 +135,10 @@ You can replace the random actions we have used in the previous examples with on
     from sinergym.utils.wrapper import LoggerWrapper, NormalizeObservation
     from sinergym.utils.controllers import RBC5Zone
 
-    env = gym.make('Eplus-5Zone-hot-continuous-v1', reward=ExpReward())
+    env = gym.make('Eplus-5Zone-hot-continuous-v1', reward=ExpReward , reward_kwargs={
+                                                                        'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
+                                                                        'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+                                                                        'energy_weight': 0.1, })
     env = NormalizeObservation(env)
     env = LoggerWrapper(env)
 
@@ -178,7 +189,10 @@ the name of the environment or the variability in stochastic environments:
     from sinergym.utils.controllers import RuleBasedController
 
     env = gym.make('Eplus-datacenter-cool-continuous-stochastic-v1', 
-                    reward=ExpReward(),
+                    reward=ExpReward, reward_kwargs={
+                                        'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
+                                        'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+                                        'energy_weight': 0.1, },
                     weather_file='ESP_Granada.084190_SWEC.epw',
                     weather_variability=(1.0,0.0,0.001),
                     env_name='new_env_name',
@@ -229,7 +243,10 @@ This new IDF version, which also adapts to the new weather you put in, is saved 
                 ...}
 
     env = gym.make('Eplus-datacenter-cool-continuous-stochastic-v1', 
-                    reward=ExpReward(),
+                    reward=ExpReward, reward_kwargs={
+                                        'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
+                                        'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+                                        'energy_weight': 0.1, },
                     weather_file='ESP_Granada.084190_SWEC.epw',
                     weather_variability=(1.0,0.0,0.001),
                     env_name='new_env_name',
