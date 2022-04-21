@@ -33,8 +33,8 @@ class LinearReward(BaseReward):
     def __init__(
         self,
         env: Env,
-        temperature_variable: Union[str, list] = 'Zone Air Temperature (SPACE1-1)',
-        energy_variable: str = 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+        temperature_variable: Union[str, list],
+        energy_variable: str,
         energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
         lambda_temperature: float = 1.0,
@@ -51,8 +51,8 @@ class LinearReward(BaseReward):
 
         Args:
             env (Env): Gym environment.
-            temperature_variable (Union[str, list], optional): Name(s) of the temperature variable(s).
-            energy_variable (str, optional): Name of the energy/power variable.
+            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
+            energy_variable (str): Name of the energy/power variable.
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
@@ -133,8 +133,8 @@ class ExpReward(LinearReward):
     def __init__(
         self,
         env: Env,
-        temperature_variable: Union[str, list] = 'Zone Air Temperature (SPACE1-1)',
-        energy_variable: str = 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+        temperature_variable: Union[str, list],
+        energy_variable: str,
         energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
         lambda_temperature: float = 1.0,
@@ -149,8 +149,8 @@ class ExpReward(LinearReward):
 
         Args:
             env (Env): Gym environment.
-            temperature_variable (Union[str, list], optional): Name(s) of the temperature variable(s).
-            energy_variable (str, optional): Name of the energy/power variable.
+            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
+            energy_variable (str): Name of the energy/power variable.
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
@@ -196,8 +196,8 @@ class HourlyLinearReward(LinearReward):
     def __init__(
         self,
         env: Env,
-        temperature_variable: Union[str, list] = 'Zone Air Temperature (SPACE1-1)',
-        energy_variable: str = 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+        temperature_variable: Union[str, list],
+        energy_variable: str,
         min_energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
         lambda_temperature: float = 1.0,
@@ -210,8 +210,8 @@ class HourlyLinearReward(LinearReward):
 
         Args:
             env (Env): Gym environment.
-            temperature_variable (Union[str, list], optional): Name(s) of the temperature variable(s).
-            energy_variable (str, optional): Name of the energy/power variable.
+            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
+            energy_variable (str): Name of the energy/power variable.
             min_energy_weight (float, optional): Minimum weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
