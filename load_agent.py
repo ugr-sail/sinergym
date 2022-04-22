@@ -100,9 +100,9 @@ name = args.model.split('/')[-1] + '-EVAL-episodes' + str(args.episodes)
 #                            Environment definition                            #
 # ---------------------------------------------------------------------------- #
 if args.reward == 'linear':
-    reward = LinearReward()
+    reward = LinearReward
 elif args.reward == 'exponential':
-    reward = ExpReward()
+    reward = ExpReward
 else:
     raise RuntimeError('Reward function specified is not registered.')
 
