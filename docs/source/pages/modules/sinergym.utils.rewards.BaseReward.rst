@@ -1,9 +1,9 @@
-sinergym.utils.rewards.LinearReward
-===================================
+sinergym.utils.rewards.BaseReward
+=================================
 
 .. currentmodule:: sinergym.utils.rewards
 
-.. autoclass:: LinearReward
+.. autoclass:: BaseReward
    :members:                                                           
    :undoc-members:               
 
@@ -15,7 +15,7 @@ sinergym.utils.rewards.LinearReward
 
    .. autosummary::
    
-      ~LinearReward.__init__
+      ~BaseReward.__init__
    
    
 
