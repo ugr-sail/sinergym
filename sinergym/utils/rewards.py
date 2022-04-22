@@ -34,9 +34,9 @@ class LinearReward(BaseReward):
         self,
         env: Env,
         temperature_variable: Union[str, list],
+        energy_variable: str,
         range_comfort_winter: tuple,
         range_comfort_summer: tuple,
-        energy_variable: str,
         energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
         lambda_temperature: float = 1.0
@@ -162,11 +162,11 @@ class ExpReward(LinearReward):
             env,
             temperature_variable,
             energy_variable,
+            range_comfort_winter,
+            range_comfort_summer,
             energy_weight,
             lambda_energy,
-            lambda_temperature,
-            range_comfort_winter,
-            range_comfort_summer
+            lambda_temperature
         )
 
     def _get_comfort(self, obs_dict):
@@ -224,11 +224,11 @@ class HourlyLinearReward(LinearReward):
             env,
             temperature_variable,
             energy_variable,
+            range_comfort_winter,
+            range_comfort_summer,
             min_energy_weight,
             lambda_energy,
-            lambda_temperature,
-            range_comfort_winter,
-            range_comfort_summer
+            lambda_temperature
         )
 
         # Reward parameters
