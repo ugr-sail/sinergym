@@ -30,7 +30,7 @@ By default, all environments use ``LinearReward`` with default parameters. But y
                                                                             'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
                                                                             'energy_weight': 0.1,})
 
-.. Note:: It is necessary to specify in any new reward that we want to put the name of the energy and temperature variables in its reward_kwargs, since they depend on the specific building (IDF) that we are using. Otherwise, an error will occur.
+.. note:: It is necessary to specify in any new reward that we want to put the name of the energy and temperature variables in its reward_kwargs, since they depend on the specific building (IDF) that we are using. Otherwise, an error will occur.
 
 
 It is also pretty simple to define your own classes. For example, imagine you want a reward signal which returns always -1 (however we do not recommend using it for training agents :)).
