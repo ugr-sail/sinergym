@@ -301,6 +301,7 @@ register(
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
             ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -324,6 +325,7 @@ register(
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
             ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -348,6 +350,7 @@ register(
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
             ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -372,6 +375,7 @@ register(
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
             ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -395,6 +399,7 @@ register(
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
             ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -416,6 +421,7 @@ register(
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
             ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -438,6 +444,7 @@ register(
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
             ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -460,6 +467,7 @@ register(
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
             ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -480,6 +488,7 @@ register(
             'temperature_variable': [
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
             'range_comfort_winter': (
                 18,
                 27),
@@ -504,6 +513,7 @@ register(
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
             ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -526,6 +536,7 @@ register(
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
             ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -548,6 +559,7 @@ register(
                 'Zone Air Temperature (West Zone)',
                 'Zone Air Temperature (East Zone)'
             ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
