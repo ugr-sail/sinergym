@@ -41,9 +41,10 @@ If you want to contribute, please read `CONTRIBUTING.md <https://github.com/jaji
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: Notebooks
+   :caption: Examples
 
+   pages/notebooks/usage_example.ipynb
    pages/notebooks/rule_controller_example.ipynb
-
+   pages/notebooks/drl.ipynb
 
 
