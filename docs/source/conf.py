@@ -72,3 +72,6 @@ html_theme_options = {'style_nav_header_background': '#a9c1be'}
 # Enable global sidebar
 html_sidebars = {'**': ['globaltoc.html',
                         'relations.html', 'sourcelink.html', 'searchbox.html']}
+
+#disable nbsphinx errors to suppres imports checks not working
+nbsphinx_allow_errors = True
