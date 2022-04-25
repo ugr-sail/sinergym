@@ -47,5 +47,6 @@ If you want to contribute, please read `CONTRIBUTING.md <https://github.com/jaji
    pages/notebooks/rule_controller_example.ipynb
    pages/notebooks/drl.ipynb
    pages/notebooks/wrappers_examples.ipynb
+   pages/notebooks/MLflow_example.ipynb
 
 
