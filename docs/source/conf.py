@@ -75,3 +75,8 @@ html_sidebars = {'**': ['globaltoc.html',
 
 #disable nbsphinx errors to suppres imports checks not working
 nbsphinx_allow_errors = True
+
+#disable nbsphinx nodes execution (it fails to import sinergym)
+#if a node is previously executed it will include the output
+#but nbsphonx will not execute it if the output is missing.
+nbsphinx_execute = 'never'
