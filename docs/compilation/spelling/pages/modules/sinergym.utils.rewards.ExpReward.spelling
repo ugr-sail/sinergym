@@ -1,1 +1,1 @@
-pages/modules/sinergym.utils.rewards.ExpReward.rst:None: (fot)  Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
+pages/modules/sinergym.utils.rewards.ExpReward.rst:None: (fot)  Temperature comfort range fot hot season. Depends on environment you are using.
