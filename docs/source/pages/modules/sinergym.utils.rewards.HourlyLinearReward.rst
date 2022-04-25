@@ -1,9 +1,9 @@
-sinergym.utils.rewards.LinearReward
-===================================
+sinergym.utils.rewards.HourlyLinearReward
+=========================================
 
 .. currentmodule:: sinergym.utils.rewards
 
-.. autoclass:: LinearReward
+.. autoclass:: HourlyLinearReward
    :members:                                                           
    :undoc-members:               
 
@@ -15,7 +15,7 @@ sinergym.utils.rewards.LinearReward
 
    .. autosummary::
    
-      ~LinearReward.__init__
+      ~HourlyLinearReward.__init__
    
    
 

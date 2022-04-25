@@ -172,6 +172,12 @@ def env_demo(idf_path, weather_path, variable_path, space_path):
         variables_file=variables_file,
         spaces_file=spaces_file,
         discrete_actions=True,
+        reward=LinearReward,
+        reward_kwargs={
+            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (23.0, 26.0)},
         weather_variability=None)
 
 
@@ -189,6 +195,12 @@ def env_demo_continuous(idf_path, weather_path, variable_path, space_path):
         variables_file=variables_file,
         spaces_file=spaces_file,
         discrete_actions=False,
+        reward=LinearReward,
+        reward_kwargs={
+            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (23.0, 26.0)},
         weather_variability=None)
 
 
@@ -206,6 +218,18 @@ def env_datacenter(idf_path2, weather_path, variable_path2, space_path2):
         variables_file=variables_file,
         spaces_file=spaces_file,
         discrete_actions=True,
+        reward=LinearReward,
+        reward_kwargs={
+            'temperature_variable': [
+                'Zone Air Temperature (West Zone)',
+                'Zone Air Temperature (East Zone)'],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'range_comfort_winter': (
+                18,
+                27),
+            'range_comfort_summer': (
+                18,
+                27)},
         weather_variability=None)
 
 
@@ -227,6 +251,18 @@ def env_datacenter_continuous(
         variables_file=variables_file,
         spaces_file=spaces_file,
         discrete_actions=False,
+        reward=LinearReward,
+        reward_kwargs={
+            'temperature_variable': [
+                'Zone Air Temperature (West Zone)',
+                'Zone Air Temperature (East Zone)'],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'range_comfort_winter': (
+                18,
+                27),
+            'range_comfort_summer': (
+                18,
+                27)},
         weather_variability=None)
 
 # ---------------------------------------------------------------------------- #
@@ -326,6 +362,11 @@ def env_linear_reward(idf_path, weather_path, variable_path, space_path):
         spaces_file=spaces_file,
         discrete_actions=True,
         reward=LinearReward,
+        reward_kwargs={
+            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (23.0, 26.0)},
         weather_variability=None)
 
 
@@ -346,9 +387,10 @@ def env_linear_reward_args(idf_path, weather_path, variable_path, space_path):
         reward=LinearReward,
         reward_kwargs={
             'energy_weight': 0.2,
-            'range_comfort_summer': (
-                18.0,
-                20.0)},
+            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (18.0, 20.0)},
         weather_variability=None)
 
 

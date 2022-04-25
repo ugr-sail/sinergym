@@ -33,13 +33,13 @@ class LinearReward(BaseReward):
     def __init__(
         self,
         env: Env,
-        temperature_variable: Union[str, list] = 'Zone Air Temperature (SPACE1-1)',
-        energy_variable: str = 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+        temperature_variable: Union[str, list],
+        energy_variable: str,
+        range_comfort_winter: tuple,
+        range_comfort_summer: tuple,
         energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
-        lambda_temperature: float = 1.0,
-        range_comfort_winter: tuple = (20.0, 23.5),
-        range_comfort_summer: tuple = (23.0, 26.0)
+        lambda_temperature: float = 1.0
     ):
         """
         Linear reward function.
@@ -51,13 +51,13 @@ class LinearReward(BaseReward):
 
         Args:
             env (Env): Gym environment.
-            temperature_variable (Union[str, list], optional): Name(s) of the temperature variable(s).
-            energy_variable (str, optional): Name of the energy/power variable.
+            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
+            energy_variable (str): Name of the energy/power variable.
+            range_comfort_winter (tuple): Temperature comfort range for cold season. Depends on environment you are using.
+            range_comfort_summer (tuple): Temperature comfort range fot hot season. Depends on environment you are using.
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
-            range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).
-            range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
         """
 
         super(LinearReward, self).__init__(env)
@@ -133,13 +133,13 @@ class ExpReward(LinearReward):
     def __init__(
         self,
         env: Env,
-        temperature_variable: Union[str, list] = 'Zone Air Temperature (SPACE1-1)',
-        energy_variable: str = 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+        temperature_variable: Union[str, list],
+        energy_variable: str,
+        range_comfort_winter: tuple,
+        range_comfort_summer: tuple,
         energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
-        lambda_temperature: float = 1.0,
-        range_comfort_winter: tuple = (20.0, 23.5),
-        range_comfort_summer: tuple = (23.0, 26.0),
+        lambda_temperature: float = 1.0
     ):
         """
         Reward considering exponential absolute difference to temperature comfort.
@@ -149,24 +149,24 @@ class ExpReward(LinearReward):
 
         Args:
             env (Env): Gym environment.
-            temperature_variable (Union[str, list], optional): Name(s) of the temperature variable(s).
-            energy_variable (str, optional): Name of the energy/power variable.
+            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
+            energy_variable (str): Name of the energy/power variable.
+            range_comfort_winter (tuple): Temperature comfort range for cold season. Depends on environment you are using.
+            range_comfort_summer (tuple): Temperature comfort range fot hot season. Depends on environment you are using.
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
-            range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).
-            range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
         """
 
         super(ExpReward, self).__init__(
             env,
             temperature_variable,
             energy_variable,
+            range_comfort_winter,
+            range_comfort_summer,
             energy_weight,
             lambda_energy,
-            lambda_temperature,
-            range_comfort_winter,
-            range_comfort_summer
+            lambda_temperature
         )
 
     def _get_comfort(self, obs_dict):
@@ -196,13 +196,13 @@ class HourlyLinearReward(LinearReward):
     def __init__(
         self,
         env: Env,
-        temperature_variable: Union[str, list] = 'Zone Air Temperature (SPACE1-1)',
-        energy_variable: str = 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+        temperature_variable: Union[str, list],
+        energy_variable: str,
+        range_comfort_winter: tuple,
+        range_comfort_summer: tuple,
         min_energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
         lambda_temperature: float = 1.0,
-        range_comfort_winter: tuple = (20.0, 23.5),
-        range_comfort_summer: tuple = (23.0, 26.0),
         range_comfort_hours: tuple = (9, 19),
     ):
         """
@@ -210,13 +210,13 @@ class HourlyLinearReward(LinearReward):
 
         Args:
             env (Env): Gym environment.
-            temperature_variable (Union[str, list], optional): Name(s) of the temperature variable(s).
-            energy_variable (str, optional): Name of the energy/power variable.
+            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
+            energy_variable (str): Name of the energy/power variable.
+            range_comfort_winter (tuple): Temperature comfort range for cold season. Depends on environment you are using.
+            range_comfort_summer (tuple): Temperature comfort range fot hot season. Depends on environment you are using.
             min_energy_weight (float, optional): Minimum weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
-            range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).
-            range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
             range_comfort_hours (tuple, optional): Hours where thermal comfort is considered. Defaults to (9, 19).
         """
 
@@ -224,11 +224,11 @@ class HourlyLinearReward(LinearReward):
             env,
             temperature_variable,
             energy_variable,
+            range_comfort_winter,
+            range_comfort_summer,
             min_energy_weight,
             lambda_energy,
-            lambda_temperature,
-            range_comfort_winter,
-            range_comfort_summer
+            lambda_temperature
         )
 
         # Reward parameters
