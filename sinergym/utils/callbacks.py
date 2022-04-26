@@ -310,8 +310,10 @@ class LoggerEvalCallback(EvalCallback):
                 if self.verbose > 0:
                     print("New best mean reward!")
                 if self.best_model_save_path is not None:
-                    self.model.save(os.path.join(
-                        self.best_model_save_path, "best_model"))
+                    self.model.save(
+                        os.path.join(
+                            self.best_model_save_path,
+                            self.best_model_save_path.split('/')[-1]))
                 self.best_mean_reward = mean_reward
                 # Trigger callback if needed
                 if self.callback is not None:
