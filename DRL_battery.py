@@ -391,8 +391,8 @@ with mlflow.start_run(run_name=name):
     if args.evaluation:
         eval_callback = LoggerEvalCallback(
             eval_env,
-            best_model_save_path='best_model/' + name + '/',
-            log_path='best_model/' + name + '/',
+            best_model_save_path='best_model/' + name,
+            log_path='best_model/' + name,
             eval_freq=n_timesteps_episode *
             args.eval_freq,
             deterministic=True,
@@ -478,7 +478,7 @@ with mlflow.start_run(run_name=name):
     mlflow.end_run()
 
     # ---------------------------------------------------------------------------- #
-    #                   Autodelete option if is a cloud resource                   #
+    #                Autodelete option it if is a cloud resource                   #
     # ---------------------------------------------------------------------------- #
     if args.group_name and args.auto_delete:
         token = gcloud.get_service_account_token()
