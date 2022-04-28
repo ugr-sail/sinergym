@@ -69,6 +69,14 @@ class EplusEnv(gym.Env):
             self.pkg_data_path, 'weather', weather_file)
 
         # ---------------------------------------------------------------------------- #
+        #                             Variables definition                             #
+        # ---------------------------------------------------------------------------- #
+        self.variables = {}
+        self.variables['observation'] = [
+            'year', 'month', 'day', 'hour'] + observation_variables
+        self.variables['action'] = action_variables
+
+        # ---------------------------------------------------------------------------- #
         #                                   Simulator                                  #
         # ---------------------------------------------------------------------------- #
         self.simulator = EnergyPlus(
@@ -77,18 +85,11 @@ class EplusEnv(gym.Env):
             bcvtb_path=bcvtb_path,
             idf_path=self.idf_path,
             weather_path=self.weather_path,
+            variables=self.variables,
             act_repeat=act_repeat,
             max_ep_data_store_num=max_ep_data_store_num,
             config_params=config_params
         )
-
-        # ---------------------------------------------------------------------------- #
-        #                             Variables definition                             #
-        # ---------------------------------------------------------------------------- #
-        self.variables = {}
-        self.variables['observation'] = [
-            'year', 'month', 'day', 'hour'] + observation_variables
-        self.variables['action'] = action_variables
 
         # ---------------------------------------------------------------------------- #
         #                              Weather variability                             #

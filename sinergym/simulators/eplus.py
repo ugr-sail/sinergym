@@ -35,9 +35,9 @@ class EnergyPlus(object):
             eplus_path: str,
             weather_path: str,
             bcvtb_path: str,
-            variable_path: str,
             idf_path: str,
             env_name: str,
+            variables: Dict[str, List[str]],
             act_repeat: int = 1,
             max_ep_data_store_num: int = 10,
             config_params: Optional[Dict[str, Any]] = None):
@@ -47,9 +47,9 @@ class EnergyPlus(object):
             eplus_path (str):  EnergyPlus installation path.
             weather_path (str): EnergyPlus weather file (.epw) path.
             bcvtb_path (str): BCVTB installation path.
-            variable_path (str): Path to variables file.
             idf_path (str): EnergyPlus input description file (.idf) path.
             env_name (str): The environment name.
+            variables (Dict[str,List[str]]): Variables list with observation and action keys in a dictionary.
             act_repeat (int, optional): The number of times to repeat the control action. Defaults to 1.
             max_ep_data_store_num (int, optional): The number of simulation results to keep. Defaults to 10.
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
@@ -81,7 +81,6 @@ class EnergyPlus(object):
         # Path attributes
         self._eplus_path = eplus_path
         self._weather_path = weather_path
-        self._variable_path = variable_path
         self._idf_path = idf_path
         # Episode existed
         self._episode_existed = False
@@ -95,6 +94,7 @@ class EnergyPlus(object):
         self._config = Config(
             idf_path=self._idf_path,
             weather_path=self._weather_path,
+            variables=variables,
             env_name=self._env_name,
             max_ep_store=self._max_ep_data_store_num,
             extra_config=config_params)

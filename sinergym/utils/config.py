@@ -3,6 +3,7 @@ import os
 from copy import deepcopy
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple
+import xml.etree.ElementTree as ET
 
 import numpy as np
 from opyplus import Epm, Idd, WeatherData
@@ -36,6 +37,7 @@ class Config(object):
             self,
             idf_path: str,
             weather_path: str,
+            variables: Dict[str, List[str]],
             env_name: str,
             max_ep_store: int,
             extra_config: Dict[str, Any]):
@@ -49,6 +51,38 @@ class Config(object):
         self.max_ep_store = max_ep_store
 
         self.config = extra_config
+
+        # Variables XML Tree
+        self.variables = ET.Element('BCVTB-variables')
+
+        # Observation varibles config
+        self.variables.append(
+            ET.Comment('Observation variables: Received from EnergyPlus'))
+        for obs_var in variables['observation']:
+            # obs_var = "<variable_name> (<variable_zone>)"
+            var_elements = obs_var.split('(')
+            var_name = var_elements[0]
+            var_zone = var_elements[1][:-1]
+
+            # Add obs name and zone to XML variables tree
+            new_xml_obs = ET.SubElement(
+                self.variables, 'variable', source='EnergyPlus')
+            ET.SubElement(
+                new_xml_obs,
+                'EnergyPlus',
+                name=var_zone,
+                type=var_name)
+
+        # Action variables config
+        self.variables.append(
+            ET.Comment('Action variables: Sent to EnergyPlus'))
+        for act_var in variables['action']:
+            new_xml_variable = ET.SubElement(
+                self.variables, 'variable', source='Ptolomy')
+            ET.SubElement(
+                new_xml_variable,
+                'EnergyPlus',
+                schedule=act_var)
 
         # Opyplus objects
         self._idd = Idd(os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd'))
@@ -98,6 +132,9 @@ class Config(object):
         # Added New Location and DesignDays to Epm
         self.building.site_location.batch_add(new_location)
         self.building.SizingPeriod_DesignDay.batch_add(new_designdays)
+
+    def adapt_idf_to_action_observation_variables():
+        pass
 
     def apply_extra_conf(self) -> None:
         """Set extra configuration in building model
