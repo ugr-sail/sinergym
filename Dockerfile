@@ -64,6 +64,8 @@ RUN apt update \
 RUN apt-get update && echo "Y\r" | apt-get install enchant --fix-missing -y
 # Install OpenJDK-8
 RUN apt-get update && echo "Y\r" | apt-get install default-jre openjdk-8-jdk
+#Install pandoc for sinergym jupyter documentation
+RUN apt-get update && echo "Y\r" | apt-get install pandoc --fix-missing -y
 
 # Install BCVTB
 ENV BCVTB_PATH=/usr/local/bcvtb
