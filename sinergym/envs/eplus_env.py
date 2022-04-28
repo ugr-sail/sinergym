@@ -10,8 +10,6 @@ import numpy as np
 import pkg_resources
 
 from sinergym.simulators import EnergyPlus
-from sinergym.utils.common import (parse_observation_action_space,
-                                   parse_variables, setpoints_transform)
 from sinergym.utils.rewards import ExpReward, LinearReward
 
 
@@ -82,12 +80,6 @@ class EplusEnv(gym.Env):
 
         # Random noise to apply for weather series
         self.weather_variability = weather_variability
-
-        # parse observation and action spaces from spaces_path
-        space = parse_observation_action_space(self.spaces_path)
-        observation_def = space['observation']
-        discrete_action_def = space['discrete_action']
-        continuous_action_def = space['continuous_action']
 
         # OBSERVATION SPACE
         self.observation_space = observation_space
@@ -197,29 +189,29 @@ class EplusEnv(gym.Env):
     def _get_action(self, action: Any):
         """Transform the action for sending it to the simulator."""
 
-        # # Get action depending on flag_discrete
-        # if self.flag_discrete:
-        #     # Index for action_mapping
-        #     if np.issubdtype(type(action), np.integer):
-        #         if isinstance(action, int):
-        #             setpoints = self.action_mapping[action]
-        #         else:
-        #             setpoints = self.action_mapping[action.item()]
-        #     # Manual action
-        #     elif isinstance(action, tuple) or isinstance(action, list):
-        #         # stable-baselines DQN bug prevention
-        #         if len(action) == 1:
-        #             setpoints = self.action_mapping[action.item()]
-        #         else:
-        #             setpoints = action
-        #     elif isinstance(action, np.ndarray):
-        #         setpoints = self.action_mapping[action.item()]
-        #     else:
-        #         print("ERROR: ", type(action))
-        #     action_ = list(setpoints)
-        # else:
-        #     # transform action to setpoints simulation
-        #     action_ = self._setpoints_transform(action)
+        # Get action depending on flag_discrete
+        if self.flag_discrete:
+            # Index for action_mapping
+            if np.issubdtype(type(action), np.integer):
+                if isinstance(action, int):
+                    setpoints = self.action_mapping[action]
+                else:
+                    setpoints = self.action_mapping[action.item()]
+            # Manual action
+            elif isinstance(action, tuple) or isinstance(action, list):
+                # stable-baselines DQN bug prevention
+                if len(action) == 1:
+                    setpoints = self.action_mapping[action.item()]
+                else:
+                    setpoints = action
+            elif isinstance(action, np.ndarray):
+                setpoints = self.action_mapping[action.item()]
+            else:
+                print("ERROR: ", type(action))
+            action_ = list(setpoints)
+        else:
+            # transform action to setpoints simulation
+            action_ = self._setpoints_transform(action)
 
         return action
 
