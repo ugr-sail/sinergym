@@ -112,6 +112,17 @@ class EplusEnv(gym.Env):
         self.reward_fn = reward(self, **reward_kwargs)
         self.obs_dict = None
 
+    def reset(self) -> np.ndarray:
+        """Reset the environment.
+
+        Returns:
+            np.ndarray: Current observation.
+        """
+        # Change to next episode
+        _, obs, _ = self.simulator.reset(self.weather_variability)
+
+        return np.array(obs, dtype=np.float32)
+
     def step(self,
              action: Union[int,
                            float,
@@ -160,18 +171,6 @@ class EplusEnv(gym.Env):
 
         return np.array(list(self.obs_dict.values()),
                         dtype=np.float32), reward, done, info
-
-    def reset(self) -> np.ndarray:
-        """Reset the environment.
-
-        Returns:
-            np.ndarray: Current observation.
-        """
-        # Change to next episode
-        time_info, obs, _ = self.simulator.reset(self.weather_variability)
-        self.obs_dict = dict(zip(self.variables['observation'], obs))
-
-        return np.array(list(self.obs_dict.values()), dtype=np.float32)
 
     def render(self, mode: str = 'human') -> None:
         """Environment rendering.
