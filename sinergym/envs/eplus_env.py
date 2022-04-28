@@ -213,7 +213,7 @@ class EplusEnv(gym.Env):
             # transform action to setpoints simulation
             action_ = self._setpoints_transform(action)
 
-        return action
+        return action_
 
     def _setpoints_transform(self, action: Union[int,
                                                  float,
