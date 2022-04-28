@@ -23,15 +23,17 @@ class EplusEnv(gym.Env):
         self,
         idf_file: str,
         weather_file: str,
-        variables_file: str,
-        spaces_file: str,
-        env_name: str = 'eplus-env-v1',
-        discrete_actions: bool = True,
+        observation_space: gym.spaces.Box = gym.spaces.Box(low=0, high=0, shape=(0,)),
+        observation_variables: List[str] = [],
+        action_space: Union[gym.spaces.Box, gym.spaces.Discrete] = gym.spaces.Box(low=0, high=0, shape=(0,)),
+        action_variables: List[str] = [],
+        action_mapping: List[Tuple[int, ...]] = [],
         weather_variability: Optional[Tuple[float]] = None,
         reward: Any = LinearReward,
         reward_kwargs: Optional[Dict[str, Any]] = {},
         act_repeat: int = 1,
         max_ep_data_store_num: int = 10,
+        env_name: str = 'eplus-env-v1',
         config_params: Optional[Dict[str, Any]] = None
     ):
         """Environment with EnergyPlus simulator.
@@ -39,15 +41,17 @@ class EplusEnv(gym.Env):
         Args:
             idf_file (str): Name of the IDF file with the building definition.
             weather_file (str): Name of the EPW file for weather conditions.
-            variables_file (str): Variables defined in environment to be observation and action.
-            spaces_file (str): Action and observation space defined in a xml.
-            env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
-            discrete_actions (bool, optional): Whether the actions are discrete (True) or continuous (False). Defaults to True.
+            observation_space (gym.spaces.Box, optional): Gym Observation Space definition. Defaults to an empty observation_space (no control).
+            observation_variables (List[str], optional): List with variables names in IDF. Defaults to an empty observation variables (no control).
+            action_space (Union[gym.spaces.Box, gym.spaces.Discrete], optional): Gym Action Space definition. Defaults to an empty action_space (no control).
+            action_variables (List[str],optional): Action variables to be controlled in IDF, if that actions names have not been configured manually in IDF, you should configure or use extra_config. Default to empty List.
+            action_mapping (List[Tuple[int, ...]], optional): Action mapping list for discrete actions spaces only. Defaults to empty list.
             weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
             reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
             act_repeat (int, optional): Number of timesteps that an action is repeated in the simulator, regardless of the actions it receives during that repetition interval.
             max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
+            env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
         """
         eplus_path = os.environ['EPLUS_PATH']
@@ -58,10 +62,6 @@ class EplusEnv(gym.Env):
         self.idf_path = os.path.join(self.pkg_data_path, 'buildings', idf_file)
         self.weather_path = os.path.join(
             self.pkg_data_path, 'weather', weather_file)
-        self.variables_path = os.path.join(
-            self.pkg_data_path, 'variables', variables_file)
-        self.spaces_path = os.path.join(
-            self.pkg_data_path, 'variables', spaces_file)
 
         self.simulator = EnergyPlus(
             env_name=env_name,
@@ -69,17 +69,16 @@ class EplusEnv(gym.Env):
             bcvtb_path=bcvtb_path,
             idf_path=self.idf_path,
             weather_path=self.weather_path,
-            variable_path=self.variables_path,
             act_repeat=act_repeat,
             max_ep_data_store_num=max_ep_data_store_num,
             config_params=config_params
         )
 
         # parse variables (observation and action) from cfg file
-        self.variables = parse_variables(self.variables_path)
-        # Add year, month, day and hour to observation variables
-        self.variables['observation'] = ['year', 'month',
-                                         'day', 'hour'] + self.variables['observation']
+        self.variables = {}
+        self.variables['observation'] = [
+            'year', 'month', 'day', 'hour'] + observation_variables
+        self.variables['action'] = action_variables
 
         # Random noise to apply for weather series
         self.weather_variability = weather_variability
@@ -90,34 +89,31 @@ class EplusEnv(gym.Env):
         discrete_action_def = space['discrete_action']
         continuous_action_def = space['continuous_action']
 
-        # Observation space
-        self.observation_space = gym.spaces.Box(
-            low=observation_def[0],
-            high=observation_def[1],
-            shape=observation_def[2],
-            dtype=observation_def[3])
+        # OBSERVATION SPACE
+        self.observation_space = observation_space
 
-        # Action space
-        self.flag_discrete = discrete_actions
+        # ACTION SPACE
+
+        # Action space type
+        self.flag_discrete = (
+            isinstance(
+                action_space,
+                gym.spaces.Discrete))
 
         # Discrete
         if self.flag_discrete:
-            self.action_mapping = discrete_action_def
-            self.action_space = gym.spaces.Discrete(len(discrete_action_def))
+            self.action_mapping = action_mapping
+            self.action_space = action_space
         # Continuous
         else:
             # Defining action values setpoints (one per value)
-            self.action_setpoints = []
-            for i in range(len(self.variables['action'])):
-                # action_variable --> [low,up]
-                self.action_setpoints.append([
-                    continuous_action_def[0][i], continuous_action_def[1][i]])
+            self.setpoints_space = action_space
 
             self.action_space = gym.spaces.Box(
                 # continuous_action_def[2] --> shape
-                low=np.repeat(-1, continuous_action_def[2][0]),
-                high=np.repeat(1, continuous_action_def[2][0]),
-                dtype=continuous_action_def[3]
+                low=np.repeat(-1, action_space.shape[0]),
+                high=np.repeat(1, action_space.shape[0]),
+                dtype=action_space.dtype
             )
 
         # Reward class
@@ -223,7 +219,30 @@ class EplusEnv(gym.Env):
         #     action_ = list(setpoints)
         # else:
         #     # transform action to setpoints simulation
-        #     action_ = setpoints_transform(
-        #         action, self.action_space, self.action_setpoints)
+        #     action_ = self._setpoints_transform(action)
 
         return action
+
+    def _setpoints_transform(self, action: Union[int,
+                                                 float,
+                                                 np.integer,
+                                                 np.ndarray,
+                                                 List[Any],
+                                                 Tuple[Any]]):
+        action_ = []
+
+        for i, value in enumerate(action):
+            if self.action_space.low[i] <= value <= self.action_space.high[i]:
+                a_max_min = self.action_space.high[i] - \
+                    self.action_space.low[i]
+                sp_max_min = self.setpoints_space.high[i] - \
+                    self.setpoints_space.low[i]
+
+                action_.append(
+                    self.setpoints_space.low[i] + (value - self.action_space.low[i]) * sp_max_min / a_max_min)
+            else:
+                # If action is outer action_space already, it don't need
+                # transformation
+                action_.append(value)
+
+        return action_
