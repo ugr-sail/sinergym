@@ -17,6 +17,9 @@ class EplusEnv(gym.Env):
 
     metadata = {'render.modes': ['human']}
 
+    # ---------------------------------------------------------------------------- #
+    #                            ENVIRONMENT CONSTRUCTOR                           #
+    # ---------------------------------------------------------------------------- #
     def __init__(
         self,
         idf_file: str,
@@ -52,6 +55,10 @@ class EplusEnv(gym.Env):
             env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
         """
+
+        # ---------------------------------------------------------------------------- #
+        #                          Energyplus, BCVTB and paths                         #
+        # ---------------------------------------------------------------------------- #
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
         self.pkg_data_path = pkg_resources.resource_filename(
@@ -61,6 +68,9 @@ class EplusEnv(gym.Env):
         self.weather_path = os.path.join(
             self.pkg_data_path, 'weather', weather_file)
 
+        # ---------------------------------------------------------------------------- #
+        #                                   Simulator                                  #
+        # ---------------------------------------------------------------------------- #
         self.simulator = EnergyPlus(
             env_name=env_name,
             eplus_path=eplus_path,
@@ -72,20 +82,27 @@ class EplusEnv(gym.Env):
             config_params=config_params
         )
 
-        # parse variables (observation and action) from cfg file
+        # ---------------------------------------------------------------------------- #
+        #                             Variables definition                             #
+        # ---------------------------------------------------------------------------- #
         self.variables = {}
         self.variables['observation'] = [
             'year', 'month', 'day', 'hour'] + observation_variables
         self.variables['action'] = action_variables
 
-        # Random noise to apply for weather series
+        # ---------------------------------------------------------------------------- #
+        #                              Weather variability                             #
+        # ---------------------------------------------------------------------------- #
         self.weather_variability = weather_variability
 
-        # OBSERVATION SPACE
+        # ---------------------------------------------------------------------------- #
+        #                               Observation Space                              #
+        # ---------------------------------------------------------------------------- #
         self.observation_space = observation_space
 
-        # ACTION SPACE
-
+        # ---------------------------------------------------------------------------- #
+        #                                 Action Space                                 #
+        # ---------------------------------------------------------------------------- #
         # Action space type
         self.flag_discrete = (
             isinstance(
@@ -108,10 +125,15 @@ class EplusEnv(gym.Env):
                 dtype=action_space.dtype
             )
 
-        # Reward class
+        # ---------------------------------------------------------------------------- #
+        #                                    Reward                                    #
+        # ---------------------------------------------------------------------------- #
         self.reward_fn = reward(self, **reward_kwargs)
         self.obs_dict = None
 
+    # ---------------------------------------------------------------------------- #
+    #                                     RESET                                    #
+    # ---------------------------------------------------------------------------- #
     def reset(self) -> np.ndarray:
         """Reset the environment.
 
@@ -123,6 +145,9 @@ class EplusEnv(gym.Env):
 
         return np.array(obs, dtype=np.float32)
 
+    # ---------------------------------------------------------------------------- #
+    #                                     STEP                                     #
+    # ---------------------------------------------------------------------------- #
     def step(self,
              action: Union[int,
                            float,
@@ -142,7 +167,6 @@ class EplusEnv(gym.Env):
 
         # Get action
         action_ = self._get_action(action)
-
         # Send action to the simulator
         self.simulator.logger_main.debug(action_)
         # time_info = (current simulation year, month, day, hour, time_elapsed)
@@ -169,9 +193,11 @@ class EplusEnv(gym.Env):
             'out_temperature': self.obs_dict['Site Outdoor Air Drybulb Temperature (Environment)'],
             'action_': action_}
 
-        return np.array(list(self.obs_dict.values()),
-                        dtype=np.float32), reward, done, info
+        return np.array(obs, dtype=np.float32), reward, done, info
 
+    # ---------------------------------------------------------------------------- #
+    #                                RENDER (empty)                                #
+    # ---------------------------------------------------------------------------- #
     def render(self, mode: str = 'human') -> None:
         """Environment rendering.
 
@@ -180,11 +206,17 @@ class EplusEnv(gym.Env):
         """
         pass
 
+    # ---------------------------------------------------------------------------- #
+    #                                     CLOSE                                    #
+    # ---------------------------------------------------------------------------- #
     def close(self) -> None:
         """End simulation."""
 
         self.simulator.end_env()
 
+    # ---------------------------------------------------------------------------- #
+    #                           Environment functionality                          #
+    # ---------------------------------------------------------------------------- #
     def _get_action(self, action: Any):
         """Transform the action for sending it to the simulator."""
 
