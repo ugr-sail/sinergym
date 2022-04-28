@@ -2328,7 +2328,7 @@
     ThermostatSetpoint:SingleHeating,  !- Control 2 Object Type
     HeatingSetpoint,         !- Control 2 Name
     ThermostatSetpoint:DualSetpoint,  !- Control 3 Object Type
-    Space1-DualSetP-RL;      !- Control 3 Name
+    DualSetPoint;      !- Control 3 Name
 
   ZoneControl:Thermostat,
     SPACE2-1 Control,        !- Name
@@ -2394,11 +2394,6 @@
     DualSetPoint,            !- Name
     Htg-SetP-Sch,            !- Heating Setpoint Temperature Schedule Name
     Clg-SetP-Sch;            !- Cooling Setpoint Temperature Schedule Name
-
-  ThermostatSetpoint:DualSetpoint,
-    Space1-DualSetP-RL,      !- Name
-    Space1-HtgSetP-RL,       !- Heating Setpoint Temperature Schedule Name
-    Space1-ClgSetP-RL;       !- Cooling Setpoint Temperature Schedule Name
 
   ZoneHVAC:EquipmentList,
     SPACE1-1 Eq,             !- Name
@@ -2878,16 +2873,6 @@
 
   ExternalInterface,
     PtolemyServer;           !- Name of External Interface
-
-  ExternalInterface:Schedule,
-    Space1-HtgSetP-RL,       !- Name
-    Temperature,             !- Schedule Type Limits Name
-    21;                      !- Initial Value
-
-  ExternalInterface:Schedule,
-    Space1-ClgSetP-RL,       !- Name
-    Temperature,             !- Schedule Type Limits Name
-    25;                      !- Initial Value
 
   !- Site weather output
 

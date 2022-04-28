@@ -201,29 +201,29 @@ class EplusEnv(gym.Env):
     def _get_action(self, action: Any):
         """Transform the action for sending it to the simulator."""
 
-        # Get action depending on flag_discrete
-        if self.flag_discrete:
-            # Index for action_mapping
-            if np.issubdtype(type(action), np.integer):
-                if isinstance(action, int):
-                    setpoints = self.action_mapping[action]
-                else:
-                    setpoints = self.action_mapping[action.item()]
-            # Manual action
-            elif isinstance(action, tuple) or isinstance(action, list):
-                # stable-baselines DQN bug prevention
-                if len(action) == 1:
-                    setpoints = self.action_mapping[action.item()]
-                else:
-                    setpoints = action
-            elif isinstance(action, np.ndarray):
-                setpoints = self.action_mapping[action.item()]
-            else:
-                print("ERROR: ", type(action))
-            action_ = list(setpoints)
-        else:
-            # transform action to setpoints simulation
-            action_ = setpoints_transform(
-                action, self.action_space, self.action_setpoints)
+        # # Get action depending on flag_discrete
+        # if self.flag_discrete:
+        #     # Index for action_mapping
+        #     if np.issubdtype(type(action), np.integer):
+        #         if isinstance(action, int):
+        #             setpoints = self.action_mapping[action]
+        #         else:
+        #             setpoints = self.action_mapping[action.item()]
+        #     # Manual action
+        #     elif isinstance(action, tuple) or isinstance(action, list):
+        #         # stable-baselines DQN bug prevention
+        #         if len(action) == 1:
+        #             setpoints = self.action_mapping[action.item()]
+        #         else:
+        #             setpoints = action
+        #     elif isinstance(action, np.ndarray):
+        #         setpoints = self.action_mapping[action.item()]
+        #     else:
+        #         print("ERROR: ", type(action))
+        #     action_ = list(setpoints)
+        # else:
+        #     # transform action to setpoints simulation
+        #     action_ = setpoints_transform(
+        #         action, self.action_space, self.action_setpoints)
 
-        return action_
+        return action
