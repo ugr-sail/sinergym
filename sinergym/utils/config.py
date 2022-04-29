@@ -4,6 +4,7 @@ from copy import deepcopy
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple
 import xml.etree.ElementTree as ET
+from xml.dom import minidom
 
 import numpy as np
 from opyplus import Epm, Idd, WeatherData
@@ -52,37 +53,9 @@ class Config(object):
 
         self.config = extra_config
 
-        # Variables XML Tree
-        self.variables = ET.Element('BCVTB-variables')
-
-        # Observation varibles config
-        self.variables.append(
-            ET.Comment('Observation variables: Received from EnergyPlus'))
-        for obs_var in variables['observation']:
-            # obs_var = "<variable_name> (<variable_zone>)"
-            var_elements = obs_var.split('(')
-            var_name = var_elements[0]
-            var_zone = var_elements[1][:-1]
-
-            # Add obs name and zone to XML variables tree
-            new_xml_obs = ET.SubElement(
-                self.variables, 'variable', source='EnergyPlus')
-            ET.SubElement(
-                new_xml_obs,
-                'EnergyPlus',
-                name=var_zone,
-                type=var_name)
-
-        # Action variables config
-        self.variables.append(
-            ET.Comment('Action variables: Sent to EnergyPlus'))
-        for act_var in variables['action']:
-            new_xml_variable = ET.SubElement(
-                self.variables, 'variable', source='Ptolomy')
-            ET.SubElement(
-                new_xml_variable,
-                'EnergyPlus',
-                schedule=act_var)
+        # Variables XML Tree (empty at the beginning)
+        self.variables = variables
+        self.variables_tree = ET.Element('BCVTB-variables')
 
         # Opyplus objects
         self._idd = Idd(os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd'))
@@ -97,7 +70,7 @@ class Config(object):
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
     # ---------------------------------------------------------------------------- #
-    #                       IDF and Building model management                      #
+    #            IDF, variables and Building model adaptation                      #
     # ---------------------------------------------------------------------------- #
 
     def adapt_idf_to_epw(self,
@@ -133,8 +106,52 @@ class Config(object):
         self.building.site_location.batch_add(new_location)
         self.building.SizingPeriod_DesignDay.batch_add(new_designdays)
 
-    def adapt_idf_to_action_observation_variables():
-        pass
+    def adapt_variables_to_cfg_and_idf(self):
+        # OBSERVATION VARIABLES
+        output_variables = []
+        self.variables_tree.append(
+            ET.Comment('Observation variables: Received from EnergyPlus'))
+        for obs_var in self.variables['observation']:
+            # obs_var = "<variable_name> (<variable_zone>)"
+            var_elements = obs_var.split('(')
+            var_name = var_elements[0]
+            var_zone = var_elements[1][:-1]
+
+            # Add obs name and zone to XML variables tree
+            new_xml_obs = ET.SubElement(
+                self.variables_tree, 'variable', source='EnergyPlus')
+            ET.SubElement(
+                new_xml_obs,
+                'EnergyPlus',
+                name=var_zone,
+                type=var_name)
+
+            # Add IDF record Output:Variable
+            if var_zone.lower() == 'Environment'.lower(
+            ) or var_zone.lower() == 'Whole Building'.lower():
+                var_zone = '*'
+            output_variables.append(
+                dict(
+                    key_value=var_zone,
+                    variable_name=var_name,
+                    reporting_frequency='timestep'))
+
+        # Delete default Output:Variables and added observation_variables
+        # specified
+        self.building.output_variable.delete()
+        self.building.output_variable.batch_add(output_variables)
+
+        # ACTION VARIABLES
+        self.variables_tree.append(
+            ET.Comment('Action variables: Sent to EnergyPlus'))
+        for act_var in self.variables['action']:
+
+            new_xml_variable = ET.SubElement(
+                self.variables_tree, 'variable', source='Ptolomy')
+            ET.SubElement(
+                new_xml_variable,
+                'EnergyPlus',
+                schedule=act_var)
 
     def apply_extra_conf(self) -> None:
         """Set extra configuration in building model
@@ -158,6 +175,21 @@ class Config(object):
                 runperiod.end_day_of_month = int(self.config['runperiod'][3])
                 runperiod.end_month = int(self.config['runperiod'][4])
                 runperiod.end_year = int(self.config['runperiod'][5])
+
+    def save_varibles_cfg(self) -> str:
+        if self.episode_path is not None:
+            episode_cfg_path = self.episode_path + \
+                '/variables.cfg'
+
+            xmlstr = minidom.parseString(
+                ET.tostring(self.variables_tree)).toprettyxml(
+                    indent="   ")
+            with open(episode_cfg_path, "w") as f:
+                f.write(xmlstr)
+            return episode_cfg_path
+        else:
+            raise RuntimeError(
+                '[Simulator Config] Episode path should be set before saving variables.cfg.')
 
     def save_building_model(self) -> str:
         """Take current building model and save as IDF in current env_working_dir episode folder.
