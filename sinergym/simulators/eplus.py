@@ -105,6 +105,11 @@ class EnergyPlus(object):
         self.logger_main.info(
             'Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...')
         self._config.adapt_idf_to_epw()
+        # Updating IDF file Output:Variables with observation variables
+        # specified in environment and variables.cfg construction
+        self.logger_main.info(
+            'Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.')
+        self._config. adapt_variables_to_cfg_and_idf()
         # Setting up extra configuration if exists
         self.logger_main.info(
             'Setting up extra configuration in building model if exists...')
@@ -160,12 +165,10 @@ class EnergyPlus(object):
         eplus_working_dir = self._config.set_episode_working_dir()
         # Getting IDF, WEATHER, VARIABLES and OUTPUT path for current episode
         eplus_working_idf_path = self._config.save_building_model()
-        eplus_working_var_path = (eplus_working_dir + '/' + 'variables.cfg')
+        eplus_working_var_path = self._config.save_varibles_cfg()
         eplus_working_out_path = (eplus_working_dir + '/' + 'output')
         eplus_working_weather_path = self._config.apply_weather_variability(
             variation=weather_variability)
-        # Copy the variable.cfg file to the working dir
-        copyfile(self._variable_path, eplus_working_var_path)
 
         self._create_socket_cfg(self._host,
                                 self._port,
