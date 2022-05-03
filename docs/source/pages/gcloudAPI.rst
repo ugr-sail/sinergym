@@ -146,7 +146,7 @@ In order to execute **cloudbuild.yaml**, you have to do the next:
 
 .. code:: sh
 
-    $ gcloud builds submit \
+    $ gcloud builds submit --region europe-west1 \
         --config ./cloudbuild.yaml .
 
 *--substitutions* can be used in order to configure build parameters if they are needed.
