@@ -176,6 +176,33 @@ class Config(object):
                 runperiod.end_month = int(self.config['runperiod'][4])
                 runperiod.end_year = int(self.config['runperiod'][5])
 
+            # Action space definition when IDF has not been manipulated
+            # manually
+            if self.config.get('action_definition'):
+                action_definition = self.config['action_definition']
+                for controller_type, controllers in action_definition.items():
+                    # ThermostatSetpoint:DualSetpoint IDF Management
+                    if controller_type == 'ThermostatSetpoint:DualSetpoint':
+                        for controller in controllers:
+                            # Create Ptolomy variables
+                            self.building.ExternalInterface_Schedule.add(
+                                name=controller['heating_name'],
+                                schedule_type_limits_name='Temperature',
+                                initial_value=21)
+                            self.building.ExternalInterface_Schedule.add(
+                                name=controller['cooling_name'],
+                                schedule_type_limits_name='Temperature',
+                                initial_value=25)
+                            # Create a ThermostatSetpoint:DualSetpoint object
+                            self.building.ThermostatSetpoint_DualSetpoint.add(
+                                name=controller['name'],
+                                heating_setpoint_temperature_schedule_name=controller['heating_name'],
+                                cooling_setpoint_temperature_schedule_name=controller['cooling_name'])
+                            # Link in zones required
+                            for zone_control in self.building.ZoneControl_Thermostat:
+                                if zone_control.zone_or_zonelist_name.name in controller['zones']:
+                                    zone_control.control_3_name = controller['name']
+
     def save_varibles_cfg(self) -> str:
         if self.episode_path is not None:
             episode_cfg_path = self.episode_path + \
