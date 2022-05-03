@@ -72,8 +72,7 @@ class EplusEnv(gym.Env):
         #                             Variables definition                             #
         # ---------------------------------------------------------------------------- #
         self.variables = {}
-        self.variables['observation'] = [
-            'year', 'month', 'day', 'hour'] + observation_variables
+        self.variables['observation'] = observation_variables
         self.variables['action'] = action_variables
 
         # ---------------------------------------------------------------------------- #
@@ -90,6 +89,13 @@ class EplusEnv(gym.Env):
             max_ep_data_store_num=max_ep_data_store_num,
             config_params=config_params
         )
+
+        # ---------------------------------------------------------------------------- #
+        #        Adding simulation date to observation (not needed in simulator)       #
+        # ---------------------------------------------------------------------------- #
+
+        self.variables['observation'] = ['year', 'month',
+                                         'day', 'hour'] + self.variables['observation']
 
         # ---------------------------------------------------------------------------- #
         #                              Weather variability                             #
