@@ -1,6 +1,8 @@
 import os
 
 from gym.envs.registration import register
+import gym
+import numpy as np
 
 from sinergym.utils.rewards import *
 
@@ -10,7 +12,84 @@ with open(version_file, "r") as file_handler:
     __version__ = file_handler.read().strip()
 
 
-#========================5ZoneAutoDXVAV========================#
+# ---------------------------------------------------------------------------- #
+#                       Default Environments Configuration                     #
+# ---------------------------------------------------------------------------- #
+
+# 5Zone
+default_5zone_observation_variables = [
+    'Site Outdoor Air Drybulb Temperature (Environment)',
+    'Site Outdoor Air Relative Humidity (Environment)',
+    'Site Wind Speed (Environment)',
+    'Site Wind Direction (Environment)',
+    'Site Diffuse Solar Radiation Rate per Area(Environment)',
+    'Site Direct Solar Radiation Rate per Area(Environment)',
+    'Zone Thermostat Heating Setpoint Temperature(SPACE1-1)',
+    'Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)',
+    'Zone Air Temperature(SPACE1-1)',
+    'Zone Thermal Comfort Mean Radiant Temperature(SPACE1-1 PEOPLE 1)',
+    'Zone Air Relative Humidity(SPACE1-1)',
+    'Zone Thermal Comfort Clothing Value(SPACE1-1 PEOPLE 1)',
+    'Zone Thermal Comfort Fanger Model PPD(SPACE1-1 PEOPLE 1)',
+    'Zone People Occupant Count(SPACE1-1)',
+    'People Air Temperature(SPACE1-1 PEOPLE 1)',
+    'Facility Total HVAC Electricity Demand Rate(Whole Building)'
+]
+
+default_5zone_action_variables = [
+    'space1-htgsetp-rl',
+    'space1-clgsetp-rl'
+]
+
+default_5zone_observation_space = gym.spaces.Box(
+    low=-5e6,
+    high=5e6,
+    shape=(len(default_5zone_observation_variables) + 4,),
+    dtype=np.float32)
+
+default_5zone_action_mapping = {
+    0: (15, 30),
+    1: (16, 29),
+    2: (17, 28),
+    3: (18, 27),
+    4: (19, 26),
+    5: (20, 25),
+    6: (21, 24),
+    7: (22, 23),
+    8: (22, 22),
+    9: (21, 21)
+}
+
+default_5zone_action_space_discrete = gym.spaces.Discrete(10)
+
+default_5zone_action_space_continuous = gym.spaces.Box(
+    low=np.array([15.0, 22.5]),
+    high=np.array([22.5, 30.0]),
+    shape=(2,),
+    dtype=np.float32
+)
+
+default_5zone_config_params = {
+    'action_definition': {
+        'ThermostatSetpoint:DualSetpoint': [{
+            'name': 'space1-dualsetp-rl',
+            'heating_name': 'space1-htgsetp-rl',
+            'cooling_name': 'space1-clgsetp-rl',
+            'zones': ['space1-1']
+        }]
+    }
+}
+# Datacenter
+eplus_datacenter_observartion_variables = []
+eplus_datacenter_action_variables = []
+eplus_datacenter_action_space_discrete = []
+eplus_datacenter_action_space_continuos = []
+eplus_datacenter_action_mapping = []
+eplus_datacenter_config_params = {}
+
+# ---------------------------------------------------------------------------- #
+#                          5ZoneAutoDXVAV Environments                         #
+# ---------------------------------------------------------------------------- #
 # 0) Demo environment
 register(
     id='Eplus-demo-v1',
@@ -18,8 +97,11 @@ register(
     kwargs={
         'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
-        'variables_file': 'variablesDXVAV.cfg',
-        'spaces_file': '5ZoneAutoDXVAV_spaces.cfg',
+        'observation_space': default_5zone_observation_space,
+        'observation_variables': default_5zone_observation_variables,
+        'action_space': default_5zone_action_space_discrete,
+        'action_variables': default_5zone_action_variables,
+        'action_mapping': default_5zone_action_mapping,
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
@@ -30,7 +112,8 @@ register(
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        'env_name': 'demo-v1'})
+        'env_name': 'demo-v1',
+        'config_params': default_5zone_config_params})
 
 # 1) 5-zone, hot weather, discrete actions
 register(
@@ -284,7 +367,9 @@ register(
         },
         'env_name': '5Zone-cool-continuous-stochastic-v1'})
 
-#========================DATACENTER========================#
+# ---------------------------------------------------------------------------- #
+#                            Datacenter Environments                           #
+# ---------------------------------------------------------------------------- #
 # 13) DC, hot weather, discrete actions
 register(
     id='Eplus-datacenter-hot-discrete-v1',
@@ -565,7 +650,9 @@ register(
         },
         'env_name': 'datacenter-cool-continuous-stochastic-v1'})
 
-#========================MULLION========================#
+# ---------------------------------------------------------------------------- #
+#                              Mullion Environmens                             #
+# ---------------------------------------------------------------------------- #
 # TODO Change temperature and energy names for reward calculation.
 # 25) IW, mixed weather, discrete actions
 register(

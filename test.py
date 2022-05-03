@@ -14,13 +14,7 @@ extra_conf = {
             'name': 'space1-dualsetp-rl',
             'heating_name': 'space1-htgsetp-rl',
             'cooling_name': 'space1-clgsetp-rl',
-            'zones': ['space1-1', 'space2-1']
-        },
-            {
-            'name': 'space2-dualsetp-rl',
-            'heating_name': 'space2-htgsetp-rl',
-            'cooling_name': 'space2-clgsetp-rl',
-            'zones': ['space3-1', 'space4-1']
+            'zones': ['space1-1']
         }]
     }
 }
