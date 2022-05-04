@@ -18,10 +18,10 @@ with open(version_file, "r") as file_handler:
 
 # 5Zone
 default_5zone_observation_variables = [
-    'Site Outdoor Air Drybulb Temperature (Environment)',
-    'Site Outdoor Air Relative Humidity (Environment)',
-    'Site Wind Speed (Environment)',
-    'Site Wind Direction (Environment)',
+    'Site Outdoor Air Drybulb Temperature(Environment)',
+    'Site Outdoor Air Relative Humidity(Environment)',
+    'Site Wind Speed(Environment)',
+    'Site Wind Direction(Environment)',
     'Site Diffuse Solar Radiation Rate per Area(Environment)',
     'Site Direct Solar Radiation Rate per Area(Environment)',
     'Zone Thermostat Heating Setpoint Temperature(SPACE1-1)',
@@ -37,8 +37,8 @@ default_5zone_observation_variables = [
 ]
 
 default_5zone_action_variables = [
-    'space1-htgsetp-rl',
-    'space1-clgsetp-rl'
+    'Space1-HtgSetP-RL',
+    'Space1-ClgSetP-RL'
 ]
 
 default_5zone_observation_space = gym.spaces.Box(
@@ -72,9 +72,9 @@ default_5zone_action_space_continuous = gym.spaces.Box(
 default_5zone_config_params = {
     'action_definition': {
         'ThermostatSetpoint:DualSetpoint': [{
-            'name': 'space1-dualsetp-rl',
-            'heating_name': 'space1-htgsetp-rl',
-            'cooling_name': 'space1-clgsetp-rl',
+            'name': 'Space1-DualSetP-RL',
+            'heating_name': 'Space1-HtgSetP-RL',
+            'cooling_name': 'Space1-ClgSetP-RL',
             'zones': ['space1-1']
         }]
     }

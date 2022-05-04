@@ -2,8 +2,11 @@ import gym
 import numpy as np
 
 import sinergym
+from sinergym.utils.wrappers import LoggerWrapper
 
-env = gym.make('Eplus-5Zone-hot-continuous-v1')
+env = gym.make('Eplus-demo-v1')
+env = LoggerWrapper(env)
+
 for i in range(1):
     obs = env.reset()
     rewards = []
