@@ -104,8 +104,8 @@ register(
         'action_mapping': default_5zone_action_mapping,
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (
                 20.0,
                 23.5),

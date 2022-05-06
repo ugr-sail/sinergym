@@ -197,7 +197,7 @@ class EplusEnv(gym.Env):
             'total_power_no_units': terms.get('reward_energy'),
             'comfort_penalty': terms.get('reward_comfort'),
             'temperatures': terms.get('temperatures'),
-            'out_temperature': self.obs_dict['Site Outdoor Air Drybulb Temperature (Environment)'],
+            'out_temperature': self.obs_dict['Site Outdoor Air Drybulb Temperature(Environment)'],
             'action_': action_}
 
         return np.array(obs, dtype=np.float32), reward, done, info
