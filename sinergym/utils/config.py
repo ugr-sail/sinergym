@@ -1,10 +1,11 @@
 """Class and utilities for set up extra configuration in experiments with Sinergym (extra params, weather_variability, building model modification and files management)"""
 import os
 from copy import deepcopy
+from shutil import copyfile
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple
-import xml.etree.ElementTree as ET
 from xml.dom import minidom
+import xml.etree.cElementTree as ElementTree
 
 import numpy as np
 from opyplus import Epm, Idd, WeatherData
@@ -55,7 +56,7 @@ class Config(object):
 
         # Variables XML Tree (empty at the beginning)
         self.variables = variables
-        self.variables_tree = ET.Element('BCVTB-variables')
+        self.variables_tree = ElementTree.Element('BCVTB-variables')
 
         # Opyplus objects
         self._idd = Idd(os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd'))
@@ -109,8 +110,8 @@ class Config(object):
     def adapt_variables_to_cfg_and_idf(self):
         # OBSERVATION VARIABLES
         output_variables = []
-        self.variables_tree.append(
-            ET.Comment('Observation variables: Received from EnergyPlus'))
+        self.variables_tree.append(ElementTree.Comment(
+            'Observation variables: Received from EnergyPlus'))
         for obs_var in self.variables['observation']:
             # obs_var = "<variable_name> (<variable_zone>)"
             var_elements = obs_var.split('(')
@@ -118,9 +119,9 @@ class Config(object):
             var_zone = var_elements[1][:-1]
 
             # Add obs name and zone to XML variables tree
-            new_xml_obs = ET.SubElement(
+            new_xml_obs = ElementTree.SubElement(
                 self.variables_tree, 'variable', source='EnergyPlus')
-            ET.SubElement(
+            ElementTree.SubElement(
                 new_xml_obs,
                 'EnergyPlus',
                 name=var_zone,
@@ -143,12 +144,12 @@ class Config(object):
 
         # ACTION VARIABLES
         self.variables_tree.append(
-            ET.Comment('Action variables: Sent to EnergyPlus'))
+            ElementTree.Comment('Action variables: Sent to EnergyPlus'))
         for act_var in self.variables['action']:
 
-            new_xml_variable = ET.SubElement(
+            new_xml_variable = ElementTree.SubElement(
                 self.variables_tree, 'variable', source='Ptolomy')
-            ET.SubElement(
+            ElementTree.SubElement(
                 new_xml_variable,
                 'EnergyPlus',
                 schedule=act_var)
@@ -209,10 +210,13 @@ class Config(object):
                 '/variables.cfg'
 
             xmlstr = minidom.parseString(
-                ET.tostring(self.variables_tree)).toprettyxml(
+                string=ElementTree.tostring(self.variables_tree)).toprettyxml(
                     indent="   ")
-            with open(episode_cfg_path, "w") as f:
-                f.write(xmlstr)
+
+            with open(episode_cfg_path, "wb") as f:
+                f.write(
+                    '<?xml version="1.0" encoding="ISO-8859-1"?><!DOCTYPE BCVTB-variables SYSTEM "variables.dtd">'.encode('utf8'))
+                ElementTree.ElementTree(self.variables_tree).write(f, 'utf-8')
             return episode_cfg_path
         else:
             raise RuntimeError(
