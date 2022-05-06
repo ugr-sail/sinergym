@@ -148,7 +148,7 @@ class Config(object):
         for act_var in self.variables['action']:
 
             new_xml_variable = ElementTree.SubElement(
-                self.variables_tree, 'variable', source='Ptolomy')
+                self.variables_tree, 'variable', source='Ptolemy')
             ElementTree.SubElement(
                 new_xml_variable,
                 'EnergyPlus',
@@ -185,7 +185,7 @@ class Config(object):
                     # ThermostatSetpoint:DualSetpoint IDF Management
                     if controller_type == 'ThermostatSetpoint:DualSetpoint':
                         for controller in controllers:
-                            # Create Ptolomy variables
+                            # Create Ptolmy variables
                             self.building.ExternalInterface_Schedule.add(
                                 name=controller['heating_name'],
                                 schedule_type_limits_name='Temperature',
@@ -206,18 +206,19 @@ class Config(object):
 
     def save_varibles_cfg(self) -> str:
         if self.episode_path is not None:
+
             episode_cfg_path = self.episode_path + \
                 '/variables.cfg'
 
-            xmlstr = minidom.parseString(
-                string=ElementTree.tostring(self.variables_tree)).toprettyxml(
-                    indent="   ")
+            ElementTree.indent(self.variables_tree)
 
             with open(episode_cfg_path, "wb") as f:
                 f.write(
-                    '<?xml version="1.0" encoding="ISO-8859-1"?><!DOCTYPE BCVTB-variables SYSTEM "variables.dtd">'.encode('utf8'))
+                    '<?xml version="1.0" encoding="ISO-8859-1"?>\n<!DOCTYPE BCVTB-variables SYSTEM "variables.dtd">\n'.encode('utf8'))
                 ElementTree.ElementTree(self.variables_tree).write(f, 'utf-8')
+
             return episode_cfg_path
+
         else:
             raise RuntimeError(
                 '[Simulator Config] Episode path should be set before saving variables.cfg.')
