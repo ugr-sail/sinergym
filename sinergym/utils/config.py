@@ -567,5 +567,8 @@ class Config(object):
             # Check observation variables zones
             if obs_zone.lower() != 'Environment'.lower(
             ) and obs_zone.lower() != 'Whole Building'.lower():
-                assert obs_zone in self.idf_zone_names, 'Observation variables: Zone called {} in observation variables does not exist in IDF building model.'.format(
-                    obs_zone)
+                # zones names with people 1 or lights 1, etc. The second name
+                # is ignored
+                obs_zone_aux = obs_zone.lower().split()[0]
+                assert obs_zone_aux in list(map(lambda zone_name: zone_name.lower(
+                ), self.idf_zone_names)), 'Observation variables: Zone called {} in observation variables does not exist in IDF building model.'.format(obs_zone_aux)
