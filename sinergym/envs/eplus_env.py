@@ -318,11 +318,11 @@ class EplusEnv(gym.Env):
                 assert len(values) == len(
                     self.variables['action']), 'Discrete environment: Action mapping tuples values must have the same length than action variables specified.'
         else:
-            assert len(self.variables['action'] == self.action_space.shape[0]
-                       ), 'Action space shape must match with number of action variables specified.'
+            assert len(
+                self.variables['action']) == self.action_space.shape[0], 'Action space shape must match with number of action variables specified.'
             assert hasattr(
                 self, 'setpoints_space'), 'Continuous environment: setpoints_space attribute should have been defined.'
             assert not hasattr(
                 self, 'action_mapping'), 'Continuous environment: action mapping should not have been defined.'
-            assert len(self.action_space.low) == self.variables['action'] and len(
-                self.action_space.high) == self.variables['action'], 'Continuous environment: low and high values action space definition should have the same number of values than action variables.'
+            assert len(self.action_space.low) == len(self.variables['action']) and len(self.action_space.high) == len(
+                self.variables['action']), 'Continuous environment: low and high values action space definition should have the same number of values than action variables.'
