@@ -556,14 +556,14 @@ class Config(object):
     def _check_observation_variables(self) -> None:
         """This method checks whether observation variables zones are available in building model definition
         """
+        print(self.rdd_variables_names)
         for obs_var in self.variables['observation']:
             obs_name = obs_var.split('(')[0]
             obs_zone = obs_var.split('(')[1][:-1]
 
             # Check observarion variables names
-            if obs_name in self.rdd_variables_names:
-                assert obs_name in self.rdd_variables_names, 'Observation variables: Variable called {} in observation variables is not valid for IDF building model'.format(
-                    obs_name)
+            assert obs_name in self.rdd_variables_names, 'Observation variables: Variable called {} in observation variables is not valid for IDF building model'.format(
+                obs_name)
             # Check observation variables zones
             if obs_zone.lower() != 'Environment'.lower(
             ) and obs_zone.lower() != 'Whole Building'.lower():
