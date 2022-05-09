@@ -529,7 +529,7 @@ class Config(object):
         if self.config.get('timesteps_per_hour'):
             assert self.config['timesteps_per_hour'] > 0, 'timestep_per_hour must be a positive int value.'
         # Runperiod
-        if self.config.get['runperiod']:
+        if self.config.get('runperiod'):
             assert isinstance(self.config['runperiod'], tuple) and len(
                 self.config['runperiod']) == 6, 'Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).'
         # Action definition
