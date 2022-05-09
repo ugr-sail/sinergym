@@ -56,7 +56,7 @@ class Config(object):
         self._rdd_path = os.path.join(
             PKG_DATA_PATH,
             'variables',
-            self._idf_path.split('.idf')[0] +
+            self._idf_path.split('/')[-1].split('.idf')[0] +
             '.rdd')
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
