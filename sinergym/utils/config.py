@@ -18,6 +18,11 @@ YEAR = 1991  # Non leap year
 
 CWD = os.getcwd()
 
+# For store all key names in order to assert them.
+CONFIG_KEYS = ['timesteps_per_hour', 'runperiod', 'action_definition']
+# For action definition components in order to assert them
+ACTION_DEFINITION_COMPONENTS = ['ThermostatSetpoint:DualSetpoint']
+
 
 class Config(object):
     """Config object to manage extra configuration in Sinergym experiments.
@@ -69,6 +74,9 @@ class Config(object):
             idd_or_version=self._idd,
             check_length=False)
         self.weather_data = WeatherData.from_epw(self._weather_path)
+
+        # Check config definition
+        self._check_eplus_config
 
     # ---------------------------------------------------------------------------- #
     #            IDF, variables and Building model adaptation                      #
@@ -161,14 +169,11 @@ class Config(object):
 
             # Timesteps processed in a simulation hour
             if self.config.get('timesteps_per_hour'):
-                assert self.config['timesteps_per_hour'] > 0, 'timestep_per_hour must be a positive int value.'
                 self.building.timestep[0].number_of_timesteps_per_hour = self.config['timesteps_per_hour']
 
             # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
             # end_day, end_month, end_year)
             if self.config.get('runperiod'):
-                assert isinstance(self.config['runperiod'], tuple) and len(
-                    self.config['runperiod']) == 6, 'Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).'
                 runperiod = self.building.RunPeriod[0]
                 runperiod.begin_day_of_month = int(self.config['runperiod'][0])
                 runperiod.begin_month = int(self.config['runperiod'][1])
@@ -486,3 +491,48 @@ class Config(object):
         """
 
         return YEAR
+
+    # ---------------------------------------------------------------------------- #
+    #                             Config class checker                             #
+    # ---------------------------------------------------------------------------- #
+
+    def _check_eplus_config(self) -> None:
+        """Check Eplus Environment config definition is correct.
+        """
+
+        # Check all keys specified in config are valids (previusly defined in
+        # CONFIG_KEYS)
+        for config_key in self.config.keys():
+            assert config_key in CONFIG_KEYS, 'Extra parameter {} unknown by Sinergym'.format(
+                config_key)
+        # Check config parameters values
+        # Timesteps
+        if self.config.get('timesteps_per_hour'):
+            assert self.config['timesteps_per_hour'] > 0, 'timestep_per_hour must be a positive int value.'
+        # Runperiod
+        if self.config.get['runperiod']:
+            assert isinstance(self.config['runperiod'], tuple) and len(
+                self.config['runperiod']) == 6, 'Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).'
+        # Action definition
+        if self.config.get('action_definition'):
+            # Check Action definition keys are valids (previusly defined
+            # ACTION_DEFINITION_COMPONENTS)
+            for component_name in self.config['action_definition'].keys():
+                assert component_name in ACTION_DEFINITION_COMPONENTS, 'The element {} cannot be processed by Sinergym.'.format(
+                    component_name)
+                # Check ThermostatSetpoint:DualSetpoint
+                if component_name == 'ThermostatSetpoint:DualSetpoint':
+                    for thermostat in self.config['action_definition'][component_name]:
+                        # Check Thermostates fields
+                        assert set(thermostat.keys()) == set(['name', 'heating_name', 'cooling_name', 'zones']
+                                                             ), 'Extra config action definition: ThermostatSetpoint:DualSetpoint key names unknown, check them please.'
+                        assert thermostat['heating_name'] in self.variables['action'], 'Extra config action definition: {} should be in action variables.'.format(
+                            thermostat['heating_name'])
+                        assert thermostat['cooling_name'] in self.variables['action'], 'Extra config action definition: {} should be in action variables.'.format(
+                            thermostat['cooling_name'])
+                        idf_zone_names = []
+                        for idf_zone in self.building.Zone:
+                            idf_zone_names.append(idf_zone.name)
+                        for zone in thermostat['zones']:
+                            assert zone in idf_zone_names, 'Extra config action definition: Zone called {} not exists in IDF building'.format(
+                                zone)
