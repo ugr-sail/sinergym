@@ -88,9 +88,9 @@ class Config(object):
             self.idf_zone_names.append(idf_zone.name)
         # Extract rdd observation variables names
         data = pandas.read_csv(self._rdd_path, skiprows=1)
-        self.rdd_variables_names = map(
+        self.rdd_variables_names = list(map(
             lambda name: name.split(' [')[0],
-            data['Variable Name [Units]'].tolist())
+            data['Variable Name [Units]'].tolist()))
 
         # Check observation variables definition
         self._check_observation_variables()
