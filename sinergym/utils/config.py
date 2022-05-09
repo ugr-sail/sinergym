@@ -6,7 +6,8 @@ from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple
 from xml.dom import minidom
 import xml.etree.cElementTree as ElementTree
-
+import pandas
+from sinergym.utils.constant import PKG_DATA_PATH
 import numpy as np
 from opyplus import Epm, Idd, WeatherData
 
@@ -51,6 +52,12 @@ class Config(object):
 
         self._idf_path = idf_path
         self._weather_path = weather_path
+        # RDD file name is deducible using idf name (only change .idf by .rdd)
+        self._rdd_path = os.path.join(
+            PKG_DATA_PATH,
+            'variables',
+            self._idf_path.split('.idf')[0] +
+            '.rdd')
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
         self.experiment_path = self.set_experiment_working_dir(env_name)
@@ -75,8 +82,20 @@ class Config(object):
             check_length=False)
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
+        # Extract idf zone names
+        self.idf_zone_names = []
+        for idf_zone in self.building.Zone:
+            self.idf_zone_names.append(idf_zone.name)
+        # Extract rdd observation variables names
+        data = pandas.read_csv(self._rdd_path)
+        self.rdd_variables_names = map(
+            lambda name: name.split(' [')[0],
+            data['Variable Name [Units]'].tolist())
+
+        # Check observation variables definition
+        self._check_observation_variables()
         # Check config definition
-        self._check_eplus_config
+        self._check_eplus_config()
 
     # ---------------------------------------------------------------------------- #
     #            IDF, variables and Building model adaptation                      #
@@ -530,9 +549,23 @@ class Config(object):
                             thermostat['heating_name'])
                         assert thermostat['cooling_name'] in self.variables['action'], 'Extra config action definition: {} should be in action variables.'.format(
                             thermostat['cooling_name'])
-                        idf_zone_names = []
-                        for idf_zone in self.building.Zone:
-                            idf_zone_names.append(idf_zone.name)
                         for zone in thermostat['zones']:
-                            assert zone in idf_zone_names, 'Extra config action definition: Zone called {} not exists in IDF building'.format(
+                            assert zone in self.idf_zone_names, 'Extra config action definition: Zone called {} does not exist in IDF building model.'.format(
                                 zone)
+
+    def _check_observation_variables(self) -> None:
+        """This method checks whether observation variables zones are available in building model definition
+        """
+        for obs_var in self.variables['observation']:
+            obs_name = obs_var.split('(')[0]
+            obs_zone = obs_var.split('(')[1][:-1]
+
+            # Check observarion variables names
+            if obs_name in self.rdd_variables_names:
+                assert obs_name in self.rdd_variables_names, 'Observation variables: Variable called {} in observation variables is not valid for IDF building model'.format(
+                    obs_name)
+            # Check observation variables zones
+            if obs_zone.lower() != 'Environment'.lower(
+            ) and obs_zone.lower() != 'Whole Building'.lower():
+                assert obs_zone in self.idf_zone_names, 'Observation variables: Zone called {} in observation variables does not exist in IDF building model.'.format(
+                    obs_zone)
