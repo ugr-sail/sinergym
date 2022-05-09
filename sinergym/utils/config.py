@@ -87,7 +87,7 @@ class Config(object):
         for idf_zone in self.building.Zone:
             self.idf_zone_names.append(idf_zone.name)
         # Extract rdd observation variables names
-        data = pandas.read_csv(self._rdd_path)
+        data = pandas.read_csv(self._rdd_path, skiprows=1)
         self.rdd_variables_names = map(
             lambda name: name.split(' [')[0],
             data['Variable Name [Units]'].tolist())
