@@ -24,9 +24,11 @@ class EplusEnv(gym.Env):
         self,
         idf_file: str,
         weather_file: str,
-        observation_space: gym.spaces.Box = gym.spaces.Box(low=0, high=0, shape=(0,)),
+        observation_space: gym.spaces.Box = gym.spaces.Box(
+            low=0, high=0, shape=(0,)),
         observation_variables: List[str] = [],
-        action_space: Union[gym.spaces.Box, gym.spaces.Discrete] = gym.spaces.Box(low=0, high=0, shape=(0,)),
+        action_space: Union[gym.spaces.Box, gym.spaces.Discrete] = gym.spaces.Box(
+            low=0, high=0, shape=(0,)),
         action_variables: List[str] = [],
         action_mapping: Dict[int, Tuple[float, ...]] = [],
         weather_variability: Optional[Tuple[float]] = None,
@@ -259,12 +261,26 @@ class EplusEnv(gym.Env):
 
         return action_
 
-    def _setpoints_transform(self, action: Union[int,
-                                                 float,
-                                                 np.integer,
-                                                 np.ndarray,
-                                                 List[Any],
-                                                 Tuple[Any]]):
+    def _setpoints_transform(self,
+                             action: Union[int,
+                                           float,
+                                           np.integer,
+                                           np.ndarray,
+                                           List[Any],
+                                           Tuple[Any]]) -> Union[int,
+                                                                 float,
+                                                                 np.integer,
+                                                                 np.ndarray,
+                                                                 List[Any],
+                                                                 Tuple[Any]]:
+        """ This method transforms an action defined in gym (-1,1 in all continuous environment) action space to simulation real action space.
+
+        Args:
+            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action received in environment
+
+        Returns:
+            Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]: Action transformed in simulator action space.
+        """
         action_ = []
 
         for i, value in enumerate(action):
@@ -283,7 +299,12 @@ class EplusEnv(gym.Env):
 
         return action_
 
-    def _check_eplus_env(self):
+    def _check_observation_variables(self) -> None:
+        pass
+
+    def _check_eplus_env(self) -> None:
+        """This method checks that environment definition is correct and it has not inconsistencies.
+        """
         # OBSERVATION
         assert len(self.variables['observation']) == self.observation_space.shape[
             0], 'Observation space has not the same length than variable names specified.'
@@ -308,5 +329,3 @@ class EplusEnv(gym.Env):
                 self, 'action_mapping'), 'Continuous environment: action mapping should not have been defined.'
             assert len(self.action_space.low) == self.variables['action'] and len(
                 self.action_space.high) == self.variables['action'], 'Continuous environment: low and high values action space definition should have the same number of values than action variables.'
-
-        self.simulator._config._check_eplus_config()
