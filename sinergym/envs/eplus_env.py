@@ -299,9 +299,6 @@ class EplusEnv(gym.Env):
 
         return action_
 
-    def _check_observation_variables(self) -> None:
-        pass
-
     def _check_eplus_env(self) -> None:
         """This method checks that environment definition is correct and it has not inconsistencies.
         """
