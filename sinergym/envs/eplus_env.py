@@ -28,7 +28,7 @@ class EplusEnv(gym.Env):
         observation_variables: List[str] = [],
         action_space: Union[gym.spaces.Box, gym.spaces.Discrete] = gym.spaces.Box(low=0, high=0, shape=(0,)),
         action_variables: List[str] = [],
-        action_mapping: List[Tuple[int, ...]] = [],
+        action_mapping: Dict[int, Tuple[float, ...]] = [],
         weather_variability: Optional[Tuple[float]] = None,
         reward: Any = LinearReward,
         reward_kwargs: Optional[Dict[str, Any]] = {},
@@ -46,7 +46,7 @@ class EplusEnv(gym.Env):
             observation_variables (List[str], optional): List with variables names in IDF. Defaults to an empty observation variables (no control).
             action_space (Union[gym.spaces.Box, gym.spaces.Discrete], optional): Gym Action Space definition. Defaults to an empty action_space (no control).
             action_variables (List[str],optional): Action variables to be controlled in IDF, if that actions names have not been configured manually in IDF, you should configure or use extra_config. Default to empty List.
-            action_mapping (List[Tuple[int, ...]], optional): Action mapping list for discrete actions spaces only. Defaults to empty list.
+            action_mapping (Dict[int, Tuple[float, ...]], optional): Action mapping list for discrete actions spaces only. Defaults to empty list.
             weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
             reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
@@ -137,6 +137,12 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         self.reward_fn = reward(self, **reward_kwargs)
         self.obs_dict = None
+
+        # ---------------------------------------------------------------------------- #
+        #                        Environment definition checker                        #
+        # ---------------------------------------------------------------------------- #
+
+        self._check_eplus_env()
 
     # ---------------------------------------------------------------------------- #
     #                                     RESET                                    #
@@ -276,3 +282,31 @@ class EplusEnv(gym.Env):
                 action_.append(value)
 
         return action_
+
+    def _check_eplus_env(self):
+        # OBSERVATION
+        assert len(self.variables['observation']) == self.observation_space.shape[
+            0], 'Observation space has not the same length than variable names specified.'
+
+        # ACTION
+        if self.flag_discrete:
+            assert hasattr(
+                self, 'action_mapping'), 'Discrete environment: action mapping should have been defined.'
+            assert not hasattr(
+                self, 'setpoints_space'), 'Discrete environment: setpoints space should not have been defined.'
+            assert self.action_space.n == len(
+                self.action_mapping), 'Discrete environment: The length of the action_mapping must match the dimension of the discrete action space.'
+            for values in self.action_mapping.values():
+                assert len(values) == len(
+                    self.variables['action']), 'Discrete environment: Action mapping tuples values must have the same length than action variables specified.'
+        else:
+            assert len(self.variables['action'] == self.action_space.shape[0]
+                       ), 'Action space shape must match with number of action variables specified.'
+            assert hasattr(
+                self, 'setpoints_space'), 'Continuous environment: setpoints_space attribute should have been defined.'
+            assert not hasattr(
+                self, 'action_mapping'), 'Continuous environment: action mapping should not have been defined.'
+            assert len(self.action_space.low) == self.variables['action'] and len(
+                self.action_space.high) == self.variables['action'], 'Continuous environment: low and high values action space definition should have the same number of values than action variables.'
+
+        self.simulator._config._check_eplus_config()
