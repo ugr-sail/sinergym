@@ -5,11 +5,12 @@ from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple
 from xml.dom import minidom
 import xml.etree.cElementTree as ElementTree
+import opyplus
 import pandas
 from sinergym.utils.constants import PKG_DATA_PATH, YEAR, WEEKDAY_ENCODING, CWD, CONFIG_KEYS, ACTION_DEFINITION_COMPONENTS
 import numpy as np
-from opyplus import Epm, Idd, WeatherData
-from sinergym.utils.common import get_delta_seconds, prepare_batch_from_records
+from opyplus import Epm, Idd, RecordDoesNotExistError, WeatherData
+from sinergym.utils.common import get_delta_seconds, get_record_keys, prepare_batch_from_records
 
 
 class Config(object):
@@ -72,7 +73,7 @@ class Config(object):
         # Extract idf zone names
         self.idf_zone_names = []
         for idf_zone in self.building.Zone:
-            self.idf_zone_names.append(idf_zone.name)
+            self.idf_zone_names.append(idf_zone.name.lower())
         # Extract rdd observation variables names
         data = pandas.read_csv(self._rdd_path, skiprows=1)
         self.rdd_variables_names = list(map(
@@ -212,8 +213,16 @@ class Config(object):
                                 cooling_setpoint_temperature_schedule_name=controller['cooling_name'])
                             # Link in zones required
                             for zone_control in self.building.ZoneControl_Thermostat:
-                                if zone_control.zone_or_zonelist_name.name in controller['zones']:
-                                    zone_control.control_3_name = controller['name']
+                                if zone_control.zone_or_zonelist_name.name.lower() in list(
+                                        map(lambda zone: zone.lower(), controller['zones'])):
+                                    for i in range(
+                                            len(get_record_keys(zone_control))):
+                                        if isinstance(zone_control[i], str):
+                                            if zone_control[i].lower(
+                                            ) == controller_type.lower():
+                                                zone_control[i +
+                                                             1] = controller['name']
+                                                break
 
     def save_varibles_cfg(self) -> str:
         if self.episode_path is not None:
@@ -508,42 +517,42 @@ class Config(object):
 
         # Check all keys specified in config are valids (previusly defined in
         # CONFIG_KEYS)
-        for config_key in self.config.keys():
-            assert config_key in CONFIG_KEYS, 'Extra parameter {} unknown by Sinergym'.format(
-                config_key)
-        # Check config parameters values
-        # Timesteps
-        if self.config.get('timesteps_per_hour'):
-            assert self.config['timesteps_per_hour'] > 0, 'timestep_per_hour must be a positive int value.'
-        # Runperiod
-        if self.config.get('runperiod'):
-            assert isinstance(self.config['runperiod'], tuple) and len(
-                self.config['runperiod']) == 6, 'Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).'
-        # Action definition
-        if self.config.get('action_definition'):
-            # Check Action definition keys are valids (previusly defined
-            # ACTION_DEFINITION_COMPONENTS)
-            for component_name in self.config['action_definition'].keys():
-                assert component_name in ACTION_DEFINITION_COMPONENTS, 'The element {} cannot be processed by Sinergym.'.format(
-                    component_name)
-                # Check ThermostatSetpoint:DualSetpoint
-                if component_name == 'ThermostatSetpoint:DualSetpoint':
-                    for thermostat in self.config['action_definition'][component_name]:
-                        # Check Thermostates fields
-                        assert set(thermostat.keys()) == set(['name', 'heating_name', 'cooling_name', 'zones']
-                                                             ), 'Extra config action definition: ThermostatSetpoint:DualSetpoint key names unknown, check them please.'
-                        assert thermostat['heating_name'] in self.variables['action'], 'Extra config action definition: {} should be in action variables.'.format(
-                            thermostat['heating_name'])
-                        assert thermostat['cooling_name'] in self.variables['action'], 'Extra config action definition: {} should be in action variables.'.format(
-                            thermostat['cooling_name'])
-                        for zone in thermostat['zones']:
-                            assert zone in self.idf_zone_names, 'Extra config action definition: Zone called {} does not exist in IDF building model.'.format(
-                                zone)
+        if self.config is not None:
+            for config_key in self.config.keys():
+                assert config_key in CONFIG_KEYS, 'Extra parameter {} unknown by Sinergym'.format(
+                    config_key)
+            # Check config parameters values
+            # Timesteps
+            if self.config.get('timesteps_per_hour'):
+                assert self.config['timesteps_per_hour'] > 0, 'timestep_per_hour must be a positive int value.'
+            # Runperiod
+            if self.config.get('runperiod'):
+                assert isinstance(self.config['runperiod'], tuple) and len(
+                    self.config['runperiod']) == 6, 'Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).'
+            # Action definition
+            if self.config.get('action_definition'):
+                # Check Action definition keys are valids (previusly defined
+                # ACTION_DEFINITION_COMPONENTS)
+                for component_name in self.config['action_definition'].keys():
+                    assert component_name in ACTION_DEFINITION_COMPONENTS, 'The element {} cannot be processed by Sinergym.'.format(
+                        component_name)
+                    # Check ThermostatSetpoint:DualSetpoint
+                    if component_name == 'ThermostatSetpoint:DualSetpoint':
+                        for thermostat in self.config['action_definition'][component_name]:
+                            # Check Thermostates fields
+                            assert set(thermostat.keys()) == set(['name', 'heating_name', 'cooling_name', 'zones']
+                                                                 ), 'Extra config action definition: ThermostatSetpoint:DualSetpoint key names unknown, check them please.'
+                            assert thermostat['heating_name'] in self.variables['action'], 'Extra config action definition: {} should be in action variables.'.format(
+                                thermostat['heating_name'])
+                            assert thermostat['cooling_name'] in self.variables['action'], 'Extra config action definition: {} should be in action variables.'.format(
+                                thermostat['cooling_name'])
+                            for zone in thermostat['zones']:
+                                assert zone.lower() in self.idf_zone_names, 'Extra config action definition: Zone called {} does not exist in IDF building model.'.format(
+                                    zone)
 
     def _check_observation_variables(self) -> None:
         """This method checks whether observation variables zones are available in building model definition
         """
-        print(self.rdd_variables_names)
         for obs_var in self.variables['observation']:
             obs_name = obs_var.split('(')[0]
             obs_zone = obs_var.split('(')[1][:-1]
@@ -555,7 +564,6 @@ class Config(object):
             if obs_zone.lower() != 'Environment'.lower(
             ) and obs_zone.lower() != 'Whole Building'.lower():
                 # zones names with people 1 or lights 1, etc. The second name
-                # is ignored
-                for zone in self.idf_zone_names:
-                    assert zone.lower() in obs_zone.lower(
-                    ), 'Observation variables: Zone called {} in observation variables does not exist in IDF building model.'.format(obs_zone)
+                # is ignored, only check that zone is a substr from obs zone
+                assert any(list(map(lambda zone: zone.lower() in obs_zone.lower(), self.idf_zone_names))
+                           ), 'Observation variables: Zone called {} in observation variables does not exist in IDF building model.'.format(obs_zone)
