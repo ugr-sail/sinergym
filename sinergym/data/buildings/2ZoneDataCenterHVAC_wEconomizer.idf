@@ -3135,29 +3135,19 @@
     West Zone,               !- Zone or ZoneList Name
     Zone Control Type Sched, !- Control Type Schedule Name
     ThermostatSetpoint:DualSetpoint,  !- Control 1 Object Type
-    West-DualSetP-RL;        !- Control 1 Name
+    Temperature Setpoints;        !- Control 1 Name
 
   ZoneControl:Thermostat,
     East Zone Thermostat,    !- Name
     East Zone,               !- Zone or ZoneList Name
     Zone Control Type Sched, !- Control Type Schedule Name
     ThermostatSetpoint:DualSetpoint,  !- Control 1 Object Type
-    East-DualSetP-RL;        !- Control 1 Name
+    Temperature Setpoints;        !- Control 1 Name
 
   ThermostatSetpoint:DualSetpoint,
     Temperature Setpoints,   !- Name
     Heating Setpoints,       !- Heating Setpoint Temperature Schedule Name
     Cooling Setpoints;       !- Cooling Setpoint Temperature Schedule Name
-
-  ThermostatSetpoint:DualSetpoint,
-    West-DualSetP-RL,        !- Name
-    West-HtgSetP-RL,         !- Heating Setpoint Temperature Schedule Name
-    West-ClgSetP-RL;         !- Cooling Setpoint Temperature Schedule Name
-
-  ThermostatSetpoint:DualSetpoint,
-    East-DualSetP-RL,        !- Name
-    East-HtgSetP-RL,         !- Heating Setpoint Temperature Schedule Name
-    East-ClgSetP-RL;         !- Cooling Setpoint Temperature Schedule Name
 
   Schedule:Compact,
     Zone Control Type Sched, !- Name
@@ -3310,26 +3300,6 @@
 
   ExternalInterface,
     PtolemyServer;           !- Name of External Interface
-
-  ExternalInterface:Schedule,
-    West-HtgSetP-RL,         !- Name
-    Temperature,             !- Schedule Type Limits Name
-    21;                      !- Initial Value
-
-  ExternalInterface:Schedule,
-    West-ClgSetP-RL,         !- Name
-    Temperature,             !- Schedule Type Limits Name
-    25;                      !- Initial Value
-
-  ExternalInterface:Schedule,
-    East-HtgSetP-RL,         !- Name
-    Temperature,             !- Schedule Type Limits Name
-    21;                      !- Initial Value
-
-  ExternalInterface:Schedule,
-    East-ClgSetP-RL,         !- Name
-    Temperature,             !- Schedule Type Limits Name
-    25;                      !- Initial Value
 
   OutputControl:Table:Style,
     HTML;                    !- Column Separator
