@@ -1,28 +1,15 @@
 """Class and utilities for set up extra configuration in experiments with Sinergym (extra params, weather_variability, building model modification and files management)"""
 import os
 from copy import deepcopy
-from shutil import copyfile
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple
 from xml.dom import minidom
 import xml.etree.cElementTree as ElementTree
 import pandas
-from sinergym.utils.constant import PKG_DATA_PATH
+from sinergym.utils.constants import PKG_DATA_PATH, YEAR, WEEKDAY_ENCODING, CWD, CONFIG_KEYS, ACTION_DEFINITION_COMPONENTS
 import numpy as np
 from opyplus import Epm, Idd, WeatherData
-
 from sinergym.utils.common import get_delta_seconds, prepare_batch_from_records
-
-WEEKDAY_ENCODING = {'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
-                    'friday': 4, 'saturday': 5, 'sunday': 6}
-YEAR = 1991  # Non leap year
-
-CWD = os.getcwd()
-
-# For store all key names in order to assert them.
-CONFIG_KEYS = ['timesteps_per_hour', 'runperiod', 'action_definition']
-# For action definition components in order to assert them
-ACTION_DEFINITION_COMPONENTS = ['ThermostatSetpoint:DualSetpoint']
 
 
 class Config(object):
@@ -569,6 +556,6 @@ class Config(object):
             ) and obs_zone.lower() != 'Whole Building'.lower():
                 # zones names with people 1 or lights 1, etc. The second name
                 # is ignored
-                obs_zone_aux = obs_zone.lower().split()[0]
-                assert obs_zone_aux in list(map(lambda zone_name: zone_name.lower(
-                ), self.idf_zone_names)), 'Observation variables: Zone called {} in observation variables does not exist in IDF building model.'.format(obs_zone_aux)
+                for zone in self.idf_zone_names:
+                    assert zone.lower() in obs_zone.lower(
+                    ), 'Observation variables: Zone called {} in observation variables does not exist in IDF building model.'.format(obs_zone)
