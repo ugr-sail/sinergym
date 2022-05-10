@@ -31,7 +31,7 @@ class EplusEnv(gym.Env):
         action_space: Union[gym.spaces.Box, gym.spaces.Discrete] = gym.spaces.Box(
             low=0, high=0, shape=(0,)),
         action_variables: List[str] = [],
-        action_mapping: Dict[int, Tuple[float, ...]] = [],
+        action_mapping: Dict[int, Tuple[float, ...]] = {},
         weather_variability: Optional[Tuple[float]] = None,
         reward: Any = LinearReward,
         reward_kwargs: Optional[Dict[str, Any]] = {},
