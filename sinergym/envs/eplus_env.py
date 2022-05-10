@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import gym
 import numpy as np
 import pkg_resources
+from sinergym.utils.constants import PKG_DATA_PATH
 
 from sinergym.simulators import EnergyPlus
 from sinergym.utils.rewards import ExpReward, LinearReward
@@ -63,8 +64,7 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
-        self.pkg_data_path = pkg_resources.resource_filename(
-            'sinergym', 'data/')
+        self.pkg_data_path = PKG_DATA_PATH
 
         self.idf_path = os.path.join(self.pkg_data_path, 'buildings', idf_file)
         self.weather_path = os.path.join(

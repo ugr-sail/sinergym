@@ -4,88 +4,13 @@ from gym.envs.registration import register
 import gym
 import numpy as np
 
+from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
 
 # Set __version__ in module
 version_file = os.path.join(os.path.dirname(__file__), "version.txt")
 with open(version_file, "r") as file_handler:
     __version__ = file_handler.read().strip()
-
-
-# ---------------------------------------------------------------------------- #
-#                       Default Environments Configuration                     #
-# ---------------------------------------------------------------------------- #
-
-# 5Zone
-default_5zone_observation_variables = [
-    'Site Outdoor Air Drybulb Temperature(Environment)',
-    'Site Outdoor Air Relative Humidity(Environment)',
-    'Site Wind Speed(Environment)',
-    'Site Wind Direction(Environment)',
-    'Site Diffuse Solar Radiation Rate per Area(Environment)',
-    'Site Direct Solar Radiation Rate per Area(Environment)',
-    'Zone Thermostat Heating Setpoint Temperature(SPACE1-1)',
-    'Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)',
-    'Zone Air Temperature(SPACE1-1)',
-    'Zone Thermal Comfort Mean Radiant Temperature(SPACE1-1 PEOPLE 1)',
-    'Zone Air Relative Humidity(SPACE1-1)',
-    'Zone Thermal Comfort Clothing Value(SPACE1-1 PEOPLE 1)',
-    'Zone Thermal Comfort Fanger Model PPD(SPACE1-1 PEOPLE 1)',
-    'Zone People Occupant Count(SPACE1-1)',
-    'People Air Temperature(SPACE1-1 PEOPLE 1)',
-    'Facility Total HVAC Electricity Demand Rate(Whole Building)'
-]
-
-default_5zone_action_variables = [
-    'Space1-HtgSetP-RL',
-    'Space1-ClgSetP-RL'
-]
-
-default_5zone_observation_space = gym.spaces.Box(
-    low=-5e6,
-    high=5e6,
-    shape=(len(default_5zone_observation_variables) + 4,),
-    dtype=np.float32)
-
-default_5zone_action_mapping = {
-    0: (15, 30),
-    1: (16, 29),
-    2: (17, 28),
-    3: (18, 27),
-    4: (19, 26),
-    5: (20, 25),
-    6: (21, 24),
-    7: (22, 23),
-    8: (22, 22),
-    9: (21, 21)
-}
-
-default_5zone_action_space_discrete = gym.spaces.Discrete(10)
-
-default_5zone_action_space_continuous = gym.spaces.Box(
-    low=np.array([15.0, 22.5]),
-    high=np.array([22.5, 30.0]),
-    shape=(2,),
-    dtype=np.float32
-)
-
-default_5zone_config_params = {
-    'action_definition': {
-        'ThermostatSetpoint:DualSetpoint': [{
-            'name': 'Space1-DualSetP-RL',
-            'heating_name': 'Space1-HtgSetP-RL',
-            'cooling_name': 'Space1-ClgSetP-RL',
-            'zones': ['space1-1']
-        }]
-    }
-}
-# Datacenter
-eplus_datacenter_observartion_variables = []
-eplus_datacenter_action_variables = []
-eplus_datacenter_action_space_discrete = []
-eplus_datacenter_action_space_continuos = []
-eplus_datacenter_action_mapping = []
-eplus_datacenter_config_params = {}
 
 # ---------------------------------------------------------------------------- #
 #                          5ZoneAutoDXVAV Environments                         #
@@ -97,11 +22,11 @@ register(
     kwargs={
         'idf_file': '5ZoneAutoDXVAV.idf',
         'weather_file': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
-        'observation_space': default_5zone_observation_space,
-        'observation_variables': default_5zone_observation_variables,
-        'action_space': default_5zone_action_space_discrete,
-        'action_variables': default_5zone_action_variables,
-        'action_mapping': default_5zone_action_mapping,
+        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
+        'action_space': DEFAULT_5ZONE_ACTION_SPACE_DISCRETE,
+        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
+        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
@@ -113,7 +38,7 @@ register(
                 23.0,
                 26.0)},
         'env_name': 'demo-v1',
-        'config_params': default_5zone_config_params})
+        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
 
 # 1) 5-zone, hot weather, discrete actions
 register(
