@@ -98,7 +98,6 @@ RUN cabal install --ghc-options='+RTS -M2G -RTS' \
 RUN echo "Installing pandoc-citeproc via cabal."
 RUN cabal install --ghc-options='+RTS -M2G -RTS' \
                   --allow-newer=base \
-
                   pandoc-citeproc
 RUN echo "Installing pandoc-citeproc-preamble via cabal."
 RUN cabal install --ghc-options='+RTS -M2G -RTS' \
