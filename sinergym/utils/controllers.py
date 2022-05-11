@@ -2,8 +2,6 @@
 from datetime import datetime
 from typing import Any, List, Sequence
 
-from ..utils.common import parse_variables
-
 
 class RandomController(object):
 

@@ -7,10 +7,9 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import gym
 import numpy as np
-import pkg_resources
-from sinergym.utils.constants import PKG_DATA_PATH
 
 from sinergym.simulators import EnergyPlus
+from sinergym.utils.constants import PKG_DATA_PATH
 from sinergym.utils.rewards import ExpReward, LinearReward
 
 

@@ -8,8 +8,8 @@ from opyplus import Epm, Idd, WeatherData
 
 from sinergym.envs.eplus_env import EplusEnv
 from sinergym.simulators.eplus import EnergyPlus
-from sinergym.utils.common import RANGES_5ZONE
 from sinergym.utils.config import Config
+from sinergym.utils.constants import RANGES_5ZONE
 from sinergym.utils.rewards import BaseReward, LinearReward
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
                                      NormalizeObservation)

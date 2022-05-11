@@ -1,16 +1,19 @@
 """Class and utilities for set up extra configuration in experiments with Sinergym (extra params, weather_variability, building model modification and files management)"""
 import os
+import xml.etree.cElementTree as ElementTree
 from copy import deepcopy
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple
-from xml.dom import minidom
-import xml.etree.cElementTree as ElementTree
-import opyplus
-import pandas
-from sinergym.utils.constants import PKG_DATA_PATH, YEAR, WEEKDAY_ENCODING, CWD, CONFIG_KEYS, ACTION_DEFINITION_COMPONENTS
+
 import numpy as np
-from opyplus import Epm, Idd, RecordDoesNotExistError, WeatherData
-from sinergym.utils.common import get_delta_seconds, get_record_keys, prepare_batch_from_records
+import pandas
+from opyplus import Epm, Idd, WeatherData
+
+from sinergym.utils.common import (get_delta_seconds, get_record_keys,
+                                   prepare_batch_from_records)
+from sinergym.utils.constants import (ACTION_DEFINITION_COMPONENTS,
+                                      CONFIG_KEYS, CWD, PKG_DATA_PATH,
+                                      WEEKDAY_ENCODING, YEAR)
 
 
 class Config(object):

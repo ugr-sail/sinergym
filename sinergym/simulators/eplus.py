@@ -14,7 +14,6 @@ import socket
 import subprocess
 import threading
 import time
-from shutil import copyfile
 from typing import Any, Dict, List, Optional, Tuple, Union
 from xml.etree.ElementTree import Element, SubElement, tostring
 
@@ -22,6 +21,7 @@ import numpy as np
 
 from sinergym.utils.common import *
 from sinergym.utils.config import Config
+from sinergym.utils.logger import Logger
 
 LOG_LEVEL_MAIN = 'INFO'
 LOG_LEVEL_EPLS = 'FATAL'

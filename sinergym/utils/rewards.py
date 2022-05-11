@@ -3,7 +3,7 @@
 
 from datetime import datetime
 from math import exp
-from typing import Dict, List, Tuple, Union, Any
+from typing import Any, Dict, List, Tuple, Union
 
 from gym import Env
 

@@ -7,7 +7,7 @@ import gym
 import numpy as np
 from stable_baselines3.common.env_util import is_wrapped
 
-from sinergym.utils.common import CSVLogger
+from sinergym.utils.logger import CSVLogger
 
 
 class NormalizeObservation(gym.ObservationWrapper):

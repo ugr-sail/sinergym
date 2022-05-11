@@ -1,8 +1,7 @@
 import os
 
-from gym.envs.registration import register
 import gym
-import numpy as np
+from gym.envs.registration import register
 
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *

@@ -1,7 +1,10 @@
-import pkg_resources
+"""Constants used in whole project."""
+
 import os
+
 import gym
 import numpy as np
+import pkg_resources
 
 # ---------------------------------------------------------------------------- #
 #                               Generic constants                              #
