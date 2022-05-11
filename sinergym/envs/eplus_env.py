@@ -26,7 +26,7 @@ class EplusEnv(gym.Env):
         idf_file: str,
         weather_file: str,
         observation_space: gym.spaces.Box = gym.spaces.Box(
-            low=0, high=0, shape=(0,)),
+            low=-5e6, high=5e6, shape=(4,)),
         observation_variables: List[str] = [],
         action_space: Union[gym.spaces.Box, gym.spaces.Discrete] = gym.spaces.Box(
             low=0, high=0, shape=(0,)),
