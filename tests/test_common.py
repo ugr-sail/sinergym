@@ -55,64 +55,6 @@ def test_get_current_time_info(epm, sec_elapsed, expected_list):
     assert output == expected_list
 
 
-def test_parse_variables(variable_path):
-    # The name of variables we expected
-    observation_expected = [
-        'Site Outdoor Air Drybulb Temperature (Environment)',
-        'Site Outdoor Air Relative Humidity (Environment)',
-        'Site Wind Speed (Environment)',
-        'Site Wind Direction (Environment)',
-        'Site Diffuse Solar Radiation Rate per Area (Environment)',
-        'Site Direct Solar Radiation Rate per Area (Environment)',
-        'Zone Thermostat Heating Setpoint Temperature (SPACE1-1)',
-        'Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)',
-        'Zone Air Temperature (SPACE1-1)',
-        'Zone Thermal Comfort Mean Radiant Temperature (SPACE1-1 PEOPLE 1)',
-        'Zone Air Relative Humidity (SPACE1-1)',
-        'Zone Thermal Comfort Clothing Value (SPACE1-1 PEOPLE 1)',
-        'Zone Thermal Comfort Fanger Model PPD (SPACE1-1 PEOPLE 1)',
-        'Zone People Occupant Count (SPACE1-1)',
-        'People Air Temperature (SPACE1-1 PEOPLE 1)',
-        'Facility Total HVAC Electricity Demand Rate (Whole Building)']
-    action_expected = ['Space1-HtgSetP-RL', 'Space1-ClgSetP-RL']
-
-    variables = common.parse_variables(variable_path)
-
-    assert isinstance(variables, dict)
-    assert len(variables) == 2
-    for i in range(len(variables['observation'])):
-        assert variables['observation'][i] == observation_expected[i]
-    for i in range(len(variables['action'])):
-        assert variables['action'][i] == action_expected[i]
-
-
-def test_parse_observation_action_space(space_path):
-
-    output = common.parse_observation_action_space(space_path)
-
-    assert list(output.keys()) == ['observation',
-                                   'discrete_action', 'continuous_action']
-
-    assert isinstance(output['observation'], tuple)
-    assert output['observation'][0] == float(-5e6)
-    assert output['observation'][1] == float(5e6)
-    assert output['observation'][2] == (20,)
-
-    assert output['continuous_action'][2] == (2,)
-
-    assert isinstance(output['discrete_action'], dict)
-    assert len(output['discrete_action']) == 10
-    assert isinstance(output['discrete_action'][0], tuple)
-    assert len(output['discrete_action'][0]
-               ) == output['continuous_action'][2][0]
-
-    assert isinstance(output['continuous_action'], tuple)
-    assert len(output['continuous_action'][0]
-               ) == output['continuous_action'][2][0]
-    assert len(output['continuous_action'][1]
-               ) == output['continuous_action'][2][0]
-
-
 @ pytest.mark.parametrize(
     'variation',
     [

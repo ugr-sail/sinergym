@@ -84,12 +84,24 @@ def test_adapt_idf_to_epw(config):
 def test_apply_extra_conf(config):
     # Check default config
     assert int(config.building.timestep[0].number_of_timesteps_per_hour) == 4
+    # Check External interface is not created yet
+    assert len(config.building.ExternalInterface_Schedule) == 0
 
     # Set new extra configuration
     config.apply_extra_conf()
 
     # Check new config
     assert int(config.building.timestep[0].number_of_timesteps_per_hour) == 2
+    # Check External interface has been created
+    assert len(config.building.ExternalInterface_Schedule) == 2
+    # Check Runperiod
+    assert config.building.runperiod[0].begin_day_of_month == int(
+        config.config['runperiod'][0]) and config.building.runperiod[0].begin_month == int(
+        config.config['runperiod'][1]) and config.building.runperiod[0].begin_year == int(
+            config.config['runperiod'][2]) and config.building.runperiod[0].end_day_of_month == int(
+                config.config['runperiod'][3]) and config.building.runperiod[0].end_month == int(
+                    config.config['runperiod'][4]) and config.building.runperiod[0].end_year == int(
+                        config.config['runperiod'][5])
 
 
 def test_save_building_model(config, eplus_path, idf_path):
