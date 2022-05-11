@@ -83,6 +83,8 @@ RUN echo "Initial update." &&\
       librsvg2-common \
       zlib1g \
       zlib1g-dev &&\
+# update cabal
+    cabal install cabal-install\
 # print the versions of cabal and ghc
     cabal --version &&\
     ghc --version &&\
