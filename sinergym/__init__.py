@@ -54,8 +54,8 @@ register(
         'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (20.0, 23.5),
             'range_comfort_summer': (23.0, 26.0)
         },
@@ -76,8 +76,8 @@ register(
         'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (20.0, 23.5),
             'range_comfort_summer': (23.0, 26.0)
         },
@@ -98,8 +98,8 @@ register(
         'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (20.0, 23.5),
             'range_comfort_summer': (23.0, 26.0)
         },
@@ -124,8 +124,8 @@ register(
             0.001),
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (20.0, 23.5),
             'range_comfort_summer': (23.0, 26.0)
         },
@@ -147,8 +147,8 @@ register(
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (20.0, 23.5),
             'range_comfort_summer': (23.0, 26.0)
         },
@@ -170,8 +170,8 @@ register(
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (20.0, 23.5),
             'range_comfort_summer': (23.0, 26.0)
         },
@@ -192,8 +192,8 @@ register(
         'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (
                 20.0,
                 23.5),
@@ -217,8 +217,8 @@ register(
         'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (
                 20.0,
                 23.5),
@@ -242,8 +242,8 @@ register(
         'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (
                 20.0,
                 23.5),
@@ -271,8 +271,8 @@ register(
             0.001),
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (
                 20.0,
                 23.5),
@@ -297,8 +297,8 @@ register(
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward,
         'reward_kwargs': {
-                'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-                'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+                'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+                'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
                 'range_comfort_winter': (20.0, 23.5),
                 'range_comfort_summer': (23.0, 26.0)
         },
@@ -320,8 +320,8 @@ register(
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward,
         'reward_kwargs': {
-                'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-                'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+                'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+                'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
                 'range_comfort_winter': (20.0, 23.5),
                 'range_comfort_summer': (23.0, 26.0)
         },
@@ -346,10 +346,10 @@ register(
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': [
-                'Zone Air Temperature (West Zone)',
-                'Zone Air Temperature (East Zone)'
+                'Zone Air Temperature(West Zone)',
+                'Zone Air Temperature(East Zone)'
             ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -401,10 +401,10 @@ register(
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': [
-                'Zone Air Temperature (West Zone)',
-                'Zone Air Temperature (East Zone)'
+                'Zone Air Temperature(West Zone)',
+                'Zone Air Temperature(East Zone)'
             ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -429,10 +429,10 @@ register(
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': [
-                'Zone Air Temperature (West Zone)',
-                'Zone Air Temperature (East Zone)'
+                'Zone Air Temperature(West Zone)',
+                'Zone Air Temperature(East Zone)'
             ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -456,10 +456,10 @@ register(
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': [
-                'Zone Air Temperature (West Zone)',
-                'Zone Air Temperature (East Zone)'
+                'Zone Air Temperature(West Zone)',
+                'Zone Air Temperature(East Zone)'
             ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -481,10 +481,10 @@ register(
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': [
-                'Zone Air Temperature (West Zone)',
-                'Zone Air Temperature (East Zone)'
+                'Zone Air Temperature(West Zone)',
+                'Zone Air Temperature(East Zone)'
             ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -507,10 +507,10 @@ register(
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': [
-                'Zone Air Temperature (West Zone)',
-                'Zone Air Temperature (East Zone)'
+                'Zone Air Temperature(West Zone)',
+                'Zone Air Temperature(East Zone)'
             ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -533,10 +533,10 @@ register(
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': [
-                'Zone Air Temperature (West Zone)',
-                'Zone Air Temperature (East Zone)'
+                'Zone Air Temperature(West Zone)',
+                'Zone Air Temperature(East Zone)'
             ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -558,9 +558,9 @@ register(
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': [
-                'Zone Air Temperature (West Zone)',
-                'Zone Air Temperature (East Zone)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+                'Zone Air Temperature(West Zone)',
+                'Zone Air Temperature(East Zone)'],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (
                 18,
                 27),
@@ -585,10 +585,10 @@ register(
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': [
-                'Zone Air Temperature (West Zone)',
-                'Zone Air Temperature (East Zone)'
+                'Zone Air Temperature(West Zone)',
+                'Zone Air Temperature(East Zone)'
             ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -611,10 +611,10 @@ register(
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': [
-                'Zone Air Temperature (West Zone)',
-                'Zone Air Temperature (East Zone)'
+                'Zone Air Temperature(West Zone)',
+                'Zone Air Temperature(East Zone)'
             ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
@@ -637,10 +637,10 @@ register(
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': [
-                'Zone Air Temperature (West Zone)',
-                'Zone Air Temperature (East Zone)'
+                'Zone Air Temperature(West Zone)',
+                'Zone Air Temperature(East Zone)'
             ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
