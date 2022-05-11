@@ -67,6 +67,8 @@ RUN apt-get update && echo "Y\r" | apt-get install default-jre openjdk-8-jdk
 
 # START Install pandoc for sinergym jupyter documentation
 
+RUN echo "Initial update." &&\
+    apt-get update &&\
 # install tzdata, which we will need down the line
     apt-get install -f -y --no-install-recommends tzdata &&\
     echo "Now installing cabal, and other tools." &&\
