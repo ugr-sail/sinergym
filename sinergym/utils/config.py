@@ -122,7 +122,9 @@ class Config(object):
         self.building.site_location.batch_add(new_location)
         self.building.SizingPeriod_DesignDay.batch_add(new_designdays)
 
-    def adapt_variables_to_cfg_and_idf(self):
+    def adapt_variables_to_cfg_and_idf(self) -> None:
+        """This method adds to XML variable tree all observation and action variables information. In addition, it modifies IDF Output:Variable in order to adapt to new observation variables set.
+        """
         # OBSERVATION VARIABLES
         output_variables = []
         self.variables_tree.append(ElementTree.Comment(
@@ -225,6 +227,14 @@ class Config(object):
                                                 break
 
     def save_varibles_cfg(self) -> str:
+        """This method saves current XML variables tree model into a variables.cfg file.
+
+        Raises:
+            RuntimeError: If this method is used without an episode_path generated (see reset method in simulator), this exception is raised.
+
+        Returns:
+            str: Path to the new saved variables.cfg used by BCVTB for Energyplus communication.
+        """
         if self.episode_path is not None:
 
             episode_cfg_path = self.episode_path + \
