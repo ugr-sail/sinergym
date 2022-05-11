@@ -82,9 +82,7 @@ RUN apt-get install -f -y --no-install-recommends \
       librsvg2-bin \
       librsvg2-common \
       zlib1g \
-      zlib1g-dev
-# update cabal
-RUN cabal install cabal-install
+      zlib1g-dev \
 
 # get the newest list of packages
 RUN echo "Getting the newest list of cabal packages."
