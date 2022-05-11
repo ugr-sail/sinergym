@@ -67,11 +67,9 @@ RUN apt-get update && echo "Y\r" | apt-get install default-jre openjdk-8-jdk
 
 # START Install pandoc for sinergym jupyter documentation
 
-RUN echo "Initial update." &&\
-    apt-get update &&\
 # install tzdata, which we will need down the line
-    apt-get install -f -y --no-install-recommends tzdata &&\
-    echo "Now installing cabal, and other tools."
+RUN apt-get install -f -y --no-install-recommends tzdata
+RUN echo "Now installing cabal, and other tools."
 # We install cabal, a Haskell package manager, because we want the newest
 # pandoc and filters which we can only get from there.
 # We also install zlib1g, as we will need it later on.
@@ -82,7 +80,7 @@ RUN apt-get install -f -y --no-install-recommends \
       librsvg2-bin \
       librsvg2-common \
       zlib1g \
-      zlib1g-dev \
+      zlib1g-dev
 
 # get the newest list of packages
 RUN echo "Getting the newest list of cabal packages."
@@ -100,6 +98,7 @@ RUN cabal install --ghc-options='+RTS -M2G -RTS' \
 RUN echo "Installing pandoc-citeproc via cabal."
 RUN cabal install --ghc-options='+RTS -M2G -RTS' \
                   --allow-newer=base \
+
                   pandoc-citeproc
 RUN echo "Installing pandoc-citeproc-preamble via cabal."
 RUN cabal install --ghc-options='+RTS -M2G -RTS' \
