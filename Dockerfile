@@ -91,7 +91,6 @@ RUN echo "Initial update." &&\
     cabal update &&\
     echo "Installing QuickCheck via cabal." &&\
     cabal install --ghc-options='+RTS -M2G -RTS' \
-                  --lib \
                   QuickCheck &&\
     echo "Installing pandoc via cabal." &&\
     cabal install --ghc-options='+RTS -M2G -RTS' \
