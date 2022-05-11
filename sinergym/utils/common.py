@@ -99,84 +99,6 @@ def parse_variables(var_file: str) -> Dict[str, List[str]]:
     return variables
 
 
-def parse_observation_action_space(space_file: str) -> Dict[str, Any]:
-    """Parse observation space definition to gym env.
-
-    Args:
-        space_file (str): Observation space definition file path.
-
-    Raises:
-        RuntimeError: If root XML tag is not 'space'.
-
-    Returns:
-        Dict[str, Any]: 'observation', 'discrete_action' and 'continuous_action' keys. tuple for gym.spaces.Box() arguments, dictionary action mapping for gym.spaces.Discrete() and tuple for gym.spaces.Box()
-    """
-
-    tree = ET.parse(space_file)
-    root = tree.getroot()
-    if(root.tag != 'space'):
-        raise RuntimeError(
-            'Failed to open environment action observation space (Check XML definition)')
-
-    # Observation and action spaces
-    observation_space = root.find('observation-space')
-    action_space = root.find('action-space')
-    assert observation_space is not None and action_space is not None
-
-    discrete_action_space = action_space.find('discrete')
-    continuous_action_space = action_space.find('continuous')
-    assert discrete_action_space is not None and continuous_action_space is not None
-
-    action_shape = action_space.find('shape')
-    assert action_shape is not None
-    action_shape = int(action_shape.attrib['value'])
-
-    # Observation space values
-    dtype = observation_space.find('dtype')
-    assert dtype is not None
-    dtype = locate(dtype.attrib['value'])
-    assert callable(dtype)
-    low = observation_space.find('low')
-    high = observation_space.find('high')
-    shape = observation_space.find('shape')
-    assert low is not None and high is not None and shape is not None
-    low = dtype(low.attrib['value'])
-    high = dtype(high.attrib['value'])
-    shape = int(shape.attrib['value'])
-    observation = (low, high, (shape,), dtype)
-
-    # discrete action values
-    discrete_action = {}
-    for element in discrete_action_space:
-        # element mapping index
-        index = int(element.attrib['index'])
-        # element action values
-        actions = tuple([float(element.attrib['action' + str(i)])
-                         for i in range(action_shape)])
-
-        discrete_action[index] = actions
-
-    # continuous actions values
-    actions_dtype = locate(
-        continuous_action_space.find('dtype').attrib['value'])
-    low_ranges = continuous_action_space.find('low-ranges')
-    high_ranges = continuous_action_space.find('high-ranges')
-    low_action = [actions_dtype(element.attrib['value'])
-                  for element in low_ranges]
-    high_action = [actions_dtype(element.attrib['value'])
-                   for element in high_ranges]
-
-    continuous_action = (low_action, high_action,
-                         (action_shape,), actions_dtype)
-
-    # return final output
-    result = {}
-    result['observation'] = observation
-    result['discrete_action'] = discrete_action
-    result['continuous_action'] = continuous_action
-    return result
-
-
 def create_variable_weather(
         weather_data: WeatherData,
         original_epw_file: str,
@@ -281,46 +203,6 @@ def ranges_getter(output_path: str,
                         if np.max(data[column]) > result[column][1]:
                             result[column][1] = np.max(data[column])
     return result
-
-
-def setpoints_transform(action: Union[int,
-                                      float,
-                                      np.integer,
-                                      np.ndarray,
-                                      List[Any],
-                                      Tuple[Any]],
-                        action_space: gym.spaces.Box,
-                        setpoints_space: List[List[Union[int, float]]]
-                        ) -> List[Union[int, float]]:
-    """Given an action inner gym action_space, this will be converted into an action inner setpoints_space (Sinergym Simulation).
-
-     Args:
-        action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action of a step in gym simulation.
-        action_space (gym.spaces.Box): Gym action space
-        setpoints_space (List[List[Union[int, float]]]): Sinergym simulation action space
-
-     Returns:
-        List[Union[int, float]]: Action transformed into simulation action space.
-
-    """
-
-    action_ = []
-
-    for i, value in enumerate(action):
-        if action_space.low[i] <= value <= action_space.high[i]:
-            a_max_min = action_space.high[i] - \
-                action_space.low[i]
-            sp_max_min = setpoints_space[i][1] - \
-                setpoints_space[i][0]
-
-            action_.append(
-                setpoints_space[i][0] + (value - action_space.low[i]) * sp_max_min / a_max_min)
-        else:
-            # If action is outer action_space already, it don't need
-            # transformation
-            action_.append(value)
-
-    return action_
 
 
 def get_record_keys(record: Record) -> List[str]:
