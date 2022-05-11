@@ -90,27 +90,27 @@ RUN cabal update
 # update cabal
 RUN cabal install cabal-install
 
-RUN echo "Installing QuickCheck via cabal." &&\
+RUN echo "Installing QuickCheck via cabal."
 RUN cabal install --ghc-options='+RTS -M2G -RTS' \
                   QuickCheck
-RUN echo "Installing pandoc via cabal." &&\
+RUN echo "Installing pandoc via cabal."
 RUN cabal install --ghc-options='+RTS -M2G -RTS' \
                   --allow-newer=base \
                   pandoc
-RUN echo "Installing pandoc-citeproc via cabal." &&\
+RUN echo "Installing pandoc-citeproc via cabal."
 RUN cabal install --ghc-options='+RTS -M2G -RTS' \
                   --allow-newer=base \
                   pandoc-citeproc
-RUN echo "Installing pandoc-citeproc-preamble via cabal." &&\
+RUN echo "Installing pandoc-citeproc-preamble via cabal."
 RUN cabal install --ghc-options='+RTS -M2G -RTS' \
                   --allow-newer=base \
                   pandoc-citeproc-preamble
-RUN echo "Installing pandoc-crossref via cabal." &&\
+RUN echo "Installing pandoc-crossref via cabal."
 RUN cabal install --ghc-options='+RTS -M2G -RTS' \
                   pandoc-crossref
 # clear unnecessary cabal files
-RUN echo "Performing cleanup of unnecessary cabal files." &&\
-    rm -rf /root/.cabal/logs &&\
+RUN echo "Performing cleanup of unnecessary cabal files."
+RUN rm -rf /root/.cabal/logs &&\
     rm -rf /root/.cabal/packages &&\
     rm -rf /root/.cabal/lib &&\
     rm -rf /root/.cabal/share/doc &&\
@@ -118,15 +118,15 @@ RUN echo "Performing cleanup of unnecessary cabal files." &&\
     (find /root/.cabal/ -type f -empty -delete || true) &&\
     (find /root/.cabal/ -type d -empty -delete || true)
 # remove cabal-install and dependencies
-RUN echo "Removing cabal-install and its dependencies. They are no longer needed." &&\
-    apt-get purge -f -y cabal-install ghc &&\
+RUN echo "Removing cabal-install and its dependencies. They are no longer needed."
+RUN apt-get purge -f -y cabal-install ghc &&\
     apt-get autoremove -f -y &&\
     apt-get autoclean -y &&\
     apt-get autoremove -f -y &&\
     apt-get autoclean -y
 # clean up all temporary files
-RUN echo "Performing more cleanup." &&\
-    apt-get clean -y &&\
+RUN echo "Performing more cleanup."
+RUN apt-get clean -y &&\
     rm -rf /var/lib/apt/lists/* &&\
     rm -f /etc/ssh/ssh_host_*
 RUN echo "Done."
