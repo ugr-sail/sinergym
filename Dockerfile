@@ -66,74 +66,7 @@ RUN apt-get update && echo "Y\r" | apt-get install enchant --fix-missing -y
 RUN apt-get update && echo "Y\r" | apt-get install default-jre openjdk-8-jdk
 
 # START Install pandoc for sinergym jupyter documentation
-
-# install tzdata, which we will need down the line
-RUN apt-get install -f -y --no-install-recommends tzdata
-RUN echo "Now installing cabal, and other tools."
-# We install cabal, a Haskell package manager, because we want the newest
-# pandoc and filters which we can only get from there.
-# We also install zlib1g, as we will need it later on.
-# We install librsvg2 in order to make svg -> pdf conversation possible.
-# imagemagick may be needed by the latex-formulae-pandoc filter
-RUN apt-get install -f -y --no-install-recommends \
-      cabal-install \
-      librsvg2-bin \
-      librsvg2-common \
-      zlib1g \
-      zlib1g-dev
-
-# get the newest list of packages
-RUN echo "Getting the newest list of cabal packages."
-RUN cabal update
-# update cabal
-RUN cabal install cabal-install
-
-RUN echo "Installing QuickCheck via cabal."
-RUN cabal install --ghc-options='+RTS -M2G -RTS' \
-                  QuickCheck
-RUN echo "Installing pandoc via cabal."
-RUN cabal install --ghc-options='+RTS -M2G -RTS' \
-                  --allow-newer=base \
-                  pandoc
-RUN echo "Installing pandoc-citeproc via cabal."
-RUN cabal install --ghc-options='+RTS -M2G -RTS' \
-                  --allow-newer=base \
-                  pandoc-citeproc
-RUN echo "Installing pandoc-citeproc-preamble via cabal."
-RUN cabal install --ghc-options='+RTS -M2G -RTS' \
-                  --allow-newer=base \
-                  pandoc-citeproc-preamble
-RUN echo "Installing pandoc-crossref via cabal."
-RUN cabal install --ghc-options='+RTS -M2G -RTS' \
-                  pandoc-crossref
-# clear unnecessary cabal files
-RUN echo "Performing cleanup of unnecessary cabal files."
-RUN rm -rf /root/.cabal/logs &&\
-    rm -rf /root/.cabal/packages &&\
-    rm -rf /root/.cabal/lib &&\
-    rm -rf /root/.cabal/share/doc &&\
-    rm -rf /root/.cabal/share/man &&\
-    (find /root/.cabal/ -type f -empty -delete || true) &&\
-    (find /root/.cabal/ -type d -empty -delete || true)
-# remove cabal-install and dependencies
-RUN echo "Removing cabal-install and its dependencies. They are no longer needed."
-RUN apt-get purge -f -y cabal-install ghc &&\
-    apt-get autoremove -f -y &&\
-    apt-get autoclean -y &&\
-    apt-get autoremove -f -y &&\
-    apt-get autoclean -y
-# clean up all temporary files
-RUN echo "Performing more cleanup."
-RUN apt-get clean -y &&\
-    rm -rf /var/lib/apt/lists/* &&\
-    rm -f /etc/ssh/ssh_host_*
-RUN echo "Done."
-
-# we remember the path to pandoc in a special variable
-ENV PANDOC_DIR=/root/.cabal/bin/
-
-# add pandoc to the path
-ENV PATH=${PATH}:${PANDOC_DIR}
+RUN apt-get update && echo "Y\r" | apt-get install pandoc
 
 # End pandoc installation
 
