@@ -77,12 +77,12 @@ class LinearReward(BaseReward):
         self.summer_start_date = datetime(self.year, 6, 1)
         self.summer_final_date = datetime(self.year, 9, 30)
 
-    def __call__(self) -> Tuple[float, Dict[str, float]]:
+    def __call__(self) -> Tuple[float, Dict[str, Any]]:
         """
         Calculate the reward function.
 
         Returns:
-            Tuple[float, Dict[str, float]]: Reward value and dictionary with their individual components.
+            Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
         """
         # Current observation
         obs_dict = self.env.obs_dict.copy()
