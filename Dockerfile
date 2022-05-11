@@ -64,10 +64,80 @@ RUN apt update \
 RUN apt-get update && echo "Y\r" | apt-get install enchant --fix-missing -y
 # Install OpenJDK-8
 RUN apt-get update && echo "Y\r" | apt-get install default-jre openjdk-8-jdk
-#Install pandoc for sinergym jupyter documentation
-RUN apt-get install wget \
-    && wget https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-1-amd64.deb \
-    && echo "Y\r" | dpkg -i ./pandoc-2.18-1-amd64.deb
+
+# START Install pandoc for sinergym jupyter documentation
+
+# install tzdata, which we will need down the line
+    apt-get install -f -y --no-install-recommends tzdata &&\
+    echo "Now installing cabal, and other tools." &&\
+# We install cabal, a Haskell package manager, because we want the newest
+# pandoc and filters which we can only get from there.
+# We also install zlib1g, as we will need it later on.
+# We install librsvg2 in order to make svg -> pdf conversation possible.
+# imagemagick may be needed by the latex-formulae-pandoc filter
+    apt-get install -f -y --no-install-recommends \
+      cabal-install \
+      librsvg2-bin \
+      librsvg2-common \
+      zlib1g \
+      zlib1g-dev &&\
+# print the versions of cabal and ghc
+    cabal --version &&\
+    ghc --version &&\
+# get the newest list of packages
+    echo "Getting the newest list of cabal packages." &&\
+    cabal update &&\
+    echo "Installing QuickCheck via cabal." &&\
+    cabal install --ghc-options='+RTS -M2G -RTS' \
+                  --lib \
+                  QuickCheck &&\
+    echo "Installing pandoc via cabal." &&\
+    cabal install --ghc-options='+RTS -M2G -RTS' \
+                  --allow-newer=base \
+                  pandoc &&\
+    echo "Installing pandoc-citeproc via cabal." &&\
+    cabal install --ghc-options='+RTS -M2G -RTS' \
+                  --allow-newer=base \
+                  pandoc-citeproc &&\
+    echo "Installing pandoc-citeproc-preamble via cabal." &&\
+    cabal install --ghc-options='+RTS -M2G -RTS' \
+                  --allow-newer=base \
+                  pandoc-citeproc-preamble &&\
+    echo "Installing pandoc-crossref via cabal." &&\
+    cabal install --ghc-options='+RTS -M2G -RTS' \
+                  pandoc-crossref &&\
+# clear unnecessary cabal files
+    echo "Performing cleanup of unnecessary cabal files." &&\
+    rm -rf /root/.cabal/logs &&\
+    rm -rf /root/.cabal/packages &&\
+    rm -rf /root/.cabal/lib &&\
+    rm -rf /root/.cabal/share/doc &&\
+    rm -rf /root/.cabal/share/man &&\
+    (find /root/.cabal/ -type f -empty -delete || true) &&\
+    (find /root/.cabal/ -type d -empty -delete || true) &&\
+# remove cabal-install and dependencies
+    echo "Removing cabal-install and its dependencies. They are no longer needed." &&\
+    apt-get purge -f -y cabal-install ghc &&\
+    apt-get autoremove -f -y &&\
+    apt-get autoclean -y &&\
+    apt-get autoremove -f -y &&\
+    apt-get autoclean -y &&\
+# clean up all temporary files
+    echo "Performing more cleanup." &&\
+    apt-get clean -y &&\
+    rm -rf /var/lib/apt/lists/* &&\
+    rm -f /etc/ssh/ssh_host_* &&\
+    echo "Done."
+
+# we remember the path to pandoc in a special variable
+ENV PANDOC_DIR=/root/.cabal/bin/
+
+# add pandoc to the path
+ENV PATH=${PATH}:${PANDOC_DIR}
+
+# End pandoc installation
+
+
 
 # Install BCVTB
 ENV BCVTB_PATH=/usr/local/bcvtb
