@@ -1,9 +1,9 @@
-sinergym.utils.rewards.LinearReward
-===================================
+sinergym.utils.controllers.RBCDatacenter
+========================================
 
-.. currentmodule:: sinergym.utils.rewards
+.. currentmodule:: sinergym.utils.controllers
 
-.. autoclass:: LinearReward
+.. autoclass:: RBCDatacenter
    :members:                                                           
    :undoc-members:               
 
@@ -15,7 +15,8 @@ sinergym.utils.rewards.LinearReward
 
    .. autosummary::
    
-      ~LinearReward.__init__
+      ~RBCDatacenter.__init__
+      ~RBCDatacenter.act
    
    
 

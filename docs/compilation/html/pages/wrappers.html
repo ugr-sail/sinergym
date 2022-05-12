@@ -310,17 +310,41 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
                 <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_epi_num</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;) if logger is active&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">set_log_file</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_eplus_working_dir</span> <span class="o">+</span> <span class="s1">&#39;/monitor.csv&#39;</span><span class="p">)</span>
-        <span class="c1"># Store initial state of simulation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                             <span class="n">observation</span><span class="o">=</span><span class="n">obs</span><span class="p">,</span>
-                             <span class="n">action</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
-                                 <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]))],</span>
-                             <span class="n">simulation_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                             <span class="n">reward</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">total_power_no_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">comfort_penalty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">power</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">done</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">is_wrapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">NormalizeObservation</span><span class="p">):</span>
+            <span class="c1"># Store initial state of simulation (normalized)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step_normalize</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                           <span class="n">observation</span><span class="o">=</span><span class="n">obs</span><span class="p">,</span>
+                                           <span class="n">action</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+                                               <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]))],</span>
+                                           <span class="n">simulation_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                           <span class="n">reward</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                           <span class="n">total_power_no_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                           <span class="n">comfort_penalty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                           <span class="n">done</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="c1"># And store original obs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                 <span class="n">observation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_unwrapped_obs</span><span class="p">(),</span>
+                                 <span class="n">action</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+                                     <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]))],</span>
+                                 <span class="n">simulation_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                 <span class="n">reward</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">total_power_no_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">comfort_penalty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">power</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">done</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Only store original step</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                 <span class="n">observation</span><span class="o">=</span><span class="n">obs</span><span class="p">,</span>
+                                 <span class="n">action</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+                                     <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]))],</span>
+                                 <span class="n">simulation_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                 <span class="n">reward</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">total_power_no_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">comfort_penalty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">power</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">done</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">obs</span>
 
@@ -350,7 +374,8 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">MultiObsWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">MultiObsWrapper</span><span class="p">,</span>
+                                     <span class="n">NormalizeObservation</span><span class="p">)</span>
 
 <span class="n">default_env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
 

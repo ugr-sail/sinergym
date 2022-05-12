@@ -97,8 +97,17 @@ summer period and other for the winter period. The weights of each term in the r
 <p>By default, all environments use <code class="docutils literal notranslate"><span class="pre">LinearReward</span></code> with default parameters. But you can change this configuration using <code class="docutils literal notranslate"><span class="pre">gym.make()</span></code> as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="n">ExpReward</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-discrete-stochastic-mixed-v1&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">ExpReward</span><span class="p">,</span> <span class="n">reward_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;energy_weight&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-discrete-stochastic-mixed-v1&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">ExpReward</span><span class="p">,</span> <span class="n">reward_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+                                                                        <span class="s1">&#39;temperature_variable&#39;</span><span class="p">:</span> <span class="s1">&#39;Zone Air Temperature (SPACE1-1)&#39;</span><span class="p">,</span>
+                                                                        <span class="s1">&#39;energy_variable&#39;</span><span class="p">:</span> <span class="s1">&#39;Facility Total HVAC Electricity Demand Rate (Whole Building)&#39;</span><span class="p">,</span>
+                                                                        <span class="s1">&#39;range_comfort_winter&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
+                                                                        <span class="s1">&#39;range_comfort_summer&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">),</span>
+                                                                        <span class="s1">&#39;energy_weight&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
 </pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When specifying a different reward with <cite>gym.make</cite> than the default environment ID, it is very important to set the <cite>reward_kwargs</cite> that are required and therefore do not have a default value. In the rewards we have defined it is required: <strong>temperature_variable(s)</strong>, <strong>energy_variable</strong>, <strong>range_comfort_winter</strong>, <strong>range_comfort_summer</strong>. The rest of them have default values and it is not neccesary to specify.</p>
 </div>
 <p>It is also pretty simple to define your own classes. For example, imagine you want a reward signal which returns always -1 (however we do not recommend using it for training agents :)).
 The only requirement is that the calculation is performed using <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method, which returns the reward and a dictionary with extra information. The below code implements this.</p>
@@ -150,13 +159,13 @@ The only requirement is that the calculation is performed using <code class="doc
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">env</span><span class="p">:</span> <span class="n">Env</span><span class="p">,</span>
-        <span class="n">temperature_variable</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Zone Air Temperature (SPACE1-1)&#39;</span><span class="p">,</span>
-        <span class="n">energy_variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Facility Total HVAC Electricity Demand Rate (Whole Building)&#39;</span><span class="p">,</span>
+        <span class="n">temperature_variable</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
+        <span class="n">energy_variable</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
+        <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
         <span class="n">energy_weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
         <span class="n">lambda_energy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
-        <span class="n">lambda_temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
-        <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">)</span>
+        <span class="n">lambda_temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Linear reward function.</span>
@@ -168,13 +177,13 @@ The only requirement is that the calculation is performed using <code class="doc
 
 <span class="sd">        Args:</span>
 <span class="sd">            env (Env): Gym environment.</span>
-<span class="sd">            temperature_variable (Union[str, list], optional): Name(s) of the temperature variable(s).</span>
-<span class="sd">            energy_variable (str, optional): Name of the energy/power variable.</span>
+<span class="sd">            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).</span>
+<span class="sd">            energy_variable (str): Name of the energy/power variable.</span>
+<span class="sd">            range_comfort_winter (tuple): Temperature comfort range for cold season. Depends on environment you are using.</span>
+<span class="sd">            range_comfort_summer (tuple): Temperature comfort range fot hot season. Depends on environment you are using.</span>
 <span class="sd">            energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.</span>
 <span class="sd">            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.</span>
 <span class="sd">            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</span>
-<span class="sd">            range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).</span>
-<span class="sd">            range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">LinearReward</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
@@ -250,13 +259,13 @@ The only requirement is that the calculation is performed using <code class="doc
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">env</span><span class="p">:</span> <span class="n">Env</span><span class="p">,</span>
-        <span class="n">temperature_variable</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Zone Air Temperature (SPACE1-1)&#39;</span><span class="p">,</span>
-        <span class="n">energy_variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Facility Total HVAC Electricity Demand Rate (Whole Building)&#39;</span><span class="p">,</span>
+        <span class="n">temperature_variable</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
+        <span class="n">energy_variable</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
+        <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
         <span class="n">energy_weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
         <span class="n">lambda_energy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
-        <span class="n">lambda_temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
-        <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">),</span>
+        <span class="n">lambda_temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reward considering exponential absolute difference to temperature comfort.</span>
@@ -266,24 +275,24 @@ The only requirement is that the calculation is performed using <code class="doc
 
 <span class="sd">        Args:</span>
 <span class="sd">            env (Env): Gym environment.</span>
-<span class="sd">            temperature_variable (Union[str, list], optional): Name(s) of the temperature variable(s).</span>
-<span class="sd">            energy_variable (str, optional): Name of the energy/power variable.</span>
+<span class="sd">            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).</span>
+<span class="sd">            energy_variable (str): Name of the energy/power variable.</span>
+<span class="sd">            range_comfort_winter (tuple): Temperature comfort range for cold season. Depends on environment you are using.</span>
+<span class="sd">            range_comfort_summer (tuple): Temperature comfort range fot hot season. Depends on environment you are using.</span>
 <span class="sd">            energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.</span>
 <span class="sd">            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.</span>
 <span class="sd">            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</span>
-<span class="sd">            range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).</span>
-<span class="sd">            range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">ExpReward</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">env</span><span class="p">,</span>
             <span class="n">temperature_variable</span><span class="p">,</span>
             <span class="n">energy_variable</span><span class="p">,</span>
+            <span class="n">range_comfort_winter</span><span class="p">,</span>
+            <span class="n">range_comfort_summer</span><span class="p">,</span>
             <span class="n">energy_weight</span><span class="p">,</span>
             <span class="n">lambda_energy</span><span class="p">,</span>
-            <span class="n">lambda_temperature</span><span class="p">,</span>
-            <span class="n">range_comfort_winter</span><span class="p">,</span>
-            <span class="n">range_comfort_summer</span>
+            <span class="n">lambda_temperature</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_comfort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs_dict</span><span class="p">):</span>
@@ -313,13 +322,13 @@ The only requirement is that the calculation is performed using <code class="doc
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">env</span><span class="p">:</span> <span class="n">Env</span><span class="p">,</span>
-        <span class="n">temperature_variable</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Zone Air Temperature (SPACE1-1)&#39;</span><span class="p">,</span>
-        <span class="n">energy_variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Facility Total HVAC Electricity Demand Rate (Whole Building)&#39;</span><span class="p">,</span>
+        <span class="n">temperature_variable</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
+        <span class="n">energy_variable</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
+        <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
         <span class="n">min_energy_weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
         <span class="n">lambda_energy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
         <span class="n">lambda_temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
-        <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">),</span>
         <span class="n">range_comfort_hours</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -327,13 +336,13 @@ The only requirement is that the calculation is performed using <code class="doc
 
 <span class="sd">        Args:</span>
 <span class="sd">            env (Env): Gym environment.</span>
-<span class="sd">            temperature_variable (Union[str, list], optional): Name(s) of the temperature variable(s).</span>
-<span class="sd">            energy_variable (str, optional): Name of the energy/power variable.</span>
+<span class="sd">            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).</span>
+<span class="sd">            energy_variable (str): Name of the energy/power variable.</span>
+<span class="sd">            range_comfort_winter (tuple): Temperature comfort range for cold season. Depends on environment you are using.</span>
+<span class="sd">            range_comfort_summer (tuple): Temperature comfort range fot hot season. Depends on environment you are using.</span>
 <span class="sd">            min_energy_weight (float, optional): Minimum weight given to the energy term. Defaults to 0.5.</span>
 <span class="sd">            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.</span>
 <span class="sd">            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</span>
-<span class="sd">            range_comfort_winter (tuple, optional): Temperature comfort range for cold season. Defaults to (20.0, 23.5).</span>
-<span class="sd">            range_comfort_summer (tuple, optional): Temperature comfort range fot hot season. Defaults to (23.0, 26.0).</span>
 <span class="sd">            range_comfort_hours (tuple, optional): Hours where thermal comfort is considered. Defaults to (9, 19).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -341,11 +350,11 @@ The only requirement is that the calculation is performed using <code class="doc
             <span class="n">env</span><span class="p">,</span>
             <span class="n">temperature_variable</span><span class="p">,</span>
             <span class="n">energy_variable</span><span class="p">,</span>
+            <span class="n">range_comfort_winter</span><span class="p">,</span>
+            <span class="n">range_comfort_summer</span><span class="p">,</span>
             <span class="n">min_energy_weight</span><span class="p">,</span>
             <span class="n">lambda_energy</span><span class="p">,</span>
-            <span class="n">lambda_temperature</span><span class="p">,</span>
-            <span class="n">range_comfort_winter</span><span class="p">,</span>
-            <span class="n">range_comfort_summer</span>
+            <span class="n">lambda_temperature</span>
         <span class="p">)</span>
 
         <span class="c1"># Reward parameters</span>

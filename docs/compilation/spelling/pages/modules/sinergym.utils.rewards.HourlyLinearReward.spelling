@@ -1,2 +1,2 @@
 pages/modules/sinergym.utils.rewards.HourlyLinearReward.rst:2: (HourlyLinearReward)  sinergym.utils.rewards.HourlyLinearReward
-pages/modules/sinergym.utils.rewards.HourlyLinearReward.rst:None: (fot)  Temperature comfort range fot hot season. Defaults to (23.0, 26.0).
+pages/modules/sinergym.utils.rewards.HourlyLinearReward.rst:None: (fot)  Temperature comfort range fot hot season. Depends on environment you are using.

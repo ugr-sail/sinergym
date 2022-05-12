@@ -1,9 +1,9 @@
-sinergym.utils.controllers.RuleBasedController
-==============================================
+sinergym.utils.controllers.RBC5Zone
+===================================
 
 .. currentmodule:: sinergym.utils.controllers
 
-.. autoclass:: RuleBasedController
+.. autoclass:: RBC5Zone
    :members:                                                           
    :undoc-members:               
 
@@ -15,8 +15,8 @@ sinergym.utils.controllers.RuleBasedController
 
    .. autosummary::
    
-      ~RuleBasedController.__init__
-      ~RuleBasedController.act
+      ~RBC5Zone.__init__
+      ~RBC5Zone.act
    
    
 
