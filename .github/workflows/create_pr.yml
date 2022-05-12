@@ -79,7 +79,7 @@ jobs:
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: python -m pip install --upgrade pip
 
-      - name: Install pandoc dependency
+      - name: Install pandoc dependencies
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: apt install pandoc
 
