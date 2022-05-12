@@ -2,7 +2,7 @@ import os
 
 import pytest
 from opyplus import Epm, Idd
-
+import xml.etree.cElementTree as ElementTree
 import sinergym.utils.config as config
 
 
@@ -81,6 +81,35 @@ def test_adapt_idf_to_epw(config):
     assert float(summer_day.wind_speed) == 4.8
 
 
+def test_adapt_variables_to_cfg_and_idf(config):
+    # Check initial state in Config variables_tree attribute and IDF
+    # OutputVariables
+    assert len(config.variables_tree) == 0
+    assert config.variables_tree.find('variable') is None
+
+    # Execute method
+    config.adapt_variables_to_cfg_and_idf()
+
+    print(config.variables_tree)
+    assert len(config.variables_tree.findall('variable')) == len(
+        config.variables['observation']) + len(config.variables['action'])
+    for i, variable in enumerate(config.variables_tree.findall('variable')):
+        # If is not a comment
+        assert variable.tag == 'variable'
+        # obs
+        if i < len(config.variables['observation']):
+            assert variable.attrib['source'] == 'EnergyPlus'
+            assert variable.find('EnergyPlus') is not None
+            assert list(variable.find('EnergyPlus').attrib.keys()) == [
+                'name', 'type']
+        # action
+        else:
+            assert variable.attrib['source'] == 'Ptolemy'
+            assert variable.find('EnergyPlus') is not None
+            assert list(variable.find('EnergyPlus').attrib.keys()) == [
+                'schedule']
+
+
 def test_apply_extra_conf(config):
     # Check default config
     assert int(config.building.timestep[0].number_of_timesteps_per_hour) == 4
@@ -102,6 +131,41 @@ def test_apply_extra_conf(config):
                 config.config['runperiod'][3]) and config.building.runperiod[0].end_month == int(
                     config.config['runperiod'][4]) and config.building.runperiod[0].end_year == int(
                         config.config['runperiod'][5])
+
+
+def test_save_variables_cfg(config):
+    # Create working dir
+    assert config.episode_path is None
+    config.set_episode_working_dir()
+    assert config.episode_path is not None
+    # Generate xml_tree and save it
+    config.adapt_variables_to_cfg_and_idf()
+    path_save = config.save_variables_cfg()
+    # Read the first two lines and check is correct
+    with open(path_save, "r") as f:
+        assert f.readline().rstrip('\n') == '<?xml version="1.0" encoding="ISO-8859-1"?>'
+        assert f.readline().rstrip('\n') == '<!DOCTYPE BCVTB-variables SYSTEM "variables.dtd">'
+        f.close()
+    # Read the path save cfg and check all is correct
+    root = ElementTree.parse(path_save).getroot()
+    # Check all values
+    assert len(root.findall('variable')) == len(
+        config.variables['observation']) + len(config.variables['action'])
+    for i, variable in enumerate(root.findall('variable')):
+        # If is not a comment
+        assert variable.tag == 'variable'
+        # obs
+        if i < len(config.variables['observation']):
+            assert variable.attrib['source'] == 'EnergyPlus'
+            assert variable.find('EnergyPlus') is not None
+            assert list(variable.find('EnergyPlus').attrib.keys()) == [
+                'name', 'type']
+        # action
+        else:
+            assert variable.attrib['source'] == 'Ptolemy'
+            assert variable.find('EnergyPlus') is not None
+            assert list(variable.find('EnergyPlus').attrib.keys()) == [
+                'schedule']
 
 
 def test_save_building_model(config, eplus_path, idf_path):
