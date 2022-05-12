@@ -2,6 +2,10 @@
 Environments
 ############
 
+**************************
+Environments List
+**************************
+
 The list of available environments is the following:
 
 +----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
@@ -85,25 +89,42 @@ values in order to add stochastic.
 Observation/action spaces
 **************************
 
-Observation and action spaces are defined in `sinergym/sinergym/data/variables <https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables>`__ specifically for each IDF file. Therefore, external interface with simulation is defined in the same way.
+Structure of observation and action space is defined in Environment constructor directly. This allows for a **dynamic definition** of these spaces. Let's see the fields required to do it:
 
-This is a definition example for 5ZoneAutoDXVAV.idf and its variants:
+.. literalinclude:: ../../../sinergym/envs/eplus_env.py
+    :language: python
+    :pyobject: EplusEnv.__init__
 
-.. literalinclude:: ../../../sinergym/data/variables/5ZoneAutoDXVAV_spaces.cfg
-    :language: xml
+- `observation_variables`: List of observation variables
 
-As can be seen in *5ZoneAutoDXVAV_spaces.cfg*, for example, the **year, month, day and hour** of the simulation are not included for each timestep. 
-However, they do appear in the definition of the observation spaces in *5ZoneAutoDXVAV_spaces.cfg* and, therefore, as part of the state returned by the environment. 
+Specification
+~~~~~~~~~~~~~~
+
+As we have told, Observation and action spaces are defined **dinamically** in Sinergym Environment constructor. Environmet ID's registered in Sinergym use a **default** definition
+set up in `constants.py <https://github.com/jajimer/sinergym/tree/main/sinergym/utils/constants.py>`__.
+
+As can be seen in environments observations, the **year, month, day and hour** are included in, but is not configured in default observation variables definition. 
 This is because they are not variables recognizable by the simulator as such (Energyplus) and Sinergym does the calculations and adds them in the states returned as 
-output by the environment. This feature is common to all environments available in Sinergym and all supported building designs.
+output by the environment. This feature is common to all environments available in Sinergym and all supported building designs. In other words, you don't need to 
+add this variables (**year, month, day and hour**) to observation variables.
 
-This gives you the possibility of playing with different observation/action spaces in discrete and continuous environments in order to study how this affects the resolution of a building problem.
-Inner each environment it is known what configuration file must read and spaces will be defined automatically, so you should not worry about anything.
+As we told before, all environments ID's registered in Sinergym use its respectively **default action and observation spaces, variables and definition**. 
+However, you can **change** this values giving you the possibility of playing with different observation/action spaces in discrete and continuous environments in order to study how this affects the resolution of a building problem.
 
-In order to make environments more generic in DRL solutions. We have updated action space for continuous problem. Gym action space is defined always between [-1,1] and Sinergym parse this values to action space defined in configuration file internally.
+.. note:: If you are interested in modifying default action and observation specification of our environments, please visit section HIPERENLACE.
 
-The function in charge of reading those configuration files is ``parse_observation_action_space(space_file)`` in *sinergym/sinergym/utils/common.py*
+Sinergym has several checkers to ensure that there are no inconsistencies in the alternative specifications made to the default ones. In case the specification offered is wrong, Sinergym will launch messages indicating where the error or inconsistency is located.
 
-.. warning:: Remember that the spaces defined here must be the same size as in variables.cfg. Except in the observation due to the fact that we have to add the year, month, day and hour. 
+Gym Action Space Note
+~~~~~~~~~~~~~~~~~~~~~~
 
-.. note:: *Set up observation and action spaces in environment constructor dynamically could be upgrade in the future. Stay tuned for upcoming releases!*
+In order to make environments more generic in DRL solutions. We have updated action space for continuous problem. Gym action space is defined always between [-1,1] and Sinergym **parse** this values to action space defined in environment internally before to send it to EnergyPlus Simulator.
+
+The method in charge of parse this values from [-1,1] to real action space is called ``_setpoints_transform(action)`` in *sinergym/sinergym/envs/eplus_env.py*
+
+**************************************
+Adding new buildings for environments
+**************************************
+
+Explain RDD information
+
