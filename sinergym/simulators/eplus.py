@@ -165,7 +165,7 @@ class EnergyPlus(object):
         eplus_working_dir = self._config.set_episode_working_dir()
         # Getting IDF, WEATHER, VARIABLES and OUTPUT path for current episode
         eplus_working_idf_path = self._config.save_building_model()
-        eplus_working_var_path = self._config.save_varibles_cfg()
+        eplus_working_var_path = self._config.save_variables_cfg()
         eplus_working_out_path = (eplus_working_dir + '/' + 'output')
         eplus_working_weather_path = self._config.apply_weather_variability(
             variation=weather_variability)

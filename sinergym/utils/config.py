@@ -240,7 +240,7 @@ class Config(object):
                                                 # specifically, so break it
                                                 break
 
-    def save_varibles_cfg(self) -> str:
+    def save_variables_cfg(self) -> str:
         """This method saves current XML variables tree model into a variables.cfg file.
 
         Raises:
