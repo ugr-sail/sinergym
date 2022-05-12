@@ -69,12 +69,12 @@ class RBC5Zone(object):
             season_comfort_range = self.range_comfort_winter
 
         # Update setpoints
-        in_temp = obs_dict['Zone Air Temperature (SPACE1-1)']
+        in_temp = obs_dict['Zone Air Temperature(SPACE1-1)']
 
         current_heat_setpoint = obs_dict[
-            'Zone Thermostat Heating Setpoint Temperature (SPACE1-1)']
+            'Zone Thermostat Heating Setpoint Temperature(SPACE1-1)']
         current_cool_setpoint = obs_dict[
-            'Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)']
+            'Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)']
 
         new_heat_setpoint = current_heat_setpoint
         new_cool_setpoint = current_cool_setpoint
@@ -117,12 +117,12 @@ class RBCDatacenter(object):
         obs_dict = dict(zip(self.variables['observation'], observation))
 
         # West Zone
-        west_in_temp = obs_dict['Zone Air Temperature (West Zone)']
+        west_in_temp = obs_dict['Zone Air Temperature(West Zone)']
 
         west_current_heat_setpoint = obs_dict[
-            'Zone Thermostat Heating Setpoint Temperature (West Zone)']
+            'Zone Thermostat Heating Setpoint Temperature(West Zone)']
         west_current_cool_setpoint = obs_dict[
-            'Zone Thermostat Cooling Setpoint Temperature (West Zone)']
+            'Zone Thermostat Cooling Setpoint Temperature(West Zone)']
 
         west_new_heat_setpoint = west_current_heat_setpoint
         west_new_cool_setpoint = west_current_cool_setpoint
@@ -135,12 +135,12 @@ class RBCDatacenter(object):
             west_new_heat_setpoint = west_current_heat_setpoint - 1
 
         # East Zone
-        east_in_temp = obs_dict['Zone Air Temperature (East Zone)']
+        east_in_temp = obs_dict['Zone Air Temperature(East Zone)']
 
         east_current_heat_setpoint = obs_dict[
-            'Zone Thermostat Heating Setpoint Temperature (East Zone)']
+            'Zone Thermostat Heating Setpoint Temperature(East Zone)']
         east_current_cool_setpoint = obs_dict[
-            'Zone Thermostat Cooling Setpoint Temperature (East Zone)']
+            'Zone Thermostat Cooling Setpoint Temperature(East Zone)']
 
         east_new_heat_setpoint = east_current_heat_setpoint
         east_new_cool_setpoint = east_current_cool_setpoint
