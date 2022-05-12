@@ -133,7 +133,7 @@ class Config(object):
         self.variables_tree.append(ElementTree.Comment(
             'Observation variables: Received from EnergyPlus'))
         for obs_var in self.variables['observation']:
-            # obs_var = "<variable_name> (<variable_zone>)"
+            # obs_var = "<variable_name>(<variable_zone>)"
             var_elements = obs_var.split('(')
             var_name = var_elements[0]
             var_zone = var_elements[1][:-1]
@@ -202,7 +202,7 @@ class Config(object):
                     # ThermostatSetpoint:DualSetpoint IDF Management
                     if controller_type == 'ThermostatSetpoint:DualSetpoint':
                         for controller in controllers:
-                            # Create Ptolmy variables
+                            # Create Ptolomy variables
                             self.building.ExternalInterface_Schedule.add(
                                 name=controller['heating_name'],
                                 schedule_type_limits_name='Temperature',
@@ -218,15 +218,26 @@ class Config(object):
                                 cooling_setpoint_temperature_schedule_name=controller['cooling_name'])
                             # Link in zones required
                             for zone_control in self.building.ZoneControl_Thermostat:
+                                # If zone specified in zone_control is included
+                                # in out DualSetpoint:
                                 if zone_control.zone_or_zonelist_name.name.lower() in list(
                                         map(lambda zone: zone.lower(), controller['zones'])):
+                                    # We iterate all record fields searching
+                                    # 'ThermostatSetpoint:DualSetpoint' value
                                     for i in range(
                                             len(get_record_keys(zone_control))):
                                         if isinstance(zone_control[i], str):
                                             if zone_control[i].lower(
                                             ) == controller_type.lower():
+                                                # Then, the next field will be
+                                                # always the DualSetpoint
+                                                # thermostat name, so we change
+                                                # it
                                                 zone_control[i +
                                                              1] = controller['name']
+                                                # We do not need to search more
+                                                # fields in that record
+                                                # specifically, so break it
                                                 break
 
     def save_varibles_cfg(self) -> str:
@@ -347,6 +358,7 @@ class Config(object):
         # Get runperiod object inner IDF
         runperiod = self.building.RunPeriod[0]
 
+        # Extract information about runperiod
         start_month = int(
             0 if runperiod.begin_month is None else runperiod.begin_month)
         start_day = int(
