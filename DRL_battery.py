@@ -264,16 +264,16 @@ with mlflow.start_run(run_name=name):
         env = MultiObsWrapper(env)
         if eval_env is not None:
             eval_env = MultiObsWrapper(eval_env)
-    
+
     # ---------------------------------------------------------------------------- #
     #                           Defining model (algorithm)                         #
     # ---------------------------------------------------------------------------- #
-    
+
     model = None
-    
+
     #--------------------------------------------------------#
     #                           DQN                          #
-    #--------------------------------------------------------# 
+    #--------------------------------------------------------#
     if args.algorithm == 'DQN':
         model = DQN('MlpPolicy', env, verbose=1,
                     learning_rate=args.learning_rate,
@@ -293,7 +293,7 @@ with mlflow.start_run(run_name=name):
                     tensorboard_log=args.tensorboard)
     #--------------------------------------------------------#
     #                           DDPG                         #
-    #--------------------------------------------------------# 
+    #--------------------------------------------------------#
     elif args.algorithm == 'DDPG':
         if args.sigma:
             # noise objects for DDPG
@@ -382,7 +382,7 @@ with mlflow.start_run(run_name=name):
     #--------------------------------------------------------#
     else:
         raise RuntimeError('Algorithm specified is not registered.')
-    
+
     # ---------------------------------------------------------------------------- #
     #       Calculating total training timesteps based on number of episodes       #
     # ---------------------------------------------------------------------------- #
@@ -429,7 +429,8 @@ with mlflow.start_run(run_name=name):
     model.save(env.simulator._env_working_dir_parent + '/' + name)
 
     # If the algorithm doesn't reset or close the environment, this script will do it in
-    # order to correctly log all the simulation data (Energyplus + Sinergym logs)
+    # order to correctly log all the simulation data (Energyplus + Sinergym
+    # logs)
     if env.simulator._episode_existed:
         env.close()
 
