@@ -34,7 +34,9 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.autosectionlabel',
     'sphinxcontrib.spelling',
-    'nbsphinx']
+    'IPython.sphinxext.ipython_console_highlighting',
+    'nbsphinx',
+    'nbsphinx_link']
 
 autosummary_generate = True
 
@@ -73,10 +75,10 @@ html_theme_options = {'style_nav_header_background': '#a9c1be'}
 html_sidebars = {'**': ['globaltoc.html',
                         'relations.html', 'sourcelink.html', 'searchbox.html']}
 
-#disable nbsphinx errors to suppres imports checks not working
+# disable nbsphinx errors to suppres imports checks not working
 nbsphinx_allow_errors = True
 
-#disable nbsphinx nodes execution (it fails to import sinergym)
-#if a node is previously executed it will include the output
-#but nbsphonx will not execute it if the output is missing.
+# disable nbsphinx nodes execution (it fails to import sinergym)
+# if a node is previously executed it will include the output
+# but nbsphonx will not execute it if the output is missing.
 nbsphinx_execute = 'never'
