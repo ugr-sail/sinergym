@@ -34,7 +34,10 @@ setup(name='sinergym',
               'pyenchant',
               'google-api-python-client',
               'oauth2client',
-              'google-cloud-storage'
+              'google-cloud-storage',
+              'nbsphinx',
+              'nbsphinx_link',
+              'IPython'
           ],
           'test': [
               'pytest',
@@ -50,7 +53,10 @@ setup(name='sinergym',
               'sphinx',
               'sphinx-rtd-theme',
               'sphinxcontrib-spelling',
-              'pyenchant'
+              'pyenchant',
+              'nbsphinx',
+              'nbsphinx_link',
+              'IPython'
           ],
           'visualization': [
               'matplotlib',
