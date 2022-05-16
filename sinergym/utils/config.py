@@ -131,7 +131,7 @@ class Config(object):
         # If no path specified, then use idf_path to save it.
         if self.episode_path is not None:
             episode_idf_path = os.path.join(self.episode_path,
-                os.path.basename(self._idf_path))
+                                            os.path.basename(self._idf_path))
             self.building.save(episode_idf_path)
             return episode_idf_path
         else:
