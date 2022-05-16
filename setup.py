@@ -36,6 +36,7 @@ setup(name='sinergym',
               'oauth2client',
               'google-cloud-storage',
               'nbsphinx',
+              'nbsphinx_link',
               'IPython'
           ],
           'test': [
@@ -54,6 +55,7 @@ setup(name='sinergym',
               'sphinxcontrib-spelling',
               'pyenchant',
               'nbsphinx',
+              'nbsphinx_link',
               'IPython'
           ],
           'visualization': [
