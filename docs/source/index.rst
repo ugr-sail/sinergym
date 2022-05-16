@@ -43,8 +43,8 @@ If you want to contribute, please read `CONTRIBUTING.md <https://github.com/jaji
    :hidden:
    :caption: Examples
 
-   pages/notebooks/usage_example.ipynb
-   pages/notebooks/rule_controller_example.ipynb
-   pages/notebooks/drl.ipynb
-   pages/notebooks/wrappers_examples.ipynb
-   pages/notebooks/MLflow_example.ipynb
+   pages/notebooks/usage_example.nblink
+   pages/notebooks/rule_controller_example.nblink
+   pages/notebooks/drl.nblink
+   pages/notebooks/wrappers_examples.nblink
+   pages/notebooks/MLflow_example.nblink
