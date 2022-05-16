@@ -1,5 +1,4 @@
 import argparse
-from datetime import datetime
 
 import gym
 import numpy as np
@@ -186,7 +185,6 @@ env.close()
 # ---------------------------------------------------------------------------- #
 #                                 Store results                                #
 # ---------------------------------------------------------------------------- #
-
 if args.remote_store:
     # Initiate Google Cloud client
     client = gcloud.init_storage_client()
@@ -200,7 +198,6 @@ if args.remote_store:
 # ---------------------------------------------------------------------------- #
 #                          Auto-delete remote container                        #
 # ---------------------------------------------------------------------------- #
-
 if args.group_name and args.auto_delete:
     token = gcloud.get_service_account_token()
     gcloud.delete_instance_MIG_from_container(args.group_name, token)

@@ -192,7 +192,7 @@ the name of the environment or the variability in stochastic environments:
     import sinergym
     from sinergym.utils.rewards import LinearReward, ExpReward
     from sinergym.utils.wrapper import LoggerWrapper, NormalizeObservation
-    from sinergym.utils.controllers import RuleBasedController
+    from sinergym.utils.controllers import   RBCDatacenter
 
     env = gym.make('Eplus-datacenter-cool-continuous-stochastic-v1', 
                     reward=ExpReward, reward_kwargs={
@@ -210,7 +210,7 @@ the name of the environment or the variability in stochastic environments:
     env = NormalizeObservation(env)
     env = LoggerWrapper(env)
 
-    agent = RuleBasedController(env)
+    agent = RBCDatacenter(env)
 
     for i in range(1):
         obs = env.reset()
@@ -245,7 +245,7 @@ This new IDF version, which also adapts to the new weather you put in, is saved 
     import sinergym
     from sinergym.utils.rewards import LinearReward, ExpReward
     from sinergym.utils.wrapper import LoggerWrapper, NormalizeObservation
-    from sinergym.utils.controllers import RuleBasedController
+    from sinergym.utils.controllers import RBCDatacenter
 
     extra_conf={'timesteps_per_hour':6,
                 ...}
@@ -268,7 +268,7 @@ This new IDF version, which also adapts to the new weather you put in, is saved 
     env = NormalizeObservation(env)
     env = LoggerWrapper(env)
 
-    agent = RuleBasedController(env)
+    agent = RBCDatacenter(env)
 
     for i in range(1):
         obs = env.reset()

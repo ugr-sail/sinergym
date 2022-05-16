@@ -1,7 +1,7 @@
 {
 	"name": "sinergym",
 	"build": {
-		"args": {"ENERGYPLUS_VERSION":"9.5.0", "ENERGYPLUS_INSTALL_VERSION":"9-5-0", "ENERGYPLUS_SHA":"de239b2e5f"},
+		"args": {"ENERGYPLUS_VERSION":"9.5.0", "ENERGYPLUS_INSTALL_VERSION":"9-5-0", "ENERGYPLUS_SHA":"de239b2e5f"}
 	},
 	"dockerFile": "./Dockerfile",
 	"context": "..",
@@ -28,4 +28,7 @@
 		},
 		"terminal.integrated.defaultProfile.linux": "bash"
 	},
+	"extensions": [
+		"ms-python.python"
+	]
 }

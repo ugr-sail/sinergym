@@ -7,7 +7,6 @@ class RandomController(object):
 
     def __init__(self, env: Any):
         """Random agent. It selects available actions randomly.
-
         Args:
             env (Any): Simulation environment.
         """
@@ -15,7 +14,6 @@ class RandomController(object):
 
     def act(self) -> Sequence[Any]:
         """Selects a random action from the environment's action_space.
-
         Returns:
             Sequence[Any]: Action chosen.
         """
@@ -28,7 +26,6 @@ class RBC5Zone(object):
     def __init__(self, env: Any) -> None:
         """Agent based on static rules for controlling 5ZoneAutoDXVAV setpoints.
         Follows the standard setpoints described in ASHRAE Standard 55-2004: Thermal Environmental Conditions for Human Occupancy.
-
         Args:
             env (Any): Simulation environment
         """
@@ -45,10 +42,8 @@ class RBC5Zone(object):
 
     def act(self, observation: List[Any]) -> Sequence[Any]:
         """Select action based on indoor temperature.
-
         Args:
             observation (List[Any]): Perceived observation.
-
         Returns:
             Sequence[Any]: Action chosen.
         """
@@ -94,7 +89,6 @@ class RBCDatacenter(object):
     def __init__(self, env: Any) -> None:
         """Agent based on static rules for controlling 2ZoneDataCenterHVAC setpoints.
         Follows the ASHRAE recommended temperature ranges for data centers described in ASHRAE TC9.9 (2016).
-
         Args:
             env (Any): Simulation environment
         """
@@ -107,10 +101,8 @@ class RBCDatacenter(object):
 
     def act(self, observation: List[Any]) -> Sequence[Any]:
         """Select action based on indoor temperature.
-
         Args:
             observation (List[Any]): Perceived observation.
-
         Returns:
             Sequence[Any]: Action chosen.
         """

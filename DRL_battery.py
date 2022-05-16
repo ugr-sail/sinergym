@@ -173,6 +173,7 @@ if args.seed:
 if args.id:
     name += '-id' + str(args.id)
 name += '_' + experiment_date
+
 # ---------------------------------------------------------------------------- #
 #                    Check if MLFLOW_TRACKING_URI is defined                   #
 # ---------------------------------------------------------------------------- #
@@ -229,7 +230,9 @@ with mlflow.start_run(run_name=name):
     elif args.reward == 'exponential':
         reward = ExpReward
     else:
-        raise RuntimeError('Reward function specified is not registered.')
+        raise RuntimeError(
+            'Reward function [{}] specified is not registered.'.format(
+                args.reward))
 
     env = gym.make(args.environment, reward=reward)
     # env for evaluation if is enabled
@@ -251,7 +254,9 @@ with mlflow.start_run(run_name=name):
         elif env_type == 'IWMullion':
             norm_range = RANGES_IW
         else:
-            raise NameError('env_type is not valid, check environment name')
+            raise NameError(
+                'Normalization cant be use on environment :"{}", check environment name or disable normalization'.format(
+                    args.environment))
         env = NormalizeObservation(env, ranges=norm_range)
         if eval_env is not None:
             eval_env = NormalizeObservation(eval_env, ranges=norm_range)
@@ -263,11 +268,16 @@ with mlflow.start_run(run_name=name):
         env = MultiObsWrapper(env)
         if eval_env is not None:
             eval_env = MultiObsWrapper(eval_env)
+
     # ---------------------------------------------------------------------------- #
-    #                           Defining model(algorithm)                          #
+    #                           Defining model (algorithm)                         #
     # ---------------------------------------------------------------------------- #
+
     model = None
-    #--------------------------DQN---------------------------#
+
+    #--------------------------------------------------------#
+    #                           DQN                          #
+    #--------------------------------------------------------#
     if args.algorithm == 'DQN':
         model = DQN('MlpPolicy', env, verbose=1,
                     learning_rate=args.learning_rate,
@@ -288,9 +298,9 @@ with mlflow.start_run(run_name=name):
     #--------------------------------------------------------#
     #                           DDPG                         #
     #--------------------------------------------------------#
-    # noise objects for DDPG
     elif args.algorithm == 'DDPG':
         if args.sigma:
+            # noise objects for DDPG
             n_actions = env.action_space.shape[-1]
             action_noise = NormalActionNoise(mean=np.zeros(
                 n_actions), sigma=0.1 * np.ones(n_actions))
@@ -340,6 +350,11 @@ with mlflow.start_run(run_name=name):
         model = SAC(policy='MlpPolicy',
                     env=env,
                     seed=args.seed,
+                    learning_rate=args.learning_rate,
+                    buffer_size=args.buffer_size,
+                    batch_size=args.batch_size,
+                    tau=args.tau,
+                    gamma=args.gamma,
                     tensorboard_log=args.tensorboard)
     #--------------------------------------------------------#
     #                           TD3                          #
@@ -350,12 +365,10 @@ with mlflow.start_run(run_name=name):
                     tensorboard_log=args.tensorboard,
                     learning_rate=args.learning_rate,
                     buffer_size=args.buffer_size,
-                    learning_starts=args.learning_starts,
                     batch_size=args.batch_size,
                     tau=args.tau,
                     gamma=args.gamma,
                     train_freq=(1, 'episode'),
-                    gradient_steps=-1,
                     action_noise=None,
                     replay_buffer_class=None,
                     replay_buffer_kwargs=None,
@@ -372,8 +385,8 @@ with mlflow.start_run(run_name=name):
     #                           Error                        #
     #--------------------------------------------------------#
     else:
-        raise RuntimeError('Algorithm specified is not registered.')
-    #--------------------------------------------------------#
+        raise RuntimeError(
+            F'Algorithm specified [{args.algorithm}] is not registered.')
 
     # ---------------------------------------------------------------------------- #
     #       Calculating total training timesteps based on number of episodes       #
@@ -391,8 +404,8 @@ with mlflow.start_run(run_name=name):
     if args.evaluation:
         eval_callback = LoggerEvalCallback(
             eval_env,
-            best_model_save_path='best_model/' + name,
-            log_path='best_model/' + name,
+            best_model_save_path='best_model/' + name + '/',
+            log_path='best_model/' + name + '/',
             eval_freq=n_timesteps_episode *
             args.eval_freq,
             deterministic=True,
@@ -420,8 +433,9 @@ with mlflow.start_run(run_name=name):
         log_interval=args.log_interval)
     model.save(env.simulator._env_working_dir_parent + '/' + name)
 
-    # If Algorithm doesn't reset or close environment, this script will do in
-    # order to log correctly all simulation data (Energyplus + Sinergym logs)
+    # If the algorithm doesn't reset or close the environment, this script will do it in
+    # order to correctly log all the simulation data (Energyplus + Sinergym
+    # logs)
     if env.simulator._episode_existed:
         env.close()
 
@@ -478,7 +492,7 @@ with mlflow.start_run(run_name=name):
     mlflow.end_run()
 
     # ---------------------------------------------------------------------------- #
-    #                Autodelete option it if is a cloud resource                   #
+    #                   Autodelete option if is a cloud resource                   #
     # ---------------------------------------------------------------------------- #
     if args.group_name and args.auto_delete:
         token = gcloud.get_service_account_token()
