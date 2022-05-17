@@ -136,6 +136,9 @@ However, you can **change** this values giving you the possibility of playing wi
 
 Sinergym has several checkers to ensure that there are no inconsistencies in the alternative specifications made to the default ones. In case the specification offered is wrong, Sinergym will launch messages indicating where the error or inconsistency is located.
 
+.. note:: `variables.cfg` is a requirement in order to stablish a connection between gym environment and Simulator 
+           with a external interface (using BCVTB). Since Sinergym `1.9.0` version, it is created automatically using 
+           action and observation space definition in environment construction.
 
 **************************************
 Adding new buildings for environments

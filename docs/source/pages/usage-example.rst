@@ -173,9 +173,9 @@ You can replace the random actions we have used in the previous examples with on
 
 .. note:: You can also use our rule-based controller for Datacenter called **RBCDatacenter** if the environment is of that type or a random agent called **RandomController** in every environment.
 
-***********************************************
-Adding extra configuration to our environments
-***********************************************
+******************************************************
+Overwriting some default values of the environments.
+******************************************************
 
 In the same way that we can change the default reward function, as we have done in the second example, 
 it is possible to substitute other default values of the environment ID. 
@@ -233,7 +233,11 @@ the name of the environment or the variability in stochastic environments:
             sum(rewards))
     env.close()
 
-You can even add a dictionary with extra parameters that modify the IDF you use before it is used in the simulations.
+**************************************
+Adding extra configuration definition
+**************************************
+
+You can even add a dictionary with extra parameters that modify the IDF you use before it is used in the simulations (or overwrite an existing one).
 
 This new IDF version, which also adapts to the new weather you put in, is saved in the Sinergym output folder, leaving the original intact:
 
@@ -247,8 +251,24 @@ This new IDF version, which also adapts to the new weather you put in, is saved 
     from sinergym.utils.wrapper import LoggerWrapper, NormalizeObservation
     from sinergym.utils.controllers import RBCDatacenter
 
-    extra_conf={'timesteps_per_hour':6,
-                ...}
+    extra_conf={
+        'timesteps_per_hour':6,
+        'runperiod':(1,1,1991,2,1,1992),
+        'action_definition': {
+            'ThermostatSetpoint:DualSetpoint': [{
+                'name': 'West-DualSetP-RL',
+                'heating_name': 'West-HtgSetP-RL',
+                'cooling_name': 'West-ClgSetP-RL',
+                'zones': ['West Zone']
+            },
+                {
+                'name': 'East-DualSetP-RL',
+                'heating_name': 'East-HtgSetP-RL',
+                'cooling_name': 'East-ClgSetP-RL',
+                'zones': ['East Zone']
+            }]
+        }
+    }
 
     env = gym.make('Eplus-datacenter-cool-continuous-stochastic-v1', 
                     reward=ExpReward, reward_kwargs={

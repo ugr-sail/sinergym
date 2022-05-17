@@ -43,5 +43,30 @@ action_definition
 Creating a **new external interface** to control different parts of a building is not a trivial task, it requires certain changes in the building model (IDF), 
 configuration files for the external interface (variables.cfg), etc in order to control it.
 
+For this pourpose,  we have available **action_definition** key extra parameter. Its value is a dictionary with the next structure:
+
+.. code:: python
+    extra_params={
+        'action_definition':{
+            <controller_type>:[<controller1_definition>,<controller2_definition>, ...]
+        }
+    }
+
+The `<controller_definition>` will depend on the specific type of controller that we are going to create, we have the next support:
+
+Thermostat:DualSetpoint
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+This controller has the next values in its definition:
+
+- *name*: DualSetpoint resource name (str).
+- *heating_name*: Heating setpoint name. This name should be an action variable defined in your environment (str).
+- *cooling_name*: Cooling setpoint name. This name should be an action variable defined in your environment (str).
+- *zones*: An thermostat can manage several building zones at the same time. Then, you can specify one or more zones (List(str)). 
+           If the zone name specified is not exist in building, Sinergym will report the error.
+
+For an example about how to use it, see :ref:`Adding extra configuration definition`.
+
+.. note:: Actually, we only support `Thermostat:DualSetpoint` definition, but more components could be managed in the future. Stay tuned for upcoming releases! 
 
 .. note:: If you want to create your own extra configuration parameters, please see the method `apply_extra_conf` from `Config class <https://github.com/jajimer/sinergym/tree/main/sinergym/utils/config.py>`__.
