@@ -95,7 +95,30 @@ Structure of observation and action space is defined in Environment constructor 
     :language: python
     :pyobject: EplusEnv.__init__
 
-- `observation_variables`: List of observation variables
+- **observation_variables**: List of observation variables that simulator is going to process like an observation. These variables names must 
+                             follow the structure `<variable_name>(<zone_name>)` in order to register them correctly. Sinergym will check for
+                             you that the variable names are correct with respect to the building you are trying to simulate (IDF file). 
+                             To do this, it will look at the list found in the 
+                            `variables <https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables>`__ folder of the project (**RDD** file). 
+
+- **observation_space**: Definition of the observation space following the **gym standard**. This space is used to represent all the observations 
+                         variables that we have previously defined. Remember that the **year, month, day and hour** are added by Sinergym later, 
+                         so space must be reserved for these fields in the definition. If an inconsistency is found, Sinergym will notify you 
+                         so that it can be fixed. 
+
+- **action_variables**: List of the action variables that simulator is going to process like schedule control actuator in the building model. These variables
+                        must be defined in the building model (IDF file) correctly before simulation. You can modify **manually** in the IDF file or using
+                        our **action definition** extra configuration field in which you set what you want to control and Sinergym takes care of modifying 
+                        this file for you automatically. For more information about this automatic adaptation in section HIPERENLACE.
+                
+- **action_space**: Definition of the action space following the **gym standard**. This definition can be discrete or continuous and must be consistent with 
+                    the previously defined action variables (Sinergym will show inconsistency as usual).
+
+.. note:: In order to make environments more generic in DRL solutions. We have updated action space for **continuous problems**. Gym action space is defined always between [-1,1] 
+          and Sinergym **parse** this values to action space defined in environment internally before to send it to EnergyPlus Simulator. The method in charge of parse this values 
+          from [-1,1] to real action space is called ``_setpoints_transform(action)`` in *sinergym/sinergym/envs/eplus_env.py*
+
+- **action_mapping**: It is only necessary to specify it in discrete action spaces. It is a dictionary that links an index to a specific configuration of values for each action variable. 
 
 Specification
 ~~~~~~~~~~~~~~
@@ -106,25 +129,31 @@ set up in `constants.py <https://github.com/jajimer/sinergym/tree/main/sinergym/
 As can be seen in environments observations, the **year, month, day and hour** are included in, but is not configured in default observation variables definition. 
 This is because they are not variables recognizable by the simulator as such (Energyplus) and Sinergym does the calculations and adds them in the states returned as 
 output by the environment. This feature is common to all environments available in Sinergym and all supported building designs. In other words, you don't need to 
-add this variables (**year, month, day and hour**) to observation variables.
+add this variables (**year, month, day and hour**) to observation variables but yes to the observation space.
 
 As we told before, all environments ID's registered in Sinergym use its respectively **default action and observation spaces, variables and definition**. 
 However, you can **change** this values giving you the possibility of playing with different observation/action spaces in discrete and continuous environments in order to study how this affects the resolution of a building problem.
 
-.. note:: If you are interested in modifying default action and observation specification of our environments, please visit section HIPERENLACE.
-
 Sinergym has several checkers to ensure that there are no inconsistencies in the alternative specifications made to the default ones. In case the specification offered is wrong, Sinergym will launch messages indicating where the error or inconsistency is located.
 
-Gym Action Space Note
-~~~~~~~~~~~~~~~~~~~~~~
-
-In order to make environments more generic in DRL solutions. We have updated action space for continuous problem. Gym action space is defined always between [-1,1] and Sinergym **parse** this values to action space defined in environment internally before to send it to EnergyPlus Simulator.
-
-The method in charge of parse this values from [-1,1] to real action space is called ``_setpoints_transform(action)`` in *sinergym/sinergym/envs/eplus_env.py*
 
 **************************************
 Adding new buildings for environments
 **************************************
 
-Explain RDD information
+This section is intended to provide information if someone decides to add new buildings for use with Sinergym. The main steps you have to follow are the next:
+
+1. Add your building (IDF file) to `buildings <https://github.com/jajimer/sinergym/tree/main/sinergym/data/buildings>`__. 
+   As mentioned in section :ref:`Observation/action spaces`, the IDF must be previously adapted to your action space or use our **action definition** (section HIPERENLACE) 
+   to be automatically adapted to the action space and variables you have designed for it, as long as we provide support for the specific component you want to control..
+
+2. Add your own EPW file for weather conditions or use ours in environment constructor. Sinergym will adapt `DesignDays` in IDF file using EPW automatically.
+
+3. Sinergym will check that observation variables specified are available in the simulation before starting. In order to be able to do these checks, 
+   you need to copy **RDD file** with the same name than IDF file (except extension) to `variables <https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables>`__. 
+   To obtain this **RDD file** you have to run a simulation with *Energyplus* directly and extract from output folder.
+
+4. Register your own environment ID `here <https://github.com/jajimer/sinergym/blob/main/sinergym/__init__.py>`__ following the same structure than the rest.
+
+5. Now, you can use your own environment ID with `gym.make()` like our documentation examples.
 

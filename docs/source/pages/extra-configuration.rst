@@ -36,4 +36,12 @@ The format value for **runperiod** key is a **tuple** with (*start_day*, *start_
 
 .. warning:: If we include a manual runperiod with this functionality, we should not include any February 29th of a leap year in that range. Otherwise, the simulator will fail, since Energyplus does not take into account leap days and the weather files do not include these days.
 
+******************
+action_definition
+******************
+
+Creating a **new external interface** to control different parts of a building is not a trivial task, it requires certain changes in the building model (IDF), 
+configuration files for the external interface (variables.cfg), etc in order to control it.
+
+
 .. note:: If you want to create your own extra configuration parameters, please see the method `apply_extra_conf` from `Config class <https://github.com/jajimer/sinergym/tree/main/sinergym/utils/config.py>`__.
