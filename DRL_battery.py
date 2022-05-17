@@ -158,6 +158,7 @@ parser.add_argument('--tau', '-tu', type=float, default=0.005)
 parser.add_argument('--gradient_steps', '-gs', type=int, default=1)
 parser.add_argument('--clip_range', '-cr', type=float, default=.2)
 parser.add_argument('--sigma', '-sig', type=float, default=0.1)
+parser.add_argument('--rms_prop_eps', '-rpe', type=float, default=1e-5)
 
 args = parser.parse_args()
 #------------------------------------------------------------------------------#
@@ -220,6 +221,7 @@ with mlflow.start_run(run_name=name):
     mlflow.log_param('gradient-steps', args.gradient_steps)
     mlflow.log_param('clip-range', args.clip_range)
     mlflow.log_param('sigma', args.sigma)
+    mlflow.log_param('rms_prop_eps', args.rms_prop_eps)
     mlflow.log_param('id', args.id)
 
     # ---------------------------------------------------------------------------- #
