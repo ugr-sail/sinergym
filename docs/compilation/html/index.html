@@ -16,6 +16,7 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -38,20 +39,32 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="pages/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/usage-example.html">Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="pages/environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/controllers.html">Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/wrappers.html">Wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/usage-example.html">Usage example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/gcloudAPI.html">Sinergym with Google Cloud</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/github-actions.html">Github Actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/API-reference.html">API reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/usage_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/rule_controller_example.html">Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/drl.html">DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/MLflow_example.html">MLFlow example</a></li>
 </ul>
 
         </div>
@@ -78,7 +91,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="welcome-to-sinergym">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="welcome-to-sinergym">
 <h1>Welcome to <strong>sinergym</strong>!<a class="headerlink" href="#welcome-to-sinergym" title="Permalink to this headline"></a></h1>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -108,12 +145,15 @@ the backend while maintaining the Gym API.</p></li>
 <li><p><strong>Building Models configuration automatically</strong>: Building models will be
 adapted to specification of each simulation. For example, <em>Designdays</em> and
 <em>Location</em> from IDF files will be adapted to weather file specified in
-Sinergym simulator backend without any intervention by the user.</p></li>
+Sinergym simulator backend without any intervention by the user. The <em>variables.cfg</em>
+for external interface with BCVTB is obtained automatically depending on
+action and observation space/variables defined.</p></li>
 <li><p><strong>Extra configuration facilities</strong>: Our team aim to provide extra parameters
 in order to amplify the context space for the experiments with this tool.
 Sinergym will modify building model automatically based on parameters set.
 For example: People occupant, timesteps per simulation hour, observation
-and action spaces, etc.</p></li>
+and action spaces, an action definition in order to modify IDF structure
+automatically, etc.</p></li>
 <li><p><strong>Stable Baseline 3 Integration</strong>. Some functionalities like callbacks
 have been developed by our team in order to test easily these environments
 with deep reinforcement learning algorithms.</p></li>
@@ -135,6 +175,14 @@ in real-time.</p></li>
 <h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline"></a></h2>
 <p>To any interested in making Sinergym better, there are still some improvements that need to be done. You can check <a class="reference external" href="https://github.com/jajimer/sinergym/issues">issues</a> in the repo.</p>
 <p>If you want to contribute, please read <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> first.</p>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<p>The examples can be run if you have your computer or container properly configured (see <a class="reference internal" href="pages/installation.html#installation"><span class="std std-ref">Installation</span></a> section) from our notebooks hosted in the <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/examples">examples</a> folder of the official Sinergym repository.</p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
 <div class="toctree-wrapper compound">
 </div>
 </section>

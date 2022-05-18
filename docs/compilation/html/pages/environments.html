@@ -16,11 +16,12 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Rewards" href="rewards.html" />
-    <link rel="prev" title="Installation" href="installation.html" /> 
+    <link rel="prev" title="Usage example" href="usage-example.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -39,23 +40,40 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Environments</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#observation-action-spaces">Observation/action spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environments-list">Environments List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#observation-action-spaces">Observation/action spaces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#specification">Specification</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-new-buildings-for-environments">Adding new buildings for environments</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Sinergym with Google Cloud</a></li>
 <li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/usage_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/MLflow_example.html">MLFlow example</a></li>
 </ul>
 
         </div>
@@ -82,8 +100,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="environments">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="environments">
 <h1>Environments<a class="headerlink" href="#environments" title="Permalink to this headline"></a></h1>
+<section id="environments-list">
+<h2>Environments List<a class="headerlink" href="#environments-list" title="Permalink to this headline"></a></h2>
 <p>The list of available environments is the following:</p>
 <table class="docutils align-default">
 <colgroup>
@@ -337,168 +381,214 @@
 </tr>
 </tbody>
 </table>
-<p>(*) Weather types according to <a class="reference external" href="https://www.energycodes.gov/development/commercial/prototype_models#TMY3">DOE's
+<p>(*) Weather types according to <a class="reference external" href="https://www.energycodes.gov/development/commercial/prototype_models#TMY3">DOE’s
 classification</a>.</p>
 <p>(**) In these environments, weather series change from episode to
 episode. Gaussian noise with 0 mean and 2.5 std is added to the original
 values in order to add stochastic.</p>
+</section>
 <section id="observation-action-spaces">
 <h2>Observation/action spaces<a class="headerlink" href="#observation-action-spaces" title="Permalink to this headline"></a></h2>
-<p>Observation and action spaces are defined in <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables">sinergym/sinergym/data/variables</a> specifically for each IDF file. Therefore, external interface with simulation is defined in the same way.</p>
-<p>This is a definition example for 5ZoneAutoDXVAV.idf and its variants:</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</span>
-<span class="cp">&lt;!DOCTYPE BCVTB-variables SYSTEM &quot;variables.dtd&quot;&gt;</span>
-<span class="nt">&lt;space&gt;</span>
-  <span class="cm">&lt;!--</span>
+<p>Structure of observation and action space is defined in Environment constructor directly. This allows for a <strong>dynamic definition</strong> of these spaces. Let’s see the fields required to do it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">idf_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">weather_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">observation_space</span><span class="p">:</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=-</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,)),</span>
+        <span class="n">observation_variables</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="n">action_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">,</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Discrete</span><span class="p">]</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,)),</span>
+        <span class="n">action_variables</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="n">action_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span>
+        <span class="n">weather_variability</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">reward</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">LinearReward</span><span class="p">,</span>
+        <span class="n">reward_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span>
+        <span class="n">act_repeat</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">max_ep_data_store_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">env_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;eplus-env-v1&#39;</span><span class="p">,</span>
+        <span class="n">config_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Environment with EnergyPlus simulator.</span>
 
-<span class="cm">  **OBSERVATIONS**</span>
+<span class="sd">        Args:</span>
+<span class="sd">            idf_file (str): Name of the IDF file with the building definition.</span>
+<span class="sd">            weather_file (str): Name of the EPW file for weather conditions.</span>
+<span class="sd">            observation_space (gym.spaces.Box, optional): Gym Observation Space definition. Defaults to an empty observation_space (no control).</span>
+<span class="sd">            observation_variables (List[str], optional): List with variables names in IDF. Defaults to an empty observation variables (no control).</span>
+<span class="sd">            action_space (Union[gym.spaces.Box, gym.spaces.Discrete], optional): Gym Action Space definition. Defaults to an empty action_space (no control).</span>
+<span class="sd">            action_variables (List[str],optional): Action variables to be controlled in IDF, if that actions names have not been configured manually in IDF, you should configure or use extra_config. Default to empty List.</span>
+<span class="sd">            action_mapping (Dict[int, Tuple[float, ...]], optional): Action mapping list for discrete actions spaces only. Defaults to empty list.</span>
+<span class="sd">            weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.</span>
+<span class="sd">            reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.</span>
+<span class="sd">            reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.</span>
+<span class="sd">            act_repeat (int, optional): Number of timesteps that an action is repeated in the simulator, regardless of the actions it receives during that repetition interval.</span>
+<span class="sd">            max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.</span>
+<span class="sd">            env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.</span>
+<span class="sd">            config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="cm">      Type: Box(19)</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                          Energyplus, BCVTB and paths                         #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="n">eplus_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;EPLUS_PATH&#39;</span><span class="p">]</span>
+        <span class="n">bcvtb_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;BCVTB_PATH&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pkg_data_path</span> <span class="o">=</span> <span class="n">PKG_DATA_PATH</span>
 
-<span class="cm">      =====  =============================================  ====  ====</span>
-<span class="cm">      N      Variable name                                  Max   Min    </span>
-<span class="cm">      =====  =============================================  ====  ====</span>
-<span class="cm">      0      Site Outdoor Air Drybulb Temperature           -5e6  5e6</span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      1      Site Outdoor Air Relative Humidity             -5e6  5e6                </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      2      Site Wind Speed                                -5e6  5e6             </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      3      Site Wind Direction                            -5e6  5e6</span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      4      Site Diffuse Solar Radiation Rate per Area     -5e6  5e6           </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      5      Site Direct Solar Radiation Rate per Area      -5e6  5e6         </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      6      Zone Thermostat Heating Setpoint Temperature   -5e6  5e6         </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      7      Zone Thermostat Cooling Setpoint Temperature   -5e6  5e6           </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      8      Zone Air Temperature                           -5e6  5e6         </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      9      Zone Thermal Comfort Mean Radiant Temperature  -5e6  5e6          </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      10     Zone Air Relative Humidity                     -5e6  5e6           </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      11     Zone Thermal Comfort Clothing Value            -5e6  5e6          </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      12     Zone Thermal Comfort Fanger Model PPD          -5e6  5e6          </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      13     Zone People Occupant Count                     -5e6  5e6          </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      14     People Air Temperature                         -5e6  5e6     </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      15     Facility Total HVAC Electricity Demand Rate    -5e6  5e6  </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      16     Current year                                     1   2050 </span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      17     Current month                                    1     31</span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      18     Current day                                      1     12</span>
-<span class="cm">      *****  *********************************************  ****  ****</span>
-<span class="cm">      19     Current hour                                     0     23</span>
-<span class="cm">      =====  =============================================  ====  ====</span>
-<span class="cm">  --&gt;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pkg_data_path</span><span class="p">,</span> <span class="s1">&#39;buildings&#39;</span><span class="p">,</span> <span class="n">idf_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weather_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pkg_data_path</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">,</span> <span class="n">weather_file</span><span class="p">)</span>
 
-  <span class="nt">&lt;observation-space&gt;</span>
-    <span class="nt">&lt;low</span> <span class="na">value=</span><span class="s">&quot;-5e6&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;high</span> <span class="na">value=</span><span class="s">&quot;5e6&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;shape</span> <span class="na">value=</span><span class="s">&quot;20&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;dtype</span> <span class="na">value=</span><span class="s">&quot;numpy.float32&quot;</span><span class="nt">/&gt;</span>
-  <span class="nt">&lt;/observation-space&gt;</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                             Variables definition                             #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">observation_variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">action_variables</span>
 
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                                   Simulator                                  #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span> <span class="o">=</span> <span class="n">EnergyPlus</span><span class="p">(</span>
+            <span class="n">env_name</span><span class="o">=</span><span class="n">env_name</span><span class="p">,</span>
+            <span class="n">eplus_path</span><span class="o">=</span><span class="n">eplus_path</span><span class="p">,</span>
+            <span class="n">bcvtb_path</span><span class="o">=</span><span class="n">bcvtb_path</span><span class="p">,</span>
+            <span class="n">idf_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">idf_path</span><span class="p">,</span>
+            <span class="n">weather_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weather_path</span><span class="p">,</span>
+            <span class="n">variables</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
+            <span class="n">act_repeat</span><span class="o">=</span><span class="n">act_repeat</span><span class="p">,</span>
+            <span class="n">max_ep_data_store_num</span><span class="o">=</span><span class="n">max_ep_data_store_num</span><span class="p">,</span>
+            <span class="n">config_params</span><span class="o">=</span><span class="n">config_params</span>
+        <span class="p">)</span>
 
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#        Adding simulation date to observation (not needed in simulator)       #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
 
-  <span class="cm">&lt;!--</span>
-<span class="cm">     **DISCRETE ACTIONS**</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span>
+                                         <span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span>
 
-<span class="cm">      Type: Discrete(10)</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                              Weather variability                             #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weather_variability</span> <span class="o">=</span> <span class="n">weather_variability</span>
 
-<span class="cm">      ======  ================  ================</span>
-<span class="cm">      Num     Heating setpoint  Cooling setpoint</span>
-<span class="cm">      ======  ================  ================</span>
-<span class="cm">      0             15                30</span>
-<span class="cm">      ******  ****************  ****************</span>
-<span class="cm">      1             16                29</span>
-<span class="cm">      ******  ****************  ****************</span>
-<span class="cm">      2             17                28</span>
-<span class="cm">      ******  ****************  ****************</span>
-<span class="cm">      3             18                27</span>
-<span class="cm">      ******  ****************  ****************</span>
-<span class="cm">      4             19                26</span>
-<span class="cm">      ******  ****************  ****************</span>
-<span class="cm">      5             20                25</span>
-<span class="cm">      ******  ****************  ****************</span>
-<span class="cm">      6             21                24</span>
-<span class="cm">      ******  ****************  ****************</span>
-<span class="cm">      7             22                23</span>
-<span class="cm">      ******  ****************  ****************</span>
-<span class="cm">      8             22                22</span>
-<span class="cm">      ******  ****************  ****************</span>
-<span class="cm">      9             21                21</span>
-<span class="cm">      ======  ================  ================</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                               Observation Space                              #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="o">=</span> <span class="n">observation_space</span>
 
-<span class="cm">      **CONTINUOUS ACTIONS**</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                                 Action Space                                 #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1"># Action space type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag_discrete</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">action_space</span><span class="p">,</span>
+                <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Discrete</span><span class="p">))</span>
 
-<span class="cm">      Type: Box(2)</span>
+        <span class="c1"># Discrete</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag_discrete</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_mapping</span> <span class="o">=</span> <span class="n">action_mapping</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span> <span class="o">=</span> <span class="n">action_space</span>
+        <span class="c1"># Continuous</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Defining action values setpoints (one per value)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_space</span> <span class="o">=</span> <span class="n">action_space</span>
 
-<span class="cm">      ===  ================  ====  ====</span>
-<span class="cm">      Num  Variable name     Min   Max</span>
-<span class="cm">      ===  ================  ====  ====</span>
-<span class="cm">      0    Heating setpoint  15.0  22.5</span>
-<span class="cm">      ***  ****************  ****  ****</span>
-<span class="cm">      1    Cooling setpoint  22.5  30.0</span>
-<span class="cm">      ===  ================  ====  ====</span>
-<span class="cm">  --&gt;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+                <span class="c1"># continuous_action_def[2] --&gt; shape</span>
+                <span class="n">low</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="n">high</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">action_space</span><span class="o">.</span><span class="n">dtype</span>
+            <span class="p">)</span>
 
-  <span class="nt">&lt;action-space&gt;</span>
-    <span class="nt">&lt;shape</span> <span class="na">value=</span><span class="s">&quot;2&quot;</span><span class="nt">/&gt;</span>  <span class="cm">&lt;!-- number of actions values is common to discrete and continuous --&gt;</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                                    Reward                                    #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reward_fn</span> <span class="o">=</span> <span class="n">reward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">reward_kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_dict</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="nt">&lt;discrete&gt;</span>
-      <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;0&quot;</span> <span class="na">action0=</span><span class="s">&quot;15&quot;</span> <span class="na">action1=</span><span class="s">&quot;30&quot;</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;1&quot;</span> <span class="na">action0=</span><span class="s">&quot;16&quot;</span> <span class="na">action1=</span><span class="s">&quot;29&quot;</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;2&quot;</span> <span class="na">action0=</span><span class="s">&quot;17&quot;</span> <span class="na">action1=</span><span class="s">&quot;28&quot;</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;3&quot;</span> <span class="na">action0=</span><span class="s">&quot;18&quot;</span> <span class="na">action1=</span><span class="s">&quot;27&quot;</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;4&quot;</span> <span class="na">action0=</span><span class="s">&quot;19&quot;</span> <span class="na">action1=</span><span class="s">&quot;26&quot;</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;5&quot;</span> <span class="na">action0=</span><span class="s">&quot;20&quot;</span> <span class="na">action1=</span><span class="s">&quot;25&quot;</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;6&quot;</span> <span class="na">action0=</span><span class="s">&quot;21&quot;</span> <span class="na">action1=</span><span class="s">&quot;24&quot;</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;7&quot;</span> <span class="na">action0=</span><span class="s">&quot;22&quot;</span> <span class="na">action1=</span><span class="s">&quot;23&quot;</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;8&quot;</span> <span class="na">action0=</span><span class="s">&quot;22&quot;</span> <span class="na">action1=</span><span class="s">&quot;22&quot;</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;9&quot;</span> <span class="na">action0=</span><span class="s">&quot;21&quot;</span> <span class="na">action1=</span><span class="s">&quot;21&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/discrete&gt;</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                        Environment definition checker                        #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
 
-    <span class="nt">&lt;continuous&gt;</span>
-      <span class="nt">&lt;low-ranges&gt;</span>
-        <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;0&quot;</span> <span class="na">value=</span><span class="s">&quot;15.0&quot;</span><span class="nt">/&gt;</span>
-        <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;1&quot;</span> <span class="na">value=</span><span class="s">&quot;22.5&quot;</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;/low-ranges&gt;</span>
-      <span class="nt">&lt;high-ranges&gt;</span>
-        <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;0&quot;</span> <span class="na">value=</span><span class="s">&quot;22.5&quot;</span><span class="nt">/&gt;</span>
-        <span class="nt">&lt;element</span> <span class="na">index=</span><span class="s">&quot;1&quot;</span> <span class="na">value=</span><span class="s">&quot;30.0&quot;</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;/high-ranges&gt;</span>
-      <span class="nt">&lt;dtype</span> <span class="na">value=</span><span class="s">&quot;numpy.float32&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/continuous&gt;</span>
-
-  <span class="nt">&lt;/action-space&gt;</span>
-<span class="nt">&lt;/space&gt;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_eplus_env</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>As can be seen in <em>5ZoneAutoDXVAV_spaces.cfg</em>, for example, the <strong>year, month, day and hour</strong> of the simulation are not included for each timestep.
-However, they do appear in the definition of the observation spaces in <em>5ZoneAutoDXVAV_spaces.cfg</em> and, therefore, as part of the state returned by the environment.
-This is because they are not variables recognizable by the simulator as such (Energyplus) and Sinergym does the calculations and adds them in the states returned as
-output by the environment. This feature is common to all environments available in Sinergym and all supported building designs.</p>
-<p>This gives you the possibility of playing with different observation/action spaces in discrete and continuous environments in order to study how this affects the resolution of a building problem.
-Inner each environment it is known what configuration file must read and spaces will be defined automatically, so you should not worry about anything.</p>
-<p>In order to make environments more generic in DRL solutions. We have updated action space for continuous problem. Gym action space is defined always between [-1,1] and Sinergym parse this values to action space defined in configuration file internally.</p>
-<p>The function in charge of reading those configuration files is <code class="docutils literal notranslate"><span class="pre">parse_observation_action_space(space_file)</span></code> in <em>sinergym/sinergym/utils/common.py</em></p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Remember that the spaces defined here must be the same size as in variables.cfg. Except in the observation due to the fact that we have to add the year, month, day and hour.</p>
-</div>
+<ul>
+<li><dl>
+<dt><strong>observation_variables</strong>: List of observation variables that simulator is going to process like an observation. These variables names must</dt><dd><blockquote>
+<div><p>follow the structure <cite>&lt;variable_name&gt;(&lt;zone_name&gt;)</cite> in order to register them correctly. Sinergym will check for
+you that the variable names are correct with respect to the building you are trying to simulate (IDF file).
+To do this, it will look at the list found in the</p>
+</div></blockquote>
+<p><a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables">variables</a> folder of the project (<strong>RDD</strong> file).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>observation_space</strong>: Definition of the observation space following the <strong>gym standard</strong>. This space is used to represent all the observations</dt><dd><p>variables that we have previously defined. Remember that the <strong>year, month, day and hour</strong> are added by Sinergym later,
+so space must be reserved for these fields in the definition. If an inconsistency is found, Sinergym will notify you
+so that it can be fixed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>action_variables</strong>: List of the action variables that simulator is going to process like schedule control actuator in the building model. These variables</dt><dd><p>must be defined in the building model (IDF file) correctly before simulation. You can modify <strong>manually</strong> in the IDF file or using
+our <strong>action definition</strong> extra configuration field in which you set what you want to control and Sinergym takes care of modifying
+this file for you automatically. For more information about this automatic adaptation in section HIPERENLACE.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>action_space</strong>: Definition of the action space following the <strong>gym standard</strong>. This definition can be discrete or continuous and must be consistent with</dt><dd><p>the previously defined action variables (Sinergym will show inconsistency as usual).</p>
+</dd>
+</dl>
+</li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>Set up observation and action spaces in environment constructor dynamically could be upgrade in the future. Stay tuned for upcoming releases!</em></p>
+<p>In order to make environments more generic in DRL solutions. We have updated action space for <strong>continuous problems</strong>. Gym action space is defined always between [-1,1]
+and Sinergym <strong>parse</strong> this values to action space defined in environment internally before to send it to EnergyPlus Simulator. The method in charge of parse this values
+from [-1,1] to real action space is called <code class="docutils literal notranslate"><span class="pre">_setpoints_transform(action)</span></code> in <em>sinergym/sinergym/envs/eplus_env.py</em></p>
 </div>
+<ul class="simple">
+<li><p><strong>action_mapping</strong>: It is only necessary to specify it in discrete action spaces. It is a dictionary that links an index to a specific configuration of values for each action variable.</p></li>
+</ul>
+<section id="specification">
+<h3>Specification<a class="headerlink" href="#specification" title="Permalink to this headline"></a></h3>
+<p>As we have told, Observation and action spaces are defined <strong>dinamically</strong> in Sinergym Environment constructor. Environmet ID’s registered in Sinergym use a <strong>default</strong> definition
+set up in <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/utils/constants.py">constants.py</a>.</p>
+<p>As can be seen in environments observations, the <strong>year, month, day and hour</strong> are included in, but is not configured in default observation variables definition.
+This is because they are not variables recognizable by the simulator as such (Energyplus) and Sinergym does the calculations and adds them in the states returned as
+output by the environment. This feature is common to all environments available in Sinergym and all supported building designs. In other words, you don’t need to
+add this variables (<strong>year, month, day and hour</strong>) to observation variables but yes to the observation space.</p>
+<p>As we told before, all environments ID’s registered in Sinergym use its respectively <strong>default action and observation spaces, variables and definition</strong>.
+However, you can <strong>change</strong> this values giving you the possibility of playing with different observation/action spaces in discrete and continuous environments in order to study how this affects the resolution of a building problem.</p>
+<p>Sinergym has several checkers to ensure that there are no inconsistencies in the alternative specifications made to the default ones. In case the specification offered is wrong, Sinergym will launch messages indicating where the error or inconsistency is located.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><cite>variables.cfg</cite> is a requirement in order to stablish a connection between gym environment and Simulator
+with a external interface (using BCVTB). Since Sinergym <cite>1.9.0</cite> version, it is created automatically using
+action and observation space definition in environment construction.</p>
+</div>
+</section>
+</section>
+<section id="adding-new-buildings-for-environments">
+<h2>Adding new buildings for environments<a class="headerlink" href="#adding-new-buildings-for-environments" title="Permalink to this headline"></a></h2>
+<p>This section is intended to provide information if someone decides to add new buildings for use with Sinergym. The main steps you have to follow are the next:</p>
+<ol class="arabic simple">
+<li><p>Add your building (IDF file) to <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/data/buildings">buildings</a>.
+As mentioned in section <a class="reference internal" href="#observation-action-spaces"><span class="std std-ref">Observation/action spaces</span></a>, the IDF must be previously adapted to your action space or use our <strong>action definition</strong> (section HIPERENLACE)
+to be automatically adapted to the action space and variables you have designed for it, as long as we provide support for the specific component you want to control..</p></li>
+<li><p>Add your own EPW file for weather conditions or use ours in environment constructor. Sinergym will adapt <cite>DesignDays</cite> in IDF file using EPW automatically.</p></li>
+<li><p>Sinergym will check that observation variables specified are available in the simulation before starting. In order to be able to do these checks,
+you need to copy <strong>RDD file</strong> with the same name than IDF file (except extension) to <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables">variables</a>.
+To obtain this <strong>RDD file</strong> you have to run a simulation with <em>Energyplus</em> directly and extract from output folder.</p></li>
+<li><p>Register your own environment ID <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/__init__.py">here</a> following the same structure than the rest.</p></li>
+<li><p>Now, you can use your own environment ID with <cite>gym.make()</cite> like our documentation examples.</p></li>
+</ol>
 </section>
 </section>
 
@@ -506,7 +596,7 @@ Inner each environment it is known what configuration file must read and spaces 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage-example.html" class="btn btn-neutral float-left" title="Usage example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="rewards.html" class="btn btn-neutral float-right" title="Rewards" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

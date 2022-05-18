@@ -29,12 +29,15 @@ The main functionalities of *sinergym* are the following:
 -  **Building Models configuration automatically**: Building models will be
    adapted to specification of each simulation. For example, *Designdays* and 
    *Location* from IDF files will be adapted to weather file specified in
-   Sinergym simulator backend without any intervention by the user.
+   Sinergym simulator backend without any intervention by the user. The *variables.cfg*
+   for external interface with BCVTB is obtained automatically depending on
+   action and observation space/variables defined.
 -  **Extra configuration facilities**: Our team aim to provide extra parameters
    in order to amplify the context space for the experiments with this tool.
    Sinergym will modify building model automatically based on parameters set.
    For example: People occupant, timesteps per simulation hour, observation
-   and action spaces, etc.
+   and action spaces, an action definition in order to modify IDF structure
+   automatically, etc.
 -  **Stable Baseline 3 Integration**. Some functionalities like callbacks
    have been developed by our team in order to test easily these environments
    with deep reinforcement learning algorithms.

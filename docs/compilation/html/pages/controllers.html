@@ -16,6 +16,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -39,20 +40,32 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Sinergym with Google Cloud</a></li>
 <li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/usage_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/MLflow_example.html">MLFlow example</a></li>
 </ul>
 
         </div>
@@ -79,7 +92,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="controllers">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="controllers">
 <h1>Controllers<a class="headerlink" href="#controllers" title="Permalink to this headline"></a></h1>
 <p>Sinergym has a section to implement your own controllers. Currently, we have developed a <strong>random agent</strong> and a <strong>rule-based agent</strong> to 5Zone and Datacenter buildings.
 You can find this code in <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/controllers.py">sinergym/sinergym/utils/controllers.py</a>.
@@ -115,7 +152,7 @@ it is very useful in order to perform benchmarks as a reference point to study D
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Agent based on static rules for controlling 5ZoneAutoDXVAV setpoints.</span>
-<span class="sd">        Follows the standard setpoints described in ASHRAE Standard 55-2004: Thermal Environmental Conditions for Human Occupancy.</span>
+<span class="sd">        Based on ASHRAE Standard 55-2004: Thermal Environmental Conditions for Human Occupancy.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            env (Any): Simulation environment</span>
@@ -125,11 +162,8 @@ it is very useful in order to perform benchmarks as a reference point to study D
 
         <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">variables</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_summer</span> <span class="o">=</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_winter</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_summer</span> <span class="o">=</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_winter</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_summer</span> <span class="o">=</span> <span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="mf">29.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_winter</span> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Select action based on indoor temperature.</span>
@@ -152,29 +186,11 @@ it is very useful in order to perform benchmarks as a reference point to study D
 
         <span class="c1"># Get season comfort range</span>
         <span class="k">if</span> <span class="n">current_dt</span> <span class="o">&gt;=</span> <span class="n">summer_start_date</span> <span class="ow">and</span> <span class="n">current_dt</span> <span class="o">&lt;=</span> <span class="n">summer_final_date</span><span class="p">:</span>
-            <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_summer</span>
+            <span class="n">season_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_summer</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_winter</span>
+            <span class="n">season_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_winter</span>
 
-        <span class="c1"># Update setpoints</span>
-        <span class="n">in_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;Zone Air Temperature (SPACE1-1)&#39;</span><span class="p">]</span>
-
-        <span class="n">current_heat_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
-            <span class="s1">&#39;Zone Thermostat Heating Setpoint Temperature (SPACE1-1)&#39;</span><span class="p">]</span>
-        <span class="n">current_cool_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
-            <span class="s1">&#39;Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)&#39;</span><span class="p">]</span>
-
-        <span class="n">new_heat_setpoint</span> <span class="o">=</span> <span class="n">current_heat_setpoint</span>
-        <span class="n">new_cool_setpoint</span> <span class="o">=</span> <span class="n">current_cool_setpoint</span>
-
-        <span class="k">if</span> <span class="n">in_temp</span> <span class="o">&lt;</span> <span class="n">season_comfort_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-            <span class="n">new_heat_setpoint</span> <span class="o">=</span> <span class="n">current_heat_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="n">new_cool_setpoint</span> <span class="o">=</span> <span class="n">current_cool_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">in_temp</span> <span class="o">&gt;</span> <span class="n">season_comfort_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="n">new_cool_setpoint</span> <span class="o">=</span> <span class="n">current_cool_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
-            <span class="n">new_heat_setpoint</span> <span class="o">=</span> <span class="n">current_heat_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
-
-        <span class="k">return</span> <span class="p">(</span><span class="n">new_heat_setpoint</span><span class="p">,</span> <span class="n">new_cool_setpoint</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">season_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">season_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 
 <span class="k">class</span> <span class="nc">RBCDatacenter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -182,7 +198,6 @@ it is very useful in order to perform benchmarks as a reference point to study D
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Agent based on static rules for controlling 2ZoneDataCenterHVAC setpoints.</span>
 <span class="sd">        Follows the ASHRAE recommended temperature ranges for data centers described in ASHRAE TC9.9 (2016).</span>
-
 <span class="sd">        Args:</span>
 <span class="sd">            env (Any): Simulation environment</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -191,52 +206,50 @@ it is very useful in order to perform benchmarks as a reference point to study D
         <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">variables</span>
 
         <span class="c1"># ASHRAE recommended temperature range = [18, 27] Celsius</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_datacenter</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range_datacenter</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Select action based on indoor temperature.</span>
-
 <span class="sd">        Args:</span>
 <span class="sd">            observation (List[Any]): Perceived observation.</span>
-
 <span class="sd">        Returns:</span>
 <span class="sd">            Sequence[Any]: Action chosen.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obs_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">],</span> <span class="n">observation</span><span class="p">))</span>
 
         <span class="c1"># West Zone</span>
-        <span class="n">west_in_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;Zone Air Temperature (West Zone)&#39;</span><span class="p">]</span>
+        <span class="n">west_in_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;Zone Air Temperature(West Zone)&#39;</span><span class="p">]</span>
 
         <span class="n">west_current_heat_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
-            <span class="s1">&#39;Zone Thermostat Heating Setpoint Temperature (West Zone)&#39;</span><span class="p">]</span>
+            <span class="s1">&#39;Zone Thermostat Heating Setpoint Temperature(West Zone)&#39;</span><span class="p">]</span>
         <span class="n">west_current_cool_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
-            <span class="s1">&#39;Zone Thermostat Cooling Setpoint Temperature (West Zone)&#39;</span><span class="p">]</span>
+            <span class="s1">&#39;Zone Thermostat Cooling Setpoint Temperature(West Zone)&#39;</span><span class="p">]</span>
 
         <span class="n">west_new_heat_setpoint</span> <span class="o">=</span> <span class="n">west_current_heat_setpoint</span>
         <span class="n">west_new_cool_setpoint</span> <span class="o">=</span> <span class="n">west_current_cool_setpoint</span>
 
-        <span class="k">if</span> <span class="n">west_in_temp</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_datacenter</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">west_in_temp</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_datacenter</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="n">west_new_heat_setpoint</span> <span class="o">=</span> <span class="n">west_current_heat_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="n">west_new_cool_setpoint</span> <span class="o">=</span> <span class="n">west_current_cool_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">west_in_temp</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_datacenter</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">elif</span> <span class="n">west_in_temp</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_datacenter</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
             <span class="n">west_new_cool_setpoint</span> <span class="o">=</span> <span class="n">west_current_cool_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
             <span class="n">west_new_heat_setpoint</span> <span class="o">=</span> <span class="n">west_current_heat_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
 
         <span class="c1"># East Zone</span>
-        <span class="n">east_in_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;Zone Air Temperature (East Zone)&#39;</span><span class="p">]</span>
+        <span class="n">east_in_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;Zone Air Temperature(East Zone)&#39;</span><span class="p">]</span>
 
         <span class="n">east_current_heat_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
-            <span class="s1">&#39;Zone Thermostat Heating Setpoint Temperature (East Zone)&#39;</span><span class="p">]</span>
+            <span class="s1">&#39;Zone Thermostat Heating Setpoint Temperature(East Zone)&#39;</span><span class="p">]</span>
         <span class="n">east_current_cool_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
-            <span class="s1">&#39;Zone Thermostat Cooling Setpoint Temperature (East Zone)&#39;</span><span class="p">]</span>
+            <span class="s1">&#39;Zone Thermostat Cooling Setpoint Temperature(East Zone)&#39;</span><span class="p">]</span>
 
         <span class="n">east_new_heat_setpoint</span> <span class="o">=</span> <span class="n">east_current_heat_setpoint</span>
         <span class="n">east_new_cool_setpoint</span> <span class="o">=</span> <span class="n">east_current_cool_setpoint</span>
 
-        <span class="k">if</span> <span class="n">east_in_temp</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_datacenter</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">east_in_temp</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_datacenter</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="n">east_new_heat_setpoint</span> <span class="o">=</span> <span class="n">east_current_heat_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="n">east_new_cool_setpoint</span> <span class="o">=</span> <span class="n">east_current_cool_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">east_in_temp</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_datacenter</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">elif</span> <span class="n">east_in_temp</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_datacenter</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
             <span class="n">east_new_cool_setpoint</span> <span class="o">=</span> <span class="n">east_current_cool_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
             <span class="n">east_new_heat_setpoint</span> <span class="o">=</span> <span class="n">east_current_heat_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
 

@@ -15,6 +15,7 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -36,20 +37,32 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="pages/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/usage-example.html">Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="pages/environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/controllers.html">Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/wrappers.html">Wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/usage-example.html">Usage example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/gcloudAPI.html">Sinergym with Google Cloud</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/github-actions.html">Github Actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/tests.html">Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/API-reference.html">API reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/usage_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/rule_controller_example.html">Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/drl.html">DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/MLflow_example.html">MLFlow example</a></li>
 </ul>
 
         </div>
@@ -114,10 +127,6 @@
 </li>
         <li><a href="pages/modules/sinergym.utils.callbacks.LoggerEvalCallback.html#sinergym.utils.callbacks.LoggerEvalCallback.__init__">(sinergym.utils.callbacks.LoggerEvalCallback method)</a>
 </li>
-        <li><a href="pages/modules/sinergym.utils.common.CSVLogger.html#sinergym.utils.common.CSVLogger.__init__">(sinergym.utils.common.CSVLogger method)</a>
-</li>
-        <li><a href="pages/modules/sinergym.utils.common.Logger.html#sinergym.utils.common.Logger.__init__">(sinergym.utils.common.Logger method)</a>
-</li>
         <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.__init__">(sinergym.utils.config.Config method)</a>
 </li>
         <li><a href="pages/modules/sinergym.utils.controllers.RandomController.html#sinergym.utils.controllers.RandomController.__init__">(sinergym.utils.controllers.RandomController method)</a>
@@ -125,6 +134,10 @@
         <li><a href="pages/modules/sinergym.utils.controllers.RBC5Zone.html#sinergym.utils.controllers.RBC5Zone.__init__">(sinergym.utils.controllers.RBC5Zone method)</a>
 </li>
         <li><a href="pages/modules/sinergym.utils.controllers.RBCDatacenter.html#sinergym.utils.controllers.RBCDatacenter.__init__">(sinergym.utils.controllers.RBCDatacenter method)</a>
+</li>
+        <li><a href="pages/modules/sinergym.utils.logger.CSVLogger.html#sinergym.utils.logger.CSVLogger.__init__">(sinergym.utils.logger.CSVLogger method)</a>
+</li>
+        <li><a href="pages/modules/sinergym.utils.logger.Logger.html#sinergym.utils.logger.Logger.__init__">(sinergym.utils.logger.Logger method)</a>
 </li>
         <li><a href="pages/modules/sinergym.utils.rewards.BaseReward.html#sinergym.utils.rewards.BaseReward.__init__">(sinergym.utils.rewards.BaseReward method)</a>
 </li>
@@ -155,13 +168,15 @@
         <li><a href="pages/modules/sinergym.utils.controllers.RBCDatacenter.html#sinergym.utils.controllers.RBCDatacenter.act">(sinergym.utils.controllers.RBCDatacenter method)</a>
 </li>
       </ul></li>
-      <li><a href="pages/modules/sinergym.utils.common.CSVLogger.html#sinergym.utils.common.CSVLogger.activate_flag">activate_flag() (sinergym.utils.common.CSVLogger method)</a>
+      <li><a href="pages/modules/sinergym.utils.logger.CSVLogger.html#sinergym.utils.logger.CSVLogger.activate_flag">activate_flag() (sinergym.utils.logger.CSVLogger method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.utils.wrappers.LoggerWrapper.html#sinergym.utils.wrappers.LoggerWrapper.activate_logger">activate_logger() (sinergym.utils.wrappers.LoggerWrapper method)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.adapt_idf_to_epw">adapt_idf_to_epw() (sinergym.utils.config.Config method)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.adapt_variables_to_cfg_and_idf">adapt_variables_to_cfg_and_idf() (sinergym.utils.config.Config method)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.apply_extra_conf">apply_extra_conf() (sinergym.utils.config.Config method)</a>
 </li>
@@ -197,7 +212,7 @@
 </li>
       <li><a href="pages/modules/sinergym.utils.common.create_variable_weather.html#sinergym.utils.common.create_variable_weather">create_variable_weather() (in module sinergym.utils.common)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.common.CSVLogger.html#sinergym.utils.common.CSVLogger">CSVLogger (class in sinergym.utils.common)</a>
+      <li><a href="pages/modules/sinergym.utils.logger.CSVLogger.html#sinergym.utils.logger.CSVLogger">CSVLogger (class in sinergym.utils.logger)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -205,7 +220,7 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pages/modules/sinergym.utils.common.CSVLogger.html#sinergym.utils.common.CSVLogger.deactivate_flag">deactivate_flag() (sinergym.utils.common.CSVLogger method)</a>
+      <li><a href="pages/modules/sinergym.utils.logger.CSVLogger.html#sinergym.utils.logger.CSVLogger.deactivate_flag">deactivate_flag() (sinergym.utils.logger.CSVLogger method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -263,7 +278,7 @@
 </li>
       <li><a href="pages/modules/sinergym.utils.wrappers.NormalizeObservation.html#sinergym.utils.wrappers.NormalizeObservation.get_unwrapped_obs">get_unwrapped_obs() (sinergym.utils.wrappers.NormalizeObservation method)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.common.Logger.html#sinergym.utils.common.Logger.getLogger">getLogger() (sinergym.utils.common.Logger method)</a>
+      <li><a href="pages/modules/sinergym.utils.logger.Logger.html#sinergym.utils.logger.Logger.getLogger">getLogger() (sinergym.utils.logger.Logger method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -289,15 +304,15 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.utils.rewards.LinearReward.html#sinergym.utils.rewards.LinearReward">LinearReward (class in sinergym.utils.rewards)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.common.CSVLogger.html#sinergym.utils.common.CSVLogger.log_episode">log_episode() (sinergym.utils.common.CSVLogger method)</a>
+      <li><a href="pages/modules/sinergym.utils.logger.CSVLogger.html#sinergym.utils.logger.CSVLogger.log_episode">log_episode() (sinergym.utils.logger.CSVLogger method)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.common.CSVLogger.html#sinergym.utils.common.CSVLogger.log_step">log_step() (sinergym.utils.common.CSVLogger method)</a>
+      <li><a href="pages/modules/sinergym.utils.logger.CSVLogger.html#sinergym.utils.logger.CSVLogger.log_step">log_step() (sinergym.utils.logger.CSVLogger method)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.common.CSVLogger.html#sinergym.utils.common.CSVLogger.log_step_normalize">log_step_normalize() (sinergym.utils.common.CSVLogger method)</a>
+      <li><a href="pages/modules/sinergym.utils.logger.CSVLogger.html#sinergym.utils.logger.CSVLogger.log_step_normalize">log_step_normalize() (sinergym.utils.logger.CSVLogger method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pages/modules/sinergym.utils.common.Logger.html#sinergym.utils.common.Logger">Logger (class in sinergym.utils.common)</a>
+      <li><a href="pages/modules/sinergym.utils.logger.Logger.html#sinergym.utils.logger.Logger">Logger (class in sinergym.utils.logger)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.callbacks.LoggerCallback.html#sinergym.utils.callbacks.LoggerCallback">LoggerCallback (class in sinergym.utils.callbacks)</a>
 </li>
@@ -337,11 +352,15 @@
 </li>
         <li><a href="pages/modules/sinergym.utils.config.html#module-sinergym.utils.config">sinergym.utils.config</a>
 </li>
+        <li><a href="pages/modules/sinergym.utils.constants.html#module-sinergym.utils.constants">sinergym.utils.constants</a>
+</li>
         <li><a href="pages/modules/sinergym.utils.controllers.html#module-sinergym.utils.controllers">sinergym.utils.controllers</a>
 </li>
         <li><a href="pages/modules/sinergym.utils.evaluation.html#module-sinergym.utils.evaluation">sinergym.utils.evaluation</a>
 </li>
         <li><a href="pages/modules/sinergym.utils.gcloud.html#module-sinergym.utils.gcloud">sinergym.utils.gcloud</a>
+</li>
+        <li><a href="pages/modules/sinergym.utils.logger.html#module-sinergym.utils.logger">sinergym.utils.logger</a>
 </li>
         <li><a href="pages/modules/sinergym.utils.rewards.html#module-sinergym.utils.rewards">sinergym.utils.rewards</a>
 </li>
@@ -378,12 +397,10 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pages/modules/sinergym.utils.common.parse_observation_action_space.html#sinergym.utils.common.parse_observation_action_space">parse_observation_action_space() (in module sinergym.utils.common)</a>
+      <li><a href="pages/modules/sinergym.utils.common.parse_variables.html#sinergym.utils.common.parse_variables">parse_variables() (in module sinergym.utils.common)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pages/modules/sinergym.utils.common.parse_variables.html#sinergym.utils.common.parse_variables">parse_variables() (in module sinergym.utils.common)</a>
-</li>
       <li><a href="pages/modules/sinergym.utils.common.prepare_batch_from_records.html#sinergym.utils.common.prepare_batch_from_records">prepare_batch_from_records() (in module sinergym.utils.common)</a>
 </li>
   </ul></td>
@@ -430,6 +447,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.save_building_model">save_building_model() (sinergym.utils.config.Config method)</a>
 </li>
+      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.save_variables_cfg">save_variables_cfg() (sinergym.utils.config.Config method)</a>
+</li>
       <li><a href="pages/modules/sinergym.simulators.base.BaseSimulator.html#sinergym.simulators.base.BaseSimulator.send_action">send_action() (sinergym.simulators.base.BaseSimulator method)</a>
 
       <ul>
@@ -440,9 +459,7 @@
 </li>
       <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.set_experiment_working_dir">set_experiment_working_dir() (sinergym.utils.config.Config method)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.common.CSVLogger.html#sinergym.utils.common.CSVLogger.set_log_file">set_log_file() (sinergym.utils.common.CSVLogger method)</a>
-</li>
-      <li><a href="pages/modules/sinergym.utils.common.setpoints_transform.html#sinergym.utils.common.setpoints_transform">setpoints_transform() (in module sinergym.utils.common)</a>
+      <li><a href="pages/modules/sinergym.utils.logger.CSVLogger.html#sinergym.utils.logger.CSVLogger.set_log_file">set_log_file() (sinergym.utils.logger.CSVLogger method)</a>
 </li>
       <li>
     sinergym.envs
@@ -507,13 +524,20 @@
         <li><a href="pages/modules/sinergym.utils.common.html#module-sinergym.utils.common">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     sinergym.utils.config
 
       <ul>
         <li><a href="pages/modules/sinergym.utils.config.html#module-sinergym.utils.config">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    sinergym.utils.constants
+
+      <ul>
+        <li><a href="pages/modules/sinergym.utils.constants.html#module-sinergym.utils.constants">module</a>
 </li>
       </ul></li>
       <li>
@@ -535,6 +559,13 @@
 
       <ul>
         <li><a href="pages/modules/sinergym.utils.gcloud.html#module-sinergym.utils.gcloud">module</a>
+</li>
+      </ul></li>
+      <li>
+    sinergym.utils.logger
+
+      <ul>
+        <li><a href="pages/modules/sinergym.utils.logger.html#module-sinergym.utils.logger">module</a>
 </li>
       </ul></li>
       <li>

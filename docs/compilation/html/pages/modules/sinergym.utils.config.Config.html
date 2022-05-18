@@ -16,10 +16,11 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.controllers" href="sinergym.utils.controllers.html" />
+    <link rel="next" title="sinergym.utils.constants" href="sinergym.utils.constants.html" />
     <link rel="prev" title="sinergym.utils.config" href="sinergym.utils.config.html" /> 
 </head>
 
@@ -39,14 +40,18 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../output.html">Output format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">Sinergym with Google Cloud</a></li>
@@ -60,9 +65,11 @@
 <li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.config.Config</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
 </ul>
@@ -71,6 +78,14 @@
 <li class="toctree-l2"><a class="reference internal" href="sinergym.simulators.html">sinergym.simulators</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/usage_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/MLflow_example.html">MLFlow example</a></li>
 </ul>
 
         </div>
@@ -100,32 +115,56 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="sinergym-utils-config-config">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="sinergym-utils-config-config">
 <h1>sinergym.utils.config.Config<a class="headerlink" href="#sinergym-utils-config-config" title="Permalink to this headline"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.config.Config">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.config.Config" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.config.Config" title="Permalink to this definition"></a></dt>
 <dd><p>Config object to manage extra configuration in Sinergym experiments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>_idf_path</strong> -- IDF path origin for apply extra configuration.</p></li>
-<li><p><strong>_weather_path</strong> -- EPW path origin for apply weather to simulation.</p></li>
-<li><p><strong>_ddy_path</strong> -- DDY path origin for get DesignDays and weather Location</p></li>
-<li><p><strong>experiment_path</strong> -- Path for Sinergym experiment output</p></li>
-<li><p><strong>episode_path</strong> -- Path for Sinergym specific episode (before first simulator reset this param is None)</p></li>
-<li><p><strong>extra_config</strong> -- Number of episodes directories will be stored in experiment_path</p></li>
-<li><p><strong>config</strong> -- Dict config with extra configuration which is required to modify IDF model (may be None)</p></li>
-<li><p><strong>_idd</strong> -- IDD opyplus object to set up Epm</p></li>
-<li><p><strong>building</strong> -- opyplus Epm object with IDF model</p></li>
-<li><p><strong>ddy_model</strong> -- opyplus Epm object with DDY model</p></li>
-<li><p><strong>weather_data</strong> -- opyplus WeatherData object with EPW data</p></li>
+<li><p><strong>_idf_path</strong> – IDF path origin for apply extra configuration.</p></li>
+<li><p><strong>_weather_path</strong> – EPW path origin for apply weather to simulation.</p></li>
+<li><p><strong>_ddy_path</strong> – DDY path origin for get DesignDays and weather Location</p></li>
+<li><p><strong>experiment_path</strong> – Path for Sinergym experiment output</p></li>
+<li><p><strong>episode_path</strong> – Path for Sinergym specific episode (before first simulator reset this param is None)</p></li>
+<li><p><strong>extra_config</strong> – Number of episodes directories will be stored in experiment_path</p></li>
+<li><p><strong>config</strong> – Dict config with extra configuration which is required to modify IDF model (may be None)</p></li>
+<li><p><strong>_idd</strong> – IDD opyplus object to set up Epm</p></li>
+<li><p><strong>building</strong> – opyplus Epm object with IDF model</p></li>
+<li><p><strong>ddy_model</strong> – opyplus Epm object with DDY model</p></li>
+<li><p><strong>weather_data</strong> – opyplus WeatherData object with EPW data</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.config.Config.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.config.Config.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.config.Config.__init__" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods</p>
@@ -135,20 +174,26 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.__init__" title="sinergym.utils.config.Config.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(idf_path, weather_path, env_name, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.__init__" title="sinergym.utils.config.Config.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(idf_path, weather_path, variables, ...)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.adapt_idf_to_epw" title="sinergym.utils.config.Config.adapt_idf_to_epw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adapt_idf_to_epw</span></code></a>([summerday, winterday])</p></td>
 <td><p>Given a summer day name and winter day name from DDY file, this method modify IDF Location and DesingDay's in order to adapt IDF to EPW.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.apply_extra_conf" title="sinergym.utils.config.Config.apply_extra_conf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_extra_conf</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.adapt_variables_to_cfg_and_idf" title="sinergym.utils.config.Config.adapt_variables_to_cfg_and_idf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adapt_variables_to_cfg_and_idf</span></code></a>()</p></td>
+<td><p>This method adds to XML variable tree all observation and action variables information.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.apply_extra_conf" title="sinergym.utils.config.Config.apply_extra_conf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_extra_conf</span></code></a>()</p></td>
 <td><p>Set extra configuration in building model</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.apply_weather_variability" title="sinergym.utils.config.Config.apply_weather_variability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_weather_variability</span></code></a>([columns, variation])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.apply_weather_variability" title="sinergym.utils.config.Config.apply_weather_variability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_weather_variability</span></code></a>([columns, variation])</p></td>
 <td><p>Modify weather data using Ornstein-Uhlenbeck process.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.save_building_model" title="sinergym.utils.config.Config.save_building_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_building_model</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.save_building_model" title="sinergym.utils.config.Config.save_building_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_building_model</span></code></a>()</p></td>
 <td><p>Take current building model and save as IDF in current env_working_dir episode folder.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.save_variables_cfg" title="sinergym.utils.config.Config.save_variables_cfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_variables_cfg</span></code></a>()</p></td>
+<td><p>This method saves current XML variables tree model into a variables.cfg file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.set_episode_working_dir" title="sinergym.utils.config.Config.set_episode_working_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_episode_working_dir</span></code></a>()</p></td>
 <td><p>Set episode working dir path like config attribute for current simulation execution.</p></td>
@@ -173,15 +218,21 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.config.Config.adapt_idf_to_epw">
 <span class="sig-name descname"><span class="pre">adapt_idf_to_epw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summerday</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Ann</span> <span class="pre">Clg</span> <span class="pre">.4%</span> <span class="pre">Condns</span> <span class="pre">DB=&gt;MWB'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">winterday</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Ann</span> <span class="pre">Htg</span> <span class="pre">99.6%</span> <span class="pre">Condns</span> <span class="pre">DB'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.config.Config.adapt_idf_to_epw" title="Permalink to this definition"></a></dt>
-<dd><p>Given a summer day name and winter day name from DDY file, this method modify IDF Location and DesingDay's in order to adapt IDF to EPW.</p>
+<dd><p>Given a summer day name and winter day name from DDY file, this method modify IDF Location and DesingDay’s in order to adapt IDF to EPW.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>summerday</strong> (<em>str</em>) -- Design day for summer day specifically (DDY has several of them).</p></li>
-<li><p><strong>winterday</strong> (<em>str</em>) -- Design day for winter day specifically (DDY has several of them).</p></li>
+<li><p><strong>summerday</strong> (<em>str</em>) – Design day for summer day specifically (DDY has several of them).</p></li>
+<li><p><strong>winterday</strong> (<em>str</em>) – Design day for winter day specifically (DDY has several of them).</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.config.Config.adapt_variables_to_cfg_and_idf">
+<span class="sig-name descname"><span class="pre">adapt_variables_to_cfg_and_idf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.config.Config.adapt_variables_to_cfg_and_idf" title="Permalink to this definition"></a></dt>
+<dd><p>This method adds to XML variable tree all observation and action variables information. In addition, it modifies IDF Output:Variable in order to adapt to new observation variables set.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -197,8 +248,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>columns</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- List of columns to be affected. Defaults to ['drybulb'].</p></li>
-<li><p><strong>variation</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) -- Tuple with the sigma, mean and tau for OU process. Defaults to None.</p></li>
+<li><p><strong>columns</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of columns to be affected. Defaults to [‘drybulb’].</p></li>
+<li><p><strong>variation</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Tuple with the sigma, mean and tau for OU process. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -225,12 +276,29 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.config.Config.save_variables_cfg">
+<span class="sig-name descname"><span class="pre">save_variables_cfg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#sinergym.utils.config.Config.save_variables_cfg" title="Permalink to this definition"></a></dt>
+<dd><p>This method saves current XML variables tree model into a variables.cfg file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – If this method is used without an episode_path generated (see reset method in simulator), this exception is raised.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Path to the new saved variables.cfg used by BCVTB for Energyplus communication.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.config.Config.set_episode_working_dir">
 <span class="sig-name descname"><span class="pre">set_episode_working_dir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#sinergym.utils.config.Config.set_episode_working_dir" title="Permalink to this definition"></a></dt>
 <dd><p>Set episode working dir path like config attribute for current simulation execution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>Exception</strong> -- If experiment path (parent folder) has not be created previously.</p>
+<dd class="field-odd"><p><strong>Exception</strong> – If experiment path (parent folder) has not be created previously.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Episode path for directory created.</p>
@@ -247,7 +315,7 @@
 <dd><p>Set experiment working dir path like config attribute for current simulation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>env_name</strong> (<em>str</em>) -- simulation env name to define a name in directory</p>
+<dd class="field-odd"><p><strong>env_name</strong> (<em>str</em>) – simulation env name to define a name in directory</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Experiment path for directory created.</p>
@@ -281,7 +349,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="sinergym.utils.config.html" class="btn btn-neutral float-left" title="sinergym.utils.config" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.controllers.html" class="btn btn-neutral float-right" title="sinergym.utils.controllers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.constants.html" class="btn btn-neutral float-right" title="sinergym.utils.constants" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
