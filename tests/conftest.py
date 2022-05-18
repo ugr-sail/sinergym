@@ -8,8 +8,8 @@ from opyplus import Epm, Idd, WeatherData
 
 from sinergym.envs.eplus_env import EplusEnv
 from sinergym.simulators.eplus import EnergyPlus
-from sinergym.utils.common import RANGES_5ZONE
 from sinergym.utils.config import Config
+from sinergym.utils.constants import *
 from sinergym.utils.rewards import BaseReward, LinearReward
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
                                      NormalizeObservation)
@@ -45,25 +45,12 @@ def bcvtb_path():
 
 @pytest.fixture(scope='session')
 def pkg_data_path():
-    return pkg_resources.resource_filename('sinergym', 'data/')
+    return PKG_DATA_PATH
 
 
 @pytest.fixture(scope='session')
 def idf_path(pkg_data_path):
     return os.path.join(pkg_data_path, 'buildings', '5ZoneAutoDXVAV.idf')
-
-
-@pytest.fixture(scope='session')
-def variable_path(pkg_data_path):
-    return os.path.join(pkg_data_path, 'variables', 'variablesDXVAV.cfg')
-
-
-@pytest.fixture(scope='session')
-def space_path(pkg_data_path):
-    return os.path.join(
-        pkg_data_path,
-        'variables',
-        '5ZoneAutoDXVAV_spaces.cfg')
 
 
 @pytest.fixture(scope='session')
@@ -91,19 +78,6 @@ def idf_path2(pkg_data_path):
 
 
 @pytest.fixture(scope='session')
-def variable_path2(pkg_data_path):
-    return os.path.join(pkg_data_path, 'variables', 'variablesDataCenter.cfg')
-
-
-@pytest.fixture(scope='session')
-def space_path2(pkg_data_path):
-    return os.path.join(
-        pkg_data_path,
-        'variables',
-        '2ZoneDataCenterHVAC_wEconomizer_spaces.cfg')
-
-
-@pytest.fixture(scope='session')
 def weather_path2(pkg_data_path):
     return os.path.join(
         pkg_data_path,
@@ -118,40 +92,25 @@ def ddy_path2(pkg_data_path):
         'weather',
         'USA_AZ_Davis-Monthan.AFB.722745_TMY3.ddy')
 
-# ---------------------------------------------------------------------------- #
-#                                  Simulators                                  #
-# ---------------------------------------------------------------------------- #
+# 5zones variables
 
 
-@pytest.fixture(scope='function')
-def simulator(eplus_path, bcvtb_path, idf_path, variable_path, weather_path):
-    env_name = 'TEST'
-    return EnergyPlus(
-        eplus_path,
-        weather_path,
-        bcvtb_path,
-        variable_path,
-        idf_path,
-        env_name,
-        act_repeat=1,
-        max_ep_data_store_num=10)
+@pytest.fixture(scope='session')
+def variables_5zone():
+    variables = {}
+    variables['observation'] = DEFAULT_5ZONE_OBSERVATION_VARIABLES
+    variables['action'] = DEFAULT_5ZONE_ACTION_VARIABLES
+    return variables
 
-# ---------------------------------------------------------------------------- #
-#                            Simulator Config class                            #
-# ---------------------------------------------------------------------------- #
+# datacenter variables
 
 
-@pytest.fixture(scope='function')
-def config(idf_path, weather_path2):
-    env_name = 'TESTCONFIG'
-    max_ep_store = 10
-    extra_config = {'timesteps_per_hour': 2}
-    return Config(
-        idf_path=idf_path,
-        weather_path=weather_path2,
-        env_name=env_name,
-        max_ep_store=max_ep_store,
-        extra_config=extra_config)
+@pytest.fixture(scope='session')
+def variables_datacenter():
+    variables = {}
+    variables['observation'] = DEFAULT_DATACENTER_OBSERVATION_VARIABLES
+    variables['action'] = DEFAULT_DATACENTER_ACTION_VARIABLES
+    return variables
 
 # ---------------------------------------------------------------------------- #
 #                                 Environments                                 #
@@ -159,111 +118,168 @@ def config(idf_path, weather_path2):
 
 
 @pytest.fixture(scope='function')
-def env_demo(idf_path, weather_path, variable_path, space_path):
+def env_demo(idf_path, weather_path):
     idf_file = idf_path.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
-    variables_file = variable_path.split('/')[-1]
-    spaces_file = space_path.split('/')[-1]
 
     return EplusEnv(
         env_name='TESTGYM',
         idf_file=idf_file,
         weather_file=weather_file,
-        variables_file=variables_file,
-        spaces_file=spaces_file,
-        discrete_actions=True,
+        observation_space=DEFAULT_5ZONE_OBSERVATION_SPACE,
+        observation_variables=DEFAULT_5ZONE_OBSERVATION_VARIABLES,
+        action_space=DEFAULT_5ZONE_ACTION_SPACE_DISCRETE,
+        action_variables=DEFAULT_5ZONE_ACTION_VARIABLES,
+        action_mapping=DEFAULT_5ZONE_ACTION_MAPPING,
         reward=LinearReward,
         reward_kwargs={
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
-            'range_comfort_winter': (20.0, 23.5),
-            'range_comfort_summer': (23.0, 26.0)},
-        weather_variability=None)
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (
+                20.0,
+                23.5),
+            'range_comfort_summer': (
+                23.0,
+                26.0)},
+        weather_variability=None,
+        config_params=DEFAULT_5ZONE_CONFIG_PARAMS)
 
 
 @pytest.fixture(scope='function')
-def env_demo_continuous(idf_path, weather_path, variable_path, space_path):
+def env_demo_continuous(idf_path, weather_path):
     idf_file = idf_path.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
-    variables_file = variable_path.split('/')[-1]
-    spaces_file = space_path.split('/')[-1]
 
     return EplusEnv(
         env_name='TESTGYM',
         idf_file=idf_file,
         weather_file=weather_file,
-        variables_file=variables_file,
-        spaces_file=spaces_file,
-        discrete_actions=False,
+        observation_space=DEFAULT_5ZONE_OBSERVATION_SPACE,
+        observation_variables=DEFAULT_5ZONE_OBSERVATION_VARIABLES,
+        action_space=DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS,
+        action_variables=DEFAULT_5ZONE_ACTION_VARIABLES,
+        action_mapping=DEFAULT_5ZONE_ACTION_MAPPING,
         reward=LinearReward,
         reward_kwargs={
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
-            'range_comfort_winter': (20.0, 23.5),
-            'range_comfort_summer': (23.0, 26.0)},
-        weather_variability=None)
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (
+                20.0,
+                23.5),
+            'range_comfort_summer': (
+                23.0,
+                26.0)},
+        weather_variability=None,
+        config_params=DEFAULT_5ZONE_CONFIG_PARAMS)
 
 
 @pytest.fixture(scope='function')
-def env_datacenter(idf_path2, weather_path, variable_path2, space_path2):
+def env_datacenter(idf_path2, weather_path):
     idf_file = idf_path2.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
-    variables_file = variable_path2.split('/')[-1]
-    spaces_file = space_path2.split('/')[-1]
 
     return EplusEnv(
         env_name='TESTGYM',
         idf_file=idf_file,
         weather_file=weather_file,
-        variables_file=variables_file,
-        spaces_file=spaces_file,
-        discrete_actions=True,
+        observation_space=DEFAULT_DATACENTER_OBSERVATION_SPACE,
+        observation_variables=DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
+        action_space=DEFAULT_DATACENTER_ACTION_SPACE_DISCRETE,
+        action_variables=DEFAULT_DATACENTER_ACTION_VARIABLES,
+        action_mapping=DEFAULT_DATACENTER_ACTION_MAPPING,
         reward=LinearReward,
         reward_kwargs={
             'temperature_variable': [
-                'Zone Air Temperature (West Zone)',
-                'Zone Air Temperature (East Zone)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+                'Zone Air Temperature(West Zone)',
+                'Zone Air Temperature(East Zone)'],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (
                 18,
                 27),
             'range_comfort_summer': (
                 18,
                 27)},
-        weather_variability=None)
+        weather_variability=None,
+        config_params=DEFAULT_DATACENTER_CONFIG_PARAMS)
 
 
 @pytest.fixture(scope='function')
 def env_datacenter_continuous(
         idf_path2,
-        weather_path,
-        variable_path2,
-        space_path2):
+        weather_path):
     idf_file = idf_path2.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
-    variables_file = variable_path2.split('/')[-1]
-    spaces_file = space_path2.split('/')[-1]
 
     return EplusEnv(
         env_name='TESTGYM',
         idf_file=idf_file,
         weather_file=weather_file,
-        variables_file=variables_file,
-        spaces_file=spaces_file,
-        discrete_actions=False,
+        observation_space=DEFAULT_DATACENTER_OBSERVATION_SPACE,
+        observation_variables=DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
+        action_space=DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS,
+        action_variables=DEFAULT_DATACENTER_ACTION_VARIABLES,
+        action_mapping=DEFAULT_DATACENTER_ACTION_MAPPING,
         reward=LinearReward,
         reward_kwargs={
             'temperature_variable': [
-                'Zone Air Temperature (West Zone)',
-                'Zone Air Temperature (East Zone)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+                'Zone Air Temperature(West Zone)',
+                'Zone Air Temperature(East Zone)'],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (
                 18,
                 27),
             'range_comfort_summer': (
                 18,
                 27)},
-        weather_variability=None)
+        weather_variability=None,
+        config_params=DEFAULT_DATACENTER_CONFIG_PARAMS)
+
+# ---------------------------------------------------------------------------- #
+#                                  Simulators                                  #
+# ---------------------------------------------------------------------------- #
+
+
+@pytest.fixture(scope='function')
+def simulator(eplus_path, bcvtb_path, idf_path, weather_path, variables_5zone):
+    env_name = 'TEST'
+    return EnergyPlus(
+        eplus_path,
+        weather_path,
+        bcvtb_path,
+        idf_path,
+        env_name,
+        variables=variables_5zone,
+        act_repeat=1,
+        max_ep_data_store_num=10,
+        config_params=DEFAULT_5ZONE_CONFIG_PARAMS)
+
+# ---------------------------------------------------------------------------- #
+#                            Simulator Config class                            #
+# ---------------------------------------------------------------------------- #
+
+
+@pytest.fixture(scope='function')
+def config(idf_path, weather_path2, variables_5zone):
+    env_name = 'TESTCONFIG'
+    max_ep_store = 10
+    return Config(
+        idf_path=idf_path,
+        weather_path=weather_path2,
+        env_name=env_name,
+        variables=variables_5zone,
+        max_ep_store=max_ep_store,
+        extra_config={
+            'timesteps_per_hour': 2,
+            'runperiod': (1, 2, 1993, 2, 3, 1993),
+            'action_definition': {
+                'ThermostatSetpoint:DualSetpoint': [{
+                    'name': 'Space1-DualSetP-RL',
+                    'heating_name': 'Space1-HtgSetP-RL',
+                    'cooling_name': 'Space1-ClgSetP-RL',
+                    'zones': ['space1-1']
+                }]
+            }
+        })
 
 # ---------------------------------------------------------------------------- #
 #                          Environments with Wrappers                          #
@@ -298,13 +314,13 @@ def env_all_wrappers(env_demo_continuous):
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def epm(idf_path, eplus_path):
     idd = Idd(os.path.join(eplus_path, 'Energy+.idd'))
     return Epm.from_idf(idf_path, idd_or_version=idd)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def weather_data(weather_path):
     return WeatherData.from_epw(weather_path)
 
@@ -313,7 +329,7 @@ def weather_data(weather_path):
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def custom_reward():
     class CustomReward(BaseReward):
         def __init__(self, env):
@@ -324,74 +340,80 @@ def custom_reward():
     return CustomReward
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def env_custom_reward(
         idf_path,
         weather_path,
-        variable_path,
-        space_path,
         custom_reward):
     idf_file = idf_path.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
-    variables_file = variable_path.split('/')[-1]
-    spaces_file = space_path.split('/')[-1]
 
     return EplusEnv(
         env_name='TESTGYM',
         idf_file=idf_file,
         weather_file=weather_file,
-        variables_file=variables_file,
-        spaces_file=spaces_file,
-        discrete_actions=True,
+        observation_space=DEFAULT_5ZONE_OBSERVATION_SPACE,
+        observation_variables=DEFAULT_5ZONE_OBSERVATION_VARIABLES,
+        action_space=DEFAULT_5ZONE_ACTION_SPACE_DISCRETE,
+        action_variables=DEFAULT_5ZONE_ACTION_VARIABLES,
+        action_mapping=DEFAULT_5ZONE_ACTION_MAPPING,
         reward=custom_reward,
-        weather_variability=None)
+        weather_variability=None,
+        config_params=DEFAULT_5ZONE_CONFIG_PARAMS
+    )
 
 
-@pytest.fixture(scope='session')
-def env_linear_reward(idf_path, weather_path, variable_path, space_path):
+@pytest.fixture(scope='function')
+def env_linear_reward(idf_path, weather_path):
     idf_file = idf_path.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
-    variables_file = variable_path.split('/')[-1]
-    spaces_file = space_path.split('/')[-1]
 
     return EplusEnv(
         env_name='TESTGYM',
         idf_file=idf_file,
         weather_file=weather_file,
-        variables_file=variables_file,
-        spaces_file=spaces_file,
-        discrete_actions=True,
+        observation_space=DEFAULT_5ZONE_OBSERVATION_SPACE,
+        observation_variables=DEFAULT_5ZONE_OBSERVATION_VARIABLES,
+        action_space=DEFAULT_5ZONE_ACTION_SPACE_DISCRETE,
+        action_variables=DEFAULT_5ZONE_ACTION_VARIABLES,
+        action_mapping=DEFAULT_5ZONE_ACTION_MAPPING,
         reward=LinearReward,
         reward_kwargs={
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
-            'range_comfort_winter': (20.0, 23.5),
-            'range_comfort_summer': (23.0, 26.0)},
-        weather_variability=None)
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (
+                20.0,
+                23.5),
+            'range_comfort_summer': (
+                23.0,
+                26.0)},
+        weather_variability=None,
+        config_params=DEFAULT_5ZONE_CONFIG_PARAMS)
 
 
-@pytest.fixture(scope='session')
-def env_linear_reward_args(idf_path, weather_path, variable_path, space_path):
+@pytest.fixture(scope='function')
+def env_linear_reward_args(idf_path, weather_path):
     idf_file = idf_path.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
-    variables_file = variable_path.split('/')[-1]
-    spaces_file = space_path.split('/')[-1]
 
     return EplusEnv(
         env_name='TESTGYM',
         idf_file=idf_file,
         weather_file=weather_file,
-        variables_file=variables_file,
-        spaces_file=spaces_file,
-        discrete_actions=True,
+        observation_space=DEFAULT_5ZONE_OBSERVATION_SPACE,
+        observation_variables=DEFAULT_5ZONE_OBSERVATION_VARIABLES,
+        action_space=DEFAULT_5ZONE_ACTION_SPACE_DISCRETE,
+        action_variables=DEFAULT_5ZONE_ACTION_VARIABLES,
+        action_mapping=DEFAULT_5ZONE_ACTION_MAPPING,
         reward=LinearReward,
         reward_kwargs={
             'energy_weight': 0.2,
-            'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate (Whole Building)',
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (20.0, 23.5),
             'range_comfort_summer': (18.0, 20.0)},
-        weather_variability=None)
+        weather_variability=None,
+        config_params=DEFAULT_5ZONE_CONFIG_PARAMS)
 
 
 # ---------------------------------------------------------------------------- #

@@ -14,7 +14,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv
 import sinergym
 import sinergym.utils.gcloud as gcloud
 from sinergym.utils.callbacks import LoggerCallback, LoggerEvalCallback
-from sinergym.utils.common import RANGES_5ZONE, RANGES_DATACENTER, RANGES_IW
+from sinergym.utils.constants import RANGES_5ZONE, RANGES_DATACENTER, RANGES_IW
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
                                      NormalizeObservation)

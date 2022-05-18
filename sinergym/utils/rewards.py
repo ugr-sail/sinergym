@@ -3,7 +3,7 @@
 
 from datetime import datetime
 from math import exp
-from typing import Dict, List, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union
 
 from gym import Env
 
@@ -77,12 +77,12 @@ class LinearReward(BaseReward):
         self.summer_start_date = datetime(self.year, 6, 1)
         self.summer_final_date = datetime(self.year, 9, 30)
 
-    def __call__(self):
+    def __call__(self) -> Tuple[float, Dict[str, Any]]:
         """
         Calculate the reward function.
 
         Returns:
-            Tuple[float, Dict[str, float]]: Reward value and dictionary with their individual components.
+            Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
         """
         # Current observation
         obs_dict = self.env.obs_dict.copy()
@@ -107,8 +107,15 @@ class LinearReward(BaseReward):
 
         return reward, reward_terms
 
-    def _get_comfort(self, obs_dict):
-        """Calculate the comfort term of the reward."""
+    def _get_comfort(self,
+                     obs_dict: Dict[str,
+                                    Any]) -> Tuple[float,
+                                                   List[float]]:
+        """Calculate the comfort term of the reward.
+
+        Returns:
+            Tuple[float, List[float]]: comfort penalty and List with temperatures used.
+        """
 
         month = obs_dict['month']
         day = obs_dict['day']
@@ -169,8 +176,15 @@ class ExpReward(LinearReward):
             lambda_temperature
         )
 
-    def _get_comfort(self, obs_dict):
-        """"""
+    def _get_comfort(self,
+                     obs_dict: Dict[str,
+                                    Any]) -> Tuple[float,
+                                                   List[float]]:
+        """Calculate the comfort term of the reward.
+
+        Returns:
+            Tuple[float, List[float]]: comfort penalty and List with temperatures used.
+        """
 
         month = obs_dict['month']
         day = obs_dict['day']
@@ -234,8 +248,12 @@ class HourlyLinearReward(LinearReward):
         # Reward parameters
         self.range_comfort_hours = range_comfort_hours
 
-    def __call__(self):
-        """Calculate the reward function."""
+    def __call__(self) -> Tuple[float, Dict[str, Any]]:
+        """Calculate the reward function.
+
+        Returns:
+            Tuple[float, Dict[str, Any]]: Reward and dict with reward terms.
+            """
         # Current observation
         obs_dict = self.env.obs_dict.copy()
 

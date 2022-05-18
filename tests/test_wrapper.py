@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 from stable_baselines3.common.env_util import is_wrapped
 
-from sinergym.utils.common import RANGES_5ZONE
+from sinergym.utils.constants import RANGES_5ZONE
 from sinergym.utils.wrappers import NormalizeObservation
 
 

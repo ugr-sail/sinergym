@@ -23,7 +23,7 @@ gcloud iam service-accounts create mlflow-tracking-sa --description="Service Acc
 
 # Step 2 - Artifact used by mlflow to store all runs information
 echo "Creating Back-end artifact bucket [$BUCKET_NAME]..."
-gsutil mb gs://$BUCKET_NAME
+gsutil mb -l europe-west1 gs://$BUCKET_NAME
 
 # Step 3 - CLoud SQL, instance with SQL and "mlflow" database inner
 echo "Creating sql instance with mlflow database [mlflow-backend]..."

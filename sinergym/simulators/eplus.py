@@ -14,7 +14,6 @@ import socket
 import subprocess
 import threading
 import time
-from shutil import copyfile
 from typing import Any, Dict, List, Optional, Tuple, Union
 from xml.etree.ElementTree import Element, SubElement, tostring
 
@@ -22,6 +21,7 @@ import numpy as np
 
 from sinergym.utils.common import *
 from sinergym.utils.config import Config
+from sinergym.utils.logger import Logger
 
 LOG_LEVEL_MAIN = 'INFO'
 LOG_LEVEL_EPLS = 'FATAL'
@@ -35,9 +35,9 @@ class EnergyPlus(object):
             eplus_path: str,
             weather_path: str,
             bcvtb_path: str,
-            variable_path: str,
             idf_path: str,
             env_name: str,
+            variables: Dict[str, List[str]],
             act_repeat: int = 1,
             max_ep_data_store_num: int = 10,
             config_params: Optional[Dict[str, Any]] = None):
@@ -47,9 +47,9 @@ class EnergyPlus(object):
             eplus_path (str):  EnergyPlus installation path.
             weather_path (str): EnergyPlus weather file (.epw) path.
             bcvtb_path (str): BCVTB installation path.
-            variable_path (str): Path to variables file.
             idf_path (str): EnergyPlus input description file (.idf) path.
             env_name (str): The environment name.
+            variables (Dict[str,List[str]]): Variables list with observation and action keys in a dictionary.
             act_repeat (int, optional): The number of times to repeat the control action. Defaults to 1.
             max_ep_data_store_num (int, optional): The number of simulation results to keep. Defaults to 10.
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
@@ -81,7 +81,6 @@ class EnergyPlus(object):
         # Path attributes
         self._eplus_path = eplus_path
         self._weather_path = weather_path
-        self._variable_path = variable_path
         self._idf_path = idf_path
         # Episode existed
         self._episode_existed = False
@@ -95,6 +94,7 @@ class EnergyPlus(object):
         self._config = Config(
             idf_path=self._idf_path,
             weather_path=self._weather_path,
+            variables=variables,
             env_name=self._env_name,
             max_ep_store=self._max_ep_data_store_num,
             extra_config=config_params)
@@ -105,6 +105,11 @@ class EnergyPlus(object):
         self.logger_main.info(
             'Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...')
         self._config.adapt_idf_to_epw()
+        # Updating IDF file Output:Variables with observation variables
+        # specified in environment and variables.cfg construction
+        self.logger_main.info(
+            'Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.')
+        self._config. adapt_variables_to_cfg_and_idf()
         # Setting up extra configuration if exists
         self.logger_main.info(
             'Setting up extra configuration in building model if exists...')
@@ -160,12 +165,10 @@ class EnergyPlus(object):
         eplus_working_dir = self._config.set_episode_working_dir()
         # Getting IDF, WEATHER, VARIABLES and OUTPUT path for current episode
         eplus_working_idf_path = self._config.save_building_model()
-        eplus_working_var_path = (eplus_working_dir + '/' + 'variables.cfg')
+        eplus_working_var_path = self._config.save_variables_cfg()
         eplus_working_out_path = (eplus_working_dir + '/' + 'output')
         eplus_working_weather_path = self._config.apply_weather_variability(
             variation=weather_variability)
-        # Copy the variable.cfg file to the working dir
-        copyfile(self._variable_path, eplus_working_var_path)
 
         self._create_socket_cfg(self._host,
                                 self._port,

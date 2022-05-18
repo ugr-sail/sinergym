@@ -1,5 +1,6 @@
 import os
 from random import randint
+from sinergym.utils.constants import *
 
 import gym
 from stable_baselines3.common.env_checker import check_env
@@ -7,7 +8,8 @@ from stable_baselines3.common.env_checker import check_env
 
 def test_reset(env_demo):
     obs = env_demo.reset()
-    assert len(obs) == 20
+    assert len(obs) == len(DEFAULT_5ZONE_OBSERVATION_VARIABLES) + \
+        4  # year, month, day and hour
     assert env_demo.simulator._episode_existed
 
 
@@ -16,7 +18,8 @@ def test_step(env_demo):
     action = randint(0, 9)
     obs, reward, done, info = env_demo.step(action)
 
-    assert len(obs) == 20
+    assert len(obs) == len(DEFAULT_5ZONE_OBSERVATION_VARIABLES) + \
+        4  # year, month, day and hour
     assert not isinstance(reward, type(None))
     assert not done
     assert list(

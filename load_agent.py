@@ -6,7 +6,7 @@ from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
-from sinergym.utils.common import RANGES_5ZONE, RANGES_DATACENTER, RANGES_IW
+from sinergym.utils.constants import RANGES_5ZONE, RANGES_DATACENTER, RANGES_IW
 from sinergym.utils.rewards import ExpReward, LinearReward
 from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
 

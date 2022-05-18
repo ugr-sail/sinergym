@@ -1,19 +1,19 @@
 """Class and utilities for set up extra configuration in experiments with Sinergym (extra params, weather_variability, building model modification and files management)"""
 import os
+import xml.etree.cElementTree as ElementTree
 from copy import deepcopy
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
+import pandas
 from opyplus import Epm, Idd, WeatherData
 
-from sinergym.utils.common import get_delta_seconds, prepare_batch_from_records
-
-WEEKDAY_ENCODING = {'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
-                    'friday': 4, 'saturday': 5, 'sunday': 6}
-YEAR = 1991  # Non leap year
-
-CWD = os.getcwd()
+from sinergym.utils.common import (get_delta_seconds, get_record_keys,
+                                   prepare_batch_from_records)
+from sinergym.utils.constants import (ACTION_DEFINITION_COMPONENTS,
+                                      CONFIG_KEYS, CWD, PKG_DATA_PATH,
+                                      WEEKDAY_ENCODING, YEAR)
 
 
 class Config(object):
@@ -36,12 +36,19 @@ class Config(object):
             self,
             idf_path: str,
             weather_path: str,
+            variables: Dict[str, List[str]],
             env_name: str,
             max_ep_store: int,
             extra_config: Dict[str, Any]):
 
         self._idf_path = idf_path
         self._weather_path = weather_path
+        # RDD file name is deducible using idf name (only change .idf by .rdd)
+        self._rdd_path = os.path.join(
+            PKG_DATA_PATH,
+            'variables',
+            self._idf_path.split('/')[-1].split('.idf')[0] +
+            '.rdd')
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
         self.experiment_path = self.set_experiment_working_dir(env_name)
@@ -49,6 +56,10 @@ class Config(object):
         self.max_ep_store = max_ep_store
 
         self.config = extra_config
+
+        # Variables XML Tree (empty at the beginning)
+        self.variables = variables
+        self.variables_tree = ElementTree.Element('BCVTB-variables')
 
         # Opyplus objects
         self._idd = Idd(os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd'))
@@ -62,8 +73,23 @@ class Config(object):
             check_length=False)
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
+        # Extract idf zone names
+        self.idf_zone_names = []
+        for idf_zone in self.building.Zone:
+            self.idf_zone_names.append(idf_zone.name.lower())
+        # Extract rdd observation variables names
+        data = pandas.read_csv(self._rdd_path, skiprows=1)
+        self.rdd_variables_names = list(map(
+            lambda name: name.split(' [')[0],
+            data['Variable Name [Units]'].tolist()))
+
+        # Check observation variables definition
+        self._check_observation_variables()
+        # Check config definition
+        self._check_eplus_config()
+
     # ---------------------------------------------------------------------------- #
-    #                       IDF and Building model management                      #
+    #            IDF, variables and Building model adaptation                      #
     # ---------------------------------------------------------------------------- #
 
     def adapt_idf_to_epw(self,
@@ -99,6 +125,55 @@ class Config(object):
         self.building.site_location.batch_add(new_location)
         self.building.SizingPeriod_DesignDay.batch_add(new_designdays)
 
+    def adapt_variables_to_cfg_and_idf(self) -> None:
+        """This method adds to XML variable tree all observation and action variables information. In addition, it modifies IDF Output:Variable in order to adapt to new observation variables set.
+        """
+        # OBSERVATION VARIABLES
+        output_variables = []
+        self.variables_tree.append(ElementTree.Comment(
+            'Observation variables: Received from EnergyPlus'))
+        for obs_var in self.variables['observation']:
+            # obs_var = "<variable_name>(<variable_zone>)"
+            var_elements = obs_var.split('(')
+            var_name = var_elements[0]
+            var_zone = var_elements[1][:-1]
+
+            # Add obs name and zone to XML variables tree
+            new_xml_obs = ElementTree.SubElement(
+                self.variables_tree, 'variable', source='EnergyPlus')
+            ElementTree.SubElement(
+                new_xml_obs,
+                'EnergyPlus',
+                name=var_zone,
+                type=var_name)
+
+            # Add IDF record Output:Variable
+            if var_zone.lower() == 'Environment'.lower(
+            ) or var_zone.lower() == 'Whole Building'.lower():
+                var_zone = '*'
+            output_variables.append(
+                dict(
+                    key_value=var_zone,
+                    variable_name=var_name,
+                    reporting_frequency='timestep'))
+
+        # Delete default Output:Variables and added observation_variables
+        # specified
+        self.building.output_variable.delete()
+        self.building.output_variable.batch_add(output_variables)
+
+        # ACTION VARIABLES
+        self.variables_tree.append(
+            ElementTree.Comment('Action variables: Sent to EnergyPlus'))
+        for act_var in self.variables['action']:
+
+            new_xml_variable = ElementTree.SubElement(
+                self.variables_tree, 'variable', source='Ptolemy')
+            ElementTree.SubElement(
+                new_xml_variable,
+                'EnergyPlus',
+                schedule=act_var)
+
     def apply_extra_conf(self) -> None:
         """Set extra configuration in building model
         """
@@ -106,14 +181,11 @@ class Config(object):
 
             # Timesteps processed in a simulation hour
             if self.config.get('timesteps_per_hour'):
-                assert self.config['timesteps_per_hour'] > 0, 'timestep_per_hour must be a positive int value.'
                 self.building.timestep[0].number_of_timesteps_per_hour = self.config['timesteps_per_hour']
 
             # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
             # end_day, end_month, end_year)
             if self.config.get('runperiod'):
-                assert isinstance(self.config['runperiod'], tuple) and len(
-                    self.config['runperiod']) == 6, 'Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).'
                 runperiod = self.building.RunPeriod[0]
                 runperiod.begin_day_of_month = int(self.config['runperiod'][0])
                 runperiod.begin_month = int(self.config['runperiod'][1])
@@ -121,6 +193,79 @@ class Config(object):
                 runperiod.end_day_of_month = int(self.config['runperiod'][3])
                 runperiod.end_month = int(self.config['runperiod'][4])
                 runperiod.end_year = int(self.config['runperiod'][5])
+
+            # Action space definition when IDF has not been manipulated
+            # manually
+            if self.config.get('action_definition'):
+                action_definition = self.config['action_definition']
+                for controller_type, controllers in action_definition.items():
+                    # ThermostatSetpoint:DualSetpoint IDF Management
+                    if controller_type == 'ThermostatSetpoint:DualSetpoint':
+                        for controller in controllers:
+                            # Create Ptolomy variables
+                            self.building.ExternalInterface_Schedule.add(
+                                name=controller['heating_name'],
+                                schedule_type_limits_name='Temperature',
+                                initial_value=21)
+                            self.building.ExternalInterface_Schedule.add(
+                                name=controller['cooling_name'],
+                                schedule_type_limits_name='Temperature',
+                                initial_value=25)
+                            # Create a ThermostatSetpoint:DualSetpoint object
+                            self.building.ThermostatSetpoint_DualSetpoint.add(
+                                name=controller['name'],
+                                heating_setpoint_temperature_schedule_name=controller['heating_name'],
+                                cooling_setpoint_temperature_schedule_name=controller['cooling_name'])
+                            # Link in zones required
+                            for zone_control in self.building.ZoneControl_Thermostat:
+                                # If zone specified in zone_control is included
+                                # in out DualSetpoint:
+                                if zone_control.zone_or_zonelist_name.name.lower() in list(
+                                        map(lambda zone: zone.lower(), controller['zones'])):
+                                    # We iterate all record fields searching
+                                    # 'ThermostatSetpoint:DualSetpoint' value
+                                    for i in range(
+                                            len(get_record_keys(zone_control))):
+                                        if isinstance(zone_control[i], str):
+                                            if zone_control[i].lower(
+                                            ) == controller_type.lower():
+                                                # Then, the next field will be
+                                                # always the DualSetpoint
+                                                # thermostat name, so we change
+                                                # it
+                                                zone_control[i +
+                                                             1] = controller['name']
+                                                # We do not need to search more
+                                                # fields in that record
+                                                # specifically, so break it
+                                                break
+
+    def save_variables_cfg(self) -> str:
+        """This method saves current XML variables tree model into a variables.cfg file.
+
+        Raises:
+            RuntimeError: If this method is used without an episode_path generated (see reset method in simulator), this exception is raised.
+
+        Returns:
+            str: Path to the new saved variables.cfg used by BCVTB for Energyplus communication.
+        """
+        if self.episode_path is not None:
+
+            episode_cfg_path = self.episode_path + \
+                '/variables.cfg'
+
+            ElementTree.indent(self.variables_tree)
+
+            with open(episode_cfg_path, "wb") as f:
+                f.write(
+                    '<?xml version="1.0" encoding="ISO-8859-1"?>\n<!DOCTYPE BCVTB-variables SYSTEM "variables.dtd">\n'.encode('utf8'))
+                ElementTree.ElementTree(self.variables_tree).write(f, 'utf-8')
+
+            return episode_cfg_path
+
+        else:
+            raise RuntimeError(
+                '[Simulator Config] Episode path should be set before saving variables.cfg.')
 
     def save_building_model(self) -> str:
         """Take current building model and save as IDF in current env_working_dir episode folder.
@@ -213,6 +358,7 @@ class Config(object):
         # Get runperiod object inner IDF
         runperiod = self.building.RunPeriod[0]
 
+        # Extract information about runperiod
         start_month = int(
             0 if runperiod.begin_month is None else runperiod.begin_month)
         start_day = int(
@@ -385,3 +531,64 @@ class Config(object):
         """
 
         return YEAR
+
+    # ---------------------------------------------------------------------------- #
+    #                             Config class checker                             #
+    # ---------------------------------------------------------------------------- #
+
+    def _check_eplus_config(self) -> None:
+        """Check Eplus Environment config definition is correct.
+        """
+
+        # Check all keys specified in config are valids (previusly defined in
+        # CONFIG_KEYS)
+        if self.config is not None:
+            for config_key in self.config.keys():
+                assert config_key in CONFIG_KEYS, 'Extra parameter {} unknown by Sinergym'.format(
+                    config_key)
+            # Check config parameters values
+            # Timesteps
+            if self.config.get('timesteps_per_hour'):
+                assert self.config['timesteps_per_hour'] > 0, 'timestep_per_hour must be a positive int value.'
+            # Runperiod
+            if self.config.get('runperiod'):
+                assert isinstance(self.config['runperiod'], tuple) and len(
+                    self.config['runperiod']) == 6, 'Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).'
+            # Action definition
+            if self.config.get('action_definition'):
+                # Check Action definition keys are valids (previusly defined
+                # ACTION_DEFINITION_COMPONENTS)
+                for component_name in self.config['action_definition'].keys():
+                    assert component_name in ACTION_DEFINITION_COMPONENTS, 'The element {} cannot be processed by Sinergym.'.format(
+                        component_name)
+                    # Check ThermostatSetpoint:DualSetpoint
+                    if component_name == 'ThermostatSetpoint:DualSetpoint':
+                        for thermostat in self.config['action_definition'][component_name]:
+                            # Check Thermostates fields
+                            assert set(thermostat.keys()) == set(['name', 'heating_name', 'cooling_name', 'zones']
+                                                                 ), 'Extra config action definition: ThermostatSetpoint:DualSetpoint key names unknown, check them please.'
+                            assert thermostat['heating_name'] in self.variables['action'], 'Extra config action definition: {} should be in action variables.'.format(
+                                thermostat['heating_name'])
+                            assert thermostat['cooling_name'] in self.variables['action'], 'Extra config action definition: {} should be in action variables.'.format(
+                                thermostat['cooling_name'])
+                            for zone in thermostat['zones']:
+                                assert zone.lower() in self.idf_zone_names, 'Extra config action definition: Zone called {} does not exist in IDF building model.'.format(
+                                    zone)
+
+    def _check_observation_variables(self) -> None:
+        """This method checks whether observation variables zones are available in building model definition
+        """
+        for obs_var in self.variables['observation']:
+            obs_name = obs_var.split('(')[0]
+            obs_zone = obs_var.split('(')[1][:-1]
+
+            # Check observarion variables names
+            assert obs_name in self.rdd_variables_names, 'Observation variables: Variable called {} in observation variables is not valid for IDF building model'.format(
+                obs_name)
+            # Check observation variables zones
+            if obs_zone.lower() != 'Environment'.lower(
+            ) and obs_zone.lower() != 'Whole Building'.lower():
+                # zones names with people 1 or lights 1, etc. The second name
+                # is ignored, only check that zone is a substr from obs zone
+                assert any(list(map(lambda zone: zone.lower() in obs_zone.lower(), self.idf_zone_names))
+                           ), 'Observation variables: Zone called {} in observation variables does not exist in IDF building model.'.format(obs_zone)
