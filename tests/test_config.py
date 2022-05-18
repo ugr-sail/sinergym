@@ -168,6 +168,21 @@ def test_save_variables_cfg(config):
                 'schedule']
 
 
+def test_set_experiment_working_dir(config):
+    # Check current config experiment working dir and if exists
+    current_experiment_path = config.experiment_path
+    assert 'Eplus-env-TESTCONFIG-res' in current_experiment_path
+    assert os.path.isdir(current_experiment_path)
+    # Set a new experiment_path
+    new_experiment_path = config.set_experiment_working_dir(
+        env_name='TESTCONFIG')
+    # The name should be the same except last number id
+    assert current_experiment_path[:-1] == new_experiment_path[:-1]
+    assert int(current_experiment_path[-1]) < int(new_experiment_path[-1])
+    # Check if new experiment path exists
+    assert os.path.isdir(new_experiment_path)
+
+
 def test_save_building_model(config, eplus_path, idf_path):
     assert config.episode_path is None
     # Create episode path before save (else a exception will happen)
@@ -209,21 +224,6 @@ def test_get_eplus_run_info(config):
 def test_get_one_epi_len(config):
     total_time = config._get_one_epi_len()
     assert total_time == 31536000
-
-
-def test_set_experiment_working_dir(config):
-    # Check current config experiment working dir and if exists
-    current_experiment_path = config.experiment_path
-    assert 'Eplus-env-TESTCONFIG-res' in current_experiment_path
-    assert os.path.isdir(current_experiment_path)
-    # Set a new experiment_path
-    new_experiment_path = config.set_experiment_working_dir(
-        env_name='TESTCONFIG')
-    # The name should be the same except last number id
-    assert current_experiment_path[:-1] == new_experiment_path[:-1]
-    assert int(current_experiment_path[-1]) < int(new_experiment_path[-1])
-    # Check if new experiment path exists
-    assert os.path.isdir(new_experiment_path)
 
 
 def test_set_episode_working_dir(config):

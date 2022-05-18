@@ -314,13 +314,13 @@ def env_all_wrappers(env_demo_continuous):
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def epm(idf_path, eplus_path):
     idd = Idd(os.path.join(eplus_path, 'Energy+.idd'))
     return Epm.from_idf(idf_path, idd_or_version=idd)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def weather_data(weather_path):
     return WeatherData.from_epw(weather_path)
 
@@ -329,7 +329,7 @@ def weather_data(weather_path):
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def custom_reward():
     class CustomReward(BaseReward):
         def __init__(self, env):
@@ -340,7 +340,7 @@ def custom_reward():
     return CustomReward
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def env_custom_reward(
         idf_path,
         weather_path,
@@ -363,7 +363,7 @@ def env_custom_reward(
     )
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def env_linear_reward(idf_path, weather_path):
     idf_file = idf_path.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
@@ -391,7 +391,7 @@ def env_linear_reward(idf_path, weather_path):
         config_params=DEFAULT_5ZONE_CONFIG_PARAMS)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def env_linear_reward_args(idf_path, weather_path):
     idf_file = idf_path.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
