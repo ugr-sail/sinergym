@@ -1,8 +1,9 @@
 import os
+import xml.etree.cElementTree as ElementTree
 
 import pytest
 from opyplus import Epm, Idd
-import xml.etree.cElementTree as ElementTree
+
 import sinergym.utils.config as config
 
 

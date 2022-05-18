@@ -1,9 +1,10 @@
 import os
 from random import randint
-from sinergym.utils.constants import *
 
 import gym
 from stable_baselines3.common.env_checker import check_env
+
+from sinergym.utils.constants import *
 
 
 def test_reset(env_demo):

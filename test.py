@@ -1,12 +1,13 @@
+import os
+import xml.etree.ElementTree as ET
+from xml.dom import minidom
+
 import gym
 import numpy as np
+from opyplus import Epm, Idd, WeatherData
 
 import sinergym
 from sinergym.utils.wrappers import LoggerWrapper
-import xml.etree.ElementTree as ET
-from xml.dom import minidom
-import os
-from opyplus import Epm, Idd, WeatherData
 
 extra_conf = {
     'action_definition': {
