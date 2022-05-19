@@ -1,7 +1,7 @@
-sinergym.utils.common.Logger
+sinergym.utils.logger.Logger
 ============================
 
-.. currentmodule:: sinergym.utils.common
+.. currentmodule:: sinergym.utils.logger
 
 .. autoclass:: Logger
    :members:                                                           

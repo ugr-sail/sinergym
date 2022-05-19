@@ -47,7 +47,7 @@ regardless of the training technique which may be being used or any other extern
 
 Recording is managed by a instance of the class ``CSVLogger`` which is present as a environment attribute and is called in each timestep and in the end of a episode:
 
-.. literalinclude:: ../../../sinergym/utils/common.py
+.. literalinclude:: ../../../sinergym/utils/logger.py
     :language: python
     :pyobject: CSVLogger
 
