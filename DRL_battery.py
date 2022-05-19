@@ -168,11 +168,11 @@ args = parser.parse_args()
 # ---------------------------------------------------------------------------- #
 experiment_date = datetime.today().strftime('%Y-%m-%d_%H:%M')
 name = args.algorithm + '-' + args.environment + \
-    '-episodes' + str(args.episodes)
+    '-episodes-' + str(args.episodes)
 if args.seed:
-    name += '-seed' + str(args.seed)
+    name += '-seed-' + str(args.seed)
 if args.id:
-    name += '-id' + str(args.id)
+    name += '-id-' + str(args.id)
 name += '_' + experiment_date
 
 # ---------------------------------------------------------------------------- #
