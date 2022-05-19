@@ -5,12 +5,12 @@ from datetime import datetime
 import gym
 import mlflow
 import numpy as np
+import tensorboard
 from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
 from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import configure
 from stable_baselines3.common.noise import NormalActionNoise
 from stable_baselines3.common.vec_env import DummyVecEnv
-import tensorboard
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
