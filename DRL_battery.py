@@ -10,6 +10,7 @@ from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import configure
 from stable_baselines3.common.noise import NormalActionNoise
 from stable_baselines3.common.vec_env import DummyVecEnv
+import tensorboard
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
@@ -411,17 +412,17 @@ with mlflow.start_run(run_name=name):
 
         model = None
         if args.algorithm == 'DQN':
-            model = DQN.load(model_path)
+            model = DQN.load(model_path, tensorboard_log=args.tensorboard)
         elif args.algorithm == 'DDPG':
-            model = DDPG.load(model_path)
+            model = DDPG.load(model_path, tensorboard_log=args.tensorboard)
         elif args.algorithm == 'A2C':
-            model = A2C.load(model_path)
+            model = A2C.load(model_path, tensorboard_log=args.tensorboard)
         elif args.algorithm == 'PPO':
-            model = PPO.load(model_path)
+            model = PPO.load(model_path, tensorboard_log=args.tensorboard)
         elif args.algorithm == 'SAC':
-            model = SAC.load(model_path)
+            model = SAC.load(model_path, tensorboard_log=args.tensorboard)
         elif args.algorithm == 'TD3':
-            model = TD3.load(model_path)
+            model = TD3.load(model_path, tensorboard_log=args.tensorboard)
         else:
             raise RuntimeError('Algorithm specified is not registered.')
 
