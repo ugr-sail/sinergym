@@ -71,6 +71,13 @@ parser.add_argument(
     dest='seed',
     help='Seed used to algorithm training.')
 parser.add_argument(
+    '--id',
+    '-id',
+    type=str,
+    default=None,
+    dest='id',
+    help='Custom load evaluation identifier.')
+parser.add_argument(
     '--remote_store',
     '-sto',
     action='store_true',
@@ -93,7 +100,8 @@ args = parser.parse_args()
 # ---------------------------------------------------------------------------- #
 #                                Evaluation name                               #
 # ---------------------------------------------------------------------------- #
-name = args.model.split('/')[-1] + '-EVAL-episodes' + str(args.episodes)
+name = args.model.split('/')[-1] + '-EVAL-episodes-' + \
+    str(args.episodes) + '-id-' + args.id
 
 # ---------------------------------------------------------------------------- #
 #                            Environment definition                            #

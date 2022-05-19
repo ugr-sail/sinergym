@@ -1,7 +1,7 @@
-sinergym.utils.rewards
-======================
+sinergym.utils.logger
+=====================
 
-.. automodule:: sinergym.utils.rewards
+.. automodule:: sinergym.utils.logger
   
    
    
@@ -19,10 +19,8 @@ sinergym.utils.rewards
       :toctree:                                          
       :template: custom-class-template.rst               
    
-      BaseReward
-      ExpReward
-      HourlyLinearReward
-      LinearReward
+      CSVLogger
+      Logger
    
    
 

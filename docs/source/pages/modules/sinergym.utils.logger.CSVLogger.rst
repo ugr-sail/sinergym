@@ -1,7 +1,7 @@
-sinergym.utils.common.CSVLogger
+sinergym.utils.logger.CSVLogger
 ===============================
 
-.. currentmodule:: sinergym.utils.common
+.. currentmodule:: sinergym.utils.logger
 
 .. autoclass:: CSVLogger
    :members:                                                           

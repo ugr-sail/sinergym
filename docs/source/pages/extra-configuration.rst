@@ -46,6 +46,7 @@ configuration files for the external interface (variables.cfg), etc in order to 
 For this pourpose,  we have available **action_definition** key extra parameter. Its value is a dictionary with the next structure:
 
 .. code:: python
+
     extra_params={
         'action_definition':{
             <controller_type>:[<controller1_definition>,<controller2_definition>, ...]
@@ -62,8 +63,7 @@ This controller has the next values in its definition:
 - *name*: DualSetpoint resource name (str).
 - *heating_name*: Heating setpoint name. This name should be an action variable defined in your environment (str).
 - *cooling_name*: Cooling setpoint name. This name should be an action variable defined in your environment (str).
-- *zones*: An thermostat can manage several building zones at the same time. Then, you can specify one or more zones (List(str)). 
-           If the zone name specified is not exist in building, Sinergym will report the error.
+- *zones*: An thermostat can manage several building zones at the same time. Then, you can specify one or more zones (List(str)). If the zone name specified is not exist in building, Sinergym will report the error.
 
 For an example about how to use it, see :ref:`Adding extra configuration definition`.
 

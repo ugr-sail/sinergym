@@ -10,6 +10,7 @@ from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import configure
 from stable_baselines3.common.noise import NormalActionNoise
 from stable_baselines3.common.vec_env import DummyVecEnv
+import tensorboard
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
@@ -31,6 +32,13 @@ parser.add_argument(
     type=str,
     dest='environment',
     help='Environment name of simulation (see sinergym/__init__.py).')
+parser.add_argument(
+    '--model',
+    '-mod',
+    type=str,
+    default=None,
+    dest='model',
+    help='Path where model is stored, only when you want a model to continue training it.')
 parser.add_argument(
     '--episodes',
     '-ep',
@@ -168,11 +176,11 @@ args = parser.parse_args()
 # ---------------------------------------------------------------------------- #
 experiment_date = datetime.today().strftime('%Y-%m-%d_%H:%M')
 name = args.algorithm + '-' + args.environment + \
-    '-episodes' + str(args.episodes)
+    '-episodes-' + str(args.episodes)
 if args.seed:
-    name += '-seed' + str(args.seed)
+    name += '-seed-' + str(args.seed)
 if args.id:
-    name += '-id' + str(args.id)
+    name += '-id-' + str(args.id)
 name += '_' + experiment_date
 
 # ---------------------------------------------------------------------------- #
@@ -275,120 +283,150 @@ with mlflow.start_run(run_name=name):
     #                           Defining model (algorithm)                         #
     # ---------------------------------------------------------------------------- #
 
-    model = None
+    if args.model is None:
 
-    #--------------------------------------------------------#
-    #                           DQN                          #
-    #--------------------------------------------------------#
-    if args.algorithm == 'DQN':
-        model = DQN('MlpPolicy', env, verbose=1,
-                    learning_rate=args.learning_rate,
-                    buffer_size=args.buffer_size,
-                    learning_starts=args.learning_starts,
-                    batch_size=args.batch_size,
-                    tau=args.tau,
-                    gamma=args.gamma,
-                    train_freq=4,
-                    gradient_steps=args.gradient_steps,
-                    target_update_interval=10000,
-                    exploration_fraction=.1,
-                    exploration_initial_eps=1.0,
-                    exploration_final_eps=.05,
-                    max_grad_norm=args.max_grad_norm,
-                    seed=args.seed,
-                    tensorboard_log=args.tensorboard)
-    #--------------------------------------------------------#
-    #                           DDPG                         #
-    #--------------------------------------------------------#
-    elif args.algorithm == 'DDPG':
-        if args.sigma:
-            # noise objects for DDPG
-            n_actions = env.action_space.shape[-1]
-            action_noise = NormalActionNoise(mean=np.zeros(
-                n_actions), sigma=0.1 * np.ones(n_actions))
+        #--------------------------------------------------------#
+        #                           DQN                          #
+        #--------------------------------------------------------#
+        if args.algorithm == 'DQN':
+            model = DQN('MlpPolicy', env, verbose=1,
+                        learning_rate=args.learning_rate,
+                        buffer_size=args.buffer_size,
+                        learning_starts=args.learning_starts,
+                        batch_size=args.batch_size,
+                        tau=args.tau,
+                        gamma=args.gamma,
+                        train_freq=4,
+                        gradient_steps=args.gradient_steps,
+                        target_update_interval=10000,
+                        exploration_fraction=.1,
+                        exploration_initial_eps=1.0,
+                        exploration_final_eps=.05,
+                        max_grad_norm=args.max_grad_norm,
+                        seed=args.seed,
+                        tensorboard_log=args.tensorboard)
+        #--------------------------------------------------------#
+        #                           DDPG                         #
+        #--------------------------------------------------------#
+        elif args.algorithm == 'DDPG':
+            if args.sigma:
+                # noise objects for DDPG
+                n_actions = env.action_space.shape[-1]
+                action_noise = NormalActionNoise(mean=np.zeros(
+                    n_actions), sigma=0.1 * np.ones(n_actions))
 
-        model = DDPG("MlpPolicy",
-                     env,
-                     action_noise=action_noise,
-                     verbose=1,
-                     seed=args.seed,
-                     tensorboard_log=args.tensorboard)
-    #--------------------------------------------------------#
-    #                           A2C                          #
-    #--------------------------------------------------------#
-    elif args.algorithm == 'A2C':
-        model = A2C('MlpPolicy', env, verbose=1,
-                    learning_rate=args.learning_rate,
-                    n_steps=args.n_steps,
-                    gamma=args.gamma,
-                    gae_lambda=args.gae_lambda,
-                    ent_coef=args.ent_coef,
-                    vf_coef=args.vf_coef,
-                    max_grad_norm=args.max_grad_norm,
-                    rms_prop_eps=args.rms_prop_eps,
-                    seed=args.seed,
-                    tensorboard_log=args.tensorboard)
-    #--------------------------------------------------------#
-    #                           PPO                          #
-    #--------------------------------------------------------#
-    elif args.algorithm == 'PPO':
-        model = PPO('MlpPolicy', env, verbose=1,
-                    learning_rate=args.learning_rate,
-                    n_steps=args.n_steps,
-                    batch_size=args.batch_size,
-                    n_epochs=args.n_epochs,
-                    gamma=args.gamma,
-                    gae_lambda=args.gae_lambda,
-                    clip_range=args.clip_range,
-                    ent_coef=args.ent_coef,
-                    vf_coef=args.vf_coef,
-                    max_grad_norm=args.max_grad_norm,
-                    seed=args.seed,
-                    tensorboard_log=args.tensorboard)
-    #--------------------------------------------------------#
-    #                           SAC                          #
-    #--------------------------------------------------------#
-    elif args.algorithm == 'SAC':
-        model = SAC(policy='MlpPolicy',
-                    env=env,
-                    seed=args.seed,
-                    learning_rate=args.learning_rate,
-                    buffer_size=args.buffer_size,
-                    batch_size=args.batch_size,
-                    tau=args.tau,
-                    gamma=args.gamma,
-                    tensorboard_log=args.tensorboard)
-    #--------------------------------------------------------#
-    #                           TD3                          #
-    #--------------------------------------------------------#
-    elif args.algorithm == 'TD3':
-        model = TD3(policy='MlpPolicy',
-                    env=env, seed=args.seed,
-                    tensorboard_log=args.tensorboard,
-                    learning_rate=args.learning_rate,
-                    buffer_size=args.buffer_size,
-                    batch_size=args.batch_size,
-                    tau=args.tau,
-                    gamma=args.gamma,
-                    train_freq=(1, 'episode'),
-                    action_noise=None,
-                    replay_buffer_class=None,
-                    replay_buffer_kwargs=None,
-                    optimize_memory_usage=False,
-                    policy_delay=2,
-                    target_policy_noise=0.2,
-                    target_noise_clip=0.5,
-                    create_eval_env=False,
-                    policy_kwargs=None,
-                    verbose=0,
-                    device='auto',
-                    _init_setup_model=True)
-    #--------------------------------------------------------#
-    #                           Error                        #
-    #--------------------------------------------------------#
+            model = DDPG("MlpPolicy",
+                         env,
+                         action_noise=action_noise,
+                         verbose=1,
+                         seed=args.seed,
+                         tensorboard_log=args.tensorboard)
+        #--------------------------------------------------------#
+        #                           A2C                          #
+        #--------------------------------------------------------#
+        elif args.algorithm == 'A2C':
+            model = A2C('MlpPolicy', env, verbose=1,
+                        learning_rate=args.learning_rate,
+                        n_steps=args.n_steps,
+                        gamma=args.gamma,
+                        gae_lambda=args.gae_lambda,
+                        ent_coef=args.ent_coef,
+                        vf_coef=args.vf_coef,
+                        max_grad_norm=args.max_grad_norm,
+                        rms_prop_eps=args.rms_prop_eps,
+                        seed=args.seed,
+                        tensorboard_log=args.tensorboard)
+        #--------------------------------------------------------#
+        #                           PPO                          #
+        #--------------------------------------------------------#
+        elif args.algorithm == 'PPO':
+            model = PPO('MlpPolicy', env, verbose=1,
+                        learning_rate=args.learning_rate,
+                        n_steps=args.n_steps,
+                        batch_size=args.batch_size,
+                        n_epochs=args.n_epochs,
+                        gamma=args.gamma,
+                        gae_lambda=args.gae_lambda,
+                        clip_range=args.clip_range,
+                        ent_coef=args.ent_coef,
+                        vf_coef=args.vf_coef,
+                        max_grad_norm=args.max_grad_norm,
+                        seed=args.seed,
+                        tensorboard_log=args.tensorboard)
+        #--------------------------------------------------------#
+        #                           SAC                          #
+        #--------------------------------------------------------#
+        elif args.algorithm == 'SAC':
+            model = SAC(policy='MlpPolicy',
+                        env=env,
+                        seed=args.seed,
+                        learning_rate=args.learning_rate,
+                        buffer_size=args.buffer_size,
+                        batch_size=args.batch_size,
+                        tau=args.tau,
+                        gamma=args.gamma,
+                        tensorboard_log=args.tensorboard)
+        #--------------------------------------------------------#
+        #                           TD3                          #
+        #--------------------------------------------------------#
+        elif args.algorithm == 'TD3':
+            model = TD3(policy='MlpPolicy',
+                        env=env, seed=args.seed,
+                        tensorboard_log=args.tensorboard,
+                        learning_rate=args.learning_rate,
+                        buffer_size=args.buffer_size,
+                        batch_size=args.batch_size,
+                        tau=args.tau,
+                        gamma=args.gamma,
+                        train_freq=(1, 'episode'),
+                        action_noise=None,
+                        replay_buffer_class=None,
+                        replay_buffer_kwargs=None,
+                        optimize_memory_usage=False,
+                        policy_delay=2,
+                        target_policy_noise=0.2,
+                        target_noise_clip=0.5,
+                        create_eval_env=False,
+                        policy_kwargs=None,
+                        verbose=0,
+                        device='auto',
+                        _init_setup_model=True)
+        #--------------------------------------------------------#
+        #                           Error                        #
+        #--------------------------------------------------------#
+        else:
+            raise RuntimeError(
+                F'Algorithm specified [{args.algorithm}] is not registered.')
+
     else:
-        raise RuntimeError(
-            F'Algorithm specified [{args.algorithm}] is not registered.')
+        model_path = ''
+        if 'gs://' in args.model:
+            # Download from given bucket (gcloud configured with privileges)
+            client = gcloud.init_storage_client()
+            bucket_name = args.model.split('/')[2]
+            model_path = args.model.split(bucket_name + '/')[-1]
+            gcloud.read_from_bucket(client, bucket_name, model_path)
+            model_path = './' + model_path
+        else:
+            model_path = args.model
+
+        model = None
+        if args.algorithm == 'DQN':
+            model = DQN.load(model_path, tensorboard_log=args.tensorboard)
+        elif args.algorithm == 'DDPG':
+            model = DDPG.load(model_path, tensorboard_log=args.tensorboard)
+        elif args.algorithm == 'A2C':
+            model = A2C.load(model_path, tensorboard_log=args.tensorboard)
+        elif args.algorithm == 'PPO':
+            model = PPO.load(model_path, tensorboard_log=args.tensorboard)
+        elif args.algorithm == 'SAC':
+            model = SAC.load(model_path, tensorboard_log=args.tensorboard)
+        elif args.algorithm == 'TD3':
+            model = TD3.load(model_path, tensorboard_log=args.tensorboard)
+        else:
+            raise RuntimeError('Algorithm specified is not registered.')
+
+        model.set_env(env)
 
     # ---------------------------------------------------------------------------- #
     #       Calculating total training timesteps based on number of episodes       #

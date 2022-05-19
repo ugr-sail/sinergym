@@ -98,7 +98,8 @@ The most important information you must keep in mind when you try your own exper
 * Callbacks can be concatenated in a ``CallbackList`` instance from Stable Baselines 3.
 * Neural network will not train until you execute ``model.learn()`` method. Here is where you
   specify train ``timesteps``, ``callbacks`` and ``log_interval`` as we commented in type algorithms (On and Off Policy).
-* ``DRL_usage.py`` or ``DRL_battery.py`` requires some extra arguments to being executed like ``-env`` and ``-ep``.
+* ``DRL_battery.py`` requires some extra arguments to being executed like ``-env`` and ``-ep``.
+* You can execute **Curriculum Learning**, you only have to add ``--model`` field with a valid model path, this script will load the model and execute to train.
 
 Code example:
 
