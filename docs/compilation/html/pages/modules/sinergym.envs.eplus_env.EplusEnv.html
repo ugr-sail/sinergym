@@ -142,20 +142,20 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>idf_file</strong> (<em>str</em>) – Name of the IDF file with the building definition.</p></li>
-<li><p><strong>weather_file</strong> (<em>str</em>) – Name of the EPW file for weather conditions.</p></li>
-<li><p><strong>observation_space</strong> (<em>gym.spaces.Box</em><em>, </em><em>optional</em>) – Gym Observation Space definition. Defaults to an empty observation_space (no control).</p></li>
-<li><p><strong>observation_variables</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List with variables names in IDF. Defaults to an empty observation variables (no control).</p></li>
-<li><p><strong>action_space</strong> (<em>Union</em><em>[</em><em>gym.spaces.Box</em><em>, </em><em>gym.spaces.Discrete</em><em>]</em><em>, </em><em>optional</em>) – Gym Action Space definition. Defaults to an empty action_space (no control).</p></li>
-<li><p><strong>action_variables</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>,</em><em>optional</em>) – Action variables to be controlled in IDF, if that actions names have not been configured manually in IDF, you should configure or use extra_config. Default to empty List.</p></li>
-<li><p><strong>action_mapping</strong> (<em>Dict</em><em>[</em><em>int</em><em>, </em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>...</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Action mapping list for discrete actions spaces only. Defaults to empty list.</p></li>
-<li><p><strong>weather_variability</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.</p></li>
-<li><p><strong>reward</strong> (<em>Any</em><em>, </em><em>optional</em>) – Reward function instance used for agent feedback. Defaults to LinearReward.</p></li>
-<li><p><strong>reward_kwargs</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Parameters to be passed to the reward function. Defaults to empty dict.</p></li>
-<li><p><strong>act_repeat</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of timesteps that an action is repeated in the simulator, regardless of the actions it receives during that repetition interval.</p></li>
-<li><p><strong>max_ep_data_store_num</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of last sub-folders (one for each episode) generated during execution on the simulation.</p></li>
-<li><p><strong>env_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Env name used for working directory generation. Defaults to eplus-env-v1.</p></li>
-<li><p><strong>config_params</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Dictionary with all extra configuration for simulator. Defaults to None.</p></li>
+<li><p><strong>idf_file</strong> (<em>str</em>) -- Name of the IDF file with the building definition.</p></li>
+<li><p><strong>weather_file</strong> (<em>str</em>) -- Name of the EPW file for weather conditions.</p></li>
+<li><p><strong>observation_space</strong> (<em>gym.spaces.Box</em><em>, </em><em>optional</em>) -- Gym Observation Space definition. Defaults to an empty observation_space (no control).</p></li>
+<li><p><strong>observation_variables</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- List with variables names in IDF. Defaults to an empty observation variables (no control).</p></li>
+<li><p><strong>action_space</strong> (<em>Union</em><em>[</em><em>gym.spaces.Box</em><em>, </em><em>gym.spaces.Discrete</em><em>]</em><em>, </em><em>optional</em>) -- Gym Action Space definition. Defaults to an empty action_space (no control).</p></li>
+<li><p><strong>action_variables</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>,</em><em>optional</em>) -- Action variables to be controlled in IDF, if that actions names have not been configured manually in IDF, you should configure or use extra_config. Default to empty List.</p></li>
+<li><p><strong>action_mapping</strong> (<em>Dict</em><em>[</em><em>int</em><em>, </em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>...</em><em>]</em><em>]</em><em>, </em><em>optional</em>) -- Action mapping list for discrete actions spaces only. Defaults to empty list.</p></li>
+<li><p><strong>weather_variability</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) -- Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.</p></li>
+<li><p><strong>reward</strong> (<em>Any</em><em>, </em><em>optional</em>) -- Reward function instance used for agent feedback. Defaults to LinearReward.</p></li>
+<li><p><strong>reward_kwargs</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>, </em><em>optional</em>) -- Parameters to be passed to the reward function. Defaults to empty dict.</p></li>
+<li><p><strong>act_repeat</strong> (<em>int</em><em>, </em><em>optional</em>) -- Number of timesteps that an action is repeated in the simulator, regardless of the actions it receives during that repetition interval.</p></li>
+<li><p><strong>max_ep_data_store_num</strong> (<em>int</em><em>, </em><em>optional</em>) -- Number of last sub-folders (one for each episode) generated during execution on the simulation.</p></li>
+<li><p><strong>env_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- Env name used for working directory generation. Defaults to eplus-env-v1.</p></li>
+<li><p><strong>config_params</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>, </em><em>optional</em>) -- Dictionary with all extra configuration for simulator. Defaults to None.</p></li>
 </ul>
 </dd>
 </dl>
@@ -232,7 +232,7 @@
 <dd><p>Environment rendering.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Mode for rendering. Defaults to ‘human’.</p>
+<dd class="field-odd"><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) -- Mode for rendering. Defaults to 'human'.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -257,7 +257,7 @@
 <dd><p>Sends action to the environment</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>action</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>float</em><em>, </em><em>np.integer</em><em>, </em><em>np.ndarray</em><em>, </em><em>List</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – Action selected by the agent.</p>
+<dd class="field-odd"><p><strong>action</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>float</em><em>, </em><em>np.integer</em><em>, </em><em>np.ndarray</em><em>, </em><em>List</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>Any</em><em>]</em><em>]</em>) -- Action selected by the agent.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Observation for next timestep, reward obtained, Whether the episode has ended or not and a dictionary with extra information</p>

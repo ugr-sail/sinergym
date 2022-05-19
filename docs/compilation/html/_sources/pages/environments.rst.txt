@@ -95,11 +95,11 @@ Structure of observation and action space is defined in Environment constructor 
     :language: python
     :pyobject: EplusEnv.__init__
 
+
 - **observation_variables**: List of observation variables that simulator is going to process like an observation. These variables names must 
                              follow the structure `<variable_name>(<zone_name>)` in order to register them correctly. Sinergym will check for
                              you that the variable names are correct with respect to the building you are trying to simulate (IDF file). 
-                             To do this, it will look at the list found in the 
-                            `variables <https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables>`__ folder of the project (**RDD** file). 
+                             To do this, it will look at the list found in the `variables <https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables>`__ folder of the project (**RDD** file). 
 
 - **observation_space**: Definition of the observation space following the **gym standard**. This space is used to represent all the observations 
                          variables that we have previously defined. Remember that the **year, month, day and hour** are added by Sinergym later, 

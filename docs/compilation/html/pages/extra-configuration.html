@@ -142,7 +142,7 @@ The format for apply extra configuration is a <strong>Python dictionary</strong>
 <p class="admonition-title">Note</p>
 <p><em>Currently, only code skeleton and some parameters has been designed. Stay tuned for upcoming releases!</em></p>
 </div>
-<p>Let’s see each implemented parameter for extra configuration separately:</p>
+<p>Let's see each implemented parameter for extra configuration separately:</p>
 <section id="timestep-per-hour">
 <h2>timestep_per_hour<a class="headerlink" href="#timestep-per-hour" title="Permalink to this headline"></a></h2>
 <p>By default, a Sinergym simulation apply 4 timestep per simulation hour. However, you have the possibility to modify this value using <strong>timestep_per_hour</strong> key in <cite>config_params</cite> dictionary and set more/less timesteps in each simulation hour.</p>
@@ -161,6 +161,13 @@ The format value for <strong>runperiod</strong> key is a <strong>tuple</strong> 
 <p>Creating a <strong>new external interface</strong> to control different parts of a building is not a trivial task, it requires certain changes in the building model (IDF),
 configuration files for the external interface (variables.cfg), etc in order to control it.</p>
 <p>For this pourpose,  we have available <strong>action_definition</strong> key extra parameter. Its value is a dictionary with the next structure:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">extra_params</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;action_definition&#39;</span><span class="p">:{</span>
+        <span class="o">&lt;</span><span class="n">controller_type</span><span class="o">&gt;</span><span class="p">:[</span><span class="o">&lt;</span><span class="n">controller1_definition</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">controller2_definition</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>The <cite>&lt;controller_definition&gt;</cite> will depend on the specific type of controller that we are going to create, we have the next support:</p>
 <section id="thermostat-dualsetpoint">
 <h3>Thermostat:DualSetpoint<a class="headerlink" href="#thermostat-dualsetpoint" title="Permalink to this headline"></a></h3>
@@ -169,11 +176,7 @@ configuration files for the external interface (variables.cfg), etc in order to 
 <li><p><em>name</em>: DualSetpoint resource name (str).</p></li>
 <li><p><em>heating_name</em>: Heating setpoint name. This name should be an action variable defined in your environment (str).</p></li>
 <li><p><em>cooling_name</em>: Cooling setpoint name. This name should be an action variable defined in your environment (str).</p></li>
-<li><dl class="simple">
-<dt><em>zones</em>: An thermostat can manage several building zones at the same time. Then, you can specify one or more zones (List(str)).</dt><dd><p>If the zone name specified is not exist in building, Sinergym will report the error.</p>
-</dd>
-</dl>
-</li>
+<li><p><em>zones</em>: An thermostat can manage several building zones at the same time. Then, you can specify one or more zones (List(str)). If the zone name specified is not exist in building, Sinergym will report the error.</p></li>
 </ul>
 <p>For an example about how to use it, see <a class="reference internal" href="usage-example.html#adding-extra-configuration-definition"><span class="std std-ref">Adding extra configuration definition</span></a>.</p>
 <div class="admonition note">

@@ -381,7 +381,7 @@
 </tr>
 </tbody>
 </table>
-<p>(*) Weather types according to <a class="reference external" href="https://www.energycodes.gov/development/commercial/prototype_models#TMY3">DOE’s
+<p>(*) Weather types according to <a class="reference external" href="https://www.energycodes.gov/development/commercial/prototype_models#TMY3">DOE's
 classification</a>.</p>
 <p>(**) In these environments, weather series change from episode to
 episode. Gaussian noise with 0 mean and 2.5 std is added to the original
@@ -389,7 +389,7 @@ values in order to add stochastic.</p>
 </section>
 <section id="observation-action-spaces">
 <h2>Observation/action spaces<a class="headerlink" href="#observation-action-spaces" title="Permalink to this headline"></a></h2>
-<p>Structure of observation and action space is defined in Environment constructor directly. This allows for a <strong>dynamic definition</strong> of these spaces. Let’s see the fields required to do it:</p>
+<p>Structure of observation and action space is defined in Environment constructor directly. This allows for a <strong>dynamic definition</strong> of these spaces. Let's see the fields required to do it:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">idf_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -516,14 +516,11 @@ values in order to add stochastic.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_eplus_env</span><span class="p">()</span>
 </pre></div>
 </div>
-<ul>
-<li><dl>
-<dt><strong>observation_variables</strong>: List of observation variables that simulator is going to process like an observation. These variables names must</dt><dd><blockquote>
-<div><p>follow the structure <cite>&lt;variable_name&gt;(&lt;zone_name&gt;)</cite> in order to register them correctly. Sinergym will check for
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>observation_variables</strong>: List of observation variables that simulator is going to process like an observation. These variables names must</dt><dd><p>follow the structure <cite>&lt;variable_name&gt;(&lt;zone_name&gt;)</cite> in order to register them correctly. Sinergym will check for
 you that the variable names are correct with respect to the building you are trying to simulate (IDF file).
-To do this, it will look at the list found in the</p>
-</div></blockquote>
-<p><a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables">variables</a> folder of the project (<strong>RDD</strong> file).</p>
+To do this, it will look at the list found in the <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables">variables</a> folder of the project (<strong>RDD</strong> file).</p>
 </dd>
 </dl>
 </li>
@@ -558,13 +555,13 @@ from [-1,1] to real action space is called <code class="docutils literal notrans
 </ul>
 <section id="specification">
 <h3>Specification<a class="headerlink" href="#specification" title="Permalink to this headline"></a></h3>
-<p>As we have told, Observation and action spaces are defined <strong>dinamically</strong> in Sinergym Environment constructor. Environmet ID’s registered in Sinergym use a <strong>default</strong> definition
+<p>As we have told, Observation and action spaces are defined <strong>dinamically</strong> in Sinergym Environment constructor. Environmet ID's registered in Sinergym use a <strong>default</strong> definition
 set up in <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/utils/constants.py">constants.py</a>.</p>
 <p>As can be seen in environments observations, the <strong>year, month, day and hour</strong> are included in, but is not configured in default observation variables definition.
 This is because they are not variables recognizable by the simulator as such (Energyplus) and Sinergym does the calculations and adds them in the states returned as
-output by the environment. This feature is common to all environments available in Sinergym and all supported building designs. In other words, you don’t need to
+output by the environment. This feature is common to all environments available in Sinergym and all supported building designs. In other words, you don't need to
 add this variables (<strong>year, month, day and hour</strong>) to observation variables but yes to the observation space.</p>
-<p>As we told before, all environments ID’s registered in Sinergym use its respectively <strong>default action and observation spaces, variables and definition</strong>.
+<p>As we told before, all environments ID's registered in Sinergym use its respectively <strong>default action and observation spaces, variables and definition</strong>.
 However, you can <strong>change</strong> this values giving you the possibility of playing with different observation/action spaces in discrete and continuous environments in order to study how this affects the resolution of a building problem.</p>
 <p>Sinergym has several checkers to ensure that there are no inconsistencies in the alternative specifications made to the default ones. In case the specification offered is wrong, Sinergym will launch messages indicating where the error or inconsistency is located.</p>
 <div class="admonition note">
