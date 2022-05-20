@@ -444,7 +444,7 @@ with mlflow.start_run(run_name=name):
     if args.evaluation:
         eval_callback = LoggerEvalCallback(
             eval_env,
-            best_model_save_path='best_model/' + name + '/',
+            best_model_save_path='best_model/' + name,
             log_path='best_model/' + name + '/',
             eval_freq=n_timesteps_episode *
             args.eval_freq,
@@ -486,16 +486,16 @@ with mlflow.start_run(run_name=name):
         # Code for send output and tensorboard to mlflow artifacts.
         mlflow.log_artifacts(
             local_dir=env.simulator._env_working_dir_parent,
-            artifact_path=name + '/')
+            artifact_path=name)
         if args.evaluation:
             mlflow.log_artifacts(
-                local_dir='best_model/' + name + '/',
-                artifact_path='best_model/' + name + '/')
+                local_dir='best_model/' + name,
+                artifact_path='best_model/' + name)
         # If tensorboard is active (in local) we should send to mlflow
         if args.tensorboard and 'gs://experiments-storage' not in args.tensorboard:
             mlflow.log_artifacts(
-                local_dir=args.tensorboard + '/' + name + '/',
-                artifact_path=os.path.abspath(args.tensorboard).split('/')[-1] + '/' + name + '/')
+                local_dir=args.tensorboard + '/' + name,
+                artifact_path=os.path.abspath(args.tensorboard).split('/')[-1] + '/' + name)
 
     # ---------------------------------------------------------------------------- #
     #                          Google Cloud Bucket Storage                         #
