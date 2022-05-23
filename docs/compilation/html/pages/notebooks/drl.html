@@ -22,7 +22,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Wrappers example" href="wrappers_examples.html" />
+    <link rel="next" title="MLFlow example" href="MLflow_example.html" />
     <link rel="prev" title="Rule Controller example" href="rule_controller_example.html" /> 
 </head>
 
@@ -63,11 +63,13 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="usage_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">Rule Controller example</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">DRL usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MLflow_example.html">MLFlow example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TensorBoard_example.html">TensorBoard example</a></li>
 </ul>
 
         </div>
@@ -366,9 +368,13 @@ div.rendered_html tbody tr:hover {
 </style>
 <section id="DRL-usage-example">
 <h1>DRL usage example<a class="headerlink" href="#DRL-usage-example" title="Permalink to this headline"></a></h1>
-<p>First we import al the used libraries, remember to always import <code class="docutils literal notranslate"><span class="pre">Sinergym</span></code> even if it says is not used, because that is needed to define the environments</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<p>We are going to rely on the script available in the repository root called <code class="docutils literal notranslate"><span class="pre">DRL_battery.py</span></code>. This script applies all the possibilities that Sinergym has to work with deep reinforcement learning algorithms and parameterizes everything so that we can define the training options from the execution of the script.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information about how run <code class="docutils literal notranslate"><span class="pre">DRL_battery.py</span></code>, please, see <a class="reference external" href="https://jajimer.github.io/sinergym/compilation/html/pages/deep-reinforcement-learning.html#how-use">DRL documentation</a></p>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sinergym</span>
@@ -383,9 +389,20 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.9/dist-packages/gym/logger.py:34: UserWarning: <span class="ansi-yellow-fg">WARN: Box bound precision lowered by casting to float32</span>
+  warnings.warn(colorize(&#34;%s: %s&#34; % (&#34;WARN&#34;, msg % args), &#34;yellow&#34;))
+/usr/local/lib/python3.9/dist-packages/tqdm/auto.py:22: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div></div>
+</div>
 <p>First let’s define some strings and variables for the execution.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">environment</span> <span class="o">=</span> <span class="s2">&quot;Eplus-demo-v1&quot;</span>
@@ -399,7 +416,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Now we are ready to create the Gym Environment. Here we use the run name defined before as well as the type of reward, in our case we are going to use the LinearReward defined by <code class="docutils literal notranslate"><span class="pre">Sinergym</span></code>. You can define your own or use any of the other defined by <code class="docutils literal notranslate"><span class="pre">Sinergym</span></code> have a look at ref:<code class="docutils literal notranslate"><span class="pre">rewards</span></code> for more information on that.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">LinearReward</span><span class="p">)</span>
@@ -411,13 +428,14 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:33:59,775] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:33:59,780] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:41:42,528] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:41:42,530] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:41:42,531] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
 </pre></div></div>
 </div>
 <p>We can add also a Wrapper to the environment, we are going to use a Logger (extension of <code class="docutils literal notranslate"><span class="pre">gym.Wrapper</span></code>) this is used to monitor and log the interactions with the environment and save the data into a CSV.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
@@ -426,7 +444,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>At this point we have the environment all set up and ready to be used to define and create our learning model in this case it’s going to be a DQN, but we can use any other (have a look at the <code class="docutils literal notranslate"><span class="pre">DRL_battery.py</span></code> and read :ref:<code class="docutils literal notranslate"><span class="pre">Deep</span> <span class="pre">Reinforcement</span> <span class="pre">Learning</span> <span class="pre">Integration</span></code> for more detailed information on available DRL algorithms). Please feel free to play and change the values of the attributes of our model (or even the model) to see the differences.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="s1">&#39;MlpPolicy&#39;</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -445,7 +463,7 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <p>Now we need to calculate the number of timesteps of each episode for the evaluation.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_timesteps_episode</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_eplus_one_epi_len</span> <span class="o">/</span> \
@@ -455,16 +473,16 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <p>Now we need to create a vectorized wrapper for the environment because the callbacks we are going to use require a vector.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env_vec</span> <span class="o">=</span> <span class="n">DummyVecEnv</span><span class="p">([</span><span class="k">lambda</span><span class="p">:</span> <span class="n">env</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
-<p>We are going to use the LoggerEval callback to print and save the training process.</p>
+<p>We are going to use the LoggerEval callback to print and save the best model evaluated during training.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">callbacks</span> <span class="o">=</span> <span class="p">[]</span>
@@ -486,7 +504,7 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <p>This is the number of total time steps for the training.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">timesteps</span> <span class="o">=</span> <span class="n">episodes</span> <span class="o">*</span> <span class="n">n_timesteps_episode</span>
@@ -495,7 +513,7 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <p>Now is time to train the model with the callbacks defined earlier. This may take a few minutes, depending on your computer.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span>
@@ -510,11 +528,11 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:34:36,641] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:34:36,673] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1
-[2022-05-16 13:35:01,132] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-16 13:35:01,132] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:35:01,167] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run2
+[2022-05-23 16:41:43,022] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:41:43,033] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run1
+[2022-05-23 16:41:58,161] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:41:58,162] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:41:58,172] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run2
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -525,12 +543,12 @@ Wrapping the env in a DummyVecEnv.
 -----------------------------------
 | rollout/            |           |
 |    ep_len_mean      | 3.5e+04   |
-|    ep_rew_mean      | -2.24e+04 |
+|    ep_rew_mean      | -2.25e+04 |
 |    exploration_rate | 0.05      |
 | time/               |           |
 |    episodes         | 1         |
-|    fps              | 1396      |
-|    time_elapsed     | 25        |
+|    fps              | 2230      |
+|    time_elapsed     | 15        |
 |    total_timesteps  | 35040     |
 -----------------------------------
 </pre></div></div>
@@ -540,22 +558,22 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:35:40,865] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-16 13:35:40,867] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:35:40,912] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run3
+[2022-05-23 16:42:24,200] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:24,201] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:24,213] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run3
 /usr/local/lib/python3.9/dist-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
   return _methods._mean(a, axis=axis, dtype=dtype,
 /usr/local/lib/python3.9/dist-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
   ret = ret.dtype.type(ret / rcount)
-[2022-05-16 13:35:47,155] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-16 13:35:47,156] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:35:47,191] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run4
-[2022-05-16 13:36:16,545] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-16 13:36:16,547] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:36:16,587] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run5
-[2022-05-16 13:36:46,019] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-16 13:36:46,021] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:36:46,064] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run6
+[2022-05-23 16:42:30,689] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:30,690] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:30,705] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run4
+[2022-05-23 16:42:48,619] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:48,620] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:48,632] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run5
+[2022-05-23 16:43:06,271] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:43:06,271] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:43:06,283] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run6
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -563,32 +581,32 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Eval num_timesteps=70080, episode_reward=-19505.93 +/- 0.00
+Eval num_timesteps=70080, episode_reward=-19088.19 +/- 0.00
 Episode length: 35040.00 +/- 0.00
 New best mean reward!
-----------------------------------------
-| eval/                   |            |
-|    comfort_penalty      | -2.14e+04  |
-|    comfort_violation(%) | 35.7       |
-|    mean_ep_length       | 3.5e+04    |
-|    mean_power_consum... | 1.76e+08   |
-|    mean_rewards         | -19505.926 |
-|    power_penalty        | -1.76e+04  |
-|    std_rewards          | 0.0        |
-| rollout/                |            |
-|    ep_len_mean          | 3.5e+04    |
-|    ep_rew_mean          | -2.08e+04  |
-|    exploration_rate     | 0.05       |
-| time/                   |            |
-|    episodes             | 2          |
-|    fps                  | 538        |
-|    time_elapsed         | 130        |
-|    total_timesteps      | 70080      |
-| train/                  |            |
-|    learning_rate        | 0.0001     |
-|    loss                 | 15.5       |
-|    n_updates            | 5019       |
-----------------------------------------
+---------------------------------------
+| eval/                   |           |
+|    comfort_penalty      | -2.03e+04 |
+|    comfort_violation(%) | 35.6      |
+|    mean_ep_length       | 3.5e+04   |
+|    mean_power_consum... | 1.79e+08  |
+|    mean_rewards         | -19088.19 |
+|    power_penalty        | -1.79e+04 |
+|    std_rewards          | 0.0       |
+| rollout/                |           |
+|    ep_len_mean          | 3.5e+04   |
+|    ep_rew_mean          | -2.07e+04 |
+|    exploration_rate     | 0.05      |
+| time/                   |           |
+|    episodes             | 2         |
+|    fps                  | 835       |
+|    time_elapsed         | 83        |
+|    total_timesteps      | 70080     |
+| train/                  |           |
+|    learning_rate        | 0.0001    |
+|    loss                 | 34.7      |
+|    n_updates            | 5019      |
+---------------------------------------
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -596,9 +614,9 @@ New best mean reward!
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:37:35,920] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-16 13:37:35,920] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:37:35,952] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run7
+[2022-05-23 16:43:43,033] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:43:43,033] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:43:43,045] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run7
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -613,12 +631,12 @@ New best mean reward!
 |    exploration_rate | 0.05      |
 | time/               |           |
 |    episodes         | 3         |
-|    fps              | 584       |
-|    time_elapsed     | 179       |
+|    fps              | 872       |
+|    time_elapsed     | 120       |
 |    total_timesteps  | 105120    |
 | train/              |           |
 |    learning_rate    | 0.0001    |
-|    loss             | 18.7      |
+|    loss             | 14.4      |
 |    n_updates        | 13779     |
 -----------------------------------
 </pre></div></div>
@@ -628,18 +646,18 @@ New best mean reward!
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:38:28,273] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-16 13:38:28,273] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:38:28,305] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run8
-[2022-05-16 13:38:34,736] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-16 13:38:34,737] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:38:34,771] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run9
-[2022-05-16 13:39:05,465] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-16 13:39:05,465] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:39:05,497] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run10
-[2022-05-16 13:39:36,108] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-16 13:39:36,109] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:39:36,143] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run11
+[2022-05-23 16:44:15,042] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:44:15,043] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:44:15,061] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run8
+[2022-05-23 16:44:20,389] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:44:20,390] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:44:20,400] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run9
+[2022-05-23 16:44:35,500] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:44:35,502] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:44:35,522] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run10
+[2022-05-23 16:44:51,322] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:44:51,323] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:44:51,336] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run11
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -647,45 +665,45 @@ New best mean reward!
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Eval num_timesteps=140160, episode_reward=-20375.97 +/- 0.00
+Eval num_timesteps=140160, episode_reward=-19104.20 +/- 0.00
 Episode length: 35040.00 +/- 0.00
 ----------------------------------------
 | eval/                   |            |
-|    comfort_penalty      | -2.29e+04  |
-|    comfort_violation(%) | 35.6       |
+|    comfort_penalty      | -2.15e+04  |
+|    comfort_violation(%) | 39.4       |
 |    mean_ep_length       | 3.5e+04    |
-|    mean_power_consum... | 1.78e+08   |
-|    mean_rewards         | -20375.975 |
-|    power_penalty        | -1.78e+04  |
+|    mean_power_consum... | 1.67e+08   |
+|    mean_rewards         | -19104.195 |
+|    power_penalty        | -1.67e+04  |
 |    std_rewards          | 0.0        |
 | rollout/                |            |
 |    ep_len_mean          | 3.5e+04    |
-|    ep_rew_mean          | -2e+04     |
+|    ep_rew_mean          | -1.96e+04  |
 |    exploration_rate     | 0.05       |
 | time/                   |            |
 |    episodes             | 4          |
-|    fps                  | 467        |
-|    time_elapsed         | 300        |
+|    fps                  | 741        |
+|    time_elapsed         | 188        |
 |    total_timesteps      | 140160     |
 | train/                  |            |
 |    learning_rate        | 0.0001     |
-|    loss                 | 8.5        |
+|    loss                 | 27.6       |
 |    n_updates            | 22539      |
 ----------------------------------------
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;stable_baselines3.dqn.dqn.DQN at 0x7fb5acdaaa30&gt;
+&lt;stable_baselines3.dqn.dqn.DQN at 0x7f7689a90100&gt;
 </pre></div></div>
 </div>
 <p>Now we save the current model.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_env_working_dir_parent</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
@@ -694,7 +712,7 @@ Episode length: 35040.00 +/- 0.00
 </div>
 <p>And as always, remember to close the environment.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -706,7 +724,7 @@ Episode length: 35040.00 +/- 0.00
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:39:42,683] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-05-23 16:44:57,008] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
 </pre></div></div>
 </div>
 </section>
@@ -716,7 +734,7 @@ Episode length: 35040.00 +/- 0.00
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="rule_controller_example.html" class="btn btn-neutral float-left" title="Rule Controller example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="wrappers_examples.html" class="btn btn-neutral float-right" title="Wrappers example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="MLflow_example.html" class="btn btn-neutral float-right" title="MLFlow example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

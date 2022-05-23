@@ -9,6 +9,8 @@ At this point of the documentation, we have explained how to install Sinergym, t
 
 In this section we will see some examples of use to better understand how they can be used in practice.
 
+If you want to execute our notebooks on your own it is possible in `examples` folder.
+
 *****************
 Simplest example
 *****************
@@ -87,7 +89,7 @@ By default, the ID's of our environments do not include any wrapper, but we can 
 
     import sinergym
     from sinergym.utils.rewards import LinearReward, ExpReward
-    from sinergym.utils.wrapper import LoggerWrapper, NormalizeObservation
+    from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
 
     env = gym.make('Eplus-5Zone-hot-continuous-v1', reward=ExpReward, reward_kwargs={
                                                                         'temperature_variable': 'Zone Air Temperature (SPACE1-1)',
@@ -136,7 +138,7 @@ You can replace the random actions we have used in the previous examples with on
 
     import sinergym
     from sinergym.utils.rewards import LinearReward, ExpReward
-    from sinergym.utils.wrapper import LoggerWrapper, NormalizeObservation
+    from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
     from sinergym.utils.controllers import RBC5Zone
 
     env = gym.make('Eplus-5Zone-hot-continuous-v1', reward=ExpReward , reward_kwargs={
@@ -191,7 +193,7 @@ the name of the environment or the variability in stochastic environments:
 
     import sinergym
     from sinergym.utils.rewards import LinearReward, ExpReward
-    from sinergym.utils.wrapper import LoggerWrapper, NormalizeObservation
+    from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
     from sinergym.utils.controllers import   RBCDatacenter
 
     env = gym.make('Eplus-datacenter-cool-continuous-stochastic-v1', 
@@ -248,7 +250,7 @@ This new IDF version, which also adapts to the new weather you put in, is saved 
 
     import sinergym
     from sinergym.utils.rewards import LinearReward, ExpReward
-    from sinergym.utils.wrapper import LoggerWrapper, NormalizeObservation
+    from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
     from sinergym.utils.controllers import RBCDatacenter
 
     extra_conf={

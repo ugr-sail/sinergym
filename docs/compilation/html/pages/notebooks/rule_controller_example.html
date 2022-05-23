@@ -23,7 +23,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="DRL usage example" href="drl.html" />
-    <link rel="prev" title="Basic example" href="usage_example.html" /> 
+    <link rel="prev" title="Wrappers example" href="wrappers_examples.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -63,11 +63,13 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="usage_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Rule Controller example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="drl.html">DRL usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MLflow_example.html">MLFlow example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TensorBoard_example.html">TensorBoard example</a></li>
 </ul>
 
         </div>
@@ -368,7 +370,7 @@ div.rendered_html tbody tr:hover {
 <h1>Rule Controller example<a class="headerlink" href="#Rule-Controller-example" title="Permalink to this headline"></a></h1>
 <p>First we import al the used libraries, remember to always import <code class="docutils literal notranslate"><span class="pre">sinergym</span></code> even if it says is not used, because that is needed to define the environments</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Sequence</span>
@@ -382,7 +384,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Now we can define the environment we want to use, in our case we are using the Eplus demo.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
@@ -394,14 +396,15 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:52:47,254] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:52:47,254] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:52:47,254] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:52:47,254] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:52:47,257] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:52:47,257] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:52:47,257] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:52:47,257] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:43:26,104] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:43:26,104] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:43:26,104] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:43:26,107] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:43:26,107] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:43:26,107] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:43:26,111] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:43:26,111] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:43:26,111] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
 </pre></div></div>
 </div>
 <p>For the Rule-base controller have a look at the already defined controllers, there is one for each building, since the demo is based on the 5Zone building we are extending that controller and defining the action function we desire, feel free to play with the function to define your own action.</p>
@@ -424,7 +427,7 @@ div.rendered_html tbody tr:hover {
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obs_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">],</span> <span class="n">observation</span><span class="p">))</span>
 
-        <span class="n">out_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;Site Outdoor Air Drybulb Temperature (Environment)&#39;</span><span class="p">]</span>
+        <span class="n">out_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;Site Outdoor Air Drybulb Temperature(Environment)&#39;</span><span class="p">]</span>
 
         <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">])</span>
         <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">])</span>
@@ -438,17 +441,17 @@ div.rendered_html tbody tr:hover {
 
         <span class="c1"># Get season comfort range</span>
         <span class="k">if</span> <span class="n">current_dt</span> <span class="o">&gt;=</span> <span class="n">summer_start_date</span> <span class="ow">and</span> <span class="n">current_dt</span> <span class="o">&lt;=</span> <span class="n">summer_final_date</span><span class="p">:</span>
-            <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_summer</span>
+            <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_summer</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_winter</span>
+            <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_summer</span>
         <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="n">get_season_comfort_range</span><span class="p">(</span><span class="mi">1991</span><span class="p">,</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span>
         <span class="c1"># Update setpoints</span>
-        <span class="n">in_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;Zone Air Temperature (SPACE1-1)&#39;</span><span class="p">]</span>
+        <span class="n">in_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;Zone Air Temperature(SPACE1-1)&#39;</span><span class="p">]</span>
 
         <span class="n">current_heat_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
-            <span class="s1">&#39;Zone Thermostat Heating Setpoint Temperature (SPACE1-1)&#39;</span><span class="p">]</span>
+            <span class="s1">&#39;Zone Thermostat Heating Setpoint Temperature(SPACE1-1)&#39;</span><span class="p">]</span>
         <span class="n">current_cool_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
-            <span class="s1">&#39;Zone Thermostat Cooling Setpoint Temperature (SPACE1-1)&#39;</span><span class="p">]</span>
+            <span class="s1">&#39;Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)&#39;</span><span class="p">]</span>
 
         <span class="n">new_heat_setpoint</span> <span class="o">=</span> <span class="n">current_heat_setpoint</span>
         <span class="n">new_cool_setpoint</span> <span class="o">=</span> <span class="n">current_cool_setpoint</span>
@@ -504,14 +507,15 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:52:47,462] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:52:47,462] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:52:47,462] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:52:47,462] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:52:47,477] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res15/Eplus-env-sub_run1
-[2022-05-16 13:52:47,477] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res15/Eplus-env-sub_run1
-[2022-05-16 13:52:47,477] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res15/Eplus-env-sub_run1
-[2022-05-16 13:52:47,477] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res15/Eplus-env-sub_run1
+[2022-05-23 16:44:48,429] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:44:48,429] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:44:48,429] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:44:48,430] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:44:48,430] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:44:48,430] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:44:48,443] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res10/Eplus-env-sub_run2
+[2022-05-23 16:44:48,443] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res10/Eplus-env-sub_run2
+[2022-05-23 16:44:48,443] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res10/Eplus-env-sub_run2
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -549,11 +553,14 @@ Episode  0 Mean reward:  -0.36455554318315797 Cumulative reward:  -12774.0262331
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:52:58,937] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-05-16 13:52:58,937] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-05-16 13:52:58,937] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-05-16 13:52:58,937] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-05-23 16:44:59,813] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-05-23 16:44:59,813] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-05-23 16:44:59,813] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
 </pre></div></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information about our defines controllers and how create a new one, please, visit our <a class="reference external" href="https://jajimer.github.io/sinergym/compilation/html/pages/controllers.html">Controller Documentation</a></p>
 </div>
 </section>
 
@@ -561,7 +568,7 @@ Episode  0 Mean reward:  -0.36455554318315797 Cumulative reward:  -12774.0262331
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="usage_example.html" class="btn btn-neutral float-left" title="Basic example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="wrappers_examples.html" class="btn btn-neutral float-left" title="Wrappers example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="drl.html" class="btn btn-neutral float-right" title="DRL usage example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

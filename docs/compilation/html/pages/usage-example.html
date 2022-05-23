@@ -69,11 +69,13 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/usage_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">Rule Controller example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">DRL usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/MLflow_example.html">MLFlow example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/TensorBoard_example.html">TensorBoard example</a></li>
 </ul>
 
         </div>
@@ -130,6 +132,7 @@
 In any case, we start from the point that you have at your disposal a terminal with the appropriate python version and Sinergym running correctly.</p>
 <p>At this point of the documentation, we have explained how to install Sinergym, the environments it includes, the reward functions we can define, wrappers and controllers.</p>
 <p>In this section we will see some examples of use to better understand how they can be used in practice.</p>
+<p>If you want to execute our notebooks on your own it is possible in <cite>examples</cite> folder.</p>
 <section id="simplest-example">
 <h2>Simplest example<a class="headerlink" href="#simplest-example" title="Permalink to this headline"></a></h2>
 <p>Let's start with the simplest use case for the Sinergym tool. In the root repository we have the script <strong>try_env.py</strong>:</p>
@@ -224,7 +227,7 @@ If you run the code you can see the difference in the values obtained for the re
 
 <span class="kn">import</span> <span class="nn">sinergym</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="n">LinearReward</span><span class="p">,</span> <span class="n">ExpReward</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.wrapper</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-hot-continuous-v1&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">ExpReward</span><span class="p">,</span> <span class="n">reward_kwargs</span><span class="o">=</span><span class="p">{</span>
                                                                     <span class="s1">&#39;temperature_variable&#39;</span><span class="p">:</span> <span class="s1">&#39;Zone Air Temperature (SPACE1-1)&#39;</span><span class="p">,</span>
@@ -269,7 +272,7 @@ For more information about how Sinergym displays its output, please visit the se
 
 <span class="kn">import</span> <span class="nn">sinergym</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="n">LinearReward</span><span class="p">,</span> <span class="n">ExpReward</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.wrapper</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.controllers</span> <span class="kn">import</span> <span class="n">RBC5Zone</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-hot-continuous-v1&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">ExpReward</span> <span class="p">,</span> <span class="n">reward_kwargs</span><span class="o">=</span><span class="p">{</span>
@@ -322,7 +325,7 @@ the name of the environment or the variability in stochastic environments:</p>
 
 <span class="kn">import</span> <span class="nn">sinergym</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="n">LinearReward</span><span class="p">,</span> <span class="n">ExpReward</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.wrapper</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.controllers</span> <span class="kn">import</span>   <span class="n">RBCDatacenter</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-datacenter-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
@@ -375,7 +378,7 @@ the name of the environment or the variability in stochastic environments:</p>
 
 <span class="kn">import</span> <span class="nn">sinergym</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="n">LinearReward</span><span class="p">,</span> <span class="n">ExpReward</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.wrapper</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.controllers</span> <span class="kn">import</span> <span class="n">RBCDatacenter</span>
 
 <span class="n">extra_conf</span><span class="o">=</span><span class="p">{</span>

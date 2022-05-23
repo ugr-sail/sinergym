@@ -49,8 +49,10 @@ The examples can be run if you have your computer or container properly configur
    :hidden:
    :caption: Examples
 
-   pages/notebooks/usage_example.nblink
+   pages/notebooks/basic_example.nblink
+   pages/notebooks/change_environment.nblink
+   pages/notebooks/wrappers_examples.nblink
    pages/notebooks/rule_controller_example.nblink
    pages/notebooks/drl.nblink
-   pages/notebooks/wrappers_examples.nblink
    pages/notebooks/MLflow_example.nblink
+   pages/notebooks/TensorBoard_example.nblink

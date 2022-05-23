@@ -1,0 +1,1 @@
+pages/notebooks/TensorBoard_example.nblink:372: (parh)  While training is executing, you can see that tensorboard parh specified folder has been created. Then, you can start a local server and see the information about training in real-time.

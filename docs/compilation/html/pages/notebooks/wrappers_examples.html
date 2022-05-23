@@ -22,8 +22,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="MLFlow example" href="MLflow_example.html" />
-    <link rel="prev" title="DRL usage example" href="drl.html" /> 
+    <link rel="next" title="Rule Controller example" href="rule_controller_example.html" />
+    <link rel="prev" title="Changing an environment registered in Sinergym" href="change_environment.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -63,11 +63,19 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="usage_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Wrappers example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Normalization-Wrapper">Normalization Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Logger-Wrapper">Logger Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Multi-Observation-Wrapper">Multi Observation Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#All-Wrappers-in-one">All Wrappers in one</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">Rule Controller example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="drl.html">DRL usage example</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MLflow_example.html">MLFlow example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TensorBoard_example.html">TensorBoard example</a></li>
 </ul>
 
         </div>
@@ -368,7 +376,7 @@ div.rendered_html tbody tr:hover {
 <h1>Wrappers example<a class="headerlink" href="#Wrappers-example" title="Permalink to this headline"></a></h1>
 <p>We will see on this notebook what are the wrappers defined by sinergym and how to use them. Currently, we have developed a <strong>normalization wrapper</strong>, <strong>multi-observation wrapper</strong> and <strong>Logger wrapper</strong></p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
@@ -376,71 +384,113 @@ div.rendered_html tbody tr:hover {
 <span class="kn">import</span> <span class="nn">sinergym</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">MultiObsWrapper</span><span class="p">,</span>
                                      <span class="n">NormalizeObservation</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.common</span> <span class="kn">import</span> <span class="n">RANGES_5ZONE</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.constants</span> <span class="kn">import</span> <span class="n">RANGES_5ZONE</span>
 </pre></div>
 </div>
 </div>
+<section id="Normalization-Wrapper">
+<h2>Normalization Wrapper<a class="headerlink" href="#Normalization-Wrapper" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env_with_wrappers</span> <span class="o">=</span> <span class="n">MultiObsWrapper</span><span class="p">(</span><span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">),</span><span class="n">ranges</span><span class="o">=</span><span class="n">RANGES_5ZONE</span><span class="p">)))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Original env</span>
+<span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
+<span class="n">obs</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BEFORE NORMILIZATION: &#39;</span><span class="p">,</span><span class="n">obs</span><span class="p">)</span>
+
+<span class="c1">#Normalize env</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="n">ranges</span><span class="o">=</span><span class="n">RANGES_5ZONE</span><span class="p">)</span>
+<span class="n">obs</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;AFTER NORMILIZATION: &#39;</span><span class="p">,</span><span class="n">obs</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:51:12,674] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:12,674] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:12,674] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:12,674] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:12,674] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:12,674] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:12,678] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:12,678] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:12,678] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:12,678] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:12,678] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:12,678] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:41:54,693] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:41:54,693] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:41:54,693] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:41:54,693] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:41:54,693] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:41:54,696] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:41:54,696] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:41:54,696] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:41:54,696] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:41:54,696] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:41:54,699] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:41:54,699] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:41:54,699] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:41:54,699] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:41:54,699] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:41:54,702] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:41:54,702] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:41:54,702] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:41:54,702] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:41:54,702] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:41:54,714] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run1
+[2022-05-23 16:41:54,714] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run1
+[2022-05-23 16:41:54,714] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run1
+[2022-05-23 16:41:54,714] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run1
+[2022-05-23 16:41:54,714] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run1
 </pre></div></div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env_with_wrappers</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">),</span> <span class="n">ranges</span><span class="o">=</span><span class="n">RANGES_5ZONE</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area stderr docutils container">
+<div class="output_area docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:51:13,714] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:13,714] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:13,714] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:13,714] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:13,714] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:13,714] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:13,714] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:13,717] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:13,717] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:13,717] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:13,717] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:13,717] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:13,717] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:13,717] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+BEFORE NORMILIZATION:  [1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+00 0.0000000e+00
+ 9.5000000e+01 4.0999999e+00 2.9000000e+02 0.0000000e+00 0.0000000e+00
+ 2.1000000e+01 2.5000000e+01 2.0999992e+01 0.0000000e+00 3.9522228e+01
+ 0.0000000e+00 0.0000000e+00 0.0000000e+00 0.0000000e+00 8.0098755e+03]
 </pre></div></div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+[2022-05-23 16:42:00,247] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:00,247] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:00,247] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:00,247] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:00,247] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:00,249] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:00,249] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:00,249] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:00,249] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:00,249] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:00,261] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run2
+[2022-05-23 16:42:00,261] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run2
+[2022-05-23 16:42:00,261] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run2
+[2022-05-23 16:42:00,261] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run2
+[2022-05-23 16:42:00,261] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run2
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+AFTER NORMILIZATION:  [0.98466104 0.         0.         0.         0.33834645 0.9484536
+ 0.17748918 0.8111888  0.         0.         0.800001   0.44444445
+ 0.39061695 0.         0.42973474 0.         0.         0.
+ 0.         0.24169508]
+</pre></div></div>
+</div>
+</section>
+<section id="Logger-Wrapper">
+<h2>Logger Wrapper<a class="headerlink" href="#Logger-Wrapper" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env_with_wrappers</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">),</span> <span class="n">ranges</span><span class="o">=</span><span class="n">RANGES_5ZONE</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
+<span class="n">env</span><span class="o">=</span><span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -449,22 +499,201 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:51:14,830] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:14,830] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:14,830] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:14,830] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:14,830] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:14,830] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:14,830] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:14,830] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-16 13:51:14,834] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:14,834] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:14,834] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:14,834] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:14,834] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:14,834] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:14,834] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-05-16 13:51:14,834] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:01,844] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:01,844] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:01,844] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:01,844] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:01,844] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:01,844] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:01,847] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:01,847] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:01,847] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:01,847] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:01,847] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:01,847] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:01,851] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:01,851] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:01,851] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:01,851] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:01,851] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:01,851] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+</pre></div></div>
+</div>
+<p>Now, you can see in Sinergym output folder that you will have available <code class="docutils literal notranslate"><span class="pre">progress.csv</span></code> file and <code class="docutils literal notranslate"><span class="pre">monitor.csv</span></code> files in each episode.</p>
+</section>
+<section id="Multi-Observation-Wrapper">
+<h2>Multi Observation Wrapper<a class="headerlink" href="#Multi-Observation-Wrapper" title="Permalink to this headline"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Original environment</span>
+<span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
+<span class="n">obs</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BEFORE MULTI OBSERVATION: &#39;</span><span class="p">,</span><span class="n">obs</span><span class="p">)</span>
+
+<span class="c1">#Multi Observation environment</span>
+<span class="n">env</span><span class="o">=</span><span class="n">MultiObsWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">obs</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;AFTER MULTI OBSERVATION: &#39;</span><span class="p">,</span><span class="n">obs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+[2022-05-23 16:42:02,770] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:02,770] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:02,770] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:02,770] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:02,770] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:02,770] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:02,770] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:02,773] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:02,773] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:02,773] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:02,773] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:02,773] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:02,773] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:02,773] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:02,777] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:02,777] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:02,777] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:02,777] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:02,777] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:02,777] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:02,777] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:02,779] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:02,779] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:02,779] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:02,779] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:02,779] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:02,779] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:02,779] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:02,792] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run1
+[2022-05-23 16:42:02,792] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run1
+[2022-05-23 16:42:02,792] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run1
+[2022-05-23 16:42:02,792] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run1
+[2022-05-23 16:42:02,792] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run1
+[2022-05-23 16:42:02,792] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run1
+[2022-05-23 16:42:02,792] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run1
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+BEFORE MULTI OBSERVATION:  [1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+00 0.0000000e+00
+ 9.5000000e+01 4.0999999e+00 2.9000000e+02 0.0000000e+00 0.0000000e+00
+ 2.1000000e+01 2.5000000e+01 2.0999992e+01 0.0000000e+00 3.9522228e+01
+ 0.0000000e+00 0.0000000e+00 0.0000000e+00 0.0000000e+00 8.0098755e+03]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+[2022-05-23 16:42:08,781] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:08,781] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:08,781] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:08,781] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:08,781] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:08,781] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:08,781] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-05-23 16:42:08,783] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:08,783] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:08,783] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:08,783] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:08,783] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:08,783] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:08,783] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:08,798] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run2
+[2022-05-23 16:42:08,798] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run2
+[2022-05-23 16:42:08,798] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run2
+[2022-05-23 16:42:08,798] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run2
+[2022-05-23 16:42:08,798] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run2
+[2022-05-23 16:42:08,798] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run2
+[2022-05-23 16:42:08,798] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res7/Eplus-env-sub_run2
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+AFTER MULTI OBSERVATION:  [1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+00 0.0000000e+00
+ 9.5000000e+01 4.0999999e+00 2.9000000e+02 0.0000000e+00 0.0000000e+00
+ 2.1000000e+01 2.5000000e+01 2.0999992e+01 0.0000000e+00 3.9522228e+01
+ 0.0000000e+00 0.0000000e+00 0.0000000e+00 0.0000000e+00 8.0098755e+03
+ 1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+00 0.0000000e+00
+ 9.5000000e+01 4.0999999e+00 2.9000000e+02 0.0000000e+00 0.0000000e+00
+ 2.1000000e+01 2.5000000e+01 2.0999992e+01 0.0000000e+00 3.9522228e+01
+ 0.0000000e+00 0.0000000e+00 0.0000000e+00 0.0000000e+00 8.0098755e+03
+ 1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+00 0.0000000e+00
+ 9.5000000e+01 4.0999999e+00 2.9000000e+02 0.0000000e+00 0.0000000e+00
+ 2.1000000e+01 2.5000000e+01 2.0999992e+01 0.0000000e+00 3.9522228e+01
+ 0.0000000e+00 0.0000000e+00 0.0000000e+00 0.0000000e+00 8.0098755e+03
+ 1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+00 0.0000000e+00
+ 9.5000000e+01 4.0999999e+00 2.9000000e+02 0.0000000e+00 0.0000000e+00
+ 2.1000000e+01 2.5000000e+01 2.0999992e+01 0.0000000e+00 3.9522228e+01
+ 0.0000000e+00 0.0000000e+00 0.0000000e+00 0.0000000e+00 8.0098755e+03
+ 1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+00 0.0000000e+00
+ 9.5000000e+01 4.0999999e+00 2.9000000e+02 0.0000000e+00 0.0000000e+00
+ 2.1000000e+01 2.5000000e+01 2.0999992e+01 0.0000000e+00 3.9522228e+01
+ 0.0000000e+00 0.0000000e+00 0.0000000e+00 0.0000000e+00 8.0098755e+03]
+</pre></div></div>
+</div>
+</section>
+<section id="All-Wrappers-in-one">
+<h2>All Wrappers in one<a class="headerlink" href="#All-Wrappers-in-one" title="Permalink to this headline"></a></h2>
+<p>You can also combine wrappers in order to use all their functionality at the same time.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
+<span class="c1">#Normalization</span>
+<span class="n">env</span><span class="o">=</span><span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="n">ranges</span><span class="o">=</span><span class="n">RANGES_5ZONE</span><span class="p">)</span>
+<span class="c1">#Logger</span>
+<span class="n">env</span><span class="o">=</span><span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="c1">#MultiObs</span>
+<span class="n">env</span><span class="o">=</span><span class="n">MultiObsWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">flatten</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+[2022-05-23 16:42:10,602] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:10,602] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:10,602] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:10,602] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:10,602] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:10,602] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:10,602] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:10,602] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-05-23 16:42:10,606] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:10,606] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:10,606] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:10,606] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:10,606] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:10,606] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:10,606] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:10,606] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-05-23 16:42:10,609] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:10,609] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:10,609] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:10,609] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:10,609] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:10,609] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:10,609] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-05-23 16:42:10,609] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
 </pre></div></div>
 </div>
 <div class="admonition warning">
@@ -473,28 +702,28 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For more information about Sinergym Logger, visit :ref:<code class="docutils literal notranslate"><span class="pre">Logger</span></code>.</p>
+<p>For more information about Sinergym Logger, visit <a class="reference external" href="https://jajimer.github.io/sinergym/compilation/html/pages/output.html#logger">Logger documentation</a> and <a class="reference external" href="https://jajimer.github.io/sinergym/compilation/html/pages/wrappers.html">Wrapper documentation</a></p>
 </div>
 <p>Now we just simply use the environment with the wrappers, for example:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">obs</span> <span class="o">=</span> <span class="n">env_with_wrappers</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
     <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">env_with_wrappers</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
-        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env_with_wrappers</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
         <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
             <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Episode &#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
         <span class="n">rewards</span><span class="p">),</span> <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
-<span class="n">env_with_wrappers</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -503,22 +732,22 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:51:14,990] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:51:14,990] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:51:14,990] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:51:14,990] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:51:14,990] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:51:14,990] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:51:14,990] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:51:14,990] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-16 13:51:15,005] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res14/Eplus-env-sub_run1
-[2022-05-16 13:51:15,005] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res14/Eplus-env-sub_run1
-[2022-05-16 13:51:15,005] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res14/Eplus-env-sub_run1
-[2022-05-16 13:51:15,005] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res14/Eplus-env-sub_run1
-[2022-05-16 13:51:15,005] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res14/Eplus-env-sub_run1
-[2022-05-16 13:51:15,005] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res14/Eplus-env-sub_run1
-[2022-05-16 13:51:15,005] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res14/Eplus-env-sub_run1
-[2022-05-16 13:51:15,005] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res14/Eplus-env-sub_run1
+[2022-05-23 16:42:10,692] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:10,692] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:10,692] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:10,692] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:10,692] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:10,692] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:10,692] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:10,692] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-05-23 16:42:10,709] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res8/Eplus-env-sub_run1
+[2022-05-23 16:42:10,709] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res8/Eplus-env-sub_run1
+[2022-05-23 16:42:10,709] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res8/Eplus-env-sub_run1
+[2022-05-23 16:42:10,709] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res8/Eplus-env-sub_run1
+[2022-05-23 16:42:10,709] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res8/Eplus-env-sub_run1
+[2022-05-23 16:42:10,709] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res8/Eplus-env-sub_run1
+[2022-05-23 16:42:10,709] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res8/Eplus-env-sub_run1
+[2022-05-23 16:42:10,709] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res8/Eplus-env-sub_run1
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -526,20 +755,20 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Reward:  -0.6725497890372467 {&#39;timestep&#39;: 1, &#39;time_elapsed&#39;: 900, &#39;year&#39;: 1991, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 3133.716390651039, &#39;total_power_no_units&#39;: -0.3133716390651039, &#39;comfort_penalty&#39;: -1.0317279390093894, &#39;temperatures&#39;: [18.96827206099061], &#39;out_temperature&#39;: 1.8, &#39;action_&#39;: [17.0, 28.0]}
-Reward:  -1809.6247298837213 {&#39;timestep&#39;: 2976, &#39;time_elapsed&#39;: 2678400, &#39;year&#39;: 1991, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 5107.400520896434, &#39;total_power_no_units&#39;: -0.5107400520896433, &#39;comfort_penalty&#39;: -2.40452930117074, &#39;temperatures&#39;: [17.59547069882926], &#39;out_temperature&#39;: -7.0, &#39;action_&#39;: [15.0, 30.0]}
-Reward:  -3564.6143288880503 {&#39;timestep&#39;: 5664, &#39;time_elapsed&#39;: 5097600, &#39;year&#39;: 1991, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 4732.071629972534, &#39;total_power_no_units&#39;: -0.4732071629972534, &#39;comfort_penalty&#39;: -0.0, &#39;temperatures&#39;: [20.94123714194632], &#39;out_temperature&#39;: 8.1, &#39;action_&#39;: [21.0, 24.0]}
-Reward:  -4753.266089024571 {&#39;timestep&#39;: 8640, &#39;time_elapsed&#39;: 7776000, &#39;year&#39;: 1991, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 2842.149123903046, &#39;total_power_no_units&#39;: -0.2842149123903046, &#39;comfort_penalty&#39;: -0.0, &#39;temperatures&#39;: [20.88387972165356], &#39;out_temperature&#39;: 7.7, &#39;action_&#39;: [21.0, 24.0]}
-Reward:  -5548.758183624994 {&#39;timestep&#39;: 11520, &#39;time_elapsed&#39;: 10368000, &#39;year&#39;: 1991, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 1845.156949449085, &#39;total_power_no_units&#39;: -0.18451569494490852, &#39;comfort_penalty&#39;: -0.0, &#39;temperatures&#39;: [20.97361268288754], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [21.0, 24.0]}
-Reward:  -6267.448456576817 {&#39;timestep&#39;: 14496, &#39;time_elapsed&#39;: 13046400, &#39;year&#39;: 1991, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 311.2386211971196, &#39;total_power_no_units&#39;: -0.03112386211971196, &#39;comfort_penalty&#39;: -2.920549183740629, &#39;temperatures&#39;: [20.07945081625937], &#39;out_temperature&#39;: 18.4, &#39;action_&#39;: [18.0, 27.0]}
-Reward:  -9278.129018992366 {&#39;timestep&#39;: 17376, &#39;time_elapsed&#39;: 15638400, &#39;year&#39;: 1991, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 215.8105448937054, &#39;total_power_no_units&#39;: -0.021581054489370543, &#39;comfort_penalty&#39;: -2.160645643964191, &#39;temperatures&#39;: [20.83935435603581], &#39;out_temperature&#39;: 17.7, &#39;action_&#39;: [15.0, 30.0]}
-Reward:  -12606.74763835033 {&#39;timestep&#39;: 20352, &#39;time_elapsed&#39;: 18316800, &#39;year&#39;: 1991, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 4271.371117883376, &#39;total_power_no_units&#39;: -0.4271371117883377, &#39;comfort_penalty&#39;: -3.44536993682021, &#39;temperatures&#39;: [19.55463006317979], &#39;out_temperature&#39;: 20.6, &#39;action_&#39;: [19.0, 26.0]}
-Reward:  -15966.020368671201 {&#39;timestep&#39;: 23328, &#39;time_elapsed&#39;: 20995200, &#39;year&#39;: 1991, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 1438.096189867415, &#39;total_power_no_units&#39;: -0.1438096189867415, &#39;comfort_penalty&#39;: -2.0114058500185408, &#39;temperatures&#39;: [20.98859414998146], &#39;out_temperature&#39;: 18.8, &#39;action_&#39;: [21.0, 21.0]}
-Reward:  -18790.598543772387 {&#39;timestep&#39;: 26208, &#39;time_elapsed&#39;: 23587200, &#39;year&#39;: 1991, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 186.5934720667916, &#39;total_power_no_units&#39;: -0.018659347206679163, &#39;comfort_penalty&#39;: -0.0, &#39;temperatures&#39;: [20.0548335727706], &#39;out_temperature&#39;: 13.3, &#39;action_&#39;: [19.0, 26.0]}
-Reward:  -19736.601375956336 {&#39;timestep&#39;: 29184, &#39;time_elapsed&#39;: 26265600, &#39;year&#39;: 1991, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 2266.111275620936, &#39;total_power_no_units&#39;: -0.2266111275620936, &#39;comfort_penalty&#39;: -0.0, &#39;temperatures&#39;: [20.95281263641111], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [21.0, 21.0]}
-Reward:  -20765.161768659775 {&#39;timestep&#39;: 32064, &#39;time_elapsed&#39;: 28857600, &#39;year&#39;: 1991, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 2698.220158800282, &#39;total_power_no_units&#39;: -0.26982201588002824, &#39;comfort_penalty&#39;: -0.0, &#39;temperatures&#39;: [21.03788844083321], &#39;out_temperature&#39;: 5.1, &#39;action_&#39;: [21.0, 24.0]}
-Reward:  -22517.74879099755 {&#39;timestep&#39;: 35040, &#39;time_elapsed&#39;: 31536000, &#39;year&#39;: 1992, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 9659.44758487137, &#39;total_power_no_units&#39;: -0.965944758487137, &#39;comfort_penalty&#39;: -1.9937089853210495, &#39;temperatures&#39;: [18.00629101467895], &#39;out_temperature&#39;: -12.0, &#39;action_&#39;: [18.0, 27.0]}
-Episode  0 Mean reward:  -0.6426298170946527 Cumulative reward:  -22517.74879099755
+Reward:  -0.3808358083250143 {&#39;timestep&#39;: 1, &#39;time_elapsed&#39;: 900, &#39;year&#39;: 1991, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 7616.716166500285, &#39;total_power_no_units&#39;: -0.7616716166500286, &#39;comfort_penalty&#39;: -0.0, &#39;temperatures&#39;: [20.99998783039325], &#39;out_temperature&#39;: 1.8, &#39;action_&#39;: [21, 21]}
+Reward:  -1871.2735943472342 {&#39;timestep&#39;: 2976, &#39;time_elapsed&#39;: 2678400, &#39;year&#39;: 1991, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 4717.088000520113, &#39;total_power_no_units&#39;: -0.4717088000520114, &#39;comfort_penalty&#39;: -1.7573715796282414, &#39;temperatures&#39;: [18.24262842037176], &#39;out_temperature&#39;: -7.0, &#39;action_&#39;: [17, 28]}
+Reward:  -3591.708406946749 {&#39;timestep&#39;: 5664, &#39;time_elapsed&#39;: 5097600, &#39;year&#39;: 1991, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 1914.018114977942, &#39;total_power_no_units&#39;: -0.19140181149779423, &#39;comfort_penalty&#39;: -1.0756168928023513, &#39;temperatures&#39;: [18.92438310719765], &#39;out_temperature&#39;: 8.1, &#39;action_&#39;: [19, 26]}
+Reward:  -4739.976056551516 {&#39;timestep&#39;: 8640, &#39;time_elapsed&#39;: 7776000, &#39;year&#39;: 1991, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 186.5934720667916, &#39;total_power_no_units&#39;: -0.018659347206679163, &#39;comfort_penalty&#39;: -0.41562783370860856, &#39;temperatures&#39;: [19.58437216629139], &#39;out_temperature&#39;: 7.7, &#39;action_&#39;: [17, 28]}
+Reward:  -5546.170775112516 {&#39;timestep&#39;: 11520, &#39;time_elapsed&#39;: 10368000, &#39;year&#39;: 1991, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 186.5934720667916, &#39;total_power_no_units&#39;: -0.018659347206679163, &#39;comfort_penalty&#39;: -0.6675625711856412, &#39;temperatures&#39;: [19.33243742881436], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [16, 29]}
+Reward:  -6291.521621999336 {&#39;timestep&#39;: 14496, &#39;time_elapsed&#39;: 13046400, &#39;year&#39;: 1991, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 311.2037337978678, &#39;total_power_no_units&#39;: -0.03112037337978678, &#39;comfort_penalty&#39;: -2.76487463809368, &#39;temperatures&#39;: [20.23512536190632], &#39;out_temperature&#39;: 18.4, &#39;action_&#39;: [19, 26]}
+Reward:  -9278.775602691854 {&#39;timestep&#39;: 17376, &#39;time_elapsed&#39;: 15638400, &#39;year&#39;: 1991, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 215.8105427085715, &#39;total_power_no_units&#39;: -0.02158105427085715, &#39;comfort_penalty&#39;: -2.717878688683829, &#39;temperatures&#39;: [20.28212131131617], &#39;out_temperature&#39;: 17.7, &#39;action_&#39;: [18, 27]}
+Reward:  -12603.078345531798 {&#39;timestep&#39;: 20352, &#39;time_elapsed&#39;: 18316800, &#39;year&#39;: 1991, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 9710.545171272992, &#39;total_power_no_units&#39;: -0.9710545171272993, &#39;comfort_penalty&#39;: -1.6105363983255216, &#39;temperatures&#39;: [21.38946360167448], &#39;out_temperature&#39;: 20.6, &#39;action_&#39;: [22, 23]}
+Reward:  -15898.38172607886 {&#39;timestep&#39;: 23328, &#39;time_elapsed&#39;: 20995200, &#39;year&#39;: 1991, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 2724.07911675267, &#39;total_power_no_units&#39;: -0.272407911675267, &#39;comfort_penalty&#39;: -1.0412778161750396, &#39;temperatures&#39;: [21.95872218382496], &#39;out_temperature&#39;: 18.8, &#39;action_&#39;: [22, 22]}
+Reward:  -18741.72328624202 {&#39;timestep&#39;: 26208, &#39;time_elapsed&#39;: 23587200, &#39;year&#39;: 1991, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 513.7610654329847, &#39;total_power_no_units&#39;: -0.051376106543298466, &#39;comfort_penalty&#39;: -0.0025701501132289195, &#39;temperatures&#39;: [19.99742984988677], &#39;out_temperature&#39;: 13.3, &#39;action_&#39;: [20, 25]}
+Reward:  -19653.923057089025 {&#39;timestep&#39;: 29184, &#39;time_elapsed&#39;: 26265600, &#39;year&#39;: 1991, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 186.5934720667916, &#39;total_power_no_units&#39;: -0.018659347206679163, &#39;comfort_penalty&#39;: -0.16125875764038966, &#39;temperatures&#39;: [19.83874124235961], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [18, 27]}
+Reward:  -20670.415163107275 {&#39;timestep&#39;: 32064, &#39;time_elapsed&#39;: 28857600, &#39;year&#39;: 1991, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 2374.725317005226, &#39;total_power_no_units&#39;: -0.2374725317005226, &#39;comfort_penalty&#39;: -0.0, &#39;temperatures&#39;: [21.17986449699296], &#39;out_temperature&#39;: 5.1, &#39;action_&#39;: [21, 24]}
+Reward:  -22461.581130904375 {&#39;timestep&#39;: 35040, &#39;time_elapsed&#39;: 31536000, &#39;year&#39;: 1992, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 7149.075848784849, &#39;total_power_no_units&#39;: -0.7149075848784849, &#39;comfort_penalty&#39;: -1.7503558827192691, &#39;temperatures&#39;: [18.24964411728073], &#39;out_temperature&#39;: -12.0, &#39;action_&#39;: [15, 30]}
+Episode  0 Mean reward:  -0.6410268587586611 Cumulative reward:  -22461.581130904375
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -547,24 +776,25 @@ Episode  0 Mean reward:  -0.6426298170946527 Cumulative reward:  -22517.74879099
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-16 13:51:35,848] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-05-16 13:51:35,848] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-05-16 13:51:35,848] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-05-16 13:51:35,848] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-05-16 13:51:35,848] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-05-16 13:51:35,848] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-05-16 13:51:35,848] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-05-16 13:51:35,848] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-05-23 16:42:33,727] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-05-23 16:42:33,727] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-05-23 16:42:33,727] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-05-23 16:42:33,727] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-05-23 16:42:33,727] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-05-23 16:42:33,727] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-05-23 16:42:33,727] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-05-23 16:42:33,727] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
 </pre></div></div>
 </div>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="drl.html" class="btn btn-neutral float-left" title="DRL usage example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="MLflow_example.html" class="btn btn-neutral float-right" title="MLFlow example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="change_environment.html" class="btn btn-neutral float-left" title="Changing an environment registered in Sinergym" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rule_controller_example.html" class="btn btn-neutral float-right" title="Rule Controller example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

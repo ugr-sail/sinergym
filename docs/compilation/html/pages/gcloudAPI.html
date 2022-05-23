@@ -82,11 +82,13 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/usage_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">Rule Controller example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">DRL usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/MLflow_example.html">MLFlow example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/TensorBoard_example.html">TensorBoard example</a></li>
 </ul>
 
         </div>
@@ -396,12 +398,12 @@ You can think that is an error, Google cloud should notify this. If this issue h
 <span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">mlflow</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorboard</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="n">A2C</span><span class="p">,</span> <span class="n">DDPG</span><span class="p">,</span> <span class="n">DQN</span><span class="p">,</span> <span class="n">PPO</span><span class="p">,</span> <span class="n">SAC</span><span class="p">,</span> <span class="n">TD3</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3.common.callbacks</span> <span class="kn">import</span> <span class="n">CallbackList</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3.common.logger</span> <span class="kn">import</span> <span class="n">configure</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3.common.noise</span> <span class="kn">import</span> <span class="n">NormalActionNoise</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3.common.vec_env</span> <span class="kn">import</span> <span class="n">DummyVecEnv</span>
-<span class="kn">import</span> <span class="nn">tensorboard</span>
 
 <span class="kn">import</span> <span class="nn">sinergym</span>
 <span class="kn">import</span> <span class="nn">sinergym.utils.gcloud</span> <span class="k">as</span> <span class="nn">gcloud</span>
@@ -835,7 +837,7 @@ You can think that is an error, Google cloud should notify this. If this issue h
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">evaluation</span><span class="p">:</span>
         <span class="n">eval_callback</span> <span class="o">=</span> <span class="n">LoggerEvalCallback</span><span class="p">(</span>
             <span class="n">eval_env</span><span class="p">,</span>
-            <span class="n">best_model_save_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+            <span class="n">best_model_save_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span>
             <span class="n">log_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
             <span class="n">eval_freq</span><span class="o">=</span><span class="n">n_timesteps_episode</span> <span class="o">*</span>
             <span class="n">args</span><span class="o">.</span><span class="n">eval_freq</span><span class="p">,</span>
@@ -877,16 +879,16 @@ You can think that is an error, Google cloud should notify this. If this issue h
         <span class="c1"># Code for send output and tensorboard to mlflow artifacts.</span>
         <span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span>
             <span class="n">local_dir</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_env_working_dir_parent</span><span class="p">,</span>
-            <span class="n">artifact_path</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+            <span class="n">artifact_path</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">evaluation</span><span class="p">:</span>
             <span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span>
-                <span class="n">local_dir</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
-                <span class="n">artifact_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+                <span class="n">local_dir</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span>
+                <span class="n">artifact_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
         <span class="c1"># If tensorboard is active (in local) we should send to mlflow</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="ow">and</span> <span class="s1">&#39;gs://experiments-storage&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">:</span>
             <span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span>
-                <span class="n">local_dir</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
-                <span class="n">artifact_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+                <span class="n">local_dir</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span>
+                <span class="n">artifact_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
 
     <span class="c1"># ---------------------------------------------------------------------------- #</span>
     <span class="c1">#                          Google Cloud Bucket Storage                         #</span>

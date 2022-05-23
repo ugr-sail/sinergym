@@ -1,1 +1,1 @@
-pages/notebooks/drl.nblink:20: (al)  First we import al the used libraries, remember to always import 
+pages/notebooks/drl.nblink:20: (parameterizes)  . This script applies all the possibilities that Sinergym has to work with deep reinforcement learning algorithms and parameterizes everything so that we can define the training options from the execution of the script.
