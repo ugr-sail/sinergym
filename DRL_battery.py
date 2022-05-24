@@ -133,6 +133,13 @@ parser.add_argument(
     dest='remote_store',
     help='Determine if sinergym output will be sent to a Google Cloud Storage Bucket.')
 parser.add_argument(
+    '--bucket_name',
+    '-buc',
+    type=str,
+    default='experiments-storage',
+    dest='bucket_name',
+    help='Name of the bucket where experiments output will be stored if experiment is configured to that.')
+parser.add_argument(
     '--mlflow_store',
     '-mlflow',
     action='store_true',
@@ -492,7 +499,7 @@ with mlflow.start_run(run_name=name):
                 local_dir='best_model/' + name,
                 artifact_path='best_model/' + name)
         # If tensorboard is active (in local) we should send to mlflow
-        if args.tensorboard and 'gs://experiments-storage' not in args.tensorboard:
+        if args.tensorboard and 'gs://' + args.bucket_name not in args.tensorboard:
             mlflow.log_artifacts(
                 local_dir=args.tensorboard + '/' + name,
                 artifact_path=os.path.abspath(args.tensorboard).split('/')[-1] + '/' + name)
@@ -507,25 +514,25 @@ with mlflow.start_run(run_name=name):
         gcloud.upload_to_bucket(
             client,
             src_path=env.simulator._env_working_dir_parent,
-            dest_bucket_name='experiments-storage',
+            dest_bucket_name=args.bucket_name,
             dest_path=name)
         if args.evaluation:
             gcloud.upload_to_bucket(
                 client,
                 src_path='best_model/' + name + '/',
-                dest_bucket_name='experiments-storage',
+                dest_bucket_name=args.bucket_name,
                 dest_path='best_model/' + name + '/')
         # If tensorboard is active (in local) we should send to bucket
-        if args.tensorboard and 'gs://experiments-storage' not in args.tensorboard:
+        if args.tensorboard and 'gs://' + args.bucket_name not in args.tensorboard:
             gcloud.upload_to_bucket(
                 client,
                 src_path=args.tensorboard + '/' + name + '/',
-                dest_bucket_name='experiments-storage',
+                dest_bucket_name=args.bucket_name,
                 dest_path=os.path.abspath(args.tensorboard).split('/')[-1] + '/' + name + '/')
         # gcloud.upload_to_bucket(
         #     client,
         #     src_path='mlruns/',
-        #     dest_bucket_name='experiments-storage',
+        #     dest_bucket_name=args.bucket_name,
         #     dest_path='mlruns/')
 
     # End mlflow run
