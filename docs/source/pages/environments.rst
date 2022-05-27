@@ -123,7 +123,7 @@ Structure of observation and action space is defined in Environment constructor 
 Specification
 ~~~~~~~~~~~~~~
 
-As we have told, Observation and action spaces are defined **dinamically** in Sinergym Environment constructor. Environmet ID's registered in Sinergym use a **default** definition
+As we have told, Observation and action spaces are defined **dinamically** in Sinergym Environment constructor. Environment ID's registered in Sinergym use a **default** definition
 set up in `constants.py <https://github.com/jajimer/sinergym/tree/main/sinergym/utils/constants.py>`__.
 
 As can be seen in environments observations, the **year, month, day and hour** are included in, but is not configured in default observation variables definition. 
@@ -136,7 +136,7 @@ However, you can **change** this values giving you the possibility of playing wi
 
 Sinergym has several checkers to ensure that there are no inconsistencies in the alternative specifications made to the default ones. In case the specification offered is wrong, Sinergym will launch messages indicating where the error or inconsistency is located.
 
-.. note:: `variables.cfg` is a requirement in order to stablish a connection between gym environment and Simulator 
+.. note:: `variables.cfg` is a requirement in order to establish a connection between gym environment and Simulator 
            with a external interface (using BCVTB). Since Sinergym `1.9.0` version, it is created automatically using 
            action and observation space definition in environment construction.
 
