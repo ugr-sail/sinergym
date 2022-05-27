@@ -109,7 +109,7 @@ Structure of observation and action space is defined in Environment constructor 
 - **action_variables**: List of the action variables that simulator is going to process like schedule control actuator in the building model. These variables
                         must be defined in the building model (IDF file) correctly before simulation. You can modify **manually** in the IDF file or using
                         our **action definition** extra configuration field in which you set what you want to control and Sinergym takes care of modifying 
-                        this file for you automatically. For more information about this automatic adaptation in section HIPERENLACE.
+                        this file for you automatically. For more information about this automatic adaptation in section :ref:`action_definition`.
                 
 - **action_space**: Definition of the action space following the **gym standard**. This definition can be discrete or continuous and must be consistent with 
                     the previously defined action variables (Sinergym will show inconsistency as usual).
@@ -147,7 +147,7 @@ Adding new buildings for environments
 This section is intended to provide information if someone decides to add new buildings for use with Sinergym. The main steps you have to follow are the next:
 
 1. Add your building (IDF file) to `buildings <https://github.com/jajimer/sinergym/tree/main/sinergym/data/buildings>`__. 
-   As mentioned in section :ref:`Observation/action spaces`, the IDF must be previously adapted to your action space or use our **action definition** (section HIPERENLACE) 
+   As mentioned in section :ref:`Observation/action spaces`, the IDF must be previously adapted to your action space or use our **action definition** (section :ref:`action_definition`) 
    to be automatically adapted to the action space and variables you have designed for it, as long as we provide support for the specific component you want to control..
 
 2. Add your own EPW file for weather conditions or use ours in environment constructor. Sinergym will adapt `DesignDays` in IDF file using EPW automatically.
