@@ -70,7 +70,7 @@ By default, all our environment ID's make use of a default (linear) reward. But 
             sum(rewards))
     env.close()
 
-.. warning:: When specifying a different reward with `gym.make` than the default environment ID, it is very important to set the `reward_kwargs` that are required and therefore do not have a default value. In the rewards we have defined it is required: **temperature_variable(s)**, **energy_variable**, **range_comfort_winter**, **range_comfort_summer**. The rest of them have default values and it is not neccesary to specify.
+.. warning:: When specifying a different reward with `gym.make` than the default environment ID, it is very important to set the `reward_kwargs` that are required and therefore do not have a default value. In the rewards we have defined it is required: **temperature_variable(s)**, **energy_variable**, **range_comfort_winter**, **range_comfort_summer**. The rest of them have default values and it is not necessary to specify.
 
 This example is exactly the same as the previous one, except that it uses different criteria to determine the rewards in each step of the simulation. 
 If you run the code you can see the difference in the values obtained for the reward (using a seed for randomization).

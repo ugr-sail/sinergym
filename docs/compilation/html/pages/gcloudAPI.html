@@ -7,6 +7,7 @@
   <title>Sinergym with Google Cloud &mdash; sinergym  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/doc_theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -526,6 +527,13 @@ You can think that is an error, Google cloud should notify this. If this issue h
     <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;remote_store&#39;</span><span class="p">,</span>
     <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Determine if sinergym output will be sent to a Google Cloud Storage Bucket.&#39;</span><span class="p">)</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s1">&#39;--bucket_name&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-buc&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="s1">&#39;experiments-storage&#39;</span><span class="p">,</span>
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;bucket_name&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Name of the bucket where experiments output will be stored if experiment is configured to that.&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
     <span class="s1">&#39;--mlflow_store&#39;</span><span class="p">,</span>
     <span class="s1">&#39;-mlflow&#39;</span><span class="p">,</span>
     <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
@@ -885,7 +893,7 @@ You can think that is an error, Google cloud should notify this. If this issue h
                 <span class="n">local_dir</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span>
                 <span class="n">artifact_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
         <span class="c1"># If tensorboard is active (in local) we should send to mlflow</span>
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="ow">and</span> <span class="s1">&#39;gs://experiments-storage&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="ow">and</span> <span class="s1">&#39;gs://&#39;</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">bucket_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">:</span>
             <span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span>
                 <span class="n">local_dir</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span>
                 <span class="n">artifact_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
@@ -900,25 +908,25 @@ You can think that is an error, Google cloud should notify this. If this issue h
         <span class="n">gcloud</span><span class="o">.</span><span class="n">upload_to_bucket</span><span class="p">(</span>
             <span class="n">client</span><span class="p">,</span>
             <span class="n">src_path</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_env_working_dir_parent</span><span class="p">,</span>
-            <span class="n">dest_bucket_name</span><span class="o">=</span><span class="s1">&#39;experiments-storage&#39;</span><span class="p">,</span>
+            <span class="n">dest_bucket_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span>
             <span class="n">dest_path</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">evaluation</span><span class="p">:</span>
             <span class="n">gcloud</span><span class="o">.</span><span class="n">upload_to_bucket</span><span class="p">(</span>
                 <span class="n">client</span><span class="p">,</span>
                 <span class="n">src_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
-                <span class="n">dest_bucket_name</span><span class="o">=</span><span class="s1">&#39;experiments-storage&#39;</span><span class="p">,</span>
+                <span class="n">dest_bucket_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span>
                 <span class="n">dest_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
         <span class="c1"># If tensorboard is active (in local) we should send to bucket</span>
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="ow">and</span> <span class="s1">&#39;gs://experiments-storage&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="ow">and</span> <span class="s1">&#39;gs://&#39;</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">bucket_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">:</span>
             <span class="n">gcloud</span><span class="o">.</span><span class="n">upload_to_bucket</span><span class="p">(</span>
                 <span class="n">client</span><span class="p">,</span>
                 <span class="n">src_path</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
-                <span class="n">dest_bucket_name</span><span class="o">=</span><span class="s1">&#39;experiments-storage&#39;</span><span class="p">,</span>
+                <span class="n">dest_bucket_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span>
                 <span class="n">dest_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
         <span class="c1"># gcloud.upload_to_bucket(</span>
         <span class="c1">#     client,</span>
         <span class="c1">#     src_path=&#39;mlruns/&#39;,</span>
-        <span class="c1">#     dest_bucket_name=&#39;experiments-storage&#39;,</span>
+        <span class="c1">#     dest_bucket_name=args.bucket_name,</span>
         <span class="c1">#     dest_path=&#39;mlruns/&#39;)</span>
 
     <span class="c1"># End mlflow run</span>

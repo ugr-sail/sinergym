@@ -7,6 +7,7 @@
   <title>Environments &mdash; sinergym  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/doc_theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -536,7 +537,7 @@ so that it can be fixed.</p>
 <li><dl class="simple">
 <dt><strong>action_variables</strong>: List of the action variables that simulator is going to process like schedule control actuator in the building model. These variables</dt><dd><p>must be defined in the building model (IDF file) correctly before simulation. You can modify <strong>manually</strong> in the IDF file or using
 our <strong>action definition</strong> extra configuration field in which you set what you want to control and Sinergym takes care of modifying
-this file for you automatically. For more information about this automatic adaptation in section HIPERENLACE.</p>
+this file for you automatically. For more information about this automatic adaptation in section <a class="reference internal" href="extra-configuration.html#action-definition"><span class="std std-ref">action_definition</span></a>.</p>
 </dd>
 </dl>
 </li>
@@ -557,7 +558,7 @@ from [-1,1] to real action space is called <code class="docutils literal notrans
 </ul>
 <section id="specification">
 <h3>Specification<a class="headerlink" href="#specification" title="Permalink to this headline"></a></h3>
-<p>As we have told, Observation and action spaces are defined <strong>dinamically</strong> in Sinergym Environment constructor. Environmet ID's registered in Sinergym use a <strong>default</strong> definition
+<p>As we have told, Observation and action spaces are defined <strong>dinamically</strong> in Sinergym Environment constructor. Environment ID's registered in Sinergym use a <strong>default</strong> definition
 set up in <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/utils/constants.py">constants.py</a>.</p>
 <p>As can be seen in environments observations, the <strong>year, month, day and hour</strong> are included in, but is not configured in default observation variables definition.
 This is because they are not variables recognizable by the simulator as such (Energyplus) and Sinergym does the calculations and adds them in the states returned as
@@ -568,7 +569,7 @@ However, you can <strong>change</strong> this values giving you the possibility 
 <p>Sinergym has several checkers to ensure that there are no inconsistencies in the alternative specifications made to the default ones. In case the specification offered is wrong, Sinergym will launch messages indicating where the error or inconsistency is located.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><cite>variables.cfg</cite> is a requirement in order to stablish a connection between gym environment and Simulator
+<p><cite>variables.cfg</cite> is a requirement in order to establish a connection between gym environment and Simulator
 with a external interface (using BCVTB). Since Sinergym <cite>1.9.0</cite> version, it is created automatically using
 action and observation space definition in environment construction.</p>
 </div>
@@ -579,7 +580,7 @@ action and observation space definition in environment construction.</p>
 <p>This section is intended to provide information if someone decides to add new buildings for use with Sinergym. The main steps you have to follow are the next:</p>
 <ol class="arabic simple">
 <li><p>Add your building (IDF file) to <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/data/buildings">buildings</a>.
-As mentioned in section <a class="reference internal" href="#observation-action-spaces"><span class="std std-ref">Observation/action spaces</span></a>, the IDF must be previously adapted to your action space or use our <strong>action definition</strong> (section HIPERENLACE)
+As mentioned in section <a class="reference internal" href="#observation-action-spaces"><span class="std std-ref">Observation/action spaces</span></a>, the IDF must be previously adapted to your action space or use our <strong>action definition</strong> (section <a class="reference internal" href="extra-configuration.html#action-definition"><span class="std std-ref">action_definition</span></a>)
 to be automatically adapted to the action space and variables you have designed for it, as long as we provide support for the specific component you want to control..</p></li>
 <li><p>Add your own EPW file for weather conditions or use ours in environment constructor. Sinergym will adapt <cite>DesignDays</cite> in IDF file using EPW automatically.</p></li>
 <li><p>Sinergym will check that observation variables specified are available in the simulation before starting. In order to be able to do these checks,

@@ -7,6 +7,7 @@
   <title>Changing an environment registered in Sinergym &mdash; sinergym  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/doc_theme.css" type="text/css" />
     <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
@@ -403,7 +404,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>These environment IDs have a number of components defined, not only the building design (IDF), but also the reward function, the action and observation spaces, the defining variables, etc.</p>
 <p>If you want a new environment, you can define it from scratch in our <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/__init__.py">environment list</a> and run it locally.</p>
-<p>Another option (recommended) is to start from one of our environments and change the components you want. You can combine components you want to change obviusly.</p>
+<p>Another option (recommended) is to start from one of our environments and change the components you want. You can combine components you want to change obviously.</p>
 <p>The way to do that is to add in the <code class="docutils literal notranslate"><span class="pre">gym.make(&lt;environment_id&gt;)</span></code> those parameters of the constructor of the Sinergym environment we want to change. Let’s see what things we can change starting from any environment:</p>
 <section id="Adding-a-new-reward">
 <h2>Adding a new reward<a class="headerlink" href="#Adding-a-new-reward" title="Permalink to this headline"></a></h2>

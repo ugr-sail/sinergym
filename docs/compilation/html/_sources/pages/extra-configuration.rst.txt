@@ -43,7 +43,7 @@ action_definition
 Creating a **new external interface** to control different parts of a building is not a trivial task, it requires certain changes in the building model (IDF), 
 configuration files for the external interface (variables.cfg), etc in order to control it.
 
-For this pourpose,  we have available **action_definition** key extra parameter. Its value is a dictionary with the next structure:
+For this purpose,  we have available **action_definition** key extra parameter. Its value is a dictionary with the next structure:
 
 .. code:: python
 

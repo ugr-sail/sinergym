@@ -32,7 +32,7 @@ By default, all environments use ``LinearReward`` with default parameters. But y
                                                                             'range_comfort_summer': (23.0, 26.0),
                                                                             'energy_weight': 0.1})
 
-.. warning:: When specifying a different reward with `gym.make` than the default environment ID, it is very important to set the `reward_kwargs` that are required and therefore do not have a default value. In the rewards we have defined it is required: **temperature_variable(s)**, **energy_variable**, **range_comfort_winter**, **range_comfort_summer**. The rest of them have default values and it is not neccesary to specify.
+.. warning:: When specifying a different reward with `gym.make` than the default environment ID, it is very important to set the `reward_kwargs` that are required and therefore do not have a default value. In the rewards we have defined it is required: **temperature_variable(s)**, **energy_variable**, **range_comfort_winter**, **range_comfort_summer**. The rest of them have default values and it is not necessary to specify.
 
 
 It is also pretty simple to define your own classes. For example, imagine you want a reward signal which returns always -1 (however we do not recommend using it for training agents :)).

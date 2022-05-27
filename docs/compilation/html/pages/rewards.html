@@ -7,6 +7,7 @@
   <title>Rewards &mdash; sinergym  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/doc_theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -146,7 +147,7 @@ summer period and other for the winter period. The weights of each term in the r
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>When specifying a different reward with <cite>gym.make</cite> than the default environment ID, it is very important to set the <cite>reward_kwargs</cite> that are required and therefore do not have a default value. In the rewards we have defined it is required: <strong>temperature_variable(s)</strong>, <strong>energy_variable</strong>, <strong>range_comfort_winter</strong>, <strong>range_comfort_summer</strong>. The rest of them have default values and it is not neccesary to specify.</p>
+<p>When specifying a different reward with <cite>gym.make</cite> than the default environment ID, it is very important to set the <cite>reward_kwargs</cite> that are required and therefore do not have a default value. In the rewards we have defined it is required: <strong>temperature_variable(s)</strong>, <strong>energy_variable</strong>, <strong>range_comfort_winter</strong>, <strong>range_comfort_summer</strong>. The rest of them have default values and it is not necessary to specify.</p>
 </div>
 <p>It is also pretty simple to define your own classes. For example, imagine you want a reward signal which returns always -1 (however we do not recommend using it for training agents :)).
 The only requirement is that the calculation is performed using <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method, which returns the reward and a dictionary with extra information. The below code implements this.</p>
@@ -219,7 +220,7 @@ The only requirement is that the calculation is performed using <code class="doc
 <span class="sd">            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).</span>
 <span class="sd">            energy_variable (str): Name of the energy/power variable.</span>
 <span class="sd">            range_comfort_winter (tuple): Temperature comfort range for cold season. Depends on environment you are using.</span>
-<span class="sd">            range_comfort_summer (tuple): Temperature comfort range fot hot season. Depends on environment you are using.</span>
+<span class="sd">            range_comfort_summer (tuple): Temperature comfort range for hot season. Depends on environment you are using.</span>
 <span class="sd">            energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.</span>
 <span class="sd">            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.</span>
 <span class="sd">            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</span>
@@ -324,7 +325,7 @@ The only requirement is that the calculation is performed using <code class="doc
 <span class="sd">            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).</span>
 <span class="sd">            energy_variable (str): Name of the energy/power variable.</span>
 <span class="sd">            range_comfort_winter (tuple): Temperature comfort range for cold season. Depends on environment you are using.</span>
-<span class="sd">            range_comfort_summer (tuple): Temperature comfort range fot hot season. Depends on environment you are using.</span>
+<span class="sd">            range_comfort_summer (tuple): Temperature comfort range for hot season. Depends on environment you are using.</span>
 <span class="sd">            energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.</span>
 <span class="sd">            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.</span>
 <span class="sd">            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</span>
@@ -392,7 +393,7 @@ The only requirement is that the calculation is performed using <code class="doc
 <span class="sd">            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).</span>
 <span class="sd">            energy_variable (str): Name of the energy/power variable.</span>
 <span class="sd">            range_comfort_winter (tuple): Temperature comfort range for cold season. Depends on environment you are using.</span>
-<span class="sd">            range_comfort_summer (tuple): Temperature comfort range fot hot season. Depends on environment you are using.</span>
+<span class="sd">            range_comfort_summer (tuple): Temperature comfort range for hot season. Depends on environment you are using.</span>
 <span class="sd">            min_energy_weight (float, optional): Minimum weight given to the energy term. Defaults to 0.5.</span>
 <span class="sd">            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.</span>
 <span class="sd">            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</span>

@@ -7,6 +7,7 @@
   <title>Extra Configuration in Sinergym simulations &mdash; sinergym  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/doc_theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -162,7 +163,7 @@ The format value for <strong>runperiod</strong> key is a <strong>tuple</strong> 
 <h2>action_definition<a class="headerlink" href="#action-definition" title="Permalink to this headline"></a></h2>
 <p>Creating a <strong>new external interface</strong> to control different parts of a building is not a trivial task, it requires certain changes in the building model (IDF),
 configuration files for the external interface (variables.cfg), etc in order to control it.</p>
-<p>For this pourpose,  we have available <strong>action_definition</strong> key extra parameter. Its value is a dictionary with the next structure:</p>
+<p>For this purpose,  we have available <strong>action_definition</strong> key extra parameter. Its value is a dictionary with the next structure:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">extra_params</span><span class="o">=</span><span class="p">{</span>
     <span class="s1">&#39;action_definition&#39;</span><span class="p">:{</span>
         <span class="o">&lt;</span><span class="n">controller_type</span><span class="o">&gt;</span><span class="p">:[</span><span class="o">&lt;</span><span class="n">controller1_definition</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">controller2_definition</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
