@@ -233,12 +233,83 @@ class Config(object):
                                                 # always the DualSetpoint
                                                 # thermostat name, so we change
                                                 # it
-                                                zone_control[i +
-                                                             1] = controller['name']
+                                                zone_control[i + \
+                                                    1] = controller['name']
                                                 # We do not need to search more
                                                 # fields in that record
                                                 # specifically, so break it
                                                 break
+                    elif controller_type == 'ThermostatSetpoint:SingleHeating':
+                        for controller in controllers:
+                            # Create Ptolomy variables
+                            self.building.ExternalInterface_Schedule.add(
+                                name=controller['heating_name'],
+                                schedule_type_limits_name='Temperature',
+                                initial_value=21)
+                            # Create a ThermostatSetpoint:SigleHeating object
+                            self.building.ThermostatSetpoint_SingleHeating.add(
+                                name=controller['name'],
+                                setpoint_temperature_schedule_name=controller['heating_name'])
+                            # Link in zones required
+                            for zone_control in self.building.ZoneControl_Thermostat:
+                                # If zone specified in zone_control is included
+                                # in out DualSetpoint:
+                                if zone_control.zone_or_zonelist_name.name.lower() in list(
+                                        map(lambda zone: zone.lower(), controller['zones'])):
+                                    # We iterate all record fields searching
+                                    # 'ThermostatSetpoint:DualSetpoint' value
+                                    for i in range(
+                                            len(get_record_keys(zone_control))):
+                                        if isinstance(zone_control[i], str):
+                                            if zone_control[i].lower(
+                                            ) == controller_type.lower():
+                                                # Then, the next field will be
+                                                # always the DualSetpoint
+                                                # thermostat name, so we change
+                                                # it
+                                                zone_control[i + \
+                                                    1] = controller['name']
+                                                # We do not need to search more
+                                                # fields in that record
+                                                # specifically, so break it
+                                                break
+                    elif controller_type == 'ThermostatSetpoint:SingleCooling':
+                        for controller in controllers:
+                            # Create Ptolomy variables
+                            self.building.ExternalInterface_Schedule.add(
+                                name=controller['cooling_name'],
+                                schedule_type_limits_name='Temperature',
+                                initial_value=25)
+                            # Create a ThermostatSetpoint:SigleHeating object
+                            self.building.ThermostatSetpoint_SingleCooling.add(
+                                name=controller['name'],
+                                setpoint_temperature_schedule_name=controller['cooling_name'])
+                            # Link in zones required
+                            for zone_control in self.building.ZoneControl_Thermostat:
+                                # If zone specified in zone_control is included
+                                # in out DualSetpoint:
+                                if zone_control.zone_or_zonelist_name.name.lower() in list(
+                                        map(lambda zone: zone.lower(), controller['zones'])):
+                                    # We iterate all record fields searching
+                                    # 'ThermostatSetpoint:DualSetpoint' value
+                                    for i in range(
+                                            len(get_record_keys(zone_control))):
+                                        if isinstance(zone_control[i], str):
+                                            if zone_control[i].lower(
+                                            ) == controller_type.lower():
+                                                # Then, the next field will be
+                                                # always the DualSetpoint
+                                                # thermostat name, so we change
+                                                # it
+                                                zone_control[i + \
+                                                    1] = controller['name']
+                                                # We do not need to search more
+                                                # fields in that record
+                                                # specifically, so break it
+                                                break
+                    else:
+                        raise KeyError(
+                            F'Controller type specified in action_definition called [{controller_type}] has no support in Sinergym.')
 
     def save_variables_cfg(self) -> str:
         """This method saves current XML variables tree model into a variables.cfg file.
@@ -522,7 +593,7 @@ class Config(object):
             rm_dir_full_name = cur_dir_name + base_name + str(rm_dir_id)
             rmtree(rm_dir_full_name)
 
-    @property
+    @ property
     def start_year(self) -> int:
         """Returns the EnergyPlus simulation year.
 
