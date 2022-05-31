@@ -27,7 +27,9 @@ CWD = os.getcwd()
 CONFIG_KEYS = ['timesteps_per_hour', 'runperiod', 'action_definition']
 # Extra config action definition keys (add keys in this list in order to
 # assert new controller types)
-ACTION_DEFINITION_COMPONENTS = ['ThermostatSetpoint:DualSetpoint']
+ACTION_DEFINITION_COMPONENTS = [
+    'ThermostatSetpoint:DualSetpoint',
+    'ThermostatSetpoint:SingleHeating']
 
 # ---------------------------------------------------------------------------- #
 #                          Normalization dictionaries                          #
@@ -280,3 +282,24 @@ DEFAULT_DATACENTER_CONFIG_PARAMS = {
         }]
     }
 }
+
+DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES = [
+    'Site Outdoor Air Drybulb Temperature(Environment)',
+    'Site Outdoor Air Relative Humidity(Environment)',
+    'Site Wind Speed(Environment)',
+    'Site Wind Direction(Environment)',
+    'Site Diffuse Solar Radiation Rate per Area(Environment)',
+    'Site Direct Solar Radiation Rate per Area(Environment)',
+    'Zone Thermostat Heating Setpoint Temperature(Zone1 Office)',
+    'Zone Thermostat Cooling Setpoint Temperature(Zone1 Office)',
+    'Zone Air Temperature(Zone1 Office)',
+    'Zone Air Relative Humidity(Zone1 Office)',
+    'Zone People Occupant Count(Zone1 Office)',
+    'People Air Temperature(Zone1 Office Office People)',
+    'Facility Total HVAC Electricity Demand Rate(Whole Building)']
+
+DEFAULT_WAREHOUSE_OBSERVATION_SPACE = gym.spaces.Box(
+    low=-5e6,
+    high=5e6,
+    shape=(len(DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES) + 4,),
+    dtype=np.float32)
