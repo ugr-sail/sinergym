@@ -761,3 +761,50 @@ register(
             0.0,
             0.001),
         'env_name': 'IWMullion-cool-continuous-stochastic-v1'})
+
+register(
+    id='Eplus-warehouse-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'ASHRAE9012016_Warehouse_Denver.idf',
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
+        'action_space': gym.spaces.Box(
+                        low=np.array([15.0, 22.5, 15.0, 22.5, 15.0]),
+                        high=np.array([22.5, 30.0, 22.5, 30.0, 22.5]),
+                        shape=(5,),
+                        dtype=np.float32),
+        'action_variables': ['office-heating-rl', 'office-cooling-rl', 'storage-heating-rl', 'storage-cooling-rl', 'bulk-storage-heating-rl'],
+        'action_mapping': DEFAULT_DATACENTER_ACTION_MAPPING,
+        'weather_variability': (1.0, 0.0, 0.001),
+        'reward': LinearReward,
+        'reward_kwargs': {
+            'temperature_variable': [
+                'Zone Air Temperature(Zone1 Office)',
+                'Zone Air Temperature(Zone1 Office)'
+            ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
+        'env_name': 'PRUEBA',
+        'config_params': {'action_definition': {
+            'ThermostatSetpoint:DualSetpoint': [{
+                'name': 'Office-DualSetP-RL',
+                'heating_name': 'office-heating-rl',
+                                'cooling_name': 'office-cooling-rl',
+                                'zones': ['Zone1 Office']
+            },
+                {
+                'name': 'Storage-DualSetP-RL',
+                'heating_name': 'storage-heating-rl',
+                                'cooling_name': 'storage-cooling-rl',
+                                'zones': ['Zone2 Fine Storage']
+            }],
+            'ThermostatSetpoint:SingleHeating': [{
+                'name': 'Bulk-DualSetP-RL',
+                'heating_name': 'bulk-storage-heating-rl',
+                                'zones': ['Zone3 Bulk Storage']
+            }]
+        }}})
