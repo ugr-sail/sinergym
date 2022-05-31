@@ -181,10 +181,10 @@
     Run Period 1,            !- Name
     1,                       !- Begin Month
     1,                       !- Begin Day of Month
-    ,                        !- Begin Year
+    1991,                        !- Begin Year
     12,                      !- End Month
     31,                      !- End Day of Month
-    ,                        !- End Year
+    1991,                        !- End Year
     Monday,                  !- Day of Week for Start Day
     No,                      !- Use Weather File Holidays and Special Days
     No,                      !- Use Weather File Daylight Saving Period
@@ -5958,14 +5958,14 @@
 
   Schedule:Compact,
     ALWAYS_OFF,              !- Name
-    On/Off,                  !- Schedule Type Limits Name
+    Any Number,                  !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
     For: AllDays,            !- Field 2
     Until: 24:00,0;          !- Field 3
 
   Schedule:Compact,
     ALWAYS_ON,               !- Name
-    On/Off,                  !- Schedule Type Limits Name
+    Any Number,                  !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
     For: AllDays,            !- Field 2
     Until: 24:00,1;          !- Field 3
