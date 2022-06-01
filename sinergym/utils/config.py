@@ -10,7 +10,7 @@ import pandas
 from opyplus import Epm, Idd, WeatherData
 
 from sinergym.utils.common import (get_delta_seconds, get_record_keys,
-                                   prepare_batch_from_records)
+                                   prepare_batch_from_records, to_idf)
 from sinergym.utils.constants import (ACTION_DEFINITION_COMPONENTS,
                                       CONFIG_KEYS, CWD, PKG_DATA_PATH,
                                       WEEKDAY_ENCODING, YEAR)
@@ -348,7 +348,8 @@ class Config(object):
         if self.episode_path is not None:
             episode_idf_path = os.path.join(self.episode_path,
                                             os.path.basename(self._idf_path))
-            self.building.save(episode_idf_path)
+            # self.building.save(episode_idf_path)
+            to_idf(building=self.building, file_path=episode_idf_path)
             return episode_idf_path
         else:
             raise RuntimeError(
