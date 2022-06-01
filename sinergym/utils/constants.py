@@ -295,7 +295,6 @@ DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES = [
     'Zone Air Temperature(Zone1 Office)',
     'Zone Air Relative Humidity(Zone1 Office)',
     'Zone People Occupant Count(Zone1 Office)',
-    'People Air Temperature(Zone1 Office Office People)',
     'Facility Total HVAC Electricity Demand Rate(Whole Building)']
 
 DEFAULT_WAREHOUSE_OBSERVATION_SPACE = gym.spaces.Box(
