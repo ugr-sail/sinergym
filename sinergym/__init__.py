@@ -808,3 +808,25 @@ register(
                                 'zones': ['Zone3 Bulk Storage']
             }]
         }}})
+
+register(
+    id='Eplus-warehouse-empty-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'ASHRAE9012016_Warehouse_Denver.idf',
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
+        'weather_variability': (1.0, 0.0, 0.001),
+        'reward': LinearReward,
+        'reward_kwargs': {
+            'temperature_variable': [
+                'Zone Air Temperature(Zone1 Office)',
+                'Zone Air Temperature(Zone1 Office)'
+            ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
+        'env_name': 'PRUEBA_EMPTY',
+    })
