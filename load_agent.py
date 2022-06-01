@@ -90,6 +90,13 @@ parser.add_argument(
     dest='group_name',
     help='This field indicate instance group name')
 parser.add_argument(
+    '--bucket_name',
+    '-buc',
+    type=str,
+    default='experiments-storage',
+    dest='bucket_name',
+    help='This field indicates bucket name (not used currently in script)')
+parser.add_argument(
     '--auto_delete',
     '-del',
     action='store_true',
