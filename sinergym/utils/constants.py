@@ -283,6 +283,7 @@ DEFAULT_DATACENTER_CONFIG_PARAMS = {
     }
 }
 
+# ----------------------------------WAREHOUSE--------------------------------- #
 DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES = [
     'Site Outdoor Air Drybulb Temperature(Environment)',
     'Site Outdoor Air Relative Humidity(Environment)',
@@ -295,10 +296,66 @@ DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES = [
     'Zone Air Temperature(Zone1 Office)',
     'Zone Air Relative Humidity(Zone1 Office)',
     'Zone People Occupant Count(Zone1 Office)',
+    'Zone Thermostat Heating Setpoint Temperature(Zone2 Fine Storage)',
+    'Zone Thermostat Cooling Setpoint Temperature(Zone2 Fine Storage)',
+    'Zone Air Temperature(Zone2 Fine Storage)',
+    'Zone Air Relative Humidity(Zone2 Fine Storage)',
+    'Zone Thermostat Heating Setpoint Temperature(Zone3 Bulk Storage)',
+    'Zone Air Temperature(Zone3 Bulk Storage)',
+    'Zone Air Relative Humidity(Zone3 Bulk Storage)',
     'Facility Total HVAC Electricity Demand Rate(Whole Building)']
+
+DEFAULT_WAREHOUSE_ACTION_VARIABLES = [
+    'office-heating-rl',
+    'office-cooling-rl',
+    'storage-heating-rl',
+    'storage-cooling-rl',
+    'bulk-storage-heating-rl'
+]
 
 DEFAULT_WAREHOUSE_OBSERVATION_SPACE = gym.spaces.Box(
     low=-5e6,
     high=5e6,
     shape=(len(DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES) + 4,),
     dtype=np.float32)
+
+DEFAULT_WAREHOUSE_ACTION_MAPPING = {
+    0: (15, 30, 15, 30, 15),
+    1: (16, 29, 16, 29, 16),
+    2: (17, 28, 17, 28, 17),
+    3: (18, 27, 18, 27, 18),
+    4: (19, 26, 19, 26, 19),
+    5: (20, 25, 20, 25, 20),
+    6: (21, 24, 21, 24, 21),
+    7: (22, 23, 22, 23, 22),
+    8: (22, 22, 22, 22, 23),
+    9: (21, 21, 21, 21, 24)
+}
+
+DEFAULT_WAREHOUSE_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
+
+DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
+    low=np.array([15.0, 22.5, 15.0, 22.5, 15.0]),
+    high=np.array([22.5, 30.0, 22.5, 30.0, 22.5]),
+    shape=(5,),
+    dtype=np.float32)
+
+DEFAULT_WAREHOUSE_CONFIG_PARAMS = {'action_definition': {
+    'ThermostatSetpoint:DualSetpoint': [{
+        'name': 'Office-DualSetP-RL',
+        'heating_name': 'office-heating-rl',
+        'cooling_name': 'office-cooling-rl',
+        'zones': ['Zone1 Office']
+    },
+        {
+        'name': 'Storage-DualSetP-RL',
+        'heating_name': 'storage-heating-rl',
+        'cooling_name': 'storage-cooling-rl',
+        'zones': ['Zone2 Fine Storage']
+    }],
+    'ThermostatSetpoint:SingleHeating': [{
+        'name': 'Bulk-DualSetP-RL',
+        'heating_name': 'bulk-storage-heating-rl',
+        'zones': ['Zone3 Bulk Storage']
+    }]
+}}
