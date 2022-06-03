@@ -3296,11 +3296,6 @@
     CalculatePUE,            !- Name
     set PUE_Value = Whole_Building_Power / IT_Equip_Power;  !- Program Line 1
 
-  !-External Interface
-
-  ExternalInterface,
-    PtolemyServer;           !- Name of External Interface
-
   OutputControl:Table:Style,
     HTML;                    !- Column Separator
 

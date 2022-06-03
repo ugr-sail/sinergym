@@ -8180,8 +8180,3 @@
     SET_Zone3_Bulk_Storage_Light_EMS_Program_Prog_Manager,  !- Name
     BeginTimestepBeforePredictor,  !- EnergyPlus Model Calling Point
     SET_Zone3_Bulk_Storage_Light_EMS_Program;  !- Program Name 1
-
-  !-External Interface
-
-  ExternalInterface,
-    PtolemyServer;           !- Name of External Interface
