@@ -20,20 +20,31 @@ jobs:
         with:
           owner: jajimer
           repo: sinergym
-      - name: Build container image with release tag
+      - name: Build container complete image with release tag
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         env:
           TAG: ${{ steps.tag_version.outputs.latest_tag }}
           #TAG_DATE: ${{ steps.tag_version.outputs.latest_tag_published_at }}
         run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extras] --tag $DOCKER_USER/sinergym:$TAG
+      - name: Build container lite image with release tag
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        env:
+          TAG: ${{ steps.tag_version.outputs.latest_tag }}
+          #TAG_DATE: ${{ steps.tag_version.outputs.latest_tag_published_at }}
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[dev] --tag $DOCKER_USER/sinergym-lite:$TAG
       - name: Login Docker Hub
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      - name: Push container built with release tag
+      - name: Push complete container built with release tag
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         env:
           TAG: ${{ steps.tag_version.outputs.latest_tag }}
         run: docker push $DOCKER_USER/sinergym:$TAG
+      - name: Push lite container built with release tag
+        if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
+        env:
+          TAG: ${{ steps.tag_version.outputs.latest_tag }}
+        run: docker push $DOCKER_USER/sinergym-lite:$TAG
 
   update-pypi:
     env:

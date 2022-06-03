@@ -43,6 +43,7 @@ setup(name='sinergym',
               'pytest',
               'stable-baselines3'
           ],
+          'dev': ['pytest'],
           'DRL': [
               'stable-baselines3',
               'mlflow',
