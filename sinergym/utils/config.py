@@ -174,6 +174,16 @@ class Config(object):
                 'EnergyPlus',
                 schedule=act_var)
 
+    def set_external_interface(self) -> None:
+        """Set an empty external interface with Ptolemy server if is not in the current building
+        """
+
+        # If no ExternalInterface object found
+        if len(self.building.ExternalInterface) == 0:
+            # Create PtolemyServer interface in building
+            self.building.ExternalInterface.add(
+                name_of_external_interface='PtolemyServer')
+
     def apply_extra_conf(self) -> None:
         """Set extra configuration in building model
         """
