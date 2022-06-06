@@ -967,3 +967,27 @@ register(
         },
         'env_name': 'warehouse-cool-continuous-stochastic-v1',
         'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
+
+register(
+    id='Eplus-office-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'ASHRAE9012016_OfficeMedium_Denver.idf',
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
+        'action_space': DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS,
+        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
+        'weather_variability': (1.0, 0.0, 0.001),
+        'reward': LinearReward,
+        'reward_kwargs': {
+            'temperature_variable': [
+                'Zone Air Temperature(Core_bottom)'
+            ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
+        'env_name': 'PRUEBA',
+        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS
+    })
