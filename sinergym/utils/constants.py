@@ -359,7 +359,9 @@ DEFAULT_WAREHOUSE_CONFIG_PARAMS = {'action_definition': {
         'zones': ['Zone3 Bulk Storage']
     }]
 }}
+
 # ----------------------------------OFFICE--------------------------------- #
+
 DEFAULT_OFFICE_OBSERVATION_VARIABLES = [
     'Zone Air Temperature(Core_bottom)',
     'Facility Total HVAC Electricity Demand Rate(Whole Building)',
@@ -403,6 +405,54 @@ DEFAULT_OFFICE_CONFIG_PARAMS = {'action_definition': {
         'name': 'Office-DualSetP-RL',
         'heating_name': 'office-heating-rl',
         'cooling_name': 'office-cooling-rl',
+        'zones': 'all'
+    }]
+}}
+
+# ----------------------------------HOSPITAL--------------------------------- #
+DEFAULT_HOSPITAL_OBSERVATION_VARIABLES = [
+    'Zone Air Temperature(Basement)',
+    'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+    'Site Outdoor Air Drybulb Temperature(Environment)'
+]
+
+DEFAULT_HOSPITAL_ACTION_VARIABLES = [
+    'hospital-heating-rl',
+    'hospital-cooling-rl',
+]
+
+DEFAULT_HOSPITAL_OBSERVATION_SPACE = gym.spaces.Box(
+    low=-5e6,
+    high=5e6,
+    shape=(len(DEFAULT_HOSPITAL_OBSERVATION_VARIABLES) + 4,),
+    dtype=np.float32)
+
+DEFAULT_HOSPITAL_ACTION_MAPPING = {
+    0: (15, 30),
+    1: (16, 29),
+    2: (17, 28),
+    3: (18, 27),
+    4: (19, 26),
+    5: (20, 25),
+    6: (21, 24),
+    7: (22, 23),
+    8: (22, 22),
+    9: (21, 21)
+}
+
+DEFAULT_HOSPITAL_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
+
+DEFAULT_HOSPITAL_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
+    low=np.array([15.0, 22.5]),
+    high=np.array([22.5, 30.0]),
+    shape=(2,),
+    dtype=np.float32)
+
+DEFAULT_HOSPITAL_CONFIG_PARAMS = {'action_definition': {
+    'ThermostatSetpoint:DualSetpoint': [{
+        'name': 'Hospital-DualSetP-RL',
+        'heating_name': 'hospital-heating-rl',
+        'cooling_name': 'hospital-cooling-rl',
         'zones': 'all'
     }]
 }}
