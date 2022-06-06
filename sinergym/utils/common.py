@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from pydoc import locate
 from typing import Any, Dict, List, Optional, Tuple, Union
+from sinergym.utils.constants import YEAR
 
 import textwrap
 import gym
@@ -56,9 +57,9 @@ def get_current_time_info(
 
     """
     start_date = datetime(
-        year=int(epm.RunPeriod[0]['begin_year']),
-        month=int(epm.RunPeriod[0]['begin_month']),
-        day=int(epm.RunPeriod[0]['begin_day_of_month'])
+        year=int(YEAR if epm.RunPeriod[0]['begin_year'] is None else epm.RunPeriod[0]['begin_year']),
+        month=int(1 if epm.RunPeriod[0]['begin_month'] is None else epm.RunPeriod[0]['begin_month']),
+        day=int(1 if epm.RunPeriod[0]['begin_day_of_month'] is None else epm.RunPeriod[0]['begin_day_of_month'])
     )
 
     current_date = start_date + timedelta(seconds=sec_elapsed)
