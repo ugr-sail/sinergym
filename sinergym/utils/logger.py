@@ -78,7 +78,7 @@ class CSVLogger(object):
         self.total_time_elapsed = 0
         self.comfort_violation_timesteps = 0
 
-    def get_row_contents(
+    def create_row_contents(
             self,
             timestep: int,
             observation: List[Any],
@@ -119,7 +119,7 @@ class CSVLogger(object):
 
         """
         if self.flag:
-            self.steps_data.append(self.get_row_contents(
+            self.steps_data.append(self.create_row_contents(
                 timestep,
                 observation,
                 action,
@@ -163,7 +163,7 @@ class CSVLogger(object):
             done (bool): It specifies if this step terminates episode or not.
         """
         if self.flag:
-            self.steps_data_normalized.append(self.get_row_contents(
+            self.steps_data_normalized.append(self.create_row_contents(
                 timestep,
                 observation,
                 action,
