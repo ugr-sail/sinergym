@@ -31,7 +31,7 @@ jobs:
         env:
           TAG: ${{ steps.tag_version.outputs.latest_tag }}
           #TAG_DATE: ${{ steps.tag_version.outputs.latest_tag_published_at }}
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[dev] --tag $DOCKER_USER/sinergym-lite:$TAG
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[dev] --tag $DOCKER_USER/sinergym:$TAG-lite
       - name: Login Docker Hub
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
@@ -44,7 +44,7 @@ jobs:
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         env:
           TAG: ${{ steps.tag_version.outputs.latest_tag }}
-        run: docker push $DOCKER_USER/sinergym-lite:$TAG
+        run: docker push $DOCKER_USER/sinergym:$TAG-lite
 
   update-pypi:
     env:
