@@ -127,7 +127,7 @@ class MultiObsWrapper(gym.Wrapper):
 
 class LoggerWrapper(gym.Wrapper):
 
-    def __init__(self, env: Any, flag: bool = True):
+    def __init__(self, env: Any, flag: bool = True, logger: CSVLogger = CSVLogger, headers: list = None):
         """CSVLogger to log interactions with environment.
 
         Args:
@@ -136,9 +136,10 @@ class LoggerWrapper(gym.Wrapper):
         """
         gym.Wrapper.__init__(self, env)
         # Headers for csv logger
-        monitor_header_list = ['timestep'] + env.variables['observation'] + \
-            env.variables['action'] + ['time (seconds)', 'reward',
-                                       'power_penalty', 'comfort_penalty', 'done']
+        monitor_header_list = headers if headers is not None else \
+            (['timestep'] + env.variables['observation'] +
+                env.variables['action'] + ['time (seconds)', 'reward',
+                'power_penalty', 'comfort_penalty', 'done'])
         self.monitor_header = ''
         for element_header in monitor_header_list:
             self.monitor_header += element_header + ','
@@ -146,7 +147,7 @@ class LoggerWrapper(gym.Wrapper):
         self.progress_header = 'episode_num,cumulative_reward,mean_reward,cumulative_power_consumption,mean_power_consumption,cumulative_comfort_penalty,mean_comfort_penalty,cumulative_power_penalty,mean_power_penalty,comfort_violation (%),length(timesteps),time_elapsed(seconds)'
 
         # Create simulation logger, by default is active (flag=True)
-        self.logger = CSVLogger(
+        self.logger = logger(
             monitor_header=self.monitor_header,
             progress_header=self.progress_header,
             log_progress_file=env.simulator._env_working_dir_parent +
