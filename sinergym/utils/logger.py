@@ -88,7 +88,19 @@ class CSVLogger(object):
             total_power_no_units: Optional[float],
             comfort_penalty: Optional[float],
             done: bool) -> List:
+        """Assemble the array data to log in the new row
 
+        Args:
+            timestep (int): Current episode timestep in simulation.
+            observation (list): Values that belong to current observation.
+            action (list): Values that belong to current action.
+            simulation_time (float): Total time elapsed in current episode (seconds).
+            reward (float): Current reward achieved.
+            total_power_no_units (float): Power consumption penalty depending on reward function.
+            comfort_penalty (float): Temperature comfort penalty depending on reward function.
+            done (bool): It specifies if this step terminates episode or not.
+
+        """
         return [timestep] + list(observation) + \
                        list(action) + [simulation_time, reward,
                                        total_power_no_units, comfort_penalty, done]
