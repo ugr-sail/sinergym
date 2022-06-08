@@ -1,7 +1,11 @@
 {
 	"name": "sinergym",
 	"build": {
-		"args": {"ENERGYPLUS_VERSION":"9.5.0", "ENERGYPLUS_INSTALL_VERSION":"9-5-0", "ENERGYPLUS_SHA":"de239b2e5f"}
+		"args": {
+			"ENERGYPLUS_VERSION": "9.5.0",
+			"ENERGYPLUS_INSTALL_VERSION": "9-5-0",
+			"ENERGYPLUS_SHA": "de239b2e5f"
+		}
 	},
 	"dockerFile": "./Dockerfile",
 	"context": "..",
@@ -29,6 +33,18 @@
 		"terminal.integrated.defaultProfile.linux": "bash"
 	},
 	"extensions": [
-		"ms-python.python"
+		"ms-python.python",
+		"stackbreak.comment-divider",
+		"github.vscode-pull-request-github",
+		"ms-toolsai.jupyter",
+		"karyfoundation.idf",
+		"yzhang.markdown-all-in-one",
+		"ms-python.vscode-pylance",
+		"mechatroner.rainbow-csv",
+		"trond-snekvik.simple-rst",
+		"ue.alphabetical-sorter",
+		"njpwerner.autodocstring",
+		"grapecity.gc-excelviewer",
+		"ms-ceintl.vscode-language-pack-es",
 	]
 }
