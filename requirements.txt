@@ -8,3 +8,4 @@ opyplus
 pandas
 pytype
 twine
+six
