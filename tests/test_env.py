@@ -2,7 +2,7 @@ import os
 from random import randint
 
 import gym
-from stable_baselines3.common.env_checker import check_env
+from sinergym.utils.env_checker import check_env
 
 from sinergym.utils.constants import *
 
