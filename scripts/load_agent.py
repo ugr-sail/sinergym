@@ -52,6 +52,12 @@ parser.add_argument(
     dest='reward',
     help='Reward function used by model, by default is linear (possible values: linear, exponential).')
 parser.add_argument(
+    '--energy_weight',
+    '-rew',
+    type=float,
+    dest='energy_weight',
+    help='Reward energy weight with compatible rewards types.')
+parser.add_argument(
     '--normalization',
     '-norm',
     action='store_true',
@@ -108,7 +114,9 @@ args = parser.parse_args()
 #                                Evaluation name                               #
 # ---------------------------------------------------------------------------- #
 name = args.model.split('/')[-1] + '-EVAL-episodes-' + \
-    str(args.episodes) + '-id-' + args.id
+    str(args.episodes)
+if args.id:
+    name += '-id-' + args.id
 
 # ---------------------------------------------------------------------------- #
 #                            Environment definition                            #
@@ -121,6 +129,8 @@ else:
     raise RuntimeError('Reward function specified is not registered.')
 
 env = gym.make(args.environment, reward=reward)
+if hasattr(env.reward_fn, 'W_energy') and args.energy_weight:
+    env.reward_fn.W_energy = args.energy_weight
 
 # ---------------------------------------------------------------------------- #
 #                                   Wrappers                                   #

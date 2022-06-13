@@ -61,6 +61,12 @@ parser.add_argument(
     dest='reward',
     help='Reward function used by model, by default is linear (possible values: linear, exponential).')
 parser.add_argument(
+    '--energy_weight',
+    '-rew',
+    type=float,
+    dest='energy_weight',
+    help='Reward energy weight with compatible rewards types.')
+parser.add_argument(
     '--normalization',
     '-norm',
     action='store_true',
@@ -252,10 +258,14 @@ with mlflow.start_run(run_name=name):
                 args.reward))
 
     env = gym.make(args.environment, reward=reward)
+    if hasattr(env.reward_fn, 'W_energy') and args.energy_weight:
+        env.reward_fn.W_energy = args.energy_weight
     # env for evaluation if is enabled
     eval_env = None
     if args.evaluation:
         eval_env = gym.make(args.environment, reward=reward)
+        if hasattr(eval_env.reward_fn, 'W_energy') and args.energy_weight:
+            eval_env.reward_fn.W_energy = args.energy_weight
 
     # ---------------------------------------------------------------------------- #
     #                                   Wrappers                                   #
