@@ -1,5 +1,5 @@
 # Base on nrel/energyplus from Nicholas Long but using 
-# Ubuntu, Python 3.6 and BCVTB
+# Ubuntu, Python 3.10 and BCVTB
 ARG UBUNTU_VERSION=22.04
 FROM ubuntu:${UBUNTU_VERSION}
 
@@ -11,8 +11,8 @@ ARG ENERGYPLUS_SHA=de239b2e5f
 # Argument for Sinergym extras libraries
 ARG SINERGYM_EXTRAS=[extras]
 
-# Argument for choose Python version
-ARG PYTHON_VERSION=3.9
+# Argument for choosing Python version
+ARG PYTHON_VERSION=3.10
 
 ENV ENERGYPLUS_VERSION=$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
@@ -33,11 +33,10 @@ ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_F
 # that are not needed in the container
 ENV TZ=Europe/Kiev
 ENV BCVTB_PATH=/usr/local/bcvtb
-RUN apt-get update \
+RUN apt-get update && apt-get upgrade -y \
     # Added tzdata location in order to don't ask in keyboard input
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && apt-get install -y ca-certificates curl libx11-6 libexpat1 \
-    && rm -rf /var/lib/apt/lists/* \
     #Energyplus installation
     && curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
     && chmod +x $ENERGYPLUS_DOWNLOAD_FILENAME \
@@ -48,28 +47,20 @@ RUN apt-get update \
     # Remove the broken symlinks
     && cd /usr/local/bin find -L . -type l -delete \
     # BCVTB installation
-    && apt-get update && apt-get upgrade -y && echo "Y\r" | apt-get install default-jre openjdk-8-jdk \ 
-    && apt-get install -y git \
-    && apt-get install wget \
+    && echo "Y\r" | apt-get install default-jre openjdk-8-jdk \ 
+    && apt-get install -y git wget \
     && wget http://github.com/lbl-srg/bcvtb/releases/download/v1.6.0/bcvtb-install-linux64-v1.6.0.jar \
     && yes "1" | java -jar bcvtb-install-linux64-v1.6.0.jar \
     && cp -R 1/ $BCVTB_PATH && rm -R 1/ \
-    # Uninstall 3.6 python default version
-    && apt-get remove --purge python3-pip python3 -y \
-    && apt-get autoremove -y && apt-get autoclean -y \
-    # Install Python version PYTHON_VERSION
-    && apt install software-properties-common -y \
-    && add-apt-repository ppa:deadsnakes/ppa \
-    && apt install python${PYTHON_VERSION} python${PYTHON_VERSION}-distutils -y \
+    # Install pip, and make python point to python3
     && apt install python3-pip -y \
-    && python${PYTHON_VERSION} -m pip install --upgrade pip \
-    # Upgrade setuptools for possible errors (depending on python version)
-    && pip install --upgrade setuptools \
-    # python3.9 is now python bash command
-    && ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python \
-    # Intall some apt dependencies
+    && ln -s /usr/bin/python3 /usr/bin/python \
+    # Install some apt dependencies
     && echo "Y\r" | apt-get install python3-enchant -y \
-    && echo "Y\r" | apt-get install pandoc -y 
+    && echo "Y\r" | apt-get install pandoc -y \
+    # clean files
+    && apt-get autoremove -y && apt-get autoclean -y \
+    && rm -rf /var/lib/apt/lists/* 
 
 WORKDIR /sinergym
 COPY requirements.txt .
