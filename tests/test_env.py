@@ -1,5 +1,5 @@
 import os
-from random import randint
+from random import randint, sample
 
 import gym
 
@@ -78,7 +78,9 @@ def test_all_environments():
 
     envs_id = [env_spec.id for env_spec in gym.envs.registry.all()
                if env_spec.id.startswith('Eplus')]
-    for env_id in envs_id:
+    # Select 10 environments randomly (test would be too large)
+    samples_id = sample(envs_id, 5)
+    for env_id in samples_id:
         # Create env with TEST name
         env = gym.make(env_id)
 
