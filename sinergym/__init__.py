@@ -647,7 +647,7 @@ register(
         'config_params': DEFAULT_DATACENTER_CONFIG_PARAMS})
 
 # ---------------------------------------------------------------------------- #
-#                          Warehouse Environmens                               #
+#                          Warehouse Environments                              #
 # ---------------------------------------------------------------------------- #
 
 # 25) WH, hot weather, discrete actions
@@ -968,8 +968,387 @@ register(
         'env_name': 'warehouse-cool-continuous-stochastic-v1',
         'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
 
+
+# ---------------------------------------------------------------------------- #
+#                              Medium Office                                   #
+# ---------------------------------------------------------------------------- #
+
+# 37) MO, hot weather, discrete actions
 register(
-    id='Eplus-office-v1',
+    id='Eplus-office-hot-discrete-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'ASHRAE9012016_OfficeMedium_Denver.idf',
+        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
+        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
+        'action_space': DEFAULT_OFFICE_ACTION_SPACE_DISCRETE,
+        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
+        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
+        'reward': LinearReward,
+        'reward_kwargs': {
+            'temperature_variable': [
+                'Zone Air Temperature(Core_bottom)',
+                'Zone Air Temperature(TopFloor_Plenum)',
+                'Zone Air Temperature(MidFloor_Plenum)',
+                'Zone Air Temperature(FirstFloor_Plenum)',
+                'Zone Air Temperature(Core_mid)',
+                'Zone Air Temperature(Core_top)',
+                'Zone Air Temperature(Perimeter_top_ZN_3)',
+                'Zone Air Temperature(Perimeter_top_ZN_2)',
+                'Zone Air Temperature(Perimeter_top_ZN_1)',
+                'Zone Air Temperature(Perimeter_top_ZN_4)',
+                'Zone Air Temperature(Perimeter_bot_ZN_3)',
+                'Zone Air Temperature(Perimeter_bot_ZN_2)',
+                'Zone Air Temperature(Perimeter_bot_ZN_1)',
+                'Zone Air Temperature(Perimeter_bot_ZN_4)',
+                'Zone Air Temperature(Perimeter_mid_ZN_3)',
+                'Zone Air Temperature(Perimeter_mid_ZN_2)',
+                'Zone Air Temperature(Perimeter_mid_ZN_1)',
+                'Zone Air Temperature(Perimeter_mid_ZN_4)'
+            ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
+        'env_name': 'office-hot-discrete-v1',
+        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+
+# 38) MO, hot weather, continuous actions
+register(
+    id='Eplus-office-hot-continuous-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'ASHRAE9012016_OfficeMedium_Denver.idf',
+        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
+        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
+        'action_space': DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS,
+        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
+        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
+        'reward': LinearReward,
+        'reward_kwargs': {
+            'temperature_variable': [
+                'Zone Air Temperature(Core_bottom)',
+                'Zone Air Temperature(TopFloor_Plenum)',
+                'Zone Air Temperature(MidFloor_Plenum)',
+                'Zone Air Temperature(FirstFloor_Plenum)',
+                'Zone Air Temperature(Core_mid)',
+                'Zone Air Temperature(Core_top)',
+                'Zone Air Temperature(Perimeter_top_ZN_3)',
+                'Zone Air Temperature(Perimeter_top_ZN_2)',
+                'Zone Air Temperature(Perimeter_top_ZN_1)',
+                'Zone Air Temperature(Perimeter_top_ZN_4)',
+                'Zone Air Temperature(Perimeter_bot_ZN_3)',
+                'Zone Air Temperature(Perimeter_bot_ZN_2)',
+                'Zone Air Temperature(Perimeter_bot_ZN_1)',
+                'Zone Air Temperature(Perimeter_bot_ZN_4)',
+                'Zone Air Temperature(Perimeter_mid_ZN_3)',
+                'Zone Air Temperature(Perimeter_mid_ZN_2)',
+                'Zone Air Temperature(Perimeter_mid_ZN_1)',
+                'Zone Air Temperature(Perimeter_mid_ZN_4)'
+            ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
+        'env_name': 'office-hot-continuous-v1',
+        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+
+# 39) MO, hot weather, discrete actions and stochastic
+register(
+    id='Eplus-office-hot-discrete-stochastic-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'ASHRAE9012016_OfficeMedium_Denver.idf',
+        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
+        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
+        'action_space': DEFAULT_OFFICE_ACTION_SPACE_DISCRETE,
+        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
+        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
+        'weather_variability': (1.0, 0.0, 0.001),
+        'reward': LinearReward,
+        'reward_kwargs': {
+            'temperature_variable': [
+                'Zone Air Temperature(Core_bottom)',
+                'Zone Air Temperature(TopFloor_Plenum)',
+                'Zone Air Temperature(MidFloor_Plenum)',
+                'Zone Air Temperature(FirstFloor_Plenum)',
+                'Zone Air Temperature(Core_mid)',
+                'Zone Air Temperature(Core_top)',
+                'Zone Air Temperature(Perimeter_top_ZN_3)',
+                'Zone Air Temperature(Perimeter_top_ZN_2)',
+                'Zone Air Temperature(Perimeter_top_ZN_1)',
+                'Zone Air Temperature(Perimeter_top_ZN_4)',
+                'Zone Air Temperature(Perimeter_bot_ZN_3)',
+                'Zone Air Temperature(Perimeter_bot_ZN_2)',
+                'Zone Air Temperature(Perimeter_bot_ZN_1)',
+                'Zone Air Temperature(Perimeter_bot_ZN_4)',
+                'Zone Air Temperature(Perimeter_mid_ZN_3)',
+                'Zone Air Temperature(Perimeter_mid_ZN_2)',
+                'Zone Air Temperature(Perimeter_mid_ZN_1)',
+                'Zone Air Temperature(Perimeter_mid_ZN_4)'
+            ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
+        'env_name': 'office-hot-discrete-stochastic-v1',
+        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+
+# 40) MO, hot weather, continuous actions and stochastic
+register(
+    id='Eplus-office-hot-continuous-stochastic-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'ASHRAE9012016_OfficeMedium_Denver.idf',
+        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
+        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
+        'action_space': DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS,
+        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
+        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
+        'weather_variability': (1.0, 0.0, 0.001),
+        'reward': LinearReward,
+        'reward_kwargs': {
+            'temperature_variable': [
+                'Zone Air Temperature(Core_bottom)',
+                'Zone Air Temperature(TopFloor_Plenum)',
+                'Zone Air Temperature(MidFloor_Plenum)',
+                'Zone Air Temperature(FirstFloor_Plenum)',
+                'Zone Air Temperature(Core_mid)',
+                'Zone Air Temperature(Core_top)',
+                'Zone Air Temperature(Perimeter_top_ZN_3)',
+                'Zone Air Temperature(Perimeter_top_ZN_2)',
+                'Zone Air Temperature(Perimeter_top_ZN_1)',
+                'Zone Air Temperature(Perimeter_top_ZN_4)',
+                'Zone Air Temperature(Perimeter_bot_ZN_3)',
+                'Zone Air Temperature(Perimeter_bot_ZN_2)',
+                'Zone Air Temperature(Perimeter_bot_ZN_1)',
+                'Zone Air Temperature(Perimeter_bot_ZN_4)',
+                'Zone Air Temperature(Perimeter_mid_ZN_3)',
+                'Zone Air Temperature(Perimeter_mid_ZN_2)',
+                'Zone Air Temperature(Perimeter_mid_ZN_1)',
+                'Zone Air Temperature(Perimeter_mid_ZN_4)'
+            ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
+        'env_name': 'office-hot-continuous-stochastic-v1',
+        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+
+# 41) MO, mixed weather, discrete actions
+register(
+    id='Eplus-office-mixed-discrete-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'ASHRAE9012016_OfficeMedium_Denver.idf',
+        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
+        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
+        'action_space': DEFAULT_OFFICE_ACTION_SPACE_DISCRETE,
+        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
+        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
+        'reward': LinearReward,
+        'reward_kwargs': {
+            'temperature_variable': [
+                'Zone Air Temperature(Core_bottom)',
+                'Zone Air Temperature(TopFloor_Plenum)',
+                'Zone Air Temperature(MidFloor_Plenum)',
+                'Zone Air Temperature(FirstFloor_Plenum)',
+                'Zone Air Temperature(Core_mid)',
+                'Zone Air Temperature(Core_top)',
+                'Zone Air Temperature(Perimeter_top_ZN_3)',
+                'Zone Air Temperature(Perimeter_top_ZN_2)',
+                'Zone Air Temperature(Perimeter_top_ZN_1)',
+                'Zone Air Temperature(Perimeter_top_ZN_4)',
+                'Zone Air Temperature(Perimeter_bot_ZN_3)',
+                'Zone Air Temperature(Perimeter_bot_ZN_2)',
+                'Zone Air Temperature(Perimeter_bot_ZN_1)',
+                'Zone Air Temperature(Perimeter_bot_ZN_4)',
+                'Zone Air Temperature(Perimeter_mid_ZN_3)',
+                'Zone Air Temperature(Perimeter_mid_ZN_2)',
+                'Zone Air Temperature(Perimeter_mid_ZN_1)',
+                'Zone Air Temperature(Perimeter_mid_ZN_4)'
+            ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
+        'env_name': 'office-mixed-discrete-v1',
+        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+
+# 42) MO, mixed weather, continuous actions
+register(
+    id='Eplus-office-mixed-continuous-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'ASHRAE9012016_OfficeMedium_Denver.idf',
+        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
+        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
+        'action_space': DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS,
+        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
+        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
+        'reward': LinearReward,
+        'reward_kwargs': {
+            'temperature_variable': [
+                'Zone Air Temperature(Core_bottom)',
+                'Zone Air Temperature(TopFloor_Plenum)',
+                'Zone Air Temperature(MidFloor_Plenum)',
+                'Zone Air Temperature(FirstFloor_Plenum)',
+                'Zone Air Temperature(Core_mid)',
+                'Zone Air Temperature(Core_top)',
+                'Zone Air Temperature(Perimeter_top_ZN_3)',
+                'Zone Air Temperature(Perimeter_top_ZN_2)',
+                'Zone Air Temperature(Perimeter_top_ZN_1)',
+                'Zone Air Temperature(Perimeter_top_ZN_4)',
+                'Zone Air Temperature(Perimeter_bot_ZN_3)',
+                'Zone Air Temperature(Perimeter_bot_ZN_2)',
+                'Zone Air Temperature(Perimeter_bot_ZN_1)',
+                'Zone Air Temperature(Perimeter_bot_ZN_4)',
+                'Zone Air Temperature(Perimeter_mid_ZN_3)',
+                'Zone Air Temperature(Perimeter_mid_ZN_2)',
+                'Zone Air Temperature(Perimeter_mid_ZN_1)',
+                'Zone Air Temperature(Perimeter_mid_ZN_4)'
+            ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
+        'env_name': 'office-mixed-continuous-v1',
+        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+
+# 43) MO, mixed weather, discrete actions and stochastic
+register(
+    id='Eplus-office-mixed-discrete-stochastic-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'ASHRAE9012016_OfficeMedium_Denver.idf',
+        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
+        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
+        'action_space': DEFAULT_OFFICE_ACTION_SPACE_DISCRETE,
+        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
+        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
+        'weather_variability': (1.0, 0.0, 0.001),
+        'reward': LinearReward,
+        'reward_kwargs': {
+            'temperature_variable': [
+                'Zone Air Temperature(Core_bottom)',
+                'Zone Air Temperature(TopFloor_Plenum)',
+                'Zone Air Temperature(MidFloor_Plenum)',
+                'Zone Air Temperature(FirstFloor_Plenum)',
+                'Zone Air Temperature(Core_mid)',
+                'Zone Air Temperature(Core_top)',
+                'Zone Air Temperature(Perimeter_top_ZN_3)',
+                'Zone Air Temperature(Perimeter_top_ZN_2)',
+                'Zone Air Temperature(Perimeter_top_ZN_1)',
+                'Zone Air Temperature(Perimeter_top_ZN_4)',
+                'Zone Air Temperature(Perimeter_bot_ZN_3)',
+                'Zone Air Temperature(Perimeter_bot_ZN_2)',
+                'Zone Air Temperature(Perimeter_bot_ZN_1)',
+                'Zone Air Temperature(Perimeter_bot_ZN_4)',
+                'Zone Air Temperature(Perimeter_mid_ZN_3)',
+                'Zone Air Temperature(Perimeter_mid_ZN_2)',
+                'Zone Air Temperature(Perimeter_mid_ZN_1)',
+                'Zone Air Temperature(Perimeter_mid_ZN_4)'
+            ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
+        'env_name': 'office-mixed-discrete-stochastic-v1',
+        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+
+# 44) MO, mixed weather, continuous actions and stochastic
+register(
+    id='Eplus-office-mixed-continuous-stochastic-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'ASHRAE9012016_OfficeMedium_Denver.idf',
+        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
+        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
+        'action_space': DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS,
+        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
+        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
+        'weather_variability': (1.0, 0.0, 0.001),
+        'reward': LinearReward,
+        'reward_kwargs': {
+            'temperature_variable': [
+                'Zone Air Temperature(Core_bottom)',
+                'Zone Air Temperature(TopFloor_Plenum)',
+                'Zone Air Temperature(MidFloor_Plenum)',
+                'Zone Air Temperature(FirstFloor_Plenum)',
+                'Zone Air Temperature(Core_mid)',
+                'Zone Air Temperature(Core_top)',
+                'Zone Air Temperature(Perimeter_top_ZN_3)',
+                'Zone Air Temperature(Perimeter_top_ZN_2)',
+                'Zone Air Temperature(Perimeter_top_ZN_1)',
+                'Zone Air Temperature(Perimeter_top_ZN_4)',
+                'Zone Air Temperature(Perimeter_bot_ZN_3)',
+                'Zone Air Temperature(Perimeter_bot_ZN_2)',
+                'Zone Air Temperature(Perimeter_bot_ZN_1)',
+                'Zone Air Temperature(Perimeter_bot_ZN_4)',
+                'Zone Air Temperature(Perimeter_mid_ZN_3)',
+                'Zone Air Temperature(Perimeter_mid_ZN_2)',
+                'Zone Air Temperature(Perimeter_mid_ZN_1)',
+                'Zone Air Temperature(Perimeter_mid_ZN_4)'
+            ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
+        'env_name': 'office-mixed-continuous-stochastic-v1',
+        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+
+# 45) MO, cool weather, discrete actions
+register(
+    id='Eplus-office-cool-discrete-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'ASHRAE9012016_OfficeMedium_Denver.idf',
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
+        'action_space': DEFAULT_OFFICE_ACTION_SPACE_DISCRETE,
+        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
+        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
+        'reward': LinearReward,
+        'reward_kwargs': {
+            'temperature_variable': [
+                'Zone Air Temperature(Core_bottom)',
+                'Zone Air Temperature(TopFloor_Plenum)',
+                'Zone Air Temperature(MidFloor_Plenum)',
+                'Zone Air Temperature(FirstFloor_Plenum)',
+                'Zone Air Temperature(Core_mid)',
+                'Zone Air Temperature(Core_top)',
+                'Zone Air Temperature(Perimeter_top_ZN_3)',
+                'Zone Air Temperature(Perimeter_top_ZN_2)',
+                'Zone Air Temperature(Perimeter_top_ZN_1)',
+                'Zone Air Temperature(Perimeter_top_ZN_4)',
+                'Zone Air Temperature(Perimeter_bot_ZN_3)',
+                'Zone Air Temperature(Perimeter_bot_ZN_2)',
+                'Zone Air Temperature(Perimeter_bot_ZN_1)',
+                'Zone Air Temperature(Perimeter_bot_ZN_4)',
+                'Zone Air Temperature(Perimeter_mid_ZN_3)',
+                'Zone Air Temperature(Perimeter_mid_ZN_2)',
+                'Zone Air Temperature(Perimeter_mid_ZN_1)',
+                'Zone Air Temperature(Perimeter_mid_ZN_4)'
+            ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
+        'env_name': 'office-cool-discrete-v1',
+        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+
+# 46) MO, cool weather, continuous actions
+register(
+    id='Eplus-office-cool-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
         'idf_file': 'ASHRAE9012016_OfficeMedium_Denver.idf',
@@ -978,40 +1357,116 @@ register(
         'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
         'action_space': DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS,
         'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
-        'weather_variability': (1.0, 0.0, 0.001),
+        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)'
+                'Zone Air Temperature(Core_bottom)',
+                'Zone Air Temperature(TopFloor_Plenum)',
+                'Zone Air Temperature(MidFloor_Plenum)',
+                'Zone Air Temperature(FirstFloor_Plenum)',
+                'Zone Air Temperature(Core_mid)',
+                'Zone Air Temperature(Core_top)',
+                'Zone Air Temperature(Perimeter_top_ZN_3)',
+                'Zone Air Temperature(Perimeter_top_ZN_2)',
+                'Zone Air Temperature(Perimeter_top_ZN_1)',
+                'Zone Air Temperature(Perimeter_top_ZN_4)',
+                'Zone Air Temperature(Perimeter_bot_ZN_3)',
+                'Zone Air Temperature(Perimeter_bot_ZN_2)',
+                'Zone Air Temperature(Perimeter_bot_ZN_1)',
+                'Zone Air Temperature(Perimeter_bot_ZN_4)',
+                'Zone Air Temperature(Perimeter_mid_ZN_3)',
+                'Zone Air Temperature(Perimeter_mid_ZN_2)',
+                'Zone Air Temperature(Perimeter_mid_ZN_1)',
+                'Zone Air Temperature(Perimeter_mid_ZN_4)'
             ],
             'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
-        'env_name': 'PRUEBA_OFFICE',
-        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS
-    })
+        'env_name': 'office-cool-continuous-v1',
+        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
 
+# 47) MO, cool weather, discrete actions and stochastic
 register(
-    id='Eplus-hospital-v1',
+    id='Eplus-office-cool-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'idf_file': 'ASHRAE9012016_Hospital_Denver.idf',
+        'idf_file': 'ASHRAE9012016_OfficeMedium_Denver.idf',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_HOSPITAL_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_HOSPITAL_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_HOSPITAL_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_HOSPITAL_ACTION_VARIABLES,
+        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
+        'action_space': DEFAULT_OFFICE_ACTION_SPACE_DISCRETE,
+        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
+        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
         'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variable': [
-                'Zone Air Temperature(Basement)'
+                'Zone Air Temperature(Core_bottom)',
+                'Zone Air Temperature(TopFloor_Plenum)',
+                'Zone Air Temperature(MidFloor_Plenum)',
+                'Zone Air Temperature(FirstFloor_Plenum)',
+                'Zone Air Temperature(Core_mid)',
+                'Zone Air Temperature(Core_top)',
+                'Zone Air Temperature(Perimeter_top_ZN_3)',
+                'Zone Air Temperature(Perimeter_top_ZN_2)',
+                'Zone Air Temperature(Perimeter_top_ZN_1)',
+                'Zone Air Temperature(Perimeter_top_ZN_4)',
+                'Zone Air Temperature(Perimeter_bot_ZN_3)',
+                'Zone Air Temperature(Perimeter_bot_ZN_2)',
+                'Zone Air Temperature(Perimeter_bot_ZN_1)',
+                'Zone Air Temperature(Perimeter_bot_ZN_4)',
+                'Zone Air Temperature(Perimeter_mid_ZN_3)',
+                'Zone Air Temperature(Perimeter_mid_ZN_2)',
+                'Zone Air Temperature(Perimeter_mid_ZN_1)',
+                'Zone Air Temperature(Perimeter_mid_ZN_4)'
             ],
             'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         },
-        'env_name': 'PRUEBA_HOSPITAL',
-        'config_params': DEFAULT_HOSPITAL_CONFIG_PARAMS
-    })
+        'env_name': 'office-cool-discrete-stochastic-v1',
+        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+
+# 48) MO, cool weather, continuous actions and stochastic
+register(
+    id='Eplus-office-cool-continuous-stochastic-v1',
+    entry_point='sinergym.envs:EplusEnv',
+    kwargs={
+        'idf_file': 'ASHRAE9012016_OfficeMedium_Denver.idf',
+        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
+        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
+        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
+        'action_space': DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS,
+        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
+        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
+        'weather_variability': (1.0, 0.0, 0.001),
+        'reward': LinearReward,
+        'reward_kwargs': {
+            'temperature_variable': [
+                'Zone Air Temperature(Core_bottom)',
+                'Zone Air Temperature(TopFloor_Plenum)',
+                'Zone Air Temperature(MidFloor_Plenum)',
+                'Zone Air Temperature(FirstFloor_Plenum)',
+                'Zone Air Temperature(Core_mid)',
+                'Zone Air Temperature(Core_top)',
+                'Zone Air Temperature(Perimeter_top_ZN_3)',
+                'Zone Air Temperature(Perimeter_top_ZN_2)',
+                'Zone Air Temperature(Perimeter_top_ZN_1)',
+                'Zone Air Temperature(Perimeter_top_ZN_4)',
+                'Zone Air Temperature(Perimeter_bot_ZN_3)',
+                'Zone Air Temperature(Perimeter_bot_ZN_2)',
+                'Zone Air Temperature(Perimeter_bot_ZN_1)',
+                'Zone Air Temperature(Perimeter_bot_ZN_4)',
+                'Zone Air Temperature(Perimeter_mid_ZN_3)',
+                'Zone Air Temperature(Perimeter_mid_ZN_2)',
+                'Zone Air Temperature(Perimeter_mid_ZN_1)',
+                'Zone Air Temperature(Perimeter_mid_ZN_4)'
+            ],
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (18, 27),
+            'range_comfort_summer': (18, 27)
+        },
+        'env_name': 'office-cool-continuous-stochastic-v1',
+        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})

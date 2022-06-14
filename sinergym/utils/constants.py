@@ -364,6 +364,23 @@ DEFAULT_WAREHOUSE_CONFIG_PARAMS = {'action_definition': {
 
 DEFAULT_OFFICE_OBSERVATION_VARIABLES = [
     'Zone Air Temperature(Core_bottom)',
+    'Zone Air Temperature(TopFloor_Plenum)',
+    'Zone Air Temperature(MidFloor_Plenum)',
+    'Zone Air Temperature(FirstFloor_Plenum)',
+    'Zone Air Temperature(Core_mid)',
+    'Zone Air Temperature(Core_top)',
+    'Zone Air Temperature(Perimeter_top_ZN_3)',
+    'Zone Air Temperature(Perimeter_top_ZN_2)',
+    'Zone Air Temperature(Perimeter_top_ZN_1)',
+    'Zone Air Temperature(Perimeter_top_ZN_4)',
+    'Zone Air Temperature(Perimeter_bot_ZN_3)',
+    'Zone Air Temperature(Perimeter_bot_ZN_2)',
+    'Zone Air Temperature(Perimeter_bot_ZN_1)',
+    'Zone Air Temperature(Perimeter_bot_ZN_4)',
+    'Zone Air Temperature(Perimeter_mid_ZN_3)',
+    'Zone Air Temperature(Perimeter_mid_ZN_2)',
+    'Zone Air Temperature(Perimeter_mid_ZN_1)',
+    'Zone Air Temperature(Perimeter_mid_ZN_4)'
     'Facility Total HVAC Electricity Demand Rate(Whole Building)',
     'Site Outdoor Air Drybulb Temperature(Environment)'
 ]
