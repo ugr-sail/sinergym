@@ -45,11 +45,11 @@ _This is a work in progress project. Stay tuned for upcoming releases._
 
 ## List of available environments
 
-If you would like to see a complete and updated list of our available environments, please visit [our list](https://jajimer.github.io/sinergym/compilation/html/pages/environments.html) in the official Sinergym documentation.
+If you would like to see a complete and updated list of our available environments, please visit [our list](https://ugr-sail.github.io/sinergym/compilation/html/pages/environments.html) in the official Sinergym documentation.
 
 ## Installation
 
-For more detailed information, please visit our [documentation](https://jajimer.github.io/sinergym/compilation/html/index.html).
+For more detailed information, please visit our [documentation](https://ugr-sail.github.io/sinergym/compilation/html/index.html).
 
 ### Docker container
 
@@ -87,7 +87,7 @@ To install *Sinergym* manually instead of through the container (recommended), f
 - First, clone this repository:
 
 ```sh
-  $ git clone https://github.com/jajimer/sinergym.git
+  $ git clone https://github.com/ugr-sail/sinergym.git
   $ cd sinergym
 ```
 
@@ -116,9 +116,9 @@ Install EnergyPlus. Currently it has been update compatibility to 9.5.0 and it h
 been tested, but code may also work with other versions. Sinergym ensure this support:
 
 | Sinergym Version | EnergyPlus version |
-|:----------------:|:------------------:|
-|  1.0.0 or before |        8.6.0       |
-|  1.1.0 or later  |        9.5.0       |
+| :--------------: | :----------------: |
+| 1.0.0 or before  |       8.6.0        |
+|  1.1.0 or later  |       9.5.0        |
 
 Other combination may works, but they don't have been tested.
 
@@ -160,7 +160,7 @@ It's possible to select a subset of these libraries instead of 'extras' tag in w
   $ pip install -e .[test,doc]
 ```
 
-In order to check all our tag list, visit `setup.py <https://github.com/jajimer/sinergym/blob/main/setup.py>`__ in Sinergym root repository. In any case, they are not a requirement of the package.
+In order to check all our tag list, visit `setup.py <https://github.com/ugr-sail/sinergym/blob/main/setup.py>`__ in Sinergym root repository. In any case, they are not a requirement of the package.
 
 You can also install from `oficial pypi repository <https://pypi.org/project/sinergym/>`__ with last stable version by default:
 
@@ -203,13 +203,13 @@ env.close()
 
 Notice that a folder will be created in the working directory after creating the environment. It will contain the EnergyPlus outputs produced during the simulation.
 
-:pencil: For more examples and details, please visit our [usage examples](https://jajimer.github.io/sinergym/compilation/html/pages/usage-example.html) documentation section
+:pencil: For more examples and details, please visit our [usage examples](https://ugr-sail.github.io/sinergym/compilation/html/pages/usage-example.html) documentation section
 
 ## Google Cloud Platform support
 
 Cloud Computing 
 
-For more information about this functionality, please, visit our documentation [here](https://jajimer.github.io/sinergym/compilation/html/pages/gcloudAPI.html).
+For more information about this functionality, please, visit our documentation [here](https://ugr-sail.github.io/sinergym/compilation/html/pages/gcloudAPI.html).
 
 ## Citing Sinergym
 

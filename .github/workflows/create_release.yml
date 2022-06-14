@@ -18,7 +18,7 @@ jobs:
         id: tag_version
         uses: abatilo/release-info-action@v1.3.0
         with:
-          owner: jajimer
+          owner: ugr-sail
           repo: sinergym
       - name: Build container complete image with release tag
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"

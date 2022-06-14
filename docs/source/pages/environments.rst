@@ -132,7 +132,7 @@ Structure of observation and action space is defined in Environment constructor 
 - **observation_variables**: List of observation variables that simulator is going to process like an observation. These variables names must 
                              follow the structure `<variable_name>(<zone_name>)` in order to register them correctly. Sinergym will check for
                              you that the variable names are correct with respect to the building you are trying to simulate (IDF file). 
-                             To do this, it will look at the list found in the `variables <https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables>`__ folder of the project (**RDD** file). 
+                             To do this, it will look at the list found in the `variables <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/variables>`__ folder of the project (**RDD** file). 
 
 - **observation_space**: Definition of the observation space following the **gym standard**. This space is used to represent all the observations 
                          variables that we have previously defined. Remember that the **year, month, day and hour** are added by Sinergym later, 
@@ -157,7 +157,7 @@ Specification
 ~~~~~~~~~~~~~~
 
 As we have told, Observation and action spaces are defined **dynamically** in Sinergym Environment constructor. Environment ID's registered in Sinergym use a **default** definition
-set up in `constants.py <https://github.com/jajimer/sinergym/tree/main/sinergym/utils/constants.py>`__.
+set up in `constants.py <https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/constants.py>`__.
 
 As can be seen in environments observations, the **year, month, day and hour** are included in, but is not configured in default observation variables definition. 
 This is because they are not variables recognizable by the simulator as such (Energyplus) and Sinergym does the calculations and adds them in the states returned as 
@@ -179,7 +179,7 @@ Adding new buildings for environments
 
 This section is intended to provide information if someone decides to add new buildings for use with Sinergym. The main steps you have to follow are the next:
 
-1. Add your building (IDF file) to `buildings <https://github.com/jajimer/sinergym/tree/main/sinergym/data/buildings>`__. 
+1. Add your building (IDF file) to `buildings <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings>`__. 
    As mentioned in section :ref:`Observation/action spaces`, the IDF must be previously adapted to your action space or use our **action definition** (section :ref:`action_definition`) 
    to be automatically adapted to the action space and variables you have designed for it, as long as we provide support for the specific component you want to control. By default, Sinergym will create
    an `ExternalInterface` object in IDF file with an empty action space. Then, all the components will be managed by a default scheduler designed in IDF file.
@@ -187,11 +187,11 @@ This section is intended to provide information if someone decides to add new bu
 2. Add your own EPW file for weather conditions or use ours in environment constructor. Sinergym will adapt `DesignDays` in IDF file using EPW automatically.
 
 3. Sinergym will check that observation variables specified are available in the simulation before starting. In order to be able to do these checks, 
-   you need to copy **RDD file** with the same name than IDF file (except extension) to `variables <https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables>`__. 
+   you need to copy **RDD file** with the same name than IDF file (except extension) to `variables <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/variables>`__. 
    To obtain this **RDD file** you have to run a simulation with *Energyplus* directly and extract from output folder. 
    Make sure that **Output:VariableDictionary** object in IDF has the value *Regular* in order to RDD file has the correct formar for Sinergym.
 
-4. Register your own environment ID `here <https://github.com/jajimer/sinergym/blob/main/sinergym/__init__.py>`__ following the same structure than the rest.
+4. Register your own environment ID `here <https://github.com/ugr-sail/sinergym/blob/main/sinergym/__init__.py>`__ following the same structure than the rest.
 
 5. Now, you can use your own environment ID with `gym.make()` like our documentation examples.
 
