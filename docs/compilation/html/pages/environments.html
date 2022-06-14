@@ -16,6 +16,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -128,9 +129,9 @@
 }
 </style>
 <section id="environments">
-<h1>Environments<a class="headerlink" href="#environments" title="Permalink to this headline"></a></h1>
+<h1>Environments<a class="headerlink" href="#environments" title="Permalink to this heading"></a></h1>
 <section id="environments-list">
-<h2>Environments List<a class="headerlink" href="#environments-list" title="Permalink to this headline"></a></h2>
+<h2>Environments List<a class="headerlink" href="#environments-list" title="Permalink to this heading"></a></h2>
 <p>The list of available environments is the following:</p>
 <table class="docutils align-default">
 <colgroup>
@@ -384,15 +385,15 @@
 </tr>
 </tbody>
 </table>
-<p>(*) Weather types according to <a class="reference external" href="https://www.energycodes.gov/development/commercial/prototype_models#TMY3">DOE's
+<p>(*) Weather types according to <a class="reference external" href="https://www.energycodes.gov/development/commercial/prototype_models#TMY3">DOE’s
 classification</a>.</p>
 <p>(**) In these environments, weather series change from episode to
 episode. Gaussian noise with 0 mean and 2.5 std is added to the original
 values in order to add stochastic.</p>
 </section>
 <section id="observation-action-spaces">
-<h2>Observation/action spaces<a class="headerlink" href="#observation-action-spaces" title="Permalink to this headline"></a></h2>
-<p>Structure of observation and action space is defined in Environment constructor directly. This allows for a <strong>dynamic definition</strong> of these spaces. Let's see the fields required to do it:</p>
+<h2>Observation/action spaces<a class="headerlink" href="#observation-action-spaces" title="Permalink to this heading"></a></h2>
+<p>Structure of observation and action space is defined in Environment constructor directly. This allows for a <strong>dynamic definition</strong> of these spaces. Let’s see the fields required to do it:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">idf_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -557,14 +558,14 @@ from [-1,1] to real action space is called <code class="docutils literal notrans
 <li><p><strong>action_mapping</strong>: It is only necessary to specify it in discrete action spaces. It is a dictionary that links an index to a specific configuration of values for each action variable.</p></li>
 </ul>
 <section id="specification">
-<h3>Specification<a class="headerlink" href="#specification" title="Permalink to this headline"></a></h3>
-<p>As we have told, Observation and action spaces are defined <strong>dinamically</strong> in Sinergym Environment constructor. Environment ID's registered in Sinergym use a <strong>default</strong> definition
+<h3>Specification<a class="headerlink" href="#specification" title="Permalink to this heading"></a></h3>
+<p>As we have told, Observation and action spaces are defined <strong>dinamically</strong> in Sinergym Environment constructor. Environment ID’s registered in Sinergym use a <strong>default</strong> definition
 set up in <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/utils/constants.py">constants.py</a>.</p>
 <p>As can be seen in environments observations, the <strong>year, month, day and hour</strong> are included in, but is not configured in default observation variables definition.
 This is because they are not variables recognizable by the simulator as such (Energyplus) and Sinergym does the calculations and adds them in the states returned as
-output by the environment. This feature is common to all environments available in Sinergym and all supported building designs. In other words, you don't need to
+output by the environment. This feature is common to all environments available in Sinergym and all supported building designs. In other words, you don’t need to
 add this variables (<strong>year, month, day and hour</strong>) to observation variables but yes to the observation space.</p>
-<p>As we told before, all environments ID's registered in Sinergym use its respectively <strong>default action and observation spaces, variables and definition</strong>.
+<p>As we told before, all environments ID’s registered in Sinergym use its respectively <strong>default action and observation spaces, variables and definition</strong>.
 However, you can <strong>change</strong> this values giving you the possibility of playing with different observation/action spaces in discrete and continuous environments in order to study how this affects the resolution of a building problem.</p>
 <p>Sinergym has several checkers to ensure that there are no inconsistencies in the alternative specifications made to the default ones. In case the specification offered is wrong, Sinergym will launch messages indicating where the error or inconsistency is located.</p>
 <div class="admonition note">
@@ -576,7 +577,7 @@ action and observation space definition in environment construction.</p>
 </section>
 </section>
 <section id="adding-new-buildings-for-environments">
-<h2>Adding new buildings for environments<a class="headerlink" href="#adding-new-buildings-for-environments" title="Permalink to this headline"></a></h2>
+<h2>Adding new buildings for environments<a class="headerlink" href="#adding-new-buildings-for-environments" title="Permalink to this heading"></a></h2>
 <p>This section is intended to provide information if someone decides to add new buildings for use with Sinergym. The main steps you have to follow are the next:</p>
 <ol class="arabic simple">
 <li><p>Add your building (IDF file) to <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/data/buildings">buildings</a>.
