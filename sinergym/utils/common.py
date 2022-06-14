@@ -4,7 +4,7 @@ import os
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from pydoc import locate
-from typing import Any, Dict, List, Optional, Tuple, Union, Type
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import gym
 import numpy as np

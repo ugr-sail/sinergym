@@ -2,9 +2,10 @@ import argparse
 import pprint
 
 import gym
-import pkg_resources
 import numpy as np
+import pkg_resources
 import pytest
+
 required = {'stable-baselines3'}
 installed = {pkg.key for pkg in pkg_resources.working_set}
 missing = required - installed
