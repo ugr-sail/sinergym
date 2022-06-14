@@ -8,75 +8,108 @@ Environments List
 
 The list of available environments is the following:
 
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Env. name                                          | Location        | IDF file                            | Weather type (*)           | Action space | Simulation period |
-+====================================================+=================+=====================================+============================+==============+===================+
-| Eplus-demo-v1                                      | Pittsburgh, USA | 5ZoneAutoDXVAV.idf                  |            \-              | Discrete(10) |   01/01 - 31/03   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-5Zone-hot-discrete-v1                        | Arizona, USA    | 5ZoneAutoDXVAV.idf                  |        Hot dry (2B)        | Discrete(10) |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-5Zone-mixed-discrete-v1                      | New York, USA   | 5ZoneAutoDXVAV.idf                  |      Mixed humid (4A)      | Discrete(10) |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-5Zone-cool-discrete-v1                       | Washington, USA | 5ZoneAutoDXVAV.idf                  |      Cool marine (5C)      | Discrete(10) |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-5Zone-hot-continuous-v1                      | Arizona, USA    | 5ZoneAutoDXVAV.idf                  |        Hot dry (2B)        | Box(2)       |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-5Zone-mixed-continuous-v1                    | New York, USA   | 5ZoneAutoDXVAV.idf                  |      Mixed humid (4A)      | Box(2)       |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-5Zone-cool-continuous-v1                     | Washington, USA | 5ZoneAutoDXVAV.idf                  |      Cool marine (5C)      | Box(2)       |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-5Zone-hot-discrete-stochastic-v1             | Arizona, USA    | 5ZoneAutoDXVAV.idf                  |        Hot dry (2B) (**)   | Discrete(10) |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-5Zone-mixed-discrete-stochastic-v1           | New York, USA   | 5ZoneAutoDXVAV.idf                  |      Mixed humid (4A) (**) | Discrete(10) |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-5Zone-cool-discrete-stochastic-v1            | Washington, USA | 5ZoneAutoDXVAV.idf                  |      Cool marine (5C) (**) | Discrete(10) |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-5Zone-hot-continuous-stochastic-v1           | Arizona, USA    | 5ZoneAutoDXVAV.idf                  |        Hot dry (2B) (**)   | Box(2)       |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-5Zone-mixed-continuous-stochastic-v1         | New York, USA   | 5ZoneAutoDXVAV.idf                  |      Mixed humid (4A) (**) | Box(2)       |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-5Zone-cool-continuous-stochastic-v1          | Washington, USA | 5ZoneAutoDXVAV.idf                  |      Cool marine (5C) (**) | Box(2)       |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-datacenter-hot-discrete-v1                   | Arizona, USA    | 2ZoneDataCenterHVAC_wEconomizer.idf |      Hot dry (2B)          | Discrete(10) |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-datacenter-hot-continuous-v1                 | Arizona, USA    | 2ZoneDataCenterHVAC_wEconomizer.idf |      Hot dry (2B)          | Box(4)       |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-datacenter-hot-discrete-stochastic-v1        | Arizona, USA    | 2ZoneDataCenterHVAC_wEconomizer.idf |      Hot dry (2B) (**)     | Discrete(10) |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-datacenter-hot-continuous-stochastic-v1      | Arizona, USA    | 2ZoneDataCenterHVAC_wEconomizer.idf |      Hot dry (2B) (**)     | Box(4)       |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-datacenter-mixed-discrete-stochastic-v1      | New York, USA   | 2ZoneDataCenterHVAC_wEconomizer.idf |      Mixed humid (4A) (**) | Discrete(10) |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-datacenter-mixed-continuous-v1               | New York, USA   | 2ZoneDataCenterHVAC_wEconomizer.idf |      Mixed humid (4A)      | Box(4)       |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-datacenter-mixed-discrete-v1                 | New York, USA   | 2ZoneDataCenterHVAC_wEconomizer.idf |      Mixed humid (4A)      | Discrete(10) |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-datacenter-mixed-continuous-stochastic-v1    | New York, USA   | 2ZoneDataCenterHVAC_wEconomizer.idf |      Mixed humid (4A) (**) | Box(4)       |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-datacenter-cool-discrete-stochastic-v1       | Washington, USA | 2ZoneDataCenterHVAC_wEconomizer.idf |      Mixed humid (4A) (**) | Discrete(10) |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-datacenter-cool-continuous-v1                | Washington, USA | 2ZoneDataCenterHVAC_wEconomizer.idf |      Mixed humid (4A)      | Box(4)       |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-datacenter-cool-discrete-v1                  | Washington, USA | 2ZoneDataCenterHVAC_wEconomizer.idf |      Mixed humid (4A)      | Discrete(10) |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-datacenter-cool-continuous-stochastic-v1     | Washington, USA | 2ZoneDataCenterHVAC_wEconomizer.idf |      Mixed humid (4A) (**) | Box(4)       |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-IWMullion-mixed-discrete-v1                  | New York, USA   | IWMullion.idf                       |      Mixed humid (4A)      | Discrete(10) |   01/01 - 31/12   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-IWMullion-mixed-discrete-stochastic-v1       | New York, USA   | IWMullion.idf                       |      Mixed humid (4A) (**) | Discrete(10) |   01/01 - 31/03   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-IWMullion-mixed-continuous-v1                | New York, USA   | IWMullion.idf                       |      Mixed humid (4A)      | Box(2)       |   01/01 - 31/03   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-IWMullion-cool-discrete-v1                   | Washington, USA | IWMullion.idf                       |      Cool marine (5C) (**) | Discrete(10) |   01/01 - 31/03   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-IWMullion-mixed-continuous-stochastic-v1     | New York, USA   | IWMullion.idf                       |      Mixed humid (4A) (**) | Box(2)       |   01/01 - 31/03   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-IWMullion-cool-discrete-stochastic-v1        | Washington, USA | IWMullion.idf                       |      Cool marine (5C) (**) | Discrete(10) |   01/01 - 31/03   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-IWMullion-cool-continuous-v1                 | Washington, USA | IWMullion.idf                       |      Cool marine (5C)      | Box(2)       |   01/01 - 31/03   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
-| Eplus-IWMullion-cool-continuous-stochastic-v1      | Washington, USA | IWMullion.idf                       |      Cool marine (5C) (**) | Box(2)       |   01/01 - 31/03   |
-+----------------------------------------------------+-----------------+-------------------------------------+----------------------------+--------------+-------------------+
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Env. name                                          | Location        | IDF file                              | Weather type (*)           | Action space | Simulation period |
++====================================================+=================+=======================================+============================+==============+===================+
+| Eplus-demo-v1                                      | Pittsburgh, USA | 5ZoneAutoDXVAV.idf                    |            \-              | Discrete(10) |   01/01 - 31/03   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-5Zone-hot-discrete-v1                        | Arizona, USA    | 5ZoneAutoDXVAV.idf                    |        Hot dry (2B)        | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-5Zone-mixed-discrete-v1                      | New York, USA   | 5ZoneAutoDXVAV.idf                    |      Mixed humid (4A)      | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-5Zone-cool-discrete-v1                       | Washington, USA | 5ZoneAutoDXVAV.idf                    |      Cool marine (5C)      | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-5Zone-hot-continuous-v1                      | Arizona, USA    | 5ZoneAutoDXVAV.idf                    |        Hot dry (2B)        | Box(2)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-5Zone-mixed-continuous-v1                    | New York, USA   | 5ZoneAutoDXVAV.idf                    |      Mixed humid (4A)      | Box(2)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-5Zone-cool-continuous-v1                     | Washington, USA | 5ZoneAutoDXVAV.idf                    |      Cool marine (5C)      | Box(2)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-5Zone-hot-discrete-stochastic-v1             | Arizona, USA    | 5ZoneAutoDXVAV.idf                    |        Hot dry (2B) (**)   | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-5Zone-mixed-discrete-stochastic-v1           | New York, USA   | 5ZoneAutoDXVAV.idf                    |      Mixed humid (4A) (**) | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-5Zone-cool-discrete-stochastic-v1            | Washington, USA | 5ZoneAutoDXVAV.idf                    |      Cool marine (5C) (**) | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-5Zone-hot-continuous-stochastic-v1           | Arizona, USA    | 5ZoneAutoDXVAV.idf                    |        Hot dry (2B) (**)   | Box(2)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-5Zone-mixed-continuous-stochastic-v1         | New York, USA   | 5ZoneAutoDXVAV.idf                    |      Mixed humid (4A) (**) | Box(2)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-5Zone-cool-continuous-stochastic-v1          | Washington, USA | 5ZoneAutoDXVAV.idf                    |      Cool marine (5C) (**) | Box(2)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-datacenter-hot-discrete-v1                   | Arizona, USA    | 2ZoneDataCenterHVAC_wEconomizer.idf   |      Hot dry (2B)          | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-datacenter-hot-continuous-v1                 | Arizona, USA    | 2ZoneDataCenterHVAC_wEconomizer.idf   |      Hot dry (2B)          | Box(4)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-datacenter-hot-discrete-stochastic-v1        | Arizona, USA    | 2ZoneDataCenterHVAC_wEconomizer.idf   |      Hot dry (2B) (**)     | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-datacenter-hot-continuous-stochastic-v1      | Arizona, USA    | 2ZoneDataCenterHVAC_wEconomizer.idf   |      Hot dry (2B) (**)     | Box(4)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-datacenter-mixed-discrete-stochastic-v1      | New York, USA   | 2ZoneDataCenterHVAC_wEconomizer.idf   |      Mixed humid (4A) (**) | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-datacenter-mixed-continuous-v1               | New York, USA   | 2ZoneDataCenterHVAC_wEconomizer.idf   |      Mixed humid (4A)      | Box(4)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-datacenter-mixed-discrete-v1                 | New York, USA   | 2ZoneDataCenterHVAC_wEconomizer.idf   |      Mixed humid (4A)      | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-datacenter-mixed-continuous-stochastic-v1    | New York, USA   | 2ZoneDataCenterHVAC_wEconomizer.idf   |      Mixed humid (4A) (**) | Box(4)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-datacenter-cool-discrete-stochastic-v1       | Washington, USA | 2ZoneDataCenterHVAC_wEconomizer.idf   |      Cool marine (5C) (**) | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-datacenter-cool-continuous-v1                | Washington, USA | 2ZoneDataCenterHVAC_wEconomizer.idf   |      Cool marine (5C)      | Box(4)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-datacenter-cool-discrete-v1                  | Washington, USA | 2ZoneDataCenterHVAC_wEconomizer.idf   |      Cool marine (5C)      | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-datacenter-cool-continuous-stochastic-v1     | Washington, USA | 2ZoneDataCenterHVAC_wEconomizer.idf   |      Cool marine (5C) (**) | Box(4)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-warehouse-hot-discrete-v1                    | Arizona, USA    | ASHRAE9012016_Warehouse_Denver.idf    |      Hot dry (2B)          | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-warehouse-hot-continuous-v1                  | Arizona, USA    | ASHRAE9012016_Warehouse_Denver.idf    |      Hot dry (2B)          | Box(5)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-warehouse-hot-discrete-stochastic-v1         | Arizona, USA    | ASHRAE9012016_Warehouse_Denver.idf    |      Hot dry (2B) (**)     | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-warehouse-hot-continuous-stochastic-v1       | Arizona, USA    | ASHRAE9012016_Warehouse_Denver.idf    |      Hot dry (2B) (**)     | Box(5)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-warehouse-mixed-discrete-stochastic-v1       | New York, USA   | ASHRAE9012016_Warehouse_Denver.idf    |      Mixed humid (4A) (**) | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-warehouse-mixed-continuous-v1                | New York, USA   | ASHRAE9012016_Warehouse_Denver.idf    |      Mixed humid (4A)      | Box(5)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-warehouse-mixed-discrete-v1                  | New York, USA   | ASHRAE9012016_Warehouse_Denver.idf    |      Mixed humid (4A)      | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-warehouse-mixed-continuous-stochastic-v1     | New York, USA   | ASHRAE9012016_Warehouse_Denver.idf    |      Mixed humid (4A) (**) | Box(5)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-warehouse-cool-discrete-stochastic-v1        | Washington, USA | ASHRAE9012016_Warehouse_Denver.idf    |      Cool marine (5C) (**) | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-warehouse-cool-continuous-v1                 | Washington, USA | ASHRAE9012016_Warehouse_Denver.idf    |      Cool marine (5C)      | Box(5)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-warehouse-cool-discrete-v1                   | Washington, USA | ASHRAE9012016_Warehouse_Denver.idf    |      Cool marine (5C)      | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-warehouse-cool-continuous-stochastic-v1      | Washington, USA | ASHRAE9012016_Warehouse_Denver.idf    |     Cool marine (5C) (**)  | Box(5)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-office-hot-discrete-v1                       | Arizona, USA    | ASHRAE9012016_OfficeMedium_Denver.idf |      Hot dry (2B)          | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-office-hot-continuous-v1                     | Arizona, USA    | ASHRAE9012016_OfficeMedium_Denver.idf |      Hot dry (2B)          | Box(2)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-office-hot-discrete-stochastic-v1            | Arizona, USA    | ASHRAE9012016_OfficeMedium_Denver.idf |      Hot dry (2B) (**)     | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-office-hot-continuous-stochastic-v1          | Arizona, USA    | ASHRAE9012016_OfficeMedium_Denver.idf |      Hot dry (2B) (**)     | Box(2)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-office-mixed-discrete-stochastic-v1          | New York, USA   | ASHRAE9012016_OfficeMedium_Denver.idf |      Mixed humid (4A) (**) | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-office-mixed-continuous-v1                   | New York, USA   | ASHRAE9012016_OfficeMedium_Denver.idf |      Mixed humid (4A)      | Box(2)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-office-mixed-discrete-v1                     | New York, USA   | ASHRAE9012016_OfficeMedium_Denver.idf |      Mixed humid (4A)      | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-office-mixed-continuous-stochastic-v1        | New York, USA   | ASHRAE9012016_OfficeMedium_Denver.idf |      Mixed humid (4A) (**) | Box(2)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-office-cool-discrete-stochastic-v1           | Washington, USA | ASHRAE9012016_OfficeMedium_Denver.idf |      Cool marine (5C) (**) | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-office-cool-continuous-v1                    | Washington, USA | ASHRAE9012016_OfficeMedium_Denver.idf |      Cool marine (5C)      | Box(2)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-office-cool-discrete-v1                      | Washington, USA | ASHRAE9012016_OfficeMedium_Denver.idf |      Cool marine (5C)      | Discrete(10) |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+| Eplus-office-cool-continuous-stochastic-v1         | Washington, USA | ASHRAE9012016_OfficeMedium_Denver.idf |     Cool marine (5C) (**)  | Box(2)       |   01/01 - 31/12   |
++----------------------------------------------------+-----------------+---------------------------------------+----------------------------+--------------+-------------------+
+
 
 (\*) Weather types according to `DOE's
 classification <https://www.energycodes.gov/development/commercial/prototype_models#TMY3>`__.
@@ -123,7 +156,7 @@ Structure of observation and action space is defined in Environment constructor 
 Specification
 ~~~~~~~~~~~~~~
 
-As we have told, Observation and action spaces are defined **dinamically** in Sinergym Environment constructor. Environment ID's registered in Sinergym use a **default** definition
+As we have told, Observation and action spaces are defined **dynamically** in Sinergym Environment constructor. Environment ID's registered in Sinergym use a **default** definition
 set up in `constants.py <https://github.com/jajimer/sinergym/tree/main/sinergym/utils/constants.py>`__.
 
 As can be seen in environments observations, the **year, month, day and hour** are included in, but is not configured in default observation variables definition. 
@@ -148,13 +181,15 @@ This section is intended to provide information if someone decides to add new bu
 
 1. Add your building (IDF file) to `buildings <https://github.com/jajimer/sinergym/tree/main/sinergym/data/buildings>`__. 
    As mentioned in section :ref:`Observation/action spaces`, the IDF must be previously adapted to your action space or use our **action definition** (section :ref:`action_definition`) 
-   to be automatically adapted to the action space and variables you have designed for it, as long as we provide support for the specific component you want to control..
+   to be automatically adapted to the action space and variables you have designed for it, as long as we provide support for the specific component you want to control. By default, Sinergym will create
+   an `ExternalInterface` object in IDF file with an empty action space. Then, all the components will be managed by a default scheduler designed in IDF file.
 
 2. Add your own EPW file for weather conditions or use ours in environment constructor. Sinergym will adapt `DesignDays` in IDF file using EPW automatically.
 
 3. Sinergym will check that observation variables specified are available in the simulation before starting. In order to be able to do these checks, 
    you need to copy **RDD file** with the same name than IDF file (except extension) to `variables <https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables>`__. 
-   To obtain this **RDD file** you have to run a simulation with *Energyplus* directly and extract from output folder.
+   To obtain this **RDD file** you have to run a simulation with *Energyplus* directly and extract from output folder. 
+   Make sure that **Output:VariableDictionary** object in IDF has the value *Regular* in order to RDD file has the correct formar for Sinergym.
 
 4. Register your own environment ID `here <https://github.com/jajimer/sinergym/blob/main/sinergym/__init__.py>`__ following the same structure than the rest.
 
