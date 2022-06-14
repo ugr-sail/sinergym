@@ -31,11 +31,8 @@ ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_F
 # Collapse the update of packages, download and installation into one command
 # to make the container smaller & remove a bunch of the auxiliary apps/files
 # that are not needed in the container
-ENV TZ=Europe/Kiev
 ENV BCVTB_PATH=/usr/local/bcvtb
 RUN apt-get update && apt-get upgrade -y \
-    # Added tzdata location in order to don't ask in keyboard input
-    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && apt-get install -y ca-certificates curl libx11-6 libexpat1 \
     #Energyplus installation
     && curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
