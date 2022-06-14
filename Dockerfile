@@ -1,11 +1,7 @@
 # Base on nrel/energyplus from Nicholas Long but using 
-# Ubuntu, Python 3.6 and BCVTB
-ARG UBUNTU_VERSION=18.04
+# Ubuntu, Python 3.10 and BCVTB
+ARG UBUNTU_VERSION=22.04
 FROM ubuntu:${UBUNTU_VERSION}
-
-# Configuring tzdata in order to don't ask for geographic area
-ENV TZ=Europe/Kiev
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Arguments for EnergyPlus version (default values of version 8.6.0 if is not specified)
 ARG ENERGYPLUS_VERSION=9.5.0
@@ -15,8 +11,8 @@ ARG ENERGYPLUS_SHA=de239b2e5f
 # Argument for Sinergym extras libraries
 ARG SINERGYM_EXTRAS=[extras]
 
-# Argument for choose Python version
-ARG PYTHON_VERSION=3.9
+# Argument for choosing Python version
+ARG PYTHON_VERSION=3.10
 
 ENV ENERGYPLUS_VERSION=$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
@@ -35,74 +31,45 @@ ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_F
 # Collapse the update of packages, download and installation into one command
 # to make the container smaller & remove a bunch of the auxiliary apps/files
 # that are not needed in the container
-RUN apt-get update \
+ENV BCVTB_PATH=/usr/local/bcvtb
+RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y ca-certificates curl libx11-6 libexpat1 \
-    && rm -rf /var/lib/apt/lists/* \
+    #Energyplus installation
     && curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
     && chmod +x $ENERGYPLUS_DOWNLOAD_FILENAME \
     && echo "y\r" | ./$ENERGYPLUS_DOWNLOAD_FILENAME \
     && rm $ENERGYPLUS_DOWNLOAD_FILENAME \
     && cd /usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION \
-    && rm -rf PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater
-
-# Remove the broken symlinks
-RUN cd /usr/local/bin find -L . -type l -delete
-
-# Install ping dependency
-RUN apt update && apt install iputils-ping -y 
-
-# Install Python version PYTHON_VERSION
-RUN apt update \
-    && apt install software-properties-common -y \
-    && add-apt-repository ppa:deadsnakes/ppa \
-    && apt install python${PYTHON_VERSION} python${PYTHON_VERSION}-distutils -y \
-    && apt install python3-pip -y \
-    && ln -s /usr/bin/pip3 /usr/bin/pip \
-    && ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
-
-# Install enchant for sinergym documentation
-RUN apt-get update && echo "Y\r" | apt-get install enchant --fix-missing -y
-# Install OpenJDK-8
-RUN apt-get update && echo "Y\r" | apt-get install default-jre openjdk-8-jdk
-
-# START Install pandoc for sinergym jupyter documentation
-RUN apt-get update && echo "Y\r" | apt-get install pandoc
-
-# End pandoc installation
-
-
-
-# Install BCVTB
-ENV BCVTB_PATH=/usr/local/bcvtb
-RUN apt-get install wget \
+    && rm -rf PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater \
+    # Remove the broken symlinks
+    && cd /usr/local/bin find -L . -type l -delete \
+    # BCVTB installation
+    && echo "Y\r" | apt-get install default-jre openjdk-8-jdk \ 
+    && apt-get install -y git wget \
     && wget http://github.com/lbl-srg/bcvtb/releases/download/v1.6.0/bcvtb-install-linux64-v1.6.0.jar \
     && yes "1" | java -jar bcvtb-install-linux64-v1.6.0.jar \
-    && cp -R 1/ $BCVTB_PATH && rm -R 1/
-
-# Working directory and copy files
-RUN python -m pip install --upgrade pip
-# Upgrade setuptools for possible errors (depending on python version)
-RUN pip install --upgrade setuptools
-RUN apt-get update && apt-get upgrade -y && apt-get install -y git
+    && cp -R 1/ $BCVTB_PATH && rm -R 1/ \
+    # Install pip, and make python point to python3
+    && apt install python3-pip -y \
+    && ln -s /usr/bin/python3 /usr/bin/python \
+    # Install some apt dependencies
+    && echo "Y\r" | apt-get install python3-enchant -y \
+    && echo "Y\r" | apt-get install pandoc -y \
+    # clean files
+    && apt-get autoremove -y && apt-get autoclean -y \
+    && rm -rf /var/lib/apt/lists/* 
 
 WORKDIR /sinergym
 COPY requirements.txt .
 COPY MANIFEST.in .
 COPY setup.py .
-COPY DRL_battery.py .
-COPY load_agent.py .
+COPY scripts /sinergym/scripts
 COPY sinergym /sinergym/sinergym
 COPY tests /sinergym/tests
 COPY examples /sinergym/examples
-COPY check_run_times.py .
-COPY try_env.py .
 RUN pip install -e .${SINERGYM_EXTRAS}
 
-
-#uninstall 3.6 python default version
-RUN apt-get remove --purge python3-pip python3 -y \
-    && apt-get autoremove -y && apt-get autoclean -y
-RUN pip install idna
+#RUN pip install idna && pip install six
 CMD ["/bin/bash"]
 
 # Build: docker build -t sinergym:1.1.0 --build-arg ENERGYPLUS_VERSION=9.5.0 --build-arg ENERGYPLUS_INSTALL_VERSION=9-5-0 --build-arg ENERGYPLUS_SHA=de239b2e5f .

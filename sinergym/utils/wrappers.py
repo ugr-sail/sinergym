@@ -5,7 +5,7 @@ from typing import Any, Dict, Optional, Sequence, Tuple, Union
 
 import gym
 import numpy as np
-from stable_baselines3.common.env_util import is_wrapped
+from sinergym.utils.common import is_wrapped
 
 from sinergym.utils.logger import CSVLogger
 
