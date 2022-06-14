@@ -16,6 +16,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -123,7 +124,7 @@
 }
 </style>
 <section id="output-format">
-<h1>Output format<a class="headerlink" href="#output-format" title="Permalink to this headline"></a></h1>
+<h1>Output format<a class="headerlink" href="#output-format" title="Permalink to this heading"></a></h1>
 <p>When a simulation is running, this generates a directory called <code class="docutils literal notranslate"><span class="pre">Eplus-env-&lt;env_name&gt;-res&lt;num_simulation&gt;</span></code>. The content of this directory is the result of the simulation and we have:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Eplus-env-&lt;env_name&gt;-res&lt;num_simulation&gt;
 ├── Eplus-env-sub_run1
@@ -166,7 +167,7 @@ time_elapsed(seconds)</em>. This file only exists when environment has been wrap
 <p>For more information about specific EnergyPlus output, visit <a class="reference external" href="https://energyplus.net/documentation">EnergyPlus documentation</a>.</p>
 </div>
 <section id="logger">
-<h2>Logger<a class="headerlink" href="#logger" title="Permalink to this headline"></a></h2>
+<h2>Logger<a class="headerlink" href="#logger" title="Permalink to this heading"></a></h2>
 <p>The files <strong>monitor.csv</strong>, <strong>monitor_normalized.csv</strong> and <strong>progress.csv</strong> belong to <strong>Sinergym logger</strong> which is a wrapper for the environment (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>). This logger has the responsibility of recording
 all the interactions that are carried out in a simulation,
 regardless of the training technique which may be being used or any other external factor.</p>
@@ -431,7 +432,7 @@ regardless of the training technique which may be being used or any other extern
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Note that you can activate and deactivate logger from environment when you want it, using methods activate and deactivate, so you don't need to unwrap environment.</p>
+<p>Note that you can activate and deactivate logger from environment when you want it, using methods activate and deactivate, so you don’t need to unwrap environment.</p>
 </div>
 </section>
 </section>

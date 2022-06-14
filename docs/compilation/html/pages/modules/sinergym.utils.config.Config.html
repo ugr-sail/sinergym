@@ -16,6 +16,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -68,6 +69,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
@@ -143,7 +145,7 @@
 }
 </style>
 <section id="sinergym-utils-config-config">
-<h1>sinergym.utils.config.Config<a class="headerlink" href="#sinergym-utils-config-config" title="Permalink to this headline"></a></h1>
+<h1>sinergym.utils.config.Config<a class="headerlink" href="#sinergym-utils-config-config" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.config.Config">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ep_store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.config.Config" title="Permalink to this definition"></a></dt>
@@ -151,17 +153,17 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>_idf_path</strong> -- IDF path origin for apply extra configuration.</p></li>
-<li><p><strong>_weather_path</strong> -- EPW path origin for apply weather to simulation.</p></li>
-<li><p><strong>_ddy_path</strong> -- DDY path origin for get DesignDays and weather Location</p></li>
-<li><p><strong>experiment_path</strong> -- Path for Sinergym experiment output</p></li>
-<li><p><strong>episode_path</strong> -- Path for Sinergym specific episode (before first simulator reset this param is None)</p></li>
-<li><p><strong>extra_config</strong> -- Number of episodes directories will be stored in experiment_path</p></li>
-<li><p><strong>config</strong> -- Dict config with extra configuration which is required to modify IDF model (may be None)</p></li>
-<li><p><strong>_idd</strong> -- IDD opyplus object to set up Epm</p></li>
-<li><p><strong>building</strong> -- opyplus Epm object with IDF model</p></li>
-<li><p><strong>ddy_model</strong> -- opyplus Epm object with DDY model</p></li>
-<li><p><strong>weather_data</strong> -- opyplus WeatherData object with EPW data</p></li>
+<li><p><strong>_idf_path</strong> – IDF path origin for apply extra configuration.</p></li>
+<li><p><strong>_weather_path</strong> – EPW path origin for apply weather to simulation.</p></li>
+<li><p><strong>_ddy_path</strong> – DDY path origin for get DesignDays and weather Location</p></li>
+<li><p><strong>experiment_path</strong> – Path for Sinergym experiment output</p></li>
+<li><p><strong>episode_path</strong> – Path for Sinergym specific episode (before first simulator reset this param is None)</p></li>
+<li><p><strong>extra_config</strong> – Number of episodes directories will be stored in experiment_path</p></li>
+<li><p><strong>config</strong> – Dict config with extra configuration which is required to modify IDF model (may be None)</p></li>
+<li><p><strong>_idd</strong> – IDD opyplus object to set up Epm</p></li>
+<li><p><strong>building</strong> – opyplus Epm object with IDF model</p></li>
+<li><p><strong>ddy_model</strong> – opyplus Epm object with DDY model</p></li>
+<li><p><strong>weather_data</strong> – opyplus WeatherData object with EPW data</p></li>
 </ul>
 </dd>
 </dl>
@@ -221,12 +223,12 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.config.Config.adapt_idf_to_epw">
 <span class="sig-name descname"><span class="pre">adapt_idf_to_epw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">summerday</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Ann</span> <span class="pre">Clg</span> <span class="pre">.4%</span> <span class="pre">Condns</span> <span class="pre">DB=&gt;MWB'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">winterday</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Ann</span> <span class="pre">Htg</span> <span class="pre">99.6%</span> <span class="pre">Condns</span> <span class="pre">DB'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.config.Config.adapt_idf_to_epw" title="Permalink to this definition"></a></dt>
-<dd><p>Given a summer day name and winter day name from DDY file, this method modify IDF Location and DesingDay's in order to adapt IDF to EPW.</p>
+<dd><p>Given a summer day name and winter day name from DDY file, this method modify IDF Location and DesingDay’s in order to adapt IDF to EPW.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>summerday</strong> (<em>str</em>) -- Design day for summer day specifically (DDY has several of them).</p></li>
-<li><p><strong>winterday</strong> (<em>str</em>) -- Design day for winter day specifically (DDY has several of them).</p></li>
+<li><p><strong>summerday</strong> (<em>str</em>) – Design day for summer day specifically (DDY has several of them).</p></li>
+<li><p><strong>winterday</strong> (<em>str</em>) – Design day for winter day specifically (DDY has several of them).</p></li>
 </ul>
 </dd>
 </dl>
@@ -251,8 +253,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>columns</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- List of columns to be affected. Defaults to ['drybulb'].</p></li>
-<li><p><strong>variation</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) -- Tuple with the sigma, mean and tau for OU process. Defaults to None.</p></li>
+<li><p><strong>columns</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of columns to be affected. Defaults to [‘drybulb’].</p></li>
+<li><p><strong>variation</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Tuple with the sigma, mean and tau for OU process. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -284,7 +286,7 @@
 <dd><p>This method saves current XML variables tree model into a variables.cfg file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>RuntimeError</strong> -- If this method is used without an episode_path generated (see reset method in simulator), this exception is raised.</p>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – If this method is used without an episode_path generated (see reset method in simulator), this exception is raised.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Path to the new saved variables.cfg used by BCVTB for Energyplus communication.</p>
@@ -301,7 +303,7 @@
 <dd><p>Set episode working dir path like config attribute for current simulation execution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>Exception</strong> -- If experiment path (parent folder) has not be created previously.</p>
+<dd class="field-odd"><p><strong>Exception</strong> – If experiment path (parent folder) has not be created previously.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Episode path for directory created.</p>
@@ -318,7 +320,7 @@
 <dd><p>Set experiment working dir path like config attribute for current simulation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>env_name</strong> (<em>str</em>) -- simulation env name to define a name in directory</p>
+<dd class="field-odd"><p><strong>env_name</strong> (<em>str</em>) – simulation env name to define a name in directory</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Experiment path for directory created.</p>

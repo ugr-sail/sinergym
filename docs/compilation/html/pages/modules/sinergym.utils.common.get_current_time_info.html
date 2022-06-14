@@ -16,6 +16,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -67,14 +68,17 @@
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_delta_seconds.html">sinergym.utils.common.get_delta_seconds</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_record_keys.html">sinergym.utils.common.get_record_keys</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_season_comfort_range.html">sinergym.utils.common.get_season_comfort_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.is_wrapped.html">sinergym.utils.common.is_wrapped</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.parse_variables.html">sinergym.utils.common.parse_variables</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.prepare_batch_from_records.html">sinergym.utils.common.prepare_batch_from_records</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.ranges_getter.html">sinergym.utils.common.ranges_getter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.unwrap_wrapper.html">sinergym.utils.common.unwrap_wrapper</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.config.html">sinergym.utils.config</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
@@ -150,16 +154,16 @@
 }
 </style>
 <section id="sinergym-utils-common-get-current-time-info">
-<h1>sinergym.utils.common.get_current_time_info<a class="headerlink" href="#sinergym-utils-common-get-current-time-info" title="Permalink to this headline"></a></h1>
+<h1>sinergym.utils.common.get_current_time_info<a class="headerlink" href="#sinergym-utils-common-get-current-time-info" title="Permalink to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="sinergym.utils.common.get_current_time_info">
-<span class="sig-prename descclassname"><span class="pre">sinergym.utils.common.</span></span><span class="sig-name descname"><span class="pre">get_current_time_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">opyplus.epm.epm.Epm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sec_elapsed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.common.get_current_time_info" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sinergym.utils.common.</span></span><span class="sig-name descname"><span class="pre">get_current_time_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Epm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sec_elapsed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.common.get_current_time_info" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the current day, month and hour given the seconds elapsed since the simulation started.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>epm</strong> (<em>opyplus.Epm</em>) -- EnergyPlus model object.</p></li>
-<li><p><strong>sec_elapsed</strong> (<em>float</em>) -- Seconds elapsed since the start of the simulation</p></li>
+<li><p><strong>epm</strong> (<em>opyplus.Epm</em>) – EnergyPlus model object.</p></li>
+<li><p><strong>sec_elapsed</strong> (<em>float</em>) – Seconds elapsed since the start of the simulation</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

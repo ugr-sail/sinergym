@@ -17,7 +17,7 @@ Simplest example
 
 Let's start with the simplest use case for the Sinergym tool. In the root repository we have the script **try_env.py**:
 
-.. literalinclude:: ../../../try_env.py
+.. literalinclude:: ../../../scripts/try_env.py
     :language: python
 
 The **Sinergym import** is really important, because without it the ID's of our environments will not have been registered in the gym module and therefore we cannot use our buildings as gym environments.

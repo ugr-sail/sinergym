@@ -16,6 +16,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -317,6 +318,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -325,10 +327,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -340,12 +346,15 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
@@ -373,7 +382,7 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="Changing-an-environment-registered-in-Sinergym">
-<h1>Changing an environment registered in Sinergym<a class="headerlink" href="#Changing-an-environment-registered-in-Sinergym" title="Permalink to this headline"></a></h1>
+<h1>Changing an environment registered in Sinergym<a class="headerlink" href="#Changing-an-environment-registered-in-Sinergym" title="Permalink to this heading"></a></h1>
 <p>As discussed above, Sinergym has a list of available environments that we can call with <code class="docutils literal notranslate"><span class="pre">gym.make(&lt;environment_id&gt;)</span></code> as long as the sinergym package is imported into the python script.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -407,7 +416,7 @@ div.rendered_html tbody tr:hover {
 <p>Another option (recommended) is to start from one of our environments and change the components you want. You can combine components you want to change obviously.</p>
 <p>The way to do that is to add in the <code class="docutils literal notranslate"><span class="pre">gym.make(&lt;environment_id&gt;)</span></code> those parameters of the constructor of the Sinergym environment we want to change. Let’s see what things we can change starting from any environment:</p>
 <section id="Adding-a-new-reward">
-<h2>Adding a new reward<a class="headerlink" href="#Adding-a-new-reward" title="Permalink to this headline"></a></h2>
+<h2>Adding a new reward<a class="headerlink" href="#Adding-a-new-reward" title="Permalink to this heading"></a></h2>
 <p>As mentioned above, simply add the appropriate parameters to <code class="docutils literal notranslate"><span class="pre">gym.make()</span></code> after specifying the environment ID.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -442,7 +451,7 @@ div.rendered_html tbody tr:hover {
 <p>You have to specify the <strong>reward</strong> class you are going to use in the environment. A reward function class has several parameters that can be specified by user like temperature variables, weights, etc. Depending on the reward function you are using. In order to be able to define it, we have <strong>reward_kwargs</strong> parameter. See <a class="reference external" href="https://jajimer.github.io/sinergym/compilation/html/pages/rewards.html">reward documentation</a> for more information about reward classes and how to create a new one.</p>
 </section>
 <section id="Adding-other-new-components-to-the-environment">
-<h2>Adding other new components to the environment<a class="headerlink" href="#Adding-other-new-components-to-the-environment" title="Permalink to this headline"></a></h2>
+<h2>Adding other new components to the environment<a class="headerlink" href="#Adding-other-new-components-to-the-environment" title="Permalink to this heading"></a></h2>
 <p>In the same way that we can change the default reward function, as we have done in the second example, it is possible to substitute other default values of the environment ID.</p>
 <p>You can change the weather file, the number of timesteps an action repeats (default 1), the last n episodes you want to be stored in the Sinergym output folder (default 10), the name of the environment or the variability in stochastic environments:</p>
 <div class="nbinput docutils container">
@@ -472,7 +481,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Adding-more-configuration-definition">
-<h2>Adding more configuration definition<a class="headerlink" href="#Adding-more-configuration-definition" title="Permalink to this headline"></a></h2>
+<h2>Adding more configuration definition<a class="headerlink" href="#Adding-more-configuration-definition" title="Permalink to this heading"></a></h2>
 <p>You can even add a dictionary with extra parameters that modify the IDF you use before it is used in the simulations (or overwrite an existing one).</p>
 <p>This new IDF version, which also adapts to the new weather you put in, is saved in the Sinergym output folder, leaving the original intact:</p>
 <div class="nbinput docutils container">

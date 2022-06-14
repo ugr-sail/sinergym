@@ -313,7 +313,7 @@ class LoggerEvalCallback(EvalCallback):
                     self.model.save(
                         os.path.join(
                             self.best_model_save_path,
-                            self.best_model_save_path.split('/')[-1]))
+                            'model.zip'))
                 self.best_mean_reward = mean_reward
                 # Trigger callback if needed
                 if self.callback is not None:

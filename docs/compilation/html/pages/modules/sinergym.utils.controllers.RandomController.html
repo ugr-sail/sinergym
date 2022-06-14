@@ -16,12 +16,13 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.evaluation" href="sinergym.utils.evaluation.html" />
+    <link rel="next" title="sinergym.utils.env_checker" href="sinergym.utils.env_checker.html" />
     <link rel="prev" title="sinergym.utils.controllers.RBCDatacenter" href="sinergym.utils.controllers.RBCDatacenter.html" /> 
 </head>
 
@@ -70,6 +71,7 @@
 <li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.controllers.RandomController</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
@@ -145,7 +147,7 @@
 }
 </style>
 <section id="sinergym-utils-controllers-randomcontroller">
-<h1>sinergym.utils.controllers.RandomController<a class="headerlink" href="#sinergym-utils-controllers-randomcontroller" title="Permalink to this headline"></a></h1>
+<h1>sinergym.utils.controllers.RandomController<a class="headerlink" href="#sinergym-utils-controllers-randomcontroller" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.controllers.RandomController">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.controllers.</span></span><span class="sig-name descname"><span class="pre">RandomController</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.controllers.RandomController" title="Permalink to this definition"></a></dt>
@@ -155,7 +157,7 @@
 <dd><p>Random agent. It selects available actions randomly.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>env</strong> (<em>Any</em>) -- Simulation environment.</p>
+<dd class="field-odd"><p><strong>env</strong> (<em>Any</em>) – Simulation environment.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -178,7 +180,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.controllers.RandomController.act">
 <span class="sig-name descname"><span class="pre">act</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.controllers.RandomController.act" title="Permalink to this definition"></a></dt>
-<dd><p>Selects a random action from the environment's action_space.</p>
+<dd><p>Selects a random action from the environment’s action_space.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Action chosen.</p>
@@ -198,7 +200,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="sinergym.utils.controllers.RBCDatacenter.html" class="btn btn-neutral float-left" title="sinergym.utils.controllers.RBCDatacenter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.evaluation.html" class="btn btn-neutral float-right" title="sinergym.utils.evaluation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.env_checker.html" class="btn btn-neutral float-right" title="sinergym.utils.env_checker" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
