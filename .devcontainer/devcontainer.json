@@ -46,5 +46,16 @@
 		"njpwerner.autodocstring",
 		"grapecity.gc-excelviewer",
 		"ms-ceintl.vscode-language-pack-es",
+		"streetsidesoftware.code-spell-checker",
+		"mhutchie.git-graph",
+		"me-dutour-mathieu.vscode-github-actions",
+		"ecmel.vscode-html-css",
+		"adamvoss.vscode-languagetool",
+		"james-yu.latex-workshop",
+		"cameron.vscode-pytest",
+		"nickmillerdev.pytest-fixtures",
+		"himanoa.python-autopep8",
+		"tht13.rst-vscode",
+		"redhat.vscode-yaml"
 	]
 }
