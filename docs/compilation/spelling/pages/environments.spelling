@@ -1,2 +1,1 @@
-pages/environments.rst:126: (Environmet)   in Sinergym Environment constructor. Environmet ID's registered in Sinergym use a 
-pages/environments.rst:139: (stablish)   is a requirement in order to stablish a connection between gym environment and Simulator
+source/pages/environments.rst:189: (formar)   in order to RDD file has the correct formar for Sinergym.

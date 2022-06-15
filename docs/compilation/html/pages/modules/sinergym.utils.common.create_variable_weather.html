@@ -72,6 +72,7 @@
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.parse_variables.html">sinergym.utils.common.parse_variables</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.prepare_batch_from_records.html">sinergym.utils.common.prepare_batch_from_records</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.ranges_getter.html">sinergym.utils.common.ranges_getter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.to_idf.html">sinergym.utils.common.to_idf</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.unwrap_wrapper.html">sinergym.utils.common.unwrap_wrapper</a></li>
 </ul>
 </li>
@@ -162,10 +163,10 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>weather_data</strong> (<em>opyplus.WeatherData</em>) – Opyplus object with the weather for the simulation.</p></li>
-<li><p><strong>original_epw_file</strong> (<em>str</em>) – Path to the original EPW file.</p></li>
-<li><p><strong>columns</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of columns to be affected. Defaults to [‘drybulb’].</p></li>
-<li><p><strong>variation</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Tuple with the sigma, mean and tau for OU process. Defaults to None.</p></li>
+<li><p><strong>weather_data</strong> (<em>opyplus.WeatherData</em>) -- Opyplus object with the weather for the simulation.</p></li>
+<li><p><strong>original_epw_file</strong> (<em>str</em>) -- Path to the original EPW file.</p></li>
+<li><p><strong>columns</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) -- List of columns to be affected. Defaults to ['drybulb'].</p></li>
+<li><p><strong>variation</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) -- Tuple with the sigma, mean and tau for OU process. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

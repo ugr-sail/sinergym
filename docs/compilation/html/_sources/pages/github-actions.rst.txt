@@ -26,7 +26,7 @@ Pull Request
 - **Testing**: There is another action which builds a remote container using *Dockerfile* and executes pytest inner.
 - **Repository security**: There is a workflow which compare differences in workflows and tests from source to base. It execute that functionality only in forked repositories in order to prevent malicious software in workflow or ignore tests. Event is *pull_request_target*, this means workflow is checkout from base repository (our main branch) and it cannot be manipulate by third-parties.
 
-.. note:: These checks can be skipped in a specific commit writing `[ci skip]` string in commit message. For more information, see issue `#161 <https://github.com/jajimer/sinergym/issues/161>`__.
+.. note:: These checks can be skipped in a specific commit writing `[ci skip]` string in commit message. For more information, see issue `#161 <https://github.com/ugr-sail/sinergym/issues/161>`__.
 
 ************************************
 Push main (or merge a pull request)
@@ -45,6 +45,6 @@ New release created or modified
 - When a **release** is *published* or *edited* manually in the repository, there is an action which catches release tag version and uses it to build a container and upload/update on Docker Hub with that tag version.
 - At the same time, another job will update the **PyPi** Sinergym repository with its current version tag.
 
-.. note:: See `.github/workflows YML files <https://github.com/jajimer/sinergym/tree/develop/.github/workflows>`__ to see code used.
+.. note:: See `.github/workflows YML files <https://github.com/ugr-sail/sinergym/tree/develop/.github/workflows>`__ to see code used.
 
 .. note:: Whether you have a forked repository from Sinergym, we recommend you to **enable Github Action in your project** in order to take advantage of this functionality in your developments.

@@ -134,7 +134,7 @@
 <p>Anyway, every time sinergym repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. <a class="reference external" href="https://docs.github.com/es/actions/">Github Action</a> will do that job.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>See <a class="reference external" href="https://github.com/jajimer/sinergym/tree/develop/.github/workflows">.github/workflows YML files</a> and <a class="reference internal" href="github-actions.html#github-actions"><span class="std std-ref">Github Actions</span></a> section for more information.</p>
+<p>See <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/develop/.github/workflows">.github/workflows YML files</a> and <a class="reference internal" href="github-actions.html#github-actions"><span class="std std-ref">Github Actions</span></a> section for more information.</p>
 </div>
 <p>These tests running under <a class="reference external" href="https://docs.pytest.org/en/6.2.x/">pytest</a> framework which makes it easy to write small tests, yet scales to support complex functional testing for applications and libraries.</p>
 <section id="install-pytest">
@@ -157,22 +157,22 @@
 </section>
 <section id="create-new-tests">
 <h2>Create new tests<a class="headerlink" href="#create-new-tests" title="Permalink to this heading"></a></h2>
-<p>These tests have been created in <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/tests">sinergym/tests</a> directory, they are organized by different modules:</p>
+<p>These tests have been created in <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/tests">sinergym/tests</a> directory, they are organized by different modules:</p>
 <ul class="simple">
-<li><p><strong>test_common.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/common.py">sinergym/sinergym/utils/common.py</a>. Here will be all tests that check Sinergym common utils functionalities.</p></li>
-<li><p><strong>test_reward.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/rewards.py">sinergym/sinergym/utils/rewards.py</a>. Here will be all tests that check implementation(s) of reward function(s) applicable to sinergym environments.</p></li>
-<li><p><strong>test_wrapper.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/wrappers.py">sinergym/sinergym/utils/wrappers.py</a>. Here will be all tests that check wrappers to normalize Sinergym default environment observations.</p></li>
-<li><p><strong>test_simulator.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/simulators">sinergym/sinergym/simulators/*</a>. Here will be all tests that check low level Sinergym simulator and communication interface.</p></li>
-<li><p><strong>test_config.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/utils/config.py">sinergym/sinergym/utils/config.py</a>. Here will be all tests that check python building model, weather, directories tree for executions and extra configuration set up in simulator.</p></li>
-<li><p><strong>test_env.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/envs">sinergym/sinergym/envs/*</a>. Here will be all tests that check Sinergym simulation environments based on OpenAI Gym.</p></li>
-<li><p><strong>test_controller.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/controllers.py">sinergym/sinergym/utils/controllers.py</a>. Here will be all tests that check agent controller like Rule-Based-Controller for example.</p></li>
-<li><p><strong>test_config.py</strong>: Tests for <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/tests/test_config.py">sinergym/sinergym/utils/config.py</a>. Here will be all tests that check simulator configuration (IDF and EPW Python models and extra configuration functionality).</p></li>
+<li><p><strong>test_common.py</strong>: Tests for <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py">sinergym/sinergym/utils/common.py</a>. Here will be all tests that check Sinergym common utils functionalities.</p></li>
+<li><p><strong>test_reward.py</strong>: Tests for <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/rewards.py">sinergym/sinergym/utils/rewards.py</a>. Here will be all tests that check implementation(s) of reward function(s) applicable to sinergym environments.</p></li>
+<li><p><strong>test_wrapper.py</strong>: Tests for <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/wrappers.py">sinergym/sinergym/utils/wrappers.py</a>. Here will be all tests that check wrappers to normalize Sinergym default environment observations.</p></li>
+<li><p><strong>test_simulator.py</strong>: Tests for <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/simulators">sinergym/sinergym/simulators/*</a>. Here will be all tests that check low level Sinergym simulator and communication interface.</p></li>
+<li><p><strong>test_config.py</strong>: Tests for <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/config.py">sinergym/sinergym/utils/config.py</a>. Here will be all tests that check python building model, weather, directories tree for executions and extra configuration set up in simulator.</p></li>
+<li><p><strong>test_env.py</strong>: Tests for <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/envs">sinergym/sinergym/envs/*</a>. Here will be all tests that check Sinergym simulation environments based on OpenAI Gym.</p></li>
+<li><p><strong>test_controller.py</strong>: Tests for <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/controllers.py">sinergym/sinergym/utils/controllers.py</a>. Here will be all tests that check agent controller like Rule-Based-Controller for example.</p></li>
+<li><p><strong>test_config.py</strong>: Tests for <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/tests/test_config.py">sinergym/sinergym/utils/config.py</a>. Here will be all tests that check simulator configuration (IDF and EPW Python models and extra configuration functionality).</p></li>
 <li><p><strong>test_stable_baselines.py</strong>: Tests for <a class="reference external" href="https://github.com/DLR-RM/stable-baselines3">Stable Baselines 3</a>. Here will be all tests that check Sinergym simulation environments can be used correctly with Stable Baselines 3 algorithms.</p></li>
 </ul>
 <p>If you want to make new tests, you can append to this modules or create a new one if the conceptual context is different.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For more information about Sinergym tests, visit our <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/tests/README.md">repository README</a>.</p>
+<p>For more information about Sinergym tests, visit our <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/tests/README.md">repository README</a>.</p>
 </div>
 </section>
 </section>

@@ -412,7 +412,7 @@ div.rendered_html tbody tr:hover {
 </pre></div></div>
 </div>
 <p>These environment IDs have a number of components defined, not only the building design (IDF), but also the reward function, the action and observation spaces, the defining variables, etc.</p>
-<p>If you want a new environment, you can define it from scratch in our <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/__init__.py">environment list</a> and run it locally.</p>
+<p>If you want a new environment, you can define it from scratch in our <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/__init__.py">environment list</a> and run it locally.</p>
 <p>Another option (recommended) is to start from one of our environments and change the components you want. You can combine components you want to change obviously.</p>
 <p>The way to do that is to add in the <code class="docutils literal notranslate"><span class="pre">gym.make(&lt;environment_id&gt;)</span></code> those parameters of the constructor of the Sinergym environment we want to change. Let’s see what things we can change starting from any environment:</p>
 <section id="Adding-a-new-reward">
@@ -448,7 +448,7 @@ div.rendered_html tbody tr:hover {
   warnings.warn(colorize(&#34;%s: %s&#34; % (&#34;WARN&#34;, msg % args), &#34;yellow&#34;))
 </pre></div></div>
 </div>
-<p>You have to specify the <strong>reward</strong> class you are going to use in the environment. A reward function class has several parameters that can be specified by user like temperature variables, weights, etc. Depending on the reward function you are using. In order to be able to define it, we have <strong>reward_kwargs</strong> parameter. See <a class="reference external" href="https://jajimer.github.io/sinergym/compilation/html/pages/rewards.html">reward documentation</a> for more information about reward classes and how to create a new one.</p>
+<p>You have to specify the <strong>reward</strong> class you are going to use in the environment. A reward function class has several parameters that can be specified by user like temperature variables, weights, etc. Depending on the reward function you are using. In order to be able to define it, we have <strong>reward_kwargs</strong> parameter. See <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/html/pages/rewards.html">reward documentation</a> for more information about reward classes and how to create a new one.</p>
 </section>
 <section id="Adding-other-new-components-to-the-environment">
 <h2>Adding other new components to the environment<a class="headerlink" href="#Adding-other-new-components-to-the-environment" title="Permalink to this heading"></a></h2>
@@ -525,7 +525,7 @@ div.rendered_html tbody tr:hover {
   warnings.warn(colorize(&#34;%s: %s&#34; % (&#34;WARN&#34;, msg % args), &#34;yellow&#34;))
 </pre></div></div>
 </div>
-<p>For more information about extra configuration parameters, see our <a class="reference external" href="https://jajimer.github.io/sinergym/compilation/html/pages/extra-configuration.html">Extra configuration documentation</a></p>
+<p>For more information about extra configuration parameters, see our <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/html/pages/extra-configuration.html">Extra configuration documentation</a></p>
 </section>
 </section>
 

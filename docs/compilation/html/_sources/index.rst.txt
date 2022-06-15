@@ -7,15 +7,15 @@ Welcome to **sinergym**!
 Contributing
 ############
 
-To any interested in making Sinergym better, there are still some improvements that need to be done. You can check `issues <https://github.com/jajimer/sinergym/issues>`__ in the repo.
+To any interested in making Sinergym better, there are still some improvements that need to be done. You can check `issues <https://github.com/ugr-sail/sinergym/issues>`__ in the repo.
 
-If you want to contribute, please read `CONTRIBUTING.md <https://github.com/jajimer/sinergym/blob/main/CONTRIBUTING.md>`__ first.
+If you want to contribute, please read `CONTRIBUTING.md <https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md>`__ first.
 
 ############
 Examples
 ############
 
-The examples can be run if you have your computer or container properly configured (see :ref:`Installation` section) from our notebooks hosted in the `examples <https://github.com/jajimer/sinergym/tree/main/examples>`__ folder of the official Sinergym repository.
+The examples can be run if you have your computer or container properly configured (see :ref:`Installation` section) from our notebooks hosted in the `examples <https://github.com/ugr-sail/sinergym/tree/main/examples>`__ folder of the official Sinergym repository.
 
 .. toctree::
    :maxdepth: 2
