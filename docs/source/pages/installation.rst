@@ -45,7 +45,7 @@ To install *Sinergym* manually instead of through the container (recommended), f
 
 .. code:: sh
 
-    $ git clone https://github.com/jajimer/sinergym.git
+    $ git clone https://github.com/ugr-sail/sinergym.git
     $ cd sinergym
 
 * Then, it is recommended to create a **virtual environment**. You can do so by:
@@ -125,7 +125,7 @@ It's possible to select a subset of these libraries instead of 'extras' tag in w
 
     $ pip install -e .[test,doc]
 
-In order to check all our tag list, visit `setup.py <https://github.com/jajimer/sinergym/blob/main/setup.py>`__ in Sinergym root repository. In any case, they are not a requirement of the package.
+In order to check all our tag list, visit `setup.py <https://github.com/ugr-sail/sinergym/blob/main/setup.py>`__ in Sinergym root repository. In any case, they are not a requirement of the package.
 
 You can also install from `oficial pypi repository <https://pypi.org/project/sinergym/>`__ with last stable version by default:
 

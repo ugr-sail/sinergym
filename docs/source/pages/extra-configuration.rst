@@ -2,7 +2,7 @@
 Extra Configuration in Sinergym simulations
 ############################################
 
-Using `Config class <https://github.com/jajimer/sinergym/tree/main/sinergym/utils/config.py>`__ in simulator, we have the possibility to set up some details in our simulation. This let us to amplify the context of each experiment and have more parameters to investigate.
+Using `Config class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/config.py>`__ in simulator, we have the possibility to set up some details in our simulation. This let us to amplify the context of each experiment and have more parameters to investigate.
 To use this functionality easily, you can provide this extra parameters in env constructor in this way:
 
 .. code:: python
@@ -69,4 +69,4 @@ For an example about how to use it, see :ref:`Adding extra configuration definit
 
 .. note:: Actually, we only support `Thermostat:DualSetpoint` definition, but more components could be managed in the future. Stay tuned for upcoming releases! 
 
-.. note:: If you want to create your own extra configuration parameters, please see the method `apply_extra_conf` from `Config class <https://github.com/jajimer/sinergym/tree/main/sinergym/utils/config.py>`__.
+.. note:: If you want to create your own extra configuration parameters, please see the method `apply_extra_conf` from `Config class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/config.py>`__.

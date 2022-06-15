@@ -101,6 +101,10 @@ class EnergyPlus(object):
 
         # Annotate experiment path in simulator
         self._env_working_dir_parent = self._config.experiment_path
+        # Setting an external interface if IDF building has not got.
+        self.logger_main.info(
+            'Updating idf ExternalInterface object if it is not present...')
+        self._config.set_external_interface()
         # Updating IDF file (Location and DesignDays) with EPW file
         self.logger_main.info(
             'Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...')

@@ -266,7 +266,6 @@ with mlflow.start_run(run_name=name):
         eval_env = gym.make(args.environment, reward=reward)
         if hasattr(eval_env.reward_fn, 'W_energy') and args.energy_weight:
             eval_env.reward_fn.W_energy = args.energy_weight
-    print(env.reward_fn.W_energy)
 
     # ---------------------------------------------------------------------------- #
     #                                   Wrappers                                   #

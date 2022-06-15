@@ -16,6 +16,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -125,12 +126,12 @@
 }
 </style>
 <section id="github-actions">
-<h1>Github Actions<a class="headerlink" href="#github-actions" title="Permalink to this headline"></a></h1>
+<h1>Github Actions<a class="headerlink" href="#github-actions" title="Permalink to this heading"></a></h1>
 <p>This project is automatically processed using <a class="reference external" href="https://docs.github.com/es/actions/">Github Action</a> which allows building continuous integration and continuous deployment pipelines
 for testing, releasing and deploying software without the use of third-party websites/platforms.</p>
 <p>Currently, we have developed the next procedures for this project:</p>
 <section id="pull-request">
-<h2>Pull Request<a class="headerlink" href="#pull-request" title="Permalink to this headline"></a></h2>
+<h2>Pull Request<a class="headerlink" href="#pull-request" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p><strong>Python Code format check</strong>: Python code format is checked in every pull request following <strong>Pep8</strong> <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">standard</a> (Level 2 aggressive) and <a class="reference external" href="https://github.com/PyCQA/isort">isort</a> to sort imports.
 If format is incorrect, a bot will comment in pull request advising that issue and notifying it will be correct merging with main.</p></li>
@@ -154,11 +155,11 @@ about this topic is very possible that you want to use a word that is not in def
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>These checks can be skipped in a specific commit writing <cite>[ci skip]</cite> string in commit message. For more information, see issue <a class="reference external" href="https://github.com/jajimer/sinergym/issues/161">#161</a>.</p>
+<p>These checks can be skipped in a specific commit writing <cite>[ci skip]</cite> string in commit message. For more information, see issue <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/161">#161</a>.</p>
 </div>
 </section>
 <section id="push-main-or-merge-a-pull-request">
-<h2>Push main (or merge a pull request)<a class="headerlink" href="#push-main-or-merge-a-pull-request" title="Permalink to this headline"></a></h2>
+<h2>Push main (or merge a pull request)<a class="headerlink" href="#push-main-or-merge-a-pull-request" title="Permalink to this heading"></a></h2>
 <p>This workflows will be executed in sequential order:</p>
 <ul class="simple">
 <li><p><strong>Apply format</strong>: A bot generates a commit in main branch applying format changes when it is necessary (autopep8 2 level aggressive and/or <cite>isort</cite> module).</p></li>
@@ -167,14 +168,14 @@ about this topic is very possible that you want to use a word that is not in def
 </ul>
 </section>
 <section id="new-release-created-or-modified">
-<h2>New release created or modified<a class="headerlink" href="#new-release-created-or-modified" title="Permalink to this headline"></a></h2>
+<h2>New release created or modified<a class="headerlink" href="#new-release-created-or-modified" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>When a <strong>release</strong> is <em>published</em> or <em>edited</em> manually in the repository, there is an action which catches release tag version and uses it to build a container and upload/update on Docker Hub with that tag version.</p></li>
 <li><p>At the same time, another job will update the <strong>PyPi</strong> Sinergym repository with its current version tag.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>See <a class="reference external" href="https://github.com/jajimer/sinergym/tree/develop/.github/workflows">.github/workflows YML files</a> to see code used.</p>
+<p>See <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/develop/.github/workflows">.github/workflows YML files</a> to see code used.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

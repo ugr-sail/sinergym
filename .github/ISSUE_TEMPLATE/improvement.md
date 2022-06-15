@@ -38,8 +38,8 @@ Add any other context about the problem here.
 
 ### Checklist
 
-- [ ] I have checked that there is no similar [issue](https://github.com/jajimer/sinergym/issues) in the repo (**required**)
-- [ ] I have read the [documentation](https://jajimer.github.io/sinergym/build/html/index.html) (**required**)
+- [ ] I have checked that there is no similar [issue](https://github.com/ugr-sail/sinergym/issues) in the repo (**required**)
+- [ ] I have read the [documentation](https://ugr-sail.github.io/sinergym/compilation/html/index.html) (**required**)
 
 :pencil: Please, don't forget to include more labels besides `enhancement` if it is necessary.
 <!--- This Template is an edited version of the one from https://github.com/DLR-RM/stable-baselines3 -->

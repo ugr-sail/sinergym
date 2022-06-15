@@ -16,6 +16,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -120,9 +121,9 @@
 }
 </style>
 <section id="wrappers">
-<h1>Wrappers<a class="headerlink" href="#wrappers" title="Permalink to this headline"></a></h1>
+<h1>Wrappers<a class="headerlink" href="#wrappers" title="Permalink to this heading"></a></h1>
 <p>Sinergym has several wrappers in order to add some functionality in the environment that it doesn't have by default. Currently, we have developed a <strong>normalization wrapper</strong>,
-<strong>multi-observation wrapper</strong> and <strong>Logger wrapper</strong>. The code can be found in <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/wrappers.py">sinergym/sinergym/utils/wrappers.py</a>.
+<strong>multi-observation wrapper</strong> and <strong>Logger wrapper</strong>. The code can be found in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/wrappers.py">sinergym/sinergym/utils/wrappers.py</a>.
 You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some of its variants:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Implementation of custom Gym environments.&quot;&quot;&quot;</span>
 
@@ -131,8 +132,8 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 
 <span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">stable_baselines3.common.env_util</span> <span class="kn">import</span> <span class="n">is_wrapped</span>
 
+<span class="kn">from</span> <span class="nn">sinergym.utils.common</span> <span class="kn">import</span> <span class="n">is_wrapped</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.logger</span> <span class="kn">import</span> <span class="n">CSVLogger</span>
 
 

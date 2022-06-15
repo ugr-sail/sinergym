@@ -1,16 +1,19 @@
 """Common utilities."""
 
 import os
+import textwrap
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from pydoc import locate
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import gym
 import numpy as np
 import pandas as pd
 from opyplus import Epm, WeatherData
 from opyplus.epm.record import Record
+
+from sinergym.utils.constants import YEAR
 
 
 def get_delta_seconds(
@@ -55,9 +58,9 @@ def get_current_time_info(
 
     """
     start_date = datetime(
-        year=int(epm.RunPeriod[0]['begin_year']),
-        month=int(epm.RunPeriod[0]['begin_month']),
-        day=int(epm.RunPeriod[0]['begin_day_of_month'])
+        year=int(YEAR if epm.RunPeriod[0]['begin_year'] is None else epm.RunPeriod[0]['begin_year']),
+        month=int(1 if epm.RunPeriod[0]['begin_month'] is None else epm.RunPeriod[0]['begin_month']),
+        day=int(1 if epm.RunPeriod[0]['begin_day_of_month'] is None else epm.RunPeriod[0]['begin_day_of_month'])
     )
 
     current_date = start_date + timedelta(seconds=sec_elapsed)
@@ -97,6 +100,34 @@ def parse_variables(var_file: str) -> Dict[str, List[str]]:
     variables['action'] = action
 
     return variables
+
+
+def is_wrapped(env: Type[gym.Env], wrapper_class: Type[gym.Wrapper]) -> bool:
+    """
+    Check if a given environment has been wrapped with a given wrapper.
+
+    :param env: Environment to check
+    :param wrapper_class: Wrapper class to look for
+    :return: True if environment has been wrapped with ``wrapper_class``.
+    """
+    return unwrap_wrapper(env, wrapper_class) is not None
+
+
+def unwrap_wrapper(env: gym.Env,
+                   wrapper_class: Type[gym.Wrapper]) -> Optional[gym.Wrapper]:
+    """
+    Retrieve a ``VecEnvWrapper`` object by recursively searching.
+
+    :param env: Environment to unwrap
+    :param wrapper_class: Wrapper to look for
+    :return: Environment unwrapped till ``wrapper_class`` if it has been wrapped with it
+    """
+    env_tmp = env
+    while isinstance(env_tmp, gym.Wrapper):
+        if isinstance(env_tmp, wrapper_class):
+            return env_tmp
+        env_tmp = env_tmp.env
+    return None
 
 
 def create_variable_weather(
@@ -235,6 +266,29 @@ def prepare_batch_from_records(records: List[Record]) -> List[Dict[str, Any]]:
         batch.append(aux_dict)
 
     return batch
+
+
+def to_idf(building: Epm, file_path: str) -> None:
+
+    if building._comment != "":
+        comment = textwrap.indent(building._comment, "! ", lambda line: True)
+    comment += "\n\n"
+
+    dir_path, file_name = os.path.split(file_path)
+    model_name, _ = os.path.splitext(file_name)
+
+    # prepare body
+    formatted_records = []
+    for table_ref, table in building._tables.items(
+    ):  # self._tables is already sorted
+        formatted_records.extend(
+            [r.to_idf(model_name=model_name) for r in table])
+    body = "\n\n".join(formatted_records)
+
+    # write content
+    content = comment + body
+    with open(file_path, "w") as f:
+        f.write(content)
 
 
 def get_season_comfort_range(year, month, day):

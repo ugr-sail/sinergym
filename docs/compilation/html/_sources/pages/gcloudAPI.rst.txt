@@ -245,7 +245,7 @@ Executing experiments in remote containers
 
 This script, called *DRL_battery.py*, will be allocated in every remote container and it is used to execute experiments and combine it with **Google Cloud Bucket**, **Mlflow Artifacts**, **auto-remove**, etc:
 
-.. literalinclude:: ../../../DRL_battery.py
+.. literalinclude:: ../../../scripts/DRL_battery.py
     :language: python
 
 .. note:: **DRL_battery.py** is able to be used to local experiments into client computer. For example, ``--auto_delete`` parameter will have no effect in experiment. This experiments results could be sent to bucket and mlflow artifacts if it is specified. We will see it.

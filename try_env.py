@@ -4,7 +4,7 @@ import numpy as np
 import sinergym
 from sinergym.utils.wrappers import LoggerWrapper
 
-env = gym.make('Eplus-demo-v1')
+env = gym.make('Eplus-office-hot-continuous-v1')
 env = LoggerWrapper(env)
 
 for i in range(1):

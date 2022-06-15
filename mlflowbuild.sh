@@ -3,7 +3,7 @@
 # This scrip is used to build a mlflow server in Google Cloud, it is important
 # to set up account previously.
 
-# Please, visit our documentation here --> https://jajimer.github.io/sinergym/build/html/index.html
+# Please, visit our documentation here --> https://ugr-sail.github.io/sinergymcompilationhtml/index.html
 
 # Step 0 - Store all parameters
 

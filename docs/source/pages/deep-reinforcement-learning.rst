@@ -34,7 +34,7 @@ be called at given stages of the training procedure. You can use callbacks to ac
 It allows one to do monitoring, auto saving, model manipulation, progress bars, ...
 
 This structure allows to custom our own logger for DRL executions. Our objective is to **log all information about our custom environment** specifically.
-Therefore, `sinergym/sinergym/utils/callbacks.py <https://github.com/jajimer/sinergym/blob/main/sinergym/utils/callbacks.py>`__ has been created with this proposal.
+Therefore, `sinergym/sinergym/utils/callbacks.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/callbacks.py>`__ has been created with this proposal.
 Each algorithm has its own differences about how information is extracted which is why its implementation. ``LoggerCallback`` can deal with those subtleties.
 
 .. literalinclude:: ../../../sinergym/utils/callbacks.py
@@ -88,7 +88,7 @@ The main structure for Sinergym with Tensorboard is:
 How use
 **********
 
-You can try your own experiments and benefit from this functionality. `sinergym/examples/DRL_usage.py <https://github.com/jajimer/sinergym/blob/main/examples/DRL_usage.py>`__
+You can try your own experiments and benefit from this functionality. `sinergym/examples/DRL_usage.py <https://github.com/ugr-sail/sinergym/blob/main/examples/DRL_usage.py>`__
 is a example code to use it. You can use directly DRL_battery.py directly from your local computer specifying ``--tensorboard`` flag in execution.
 
 The most important information you must keep in mind when you try your own experiments are:
