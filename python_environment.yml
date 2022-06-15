@@ -2,7 +2,7 @@ name: sinergym
 channels:
   - nodefaults
 dependencies:
-  - python=3.9   
+  - python=3.10   
   - anaconda
   - pip
   - pip:

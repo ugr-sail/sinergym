@@ -78,6 +78,33 @@ class CSVLogger(object):
         self.total_time_elapsed = 0
         self.comfort_violation_timesteps = 0
 
+    def create_row_contents(
+            self,
+            timestep: int,
+            observation: List[Any],
+            action: Union[List[Union[int, float]], List[None]],
+            simulation_time: float,
+            reward: Optional[float],
+            total_power_no_units: Optional[float],
+            comfort_penalty: Optional[float],
+            done: bool) -> List:
+        """Assemble the array data to log in the new row
+
+        Args:
+            timestep (int): Current episode timestep in simulation.
+            observation (list): Values that belong to current observation.
+            action (list): Values that belong to current action.
+            simulation_time (float): Total time elapsed in current episode (seconds).
+            reward (float): Current reward achieved.
+            total_power_no_units (float): Power consumption penalty depending on reward function.
+            comfort_penalty (float): Temperature comfort penalty depending on reward function.
+            done (bool): It specifies if this step terminates episode or not.
+
+        """
+        return [timestep] + list(observation) + \
+                       list(action) + [simulation_time, reward,
+                                       total_power_no_units, comfort_penalty, done]
+
     def log_step(
             self,
             timestep: int,
@@ -104,10 +131,15 @@ class CSVLogger(object):
 
         """
         if self.flag:
-            row_contents = [timestep] + list(observation) + \
-                list(action) + [simulation_time, reward,
-                                total_power_no_units, comfort_penalty, done]
-            self.steps_data.append(row_contents)
+            self.steps_data.append(self.create_row_contents(
+                timestep,
+                observation,
+                action,
+                simulation_time,
+                reward,
+                total_power_no_units,
+                comfort_penalty,
+                done))
 
             # Store step information for episode
             self._store_step_information(
@@ -143,10 +175,15 @@ class CSVLogger(object):
             done (bool): It specifies if this step terminates episode or not.
         """
         if self.flag:
-            row_contents = [timestep] + list(observation) + \
-                list(action) + [simulation_time, reward,
-                                total_power_no_units, comfort_penalty, done]
-            self.steps_data_normalized.append(row_contents)
+            self.steps_data_normalized.append(self.create_row_contents(
+                timestep,
+                observation,
+                action,
+                simulation_time,
+                reward,
+                total_power_no_units,
+                comfort_penalty,
+                done))
         else:
             pass
 

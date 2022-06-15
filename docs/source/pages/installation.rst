@@ -53,7 +53,7 @@ To install *Sinergym* manually instead of through the container (recommended), f
 .. code:: sh
 
     $ sudo apt-get install python-virtualenv virtualenv
-    $ virtualenv env_sinergym --python=python3.9
+    $ virtualenv env_sinergym --python=python3.10
     $ source env_sinergym/bin/activate
     $ pip install -e .[extras]
 
