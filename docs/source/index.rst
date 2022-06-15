@@ -52,7 +52,9 @@ The examples can be run if you have your computer or container properly configur
    pages/notebooks/basic_example.nblink
    pages/notebooks/change_environment.nblink
    pages/notebooks/wrappers_examples.nblink
+   pages/notebooks/personalize_loggerwrapper.nblink
    pages/notebooks/rule_controller_example.nblink
    pages/notebooks/drl.nblink
    pages/notebooks/MLflow_example.nblink
    pages/notebooks/TensorBoard_example.nblink
+   
