@@ -89,6 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">Logger Wrapper personalization/configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">Rule Controller example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">DRL usage example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/MLflow_example.html">MLFlow example</a></li>
@@ -150,15 +151,17 @@
 <h1>sinergym.utils.wrappers.LoggerWrapper<a class="headerlink" href="#sinergym-utils-wrappers-loggerwrapper" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.LoggerWrapper">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">LoggerWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">LoggerWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env:</span> <span class="pre">~typing.Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_class:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.logger.CSVLogger'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor_header:</span> <span class="pre">~typing.Optional[list]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper" title="Permalink to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.LoggerWrapper.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env:</span> <span class="pre">~typing.Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_class:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.logger.CSVLogger'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor_header:</span> <span class="pre">~typing.Optional[list]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>CSVLogger to log interactions with environment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>env</strong> (<em>Any</em>) -- Original Gym environment.</p></li>
+<li><p><strong>logger_class</strong> (<a class="reference internal" href="sinergym.utils.logger.CSVLogger.html#sinergym.utils.logger.CSVLogger" title="sinergym.utils.logger.CSVLogger"><em>CSVLogger</em></a>) -- CSV Logger class to use to log all information.</p></li>
+<li><p><strong>monitor_header</strong> -- Header for monitor.csv in each episode. Default is None (default format).</p></li>
 <li><p><strong>flag</strong> (<em>bool</em><em>, </em><em>optional</em>) -- State of logger (activate or deactivate). Defaults to True.</p></li>
 </ul>
 </dd>
@@ -172,7 +175,7 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.LoggerWrapper.__init__" title="sinergym.utils.wrappers.LoggerWrapper.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env[, flag])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.LoggerWrapper.__init__" title="sinergym.utils.wrappers.LoggerWrapper.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env[, logger_class, ...])</p></td>
 <td><p>CSVLogger to log interactions with environment.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.LoggerWrapper.activate_logger" title="sinergym.utils.wrappers.LoggerWrapper.activate_logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">activate_logger</span></code></a>()</p></td>

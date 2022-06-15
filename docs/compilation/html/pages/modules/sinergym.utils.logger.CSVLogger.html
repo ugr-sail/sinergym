@@ -88,6 +88,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">Logger Wrapper personalization/configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">Rule Controller example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">DRL usage example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/MLflow_example.html">MLFlow example</a></li>
@@ -185,19 +186,22 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.activate_flag" title="sinergym.utils.logger.CSVLogger.activate_flag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">activate_flag</span></code></a>()</p></td>
 <td><p>Activate Sinergym CSV logger</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.deactivate_flag" title="sinergym.utils.logger.CSVLogger.deactivate_flag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deactivate_flag</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.create_row_contents" title="sinergym.utils.logger.CSVLogger.create_row_contents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_row_contents</span></code></a>(timestep, observation, ...)</p></td>
+<td><p>Assemble the array data to log in the new row</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.deactivate_flag" title="sinergym.utils.logger.CSVLogger.deactivate_flag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deactivate_flag</span></code></a>()</p></td>
 <td><p>Deactivate Sinergym CSV logger</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.log_episode" title="sinergym.utils.logger.CSVLogger.log_episode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_episode</span></code></a>(episode)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.log_episode" title="sinergym.utils.logger.CSVLogger.log_episode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_episode</span></code></a>(episode)</p></td>
 <td><p>Log episode main information using steps_data param.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.log_step" title="sinergym.utils.logger.CSVLogger.log_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_step</span></code></a>(timestep, observation, action, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.log_step" title="sinergym.utils.logger.CSVLogger.log_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_step</span></code></a>(timestep, observation, action, ...)</p></td>
 <td><p>Log step information and store it in steps_data attribute.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.log_step_normalize" title="sinergym.utils.logger.CSVLogger.log_step_normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_step_normalize</span></code></a>(timestep, observation, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.log_step_normalize" title="sinergym.utils.logger.CSVLogger.log_step_normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_step_normalize</span></code></a>(timestep, observation, ...)</p></td>
 <td><p>Log step information and store it in steps_data_normalized attribute.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.set_log_file" title="sinergym.utils.logger.CSVLogger.set_log_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_log_file</span></code></a>(new_log_file)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.set_log_file" title="sinergym.utils.logger.CSVLogger.set_log_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_log_file</span></code></a>(new_log_file)</p></td>
 <td><p>Change log_file path for monitor.csv when an episode ends.</p></td>
 </tr>
 </tbody>
@@ -206,6 +210,26 @@
 <dt class="sig sig-object py" id="sinergym.utils.logger.CSVLogger.activate_flag">
 <span class="sig-name descname"><span class="pre">activate_flag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.logger.CSVLogger.activate_flag" title="Permalink to this definition"></a></dt>
 <dd><p>Activate Sinergym CSV logger</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.logger.CSVLogger.create_row_contents">
+<span class="sig-name descname"><span class="pre">create_row_contents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_power_no_units</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comfort_penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">done</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#sinergym.utils.logger.CSVLogger.create_row_contents" title="Permalink to this definition"></a></dt>
+<dd><p>Assemble the array data to log in the new row</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timestep</strong> (<em>int</em>) -- Current episode timestep in simulation.</p></li>
+<li><p><strong>observation</strong> (<em>list</em>) -- Values that belong to current observation.</p></li>
+<li><p><strong>action</strong> (<em>list</em>) -- Values that belong to current action.</p></li>
+<li><p><strong>simulation_time</strong> (<em>float</em>) -- Total time elapsed in current episode (seconds).</p></li>
+<li><p><strong>reward</strong> (<em>float</em>) -- Current reward achieved.</p></li>
+<li><p><strong>total_power_no_units</strong> (<em>float</em>) -- Power consumption penalty depending on reward function.</p></li>
+<li><p><strong>comfort_penalty</strong> (<em>float</em>) -- Temperature comfort penalty depending on reward function.</p></li>
+<li><p><strong>done</strong> (<em>bool</em>) -- It specifies if this step terminates episode or not.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

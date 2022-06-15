@@ -66,6 +66,7 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">Logger Wrapper personalization/configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">Rule Controller example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">DRL usage example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/MLflow_example.html">MLFlow example</a></li>
@@ -128,7 +129,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Implementation of custom Gym environments.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span>
 
 <span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -254,18 +255,25 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 
 <span class="k">class</span> <span class="nc">LoggerWrapper</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">flag</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">env</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">logger_class</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">CSVLogger</span><span class="p">,</span>
+        <span class="n">monitor_header</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">flag</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;CSVLogger to log interactions with environment.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            env (Any): Original Gym environment.</span>
+<span class="sd">            logger_class (CSVLogger): CSV Logger class to use to log all information.</span>
+<span class="sd">            monitor_header: Header for monitor.csv in each episode. Default is None (default format).</span>
 <span class="sd">            flag (bool, optional): State of logger (activate or deactivate). Defaults to True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
         <span class="c1"># Headers for csv logger</span>
-        <span class="n">monitor_header_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;timestep&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span> <span class="o">+</span> \
-            <span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;time (seconds)&#39;</span><span class="p">,</span> <span class="s1">&#39;reward&#39;</span><span class="p">,</span>
-                                       <span class="s1">&#39;power_penalty&#39;</span><span class="p">,</span> <span class="s1">&#39;comfort_penalty&#39;</span><span class="p">,</span> <span class="s1">&#39;done&#39;</span><span class="p">]</span>
+        <span class="n">monitor_header_list</span> <span class="o">=</span> <span class="n">monitor_header</span> <span class="k">if</span> <span class="n">monitor_header</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span>
+            <span class="s1">&#39;timestep&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;time (seconds)&#39;</span><span class="p">,</span> <span class="s1">&#39;reward&#39;</span><span class="p">,</span> <span class="s1">&#39;power_penalty&#39;</span><span class="p">,</span> <span class="s1">&#39;comfort_penalty&#39;</span><span class="p">,</span> <span class="s1">&#39;done&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="k">for</span> <span class="n">element_header</span> <span class="ow">in</span> <span class="n">monitor_header_list</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span> <span class="o">+=</span> <span class="n">element_header</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span>
@@ -273,7 +281,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="bp">self</span><span class="o">.</span><span class="n">progress_header</span> <span class="o">=</span> <span class="s1">&#39;episode_num,cumulative_reward,mean_reward,cumulative_power_consumption,mean_power_consumption,cumulative_comfort_penalty,mean_comfort_penalty,cumulative_power_penalty,mean_power_penalty,comfort_violation (%),length(timesteps),time_elapsed(seconds)&#39;</span>
 
         <span class="c1"># Create simulation logger, by default is active (flag=True)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">CSVLogger</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger_class</span><span class="p">(</span>
             <span class="n">monitor_header</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span><span class="p">,</span>
             <span class="n">progress_header</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_header</span><span class="p">,</span>
             <span class="n">log_progress_file</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_env_working_dir_parent</span> <span class="o">+</span>

@@ -1,4 +1,4 @@
-sinergym.utils.logger.CSVLogger
+﻿sinergym.utils.logger.CSVLogger
 ===============================
 
 .. currentmodule:: sinergym.utils.logger
@@ -17,6 +17,7 @@ sinergym.utils.logger.CSVLogger
    
       ~CSVLogger.__init__
       ~CSVLogger.activate_flag
+      ~CSVLogger.create_row_contents
       ~CSVLogger.deactivate_flag
       ~CSVLogger.log_episode
       ~CSVLogger.log_step
