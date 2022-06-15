@@ -1,7 +1,7 @@
 """Implementation of custom Gym environments."""
 
 from collections import deque
-from typing import Any, Dict, Optional, Sequence, Tuple, Union, List
+from typing import Any, Dict, Optional, Sequence, Tuple, Union, Callable
 
 import gym
 import numpy as np
@@ -130,8 +130,8 @@ class LoggerWrapper(gym.Wrapper):
     def __init__(
         self,
         env: Any,
-        logger_class: CSVLogger = CSVLogger,
-        monitor_header: List[Any] = None,
+        logger_class: Callable = CSVLogger,
+        monitor_header: Optional[list] = None,
         flag: bool = True,
     ):
         """CSVLogger to log interactions with environment.
