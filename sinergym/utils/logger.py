@@ -102,8 +102,8 @@ class CSVLogger(object):
 
         """
         return [timestep] + list(observation) + \
-                       list(action) + [simulation_time, reward,
-                                       total_power_no_units, comfort_penalty, done]
+            list(action) + [simulation_time, reward,
+                            total_power_no_units, comfort_penalty, done]
 
     def log_step(
             self,
