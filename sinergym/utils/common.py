@@ -1,20 +1,19 @@
 """Common utilities."""
 
 import os
+import textwrap
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from pydoc import locate
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
-from typing import Any, Dict, List, Optional, Tuple, Union, Type
-from sinergym.utils.constants import YEAR
-
-
-import textwrap
 import gym
 import numpy as np
 import pandas as pd
 from opyplus import Epm, WeatherData
 from opyplus.epm.record import Record
+
+from sinergym.utils.constants import YEAR
 
 
 def get_delta_seconds(
