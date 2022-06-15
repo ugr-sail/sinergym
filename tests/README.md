@@ -38,19 +38,19 @@ $ pytest tests/test_common.py -vv
 
 ## Create new tests
 
-These tests have been created in [sinergym/tests](https://github.com/jajimer/sinergym/tree/main/tests) directory, they are organized by different modules:
+These tests have been created in [sinergym/tests](https://github.com/ugr-sail/sinergym/tree/main/tests) directory, they are organized by different modules:
 
-- **test_common.py**: Tests for [sinergym/sinergym/utils/common.py](https://github.com/jajimer/sinergym/blob/main/sinergym/utils/common.py). Here will be all tests that check Sinergym common utils functionalities. 
-- **test_reward.py**: Tests for [sinergym/sinergym/utils/rewards.py](https://github.com/jajimer/sinergym/blob/main/sinergym/utils/rewards.py). Here will be all tests that check implementation(s) of reward function(s) applicable to sinergym environments. 
-- **test_wrapper.py**: Tests for [sinergym/sinergym/utils/wrappers.py](https://github.com/jajimer/sinergym/blob/main/sinergym/utils/wrappers.py). Here will be all tests that check wrappers to normalize Sinergym default environment observations.
-- **test_simulator.py**: Tests for [sinergym/sinergym/simulators/\*](https://github.com/jajimer/sinergym/tree/main/sinergym/simulators). Here will be all tests that check low level Sinergym simulator and communication interface.
-- **test_env.py**: Tests for [sinergym/sinergym/envs/\*](https://github.com/jajimer/sinergym/tree/main/sinergym/envs). Here will be all tests that check Sinergym simulation Environments based on OpenAI Gym.
+- **test_common.py**: Tests for [sinergym/sinergym/utils/common.py](https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py). Here will be all tests that check Sinergym common utils functionalities. 
+- **test_reward.py**: Tests for [sinergym/sinergym/utils/rewards.py](https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/rewards.py). Here will be all tests that check implementation(s) of reward function(s) applicable to sinergym environments. 
+- **test_wrapper.py**: Tests for [sinergym/sinergym/utils/wrappers.py](https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/wrappers.py). Here will be all tests that check wrappers to normalize Sinergym default environment observations.
+- **test_simulator.py**: Tests for [sinergym/sinergym/simulators/\*](https://github.com/ugr-sail/sinergym/tree/main/sinergym/simulators). Here will be all tests that check low level Sinergym simulator and communication interface.
+- **test_env.py**: Tests for [sinergym/sinergym/envs/\*](https://github.com/ugr-sail/sinergym/tree/main/sinergym/envs). Here will be all tests that check Sinergym simulation Environments based on OpenAI Gym.
 
 If you want to make new tests, you can append to this modules or create a new one if the conceptual context is different.
 
 ### Fixtures
 
-In order to execute tests, it's necessary to define project instances to check specific functionalities. Thus, we need to create [Fixtures](https://docs.pytest.org/en/6.2.x/fixture.html) which can be used in each testing module and they are stored in [conftest.py](https://github.com/jajimer/sinergym/blob/main/tests/conftest.py) file (centralized fixtures). Let's see two of them:
+In order to execute tests, it's necessary to define project instances to check specific functionalities. Thus, we need to create [Fixtures](https://docs.pytest.org/en/6.2.x/fixture.html) which can be used in each testing module and they are stored in [conftest.py](https://github.com/ugr-sail/sinergym/blob/main/tests/conftest.py) file (centralized fixtures). Let's see two of them:
 
 ```python
 # sinergym/tests/conftest.py

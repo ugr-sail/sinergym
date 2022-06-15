@@ -6,12 +6,12 @@ into two categories:
     - Create an issue about your intended feature (use our issue template), and we shall discuss the design and
     implementation. Once we agree that the plan looks good, go ahead and implement it.
 2. You want to implement a feature or bug-fix for an outstanding issue
-    - Look at the outstanding issues here: https://github.com/jajimer/sinergym/issues
+    - Look at the outstanding issues here: https://github.com/ugr-sail/sinergym/issues
     - Pick an issue or feature and comment on the task that you want to work on this feature.
     - If you need more context on a particular issue, please ask and we shall provide.
 
 Once you finish implementing a feature or bug-fix, please send a Pull Request to
-https://github.com/jajimer/sinergym main branch. Please, follow our pull request template for this purpose
+https://github.com/ugr-sail/sinergym main branch. Please, follow our pull request template for this purpose
 (it will appear in text box so you only have to complete it).
 
 You can create a pull request when the issue is not finished yet and work on it. If you prefer to work in this way, please, select [Draft pull request](https://github.blog/2019-02-14-introducing-draft-pull-requests/) and select *ready for review* when you are ready.
@@ -33,7 +33,7 @@ To develop Sinergym on your machine, here are some alternatives:
     1. Clone a copy of Sinergym from source (your forked repository):
 
     ```bash
-    git clone https://github.com/jajimer/sinergym.git
+    git clone https://github.com/ugr-sail/sinergym.git
     cd sinergym/
     ```
 
@@ -43,7 +43,7 @@ To develop Sinergym on your machine, here are some alternatives:
     pip install -e .[extra]
     ```
 
-    3. Install Energyplus and BCVTB into your computer (see [README.md](https://github.com/jajimer/sinergym/blob/main/README.md) for more information about this).
+    3. Install Energyplus and BCVTB into your computer (see [README.md](https://github.com/ugr-sail/sinergym/blob/main/README.md) for more information about this).
 
 - Local docker container (**recommended**)
 

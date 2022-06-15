@@ -27,7 +27,9 @@ CWD = os.getcwd()
 CONFIG_KEYS = ['timesteps_per_hour', 'runperiod', 'action_definition']
 # Extra config action definition keys (add keys in this list in order to
 # assert new controller types)
-ACTION_DEFINITION_COMPONENTS = ['ThermostatSetpoint:DualSetpoint']
+ACTION_DEFINITION_COMPONENTS = [
+    'ThermostatSetpoint:DualSetpoint',
+    'ThermostatSetpoint:SingleHeating']
 
 # ---------------------------------------------------------------------------- #
 #                          Normalization dictionaries                          #
@@ -280,3 +282,194 @@ DEFAULT_DATACENTER_CONFIG_PARAMS = {
         }]
     }
 }
+
+# ----------------------------------WAREHOUSE--------------------------------- #
+DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES = [
+    'Site Outdoor Air Drybulb Temperature(Environment)',
+    'Site Outdoor Air Relative Humidity(Environment)',
+    'Site Wind Speed(Environment)',
+    'Site Wind Direction(Environment)',
+    'Site Diffuse Solar Radiation Rate per Area(Environment)',
+    'Site Direct Solar Radiation Rate per Area(Environment)',
+    'Zone Thermostat Heating Setpoint Temperature(Zone1 Office)',
+    'Zone Thermostat Cooling Setpoint Temperature(Zone1 Office)',
+    'Zone Air Temperature(Zone1 Office)',
+    'Zone Air Relative Humidity(Zone1 Office)',
+    'Zone People Occupant Count(Zone1 Office)',
+    'Zone Thermostat Heating Setpoint Temperature(Zone2 Fine Storage)',
+    'Zone Thermostat Cooling Setpoint Temperature(Zone2 Fine Storage)',
+    'Zone Air Temperature(Zone2 Fine Storage)',
+    'Zone Air Relative Humidity(Zone2 Fine Storage)',
+    'Zone Thermostat Heating Setpoint Temperature(Zone3 Bulk Storage)',
+    'Zone Air Temperature(Zone3 Bulk Storage)',
+    'Zone Air Relative Humidity(Zone3 Bulk Storage)',
+    'Facility Total HVAC Electricity Demand Rate(Whole Building)']
+
+DEFAULT_WAREHOUSE_ACTION_VARIABLES = [
+    'office-heating-rl',
+    'office-cooling-rl',
+    'storage-heating-rl',
+    'storage-cooling-rl',
+    'bulk-storage-heating-rl'
+]
+
+DEFAULT_WAREHOUSE_OBSERVATION_SPACE = gym.spaces.Box(
+    low=-5e6,
+    high=5e6,
+    shape=(len(DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES) + 4,),
+    dtype=np.float32)
+
+DEFAULT_WAREHOUSE_ACTION_MAPPING = {
+    0: (15, 30, 15, 30, 15),
+    1: (16, 29, 16, 29, 16),
+    2: (17, 28, 17, 28, 17),
+    3: (18, 27, 18, 27, 18),
+    4: (19, 26, 19, 26, 19),
+    5: (20, 25, 20, 25, 20),
+    6: (21, 24, 21, 24, 21),
+    7: (22, 23, 22, 23, 22),
+    8: (22, 22, 22, 22, 23),
+    9: (21, 21, 21, 21, 24)
+}
+
+DEFAULT_WAREHOUSE_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
+
+DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
+    low=np.array([15.0, 22.5, 15.0, 22.5, 15.0]),
+    high=np.array([22.5, 30.0, 22.5, 30.0, 22.5]),
+    shape=(5,),
+    dtype=np.float32)
+
+DEFAULT_WAREHOUSE_CONFIG_PARAMS = {'action_definition': {
+    'ThermostatSetpoint:DualSetpoint': [{
+        'name': 'Office-DualSetP-RL',
+        'heating_name': 'office-heating-rl',
+        'cooling_name': 'office-cooling-rl',
+        'zones': ['Zone1 Office']
+    },
+        {
+        'name': 'Storage-DualSetP-RL',
+        'heating_name': 'storage-heating-rl',
+        'cooling_name': 'storage-cooling-rl',
+        'zones': ['Zone2 Fine Storage']
+    }],
+    'ThermostatSetpoint:SingleHeating': [{
+        'name': 'Bulk-DualSetP-RL',
+        'heating_name': 'bulk-storage-heating-rl',
+        'zones': ['Zone3 Bulk Storage']
+    }]
+}}
+
+# ----------------------------------OFFICE--------------------------------- #
+
+DEFAULT_OFFICE_OBSERVATION_VARIABLES = [
+    'Zone Air Temperature(Core_bottom)',
+    'Zone Air Temperature(TopFloor_Plenum)',
+    'Zone Air Temperature(MidFloor_Plenum)',
+    'Zone Air Temperature(FirstFloor_Plenum)',
+    'Zone Air Temperature(Core_mid)',
+    'Zone Air Temperature(Core_top)',
+    'Zone Air Temperature(Perimeter_top_ZN_3)',
+    'Zone Air Temperature(Perimeter_top_ZN_2)',
+    'Zone Air Temperature(Perimeter_top_ZN_1)',
+    'Zone Air Temperature(Perimeter_top_ZN_4)',
+    'Zone Air Temperature(Perimeter_bot_ZN_3)',
+    'Zone Air Temperature(Perimeter_bot_ZN_2)',
+    'Zone Air Temperature(Perimeter_bot_ZN_1)',
+    'Zone Air Temperature(Perimeter_bot_ZN_4)',
+    'Zone Air Temperature(Perimeter_mid_ZN_3)',
+    'Zone Air Temperature(Perimeter_mid_ZN_2)',
+    'Zone Air Temperature(Perimeter_mid_ZN_1)',
+    'Zone Air Temperature(Perimeter_mid_ZN_4)',
+    'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+    'Site Outdoor Air Drybulb Temperature(Environment)'
+]
+
+DEFAULT_OFFICE_ACTION_VARIABLES = [
+    'office-heating-rl',
+    'office-cooling-rl',
+]
+
+DEFAULT_OFFICE_OBSERVATION_SPACE = gym.spaces.Box(
+    low=-5e6,
+    high=5e6,
+    shape=(len(DEFAULT_OFFICE_OBSERVATION_VARIABLES) + 4,),
+    dtype=np.float32)
+
+DEFAULT_OFFICE_ACTION_MAPPING = {
+    0: (15, 30),
+    1: (16, 29),
+    2: (17, 28),
+    3: (18, 27),
+    4: (19, 26),
+    5: (20, 25),
+    6: (21, 24),
+    7: (22, 23),
+    8: (22, 22),
+    9: (21, 21)
+}
+
+DEFAULT_OFFICE_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
+
+DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
+    low=np.array([15.0, 22.5]),
+    high=np.array([22.5, 30.0]),
+    shape=(2,),
+    dtype=np.float32)
+
+DEFAULT_OFFICE_CONFIG_PARAMS = {'action_definition': {
+    'ThermostatSetpoint:DualSetpoint': [{
+        'name': 'Office-DualSetP-RL',
+        'heating_name': 'office-heating-rl',
+        'cooling_name': 'office-cooling-rl',
+        'zones': 'all'
+    }]
+}}
+
+# ----------------------------------HOSPITAL--------------------------------- #
+DEFAULT_HOSPITAL_OBSERVATION_VARIABLES = [
+    'Zone Air Temperature(Basement)',
+    'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+    'Site Outdoor Air Drybulb Temperature(Environment)'
+]
+
+DEFAULT_HOSPITAL_ACTION_VARIABLES = [
+    'hospital-heating-rl',
+    'hospital-cooling-rl',
+]
+
+DEFAULT_HOSPITAL_OBSERVATION_SPACE = gym.spaces.Box(
+    low=-5e6,
+    high=5e6,
+    shape=(len(DEFAULT_HOSPITAL_OBSERVATION_VARIABLES) + 4,),
+    dtype=np.float32)
+
+DEFAULT_HOSPITAL_ACTION_MAPPING = {
+    0: (15, 30),
+    1: (16, 29),
+    2: (17, 28),
+    3: (18, 27),
+    4: (19, 26),
+    5: (20, 25),
+    6: (21, 24),
+    7: (22, 23),
+    8: (22, 22),
+    9: (21, 21)
+}
+
+DEFAULT_HOSPITAL_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
+
+DEFAULT_HOSPITAL_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
+    low=np.array([15.0, 22.5]),
+    high=np.array([22.5, 30.0]),
+    shape=(2,),
+    dtype=np.float32)
+
+DEFAULT_HOSPITAL_CONFIG_PARAMS = {'action_definition': {
+    'ThermostatSetpoint:DualSetpoint': [{
+        'name': 'Hospital-DualSetP-RL',
+        'heating_name': 'hospital-heating-rl',
+        'cooling_name': 'hospital-cooling-rl',
+        'zones': 'all'
+    }]
+}}

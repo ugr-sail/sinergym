@@ -4,8 +4,12 @@ import os
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from pydoc import locate
-from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
+from typing import Any, Dict, List, Optional, Tuple, Union, Type
+from sinergym.utils.constants import YEAR
+
+
+import textwrap
 import gym
 import numpy as np
 import pandas as pd
@@ -55,9 +59,9 @@ def get_current_time_info(
 
     """
     start_date = datetime(
-        year=int(epm.RunPeriod[0]['begin_year']),
-        month=int(epm.RunPeriod[0]['begin_month']),
-        day=int(epm.RunPeriod[0]['begin_day_of_month'])
+        year=int(YEAR if epm.RunPeriod[0]['begin_year'] is None else epm.RunPeriod[0]['begin_year']),
+        month=int(1 if epm.RunPeriod[0]['begin_month'] is None else epm.RunPeriod[0]['begin_month']),
+        day=int(1 if epm.RunPeriod[0]['begin_day_of_month'] is None else epm.RunPeriod[0]['begin_day_of_month'])
     )
 
     current_date = start_date + timedelta(seconds=sec_elapsed)
@@ -263,6 +267,29 @@ def prepare_batch_from_records(records: List[Record]) -> List[Dict[str, Any]]:
         batch.append(aux_dict)
 
     return batch
+
+
+def to_idf(building: Epm, file_path: str) -> None:
+
+    if building._comment != "":
+        comment = textwrap.indent(building._comment, "! ", lambda line: True)
+    comment += "\n\n"
+
+    dir_path, file_name = os.path.split(file_path)
+    model_name, _ = os.path.splitext(file_name)
+
+    # prepare body
+    formatted_records = []
+    for table_ref, table in building._tables.items(
+    ):  # self._tables is already sorted
+        formatted_records.extend(
+            [r.to_idf(model_name=model_name) for r in table])
+    body = "\n\n".join(formatted_records)
+
+    # write content
+    content = comment + body
+    with open(file_path, "w") as f:
+        f.write(content)
 
 
 def get_season_comfort_range(year, month, day):

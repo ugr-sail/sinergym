@@ -2869,11 +2869,6 @@
     Main Cooling Coil 1 Outlet Node,  !- Node 2 Name
     Main Heating Coil 1 Outlet Node;  !- Node 3 Name
 
-  !-External Interface
-
-  ExternalInterface,
-    PtolemyServer;           !- Name of External Interface
-
   !- Site weather output
 
   Output:Variable,*,Site Outdoor Air Drybulb Temperature,timestep;

@@ -5,7 +5,7 @@ Describe your changes in detail
 
 ## Motivation and Context
 
-- [ ] I have raised an issue to propose this change ([required](https://github.com/jajimer/sinergym/blob/main/CONTRIBUTING.md) for new features and bug fixes)
+- [ ] I have raised an issue to propose this change ([required](https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md) for new features and bug fixes)
 
 Why is this change required? What problem does it solve? Please, reference issue or issues opened previously.
 <!--- e.g You can use the syntax `fixes #100` if this solves the issue #100 -->
@@ -22,7 +22,7 @@ Fixes #(issue or issues)
 ## Checklist:
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
-- [ ] I've read the [CONTRIBUTION](https://github.com/jajimer/sinergym/blob/main/CONTRIBUTING.md) guide (**required**)
+- [ ] I've read the [CONTRIBUTION](https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md) guide (**required**)
 - [ ] My change requires a change to the documentation.
 - [ ] I have updated the tests.
 - [ ] I have updated the documentation accordingly.

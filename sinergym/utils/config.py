@@ -8,9 +8,10 @@ from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 import pandas
 from opyplus import Epm, Idd, WeatherData
+from opyplus.epm.record import Record
 
 from sinergym.utils.common import (get_delta_seconds, get_record_keys,
-                                   prepare_batch_from_records)
+                                   prepare_batch_from_records, to_idf)
 from sinergym.utils.constants import (ACTION_DEFINITION_COMPONENTS,
                                       CONFIG_KEYS, CWD, PKG_DATA_PATH,
                                       WEEKDAY_ENCODING, YEAR)
@@ -174,6 +175,16 @@ class Config(object):
                 'EnergyPlus',
                 schedule=act_var)
 
+    def set_external_interface(self) -> None:
+        """Set an empty external interface with Ptolemy server if is not in the current building
+        """
+
+        # If no ExternalInterface object found
+        if len(self.building.ExternalInterface) == 0:
+            # Create PtolemyServer interface in building
+            self.building.ExternalInterface.add(
+                name_of_external_interface='PtolemyServer')
+
     def apply_extra_conf(self) -> None:
         """Set extra configuration in building model
         """
@@ -220,25 +231,75 @@ class Config(object):
                             for zone_control in self.building.ZoneControl_Thermostat:
                                 # If zone specified in zone_control is included
                                 # in out DualSetpoint:
-                                if zone_control.zone_or_zonelist_name.name.lower() in list(
-                                        map(lambda zone: zone.lower(), controller['zones'])):
-                                    # We iterate all record fields searching
-                                    # 'ThermostatSetpoint:DualSetpoint' value
-                                    for i in range(
-                                            len(get_record_keys(zone_control))):
-                                        if isinstance(zone_control[i], str):
-                                            if zone_control[i].lower(
-                                            ) == controller_type.lower():
-                                                # Then, the next field will be
-                                                # always the DualSetpoint
-                                                # thermostat name, so we change
-                                                # it
-                                                zone_control[i +
-                                                             1] = controller['name']
-                                                # We do not need to search more
-                                                # fields in that record
-                                                # specifically, so break it
-                                                break
+                                if isinstance(controller['zones'], list):
+                                    if zone_control.zone_or_zonelist_name.name.lower() in list(
+                                            map(lambda zone: zone.lower(), controller['zones'])):
+                                        self._set_thermostat_zone_control(
+                                            zone_control, controller_type, controller)
+                                elif isinstance(controller['zones'], str) and (controller['zones'].lower() == 'all' or controller['zones'] == '*'):
+                                    self._set_thermostat_zone_control(
+                                        zone_control, controller_type, controller)
+                                else:
+                                    raise RuntimeError(
+                                        'Controller {} zones specified unknown.'.format(
+                                            controller['name']))
+                    elif controller_type == 'ThermostatSetpoint:SingleHeating':
+                        for controller in controllers:
+                            # Create Ptolomy variables
+                            self.building.ExternalInterface_Schedule.add(
+                                name=controller['heating_name'],
+                                schedule_type_limits_name='Temperature',
+                                initial_value=21)
+                            # Create a ThermostatSetpoint:SigleHeating object
+                            self.building.ThermostatSetpoint_SingleHeating.add(
+                                name=controller['name'],
+                                setpoint_temperature_schedule_name=controller['heating_name'])
+                            # Link in zones required
+                            for zone_control in self.building.ZoneControl_Thermostat:
+                                # If zone specified in zone_control is included
+                                # in out DualSetpoint:
+                                if isinstance(controller['zones'], list):
+                                    if zone_control.zone_or_zonelist_name.name.lower() in list(
+                                            map(lambda zone: zone.lower(), controller['zones'])):
+                                        self._set_thermostat_zone_control(
+                                            zone_control, controller_type, controller)
+                                elif isinstance(controller['zones'], str) and (controller['zones'].lower() == 'all' or controller['zones'] == '*'):
+                                    self._set_thermostat_zone_control(
+                                        zone_control, controller_type, controller)
+                                else:
+                                    raise RuntimeError(
+                                        'Controller {} zones specified unknown.'.format(
+                                            controller['name']))
+                    elif controller_type == 'ThermostatSetpoint:SingleCooling':
+                        for controller in controllers:
+                            # Create Ptolomy variables
+                            self.building.ExternalInterface_Schedule.add(
+                                name=controller['cooling_name'],
+                                schedule_type_limits_name='Temperature',
+                                initial_value=25)
+                            # Create a ThermostatSetpoint:SigleHeating object
+                            self.building.ThermostatSetpoint_SingleCooling.add(
+                                name=controller['name'],
+                                setpoint_temperature_schedule_name=controller['cooling_name'])
+                            # Link in zones required
+                            for zone_control in self.building.ZoneControl_Thermostat:
+                                # If zone specified in zone_control is included
+                                # in out DualSetpoint:
+                                if isinstance(controller['zones'], list):
+                                    if zone_control.zone_or_zonelist_name.name.lower() in list(
+                                            map(lambda zone: zone.lower(), controller['zones'])):
+                                        self._set_thermostat_zone_control(
+                                            zone_control, controller_type, controller)
+                                elif isinstance(controller['zones'], str) and (controller['zones'].lower() == 'all' or controller['zones'] == '*'):
+                                    self._set_thermostat_zone_control(
+                                        zone_control, controller_type, controller)
+                                else:
+                                    raise RuntimeError(
+                                        'Controller {} zones specified unknown.'.format(
+                                            controller['name']))
+                    else:
+                        raise KeyError(
+                            F'Controller type specified in action_definition called [{controller_type}] has no support in Sinergym.')
 
     def save_variables_cfg(self) -> str:
         """This method saves current XML variables tree model into a variables.cfg file.
@@ -277,7 +338,8 @@ class Config(object):
         if self.episode_path is not None:
             episode_idf_path = os.path.join(self.episode_path,
                                             os.path.basename(self._idf_path))
-            self.building.save(episode_idf_path)
+            # self.building.save(episode_idf_path)
+            to_idf(building=self.building, file_path=episode_idf_path)
             return episode_idf_path
         else:
             raise RuntimeError(
@@ -522,7 +584,7 @@ class Config(object):
             rm_dir_full_name = cur_dir_name + base_name + str(rm_dir_id)
             rmtree(rm_dir_full_name)
 
-    @property
+    @ property
     def start_year(self) -> int:
         """Returns the EnergyPlus simulation year.
 
@@ -571,9 +633,16 @@ class Config(object):
                                 thermostat['heating_name'])
                             assert thermostat['cooling_name'] in self.variables['action'], 'Extra config action definition: {} should be in action variables.'.format(
                                 thermostat['cooling_name'])
-                            for zone in thermostat['zones']:
-                                assert zone.lower() in self.idf_zone_names, 'Extra config action definition: Zone called {} does not exist in IDF building model.'.format(
-                                    zone)
+                            assert isinstance(
+                                thermostat['zones'], list) or isinstance(
+                                thermostat['zones'], str), 'Extra config action definition: thermostat zones must be a list or a str.'
+                            if isinstance(thermostat['zones'], list):
+                                for zone in thermostat['zones']:
+                                    assert zone.lower() in self.idf_zone_names, 'Extra config action definition: Zone called {} does not exist in IDF building model.'.format(
+                                        zone)
+                            elif isinstance(thermostat['zones'], str):
+                                assert thermostat['zones'] == '*' or thermostat['zones'].lower(
+                                ) == 'all', 'Extra config action definition: If thermostat zones is a str instead of a list, must be "*" or "all" value, not {}.'.format(thermostat['zones'])
 
     def _check_observation_variables(self) -> None:
         """This method checks whether observation variables zones are available in building model definition
@@ -592,3 +661,31 @@ class Config(object):
                 # is ignored, only check that zone is a substr from obs zone
                 assert any(list(map(lambda zone: zone.lower() in obs_zone.lower(), self.idf_zone_names))
                            ), 'Observation variables: Zone called {} in observation variables does not exist in IDF building model.'.format(obs_zone)
+
+    # ---------------------------------------------------------------------------- #
+    #                                    OTHERS                                    #
+    # ---------------------------------------------------------------------------- #
+
+    def _set_thermostat_zone_control(self,
+                                     zone_control: Record,
+                                     controller_type: str,
+                                     controller: Dict[str,
+                                                      Any]) -> None:
+        """Modify Thermostat:ZoneControl object from IDF model in order to set a new controller
+
+        Args:
+            zone_control (Record): Zone Control to be modified.
+            controller_type (str): Controller type you want to change.
+            controller (Dict[str, Any]): controller to set in Zone Control.
+        """
+        # We iterate all record fields searching
+        # controller_type value
+        for i in range(len(get_record_keys(zone_control))):
+            if isinstance(zone_control[i], str):
+                if zone_control[i].lower() == controller_type.lower():
+                    # Then, the next field will be always the DualSetpoint
+                    # thermostat name, so we change it
+                    zone_control[i + 1] = controller['name']
+                    # We do not need to search more fields in that record
+                    # specifically, so break it
+                    break
