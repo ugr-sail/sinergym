@@ -39,7 +39,7 @@ Describe the characteristic of your environment:
  * Describe how Sinergym was installed (pip, docker, source, ...)
  * Sinergym Version [e.g. 1.7.3]
  * OS: [e.g. iOS]
- * Python version [3.9 recommended]
+ * Python version [3.10 recommended]
  * Gym version
  * Versions of any other relevant libraries
 
