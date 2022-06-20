@@ -132,6 +132,7 @@ class LoggerWrapper(gym.Wrapper):
         env: Any,
         logger_class: Callable = CSVLogger,
         monitor_header: Optional[list] = None,
+        progress_header: Optional[List] = None,
         flag: bool = True,
     ):
         """CSVLogger to log interactions with environment.
@@ -140,6 +141,7 @@ class LoggerWrapper(gym.Wrapper):
             env (Any): Original Gym environment.
             logger_class (CSVLogger): CSV Logger class to use to log all information.
             monitor_header: Header for monitor.csv in each episode. Default is None (default format).
+            progress_header: Header for progress.csv in whole simulation. Default is None (default format).
             flag (bool, optional): State of logger (activate or deactivate). Defaults to True.
         """
         gym.Wrapper.__init__(self, env)
@@ -150,7 +152,23 @@ class LoggerWrapper(gym.Wrapper):
         for element_header in monitor_header_list:
             self.monitor_header += element_header + ','
         self.monitor_header = self.monitor_header[:-1]
-        self.progress_header = 'episode_num,cumulative_reward,mean_reward,cumulative_power_consumption,mean_power_consumption,cumulative_comfort_penalty,mean_comfort_penalty,cumulative_power_penalty,mean_power_penalty,comfort_violation (%),length(timesteps),time_elapsed(seconds)'
+        progress_header_list = progress_header if progress_header is not None else [
+            'episode_num',
+            'cumulative_reward',
+            'mean_reward',
+            'cumulative_power_consumption',
+            'mean_power_consumption',
+            'cumulative_comfort_penalty',
+            'mean_comfort_penalty',
+            'cumulative_power_penalty',
+            'mean_power_penalty',
+            'comfort_violation (%)',
+            'length(timesteps)',
+            'time_elapsed(seconds)']
+        self.progress_header = ''
+        for element_header in progress_header_list:
+            self.progress_header += element_header + ','
+        self.progress_header = self.progress_header[:-1]
 
         # Create simulation logger, by default is active (flag=True)
         self.logger = logger_class(
