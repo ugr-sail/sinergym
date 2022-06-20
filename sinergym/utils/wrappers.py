@@ -1,7 +1,7 @@
 """Implementation of custom Gym environments."""
 
 from collections import deque
-from typing import Any, Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, Optional, Sequence, Tuple, Union, List
 
 import gym
 import numpy as np
@@ -131,8 +131,8 @@ class LoggerWrapper(gym.Wrapper):
         self,
         env: Any,
         logger_class: Callable = CSVLogger,
-        monitor_header: Optional[list] = None,
-        progress_header: Optional[List] = None,
+        monitor_header: Optional[List[str]] = None,
+        progress_header: Optional[List[str]] = None,
         flag: bool = True,
     ):
         """CSVLogger to log interactions with environment.
@@ -194,37 +194,14 @@ class LoggerWrapper(gym.Wrapper):
         if is_wrapped(self, NormalizeObservation):
             # Record action and new observation in simulator's csv
             self.logger.log_step_normalize(
-                timestep=info['timestep'],
-                observation=obs,
-                action=info['action_'],
-                simulation_time=info['time_elapsed'],
-                reward=reward,
-                total_power_no_units=info['total_power_no_units'],
-                comfort_penalty=info['comfort_penalty'],
-                done=done)
+                obs, action, reward, done, info)
             # Record original observation too
             self.logger.log_step(
-                timestep=info['timestep'],
-                observation=self.env.get_unwrapped_obs(),
-                action=info['action_'],
-                simulation_time=info['time_elapsed'],
-                reward=reward,
-                total_power_no_units=info['total_power_no_units'],
-                comfort_penalty=info['comfort_penalty'],
-                power=info['total_power'],
-                done=done)
+                self.env.get_unwrapped_obs(), action, reward, done, info)
         else:
             # Only record observation without normalization
             self.logger.log_step(
-                timestep=info['timestep'],
-                observation=obs,
-                action=info['action_'],
-                simulation_time=info['time_elapsed'],
-                reward=reward,
-                total_power_no_units=info['total_power_no_units'],
-                comfort_penalty=info['comfort_penalty'],
-                power=info['total_power'],
-                done=done)
+                obs, action, reward, done, info)
 
         return obs, reward, done, info
 
@@ -252,38 +229,27 @@ class LoggerWrapper(gym.Wrapper):
 
         if is_wrapped(self, NormalizeObservation):
             # Store initial state of simulation (normalized)
-            self.logger.log_step_normalize(timestep=0,
-                                           observation=obs,
+            self.logger.log_step_normalize(obs=obs,
                                            action=[None for _ in range(
                                                len(self.env.variables['action']))],
-                                           simulation_time=0,
                                            reward=None,
-                                           total_power_no_units=None,
-                                           comfort_penalty=None,
-                                           done=False)
+                                           done=False,
+                                           info=None)
             # And store original obs
-            self.logger.log_step(timestep=0,
-                                 observation=self.env.get_unwrapped_obs(),
+            self.logger.log_step(obs=self.env.get_unwrapped_obs(),
                                  action=[None for _ in range(
                                      len(self.env.variables['action']))],
-                                 simulation_time=0,
                                  reward=None,
-                                 total_power_no_units=None,
-                                 comfort_penalty=None,
-                                 power=None,
-                                 done=False)
+                                 done=False,
+                                 info=None)
         else:
             # Only store original step
-            self.logger.log_step(timestep=0,
-                                 observation=obs,
+            self.logger.log_step(obs=obs,
                                  action=[None for _ in range(
                                      len(self.env.variables['action']))],
-                                 simulation_time=0,
                                  reward=None,
-                                 total_power_no_units=None,
-                                 comfort_penalty=None,
-                                 power=None,
-                                 done=False)
+                                 done=False,
+                                 info=None)
 
         return obs
 
