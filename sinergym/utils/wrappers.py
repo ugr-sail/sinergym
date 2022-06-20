@@ -194,14 +194,26 @@ class LoggerWrapper(gym.Wrapper):
         if is_wrapped(self, NormalizeObservation):
             # Record action and new observation in simulator's csv
             self.logger.log_step_normalize(
-                obs, action, reward, done, info)
+                obs=obs,
+                action=info['action_'],
+                reward=reward,
+                done=done,
+                info=info)
             # Record original observation too
             self.logger.log_step(
-                self.env.get_unwrapped_obs(), action, reward, done, info)
+                obs=self.env.get_unwrapped_obs(),
+                action=info['action_'],
+                reward=reward,
+                done=done,
+                info=info)
         else:
             # Only record observation without normalization
             self.logger.log_step(
-                obs, action, reward, done, info)
+                obs=obs,
+                action=info['action_'],
+                reward=reward,
+                done=done,
+                info=info)
 
         return obs, reward, done, info
 
