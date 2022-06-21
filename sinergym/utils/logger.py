@@ -74,6 +74,7 @@ class CSVLogger(object):
             'rewards': [],
             'powers': [],
             'comfort_penalties': [],
+            'abs_comfort': [],
             'power_penalties': [],
             'total_timesteps': 0,
             'total_time_elapsed': 0,
@@ -101,7 +102,7 @@ class CSVLogger(object):
         """
         if info is None:  # In a reset
             return [0] + list(obs) + list(action) + \
-                [0, reward, None, None, done]
+                [0, reward, None, None, None, done]
         else:
             return [
                 info['timestep']] + list(obs) + list(action) + [
@@ -109,6 +110,7 @@ class CSVLogger(object):
                 reward,
                 info['total_power_no_units'],
                 info['comfort_penalty'],
+                info['abs_comfort'],
                 done]
 
     def _store_step_information(
@@ -140,6 +142,8 @@ class CSVLogger(object):
             if info['total_power_no_units'] is not None:
                 self.episode_data['power_penalties'].append(
                     info['total_power_no_units'])
+            if info['abs_comfort'] is not None:
+                self.episode_data['abs_comfort'].append(info['abs_comfort'])
             if info['comfort_penalty'] != 0:
                 self.episode_data['comfort_violation_timesteps'] += 1
             self.episode_data['total_timesteps'] = info['timestep']
@@ -154,6 +158,7 @@ class CSVLogger(object):
             'rewards': [],
             'powers': [],
             'comfort_penalties': [],
+            'abs_comfort': [],
             'power_penalties': [],
             'total_timesteps': 0,
             'total_time_elapsed': 0,
@@ -180,7 +185,6 @@ class CSVLogger(object):
             self.steps_data.append(
                 self._create_row_content(
                     obs, action, reward, done, info))
-
             # Store step information for episode
             self._store_step_information(
                 obs, action, reward, done, info)
@@ -235,6 +239,10 @@ class CSVLogger(object):
                 self.episode_data['power_penalties'])
             ep_mean_power_penalty = np.mean(
                 self.episode_data['power_penalties'])
+            ep_mean_abs_comfort = np.mean(self.episode_data['abs_comfort'])
+            ep_std_abs_comfort = np.std(self.episode_data['abs_comfort'])
+            ep_cumulative_abs_comfort = np.sum(
+                self.episode_data['abs_comfort'])
             try:
                 comfort_violation = (
                     self.episode_data['comfort_violation_timesteps'] /
@@ -275,6 +283,9 @@ class CSVLogger(object):
                 ep_cumulative_power_penalty,
                 ep_mean_power_penalty,
                 comfort_violation,
+                ep_mean_abs_comfort,
+                ep_std_abs_comfort,
+                ep_cumulative_abs_comfort,
                 self.episode_data['total_timesteps'],
                 self.episode_data['total_time_elapsed']]
 
