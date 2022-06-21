@@ -1,7 +1,7 @@
 """Implementation of custom Gym environments."""
 
 from collections import deque
-from typing import Any, Callable, Dict, Optional, Sequence, Tuple, Union, List
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import gym
 import numpy as np
