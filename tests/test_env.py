@@ -34,6 +34,7 @@ def test_step(env_demo):
         'total_power',
         'total_power_no_units',
         'comfort_penalty',
+        'abs_comfort',
         'temperatures',
         'out_temperature',
         'action_']
@@ -58,6 +59,7 @@ def test_step(env_demo):
         'total_power',
         'total_power_no_units',
         'comfort_penalty',
+        'abs_comfort',
         'temperatures',
         'out_temperature',
         'action_']

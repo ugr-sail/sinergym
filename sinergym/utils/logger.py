@@ -191,7 +191,7 @@ class CSVLogger(object):
         else:
             pass
 
-    def log_step_normalized(
+    def log_step_normalize(
             self,
             obs: List[Any],
             action: Union[int, np.ndarray, List[Any]],
