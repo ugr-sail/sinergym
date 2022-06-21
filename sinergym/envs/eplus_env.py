@@ -203,6 +203,7 @@ class EplusEnv(gym.Env):
             'total_power': terms.get('total_energy'),
             'total_power_no_units': terms.get('reward_energy'),
             'comfort_penalty': terms.get('reward_comfort'),
+            'abs_comfort': terms.get('abs_comfort'),
             'temperatures': terms.get('temperatures'),
             'out_temperature': self.obs_dict['Site Outdoor Air Drybulb Temperature(Environment)'],
             'action_': action_}

@@ -102,6 +102,7 @@ class LinearReward(BaseReward):
             'reward_energy': reward_energy,
             'total_energy': obs_dict[self.energy_name],
             'reward_comfort': reward_comfort,
+            'abs_comfort': comfort,
             'temperatures': temps
         }
 

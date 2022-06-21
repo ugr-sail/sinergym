@@ -3,7 +3,7 @@
 import csv
 import logging
 import os
-from typing import Any, List, Optional, Union
+from typing import Any, List, Optional, Union, Dict
 
 import numpy as np
 
@@ -70,120 +70,151 @@ class CSVLogger(object):
         # episode data
         self.steps_data = [self.monitor_header.split(',')]
         self.steps_data_normalized = [self.monitor_header.split(',')]
-        self.rewards = []
-        self.powers = []
-        self.comfort_penalties = []
-        self.power_penalties = []
-        self.total_timesteps = 0
-        self.total_time_elapsed = 0
-        self.comfort_violation_timesteps = 0
+        self.episode_data = {
+            'rewards': [],
+            'powers': [],
+            'comfort_penalties': [],
+            'abs_comfort': [],
+            'power_penalties': [],
+            'total_timesteps': 0,
+            'total_time_elapsed': 0,
+            'comfort_violation_timesteps': 0
+        }
 
-    def create_row_contents(
+    def _create_row_content(
             self,
-            timestep: int,
-            observation: List[Any],
-            action: Union[List[Union[int, float]], List[None]],
-            simulation_time: float,
+            obs: List[Any],
+            action: Union[int, np.ndarray, List[Any]],
             reward: Optional[float],
-            total_power_no_units: Optional[float],
-            comfort_penalty: Optional[float],
-            done: bool) -> List:
+            done: bool,
+            info: Optional[Dict[str, Any]]) -> List:
         """Assemble the array data to log in the new row
 
         Args:
-            timestep (int): Current episode timestep in simulation.
-            observation (list): Values that belong to current observation.
-            action (list): Values that belong to current action.
-            simulation_time (float): Total time elapsed in current episode (seconds).
-            reward (float): Current reward achieved.
-            total_power_no_units (float): Power consumption penalty depending on reward function.
-            comfort_penalty (float): Temperature comfort penalty depending on reward function.
-            done (bool): It specifies if this step terminates episode or not.
+            obs (List[Any]): Observation from step.
+            action (Union[int, np.ndarray, List[Any]]): Action done in step.
+            reward (float): Reward returned in step.
+            done (bool): Done flag in step.
+            info (Optional[Dict[str, Any]]): Extra info collected in step.
+
+        Returns:
+            List: Row content created in order to being logged.
+        """
+        if info is None:  # In a reset
+            return [0] + list(obs) + list(action) + \
+                [0, reward, None, None, None, done]
+        else:
+            return [
+                info['timestep']] + list(obs) + list(action) + [
+                info['time_elapsed'],
+                reward,
+                info['total_power_no_units'],
+                info['comfort_penalty'],
+                info['abs_comfort'],
+                done]
+
+    def _store_step_information(
+            self,
+            obs: List[Any],
+            action: Union[int, np.ndarray, List[Any]],
+            reward: Optional[float],
+            done: bool,
+            info: Optional[Dict[str, Any]]) -> None:
+        """Store relevant data to episode summary in progress.csv.
+
+        Args:
+            obs (List[Any]): Observation from step.
+            action (Union[int, np.ndarray, List[Any]]): Action done in step.
+            reward (Optional[float]): Reward returned in step.
+            done (bool): Done flag in step.
+            info (Optional[Dict[str, Any]]): Extra info collected in step.
+
 
         """
-        return [timestep] + list(observation) + \
-            list(action) + [simulation_time, reward,
-                            total_power_no_units, comfort_penalty, done]
+        if reward is not None:
+            self.episode_data['rewards'].append(reward)
+        if info is not None:
+            if info['total_power'] is not None:
+                self.episode_data['powers'].append(info['total_power'])
+            if info['comfort_penalty'] is not None:
+                self.episode_data['comfort_penalties'].append(
+                    info['comfort_penalty'])
+            if info['total_power_no_units'] is not None:
+                self.episode_data['power_penalties'].append(
+                    info['total_power_no_units'])
+            if info['abs_comfort'] is not None:
+                self.episode_data['abs_comfort'].append(info['abs_comfort'])
+            if info['comfort_penalty'] != 0:
+                self.episode_data['comfort_violation_timesteps'] += 1
+            self.episode_data['total_timesteps'] = info['timestep']
+            self.episode_data['total_time_elapsed'] = info['time_elapsed']
+
+    def _reset_logger(self) -> None:
+        """Reset relevant data to next episode summary in progress.csv.
+        """
+        self.steps_data = [self.monitor_header.split(',')]
+        self.steps_data_normalized = [self.monitor_header.split(',')]
+        self.episode_data = {
+            'rewards': [],
+            'powers': [],
+            'comfort_penalties': [],
+            'abs_comfort': [],
+            'power_penalties': [],
+            'total_timesteps': 0,
+            'total_time_elapsed': 0,
+            'comfort_violation_timesteps': 0
+        }
 
     def log_step(
             self,
-            timestep: int,
-            observation: List[Any],
-            action: Union[List[Union[int, float]], List[None]],
-            simulation_time: float,
+            obs: List[Any],
+            action: Union[int, np.ndarray, List[Any]],
             reward: Optional[float],
-            total_power_no_units: Optional[float],
-            comfort_penalty: Optional[float],
-            power: Optional[float],
-            done: bool) -> None:
+            done: bool,
+            info: Optional[Dict[str, Any]]) -> None:
         """Log step information and store it in steps_data attribute.
 
         Args:
-            timestep (int): Current episode timestep in simulation.
-            observation (list): Values that belong to current observation.
-            action (list): Values that belong to current action.
-            simulation_time (float): Total time elapsed in current episode (seconds).
-            reward (float): Current reward achieved.
-            total_power_no_units (float): Power consumption penalty depending on reward function.
-            comfort_penalty (float): Temperature comfort penalty depending on reward function.
-            power (float): Power consumption in current step (W).
-            done (bool): It specifies if this step terminates episode or not.
-
+            obs (List[Any]): Observation from step.
+            action (Union[int, np.ndarray, List[Any]]): Action done in step.
+            reward (float): Reward returned in step.
+            done (bool): Done flag in step.
+            info (Dict[str, Any]): Extra info collected in step.
         """
         if self.flag:
-            self.steps_data.append(self.create_row_contents(
-                timestep,
-                observation,
-                action,
-                simulation_time,
-                reward,
-                total_power_no_units,
-                comfort_penalty,
-                done))
-
+            self.steps_data.append(
+                self._create_row_content(
+                    obs, action, reward, done, info))
             # Store step information for episode
             self._store_step_information(
-                reward,
-                power,
-                comfort_penalty,
-                total_power_no_units,
-                timestep,
-                simulation_time)
+                obs, action, reward, done, info)
         else:
             pass
 
     def log_step_normalize(
             self,
-            timestep: int,
-            observation: List[Any],
-            action: Union[List[Union[int, float]], List[None]],
-            simulation_time: float,
+            obs: List[Any],
+            action: Union[int, np.ndarray, List[Any]],
             reward: Optional[float],
-            total_power_no_units: Optional[float],
-            comfort_penalty: Optional[float],
-            done: bool) -> None:
-        """Log step information and store it in steps_data_normalized attribute.
+            done: bool,
+            info: Optional[Dict[str, Any]]) -> None:
+        """Log step information and store it in steps_data attribute.
 
         Args:
-            timestep (int): Current episode timestep in simulation.
-            observation (List[Any]): Values that belong to current observation.
-            action (List[Union[int, float]]): Values that belong to current action.
-            simulation_time (float): Total time elapsed in current episode (seconds).
-            reward (float): Current reward achieved.
-            total_power_no_units (float): Power consumption penalty depending on reward function.
-            comfort_penalty (float): Temperature comfort penalty depending on reward function.
-            done (bool): It specifies if this step terminates episode or not.
+            obs (List[Any]): Observation from step.
+            action (Union[int, np.ndarray, List[Any]]): Action done in step.
+            reward (Optional[float]): Reward returned in step.
+            done (bool): Done flag in step.
+            info (Optional[Dict[str, Any]]): Extra info collected in step.
         """
         if self.flag:
-            self.steps_data_normalized.append(self.create_row_contents(
-                timestep,
-                observation,
-                action,
-                simulation_time,
-                reward,
-                total_power_no_units,
-                comfort_penalty,
-                done))
+            self.steps_data_normalized.append(
+                self._create_row_content(
+                    obs, action, reward, done, info))
+
+            # Store step information for episode
+            self._store_step_information(
+                obs, action, reward, done, info)
         else:
             pass
 
@@ -196,18 +227,26 @@ class CSVLogger(object):
         """
         if self.flag:
             # statistics metrics for whole episode
-            ep_mean_reward = np.mean(self.rewards)
-            ep_cumulative_reward = np.sum(self.rewards)
-            ep_cumulative_power = np.sum(self.powers)
-            ep_mean_power = np.mean(self.powers)
-            ep_cumulative_comfort_penalty = np.sum(self.comfort_penalties)
-            ep_mean_comfort_penalty = np.mean(self.comfort_penalties)
-            ep_cumulative_power_penalty = np.sum(self.power_penalties)
-            ep_mean_power_penalty = np.mean(self.power_penalties)
+            ep_mean_reward = np.mean(self.episode_data['rewards'])
+            ep_cumulative_reward = np.sum(self.episode_data['rewards'])
+            ep_cumulative_power = np.sum(self.episode_data['powers'])
+            ep_mean_power = np.mean(self.episode_data['powers'])
+            ep_cumulative_comfort_penalty = np.sum(
+                self.episode_data['comfort_penalties'])
+            ep_mean_comfort_penalty = np.mean(
+                self.episode_data['comfort_penalties'])
+            ep_cumulative_power_penalty = np.sum(
+                self.episode_data['power_penalties'])
+            ep_mean_power_penalty = np.mean(
+                self.episode_data['power_penalties'])
+            ep_mean_abs_comfort = np.mean(self.episode_data['abs_comfort'])
+            ep_std_abs_comfort = np.std(self.episode_data['abs_comfort'])
+            ep_cumulative_abs_comfort = np.sum(
+                self.episode_data['abs_comfort'])
             try:
                 comfort_violation = (
-                    self.comfort_violation_timesteps /
-                    self.total_timesteps *
+                    self.episode_data['comfort_violation_timesteps'] /
+                    self.episode_data['total_timesteps'] *
                     100)
             except ZeroDivisionError:
                 comfort_violation = np.nan
@@ -244,8 +283,12 @@ class CSVLogger(object):
                 ep_cumulative_power_penalty,
                 ep_mean_power_penalty,
                 comfort_violation,
-                self.total_timesteps,
-                self.total_time_elapsed]
+                ep_mean_abs_comfort,
+                ep_std_abs_comfort,
+                ep_cumulative_abs_comfort,
+                self.episode_data['total_timesteps'],
+                self.episode_data['total_time_elapsed']]
+
             with open(self.log_progress_file, 'a+', newline='') as file_obj:
                 # Create a writer object from csv module
                 csv_writer = csv.writer(file_obj)
@@ -271,51 +314,6 @@ class CSVLogger(object):
                     file_obj.write(self.monitor_header)
         else:
             pass
-
-    def _store_step_information(
-            self,
-            reward: float,
-            power: float,
-            comfort_penalty: float,
-            power_penalty: float,
-            timestep: int,
-            simulation_time: float) -> None:
-        """Store relevant data to episode summary in progress.csv.
-
-        Args:
-            reward (float): Current reward achieved.
-            power (float): Power consumption in current step (W).
-            comfort_penalty (float): Temperature comfort penalty depending on reward function.
-            power_penalty (float): Power consumption penalty depending on reward function.
-            timestep (int): Current episode timestep in simulation.
-            simulation_time (float): Total time elapsed in current episode (seconds).
-
-        """
-        if reward is not None:
-            self.rewards.append(reward)
-        if power is not None:
-            self.powers.append(power)
-        if comfort_penalty is not None:
-            self.comfort_penalties.append(comfort_penalty)
-        if power_penalty is not None:
-            self.power_penalties.append(power_penalty)
-        if comfort_penalty != 0:
-            self.comfort_violation_timesteps += 1
-        self.total_timesteps = timestep
-        self.total_time_elapsed = simulation_time
-
-    def _reset_logger(self) -> None:
-        """Reset relevant data to next episode summary in progress.csv.
-        """
-        self.steps_data = [self.monitor_header.split(',')]
-        self.steps_data_normalized = [self.monitor_header.split(',')]
-        self.rewards = []
-        self.powers = []
-        self. comfort_penalties = []
-        self.power_penalties = []
-        self.total_timesteps = 0
-        self.total_time_elapsed = 0
-        self.comfort_violation_timesteps = 0
 
     def activate_flag(self) -> None:
         """Activate Sinergym CSV logger
