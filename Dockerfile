@@ -45,7 +45,7 @@ RUN apt-get update && apt-get upgrade -y \
     && cd /usr/local/bin find -L . -type l -delete \
     # BCVTB installation
     && echo "Y\r" | apt-get install default-jre openjdk-8-jdk \ 
-    && apt-get install -y git wget \
+    && apt-get install -y git wget iputils-ping \
     && wget http://github.com/lbl-srg/bcvtb/releases/download/v1.6.0/bcvtb-install-linux64-v1.6.0.jar \
     && yes "1" | java -jar bcvtb-install-linux64-v1.6.0.jar \
     && cp -R 1/ $BCVTB_PATH && rm -R 1/ \
