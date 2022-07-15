@@ -211,10 +211,6 @@ class CSVLogger(object):
             self.steps_data_normalized.append(
                 self._create_row_content(
                     obs, action, reward, done, info))
-
-            # Store step information for episode
-            self._store_step_information(
-                obs, action, reward, done, info)
         else:
             pass
 
