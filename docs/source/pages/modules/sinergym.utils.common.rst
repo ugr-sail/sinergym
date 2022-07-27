@@ -1,4 +1,4 @@
-sinergym.utils.common
+﻿sinergym.utils.common
 =====================
 
 .. automodule:: sinergym.utils.common
@@ -23,6 +23,7 @@ sinergym.utils.common
       parse_variables
       prepare_batch_from_records
       ranges_getter
+      to_idf
       unwrap_wrapper
    
    

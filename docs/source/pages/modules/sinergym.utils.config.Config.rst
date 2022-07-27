@@ -24,6 +24,7 @@
       ~Config.save_variables_cfg
       ~Config.set_episode_working_dir
       ~Config.set_experiment_working_dir
+      ~Config.set_external_interface
    
    
 

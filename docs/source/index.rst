@@ -7,7 +7,8 @@ Welcome to **sinergym**!
 Contributing
 ############
 
-To any interested in making Sinergym better, there are still some improvements that need to be done. You can check `issues <https://github.com/ugr-sail/sinergym/issues>`__ in the repo.
+For all those interested in improving Sinergym, there are always improvements to be made. 
+You can check `issues <https://github.com/ugr-sail/sinergym/issues>`__ in the repo.
 
 If you want to contribute, please read `CONTRIBUTING.md <https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md>`__ first.
 
@@ -16,6 +17,25 @@ Examples
 ############
 
 The examples can be run if you have your computer or container properly configured (see :ref:`Installation` section) from our notebooks hosted in the `examples <https://github.com/ugr-sail/sinergym/tree/main/examples>`__ folder of the official Sinergym repository.
+
+################
+Citing Sinergym
+################
+
+If you use Sinergym in your work, please cite our `paper <https://dl.acm.org/doi/abs/10.1145/3486611.3488729>`__::
+
+    @inproceedings{2021sinergym,
+    title={Sinergym: A Building Simulation and Control Framework for Training Reinforcement Learning Agents}, 
+    author={Jiménez-Raboso, Javier and Campoy-Nieves, Alejandro and Manjavacas-Lucas, Antonio and Gómez-Romero, Juan and Molina-Solana, Miguel},
+    year={2021},
+    isbn = {9781450391146},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    url = {https://doi.org/10.1145/3486611.3488729},
+    doi = {10.1145/3486611.3488729},
+    booktitle = {Proceedings of the 8th ACM International Conference on Systems for Energy-Efficient Buildings, Cities, and Transportation},
+    pages = {319–323},
+    numpages = {5},
 
 .. toctree::
    :maxdepth: 2

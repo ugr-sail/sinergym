@@ -216,7 +216,7 @@ For more information about this functionality, please, visit our documentation [
 If you use Sinergym in your work, please cite our [paper](https://dl.acm.org/doi/abs/10.1145/3486611.3488729):
 
 ```bibtex
-@inproceedings{jimenez2021sinergym,
+@inproceedings{2021sinergym,
     title={Sinergym: A Building Simulation and Control Framework for Training Reinforcement Learning Agents}, 
     author={Jiménez-Raboso, Javier and Campoy-Nieves, Alejandro and Manjavacas-Lucas, Antonio and Gómez-Romero, Juan and Molina-Solana, Miguel},
     year={2021},
