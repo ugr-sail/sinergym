@@ -118,16 +118,104 @@ classification <https://www.energycodes.gov/development/commercial/prototype_mod
 episode. Gaussian noise with 0 mean and 2.5 std is added to the original
 values in order to add stochastic.
 
-**************************
-Observation/action spaces
-**************************
+*********************
+Available Parameters
+*********************
 
-Structure of observation and action space is defined in Environment constructor directly. This allows for a **dynamic definition** of these spaces. Let's see the fields required to do it:
+With the *env constructor* we can configure the complete context of our environment 
+for experimentation, either starting from one predefined by Sinergym shown in the 
+table above or creating a new one.
 
 .. literalinclude:: ../../../sinergym/envs/eplus_env.py
     :language: python
     :pyobject: EplusEnv.__init__
 
+We will show which parameters are available and what their function is.
+
+IDF file 
+=========
+
+The parameter *idf_file* is the path to IDF (*Intermediate Data Format*) file where *Energyplus* building model is defined.
+
+Sinergym initially provides "free" buildings. This means that the IDF does not have the external 
+interface defined, with other default components, such as the *timesteps*, the *runperiod* or the 
+*location* and *DesignDays*. 
+
+Depending on the rest of the parameters that make up the environment, the IDF is automatically updated 
+by Sinergym, changing those components that are necessary, such as the external interface that we 
+have mentioned.
+
+Once the building is configured, it is copied to the output folder of that particular experimentation 
+and used by the simulator of that execution.
+
+EPW file
+=========
+
+The parameter *weather_file* is the path to EPW (*EnergyPlus Weather*) file where climate conditions during 
+a year is defined.
+
+Initially, this file will not be copied to the specific output folder of the experiment, since the original 
+file present in Sinergym can be used directly. However, the user can set a year-to-year **variability** in 
+the climate (see Section :ref:`Weather Variability`). In that case, the weather updated with such variability 
+will be copied and used in the output folder. 
+
+Depending on the climate that is set for the environment, the IDF file needs to modify some of its components 
+in such a way that it is compatible with that weather. Therefore, Sinergym updates the *DesignDays* and *Location* 
+fields automatically using the weather data, without the need for user intervention. 
+
+Weather Variability
+====================
+
+Weather variability can be integrated into an environment using *weather_variability* parameter.
+
+It implements the `Ornstein-Uhlenbeck process <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.4200&rep=rep1&type=pdf>`__
+in order to introduce noise to the weather data episode to episode. Then, parameter established is a Python tuple of three variables
+(*sigma*, *mu* and *tau*) whose values define the nature of that noise.
+
+.. image:: /_static/weather_variability.png
+  :scale: 120 %
+  :alt: Ornstein-Uhlenbeck process noise with different hyperparameters.
+  :align: center
+
+
+Reward
+=======
+
+The parameter called *reward* is used to define the reward class (see section :ref:`Rewards`)
+that the environment is going to use to calculate and return reward values each timestep.
+
+Reward Kwargs
+==============
+
+Depending on the reward class that is specified to the environment, it may have different parameters 
+depending on its type. In addition, if a user creates a new custom reward, it can have new parameters as well.
+
+In addition, depending on the building being used (IDF file) for the environment, the values of these reward parameters may 
+need to be different, such as the comfort range or the energy and temperature variables of the simulation that 
+will be used to calculate the reward.
+
+Then, the parameter called *reward_kwargs* is a Python dictionary where we can specify all reward class parameters 
+that they are needed. For more information about rewards visit section :ref:`Rewards`.
+
+Action Repeat
+==============
+
+The parameter called *act_repeat* is the number of timesteps that an action is repeated in the simulator, 
+regardless of the actions it receives during that repetition interval. Default value is 1.
+
+Maximum Episode Data Stored in Sinergym Output
+===============================================
+
+Sinergym stores all the output of an experiment in a folder organized in sub-folders for each episode 
+(see section :ref:`Output format` for more information). Depending on the value of the parameter *max_ep_data_store_num*, 
+the experiment will store the output data of the last n episodes set, where n is the value of the parameter.
+
+In any case, if *Sinergym Logger* is activate, *progress.csv* will be present with the summary data of each episode.
+
+Observation/action spaces
+===========================
+
+Structure of observation and action space is defined in Environment constructor directly. This allows for a **dynamic definition** of these spaces. Let's see the fields required to do it:
 
 - **observation_variables**: List of observation variables that simulator is going to process like an observation. These variables names must 
                              follow the structure `<variable_name>(<zone_name>)` in order to register them correctly. Sinergym will check for
@@ -137,7 +225,7 @@ Structure of observation and action space is defined in Environment constructor 
 - **observation_space**: Definition of the observation space following the **gym standard**. This space is used to represent all the observations 
                          variables that we have previously defined. Remember that the **year, month, day and hour** are added by Sinergym later, 
                          so space must be reserved for these fields in the definition. If an inconsistency is found, Sinergym will notify you 
-                         so that it can be fixed. 
+                         so that it can be fixed easily. 
 
 - **action_variables**: List of the action variables that simulator is going to process like schedule control actuator in the building model. These variables
                         must be defined in the building model (IDF file) correctly before simulation. You can modify **manually** in the IDF file or using
@@ -152,9 +240,6 @@ Structure of observation and action space is defined in Environment constructor 
           from [-1,1] to real action space is called ``_setpoints_transform(action)`` in *sinergym/sinergym/envs/eplus_env.py*
 
 - **action_mapping**: It is only necessary to specify it in discrete action spaces. It is a dictionary that links an index to a specific configuration of values for each action variable. 
-
-Specification
-~~~~~~~~~~~~~~
 
 As we have told, Observation and action spaces are defined **dynamically** in Sinergym Environment constructor. Environment ID's registered in Sinergym use a **default** definition
 set up in `constants.py <https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/constants.py>`__.
@@ -173,23 +258,42 @@ Sinergym has several checkers to ensure that there are no inconsistencies in the
            with a external interface (using BCVTB). Since Sinergym `1.9.0` version, it is created automatically using 
            action and observation space definition in environment construction.
 
+Environment name
+================
+
+The parameter *env_name* is used to define the name of working directory generation.
+
+Extra configuration
+===================
+
+Some parameters directly associated with the simulator can be set as extra configuration 
+as well, such as *people occupant*, *timesteps per simulation hour*, *external interface action definition* 
+in order to modify IDF structure automatically, etc.
+
+Like this extra configuration context can grow up in the future, this is specified in *config_params* field.
+It is a Python Dictionary where this values are specified. For more information about extra configuration
+available for Sinergym visit section :ref:`Extra Configuration in Sinergym simulations`
+
 **************************************
 Adding new buildings for environments
 **************************************
 
+As we have already mentioned, a user can change the already available environments or even create new environment 
+definitions including new climates, action and observation spaces, etc. However, perhaps the most complex thing 
+to incorporate into the project are new building models (IDF files) than the ones we support.
+
 This section is intended to provide information if someone decides to add new buildings for use with Sinergym. The main steps you have to follow are the next:
 
 1. Add your building (IDF file) to `buildings <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings>`__. 
-   As mentioned in section :ref:`Observation/action spaces`, the IDF must be previously adapted to your action space or use our **action definition** (section :ref:`action_definition`) 
-   to be automatically adapted to the action space and variables you have designed for it, as long as we provide support for the specific component you want to control. By default, Sinergym will create
-   an `ExternalInterface` object in IDF file with an empty action space. Then, all the components will be managed by a default scheduler designed in IDF file.
+   That building model must be "free" as far as external interface is concerned if you plan to use Sinergym's **action 
+   definition** which will modify the model for you before starting the simulation automatically (see section :ref:`action_definition`).
 
 2. Add your own EPW file for weather conditions or use ours in environment constructor. Sinergym will adapt `DesignDays` in IDF file using EPW automatically.
 
-3. Sinergym will check that observation variables specified are available in the simulation before starting. In order to be able to do these checks, 
+3. Sinergym will check that observation variables specified in environments constructor are available in the simulation before starting. In order to be able to do these checks, 
    you need to copy **RDD file** with the same name than IDF file (except extension) to `variables <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/variables>`__. 
    To obtain this **RDD file** you have to run a simulation with *Energyplus* directly and extract from output folder. 
-   Make sure that **Output:VariableDictionary** object in IDF has the value *Regular* in order to RDD file has the correct formar for Sinergym.
+   Make sure that **Output:VariableDictionary** object in IDF has the value *Regular* in order to RDD file has the correct format for Sinergym.
 
 4. Register your own environment ID `here <https://github.com/ugr-sail/sinergym/blob/main/sinergym/__init__.py>`__ following the same structure than the rest.
 

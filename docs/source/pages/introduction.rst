@@ -18,15 +18,14 @@ The main functionalities of *sinergym* are the following:
    engines, more of them (e.g.
    `OpenModelica <https://openmodelica.org/>`__) could be included in
    the backend while maintaining the Gym API.
--  **Benchmark environments**. Similarly to Atari or Mujoco environments
+-  **Benchmark environments**. Similarly to *Atari* or *Mujoco* environments
    for RL community, we are designing a set of environments for
    benchmarking and testing deep RL algorithms. These environments may
    include different buildings, weathers, action/observation spaces, function rewards, etc.
 -  **Customizable environments**. We aim to provide a
    package that allows to modify experimental settings in an easy
-   manner. The user can create his own environments defining, for example,
-   several reward functions, observation and action
-   variables, simulation timesteps, etc.
+   manner. The user can create his own environments defining his own
+   building model, weather, reward, observation/action space/variables, environment name, etc.
    The user can also use these preconfigured environments available in Sinergym 
    and change some aspect of it (for example, the weather) in such 
    a way that he does not  have to make an entire definition of the 
@@ -46,6 +45,8 @@ The main functionalities of *sinergym* are the following:
    simulation starts by Sinergym, this definition depends on action and observation space/variables defined.
    If the components to be controlled are directly supported by Sinergym, the IDF model will be modified 
    accordingly to be controlled, otherwise the user will have to modify the IDF file manually.
+   In short, Sinergym automates the whole process of model adaptation so that the user 
+   only has to define what he wants for his environment.
 -  **Stable Baseline 3 Integration**. Some functionalities like callbacks
    have been customized by our team in order to test easily these environments
    with deep reinforcement learning algorithms. 
