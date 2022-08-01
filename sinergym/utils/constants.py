@@ -21,17 +21,6 @@ YEAR = 1991
 CWD = os.getcwd()
 
 # ---------------------------------------------------------------------------- #
-#                               Config class keys                              #
-# ---------------------------------------------------------------------------- #
-# Extra config keys (add keys in this list in order to assert them)
-CONFIG_KEYS = ['timesteps_per_hour', 'runperiod', 'action_definition']
-# Extra config action definition keys (add keys in this list in order to
-# assert new controller types)
-ACTION_DEFINITION_COMPONENTS = [
-    'ThermostatSetpoint:DualSetpoint',
-    'ThermostatSetpoint:SingleHeating']
-
-# ---------------------------------------------------------------------------- #
 #                          Normalization dictionaries                          #
 # ---------------------------------------------------------------------------- #
 RANGES_5ZONE = {'Facility Total HVAC Electricity Demand Rate(Whole Building)': [173.6583692738386,
@@ -193,15 +182,13 @@ DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
     dtype=np.float32
 )
 
-DEFAULT_5ZONE_CONFIG_PARAMS = {
-    'action_definition': {
-        'ThermostatSetpoint:DualSetpoint': [{
-            'name': 'Space1-DualSetP-RL',
-            'heating_name': 'Space1-HtgSetP-RL',
-            'cooling_name': 'Space1-ClgSetP-RL',
-            'zones': ['space1-1']
-        }]
-    }
+DEFAULT_5ZONE_ACTION_DEFINITION = {
+    'ThermostatSetpoint:DualSetpoint': [{
+        'name': 'Space1-DualSetP-RL',
+        'heating_name': 'Space1-HtgSetP-RL',
+        'cooling_name': 'Space1-ClgSetP-RL',
+        'zones': ['space1-1']
+    }]
 }
 # ----------------------------------DATACENTER--------------------------------- #
 DEFAULT_DATACENTER_OBSERVATION_VARIABLES = [
@@ -266,21 +253,19 @@ DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
     shape=(4,),
     dtype=np.float32)
 
-DEFAULT_DATACENTER_CONFIG_PARAMS = {
-    'action_definition': {
-        'ThermostatSetpoint:DualSetpoint': [{
-            'name': 'West-DualSetP-RL',
-            'heating_name': 'West-HtgSetP-RL',
-            'cooling_name': 'West-ClgSetP-RL',
-            'zones': ['West Zone']
-        },
-            {
-            'name': 'East-DualSetP-RL',
-            'heating_name': 'East-HtgSetP-RL',
-            'cooling_name': 'East-ClgSetP-RL',
-            'zones': ['East Zone']
-        }]
-    }
+DEFAULT_DATACENTER_ACTION_DEFINITION = {
+    'ThermostatSetpoint:DualSetpoint': [{
+        'name': 'West-DualSetP-RL',
+        'heating_name': 'West-HtgSetP-RL',
+        'cooling_name': 'West-ClgSetP-RL',
+        'zones': ['West Zone']
+    },
+        {
+        'name': 'East-DualSetP-RL',
+        'heating_name': 'East-HtgSetP-RL',
+        'cooling_name': 'East-ClgSetP-RL',
+        'zones': ['East Zone']
+    }]
 }
 
 # ----------------------------------WAREHOUSE--------------------------------- #
@@ -340,7 +325,7 @@ DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
     shape=(5,),
     dtype=np.float32)
 
-DEFAULT_WAREHOUSE_CONFIG_PARAMS = {'action_definition': {
+DEFAULT_WAREHOUSE_ACTION_DEFINITION = {
     'ThermostatSetpoint:DualSetpoint': [{
         'name': 'Office-DualSetP-RL',
         'heating_name': 'office-heating-rl',
@@ -358,7 +343,7 @@ DEFAULT_WAREHOUSE_CONFIG_PARAMS = {'action_definition': {
         'heating_name': 'bulk-storage-heating-rl',
         'zones': ['Zone3 Bulk Storage']
     }]
-}}
+}
 
 # ----------------------------------OFFICE--------------------------------- #
 
@@ -417,14 +402,14 @@ DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
     shape=(2,),
     dtype=np.float32)
 
-DEFAULT_OFFICE_CONFIG_PARAMS = {'action_definition': {
+DEFAULT_OFFICE_ACTION_DEFINITION = {
     'ThermostatSetpoint:DualSetpoint': [{
         'name': 'Office-DualSetP-RL',
         'heating_name': 'office-heating-rl',
         'cooling_name': 'office-cooling-rl',
         'zones': 'all'
     }]
-}}
+}
 
 # ----------------------------------HOSPITAL--------------------------------- #
 DEFAULT_HOSPITAL_OBSERVATION_VARIABLES = [
@@ -465,11 +450,11 @@ DEFAULT_HOSPITAL_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
     shape=(2,),
     dtype=np.float32)
 
-DEFAULT_HOSPITAL_CONFIG_PARAMS = {'action_definition': {
+DEFAULT_HOSPITAL_ACTION_DEFINITION = {
     'ThermostatSetpoint:DualSetpoint': [{
         'name': 'Hospital-DualSetP-RL',
         'heating_name': 'hospital-heating-rl',
         'cooling_name': 'hospital-cooling-rl',
         'zones': 'all'
     }]
-}}
+}
