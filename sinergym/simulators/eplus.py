@@ -40,6 +40,7 @@ class EnergyPlus(object):
             variables: Dict[str, List[str]],
             act_repeat: int = 1,
             max_ep_data_store_num: int = 10,
+            action_definition: Optional[Dict[str, Any]] = None,
             config_params: Optional[Dict[str, Any]] = None):
         """EnergyPlus simulation class.
 
@@ -97,6 +98,7 @@ class EnergyPlus(object):
             variables=variables,
             env_name=self._env_name,
             max_ep_store=self._max_ep_data_store_num,
+            action_definition=action_definition,
             extra_config=config_params)
 
         # Annotate experiment path in simulator
@@ -118,6 +120,11 @@ class EnergyPlus(object):
         self.logger_main.info(
             'Setting up extra configuration in building model if exists...')
         self._config.apply_extra_conf()
+        # Setting up action definition automatic manipulation if exists
+        self.logger_main.info(
+            'Setting up action definition in building model if exists...')
+        self._config.adapt_idf_to_action_definition()
+
         # In this lines Epm model is modified but no IDF is stored anywhere yet
 
         # Eplus run info
