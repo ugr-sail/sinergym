@@ -20,7 +20,6 @@ class BaseReward(object):
             env (Env): Gym environment.
         """
         self.env = env
-        self.year = 2021  # just for datetime completion
 
     def __call__(self):
         """Method for calculating the reward function."""
@@ -120,7 +119,8 @@ class LinearReward(BaseReward):
 
         month = obs_dict['month']
         day = obs_dict['day']
-        current_dt = datetime(self.year, month, day)
+        year = obs_dict['year']
+        current_dt = datetime(year, month, day)
 
         if current_dt >= self.summer_start_date and current_dt <= self.summer_final_date:
             temp_range = self.range_comfort_summer
