@@ -122,16 +122,15 @@ class LinearReward(BaseReward):
         month = obs_dict['month']
         day = obs_dict['day']
         year = obs_dict['year']
-        self.year = year
-        current_dt = datetime(self.year, month, day)
+        current_dt = datetime(year, month, day)
 
         # Periods
         summer_start_date = datetime(
-            self.year,
+            year,
             self.summer_start[0],
             self.summer_start[1])
         summer_final_date = datetime(
-            self.year,
+            year,
             self.summer_final[0],
             self.summer_final[1])
 
@@ -207,16 +206,15 @@ class ExpReward(LinearReward):
         month = obs_dict['month']
         day = obs_dict['day']
         year = obs_dict['year']
-        self.year = year
-        current_dt = datetime(self.year, month, day)
+        current_dt = datetime(year, month, day)
 
         # Periods
         summer_start_date = datetime(
-            self.year,
+            year,
             self.summer_start[0],
             self.summer_start[1])
         summer_final_date = datetime(
-            self.year,
+            year,
             self.summer_final[0],
             self.summer_final[1])
 
