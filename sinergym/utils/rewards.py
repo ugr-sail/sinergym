@@ -34,8 +34,10 @@ class LinearReward(BaseReward):
         env: Env,
         temperature_variable: Union[str, list],
         energy_variable: str,
-        range_comfort_winter: tuple,
-        range_comfort_summer: tuple,
+        range_comfort_winter: Tuple[int],
+        range_comfort_summer: Tuple[int],
+        summer_start: Tuple[int] = (6, 1),
+        summer_final: Tuple[int] = (9, 30),
         energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
         lambda_temperature: float = 1.0
@@ -72,9 +74,9 @@ class LinearReward(BaseReward):
         self.lambda_energy = lambda_energy
         self.lambda_temp = lambda_temperature
 
-        # Periods
-        self.summer_start_date = datetime(self.year, 6, 1)
-        self.summer_final_date = datetime(self.year, 9, 30)
+        # Summer period
+        self.summer_start = summer_start  # (month,day)
+        self.summer_final = summer_final  # (month,day)
 
     def __call__(self) -> Tuple[float, Dict[str, Any]]:
         """
@@ -120,9 +122,20 @@ class LinearReward(BaseReward):
         month = obs_dict['month']
         day = obs_dict['day']
         year = obs_dict['year']
-        current_dt = datetime(year, month, day)
+        self.year = year
+        current_dt = datetime(self.year, month, day)
 
-        if current_dt >= self.summer_start_date and current_dt <= self.summer_final_date:
+        # Periods
+        summer_start_date = datetime(
+            self.year,
+            self.summer_start[0],
+            self.summer_start[1])
+        summer_final_date = datetime(
+            self.year,
+            self.summer_final[0],
+            self.summer_final[1])
+
+        if current_dt >= summer_start_date and current_dt <= summer_final_date:
             temp_range = self.range_comfort_summer
         else:
             temp_range = self.range_comfort_winter
@@ -143,8 +156,10 @@ class ExpReward(LinearReward):
         env: Env,
         temperature_variable: Union[str, list],
         energy_variable: str,
-        range_comfort_winter: tuple,
-        range_comfort_summer: tuple,
+        range_comfort_winter: Tuple[int],
+        range_comfort_summer: Tuple[int],
+        summer_start: Tuple[int] = (6, 1),
+        summer_final: Tuple[int] = (9, 30),
         energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
         lambda_temperature: float = 1.0
@@ -172,6 +187,8 @@ class ExpReward(LinearReward):
             energy_variable,
             range_comfort_winter,
             range_comfort_summer,
+            summer_start,
+            summer_final,
             energy_weight,
             lambda_energy,
             lambda_temperature
@@ -189,9 +206,21 @@ class ExpReward(LinearReward):
 
         month = obs_dict['month']
         day = obs_dict['day']
+        year = obs_dict['year']
+        self.year = year
         current_dt = datetime(self.year, month, day)
 
-        if current_dt >= self.summer_start_date and current_dt <= self.summer_final_date:
+        # Periods
+        summer_start_date = datetime(
+            self.year,
+            self.summer_start[0],
+            self.summer_start[1])
+        summer_final_date = datetime(
+            self.year,
+            self.summer_final[0],
+            self.summer_final[1])
+
+        if current_dt >= summer_start_date and current_dt <= summer_final_date:
             temp_range = self.range_comfort_summer
         else:
             temp_range = self.range_comfort_winter
@@ -213,8 +242,10 @@ class HourlyLinearReward(LinearReward):
         env: Env,
         temperature_variable: Union[str, list],
         energy_variable: str,
-        range_comfort_winter: tuple,
-        range_comfort_summer: tuple,
+        range_comfort_winter: Tuple[int],
+        range_comfort_summer: Tuple[int],
+        summer_start: Tuple[int] = (6, 1),
+        summer_final: Tuple[int] = (9, 30),
         min_energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
         lambda_temperature: float = 1.0,
@@ -241,6 +272,8 @@ class HourlyLinearReward(LinearReward):
             energy_variable,
             range_comfort_winter,
             range_comfort_summer,
+            summer_start,
+            summer_final,
             min_energy_weight,
             lambda_energy,
             lambda_temperature
