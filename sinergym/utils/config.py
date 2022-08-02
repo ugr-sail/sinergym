@@ -220,11 +220,11 @@ class Config(object):
                         self.building.ExternalInterface_Schedule.add(
                             name=controller['heating_name'],
                             schedule_type_limits_name='Temperature',
-                            initial_value=controller['heating_initial_value'])  # 21
+                            initial_value=controller['heating_initial_value'])
                         self.building.ExternalInterface_Schedule.add(
                             name=controller['cooling_name'],
                             schedule_type_limits_name='Temperature',
-                            initial_value=controller['cooling_initial_value'])  # 25
+                            initial_value=controller['cooling_initial_value'])
                         # Create a ThermostatSetpoint:DualSetpoint object
                         self.building.ThermostatSetpoint_DualSetpoint.add(
                             name=controller['name'],
@@ -252,7 +252,7 @@ class Config(object):
                         self.building.ExternalInterface_Schedule.add(
                             name=controller['heating_name'],
                             schedule_type_limits_name='Temperature',
-                            initial_value=controller['heating_initial_value'])  # 21
+                            initial_value=controller['heating_initial_value'])
                         # Create a ThermostatSetpoint:SigleHeating object
                         self.building.ThermostatSetpoint_SingleHeating.add(
                             name=controller['name'],
@@ -279,7 +279,7 @@ class Config(object):
                         self.building.ExternalInterface_Schedule.add(
                             name=controller['cooling_name'],
                             schedule_type_limits_name='Temperature',
-                            initial_value=controller['cooling_initial_value'])  # 25
+                            initial_value=controller['cooling_initial_value'])
                         # Create a ThermostatSetpoint:SigleHeating object
                         self.building.ThermostatSetpoint_SingleCooling.add(
                             name=controller['name'],
@@ -625,7 +625,7 @@ class Config(object):
                     for thermostat in self.action_definition[component_name]:
                         # Check Thermostates fields
                         assert set(thermostat.keys()) == set(['name', 'heating_name', 'cooling_name', 'heating_initial_value',
-                                                              'cooling_initial_value', 'zones']), 'Action definition: {} key names unknown, check them please.'.format(component_name)
+                                                              'cooling_initial_value', 'zones']), 'Action definition: {} key names incorrect, check them please.'.format(component_name)
                         assert thermostat['heating_name'] in self.variables['action'], 'Action definition: {} should be in action variables.'.format(
                             thermostat['heating_name'])
                         assert thermostat['cooling_name'] in self.variables['action'], 'Action definition: {} should be in action variables.'.format(
@@ -646,7 +646,7 @@ class Config(object):
                     for thermostat in self.action_definition[component_name]:
                         # Check Thermostates fields
                         assert set(thermostat.keys()) == set(['name', 'heating_name', 'heating_initial_value', 'zones']
-                                                             ), 'Action definition: {} key names unknown, check them please.'.format(component_name)
+                                                             ), 'Action definition: {} key names incorrect, check them please.'.format(component_name)
                         assert thermostat['heating_name'] in self.variables['action'], 'Action definition: {} should be in action variables.'.format(
                             thermostat['heating_name'])
                         assert isinstance(

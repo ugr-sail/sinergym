@@ -187,6 +187,8 @@ DEFAULT_5ZONE_ACTION_DEFINITION = {
         'name': 'Space1-DualSetP-RL',
         'heating_name': 'Space1-HtgSetP-RL',
         'cooling_name': 'Space1-ClgSetP-RL',
+        'heating_initial_value': 21.0,
+        'cooling_initial_value': 25.0,
         'zones': ['space1-1']
     }]
 }
@@ -258,12 +260,16 @@ DEFAULT_DATACENTER_ACTION_DEFINITION = {
         'name': 'West-DualSetP-RL',
         'heating_name': 'West-HtgSetP-RL',
         'cooling_name': 'West-ClgSetP-RL',
+        'heating_initial_value': 21.0,
+        'cooling_initial_value': 25.0,
         'zones': ['West Zone']
     },
         {
         'name': 'East-DualSetP-RL',
         'heating_name': 'East-HtgSetP-RL',
         'cooling_name': 'East-ClgSetP-RL',
+        'heating_initial_value': 21.0,
+        'cooling_initial_value': 25.0,
         'zones': ['East Zone']
     }]
 }
@@ -330,17 +336,22 @@ DEFAULT_WAREHOUSE_ACTION_DEFINITION = {
         'name': 'Office-DualSetP-RL',
         'heating_name': 'office-heating-rl',
         'cooling_name': 'office-cooling-rl',
+        'heating_initial_value': 21.0,
+        'cooling_initial_value': 25.0,
         'zones': ['Zone1 Office']
     },
         {
         'name': 'Storage-DualSetP-RL',
         'heating_name': 'storage-heating-rl',
         'cooling_name': 'storage-cooling-rl',
+        'heating_initial_value': 21.0,
+        'cooling_initial_value': 25.0,
         'zones': ['Zone2 Fine Storage']
     }],
     'ThermostatSetpoint:SingleHeating': [{
         'name': 'Bulk-DualSetP-RL',
         'heating_name': 'bulk-storage-heating-rl',
+        'heating_initial_value': 21.0,
         'zones': ['Zone3 Bulk Storage']
     }]
 }
@@ -407,6 +418,8 @@ DEFAULT_OFFICE_ACTION_DEFINITION = {
         'name': 'Office-DualSetP-RL',
         'heating_name': 'office-heating-rl',
         'cooling_name': 'office-cooling-rl',
+        'heating_initial_value': 21.0,
+        'cooling_initial_value': 25.0,
         'zones': 'all'
     }]
 }
@@ -455,6 +468,8 @@ DEFAULT_HOSPITAL_ACTION_DEFINITION = {
         'name': 'Hospital-DualSetP-RL',
         'heating_name': 'hospital-heating-rl',
         'cooling_name': 'hospital-cooling-rl',
+        'heating_initial_value': 21.0,
+        'cooling_initial_value': 25.0,
         'zones': 'all'
     }]
 }
