@@ -34,10 +34,10 @@ class LinearReward(BaseReward):
         env: Env,
         temperature_variable: Union[str, list],
         energy_variable: str,
-        range_comfort_winter: Tuple[int],
-        range_comfort_summer: Tuple[int],
-        summer_start: Tuple[int] = (6, 1),
-        summer_final: Tuple[int] = (9, 30),
+        range_comfort_winter: Tuple[int, int],
+        range_comfort_summer: Tuple[int, int],
+        summer_start: Tuple[int, int] = (6, 1),
+        summer_final: Tuple[int, int] = (9, 30),
         energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
         lambda_temperature: float = 1.0
@@ -54,10 +54,10 @@ class LinearReward(BaseReward):
             env (Env): Gym environment.
             temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
             energy_variable (str): Name of the energy/power variable.
-            range_comfort_winter (Tuple[int]): Temperature comfort range for cold season. Depends on environment you are using.
-            range_comfort_summer (Tuple[int]): Temperature comfort range for hot season. Depends on environment you are using.
-            summer_start (Tuple[int]): Summer session tuple with month and day start. Defaults to (6,1).
-            summer_final (Tuple[int]): Summer session tuple with month and day end. defaults to (9,30).
+            range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
+            range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
+            summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
+            summer_final (Tuple[int,int]): Summer session tuple with month and day end. defaults to (9,30).
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
@@ -157,10 +157,10 @@ class ExpReward(LinearReward):
         env: Env,
         temperature_variable: Union[str, list],
         energy_variable: str,
-        range_comfort_winter: Tuple[int],
-        range_comfort_summer: Tuple[int],
-        summer_start: Tuple[int] = (6, 1),
-        summer_final: Tuple[int] = (9, 30),
+        range_comfort_winter: Tuple[int, int],
+        range_comfort_summer: Tuple[int, int],
+        summer_start: Tuple[int, int] = (6, 1),
+        summer_final: Tuple[int, int] = (9, 30),
         energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
         lambda_temperature: float = 1.0
@@ -175,10 +175,10 @@ class ExpReward(LinearReward):
             env (Env): Gym environment.
             temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
             energy_variable (str): Name of the energy/power variable.
-            range_comfort_winter (Tuple[int]): Temperature comfort range for cold season. Depends on environment you are using.
-            range_comfort_summer (Tuple[int]): Temperature comfort range for hot season. Depends on environment you are using.
-            summer_start (Tuple[int]): Summer session tuple with month and day start. Defaults to (6,1).
-            summer_final (Tuple[int]): Summer session tuple with month and day end. defaults to (9,30).
+            range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
+            range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
+            summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
+            summer_final (Tuple[int,int]): Summer session tuple with month and day end. defaults to (9,30).
             energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
@@ -244,10 +244,10 @@ class HourlyLinearReward(LinearReward):
         env: Env,
         temperature_variable: Union[str, list],
         energy_variable: str,
-        range_comfort_winter: Tuple[int],
-        range_comfort_summer: Tuple[int],
-        summer_start: Tuple[int] = (6, 1),
-        summer_final: Tuple[int] = (9, 30),
+        range_comfort_winter: Tuple[int, int],
+        range_comfort_summer: Tuple[int, int],
+        summer_start: Tuple[int, int] = (6, 1),
+        summer_final: Tuple[int, int] = (9, 30),
         min_energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
         lambda_temperature: float = 1.0,
@@ -260,10 +260,10 @@ class HourlyLinearReward(LinearReward):
             env (Env): Gym environment.
             temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
             energy_variable (str): Name of the energy/power variable.
-            range_comfort_winter (Tuple[int]): Temperature comfort range for cold season. Depends on environment you are using.
-            range_comfort_summer (Tuple[int]): Temperature comfort range for hot season. Depends on environment you are using.
-            summer_start (Tuple[int]): Summer session tuple with month and day start. Defaults to (6,1).
-            summer_final (Tuple[int]): Summer session tuple with month and day end. defaults to (9,30).
+            range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
+            range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
+            summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
+            summer_final (Tuple[int,int]): Summer session tuple with month and day end. defaults to (9,30).
             min_energy_weight (float, optional): Minimum weight given to the energy term. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
