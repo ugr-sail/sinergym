@@ -111,19 +111,26 @@ def test_adapt_variables_to_cfg_and_idf(config):
                 'schedule']
 
 
+def test_set_external_interface(config):
+    # Check External interface is not created yet
+    assert len(config.building.ExternalInterface) == 0
+    # Set external interface
+    config.set_external_interface()
+    # Check external interface exists with ptolemy server
+    assert len(config.building.ExternalInterface) == 1
+    assert config.building.ExternalInterface[0].name_of_external_interface.lower(
+    ) == 'PtolemyServer'.lower()
+
+
 def test_apply_extra_conf(config):
     # Check default config
     assert int(config.building.timestep[0].number_of_timesteps_per_hour) == 4
-    # Check External interface is not created yet
-    assert len(config.building.ExternalInterface_Schedule) == 0
 
     # Set new extra configuration
     config.apply_extra_conf()
 
     # Check new config
     assert int(config.building.timestep[0].number_of_timesteps_per_hour) == 2
-    # Check External interface has been created
-    assert len(config.building.ExternalInterface_Schedule) == 2
     # Check Runperiod
     assert config.building.runperiod[0].begin_day_of_month == int(
         config.config['runperiod'][0]) and config.building.runperiod[0].begin_month == int(
@@ -132,6 +139,17 @@ def test_apply_extra_conf(config):
                 config.config['runperiod'][3]) and config.building.runperiod[0].end_month == int(
                     config.config['runperiod'][4]) and config.building.runperiod[0].end_year == int(
                         config.config['runperiod'][5])
+
+
+def test_adapt_idf_to_action_definition(config):
+    # Check External interface variables are not created yet
+    assert len(config.building.ExternalInterface_Schedule) == 0
+
+    # Apply action definition
+    config.adapt_idf_to_action_definition()
+
+    # Check variables for external interface have been created
+    assert len(config.building.ExternalInterface_Schedule) == 2
 
 
 def test_save_variables_cfg(config):
