@@ -37,7 +37,7 @@ register(
                 23.0,
                 26.0)},
         'env_name': 'demo-v1',
-        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
 # 1) 5-zone, hot weather, discrete actions
 register(
@@ -59,7 +59,7 @@ register(
             'range_comfort_summer': (23.0, 26.0)
         },
         'env_name': '5Zone-hot-discrete-v1',
-        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
 # 2) 5-zone, mixed weather, discrete actions
 register(
@@ -81,7 +81,7 @@ register(
             'range_comfort_summer': (23.0, 26.0)
         },
         'env_name': '5Zone-mixed-discrete-v1',
-        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
 # 3) 5-zone, cool weather, discrete actions
 register(
@@ -103,7 +103,7 @@ register(
             'range_comfort_summer': (23.0, 26.0)
         },
         'env_name': '5Zone-cool-discrete-v1',
-        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
 # 4) 5-zone, hot weather, discrete actions and stochastic
 register(
@@ -129,7 +129,7 @@ register(
             'range_comfort_summer': (23.0, 26.0)
         },
         'env_name': '5Zone-hot-discrete-stochastic-v1',
-        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
 # 5) 5-zone, mixed weather, discrete actions and stochastic
 register(
@@ -152,7 +152,7 @@ register(
             'range_comfort_summer': (23.0, 26.0)
         },
         'env_name': '5Zone-mixed-discrete-stochastic-v1',
-        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
 # 6) 5-zone, cool weather, discrete actions and stochastic
 register(
@@ -175,7 +175,7 @@ register(
             'range_comfort_summer': (23.0, 26.0)
         },
         'env_name': '5Zone-cool-discrete-stochastic-v1',
-        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
 # 7) 5-zone, hot weather, continuous actions
 register(
@@ -200,7 +200,7 @@ register(
                 23.0,
                 26.0)},
         'env_name': '5Zone-hot-continuous-v1',
-        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
 # 8) 5-zone, mixed weather, continuous actions
 register(
@@ -225,7 +225,7 @@ register(
                 23.0,
                 26.0)},
         'env_name': '5Zone-mixed-continuous-v1',
-        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
 # 9) 5-zone, cool weather, continuous actions
 register(
@@ -250,7 +250,7 @@ register(
                 23.0,
                 26.0)},
         'env_name': '5Zone-cool-continuous-v1',
-        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
 # 10) 5-zone, hot weather, continuous actions and stochastic
 register(
@@ -279,7 +279,7 @@ register(
                 23.0,
                 26.0)},
         'env_name': '5Zone-hot-continuous-stochastic-v1',
-        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
 # 11) 5-zone, mixed weather, continuous actions and stochastic
 register(
@@ -302,7 +302,7 @@ register(
                 'range_comfort_summer': (23.0, 26.0)
         },
         'env_name': '5Zone-mixed-continuous-stochastic-v1',
-        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
 # 12) 5-zone, cool weather, continuous actions and stochastic
 register(
@@ -325,7 +325,7 @@ register(
                 'range_comfort_summer': (23.0, 26.0)
         },
         'env_name': '5Zone-cool-continuous-stochastic-v1',
-        'config_params': DEFAULT_5ZONE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
 # ---------------------------------------------------------------------------- #
 #                            Datacenter Environments                           #
@@ -353,7 +353,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-hot-discrete-v1',
-        'config_params': DEFAULT_DATACENTER_CONFIG_PARAMS
+        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION
     }
 )
 
@@ -380,7 +380,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-hot-continuous-v1',
-        'config_params': DEFAULT_DATACENTER_CONFIG_PARAMS
+        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION
     }
 )
 
@@ -408,7 +408,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-hot-discrete-stochastic-v1',
-        'config_params': DEFAULT_DATACENTER_CONFIG_PARAMS
+        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION
     }
 )
 
@@ -436,7 +436,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-hot-continuous-stochastic-v1',
-        'config_params': DEFAULT_DATACENTER_CONFIG_PARAMS
+        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION
     }
 )
 
@@ -463,7 +463,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-mixed-discrete-v1',
-        'config_params': DEFAULT_DATACENTER_CONFIG_PARAMS})
+        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
 
 # 18) DC, mixed weather, continuous actions
 register(
@@ -488,7 +488,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-mixed-continuous-v1',
-        'config_params': DEFAULT_DATACENTER_CONFIG_PARAMS})
+        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
 
 # 19) DC, mixed weather, discrete actions and stochastic
 register(
@@ -514,7 +514,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-mixed-discrete-stochastic-v1',
-        'config_params': DEFAULT_DATACENTER_CONFIG_PARAMS})
+        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
 
 # 20) DC, mixed weather, continuous actions and stochastic
 register(
@@ -540,7 +540,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-mixed-continuous-stochastic-v1',
-        'config_params': DEFAULT_DATACENTER_CONFIG_PARAMS})
+        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
 
 # 21) DC, cool weather, discrete actions
 register(
@@ -567,7 +567,7 @@ register(
                 18,
                 27)},
         'env_name': 'datacenter-cool-discrete-v1',
-        'config_params': DEFAULT_DATACENTER_CONFIG_PARAMS})
+        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
 
 # 22) DC, cool weather, continuous actions
 register(
@@ -592,7 +592,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-cool-continuous-v1',
-        'config_params': DEFAULT_DATACENTER_CONFIG_PARAMS})
+        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
 
 # 23) DC, cool weather, discrete actions and stochastic
 register(
@@ -618,7 +618,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-cool-discrete-stochastic-v1',
-        'config_params': DEFAULT_DATACENTER_CONFIG_PARAMS})
+        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
 
 # 24) DC, cool weather, continuous actions and stochastic
 register(
@@ -644,7 +644,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'datacenter-cool-continuous-stochastic-v1',
-        'config_params': DEFAULT_DATACENTER_CONFIG_PARAMS})
+        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
 
 # ---------------------------------------------------------------------------- #
 #                          Warehouse Environments                              #
@@ -674,7 +674,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'warehouse-hot-discrete-v1',
-        'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
 
 # 26) WH, hot weather, continuous actions
 register(
@@ -700,7 +700,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'warehouse-hot-continuous-v1',
-        'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
 
 # 27) WH, hot weather, discrete actions and stochastic
 register(
@@ -727,7 +727,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'warehouse-hot-discrete-stochastic-v1',
-        'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
 
 # 28) WH, hot weather, continuous actions and stochastic
 register(
@@ -754,7 +754,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'warehouse-hot-continuous-stochastic-v1',
-        'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
 
 # 29) WH, mixed weather, discrete actions
 register(
@@ -780,7 +780,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'warehouse-mixed-discrete-v1',
-        'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
 
 # 30) WH, mixed weather, continuous actions
 register(
@@ -806,7 +806,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'warehouse-mixed-continuous-v1',
-        'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
 
 # 31) WH, mixed weather, discrete actions and stochastic
 register(
@@ -833,7 +833,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'warehouse-mixed-discrete-stochastic-v1',
-        'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
 
 # 32) WH, mixed weather, continuous actions and stochastic
 register(
@@ -860,7 +860,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'warehouse-mixed-continuous-stochastic-v1',
-        'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
 
 # 33) WH, cool weather, discrete actions
 register(
@@ -886,7 +886,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'warehouse-cool-discrete-v1',
-        'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
 
 # 34) WH, cool weather, continuous actions
 register(
@@ -912,7 +912,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'warehouse-cool-continuous-v1',
-        'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
 
 # 35) WH, cool weather, discrete actions and stochastic
 register(
@@ -939,7 +939,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'warehouse-cool-discrete-stochastic-v1',
-        'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
 
 # 36) WH, cool weather, continuous actions and stochastic
 register(
@@ -966,7 +966,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'warehouse-cool-continuous-stochastic-v1',
-        'config_params': DEFAULT_WAREHOUSE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
 
 
 # ---------------------------------------------------------------------------- #
@@ -1012,7 +1012,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'office-hot-discrete-v1',
-        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
 
 # 38) MO, hot weather, continuous actions
 register(
@@ -1053,7 +1053,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'office-hot-continuous-v1',
-        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
 
 # 39) MO, hot weather, discrete actions and stochastic
 register(
@@ -1095,7 +1095,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'office-hot-discrete-stochastic-v1',
-        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
 
 # 40) MO, hot weather, continuous actions and stochastic
 register(
@@ -1137,7 +1137,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'office-hot-continuous-stochastic-v1',
-        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
 
 # 41) MO, mixed weather, discrete actions
 register(
@@ -1178,7 +1178,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'office-mixed-discrete-v1',
-        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
 
 # 42) MO, mixed weather, continuous actions
 register(
@@ -1219,7 +1219,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'office-mixed-continuous-v1',
-        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
 
 # 43) MO, mixed weather, discrete actions and stochastic
 register(
@@ -1261,7 +1261,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'office-mixed-discrete-stochastic-v1',
-        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
 
 # 44) MO, mixed weather, continuous actions and stochastic
 register(
@@ -1303,7 +1303,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'office-mixed-continuous-stochastic-v1',
-        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
 
 # 45) MO, cool weather, discrete actions
 register(
@@ -1344,7 +1344,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'office-cool-discrete-v1',
-        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
 
 # 46) MO, cool weather, continuous actions
 register(
@@ -1385,7 +1385,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'office-cool-continuous-v1',
-        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
 
 # 47) MO, cool weather, discrete actions and stochastic
 register(
@@ -1427,7 +1427,7 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'office-cool-discrete-stochastic-v1',
-        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
 
 # 48) MO, cool weather, continuous actions and stochastic
 register(
@@ -1469,4 +1469,4 @@ register(
             'range_comfort_summer': (18, 27)
         },
         'env_name': 'office-cool-continuous-stochastic-v1',
-        'config_params': DEFAULT_OFFICE_CONFIG_PARAMS})
+        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})

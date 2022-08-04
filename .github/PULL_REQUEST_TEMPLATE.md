@@ -17,6 +17,7 @@ Fixes #(issue or issues)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
 - [ ] Documentation (update in the documentation)
+- [ ] Improvement (of an existing feature)
 - [ ] Others
 
 ## Checklist:

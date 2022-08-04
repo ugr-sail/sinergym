@@ -142,7 +142,7 @@ def env_demo(idf_path, weather_path):
                 23.0,
                 26.0)},
         weather_variability=None,
-        config_params=DEFAULT_5ZONE_CONFIG_PARAMS)
+        action_definition=DEFAULT_5ZONE_ACTION_DEFINITION)
 
 
 @pytest.fixture(scope='function')
@@ -170,7 +170,7 @@ def env_demo_continuous(idf_path, weather_path):
                 23.0,
                 26.0)},
         weather_variability=None,
-        config_params=DEFAULT_5ZONE_CONFIG_PARAMS)
+        action_definition=DEFAULT_5ZONE_ACTION_DEFINITION)
 
 
 @pytest.fixture(scope='function')
@@ -200,7 +200,7 @@ def env_datacenter(idf_path2, weather_path):
                 18,
                 27)},
         weather_variability=None,
-        config_params=DEFAULT_DATACENTER_CONFIG_PARAMS)
+        action_definition=DEFAULT_DATACENTER_ACTION_DEFINITION)
 
 
 @pytest.fixture(scope='function')
@@ -232,7 +232,7 @@ def env_datacenter_continuous(
                 18,
                 27)},
         weather_variability=None,
-        config_params=DEFAULT_DATACENTER_CONFIG_PARAMS)
+        action_definition=DEFAULT_DATACENTER_ACTION_DEFINITION)
 
 # ---------------------------------------------------------------------------- #
 #                                  Simulators                                  #
@@ -251,7 +251,7 @@ def simulator(eplus_path, bcvtb_path, idf_path, weather_path, variables_5zone):
         variables=variables_5zone,
         act_repeat=1,
         max_ep_data_store_num=10,
-        config_params=DEFAULT_5ZONE_CONFIG_PARAMS)
+        action_definition=DEFAULT_5ZONE_ACTION_DEFINITION)
 
 # ---------------------------------------------------------------------------- #
 #                            Simulator Config class                            #
@@ -268,17 +268,19 @@ def config(idf_path, weather_path2, variables_5zone):
         env_name=env_name,
         variables=variables_5zone,
         max_ep_store=max_ep_store,
+        action_definition={
+            'ThermostatSetpoint:DualSetpoint': [{
+                'name': 'Space1-DualSetP-RL',
+                'heating_name': 'Space1-HtgSetP-RL',
+                'cooling_name': 'Space1-ClgSetP-RL',
+                'heating_initial_value': 21.0,
+                'cooling_initial_value': 25.0,
+                'zones': ['space1-1']
+            }]
+        },
         extra_config={
             'timesteps_per_hour': 2,
             'runperiod': (1, 2, 1993, 2, 3, 1993),
-            'action_definition': {
-                'ThermostatSetpoint:DualSetpoint': [{
-                    'name': 'Space1-DualSetP-RL',
-                    'heating_name': 'Space1-HtgSetP-RL',
-                    'cooling_name': 'Space1-ClgSetP-RL',
-                    'zones': ['space1-1']
-                }]
-            }
         })
 
 # ---------------------------------------------------------------------------- #
@@ -359,7 +361,7 @@ def env_custom_reward(
         action_mapping=DEFAULT_5ZONE_ACTION_MAPPING,
         reward=custom_reward,
         weather_variability=None,
-        config_params=DEFAULT_5ZONE_CONFIG_PARAMS
+        action_definition=DEFAULT_5ZONE_ACTION_DEFINITION
     )
 
 
@@ -388,7 +390,7 @@ def env_linear_reward(idf_path, weather_path):
                 23.0,
                 26.0)},
         weather_variability=None,
-        config_params=DEFAULT_5ZONE_CONFIG_PARAMS)
+        action_definition=DEFAULT_5ZONE_ACTION_DEFINITION)
 
 
 @pytest.fixture(scope='function')
@@ -413,7 +415,7 @@ def env_linear_reward_args(idf_path, weather_path):
             'range_comfort_winter': (20.0, 23.5),
             'range_comfort_summer': (18.0, 20.0)},
         weather_variability=None,
-        config_params=DEFAULT_5ZONE_CONFIG_PARAMS)
+        action_definition=DEFAULT_5ZONE_ACTION_DEFINITION)
 
 
 # ---------------------------------------------------------------------------- #
