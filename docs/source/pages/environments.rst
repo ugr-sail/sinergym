@@ -191,7 +191,7 @@ Reward Kwargs
 Depending on the reward class that is specified to the environment, it may have different parameters 
 depending on its type. In addition, if a user creates a new custom reward, it can have new parameters as well.
 
-In addition, depending on the building being used (IDF file) for the environment, the values of these reward parameters may 
+Moreover, depending on the building being used (IDF file) for the environment, the values of these reward parameters may 
 need to be different, such as the comfort range or the energy and temperature variables of the simulation that 
 will be used to calculate the reward.
 
@@ -236,10 +236,10 @@ This allows for a **dynamic definition** of these spaces. Let's see the fields r
 - **action_variables**: List of the action variables that simulator is going to process 
   like schedule control actuator in the building model. These variables
   must be defined in the building model (IDF file) correctly before simulation. You can 
-  modify **manually** in the IDF file or using our **action definition** extra configuration 
-  field in which you set what you want to control and Sinergym takes care of modifying 
-  this file for you automatically. For more information about this automatic adaptation 
-  in section :ref:`action_definition`.
+  modify **manually** in the IDF file or using our **action definition**  field 
+  in which you set what you want to control and Sinergym 
+  takes care of modifying this file for you automatically. For more information about 
+  this automatic adaptation in section :ref:`Action definition`.
                 
 - **action_space**: Definition of the action space following the **gym standard**. 
   This definition can be discrete or continuous and must be consistent with 
@@ -256,7 +256,7 @@ This allows for a **dynamic definition** of these spaces. Let's see the fields r
   It is a dictionary that links an index to a specific configuration of values for 
   each action variable. 
 
-As we have told, Observation and action spaces are defined **dynamically** in Sinergym 
+As we have told, observation and action spaces are defined **dynamically** in Sinergym 
 Environment constructor. Environment ID's registered in Sinergym use a **default** definition
 set up in `constants.py <https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/constants.py>`__.
 
@@ -270,12 +270,12 @@ add this variables (**year, month, day and hour**) to observation variables but 
 the observation space.
 
 As we told before, all environments ID's registered in Sinergym use its respectively 
-**default action and observation spaces, variables and definition**. 
+**default action and observation spaces, variables and action definition**. 
 However, you can **change** this values giving you the possibility of playing with different 
 observation/action spaces in discrete and continuous environments in order to study how this 
 affects the resolution of a building problem.
 
-Sinergym has several checkers to ensure that there are no inconsistencies in the alternative 
+Sinergym has several **checkers** to ensure that there are no inconsistencies in the alternative 
 specifications made to the default ones. In case the specification offered is wrong, 
 Sinergym will launch messages indicating where the error or inconsistency is located.
 
@@ -288,12 +288,97 @@ Environment name
 
 The parameter *env_name* is used to define the name of working directory generation.
 
+Action definition
+==================
+
+Creating a **new external interface** to control different parts of a building is not a trivial task, 
+it requires certain changes in the building model (IDF), configuration files for the external 
+interface (variables.cfg), etc in order to control it.
+
+The **changes in the building model** are complex due to depending on the building model we will have
+available different zones and actuators. 
+
+Thus, there is the possibility to add an action definition in environment instead of modify IDF 
+directly about components or actuators changes required to control by external variables specified 
+in :ref:`Observation/action spaces`.
+
+For this purpose,  we have available *action_definition* parameter in environments. Its value is a 
+dictionary with the next structure:
+
+.. code:: python
+
+    action_definition_example={  
+      <controller_type>:[<controller1_definition>,<controller2_definition>, ...],
+      <other_type>: ...
+    }
+
+The `<controller_definition>` will depend on the specific type of controller that we are 
+going to create, we have the next support:
+
+Thermostat:DualSetpoint
+========================
+
+This controller has the next values in its definition:
+
+- *name*: DualSetpoint resource name (str).
+
+- *heating_name*: Heating setpoint name. This name should be an action variable defined 
+  in your environment (str).
+
+- *cooling_name*: Cooling setpoint name. This name should be an action variable defined
+  in your environment (str).
+
+- *heating_initial_value*: Initial value the heating thermostat initialize the simulation with.
+
+- *cooling_initial_value*: Initial value the cooling thermostat initialize the simulation with.
+
+- *zones*: An thermostat can manage several building zones at the same time. Then, you 
+  can specify one or more zones (List(str)). If the zone name specified is not 
+  exist in building, Sinergym will report the error.
+
+ThermostatSetpoint:SingleHeating
+=================================
+
+This controller has the next values in its definition:
+
+- *name*: SingleHeating Setpoint resource name (str).
+
+- *heating_name*: Heating setpoint name. This name should be an action variable defined 
+  in your environment (str).
+
+- *heating_initial_value*: Initial value the heating thermostat initialize the simulation with.
+
+- *zones*: An thermostat can manage several building zones at the same time. Then, you 
+  can specify one or more zones (List(str)). If the zone name specified is not 
+  exist in building, Sinergym will report the error.
+
+ThermostatSetpoint:SingleCooling
+=================================
+
+This controller has the next values in its definition:
+
+- *name*: SingleCooling Setpoint resource name (str).
+
+- *cooling_name*: Cooling setpoint name. This name should be an action variable defined
+  in your environment (str).
+
+- *cooling_initial_value*: Initial value the cooling thermostat initialize the simulation with.
+
+- *zones*: An thermostat can manage several building zones at the same time. Then, you 
+  can specify one or more zones (List(str)). If the zone name specified is not 
+  exist in building, Sinergym will report the error.
+
+..For an example about how to use it, see :ref:`Adding extra configuration definition`.
+
+.. note:: If you want to create your own controller type compatibilities, 
+          please see the method `adapt_idf_to_action_definition` from 
+          `Config class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/config.py>`__.
+
 Extra configuration
 ===================
 
 Some parameters directly associated with the simulator can be set as extra configuration 
-as well, such as *people occupant*, *timesteps per simulation hour*, *external interface action definition* 
-in order to modify IDF structure automatically, etc.
+as well, such as *people occupant*, *timesteps per simulation hour*, *run-period*, etc.
 
 Like this extra configuration context can grow up in the future, this is specified in *config_params* field.
 It is a Python Dictionary where this values are specified. For more information about extra configuration
@@ -313,13 +398,15 @@ The main steps you have to follow are the next:
 1. Add your building (IDF file) to `buildings <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings>`__. 
    That building model must be "free" as far as external interface is concerned if you plan to use Sinergym's **action 
    definition** which will modify the model for you before starting the 
-   simulation automatically (see section :ref:`action_definition`).
+   simulation automatically (see section :ref:`Action definition`).
    If you are going to control a component which is not supported by Sinergym currently, 
    you will have to update IDF manually before starting
-   simulation.
+   simulation. *Be sure that new IDF model version is compatible with EnergyPlus version*.
 
 2. Add your own EPW file for weather conditions or use ours in environment constructor. 
-   Sinergym will adapt `DesignDays` in IDF file using EPW automatically.
+   Sinergym will adapt `DesignDays` and `Location` in IDF file using EPW automatically.
+   It is important to add the *DDY* file too, with the same name than EPW in order to
+   read the `DesignDay` correctly.
 
 3. Sinergym will check that observation variables specified in environments constructor are 
    available in the simulation before starting. In order to be able to do these checks, 
