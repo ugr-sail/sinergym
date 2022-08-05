@@ -31,7 +31,7 @@ to write an empty value like this:
     $ docker build -t example1/sinergym:latest --build-arg SINERGYM_EXTRAS= .
 
 .. note:: You can install directly our container from 
-          `Docker Hub repository <https://hub.docker.com/repository/docker/alejandrocn7/sinergym>`__, 
+          `Docker Hub repository <https://hub.docker.com/repository/docker/sailugr/sinergym>`__, 
           all releases of this project are there.
 
 .. note:: If you use `Visual Studio Code <https://code.visualstudio.com/>`__, 

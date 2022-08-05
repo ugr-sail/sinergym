@@ -41,8 +41,8 @@ this directory is the result of the simulation and we have:
       episode to another (using variability, for example). If weather does not 
       change, original repository *.epw* will be used in each episode.
 
-    * A copy of **socket.cfg** and **utilSocket.idf** which are being used in
-      order to establish communication interface with Energyplus during simulation.
+    * A copy of **socket.cfg** and **utilSocket.log** which are being used in
+      order to establish communication interface with *Energyplus* during simulation.
 
     * **monitor.csv**: This records all interactions Agent-Environment during 
       the episode timestep by timestep. This file only exists 
@@ -58,7 +58,7 @@ this directory is the result of the simulation and we have:
                    `Energyplus documentation <https://energyplus.net/documentation>`__.
                    
 * **progress.csv**: This file has information about general simulation results. 
-  There is a row per episode and it records most important data such as mean 
+  There is a **row per episode** and it records most important data such as mean 
   power consumption or , mean comfort penalty, for example. This file only 
   exists when environment has been wrapped with 
   **Logger** (see :ref:`Wrappers` for more information).
@@ -74,7 +74,7 @@ all the interactions that are carried out in a simulation,
 regardless of the training technique which may be being used or any other 
 external factor.
 
-Recording is managed by a instance of the class ``CSVLogger`` which is 
+Recording is managed by an instance of the class ``CSVLogger`` which is 
 present as a wrapper attribute and is called in each timestep and 
 in the end of a episode:
 

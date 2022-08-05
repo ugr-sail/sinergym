@@ -3,10 +3,10 @@ Rewards
 #######
 
 Defining a reward function is one of the most important things in reinforcement learning. 
-Consequently, Sinergym allows you to define your own reward functions or use 
+Consequently, *Sinergym* allows you to define your own reward functions or use 
 the ones we have already implemented (see code below).
 
--  ``LinearReward`` implements a linear reward function, where both energy consumption and 
+-  ``LinearReward`` implements a **linear reward** function, where both energy consumption and 
    thermal discomfort are normalized and add together with different weights. 
    The discomfort is calculated as the absolute difference between current temperature and 
    comfort range (so if the temperature is inside that range, the discomfort would be 0).
@@ -14,24 +14,24 @@ the ones we have already implemented (see code below).
    controlled building has been taken into account.
 
 -  ``ExpReward`` is very similar, but in this case the discomfort is calculated 
-   using the exponential difference between current temperature and comfort ranges. 
+   using the **exponential difference** between current temperature and comfort ranges. 
    That means that the increase penalty for the discomfort is higher if we are far from 
    the target temperatures.
 
 -  ``HourlyLinearReward`` is a slight modification of the linear function, but 
-   the weight given to the discomfort depends on the hour of the day. If the current 
+   the weight given to the discomfort depends on the **hour of the day**. If the current 
    hour of the simulation is in working hours (by default, from 9 AM to 7 PM) both 
    comfort and energy consumption weights equally, but outside those hours only energy 
    is considered.
 
 
-These rewards are always negative, meaning that perfect behavior has a cumulative 
+These rewards are **always negative**, meaning that perfect behavior has a cumulative 
 reward of 0. Notice also that there are two temperature comfort ranges defined, 
 one for the summer period and other for the winter period. The weights of each 
 term in the reward allow to adjust the importance of each aspect when evaluating 
 the environments.
 
-The reward functions have a series of parameters in their constructor whose values 
+The reward functions have a series of **parameters** in their constructor whose values 
 may depend on the building we are using or other characteristics. For example, the 
 internal temperature or energy variables used to calculate penalties may have a 
 different name in different buildings.
@@ -88,7 +88,7 @@ But you can change this configuration using ``gym.make()`` as follows:
 Custom Rewards
 ***************
 
-It is also pretty simple to define your own classes. For example, imagine you want 
+It is also pretty simple to define your **own classes**. For example, imagine you want 
 a reward signal which returns always -1 (however we do not recommend using it 
 for training agents).
 The only requirement is that the calculation is performed using ``__call__`` 

@@ -235,6 +235,10 @@ the name of the environment or the variability in stochastic environments:
             sum(rewards))
     env.close()
 
+********************************
+Adding a new action definition
+********************************
+
 **************************************
 Adding extra configuration definition
 **************************************
