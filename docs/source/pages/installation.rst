@@ -9,8 +9,8 @@ Docker container
 We include a **Dockerfile** for installing all dependencies and setting
 up the image for running *Sinergym*. 
 
-By default, Dockerfile will do `pip install -e .[extras]`, if you want 
-to install a different setup, you will have to do in root repository:
+By default, *Dockerfile* will do ``pip install -e .[extras]``, if you want 
+to install a different setup, you will have to do in **root repository**:
 
 .. code:: sh
 
@@ -45,7 +45,7 @@ to write an empty value like this:
 Manual installation
 *******************
 
-To install *Sinergym* manually instead of through the container (*recommended*), 
+To install *Sinergym* manually instead of through the container (**recommended**), 
 follow these steps:
 
 1. Configure Python environment
@@ -68,7 +68,7 @@ follow these steps:
     $ pip install -e .[extras]
 
 There are other alternatives like **conda environments** (*recommended*). 
-Conda is very comfortable to use and we have a file to configure it automatically:
+*Conda* is very comfortable to use and we have a file to configure it automatically:
 
 .. code:: sh
     
@@ -76,15 +76,15 @@ Conda is very comfortable to use and we have a file to configure it automaticall
     $ conda env create -f python_environment.yml
     $ conda activate sinergym
 
-Now, we have a correct python version with required modules to run sinergym. 
+Now, we have a correct python version with required modules to run *Sinergym*. 
 Let's continue with the rest of the programs that are needed outside of Python 
 to run the simulations:
 
 2. Install EnergyPlus 9.5.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Install EnergyPlus. Currently it has been update compatibility to 9.5.0 and it has
-been tested, but code may also work with other versions. Sinergym ensure this support:
+Install *EnergyPlus*. Currently it has been update compatibility to ``9.5.0`` and it has
+been tested, but code may also work with other versions. *Sinergym* ensure this support:
 
 +------------------+--------------------+
 | Sinergym Version | EnergyPlus version |
@@ -97,7 +97,7 @@ been tested, but code may also work with other versions. Sinergym ensure this su
 Other combination may works, but they don't have been tested.
 
 Follow the instructions `here <https://energyplus.net/downloads>`__ and
-install it for Linux (only Ubuntu is supported by us). Choose any location
+install it for Linux (only **Ubuntu** is supported by us). Choose any location
 to install the software. Once installed, a folder called
 ``Energyplus-9-5-0`` should appear in the selected location.
 
@@ -106,7 +106,7 @@ to install the software. Once installed, a folder called
 
 Follow the instructions
 `here <https://simulationresearch.lbl.gov/bcvtb/Download>`__ for
-installing BCVTB software. Another option is to copy the ``bcvtb``
+installing *BCVTB software*. Another option is to copy the ``bcvtb``
 folder from `this
 repository <https://github.com/zhangzhizza/Gym-Eplus/tree/master/eplus_env/envs>`__.
 
@@ -114,7 +114,7 @@ repository <https://github.com/zhangzhizza/Gym-Eplus/tree/master/eplus_env/envs>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Two environment variables must be set: ``EPLUS_PATH`` and
-``BCVTB_PATH``, with the locations where EnergyPlus and BCVTB are
+``BCVTB_PATH``, with the locations where *EnergyPlus* and *BCVTB* are
 installed respectively.
 
 ***********************
@@ -122,11 +122,15 @@ About Sinergym package
 ***********************
 
 As we have told you in section :ref:`Manual installation`, Python environment 
-can be set up using *python_environment.yml* with *conda*.
-However, we can make an installation using the Github repository itself:
+can be set up using ``python_environment.yml`` with *conda*. This will install 
+the virtual environment with Python version required and all packages used 
+*all-in-one*.
+However, we can make an installation using the Github repository in a python 
+environment directly, like we have shown with *virtualenv*:
 
 .. code:: sh
 
+    $ source env_sinergym/bin/activate
     $ cd sinergym
     $ pip install -e .
 
@@ -142,7 +146,7 @@ we select all optional libraries, for example:
     $ pip install -e .[test,doc]
 
 In order to check all our tag list, visit `setup.py <https://github.com/ugr-sail/sinergym/blob/main/setup.py>`__ 
-in Sinergym root repository. In any case, they are not a requirement of the package.
+in *Sinergym* root repository. In any case, they are not a requirement of the package.
 
 You can also install from `oficial pypi repository <https://pypi.org/project/sinergym/>`__ 
 with last stable version by default:
@@ -156,23 +160,19 @@ Check Installation
 *******************
 
 This project is automatically supervised using **tests** developed specifically for it. 
-If you want to check sinergym has been installed successfully, run next command:
+If you want to check *Sinergym* has been installed successfully, run ``pytest tests/ -vv`` 
+in the **repository root**.
 
-.. code::sh
-
-    $ cd sinergym
-    $ pytest tests/ -vv
-
-Anyway, every time sinergym repository is updated, the tests will run automatically in a remote container 
+Anyway, every time *Sinergym* repository is updated, the tests will run automatically in a remote container 
 using the Dockerfile to build it. `Github Action <https://docs.github.com/es/actions/>`__ will do that job 
-(see our documentation for more information).
+(see :ref:`Github Actions` section).
 
 ****************
 Cloud Computing
 ****************
 
 You can run your experiments in the Cloud too. We are using `Google Cloud <https://cloud.google.com/>`__ 
-in order to make it possible. Our team aim to set up an account in which execute our Sinergym container 
+in order to make it possible. Our team aim to set up an account in which execute our *Sinergym* container 
 with **remote storage** and **mlflow tracking**.
 For more detail about installation and getting Google Cloud SDK ready to run your experiments, 
 visit our section :ref:`Preparing Google Cloud`.
