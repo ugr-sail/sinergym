@@ -509,7 +509,7 @@ in order to send that information
 as the training is generating it (see 
 `this issue <https://github.com/ContinualAI/avalanche/pull/628>`__ 
 for more information). In our project we have *gs://experiments-storage/tensorboard_log* but you
- can have whatever you want.
+can have whatever you want.
 
 .. note:: If in ``--tensorboard`` you have specified a gs path, ``--remote_store`` 
           or ``--mlflow_store`` parameters don't store tensorboard logs.

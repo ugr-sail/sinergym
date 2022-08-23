@@ -316,8 +316,9 @@ dictionary with the next structure:
 The ``<controller_definition>`` will depend on the specific type of controller that we are 
 going to create, we have the next support:
 
+~~~~~~~~~~~~~~~~~~~~~~~~
 Thermostat:DualSetpoint
-========================
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 This controller has the next values in its definition:
 
@@ -337,8 +338,9 @@ This controller has the next values in its definition:
   can specify one or more zones (List(str)). If the zone name specified is not 
   exist in building, Sinergym will report the error.
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ThermostatSetpoint:SingleHeating
-=================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This controller has the next values in its definition:
 
@@ -353,8 +355,9 @@ This controller has the next values in its definition:
   can specify one or more zones (List(str)). If the zone name specified is not 
   exist in building, Sinergym will report the error.
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ThermostatSetpoint:SingleCooling
-=================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This controller has the next values in its definition:
 
