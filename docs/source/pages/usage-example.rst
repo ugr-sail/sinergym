@@ -213,7 +213,7 @@ the name of the environment or the variability in stochastic environments:
 Overwriting observation and action spaces
 *******************************************
 
-By default, the IDs of the predefined environments in sinergym already have a space of actions and observations set.
+By default, the IDs of the predefined environments in *Sinergym* already have a space of actions and observations set.
 
 However, it can be overwritten by a new definition of them. On the one hand, we will have to define the name of the 
 **variables**, and on the other hand, the definition of the **spaces** (and an **action mapping** if it is a discrete environment).
@@ -340,7 +340,7 @@ it using the action space of the environment:
         }]
     }
 
-    env = gym.make('Eplus-datacenter-cool-discrete-stochastic-v1', 
+    env = gym.make('Eplus-datacenter-cool-continuous-stochastic-v1', 
                     action_definition=new_action_definition
                     )
 
@@ -420,3 +420,5 @@ output folder, leaving the original intact:
 .. note:: For more information on how each of the elements explained here works, please see the appropriate section.
 
 .. note:: To see how Sinergym can be combined with DRL algorithms, please visit section :ref:`Deep Reinforcement Learning Integration` of our documentation (specifically the DRL_battery.py script in section :ref:`How use`).
+
+.. note:: Our team provide several notebooks with more functionality and examples, visit examples section.
