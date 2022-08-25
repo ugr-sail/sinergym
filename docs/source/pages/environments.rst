@@ -157,7 +157,7 @@ a year is defined.
 
 Initially, this file will not be copied to the specific output folder of the experiment, since the original 
 file present in *Sinergym* can be used directly. However, the user can set a year-to-year **variability** in 
-the climate (see Section :ref:`Weather Variability`). In that case, the weather updated with such variability 
+the climate (see section :ref:`Weather Variability`). In that case, the weather updated with such variability 
 will be copied and used in the output folder. 
 
 Depending on the climate that is set for the environment, some of building model components need to be **modified** 

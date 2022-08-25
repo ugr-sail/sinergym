@@ -476,7 +476,7 @@ The list of parameter is:
   evaluation. If it isn't specified wrapper will not be applied.
 
 - ``--logger`` or ``-log``: Apply Sinergym logger wrapper during evaluation. If it isn't
-   specified wrapper will not be applied.
+  specified wrapper will not be applied.
 
 - ``--seed`` or ``-sd``: Seed for evaluation, random components in process will be able 
   to be recreated.
