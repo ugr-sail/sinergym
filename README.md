@@ -1,41 +1,87 @@
-# sinergym
+# Sinergym
 
 <div align="center">
   <img src="images/logo.png" width=40%><br><br>
 </div>
 
-**Welcome to sinergym!**
+**Welcome to Sinergym!**
 
 This is a project based on Zhiang Zhang and Khee Poh Lam [Gym-Eplus](https://github.com/zhangzhizza/Gym-Eplus).
 
 The goal of this project is to create an environment following OpenAI Gym interface for wrapping simulation engines for building control using **deep reinforcement learning**.
 
-The main functionalities of Sinergym are the following :
+The main functionalities of *Sinergym* are the following :
 
-  - **Benchmark environments**. Similarly to Atari or Mujoco environments for RL community, we are designing a set of environments for benchmarking and testing deep RL algorithms. These environments may include different buildings, weathers or action/observation spaces.
-  - **Develop different experimental settings**. We aim to provide a package that allows to modify experimental settings in an easy manner. For example, several reward functions or observation variables may be defined. 
-  - **Include different simulation engines**. Communication between Python and [EnergyPlus](https://energyplus.net/) is established using [BCVTB](https://simulationresearch.lbl.gov/bcvtb/FrontPage). Since this tool allows for interacting with several simulation engines, more of them (e.g. [OpenModelica](https://openmodelica.org/)) could be included in the backend while maintaining the Gym API.
-  -  **Building Models configuration automatically**: Building models will be
-   adapted to specification of each simulation. For example, *Designdays* and 
-   *Location* from IDF files will be adapted to weather file specified in
-   Sinergym simulator backend without any intervention by the user.
-  -  **Extra configuration facilities**: Our team aim to provide extra parameters
-   in order to amplify the context space for the experiments with this tool.
-   Sinergym will modify building model automatically based on parameters set.
-   For example: People occupant, timesteps per simulation hour, observation
-   and action spaces, etc.
-  -  **Stable Baseline 3 Integration**. Some functionalities like callbacks
-   have been developed by our team in order to test easily these environments
-   with deep reinforcement learning algorithms.
-  -  **Google Cloud Integration**. Whether you have a Google Cloud account and you want to
-   use your infrastructure with Sinergym, we tell you some details about how doing it.
-  - **Mlflow tracking server**. [Mlflow](https://mlflow.org/) is an open source platform for the machine
+  -  **Include different simulation engines**. Communication between
+   Python and [EnergyPlus](https://energyplus.net/) is established
+   using [BCVTB](https://simulationresearch.lbl.gov/bcvtb/FrontPage) middleware.
+   Since this tool allows for interacting with several simulation
+   engines, more of them (e.g.
+   [OpenModelica](https://openmodelica.org/)) could be included in
+   the backend while maintaining the Gym API.
+
+-  **Benchmark environments**. Similarly to *Atari* or *Mujoco* environments
+   for RL community, we are designing a set of environments for
+   benchmarking and testing deep RL algorithms. These environments may
+   include different buildings, weathers, action/observation spaces, function rewards, etc.
+
+-  **Customizable environments**. We aim to provide a
+   package that allows to modify experimental settings in an easy
+   manner. The user can create his own environments defining his own
+   building model, weather, reward, observation/action space and variables, environment name, etc.
+   The user can also use these pre-configured environments available in *Sinergym* 
+   and change some aspect of it (for example, the weather) in such 
+   a way that he does not  have to make an entire definition of the 
+   environment and can start from one pre-designed by us.
+   Some parameters directly associated with the simulator can be set as **extra configuration** 
+   as well, such as people occupant, time-steps per simulation hour, run-period, etc.
+
+-  **Customizable components**: *Sinergym* is easily scalable by third parties.
+   Following the structure of the implemented classes, new custom components 
+   can be created for new environments such as function rewards, wrappers,
+   controllers, etc.
+
+-  **Automatic Building Model adaptation to user changes**: Building models (*IDF*) will be
+   adapted to specification of each simulation by the user. For example, ``Designdays`` and 
+   ``Location`` components from *IDF* files will be adapted to weather file (*EPW*) specified in
+   *Sinergym* simulator backend without any intervention by the user (only the environment definition).
+   *BCVTB middleware* external interface in *IDF* model and *variables.cfg* file is generated when 
+   simulation starts by *Sinergym*, this definition depends on action and observation space and variables defined.
+   In short, *Sinergym* automates the whole process of model adaptation so that the user 
+   only has to define what he wants for his environment.
+
+-  **Automatic external interface integration for actions**. As far as building model (*IDF*) adaptation 
+   is concerned, it is not enough to set up an external interface and set user-specified
+   variable names. It is also necessary to make certain adjustments to the building components to be 
+   controlled, so that they use the external variables defined by the user instead of the default 
+   controllers implicitly provided by the building model. To do this, *Sinergym* provides a functionality 
+   that can adapt actuators to the desired building zones by providing a specification by the user. 
+   The building model will be manipulated based on this information automatically. In other words, 
+   if the components to be controlled are directly supported by *Sinergym*, the building model can be modified 
+   accordingly to be controlled, otherwise the user will have to modify the *IDF* file manually. More actuator 
+   types will be directly supported by *Sinergym* in the future.
+
+-  **Stable Baseline 3 Integration**. Some functionalities like callbacks
+   have been customized by our team in order to test easily these environments
+   with deep reinforcement learning algorithms. 
+   This tool can be used with any other DRL library that supports the *OpenAI gym* interface as well.
+
+-  **Google Cloud Integration**. Whether you have a Google Cloud account and you want to
+   use your infrastructure with *Sinergym*, we tell you some details about how doing it.
+
+-  **Mlflow tracking server**. [Mlflow](https://mlflow.org/) is an open source platform for the machine
    learning lifecycle. This can be used with Google Cloud remote server (if you have Google Cloud account) 
    or using local store. This will help you to manage and store your runs and artifacts generated in an orderly
    manner.
-  -  **Data Visualization**. Using Sinergym logger or Tensorboard server to visualize training information
+
+-  **Data Visualization**. Using *Sinergym* logger or Tensorboard server to visualize training and evaluation information
    in real-time.
-  - Many more!
+
+-  **Notebooks examples**. *Sinergym* develops code in notebook format with the purpose of offering use cases to 
+   the users in order to help them become familiar with the tool. They are constantly updated, along with the updates 
+   and improvements of the tool itself.
+
+-  Many more!
 
 _This is a work in progress project. Stay tuned for upcoming releases._
 
@@ -45,7 +91,7 @@ _This is a work in progress project. Stay tuned for upcoming releases._
 
 ## List of available environments
 
-If you would like to see a complete and updated list of our available environments, please visit [our list](https://ugr-sail.github.io/sinergym/compilation/html/pages/environments.html) in the official Sinergym documentation.
+If you would like to see a complete and updated list of our available environments, please visit [our list](https://ugr-sail.github.io/sinergym/compilation/html/pages/environments.html) in the official *Sinergym* documentation.
 
 ## Installation
 
@@ -74,7 +120,7 @@ On the other hand, if you don't want any extra library, it's necessary to write 
   $ docker build -t example1/sinergym:latest --build-arg SINERGYM_EXTRAS= .
 ```
 
-:pencil: You can install directly our container from `Docker Hub repository <https://hub.docker.com/repository/docker/alejandrocn7/sinergym>`__, all releases of this project are there.
+:pencil: You can install directly our container from `Docker Hub repository <https://hub.docker.com/repository/docker/sailugr/sinergym>`__, all releases of this project are there.
 
 :pencil: If you use [Visual Studio Code](https://code.visualstudio.com/), by simply opening the root directory and clicking on the pop-up button *Reopen in container*, all the dependencies will be installed automatically and you will be able to run *Sinergym* in an isolated environment. For more information about how to use this functionality, check [VSCode Containers extension documentation](https://code.visualstudio.com/docs/remote/containers).
 
@@ -108,12 +154,12 @@ To install *Sinergym* manually instead of through the container (recommended), f
   $ conda activate sinergym
 ```
 
-- Now, we have a correct python version with required modules to run sinergym. Let's continue with the rest of the programs that are needed outside of Python to run the simulations:
+- Now, we have a correct python version with required modules to run *Sinergym*. Let's continue with the rest of the programs that are needed outside of Python to run the simulations:
 
 #### 2. Install EnergyPlus 9.5.0
 
 Install EnergyPlus. Currently it has been update compatibility to 9.5.0 and it has
-been tested, but code may also work with other versions. Sinergym ensure this support:
+been tested, but code may also work with other versions. *Sinergym* ensure this support:
 
 | Sinergym Version | EnergyPlus version |
 | :--------------: | :----------------: |
@@ -160,7 +206,7 @@ It's possible to select a subset of these libraries instead of 'extras' tag in w
   $ pip install -e .[test,doc]
 ```
 
-In order to check all our tag list, visit `setup.py <https://github.com/ugr-sail/sinergym/blob/main/setup.py>`__ in Sinergym root repository. In any case, they are not a requirement of the package.
+In order to check all our tag list, visit `setup.py <https://github.com/ugr-sail/sinergym/blob/main/setup.py>`__ in *Sinergym* root repository. In any case, they are not a requirement of the package.
 
 You can also install from `oficial pypi repository <https://pypi.org/project/sinergym/>`__ with last stable version by default:
 
@@ -170,18 +216,18 @@ You can also install from `oficial pypi repository <https://pypi.org/project/sin
 
 ## Check Installation
 
-This project is automatically supervised using tests developed specifically for it. If you want to check sinergym has been installed successfully, run next command:
+This project is automatically supervised using tests developed specifically for it. If you want to check *Sinergym* has been installed successfully, run next command:
 
 ```sh
 $ pytest tests/ -vv
 ```
-Anyway, every time sinergym repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. `Github Action <https://docs.github.com/es/actions/>`__ will do that job (see our documentation for more information).
+Anyway, every time *Sinergym* repository is updated, the tests will run automatically in a remote container using the Dockerfile to build it. `Github Action <https://docs.github.com/es/actions/>`__ will do that job (see our documentation for more information).
 
 ## Usage example
 
-If you used our Dockerfile during installation, you should have the *try_env.py* file in your workspace as soon as you enter in. In case you have installed everything on your local machine directly, place it inside our cloned repository. In any case, we start from the point that you have at your disposal a terminal with the appropriate python version and Sinergym running correctly.
+If you used our Dockerfile during installation, you should have the *try_env.py* file in your workspace as soon as you enter in. In case you have installed everything on your local machine directly, place it inside our cloned repository. In any case, we start from the point that you have at your disposal a terminal with the appropriate python version and *Sinergym* running correctly.
 
-Sinergym uses the standard OpenAI gym API. So basic loop should be something like:
+*Sinergym* uses the standard OpenAI gym API. So basic loop should be something like:
 
 ```python
 
@@ -213,10 +259,10 @@ For more information about this functionality, please, visit our documentation [
 
 ## Citing Sinergym
 
-If you use Sinergym in your work, please cite our [paper](https://dl.acm.org/doi/abs/10.1145/3486611.3488729):
+If you use *Sinergym* in your work, please cite our [paper](https://dl.acm.org/doi/abs/10.1145/3486611.3488729):
 
 ```bibtex
-@inproceedings{jimenez2021sinergym,
+@inproceedings{2021sinergym,
     title={Sinergym: A Building Simulation and Control Framework for Training Reinforcement Learning Agents}, 
     author={Jiménez-Raboso, Javier and Campoy-Nieves, Alejandro and Manjavacas-Lucas, Antonio and Gómez-Romero, Juan and Molina-Solana, Miguel},
     year={2021},
