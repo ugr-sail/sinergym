@@ -51,8 +51,23 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Environments</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#environments-list">Environments List</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#observation-action-spaces">Observation/action spaces</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#specification">Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#available-parameters">Available Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#idf-file">IDF file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#epw-file">EPW file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#weather-variability">Weather Variability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reward">Reward</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reward-kwargs">Reward Kwargs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#action-repeat">Action Repeat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#maximum-episode-data-stored-in-sinergym-output">Maximum Episode Data Stored in Sinergym Output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#observation-action-spaces">Observation/action spaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#environment-name">Environment name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#action-definition">Action definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#thermostat-dualsetpoint">Thermostat:DualSetpoint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#thermostatsetpoint-singleheating">ThermostatSetpoint:SingleHeating</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#thermostatsetpoint-singlecooling">ThermostatSetpoint:SingleCooling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#extra-configuration">Extra configuration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-buildings-for-environments">Adding new buildings for environments</a></li>
@@ -133,7 +148,7 @@
 <h1>Environments<a class="headerlink" href="#environments" title="Permalink to this heading"></a></h1>
 <section id="environments-list">
 <h2>Environments List<a class="headerlink" href="#environments-list" title="Permalink to this heading"></a></h2>
-<p>The list of available environments is the following:</p>
+<p>The <strong>list of available environments</strong> is the following:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 31%" />
@@ -498,15 +513,17 @@
 </tr>
 </tbody>
 </table>
-<p>(*) Weather types according to <a class="reference external" href="https://www.energycodes.gov/development/commercial/prototype_models#TMY3">DOE's
+<p>(*) Weather types according to <a class="reference external" href="https://www.energycodes.gov/development/commercial/prototype_models#TMY3">DOE’s
 classification</a>.</p>
 <p>(**) In these environments, weather series change from episode to
 episode. Gaussian noise with 0 mean and 2.5 std is added to the original
 values in order to add stochastic.</p>
 </section>
-<section id="observation-action-spaces">
-<h2>Observation/action spaces<a class="headerlink" href="#observation-action-spaces" title="Permalink to this heading"></a></h2>
-<p>Structure of observation and action space is defined in Environment constructor directly. This allows for a <strong>dynamic definition</strong> of these spaces. Let's see the fields required to do it:</p>
+<section id="available-parameters">
+<h2>Available Parameters<a class="headerlink" href="#available-parameters" title="Permalink to this heading"></a></h2>
+<p>With the <strong>environment constructor</strong> we can configure the complete <strong>context</strong> of our environment
+for experimentation, either starting from one predefined by <em>Sinergym</em> shown in the
+table above or creating a new one.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">idf_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -523,6 +540,7 @@ values in order to add stochastic.</p>
         <span class="n">reward_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span>
         <span class="n">act_repeat</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">max_ep_data_store_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">action_definition</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">env_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;eplus-env-v1&#39;</span><span class="p">,</span>
         <span class="n">config_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>
@@ -541,6 +559,7 @@ values in order to add stochastic.</p>
 <span class="sd">            reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.</span>
 <span class="sd">            act_repeat (int, optional): Number of timesteps that an action is repeated in the simulator, regardless of the actions it receives during that repetition interval.</span>
 <span class="sd">            max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.</span>
+<span class="sd">            action_definition (Optional[Dict[str, Any]): Dict with building components to being controlled by Sinergym automatically if it is supported. Default value to None.</span>
 <span class="sd">            env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.</span>
 <span class="sd">            config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -575,6 +594,7 @@ values in order to add stochastic.</p>
             <span class="n">variables</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
             <span class="n">act_repeat</span><span class="o">=</span><span class="n">act_repeat</span><span class="p">,</span>
             <span class="n">max_ep_data_store_num</span><span class="o">=</span><span class="n">max_ep_data_store_num</span><span class="p">,</span>
+            <span class="n">action_definition</span><span class="o">=</span><span class="n">action_definition</span><span class="p">,</span>
             <span class="n">config_params</span><span class="o">=</span><span class="n">config_params</span>
         <span class="p">)</span>
 
@@ -633,77 +653,249 @@ values in order to add stochastic.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_eplus_env</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>We will show which <strong>parameters</strong> are available and what their function is.</p>
+<section id="idf-file">
+<h3>IDF file<a class="headerlink" href="#idf-file" title="Permalink to this heading"></a></h3>
+<p>The parameter <em>idf_file</em> is the path to <em>IDF</em> (Intermediate Data Format)
+file where <em>Energyplus</em> building model is defined.</p>
+<p><em>Sinergym</em> initially provides <strong>“free” buildings</strong>. This means that the <em>IDF</em> does not have the external
+interface defined and default components, such as the <code class="docutils literal notranslate"><span class="pre">timesteps</span></code>, the <code class="docutils literal notranslate"><span class="pre">runperiod</span></code>, the
+<code class="docutils literal notranslate"><span class="pre">location</span></code> or <code class="docutils literal notranslate"><span class="pre">DesignDays</span></code>.</p>
+<p>Depending on the rest of the parameters that make up the environment, the building model is <strong>updated</strong>
+by <em>Sinergym</em> automatically, changing those components that are necessary, such as the external interface that we
+have mentioned.</p>
+<p>Once the building is configured, it is <strong>copied</strong> to the output folder of that particular experimentation
+and used by the simulator of that execution.</p>
+</section>
+<section id="epw-file">
+<h3>EPW file<a class="headerlink" href="#epw-file" title="Permalink to this heading"></a></h3>
+<p>The parameter <em>weather_file</em> is the path to <em>EPW</em> (EnergyPlus Weather) file where <strong>climate conditions</strong> during
+a year is defined.</p>
+<p>Initially, this file will not be copied to the specific output folder of the experiment, since the original
+file present in <em>Sinergym</em> can be used directly. However, the user can set a year-to-year <strong>variability</strong> in
+the climate (see section <a class="reference internal" href="#weather-variability"><span class="std std-ref">Weather Variability</span></a>). In that case, the weather updated with such variability
+will be copied and used in the output folder.</p>
+<p>Depending on the climate that is set for the environment, some of building model components need to be <strong>modified</strong>
+in such a way that it is <strong>compatible</strong> with that weather. Therefore, <em>Sinergym</em> updates the <code class="docutils literal notranslate"><span class="pre">DesignDays</span></code> and <code class="docutils literal notranslate"><span class="pre">Location</span></code>
+fields automatically using the weather data, without the need for user intervention.</p>
+</section>
+<section id="weather-variability">
+<h3>Weather Variability<a class="headerlink" href="#weather-variability" title="Permalink to this heading"></a></h3>
+<p><strong>Weather variability</strong> can be integrated into an environment using <em>weather_variability</em> parameter.</p>
+<p>It implements the <a class="reference external" href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.4200&amp;rep=rep1&amp;type=pdf">Ornstein-Uhlenbeck process</a>
+in order to introduce <strong>noise</strong> to the weather data episode to episode. Then, parameter established is a Python tuple of three variables
+(<em>sigma</em>, <em>mu</em> and <em>tau</em>) whose values define the nature of that noise.</p>
+<a class="reference internal image-reference" href="../_images/weather_variability.png"><img alt="Ornstein-Uhlenbeck process noise with different hyperparameters." class="align-center" src="../_images/weather_variability.png" style="width: 1866.0px; height: 285.59999999999997px;" /></a>
+</section>
+<section id="reward">
+<h3>Reward<a class="headerlink" href="#reward" title="Permalink to this heading"></a></h3>
+<p>The parameter called <em>reward</em> is used to define the <strong>reward class</strong> (see section <a class="reference internal" href="rewards.html#rewards"><span class="std std-ref">Rewards</span></a>)
+that the environment is going to use to calculate and return reward values each timestep.</p>
+</section>
+<section id="reward-kwargs">
+<h3>Reward Kwargs<a class="headerlink" href="#reward-kwargs" title="Permalink to this heading"></a></h3>
+<p>Depending on the reward class that is specified to the environment, it may have <strong>different parameters</strong>
+depending on its type. In addition, if a user creates a new custom reward, it can have new parameters as well.</p>
+<p>Moreover, depending on the building being used (<em>IDF</em> file) for the environment, the values of these reward parameters may
+need to be different, such as the comfort range or the energy and temperature variables of the simulation that
+will be used to calculate the reward.</p>
+<p>Then, the parameter called <em>reward_kwargs</em> is a Python dictionary where we can <strong>specify all reward class parameters</strong>
+that they are needed. For more information about rewards, visit section <a class="reference internal" href="rewards.html#rewards"><span class="std std-ref">Rewards</span></a>.</p>
+</section>
+<section id="action-repeat">
+<h3>Action Repeat<a class="headerlink" href="#action-repeat" title="Permalink to this heading"></a></h3>
+<p>The parameter called <em>act_repeat</em> is the number of timesteps that an <strong>action is repeated</strong> in the simulator,
+regardless of the actions it receives during that repetition interval. Default value is 1.</p>
+</section>
+<section id="maximum-episode-data-stored-in-sinergym-output">
+<h3>Maximum Episode Data Stored in Sinergym Output<a class="headerlink" href="#maximum-episode-data-stored-in-sinergym-output" title="Permalink to this heading"></a></h3>
+<p><em>Sinergym</em> stores all the output of an experiment in a folder organized in sub-folders for each episode
+(see section <a class="reference internal" href="output.html#output-format"><span class="std std-ref">Output format</span></a> for more information). Depending on the value of the parameter <em>max_ep_data_store_num</em>,
+the experiment will store the output data of the <strong>last n episodes</strong> set, where <strong>n</strong> is the value of the parameter.</p>
+<p>In any case, if <em>Sinergym Logger</em> (See <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a> section) is activate, <code class="docutils literal notranslate"><span class="pre">progress.csv</span></code> will be present with
+the summary data of each episode.</p>
+</section>
+<section id="observation-action-spaces">
+<h3>Observation/action spaces<a class="headerlink" href="#observation-action-spaces" title="Permalink to this heading"></a></h3>
+<p>Structure of observation and action space is defined in Environment constructor directly.
+This allows for a <strong>dynamic definition</strong> of these spaces. Let’s see the fields required to do it:</p>
 <ul class="simple">
-<li><dl class="simple">
-<dt><strong>observation_variables</strong>: List of observation variables that simulator is going to process like an observation. These variables names must</dt><dd><p>follow the structure <cite>&lt;variable_name&gt;(&lt;zone_name&gt;)</cite> in order to register them correctly. Sinergym will check for
-you that the variable names are correct with respect to the building you are trying to simulate (IDF file).
-To do this, it will look at the list found in the <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/variables">variables</a> folder of the project (<strong>RDD</strong> file).</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>observation_space</strong>: Definition of the observation space following the <strong>gym standard</strong>. This space is used to represent all the observations</dt><dd><p>variables that we have previously defined. Remember that the <strong>year, month, day and hour</strong> are added by Sinergym later,
-so space must be reserved for these fields in the definition. If an inconsistency is found, Sinergym will notify you
-so that it can be fixed.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>action_variables</strong>: List of the action variables that simulator is going to process like schedule control actuator in the building model. These variables</dt><dd><p>must be defined in the building model (IDF file) correctly before simulation. You can modify <strong>manually</strong> in the IDF file or using
-our <strong>action definition</strong> extra configuration field in which you set what you want to control and Sinergym takes care of modifying
-this file for you automatically. For more information about this automatic adaptation in section <a class="reference internal" href="extra-configuration.html#action-definition"><span class="std std-ref">action_definition</span></a>.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>action_space</strong>: Definition of the action space following the <strong>gym standard</strong>. This definition can be discrete or continuous and must be consistent with</dt><dd><p>the previously defined action variables (Sinergym will show inconsistency as usual).</p>
-</dd>
-</dl>
-</li>
+<li><p><strong>observation_variables</strong>: List of observation variables that simulator is going to process like an observation.
+These variables names must follow the structure <code class="docutils literal notranslate"><span class="pre">&lt;variable_name&gt;(&lt;zone_name&gt;)</span></code> in order to register
+them correctly. <em>Sinergym</em> will check for you that the variable names are correct with respect to
+the building you are trying to simulate (<em>IDF</em> file).
+To do this, it will look at the list found in the
+<a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/variables">variables</a>
+folder of the project (<em>RDD</em> file).</p></li>
+<li><p><strong>observation_space</strong>: Definition of the observation space following the <strong>OpenAI gym standard</strong>.
+This space is used to represent all the observations variables that we have previously
+defined. Remember that the <strong>year, month, day and hour</strong> are added by <em>Sinergym</em> later,
+so space must be reserved for these fields in the definition. If an inconsistency is
+found, <em>Sinergym</em> will notify you so that it can be fixed easily.</p></li>
+<li><p><strong>action_variables</strong>: List of the action variables that simulator is going to process
+like schedule control actuator in the building model. These variables
+must be defined in the building model (<em>IDF</em> file) correctly before simulation. You can
+modify <strong>manually</strong> in the <em>IDF</em> file or using our <strong>action definition</strong> field
+in which you set what you want to control and <em>Sinergym</em>
+takes care of modifying this file for you automatically. For more information about
+this automatic adaptation in section <a class="reference internal" href="#action-definition"><span class="std std-ref">Action definition</span></a>.</p></li>
+<li><p><strong>action_space</strong>: Definition of the action space following the <strong>OpenAI gym standard</strong>.
+This definition can be discrete or continuous and must be consistent with
+the previously defined action variables (<em>Sinergym</em> will show inconsistency as usual).</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In order to make environments more generic in DRL solutions. We have updated action space for <strong>continuous problems</strong>. Gym action space is defined always between [-1,1]
-and Sinergym <strong>parse</strong> this values to action space defined in environment internally before to send it to EnergyPlus Simulator. The method in charge of parse this values
-from [-1,1] to real action space is called <code class="docutils literal notranslate"><span class="pre">_setpoints_transform(action)</span></code> in <em>sinergym/sinergym/envs/eplus_env.py</em></p>
+<p>In order to make environments more generic in DRL solutions. We have updated
+action space for <strong>continuous problems</strong>. Gym action space is defined always
+between [-1,1] and Sinergym <strong>parse</strong> this values to action space defined in
+environment internally before to send it to EnergyPlus Simulator.
+The method in charge of parse this values from [-1,1] to real action space is
+called <code class="docutils literal notranslate"><span class="pre">_setpoints_transform(action)</span></code> in <em>sinergym/sinergym/envs/eplus_env.py</em></p>
 </div>
 <ul class="simple">
-<li><p><strong>action_mapping</strong>: It is only necessary to specify it in discrete action spaces. It is a dictionary that links an index to a specific configuration of values for each action variable.</p></li>
+<li><p><strong>action_mapping</strong>: It is only necessary to specify it in <strong>discrete</strong> action spaces.
+It is a dictionary that links an <strong>index</strong> to a specific configuration of values for
+each action variable.</p></li>
 </ul>
-<section id="specification">
-<h3>Specification<a class="headerlink" href="#specification" title="Permalink to this heading"></a></h3>
-<p>As we have told, Observation and action spaces are defined <strong>dynamically</strong> in Sinergym Environment constructor. Environment ID's registered in Sinergym use a <strong>default</strong> definition
+<p>As we have told, observation and action spaces are defined <strong>dynamically</strong> in <em>Sinergym</em>
+Environment constructor. Environment ID’s registered in <em>Sinergym</em> use a <strong>default</strong> definition
 set up in <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/constants.py">constants.py</a>.</p>
-<p>As can be seen in environments observations, the <strong>year, month, day and hour</strong> are included in, but is not configured in default observation variables definition.
-This is because they are not variables recognizable by the simulator as such (Energyplus) and Sinergym does the calculations and adds them in the states returned as
-output by the environment. This feature is common to all environments available in Sinergym and all supported building designs. In other words, you don't need to
-add this variables (<strong>year, month, day and hour</strong>) to observation variables but yes to the observation space.</p>
-<p>As we told before, all environments ID's registered in Sinergym use its respectively <strong>default action and observation spaces, variables and definition</strong>.
-However, you can <strong>change</strong> this values giving you the possibility of playing with different observation/action spaces in discrete and continuous environments in order to study how this affects the resolution of a building problem.</p>
-<p>Sinergym has several checkers to ensure that there are no inconsistencies in the alternative specifications made to the default ones. In case the specification offered is wrong, Sinergym will launch messages indicating where the error or inconsistency is located.</p>
+<p>As can be seen in environments observations, the <strong>year, month, day and hour</strong> are included in,
+but is not configured in default observation variables definition.
+This is because they are not variables recognizable by the simulator (<em>Energyplus</em>) as such
+and <em>Sinergym</em> does the calculations and adds them in the states returned as
+output by the environment. This feature is <strong>common to all environments</strong> available in
+<em>Sinergym</em> and all supported building designs. In other words, you don’t need to
+add this variables (<strong>year, month, day and hour</strong>) to observation variables, but yes to
+the observation space.</p>
+<p>As we told before, all environments ID’s registered in <em>Sinergym</em> use its respectively
+<strong>default action and observation spaces, variables and action definition</strong>.
+However, you can <strong>change</strong> this values giving you the possibility of playing with different
+observation/action spaces in discrete and continuous environments in order to study how this
+affects the resolution of a building problem.</p>
+<p><em>Sinergym</em> has several <strong>checkers</strong> to ensure that there are no inconsistencies in the alternative
+specifications made to the default ones. In case the specification offered is wrong,
+<em>Sinergym</em> will launch messages indicating where the error or inconsistency is located.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><cite>variables.cfg</cite> is a requirement in order to establish a connection between gym environment and Simulator
-with a external interface (using BCVTB). Since Sinergym <cite>1.9.0</cite> version, it is created automatically using
+<p><code class="docutils literal notranslate"><span class="pre">variables.cfg</span></code> is a requirement in order to establish a connection between gym environment and Simulator
+with a external interface (using <em>BCVTB</em>). Since <em>Sinergym</em> <code class="docutils literal notranslate"><span class="pre">1.9.0</span></code> version, it is created automatically using
 action and observation space definition in environment construction.</p>
 </div>
+</section>
+<section id="environment-name">
+<h3>Environment name<a class="headerlink" href="#environment-name" title="Permalink to this heading"></a></h3>
+<p>The parameter <em>env_name</em> is used to define the <strong>name of working directory</strong> generation.</p>
+</section>
+<section id="action-definition">
+<h3>Action definition<a class="headerlink" href="#action-definition" title="Permalink to this heading"></a></h3>
+<p>Creating a <strong>new external interface</strong> to control different parts of a building is not a trivial task,
+it requires certain changes in the building model (<em>IDF</em>), configuration files for the external
+interface (<code class="docutils literal notranslate"><span class="pre">variables.cfg</span></code>), etc in order to control it.</p>
+<p>The <strong>changes in the building model</strong> are <strong>complex</strong> due to depending on the building model we will have
+available different zones and actuators.</p>
+<p>Thus, there is the possibility to add an <strong>action definition</strong> in environment instead of modify <em>IDF</em>
+directly about components or actuators changes required to control by external variables specified
+in <a class="reference internal" href="#observation-action-spaces"><span class="std std-ref">Observation/action spaces</span></a>.</p>
+<p>For this purpose,  we have available <em>action_definition</em> parameter in environments. Its value is a
+dictionary with the next structure:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">action_definition_example</span><span class="o">=</span><span class="p">{</span>
+  <span class="o">&lt;</span><span class="n">controller_type</span><span class="o">&gt;</span><span class="p">:[</span><span class="o">&lt;</span><span class="n">controller1_definition</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">controller2_definition</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+  <span class="o">&lt;</span><span class="n">other_type</span><span class="o">&gt;</span><span class="p">:</span> <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;controller_definition&gt;</span></code> will depend on the specific type of controller that we are
+going to create, we have the next support:</p>
+<section id="thermostat-dualsetpoint">
+<h4>Thermostat:DualSetpoint<a class="headerlink" href="#thermostat-dualsetpoint" title="Permalink to this heading"></a></h4>
+<p>This controller has the next values in its definition:</p>
+<ul class="simple">
+<li><p><em>name</em>: DualSetpoint resource name (str).</p></li>
+<li><p><em>heating_name</em>: Heating setpoint name. This name should be an action variable defined
+in your environment (str).</p></li>
+<li><p><em>cooling_name</em>: Cooling setpoint name. This name should be an action variable defined
+in your environment (str).</p></li>
+<li><p><em>heating_initial_value</em>: Initial value the heating thermostat initialize the simulation with (float).</p></li>
+<li><p><em>cooling_initial_value</em>: Initial value the cooling thermostat initialize the simulation with (float).</p></li>
+<li><p><em>zones</em>: An thermostat can manage several building zones at the same time. Then, you
+can specify one or more zones (List(str)). If the zone name specified is not
+exist in building, Sinergym will report the error.</p></li>
+</ul>
+</section>
+<section id="thermostatsetpoint-singleheating">
+<h4>ThermostatSetpoint:SingleHeating<a class="headerlink" href="#thermostatsetpoint-singleheating" title="Permalink to this heading"></a></h4>
+<p>This controller has the next values in its definition:</p>
+<ul class="simple">
+<li><p><em>name</em>: SingleHeating Setpoint resource name (str).</p></li>
+<li><p><em>heating_name</em>: Heating setpoint name. This name should be an action variable defined
+in your environment (str).</p></li>
+<li><p><em>heating_initial_value</em>: Initial value the heating thermostat initialize the simulation with.</p></li>
+<li><p><em>zones</em>: An thermostat can manage several building zones at the same time. Then, you
+can specify one or more zones (List(str)). If the zone name specified is not
+exist in building, Sinergym will report the error.</p></li>
+</ul>
+</section>
+<section id="thermostatsetpoint-singlecooling">
+<h4>ThermostatSetpoint:SingleCooling<a class="headerlink" href="#thermostatsetpoint-singlecooling" title="Permalink to this heading"></a></h4>
+<p>This controller has the next values in its definition:</p>
+<ul class="simple">
+<li><p><em>name</em>: SingleCooling Setpoint resource name (str).</p></li>
+<li><p><em>cooling_name</em>: Cooling setpoint name. This name should be an action variable defined
+in your environment (str).</p></li>
+<li><p><em>cooling_initial_value</em>: Initial value the cooling thermostat initialize the simulation with.</p></li>
+<li><p><em>zones</em>: An thermostat can manage several building zones at the same time. Then, you
+can specify one or more zones (List(str)). If the zone name specified is not
+exist in building, Sinergym will report the error.</p></li>
+</ul>
+<p>For an example about how to use it, see <a class="reference internal" href="usage-example.html#adding-a-new-action-definition"><span class="std std-ref">Adding a new action definition</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to create your own controller type compatibilities,
+please see the method <code class="docutils literal notranslate"><span class="pre">adapt_idf_to_action_definition</span></code> from
+<a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/config.py">Config class</a>.</p>
+</div>
+</section>
+</section>
+<section id="extra-configuration">
+<h3>Extra configuration<a class="headerlink" href="#extra-configuration" title="Permalink to this heading"></a></h3>
+<p>Some parameters directly associated with the simulator can be set as extra configuration
+as well, such as <code class="docutils literal notranslate"><span class="pre">people</span> <span class="pre">occupant</span></code>, <code class="docutils literal notranslate"><span class="pre">timesteps</span> <span class="pre">per</span> <span class="pre">simulation</span> <span class="pre">hour</span></code>, <code class="docutils literal notranslate"><span class="pre">runperiod</span></code>, etc.</p>
+<p>Like this <strong>extra configuration context</strong> can grow up in the future, this is specified in <em>config_params</em> field.
+It is a Python Dictionary where this values are specified. For more information about extra configuration
+available for <em>Sinergym</em> visit section <a class="reference internal" href="extra-configuration.html#extra-configuration-in-sinergym-simulations"><span class="std std-ref">Extra Configuration in Sinergym simulations</span></a>.</p>
 </section>
 </section>
 <section id="adding-new-buildings-for-environments">
 <h2>Adding new buildings for environments<a class="headerlink" href="#adding-new-buildings-for-environments" title="Permalink to this heading"></a></h2>
-<p>This section is intended to provide information if someone decides to add new buildings for use with Sinergym. The main steps you have to follow are the next:</p>
+<p>As we have already mentioned, a user can change the already available environments or even create new environment
+definitions including new climates, action and observation spaces, etc. However, perhaps <strong>the most complex thing
+to incorporate</strong> into the project are <strong>new building models</strong> (<em>IDF</em> files) than the ones we support.</p>
+<p>This section is intended to provide information if someone decides to add new buildings for use with <em>Sinergym</em>.
+The main steps you have to follow are the next:</p>
 <ol class="arabic simple">
-<li><p>Add your building (IDF file) to <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings">buildings</a>.
-As mentioned in section <a class="reference internal" href="#observation-action-spaces"><span class="std std-ref">Observation/action spaces</span></a>, the IDF must be previously adapted to your action space or use our <strong>action definition</strong> (section <a class="reference internal" href="extra-configuration.html#action-definition"><span class="std std-ref">action_definition</span></a>)
-to be automatically adapted to the action space and variables you have designed for it, as long as we provide support for the specific component you want to control. By default, Sinergym will create
-an <cite>ExternalInterface</cite> object in IDF file with an empty action space. Then, all the components will be managed by a default scheduler designed in IDF file.</p></li>
-<li><p>Add your own EPW file for weather conditions or use ours in environment constructor. Sinergym will adapt <cite>DesignDays</cite> in IDF file using EPW automatically.</p></li>
-<li><p>Sinergym will check that observation variables specified are available in the simulation before starting. In order to be able to do these checks,
-you need to copy <strong>RDD file</strong> with the same name than IDF file (except extension) to <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/variables">variables</a>.
-To obtain this <strong>RDD file</strong> you have to run a simulation with <em>Energyplus</em> directly and extract from output folder.
-Make sure that <strong>Output:VariableDictionary</strong> object in IDF has the value <em>Regular</em> in order to RDD file has the correct formar for Sinergym.</p></li>
-<li><p>Register your own environment ID <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/__init__.py">here</a> following the same structure than the rest.</p></li>
-<li><p>Now, you can use your own environment ID with <cite>gym.make()</cite> like our documentation examples.</p></li>
+<li><p>Add your building (<em>IDF</em> file) to <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings">buildings</a>.
+That building model must be “free” as far as external interface is concerned if you plan to use Sinergym’s <strong>action
+definition</strong> which will modify the model for you before starting the
+simulation automatically (see section <a class="reference internal" href="#action-definition"><span class="std std-ref">Action definition</span></a>).
+If you are going to control a component which is not supported by <em>Sinergym</em> currently,
+you will have to update <em>IDF</em> manually before starting
+simulation. <strong>Be sure that new IDF model version is compatible with EnergyPlus version</strong>.</p></li>
+<li><p>Add your own <em>EPW</em> file for weather conditions or use ours in environment constructor.
+<em>Sinergym</em> will adapt <code class="docutils literal notranslate"><span class="pre">DesignDays</span></code> and <code class="docutils literal notranslate"><span class="pre">Location</span></code> in <em>IDF</em> file using <em>EPW</em> automatically.
+It is important to add the <em>DDY</em> file too, with the same name than <em>EPW</em> in order to
+read the <code class="docutils literal notranslate"><span class="pre">DesignDay</span></code> correctly.</p></li>
+<li><p><em>Sinergym</em> will check that observation variables specified in environments constructor are
+available in the simulation before starting. In order to be able to do these checks,
+you need to copy <strong>RDD file</strong> with the same name than <em>IDF</em> file (except extension)
+to <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/variables">variables</a>.
+To obtain this <strong>RDD file</strong> you have to run a simulation with <em>Energyplus</em> directly
+and extract from output folder.
+Make sure that <strong>Output:VariableDictionary</strong> object in <em>IDF</em> has the value <em>Regular</em>
+in order to <em>RDD</em> file has the correct format for <em>Sinergym</em>.</p></li>
+<li><p>Register your own environment ID <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/__init__.py">here</a>
+following the same structure than the rest.</p></li>
+<li><p>Now, you can use your own environment ID with <code class="docutils literal notranslate"><span class="pre">gym.make()</span></code> like our documentation examples.</p></li>
 </ol>
 </section>
 </section>

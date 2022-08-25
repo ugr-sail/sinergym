@@ -384,8 +384,8 @@ div.rendered_html tbody tr:hover {
 <section id="Logger-Wrapper-personalization/configuration">
 <h1>Logger Wrapper personalization/configuration<a class="headerlink" href="#Logger-Wrapper-personalization/configuration" title="Permalink to this heading"></a></h1>
 <p>We will see on this notebook how to personalize the logger wrapper defined by sinergym.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
@@ -397,11 +397,20 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/gym/spaces/box.py:73: UserWarning: <span class="ansi-yellow-fg">WARN: Box bound precision lowered by casting to float32</span>
+  logger.warn(
+</pre></div></div>
+</div>
 <section id="Step-1-Inherit-and-modify-the-CSVloger">
 <h2>Step 1 Inherit and modify the CSVloger<a class="headerlink" href="#Step-1-Inherit-and-modify-the-CSVloger" title="Permalink to this heading"></a></h2>
 <p>First we need to change the CSV logger to modify the values writen into the file on the funtion create_row_contents</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="kn">from</span> <span class="nn">sinergym.utils.logger</span> <span class="kn">import</span> <span class="n">CSVLogger</span>
@@ -419,23 +428,31 @@ div.rendered_html tbody tr:hover {
         <span class="nb">super</span><span class="p">(</span><span class="n">CustomCSVLogger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">monitor_header</span><span class="p">,</span><span class="n">progress_header</span><span class="p">,</span><span class="n">log_progress_file</span><span class="p">,</span><span class="n">log_file</span><span class="p">,</span><span class="n">flag</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_10_steps_reward</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span>
 
-    <span class="k">def</span> <span class="nf">create_row_contents</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">_create_row_content</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-            <span class="n">observation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
-            <span class="n">action</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]],</span>
-            <span class="n">simulation_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">obs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+            <span class="n">action</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]],</span>
             <span class="n">reward</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-            <span class="n">total_power_no_units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-            <span class="n">comfort_penalty</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-            <span class="n">done</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+            <span class="n">done</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+
         <span class="k">if</span> <span class="n">reward</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">last_10_steps_reward</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">last_10_steps_reward</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="p">[</span><span class="n">timestep</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span> <span class="o">+</span> \
-                       <span class="nb">list</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">simulation_time</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_10_steps_reward</span><span class="p">),</span>
-                                       <span class="n">total_power_no_units</span><span class="p">,</span> <span class="n">comfort_penalty</span><span class="p">,</span> <span class="n">done</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># In a reset</span>
+            <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="o">+</span> \
+                <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_10_steps_reward</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">done</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span>
+                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestep&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span>
+                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;time_elapsed&#39;</span><span class="p">],</span>
+                <span class="n">reward</span><span class="p">,</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_10_steps_reward</span><span class="p">),</span>
+                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power_no_units&#39;</span><span class="p">],</span>
+                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;comfort_penalty&#39;</span><span class="p">],</span>
+                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;abs_comfort&#39;</span><span class="p">],</span>
+                <span class="n">done</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -444,7 +461,7 @@ div.rendered_html tbody tr:hover {
 <h2>Step 2 Intanciate the LoggerWrapper<a class="headerlink" href="#Step-2-Intanciate-the-LoggerWrapper" title="Permalink to this heading"></a></h2>
 <p>now we need to instantiate the loggerwrapper and specify the new headers of our file and the csvlogger class we want to use.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
@@ -459,23 +476,15 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-06-15 10:17:21,564] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-06-15 10:17:21,564] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-06-15 10:17:21,564] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-06-15 10:17:21,566] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-06-15 10:17:21,566] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-06-15 10:17:21,566] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-06-15 10:17:21,569] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-06-15 10:17:21,569] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-06-15 10:17:21,569] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-06-15 10:17:21,573] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-06-15 10:17:21,573] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-06-15 10:17:21,573] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-08-24 09:20:47,476] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2022-08-24 09:20:47,477] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-08-24 09:20:47,479] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-08-24 09:20:47,481] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
 </pre></div></div>
 </div>
 <p>Now, you can see in Sinergym output folder that you will have available <code class="docutils literal notranslate"><span class="pre">progress.csv</span></code> file and <code class="docutils literal notranslate"><span class="pre">monitor.csv</span></code> files in each episode.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
@@ -501,12 +510,8 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-06-15 10:17:23,444] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-06-15 10:17:23,444] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-06-15 10:17:23,444] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-06-15 10:17:23,458] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/Eplus-env-demo-v1-res9/Eplus-env-sub_run1
-[2022-06-15 10:17:23,458] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/Eplus-env-demo-v1-res9/Eplus-env-sub_run1
-[2022-06-15 10:17:23,458] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/Eplus-env-demo-v1-res9/Eplus-env-sub_run1
+[2022-08-24 09:20:47,833] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-08-24 09:20:47,845] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res4/Eplus-env-sub_run1
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -514,20 +519,20 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Reward:  -0.6725497890372522 {&#39;timestep&#39;: 1, &#39;time_elapsed&#39;: 900, &#39;year&#39;: 1991, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 3133.716390651042, &#39;total_power_no_units&#39;: -0.3133716390651042, &#39;comfort_penalty&#39;: -1.0317279390094, &#39;temperatures&#39;: [18.9682720609906], &#39;out_temperature&#39;: 1.8, &#39;action_&#39;: [17, 28]}
-Reward:  -1890.290297390496 {&#39;timestep&#39;: 2976, &#39;time_elapsed&#39;: 2678400, &#39;year&#39;: 1991, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 10541.15240360948, &#39;total_power_no_units&#39;: -1.054115240360948, &#39;comfort_penalty&#39;: -0.20180977695655855, &#39;temperatures&#39;: [19.79819022304344], &#39;out_temperature&#39;: -7.0, &#39;action_&#39;: [21, 21]}
-Reward:  -3632.298944054189 {&#39;timestep&#39;: 5664, &#39;time_elapsed&#39;: 5097600, &#39;year&#39;: 1991, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 984.986838734656, &#39;total_power_no_units&#39;: -0.09849868387346561, &#39;comfort_penalty&#39;: -1.7181247337670094, &#39;temperatures&#39;: [18.28187526623299], &#39;out_temperature&#39;: 8.1, &#39;action_&#39;: [15, 30]}
-Reward:  -4781.993675772888 {&#39;timestep&#39;: 8640, &#39;time_elapsed&#39;: 7776000, &#39;year&#39;: 1991, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 186.5934720667916, &#39;total_power_no_units&#39;: -0.018659347206679163, &#39;comfort_penalty&#39;: -0.4212075987921686, &#39;temperatures&#39;: [19.57879240120783], &#39;out_temperature&#39;: 7.7, &#39;action_&#39;: [15, 30]}
-Reward:  -5576.529594288463 {&#39;timestep&#39;: 11520, &#39;time_elapsed&#39;: 10368000, &#39;year&#39;: 1991, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 237.4012899723387, &#39;total_power_no_units&#39;: -0.02374012899723387, &#39;comfort_penalty&#39;: -0.0, &#39;temperatures&#39;: [20.20094801998858], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [20, 25]}
-Reward:  -6331.731757223947 {&#39;timestep&#39;: 14496, &#39;time_elapsed&#39;: 13046400, &#39;year&#39;: 1991, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 673.538336416174, &#39;total_power_no_units&#39;: -0.06735383364161741, &#39;comfort_penalty&#39;: -1.9545518750814317, &#39;temperatures&#39;: [21.04544812491857], &#39;out_temperature&#39;: 18.4, &#39;action_&#39;: [21, 21]}
-Reward:  -9359.225367749577 {&#39;timestep&#39;: 17376, &#39;time_elapsed&#39;: 15638400, &#39;year&#39;: 1991, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 329.7151374060161, &#39;total_power_no_units&#39;: -0.03297151374060161, &#39;comfort_penalty&#39;: -1.88944614764101, &#39;temperatures&#39;: [21.11055385235899], &#39;out_temperature&#39;: 17.7, &#39;action_&#39;: [21, 24]}
-Reward:  -12662.2065130624 {&#39;timestep&#39;: 20352, &#39;time_elapsed&#39;: 18316800, &#39;year&#39;: 1991, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 4304.388643805342, &#39;total_power_no_units&#39;: -0.43043886438053425, &#39;comfort_penalty&#39;: -3.06736556998554, &#39;temperatures&#39;: [19.93263443001446], &#39;out_temperature&#39;: 20.6, &#39;action_&#39;: [18, 27]}
-Reward:  -15937.659318463444 {&#39;timestep&#39;: 23328, &#39;time_elapsed&#39;: 20995200, &#39;year&#39;: 1991, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 367.8674323081273, &#39;total_power_no_units&#39;: -0.036786743230812734, &#39;comfort_penalty&#39;: -3.004671553778291, &#39;temperatures&#39;: [19.99532844622171], &#39;out_temperature&#39;: 18.8, &#39;action_&#39;: [19, 26]}
-Reward:  -18767.79472079995 {&#39;timestep&#39;: 26208, &#39;time_elapsed&#39;: 23587200, &#39;year&#39;: 1991, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 3113.329543513108, &#39;total_power_no_units&#39;: -0.3113329543513108, &#39;comfort_penalty&#39;: -0.0, &#39;temperatures&#39;: [21.86143408922841], &#39;out_temperature&#39;: 13.3, &#39;action_&#39;: [22, 23]}
-Reward:  -19684.979594210432 {&#39;timestep&#39;: 29184, &#39;time_elapsed&#39;: 26265600, &#39;year&#39;: 1991, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 186.5934720667916, &#39;total_power_no_units&#39;: -0.018659347206679163, &#39;comfort_penalty&#39;: -0.39271453552728985, &#39;temperatures&#39;: [19.60728546447271], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [17, 28]}
-Reward:  -20736.757914292684 {&#39;timestep&#39;: 32064, &#39;time_elapsed&#39;: 28857600, &#39;year&#39;: 1991, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 776.1606641336945, &#39;total_power_no_units&#39;: -0.07761606641336945, &#39;comfort_penalty&#39;: -1.4795415019091287, &#39;temperatures&#39;: [18.52045849809087], &#39;out_temperature&#39;: 5.1, &#39;action_&#39;: [15, 30]}
-Reward:  -22527.860063376975 {&#39;timestep&#39;: 35040, &#39;time_elapsed&#39;: 31536000, &#39;year&#39;: 1992, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 13403.08826527609, &#39;total_power_no_units&#39;: -1.340308826527609, &#39;comfort_penalty&#39;: -0.28873942972423094, &#39;temperatures&#39;: [19.71126057027577], &#39;out_temperature&#39;: -12.0, &#39;action_&#39;: [22, 23]}
-Episode  0 Mean reward:  -0.6429183808041191 Cumulative reward:  -22527.860063376975
+Reward:  -0.2841864127941594 {&#39;timestep&#39;: 1, &#39;time_elapsed&#39;: 900, &#39;year&#39;: 1991, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 5683.728255883188, &#39;total_power_no_units&#39;: -0.5683728255883188, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.09252236706716], &#39;out_temperature&#39;: 1.8, &#39;action_&#39;: [20, 25]}
+Reward:  -1895.1548592605257 {&#39;timestep&#39;: 2976, &#39;time_elapsed&#39;: 2678400, &#39;year&#39;: 1991, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 8380.491234768304, &#39;total_power_no_units&#39;: -0.8380491234768305, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.21883172787526], &#39;out_temperature&#39;: -7.0, &#39;action_&#39;: [20, 25]}
+Reward:  -3633.6399832181337 {&#39;timestep&#39;: 5664, &#39;time_elapsed&#39;: 5097600, &#39;year&#39;: 1991, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 978.7532837048899, &#39;total_power_no_units&#39;: -0.097875328370489, &#39;comfort_penalty&#39;: -1.7869800571484404, &#39;abs_comfort&#39;: 1.7869800571484404, &#39;temperatures&#39;: [18.21301994285156], &#39;out_temperature&#39;: 8.1, &#39;action_&#39;: [15, 30]}
+Reward:  -4757.122309247712 {&#39;timestep&#39;: 8640, &#39;time_elapsed&#39;: 7776000, &#39;year&#39;: 1991, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 186.5934720667916, &#39;total_power_no_units&#39;: -0.018659347206679163, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.17697338689386], &#39;out_temperature&#39;: 7.7, &#39;action_&#39;: [18, 27]}
+Reward:  -5552.826655404054 {&#39;timestep&#39;: 11520, &#39;time_elapsed&#39;: 10368000, &#39;year&#39;: 1991, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 186.5934720667916, &#39;total_power_no_units&#39;: -0.018659347206679163, &#39;comfort_penalty&#39;: -0.72939902519715, &#39;abs_comfort&#39;: 0.72939902519715, &#39;temperatures&#39;: [19.27060097480285], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [17, 28]}
+Reward:  -6263.697197328473 {&#39;timestep&#39;: 14496, &#39;time_elapsed&#39;: 13046400, &#39;year&#39;: 1991, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 386.56918097843, &#39;total_power_no_units&#39;: -0.038656918097843, &#39;comfort_penalty&#39;: -1.7596818210658398, &#39;abs_comfort&#39;: 1.7596818210658398, &#39;temperatures&#39;: [21.24031817893416], &#39;out_temperature&#39;: 18.4, &#39;action_&#39;: [21, 24]}
+Reward:  -9272.426890062703 {&#39;timestep&#39;: 17376, &#39;time_elapsed&#39;: 15638400, &#39;year&#39;: 1991, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 215.8105427091371, &#39;total_power_no_units&#39;: -0.02158105427091371, &#39;comfort_penalty&#39;: -2.199461395033879, &#39;abs_comfort&#39;: 2.199461395033879, &#39;temperatures&#39;: [20.80053860496612], &#39;out_temperature&#39;: 17.7, &#39;action_&#39;: [17, 28]}
+Reward:  -12578.3581208006 {&#39;timestep&#39;: 20352, &#39;time_elapsed&#39;: 18316800, &#39;year&#39;: 1991, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 9159.463676532796, &#39;total_power_no_units&#39;: -0.9159463676532796, &#39;comfort_penalty&#39;: -1.2923781219578103, &#39;abs_comfort&#39;: 1.2923781219578103, &#39;temperatures&#39;: [21.70762187804219], &#39;out_temperature&#39;: 20.6, &#39;action_&#39;: [22, 23]}
+Reward:  -15903.48380984905 {&#39;timestep&#39;: 23328, &#39;time_elapsed&#39;: 20995200, &#39;year&#39;: 1991, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 377.2264848331002, &#39;total_power_no_units&#39;: -0.03772264848331002, &#39;comfort_penalty&#39;: -2.974447422564811, &#39;abs_comfort&#39;: 2.974447422564811, &#39;temperatures&#39;: [20.02555257743519], &#39;out_temperature&#39;: 18.8, &#39;action_&#39;: [20, 25]}
+Reward:  -18733.26101206708 {&#39;timestep&#39;: 26208, &#39;time_elapsed&#39;: 23587200, &#39;year&#39;: 1991, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 186.5934720667916, &#39;total_power_no_units&#39;: -0.018659347206679163, &#39;comfort_penalty&#39;: -0.27470801492377106, &#39;abs_comfort&#39;: 0.27470801492377106, &#39;temperatures&#39;: [19.72529198507623], &#39;out_temperature&#39;: 13.3, &#39;action_&#39;: [17, 28]}
+Reward:  -19665.3048157153 {&#39;timestep&#39;: 29184, &#39;time_elapsed&#39;: 26265600, &#39;year&#39;: 1991, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 2998.063053624272, &#39;total_power_no_units&#39;: -0.2998063053624272, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.98445623259406], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [22, 23]}
+Reward:  -20679.519834589526 {&#39;timestep&#39;: 32064, &#39;time_elapsed&#39;: 28857600, &#39;year&#39;: 1991, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 6282.049444658835, &#39;total_power_no_units&#39;: -0.6282049444658835, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.45374695271586], &#39;out_temperature&#39;: 5.1, &#39;action_&#39;: [22, 22]}
+Reward:  -22419.718732977875 {&#39;timestep&#39;: 35040, &#39;time_elapsed&#39;: 31536000, &#39;year&#39;: 1992, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 12473.66081362551, &#39;total_power_no_units&#39;: -1.2473660813625511, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.43771976775179], &#39;out_temperature&#39;: -12.0, &#39;action_&#39;: [21, 21]}
+Episode  0 Mean reward:  -0.639832155621491 Cumulative reward:  -22419.718732977875
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -535,9 +540,7 @@ Episode  0 Mean reward:  -0.6429183808041191 Cumulative reward:  -22527.86006337
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-06-15 10:17:38,745] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-06-15 10:17:38,745] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-06-15 10:17:38,745] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-08-24 09:21:00,208] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
 </pre></div></div>
 </div>
 </section>

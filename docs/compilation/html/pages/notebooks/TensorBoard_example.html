@@ -380,8 +380,8 @@ div.rendered_html tbody tr:hover {
 <h1>TensorBoard example<a class="headerlink" href="#TensorBoard-example" title="Permalink to this heading"></a></h1>
 <p>We can integrate a server into Tensorboard so that we can see the development of our training sessions in real time as they are executing. In order to do that (see <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/html/pages/deep-reinforcement-learning.html#drl-logger">Tensorboard documentation</a>)</p>
 <p>We are going to use callbacks in order to do that.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sinergym</span>
@@ -397,9 +397,18 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/gym/spaces/box.py:73: UserWarning: <span class="ansi-yellow-fg">WARN: Box bound precision lowered by casting to float32</span>
+  logger.warn(
+</pre></div></div>
+</div>
 <p>You have to define a model like DRL notebook, this model will learn with the algorithm specified in the future.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">environment</span> <span class="o">=</span> <span class="s2">&quot;Eplus-demo-v1&quot;</span>
@@ -419,14 +428,15 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-23 16:41:49,416] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-05-23 16:41:49,418] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-05-23 16:41:49,419] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-08-24 09:21:36,475] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2022-08-24 09:21:36,477] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-08-24 09:21:36,479] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-08-24 09:21:36,482] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
 </pre></div></div>
 </div>
 <p>Now, we define tensorboard output path in the model definition.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tensorboard_path</span><span class="o">=</span><span class="s1">&#39;./tensorboard_log&#39;</span>
@@ -446,7 +456,7 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <p>Continue with the configuration as DRL notebook.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_timesteps_episode</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_eplus_one_epi_len</span> <span class="o">/</span> \
@@ -458,7 +468,7 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <p>We define the <code class="docutils literal notranslate"><span class="pre">LoggerCallback</span></code> in order to specify how to store the real time training data.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">callbacks</span> <span class="o">=</span> <span class="p">[]</span>
@@ -475,26 +485,19 @@ Wrapping the env in a DummyVecEnv.
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2022-05-23 16:41:50.179466: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library &#39;libcudart.so.11.0&#39;; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
-2022-05-23 16:41:50.179484: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Couldn&#39;t import dot_parser, loading of dot files will not be possible.
+2022-08-24 09:21:37.692349: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2022-08-24 09:21:37.734692: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library &#39;libcudart.so.11.0&#39;; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2022-08-24 09:21:37.734718: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
 </pre></div></div>
 </div>
 <p>We have to include this callback in learning process.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span>
@@ -511,25 +514,31 @@ Couldn&#39;t import dot_parser, loading of dot files will not be possible.
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-05-23 16:41:51,876] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-23 16:41:51,888] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res4/Eplus-env-sub_run1
-[2022-05-23 16:42:11,278] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-23 16:42:11,279] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-23 16:42:11,291] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res4/Eplus-env-sub_run2
-[2022-05-23 16:42:42,227] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-23 16:42:42,228] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-23 16:42:42,238] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res4/Eplus-env-sub_run3
-[2022-05-23 16:43:19,158] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-23 16:43:19,159] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-23 16:43:19,169] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res4/Eplus-env-sub_run4
-[2022-05-23 16:44:01,372] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-05-23 16:44:01,373] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-05-23 16:44:01,385] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res4/Eplus-env-sub_run5
-/usr/local/lib/python3.9/dist-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+[2022-08-24 09:21:39,780] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-08-24 09:21:39,788] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res6/Eplus-env-sub_run1
+[2022-08-24 09:21:54,888] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-08-24 09:21:54,888] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-08-24 09:21:54,896] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res6/Eplus-env-sub_run2
+[2022-08-24 09:22:19,340] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-08-24 09:22:19,341] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-08-24 09:22:19,348] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res6/Eplus-env-sub_run3
+[2022-08-24 09:22:51,235] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-08-24 09:22:51,238] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-08-24 09:22:51,253] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res6/Eplus-env-sub_run4
+[2022-08-24 09:23:24,742] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-08-24 09:23:24,743] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-08-24 09:23:24,751] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res6/Eplus-env-sub_run5
+/usr/local/lib/python3.10/dist-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
   return _methods._mean(a, axis=axis, dtype=dtype,
-/usr/local/lib/python3.9/dist-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+/usr/local/lib/python3.10/dist-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
   ret = ret.dtype.type(ret / rcount)
-[2022-05-23 16:44:07,572] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+/usr/local/lib/python3.10/dist-packages/numpy/core/_methods.py:264: RuntimeWarning: Degrees of freedom &lt;= 0 for slice
+  ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/usr/local/lib/python3.10/dist-packages/numpy/core/_methods.py:222: RuntimeWarning: invalid value encountered in true_divide
+  arrmean = um.true_divide(arrmean, div, out=arrmean, casting=&#39;unsafe&#39;,
+/usr/local/lib/python3.10/dist-packages/numpy/core/_methods.py:256: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+[2022-08-24 09:23:30,387] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
 </pre></div></div>
 </div>
 <p>While training is executing, you can see that tensorboard path specified folder has been created. Then, you can start a local server and see the information about training in real-time.</p>

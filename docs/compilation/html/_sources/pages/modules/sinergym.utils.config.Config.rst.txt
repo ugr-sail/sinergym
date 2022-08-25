@@ -16,6 +16,7 @@
    .. autosummary::
    
       ~Config.__init__
+      ~Config.adapt_idf_to_action_definition
       ~Config.adapt_idf_to_epw
       ~Config.adapt_variables_to_cfg_and_idf
       ~Config.apply_extra_conf

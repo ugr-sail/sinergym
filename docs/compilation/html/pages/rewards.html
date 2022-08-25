@@ -50,7 +50,10 @@
 <p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Rewards</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Rewards</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#custom-rewards">Custom Rewards</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
@@ -123,20 +126,59 @@
 </style>
 <section id="rewards">
 <h1>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading"></a></h1>
-<p>Defining a reward function is one of the most important things in reinforcement learning. Consequently, Sinergym allows you to define your own reward functions or use
+<p>Defining a reward function is one of the most important things in reinforcement learning.
+Consequently, <em>Sinergym</em> allows you to define your own reward functions or use
 the ones we have already implemented (see code below).</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">LinearReward</span></code> implements a linear reward function, where both energy consumption and thermal discomfort are normalized and add together with different weights. The
-discomfort is calculated as the absolute difference between current temperature and comfort range (so if the temperature is inside that range, the discomfort would be 0).
-This is a typically used function where thermal satisfaction of people inside the controlled building has been taken into account.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ExpReward</span></code> is very similar, but in this case the discomfort is calculated using the exponential difference between current temperature and comfort ranges. That means
-that the penalty for the discomfort is higher is we are far from the target temperatures.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">HourlyLinearReward</span></code> is a slight modification of the linear function, but the weight given to the discomfort depends on the hour of the day. If the current hour of the
-simulation is in working hours (by default, from 9 AM to 7 PM) both comfort and energy consumption weights equally, but outside those hours only energy is considered.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LinearReward</span></code> implements a <strong>linear reward</strong> function, where both energy consumption and
+thermal discomfort are normalized and add together with different weights.
+The discomfort is calculated as the absolute difference between current temperature and
+comfort range (so if the temperature is inside that range, the discomfort would be 0).
+This is a typically used function where thermal satisfaction of people inside the
+controlled building has been taken into account.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ExpReward</span></code> is very similar, but in this case the discomfort is calculated
+using the <strong>exponential difference</strong> between current temperature and comfort ranges.
+That means that the increase penalty for the discomfort is higher if we are far from
+the target temperatures.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HourlyLinearReward</span></code> is a slight modification of the linear function, but
+the weight given to the discomfort depends on the <strong>hour of the day</strong>. If the current
+hour of the simulation is in working hours (by default, from 9 AM to 7 PM) both
+comfort and energy consumption weights equally, but outside those hours only energy
+is considered.</p></li>
 </ul>
-<p>These rewards are always negative, meaning that perfect behavior has a cumulative reward of 0. Notice also that there are two temperature comfort ranges defined, one for the
-summer period and other for the winter period. The weights of each term in the reward allow to adjust the importance of each aspect when evaluating the environments.</p>
-<p>By default, all environments use <code class="docutils literal notranslate"><span class="pre">LinearReward</span></code> with default parameters. But you can change this configuration using <code class="docutils literal notranslate"><span class="pre">gym.make()</span></code> as follows:</p>
+<p>These rewards are <strong>always negative</strong>, meaning that perfect behavior has a cumulative
+reward of 0. Notice also that there are two temperature comfort ranges defined,
+one for the summer period and other for the winter period. The weights of each
+term in the reward allow to adjust the importance of each aspect when evaluating
+the environments.</p>
+<p>The reward functions have a series of <strong>parameters</strong> in their constructor whose values
+may depend on the building we are using or other characteristics. For example, the
+internal temperature or energy variables used to calculate penalties may have a
+different name in different buildings.</p>
+<p>The main parameters that it is considered in a function reward will be the next:</p>
+<ul class="simple">
+<li><p><strong>temperature_variable</strong>: This field can be an <em>str</em> (only a unique zone temperature)
+or a <em>list</em> (with several zone temperatures).</p></li>
+<li><p><strong>energy_variable</strong>: Name of the observation variable where energy consumption is
+reflected.</p></li>
+<li><p><strong>range_comfort_winter</strong>: Temperature comfort range for cold season. Depends on
+environment you are using.</p></li>
+<li><p><strong>range_comfort_summer</strong>: Temperature comfort range for hot season. Depends on
+environment you are using.</p></li>
+<li><p><strong>energy_weight</strong>: Weight given to the energy term. Defaults to 0.5. Comfort weight
+will have 1-<em>energy_weight</em>.</p></li>
+<li><p><strong>lambda_energy</strong>: Constant for removing dimensions from power(1/W). Defaults to 1e-4.</p></li>
+<li><p><strong>lambda_temperature</strong>: Constant for removing dimensions from temperature(1/C).
+Defaults to 1.0.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These parameters are usually common to any reward function.
+However, they may have different parameters depending on the
+one being used.</p>
+</div>
+<p>By default, all environments use <code class="docutils literal notranslate"><span class="pre">LinearReward</span></code> with default parameters.
+But you can change this configuration using <code class="docutils literal notranslate"><span class="pre">gym.make()</span></code> as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="n">ExpReward</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-discrete-stochastic-mixed-v1&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">ExpReward</span><span class="p">,</span> <span class="n">reward_kwargs</span> <span class="o">=</span> <span class="p">{</span>
@@ -149,10 +191,22 @@ summer period and other for the winter period. The weights of each term in the r
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>When specifying a different reward with <cite>gym.make</cite> than the default environment ID, it is very important to set the <cite>reward_kwargs</cite> that are required and therefore do not have a default value. In the rewards we have defined it is required: <strong>temperature_variable(s)</strong>, <strong>energy_variable</strong>, <strong>range_comfort_winter</strong>, <strong>range_comfort_summer</strong>. The rest of them have default values and it is not necessary to specify.</p>
+<p>When specifying a different reward with <cite>gym.make</cite> than the
+default environment ID, it is very important to set the <cite>reward_kwargs</cite>
+that are required and therefore do not have a default value.
+In the rewards we have defined it is required:
+<strong>temperature_variable(s)</strong>, <strong>energy_variable</strong>,
+<strong>range_comfort_winter</strong>, <strong>range_comfort_summer</strong>.
+The rest of them have default values and it is not necessary to specify.</p>
 </div>
-<p>It is also pretty simple to define your own classes. For example, imagine you want a reward signal which returns always -1 (however we do not recommend using it for training agents :)).
-The only requirement is that the calculation is performed using <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method, which returns the reward and a dictionary with extra information. The below code implements this.</p>
+<section id="custom-rewards">
+<h2>Custom Rewards<a class="headerlink" href="#custom-rewards" title="Permalink to this heading"></a></h2>
+<p>It is also pretty simple to define your <strong>own classes</strong>. For example, imagine you want
+a reward signal which returns always -1 (however we do not recommend using it
+for training agents).
+The only requirement is that the calculation is performed using <code class="docutils literal notranslate"><span class="pre">__call__</span></code>
+method, which returns the reward and a dictionary with extra information.
+The below code implements this.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="n">BaseReward</span>
 
 <span class="k">class</span> <span class="nc">CustomReward</span><span class="p">(</span><span class="n">BaseReward</span><span class="p">):</span>
@@ -165,293 +219,8 @@ The only requirement is that the calculation is performed using <code class="doc
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-discrete-stochastic-mixed-v1&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">CustomReward</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>More reward functions will be included in the future, so stay tuned!</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Implementation of reward functions.&quot;&quot;&quot;</span>
-
-
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">exp</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-
-<span class="kn">from</span> <span class="nn">gym</span> <span class="kn">import</span> <span class="n">Env</span>
-
-
-<span class="k">class</span> <span class="nc">BaseReward</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Base reward class.</span>
-
-<span class="sd">        All reward functions should inherit from this class.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            env (Env): Gym environment.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="mi">2021</span>  <span class="c1"># just for datetime completion</span>
-
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method for calculating the reward function.&quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;Reward class must have a `__call__` method.&quot;</span><span class="p">)</span>
-
-
-<span class="k">class</span> <span class="nc">LinearReward</span><span class="p">(</span><span class="n">BaseReward</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">env</span><span class="p">:</span> <span class="n">Env</span><span class="p">,</span>
-        <span class="n">temperature_variable</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
-        <span class="n">energy_variable</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
-        <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
-        <span class="n">energy_weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">lambda_energy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
-        <span class="n">lambda_temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Linear reward function.</span>
-
-<span class="sd">        It considers the energy consumption and the absolute difference to temperature comfort.</span>
-
-<span class="sd">        .. math::</span>
-<span class="sd">            R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            env (Env): Gym environment.</span>
-<span class="sd">            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).</span>
-<span class="sd">            energy_variable (str): Name of the energy/power variable.</span>
-<span class="sd">            range_comfort_winter (tuple): Temperature comfort range for cold season. Depends on environment you are using.</span>
-<span class="sd">            range_comfort_summer (tuple): Temperature comfort range for hot season. Depends on environment you are using.</span>
-<span class="sd">            energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.</span>
-<span class="sd">            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.</span>
-<span class="sd">            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="nb">super</span><span class="p">(</span><span class="n">LinearReward</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-
-        <span class="c1"># Name of the variables</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">temp_name</span> <span class="o">=</span> <span class="n">temperature_variable</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">energy_name</span> <span class="o">=</span> <span class="n">energy_variable</span>
-
-        <span class="c1"># Reward parameters</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_winter</span> <span class="o">=</span> <span class="n">range_comfort_winter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_summer</span> <span class="o">=</span> <span class="n">range_comfort_summer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">W_energy</span> <span class="o">=</span> <span class="n">energy_weight</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_energy</span> <span class="o">=</span> <span class="n">lambda_energy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_temp</span> <span class="o">=</span> <span class="n">lambda_temperature</span>
-
-        <span class="c1"># Periods</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">summer_start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">summer_final_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the reward function.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Current observation</span>
-        <span class="n">obs_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">obs_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-        <span class="c1"># Energy term</span>
-        <span class="n">reward_energy</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_energy</span> <span class="o">*</span> <span class="n">obs_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_name</span><span class="p">]</span>
-
-        <span class="c1"># Comfort</span>
-        <span class="n">comfort</span><span class="p">,</span> <span class="n">temps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_comfort</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">)</span>
-        <span class="n">reward_comfort</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_temp</span> <span class="o">*</span> <span class="n">comfort</span>
-
-        <span class="c1"># Weighted sum of both terms</span>
-        <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_energy</span> <span class="o">*</span> <span class="n">reward_energy</span> <span class="o">+</span> \
-            <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_energy</span><span class="p">)</span> <span class="o">*</span> <span class="n">reward_comfort</span>
-
-        <span class="n">reward_terms</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;reward_energy&#39;</span><span class="p">:</span> <span class="n">reward_energy</span><span class="p">,</span>
-            <span class="s1">&#39;total_energy&#39;</span><span class="p">:</span> <span class="n">obs_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_name</span><span class="p">],</span>
-            <span class="s1">&#39;reward_comfort&#39;</span><span class="p">:</span> <span class="n">reward_comfort</span><span class="p">,</span>
-            <span class="s1">&#39;temperatures&#39;</span><span class="p">:</span> <span class="n">temps</span>
-        <span class="p">}</span>
-
-        <span class="k">return</span> <span class="n">reward</span><span class="p">,</span> <span class="n">reward_terms</span>
-
-    <span class="k">def</span> <span class="nf">_get_comfort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                     <span class="n">obs_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span>
-                                    <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span>
-                                                   <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the comfort term of the reward.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Tuple[float, List[float]]: comfort penalty and List with temperatures used.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">month</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
-        <span class="n">day</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">]</span>
-        <span class="n">current_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">current_dt</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">summer_start_date</span> <span class="ow">and</span> <span class="n">current_dt</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">summer_final_date</span><span class="p">:</span>
-            <span class="n">temp_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_summer</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">temp_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_winter</span>
-
-        <span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obs_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_name</span><span class="p">]</span>
-        <span class="n">comfort</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="k">for</span> <span class="n">T</span> <span class="ow">in</span> <span class="n">temps</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">T</span> <span class="o">&lt;</span> <span class="n">temp_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">T</span> <span class="o">&gt;</span> <span class="n">temp_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="n">comfort</span> <span class="o">+=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">temp_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">T</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">T</span> <span class="o">-</span> <span class="n">temp_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-
-        <span class="k">return</span> <span class="n">comfort</span><span class="p">,</span> <span class="n">temps</span>
-
-
-<span class="k">class</span> <span class="nc">ExpReward</span><span class="p">(</span><span class="n">LinearReward</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">env</span><span class="p">:</span> <span class="n">Env</span><span class="p">,</span>
-        <span class="n">temperature_variable</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
-        <span class="n">energy_variable</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
-        <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
-        <span class="n">energy_weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">lambda_energy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
-        <span class="n">lambda_temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reward considering exponential absolute difference to temperature comfort.</span>
-
-<span class="sd">        .. math::</span>
-<span class="sd">            R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T - T_{low}, 0) + max(T_{up} - T, 0)) )</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            env (Env): Gym environment.</span>
-<span class="sd">            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).</span>
-<span class="sd">            energy_variable (str): Name of the energy/power variable.</span>
-<span class="sd">            range_comfort_winter (tuple): Temperature comfort range for cold season. Depends on environment you are using.</span>
-<span class="sd">            range_comfort_summer (tuple): Temperature comfort range for hot season. Depends on environment you are using.</span>
-<span class="sd">            energy_weight (float, optional): Weight given to the energy term. Defaults to 0.5.</span>
-<span class="sd">            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.</span>
-<span class="sd">            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="nb">super</span><span class="p">(</span><span class="n">ExpReward</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">env</span><span class="p">,</span>
-            <span class="n">temperature_variable</span><span class="p">,</span>
-            <span class="n">energy_variable</span><span class="p">,</span>
-            <span class="n">range_comfort_winter</span><span class="p">,</span>
-            <span class="n">range_comfort_summer</span><span class="p">,</span>
-            <span class="n">energy_weight</span><span class="p">,</span>
-            <span class="n">lambda_energy</span><span class="p">,</span>
-            <span class="n">lambda_temperature</span>
-        <span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_get_comfort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                     <span class="n">obs_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span>
-                                    <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span>
-                                                   <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the comfort term of the reward.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Tuple[float, List[float]]: comfort penalty and List with temperatures used.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">month</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
-        <span class="n">day</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">]</span>
-        <span class="n">current_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">current_dt</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">summer_start_date</span> <span class="ow">and</span> <span class="n">current_dt</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">summer_final_date</span><span class="p">:</span>
-            <span class="n">temp_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_summer</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">temp_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_winter</span>
-
-        <span class="n">temps</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obs_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_name</span><span class="p">]</span>
-        <span class="n">comfort</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="k">for</span> <span class="n">T</span> <span class="ow">in</span> <span class="n">temps</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">T</span> <span class="o">&lt;</span> <span class="n">temp_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">T</span> <span class="o">&gt;</span> <span class="n">temp_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="n">comfort</span> <span class="o">+=</span> <span class="n">exp</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">temp_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">T</span><span class="p">),</span>
-                                   <span class="nb">abs</span><span class="p">(</span><span class="n">T</span> <span class="o">-</span> <span class="n">temp_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
-
-        <span class="k">return</span> <span class="n">comfort</span><span class="p">,</span> <span class="n">temps</span>
-
-
-<span class="k">class</span> <span class="nc">HourlyLinearReward</span><span class="p">(</span><span class="n">LinearReward</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">env</span><span class="p">:</span> <span class="n">Env</span><span class="p">,</span>
-        <span class="n">temperature_variable</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
-        <span class="n">energy_variable</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">range_comfort_winter</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
-        <span class="n">range_comfort_summer</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
-        <span class="n">min_energy_weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">lambda_energy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
-        <span class="n">lambda_temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="n">range_comfort_hours</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Linear reward function with a time-dependent weight for consumption and energy terms.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            env (Env): Gym environment.</span>
-<span class="sd">            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).</span>
-<span class="sd">            energy_variable (str): Name of the energy/power variable.</span>
-<span class="sd">            range_comfort_winter (tuple): Temperature comfort range for cold season. Depends on environment you are using.</span>
-<span class="sd">            range_comfort_summer (tuple): Temperature comfort range for hot season. Depends on environment you are using.</span>
-<span class="sd">            min_energy_weight (float, optional): Minimum weight given to the energy term. Defaults to 0.5.</span>
-<span class="sd">            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.</span>
-<span class="sd">            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.</span>
-<span class="sd">            range_comfort_hours (tuple, optional): Hours where thermal comfort is considered. Defaults to (9, 19).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="nb">super</span><span class="p">(</span><span class="n">HourlyLinearReward</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">env</span><span class="p">,</span>
-            <span class="n">temperature_variable</span><span class="p">,</span>
-            <span class="n">energy_variable</span><span class="p">,</span>
-            <span class="n">range_comfort_winter</span><span class="p">,</span>
-            <span class="n">range_comfort_summer</span><span class="p">,</span>
-            <span class="n">min_energy_weight</span><span class="p">,</span>
-            <span class="n">lambda_energy</span><span class="p">,</span>
-            <span class="n">lambda_temperature</span>
-        <span class="p">)</span>
-
-        <span class="c1"># Reward parameters</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_hours</span> <span class="o">=</span> <span class="n">range_comfort_hours</span>
-
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the reward function.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Tuple[float, Dict[str, Any]]: Reward and dict with reward terms.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
-        <span class="c1"># Current observation</span>
-        <span class="n">obs_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">obs_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-        <span class="c1"># Energy term</span>
-        <span class="n">reward_energy</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_energy</span> <span class="o">*</span> <span class="n">obs_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_name</span><span class="p">]</span>
-
-        <span class="c1"># Comfort</span>
-        <span class="n">comfort</span><span class="p">,</span> <span class="n">temps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_comfort</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">)</span>
-        <span class="n">reward_comfort</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_temp</span> <span class="o">*</span> <span class="n">comfort</span>
-
-        <span class="c1"># Determine energy weight depending on the hour</span>
-        <span class="n">hour</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">hour</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_hours</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">hour</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_comfort_hours</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="n">weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_energy</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">weight</span> <span class="o">=</span> <span class="mf">1.0</span>
-
-        <span class="c1"># Weighted sum of both terms</span>
-        <span class="n">reward</span> <span class="o">=</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">reward_energy</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">weight</span><span class="p">)</span> <span class="o">*</span> <span class="n">reward_comfort</span>
-
-        <span class="n">reward_terms</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;reward_energy&#39;</span><span class="p">:</span> <span class="n">reward_energy</span><span class="p">,</span>
-            <span class="s1">&#39;total_energy&#39;</span><span class="p">:</span> <span class="n">obs_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_name</span><span class="p">],</span>
-            <span class="s1">&#39;reward_comfort&#39;</span><span class="p">:</span> <span class="n">reward_comfort</span><span class="p">,</span>
-            <span class="s1">&#39;temperatures&#39;</span><span class="p">:</span> <span class="n">temps</span>
-        <span class="p">}</span>
-
-        <span class="k">return</span> <span class="n">reward</span><span class="p">,</span> <span class="n">reward_terms</span>
-</pre></div>
-</div>
+<p><em>More reward functions will be included in the future, so stay tuned!</em></p>
+</section>
 </section>
 
 
