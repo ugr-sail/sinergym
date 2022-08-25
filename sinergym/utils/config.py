@@ -12,8 +12,7 @@ from opyplus.epm.record import Record
 
 from sinergym.utils.common import (get_delta_seconds, get_record_keys,
                                    prepare_batch_from_records, to_idf)
-from sinergym.utils.constants import (CWD, PKG_DATA_PATH,
-                                      WEEKDAY_ENCODING, YEAR)
+from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR
 
 
 class Config(object):
