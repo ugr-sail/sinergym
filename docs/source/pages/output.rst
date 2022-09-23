@@ -54,8 +54,8 @@ this directory is the result of the simulation and we have:
       is the same than **monitor.csv** but ``observation_values`` are normalized.
 
     * **output/**: This directory has **EnergyPlus simulation output**.
-                   If you want to know more about this files, visit 
-                   `Energyplus documentation <https://energyplus.net/documentation>`__.
+      If you want to know more about this files, visit 
+      `Energyplus documentation <https://energyplus.net/documentation>`__.
                    
 * **progress.csv**: This file has information about general simulation results. 
   There is a **row per episode** and it records most important data such as mean 
@@ -76,7 +76,7 @@ external factor.
 
 Recording is managed by an instance of the class ``CSVLogger`` which is 
 present as a wrapper attribute and is called in each timestep and 
-in the end of a episode:
+in the end of a episode.
 
 .. note:: Normalized observation methods are only used when environment is 
           wrapped with normalization previously.
@@ -84,5 +84,3 @@ in the end of a episode:
 .. note:: Note that you can activate and deactivate logger from environment 
           when you want it, using methods activate and deactivate, so 
           you don't need to unwrap environment.
-
-

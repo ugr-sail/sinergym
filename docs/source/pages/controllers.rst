@@ -6,7 +6,7 @@ Controllers
 a **random agent** and a **rule-based agent** to *5Zone* and *Datacenter* buildings.
 You can find this code in 
 `sinergym/sinergym/utils/controllers.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/controllers.py>`__.
-it is very useful in order to perform benchmarks as a reference point to study DRL algorithms:
+it is very useful in order to perform benchmarks as a reference point to study DRL algorithms.
 
 The functionality is very simple; given an environment observation, these instances return 
 an action to interact with the environment. You can develop your own
