@@ -235,6 +235,14 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #
     # ---------------------------------------------------------------------------- #
+    def get_actuators(self) -> Dict[str, Any]:
+        """Extract all actuators available in the building model
+
+        Returns:
+            Dict[str, Any]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).
+        """
+        return self.simulator._config._get_actuators()
+
     def _get_action(self, action: Any):
         """Transform the action for sending it to the simulator."""
 
