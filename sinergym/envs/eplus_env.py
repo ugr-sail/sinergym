@@ -3,6 +3,7 @@ Gym environment for simulation with EnergyPlus.
 """
 
 import os
+from sqlite3 import DatabaseError
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import gym
@@ -11,6 +12,7 @@ import numpy as np
 from sinergym.simulators import EnergyPlus
 from sinergym.utils.constants import PKG_DATA_PATH
 from sinergym.utils.rewards import ExpReward, LinearReward
+from sinergym.utils.common import export_actuators_to_excel
 
 
 class EplusEnv(gym.Env):
@@ -235,13 +237,19 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #
     # ---------------------------------------------------------------------------- #
-    def get_actuators(self) -> Dict[str, Any]:
+    def get_actuators(self, path: Optional[str] = None) -> Dict[str, Any]:
         """Extract all actuators available in the building model
+
+        Args:
+            path (str, optional): If path is specified, then this method export a xlsx file version in addition to return the dictionary.
 
         Returns:
             Dict[str, Any]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).
         """
-        return self.simulator._config._get_actuators()
+        actuators = self.simulator._config._get_actuators()
+        if path is not None:
+            export_actuators_to_excel(actuators=actuators, path=path)
+        return actuators
 
     def _get_action(self, action: Any):
         """Transform the action for sending it to the simulator."""
