@@ -10,9 +10,9 @@ import gym
 import numpy as np
 
 from sinergym.simulators import EnergyPlus
+from sinergym.utils.common import export_actuators_to_excel
 from sinergym.utils.constants import PKG_DATA_PATH
 from sinergym.utils.rewards import ExpReward, LinearReward
-from sinergym.utils.common import export_actuators_to_excel
 
 
 class EplusEnv(gym.Env):

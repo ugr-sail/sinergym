@@ -6,11 +6,11 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from pydoc import locate
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
-import xlsxwriter
 
 import gym
 import numpy as np
 import pandas as pd
+import xlsxwriter
 from opyplus import Epm, WeatherData
 from opyplus.epm.record import Record
 
