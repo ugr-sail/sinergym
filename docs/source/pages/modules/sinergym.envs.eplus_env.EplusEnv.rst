@@ -1,4 +1,4 @@
-sinergym.envs.eplus\_env.EplusEnv
+﻿sinergym.envs.eplus\_env.EplusEnv
 =================================
 
 .. currentmodule:: sinergym.envs.eplus_env
@@ -17,6 +17,7 @@ sinergym.envs.eplus\_env.EplusEnv
    
       ~EplusEnv.__init__
       ~EplusEnv.close
+      ~EplusEnv.get_actuators
       ~EplusEnv.render
       ~EplusEnv.reset
       ~EplusEnv.seed

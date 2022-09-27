@@ -3,7 +3,7 @@ import os
 import xml.etree.cElementTree as ElementTree
 from copy import deepcopy
 from shutil import rmtree
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas
@@ -476,6 +476,31 @@ class Config(object):
             end_year,
             end_month,
             end_day)
+
+    def _get_actuators(self) -> Dict[str, Any]:
+        """Extract all actuators available in the building model
+
+        Returns:
+            Dict[str, Any]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).
+        """
+        result = {}
+        for schedule in self.building.schedule_compact:
+            object_index = 1
+            result[schedule.name] = {}
+            result[schedule.name]['Type'] = schedule.schedule_type_limits_name.name
+            # Extract objects where scheduler is present as value field
+            for table in self.building:
+                if table.get_name() != 'Schedule:Compact':
+                    for record in table:
+                        for i, value in enumerate(record):
+                            if isinstance(value, Record):
+                                if value._table._dev_descriptor.table_name == 'Schedule:Compact' and value.name == schedule.name:
+                                    result[schedule.name]['Object' + str(object_index)] = {'object_name': record.name,
+                                                                                           'object_field_name': record._table._dev_descriptor._field_descriptors[i].ref,
+                                                                                           'object_type': record._table._dev_descriptor.table_name}
+                                    object_index += 1
+
+        return result
 
     # ---------------------------------------------------------------------------- #
     #                  Working Folder for Simulation Management                    #

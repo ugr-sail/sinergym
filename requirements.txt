@@ -7,3 +7,4 @@ opyplus
 pandas
 pytype
 twine
+xlsxwriter

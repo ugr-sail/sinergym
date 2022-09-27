@@ -10,6 +10,7 @@ from typing import Any, Dict, List, Optional, Tuple, Type, Union
 import gym
 import numpy as np
 import pandas as pd
+import xlsxwriter
 from opyplus import Epm, WeatherData
 from opyplus.epm.record import Record
 
@@ -269,6 +270,12 @@ def prepare_batch_from_records(records: List[Record]) -> List[Dict[str, Any]]:
 
 
 def to_idf(building: Epm, file_path: str) -> None:
+    """Given a building model (opyplus Epm object), this function export an IDF file with all content specified.
+
+    Args:
+        building (Epm): Building model from the opyplus object Epm.
+        file_path (str): Path where IDF file will be exported.
+    """
 
     if building._comment != "":
         comment = textwrap.indent(building._comment, "! ", lambda line: True)
@@ -291,7 +298,8 @@ def to_idf(building: Epm, file_path: str) -> None:
         f.write(content)
 
 
-def get_season_comfort_range(year, month, day):
+def get_season_comfort_range(
+        year: int, month: int, day: int) -> Tuple[float, float]:
     """Get comfort temperature range depending on season. The comfort ranges are those
     defined by ASHRAE in Standard 55—Thermal Environmental Conditions for Human Occupancy (2004).
 
@@ -299,6 +307,9 @@ def get_season_comfort_range(year, month, day):
         year (int): current year
         month (int): current month
         day (int): current day
+
+    Returns:
+        Tuple[float, float]: Comfort temperature from the correct season.
     """
 
     summer_start_date = datetime(year, 6, 1)
@@ -315,3 +326,84 @@ def get_season_comfort_range(year, month, day):
         comfort = range_comfort_winter
 
     return comfort
+
+
+def export_actuators_to_excel(
+        actuators: Dict[str, Dict[str, Union[str, Dict[str, str]]]], path: str) -> None:
+    """Given a python dictionary with actuators with Config:_get_actuators() format, this method export that information in a excel file
+
+    Args:
+        actuators (Dict[str, Dict[str, Union[str, Dict[str, str]]]]): Python dictionary with the format correctly.
+        path (str): Relative path where excel file will be created.
+    """
+
+    # Creating workbook and sheet
+    workbook = xlsxwriter.Workbook(path)
+    worksheet = workbook.add_worksheet()
+    # Creating cells format configuration
+    keys_format = workbook.add_format({'bold': True,
+                                       'font_size': 20,
+                                       'align': 'center',
+                                       'bg_color': 'gray',
+                                       'border': True})
+    cells_format = workbook.add_format(
+        {'align': 'center'})
+    actuator_format = workbook.add_format(
+        {'bold': True, 'align': 'center', 'bg_color': 'gray'})
+    # Indicating cell position within sheet
+    current_row = 0
+    current_col = 0
+    # Anotate max_column in order to know excel extension
+    max_col = 1
+
+    worksheet.write(current_row, current_col, 'Name', keys_format)
+    worksheet.write(current_row, current_col + 1, 'Type', keys_format)
+    current_row += 1
+
+    for key, info in actuators.items():
+        worksheet.write(current_row, current_col, key, actuator_format)
+        current_col += 1
+        worksheet.write(current_row, current_col, info['Type'], cells_format)
+        current_col += 1
+        for object in info.values():
+            if isinstance(object, dict):
+                worksheet.write(
+                    current_row,
+                    current_col,
+                    'Name: ' +
+                    object['object_name'])
+                current_col += 1
+                worksheet.write(
+                    current_row,
+                    current_col,
+                    'Field: ' +
+                    object['object_field_name'])
+                current_col += 1
+                worksheet.write(
+                    current_row,
+                    current_col,
+                    'Table type: ' +
+                    object['object_type'])
+                current_col += 1
+        # Update max column if it is necessary
+        if current_col > max_col:
+            max_col = current_col
+
+        current_row += 1
+        current_col = 0
+
+    current_row = 0
+    object_num = 1
+    # Updating columns extension
+    worksheet.set_column(0, max_col, 40)
+
+    for i in range(2, max_col, 3):
+        worksheet.merge_range(
+            current_row,
+            i,
+            current_row,
+            i + 2,
+            'OBJECT' + str(object_num),
+            keys_format)
+        object_num += 1
+    workbook.close()
