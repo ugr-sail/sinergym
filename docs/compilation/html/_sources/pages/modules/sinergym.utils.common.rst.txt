@@ -15,6 +15,7 @@
       :toctree:                                          
    
       create_variable_weather
+      export_actuators_to_excel
       get_current_time_info
       get_delta_seconds
       get_record_keys

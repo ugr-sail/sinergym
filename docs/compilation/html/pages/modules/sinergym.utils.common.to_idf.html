@@ -18,6 +18,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -64,6 +65,7 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.create_variable_weather.html">sinergym.utils.common.create_variable_weather</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.export_actuators_to_excel.html">sinergym.utils.common.export_actuators_to_excel</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_current_time_info.html">sinergym.utils.common.get_current_time_info</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_delta_seconds.html">sinergym.utils.common.get_delta_seconds</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_record_keys.html">sinergym.utils.common.get_record_keys</a></li>
@@ -96,6 +98,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/schedulers.html">Controlling schedulers in building models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">Logger Wrapper personalization/configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">Rule Controller example</a></li>
@@ -160,7 +163,16 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="sinergym.utils.common.to_idf">
 <span class="sig-prename descclassname"><span class="pre">sinergym.utils.common.</span></span><span class="sig-name descname"><span class="pre">to_idf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">building</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Epm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.common.to_idf" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Given a building model (opyplus Epm object), this function export an IDF file with all content specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>building</strong> (<em>Epm</em>) – Building model from the opyplus object Epm.</p></li>
+<li><p><strong>file_path</strong> (<em>str</em>) – Path where IDF file will be exported.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 

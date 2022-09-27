@@ -18,6 +18,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -68,6 +69,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/schedulers.html">Controlling schedulers in building models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">Logger Wrapper personalization/configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">Rule Controller example</a></li>
@@ -171,12 +173,9 @@ more information).</p></li>
 <li><p><strong>monitor_normalized.csv</strong>: This file is only generated when environment is
 wrapped with <strong>logger and normalization</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>). The structure
 is the same than <strong>monitor.csv</strong> but <code class="docutils literal notranslate"><span class="pre">observation_values</span></code> are normalized.</p></li>
-<li><dl class="simple">
-<dt><strong>output/</strong>: This directory has <strong>EnergyPlus simulation output</strong>.</dt><dd><p>If you want to know more about this files, visit
-<a class="reference external" href="https://energyplus.net/documentation">Energyplus documentation</a>.</p>
-</dd>
-</dl>
-</li>
+<li><p><strong>output/</strong>: This directory has <strong>EnergyPlus simulation output</strong>.
+If you want to know more about this files, visit
+<a class="reference external" href="https://energyplus.net/documentation">Energyplus documentation</a>.</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -196,7 +195,7 @@ regardless of the training technique which may be being used or any other
 external factor.</p>
 <p>Recording is managed by an instance of the class <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code> which is
 present as a wrapper attribute and is called in each timestep and
-in the end of a episode:</p>
+in the end of a episode.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Normalized observation methods are only used when environment is
