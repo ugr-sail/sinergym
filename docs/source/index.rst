@@ -72,6 +72,7 @@ If you use Sinergym in your work, please cite our `paper <https://dl.acm.org/doi
 
    pages/notebooks/basic_example.nblink
    pages/notebooks/change_environment.nblink
+   pages/notebooks/schedulers.nblink
    pages/notebooks/wrappers_examples.nblink
    pages/notebooks/personalize_loggerwrapper.nblink
    pages/notebooks/rule_controller_example.nblink
