@@ -97,6 +97,11 @@ class EplusEnv(gym.Env):
         )
 
         # ---------------------------------------------------------------------------- #
+        #                       Detection of controllable planners                     #
+        # ---------------------------------------------------------------------------- #
+        self.schedulers = self.get_schedulers()
+
+        # ---------------------------------------------------------------------------- #
         #        Adding simulation date to observation (not needed in simulator)       #
         # ---------------------------------------------------------------------------- #
 
@@ -237,8 +242,8 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #
     # ---------------------------------------------------------------------------- #
-    def get_actuators(self, path: Optional[str] = None) -> Dict[str, Any]:
-        """Extract all actuators available in the building model
+    def get_schedulers(self, path: Optional[str] = None) -> Dict[str, Any]:
+        """Extract all schedulers available in the building model to be controlled.
 
         Args:
             path (str, optional): If path is specified, then this method export a xlsx file version in addition to return the dictionary.
@@ -246,10 +251,10 @@ class EplusEnv(gym.Env):
         Returns:
             Dict[str, Any]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).
         """
-        actuators = self.simulator._config._get_actuators()
+        schedulers = self.simulator._config.schedulers
         if path is not None:
-            export_actuators_to_excel(actuators=actuators, path=path)
-        return actuators
+            export_actuators_to_excel(actuators=schedulers, path=path)
+        return schedulers
 
     def _get_action(self, action: Any):
         """Transform the action for sending it to the simulator."""
