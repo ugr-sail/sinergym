@@ -284,21 +284,26 @@ class Config(object):
             Dict[str, Any]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).
         """
         result = {}
-        for schedule in self.building.schedule_compact:
-            object_index = 1
-            result[schedule.name] = {}
-            result[schedule.name]['Type'] = schedule.schedule_type_limits_name.name
-            # Extract objects where scheduler is present as value field
-            for table in self.building:
-                if table.get_name() != 'Schedule:Compact':
-                    for record in table:
-                        for i, value in enumerate(record):
-                            if isinstance(value, Record):
-                                if value._table._dev_descriptor.table_name == 'Schedule:Compact' and value.name == schedule.name:
-                                    result[schedule.name]['Object' + str(object_index)] = {'object_name': record.name,
-                                                                                           'object_field_name': record._table._dev_descriptor._field_descriptors[i].ref,
-                                                                                           'object_type': record._table._dev_descriptor.table_name}
-                                    object_index += 1
+        schedule_tables = [
+            self.building.schedule_compact,
+            self.building.schedule_year]
+        for schedule_table in schedule_tables:
+            for schedule in schedule_table:
+                object_index = 1
+                result[schedule.name] = {}
+                result[schedule.name]['Type'] = schedule.schedule_type_limits_name.name
+                # Extract objects where scheduler is present as value field
+                for table in self.building:
+                    if table.get_name() != 'Schedule:Compact' and table.get_name() != 'Schedule:Year':
+                        for record in table:
+                            for i, value in enumerate(record):
+                                if isinstance(value, Record):
+                                    if (value._table._dev_descriptor.table_name == 'Schedule:Compact' or value._table._dev_descriptor.table_name ==
+                                            'Schedule:Year') and value.name == schedule.name:
+                                        result[schedule.name]['Object' + str(object_index)] = {'object_name': record.name,
+                                                                                               'object_field_name': record._table._dev_descriptor._field_descriptors[i].ref,
+                                                                                               'object_type': record._table._dev_descriptor.table_name}
+                                        object_index += 1
 
         return result
 
