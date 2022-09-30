@@ -256,6 +256,14 @@ class EplusEnv(gym.Env):
             export_actuators_to_excel(actuators=schedulers, path=path)
         return schedulers
 
+    def get_zones(self) -> List[str]:
+        """Get the zone names available in the building model of that environment.
+
+        Returns:
+            List[str]: List of the zone names.
+        """
+        return self.simulator._config.idf_zone_names
+
     def _get_action(self, action: Any):
         """Transform the action for sending it to the simulator."""
 
