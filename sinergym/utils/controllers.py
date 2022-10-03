@@ -1,6 +1,7 @@
 """Implementation of basic controllers."""
 from datetime import datetime
 from typing import Any, List, Sequence
+
 import numpy as np
 
 from ..utils.common import parse_variables
