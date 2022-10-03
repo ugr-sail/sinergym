@@ -236,9 +236,9 @@ This allows for a **dynamic definition** of these spaces. Let's see the fields r
 
 - **action_variables**: List of the action variables that simulator is going to process 
   like schedule control actuator in the building model. These variables
-  must be defined in the building model (*IDF* file) correctly before simulation. You can 
-  modify **manually** in the *IDF* file or using our **action definition** field 
-  in which you set what you want to control and *Sinergym* 
+  must be defined in the building model (*IDF* file) correctly before simulation like an 
+  ``external interface``. You can modify **manually** in the *IDF* file or using our 
+  **action definition** field in which you set what you want to control and *Sinergym* 
   takes care of modifying this file for you automatically. For more information about 
   this automatic adaptation in section :ref:`Action definition`.
                 
@@ -309,74 +309,43 @@ dictionary with the next structure:
 .. code:: python
 
     action_definition_example={  
-      <controller_type>:[<controller1_definition>,<controller2_definition>, ...],
-      <other_type>: ...
+      <Original_IDF_scheduler_name>:'name':{<external_variable_name>,'initial_value':<value>},
+      ...
     }
 
-The ``<controller_definition>`` will depend on the specific type of controller that we are 
-going to create, we have the next support:
+For an example about how to use this action definition functionality, 
+visit section :ref:`Adding a new action definition`.
 
-~~~~~~~~~~~~~~~~~~~~~~~~
-Thermostat:DualSetpoint
-~~~~~~~~~~~~~~~~~~~~~~~~
+Sinergym obtains a list of the schedulers available in the building model that is loaded in that 
+environment and is stored as an environment attribute. The information that appears in this dictionary has the following structure:
 
-This controller has the next values in its definition:
+.. code:: python
 
-- *name*: DualSetpoint resource name (str).
+    # env.schedulers
+    {  
+      <scheduler_name>:{'Type':<scheduler_value_type>,
+                        'Object1':{'':,'':,'':},
+                        'Object2':{'':,'':,'':},
+                        ...
+                       },
+      ...
+    }
 
-- *heating_name*: Heating setpoint name. This name should be an action variable defined 
-  in your environment (str).
+For each scheduler found, a new entry is created in the dictionary in which the **key** is its 
+name, the data **type** and **objects** in which the value of the scheduler is used are included. 
+Sinergym will use this information to perform the automatic changes you want in the action definition 
+we have seen above.
 
-- *cooling_name*: Cooling setpoint name. This name should be an action variable defined
-  in your environment (str).
+Sinergym replaces the original scheduler with an external interface created and used in each of the 
+objects it handled. The data type does not need to be specified, since Sinergym uses the data type 
+of the replaced scheduler.
 
-- *heating_initial_value*: Initial value the heating thermostat initialize the simulation with (float).
+This allows any component to be handled by an external interface with a simple definition by the user. 
+Although it is first necessary to know the components that are included in the building.
 
-- *cooling_initial_value*: Initial value the cooling thermostat initialize the simulation with (float).
-
-- *zones*: An thermostat can manage several building zones at the same time. Then, you 
-  can specify one or more zones (List(str)). If the zone name specified is not 
-  exist in building, Sinergym will report the error.
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ThermostatSetpoint:SingleHeating
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This controller has the next values in its definition:
-
-- *name*: SingleHeating Setpoint resource name (str).
-
-- *heating_name*: Heating setpoint name. This name should be an action variable defined 
-  in your environment (str).
-
-- *heating_initial_value*: Initial value the heating thermostat initialize the simulation with.
-
-- *zones*: An thermostat can manage several building zones at the same time. Then, you 
-  can specify one or more zones (List(str)). If the zone name specified is not 
-  exist in building, Sinergym will report the error.
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ThermostatSetpoint:SingleCooling
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This controller has the next values in its definition:
-
-- *name*: SingleCooling Setpoint resource name (str).
-
-- *cooling_name*: Cooling setpoint name. This name should be an action variable defined
-  in your environment (str).
-
-- *cooling_initial_value*: Initial value the cooling thermostat initialize the simulation with.
-
-- *zones*: An thermostat can manage several building zones at the same time. Then, you 
-  can specify one or more zones (List(str)). If the zone name specified is not 
-  exist in building, Sinergym will report the error.
-
-For an example about how to use it, see :ref:`Adding a new action definition`.
-
-.. note:: If you want to create your own controller type compatibilities, 
-          please see the method ``adapt_idf_to_action_definition`` from 
-          `Config class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/config.py>`__.
+If you do not want to read directly the dictionary of ``env.schedulers``, it is also possible to export 
+a pdf with such information in a better presented form to study those things that you want to manage. 
+For an example about how to use it, see :ref:`Getting information about building model with Sinergym`.
 
 Extra configuration
 ===================
@@ -416,7 +385,7 @@ The main steps you have to follow are the next:
    available in the simulation before starting. In order to be able to do these checks, 
    you need to copy **RDD file** with the same name than *IDF* file (except extension) 
    to `variables <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/variables>`__. 
-   To obtain this **RDD file** you have to run a simulation with *Energyplus* directly 
+   To obtain this **RDD file**, you have to run a simulation with *Energyplus* directly 
    and extract from output folder. 
    Make sure that **Output:VariableDictionary** object in *IDF* has the value *Regular* 
    in order to *RDD* file has the correct format for *Sinergym*.

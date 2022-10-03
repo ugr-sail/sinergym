@@ -274,3 +274,25 @@ def test_rm_past_history_dir(config):
     n_dir = len([i for i in os.listdir(config.experiment_path)
                  if os.path.isdir(os.path.join(config.experiment_path, i))])
     assert n_dir == 10
+
+
+def test_get_schedulers(config):
+    # Testing scheduler attribute structure is correct
+    assert len(config.schedulers) == len(config.building.Schedule_Compact)
+    for scheduler_name, definition in config.schedulers.items():
+        assert isinstance(scheduler_name, str)
+        assert isinstance(definition, dict)
+        assert isinstance(definition['Type'], str)
+        for key, value in definition.items():
+            if key != 'Type':
+                assert 'Object' in key
+                assert isinstance(value, dict)
+                assert set(['object_name', 'object_field_name',
+                           'object_type']) == set(value.keys())
+                assert isinstance(
+                    value['object_name'],
+                    str) and isinstance(
+                    value['object_field_name'],
+                    str) and isinstance(
+                    value['object_type'],
+                    str)

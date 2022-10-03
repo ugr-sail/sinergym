@@ -17,7 +17,8 @@
    
       ~EplusEnv.__init__
       ~EplusEnv.close
-      ~EplusEnv.get_actuators
+      ~EplusEnv.get_schedulers
+      ~EplusEnv.get_zones
       ~EplusEnv.render
       ~EplusEnv.reset
       ~EplusEnv.seed

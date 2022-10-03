@@ -86,6 +86,9 @@ class Config(object):
             lambda name: name.split(' [')[0],
             data['Variable Name [Units]'].tolist()))
 
+        # Extract schedulers available in building model
+        self.schedulers = self.get_schedulers()
+
         # Check observation variables definition
         self._check_observation_variables()
         # Check config definition
@@ -208,97 +211,27 @@ class Config(object):
                 runperiod.end_year = int(self.config['runperiod'][5])
 
     def adapt_idf_to_action_definition(self) -> None:
-        """If action_definition is supported by Sinergym, this method will update building model in order to adapt components to external Interface.
+        """Interpret action definition and apply changes in IDF in order to control schedulers specified.
         """
         if self.action_definition is not None:
-            for controller_type, controllers in self.action_definition.items():
-                # ThermostatSetpoint:DualSetpoint IDF Management
-                if controller_type == 'ThermostatSetpoint:DualSetpoint':
-                    for controller in controllers:
-                        # Create Ptolomy variables
-                        self.building.ExternalInterface_Schedule.add(
-                            name=controller['heating_name'],
-                            schedule_type_limits_name='Temperature',
-                            initial_value=controller['heating_initial_value'])
-                        self.building.ExternalInterface_Schedule.add(
-                            name=controller['cooling_name'],
-                            schedule_type_limits_name='Temperature',
-                            initial_value=controller['cooling_initial_value'])
-                        # Create a ThermostatSetpoint:DualSetpoint object
-                        self.building.ThermostatSetpoint_DualSetpoint.add(
-                            name=controller['name'],
-                            heating_setpoint_temperature_schedule_name=controller['heating_name'],
-                            cooling_setpoint_temperature_schedule_name=controller['cooling_name'])
-                        # Link in zones required
-                        for zone_control in self.building.ZoneControl_Thermostat:
-                            # If zone specified in zone_control is included
-                            # in out DualSetpoint:
-                            if isinstance(controller['zones'], list):
-                                if zone_control.zone_or_zonelist_name.name.lower() in list(
-                                        map(lambda zone: zone.lower(), controller['zones'])):
-                                    self._set_thermostat_zone_control(
-                                        zone_control, controller_type, controller)
-                            elif isinstance(controller['zones'], str) and (controller['zones'].lower() == 'all' or controller['zones'] == '*'):
-                                self._set_thermostat_zone_control(
-                                    zone_control, controller_type, controller)
-                            else:
-                                raise RuntimeError(
-                                    'Controller {} zones specified unknown.'.format(
-                                        controller['name']))
-                elif controller_type == 'ThermostatSetpoint:SingleHeating':
-                    for controller in controllers:
-                        # Create Ptolomy variables
-                        self.building.ExternalInterface_Schedule.add(
-                            name=controller['heating_name'],
-                            schedule_type_limits_name='Temperature',
-                            initial_value=controller['heating_initial_value'])
-                        # Create a ThermostatSetpoint:SigleHeating object
-                        self.building.ThermostatSetpoint_SingleHeating.add(
-                            name=controller['name'],
-                            setpoint_temperature_schedule_name=controller['heating_name'])
-                        # Link in zones required
-                        for zone_control in self.building.ZoneControl_Thermostat:
-                            # If zone specified in zone_control is included
-                            # in out DualSetpoint:
-                            if isinstance(controller['zones'], list):
-                                if zone_control.zone_or_zonelist_name.name.lower() in list(
-                                        map(lambda zone: zone.lower(), controller['zones'])):
-                                    self._set_thermostat_zone_control(
-                                        zone_control, controller_type, controller)
-                            elif isinstance(controller['zones'], str) and (controller['zones'].lower() == 'all' or controller['zones'] == '*'):
-                                self._set_thermostat_zone_control(
-                                    zone_control, controller_type, controller)
-                            else:
-                                raise RuntimeError(
-                                    'Controller {} zones specified unknown.'.format(
-                                        controller['name']))
-                elif controller_type == 'ThermostatSetpoint:SingleCooling':
-                    for controller in controllers:
-                        # Create Ptolomy variables
-                        self.building.ExternalInterface_Schedule.add(
-                            name=controller['cooling_name'],
-                            schedule_type_limits_name='Temperature',
-                            initial_value=controller['cooling_initial_value'])
-                        # Create a ThermostatSetpoint:SigleHeating object
-                        self.building.ThermostatSetpoint_SingleCooling.add(
-                            name=controller['name'],
-                            setpoint_temperature_schedule_name=controller['cooling_name'])
-                        # Link in zones required
-                        for zone_control in self.building.ZoneControl_Thermostat:
-                            # If zone specified in zone_control is included
-                            # in out DualSetpoint:
-                            if isinstance(controller['zones'], list):
-                                if zone_control.zone_or_zonelist_name.name.lower() in list(
-                                        map(lambda zone: zone.lower(), controller['zones'])):
-                                    self._set_thermostat_zone_control(
-                                        zone_control, controller_type, controller)
-                            elif isinstance(controller['zones'], str) and (controller['zones'].lower() == 'all' or controller['zones'] == '*'):
-                                self._set_thermostat_zone_control(
-                                    zone_control, controller_type, controller)
-                            else:
-                                raise RuntimeError(
-                                    'Controller {} zones specified unknown.'.format(
-                                        controller['name']))
+            # Iterate in schedulers to control in action definition
+            for original_sch_name, new_sch in self.action_definition.items():
+                # Search original scheduler information in building model
+                original_sch = self.schedulers[original_sch_name.lower()]
+                # Add external interface to IDF
+                self.building.ExternalInterface_Schedule.add(
+                    name=new_sch['name'],
+                    schedule_type_limits_name=original_sch['Type'],
+                    initial_value=new_sch['initial_value'])
+                # Look for scheduler elements where appear and substitute for new
+                # one name
+                for key, element in original_sch.items():
+                    if isinstance(element, dict):
+                        table_name = element['object_type'].replace(
+                            ':', '_').replace(' ', '_').lower()
+                        record = self.building._tables[table_name].one(
+                            lambda record: record.name == element['object_name'])
+                        record[element['object_field_name']] = new_sch['name']
 
     def save_variables_cfg(self) -> str:
         """This method saves current XML variables tree model into a variables.cfg file.
@@ -343,6 +276,36 @@ class Config(object):
         else:
             raise RuntimeError(
                 '[Simulator Config] Episode path should be set before saving building model.')
+
+    def get_schedulers(self) -> Dict[str, Any]:
+        """Extract all schedulers available in the building model to be controlled.
+
+        Returns:
+            Dict[str, Any]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).
+        """
+        result = {}
+        schedule_tables = [
+            self.building.schedule_compact,
+            self.building.schedule_year]
+        for schedule_table in schedule_tables:
+            for schedule in schedule_table:
+                object_index = 1
+                result[schedule.name] = {}
+                result[schedule.name]['Type'] = schedule.schedule_type_limits_name.name
+                # Extract objects where scheduler is present as value field
+                for table in self.building:
+                    if table.get_name() != 'Schedule:Compact' and table.get_name() != 'Schedule:Year':
+                        for record in table:
+                            for i, value in enumerate(record):
+                                if isinstance(value, Record):
+                                    if (value._table._dev_descriptor.table_name == 'Schedule:Compact' or value._table._dev_descriptor.table_name ==
+                                            'Schedule:Year') and value.name == schedule.name:
+                                        result[schedule.name]['Object' + str(object_index)] = {'object_name': record.name,
+                                                                                               'object_field_name': record._table._dev_descriptor._field_descriptors[i].ref,
+                                                                                               'object_type': record._table._dev_descriptor.table_name}
+                                        object_index += 1
+
+        return result
 
     # ---------------------------------------------------------------------------- #
     #                        EPW and Weather Data management                       #
@@ -477,31 +440,6 @@ class Config(object):
             end_month,
             end_day)
 
-    def _get_actuators(self) -> Dict[str, Any]:
-        """Extract all actuators available in the building model
-
-        Returns:
-            Dict[str, Any]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).
-        """
-        result = {}
-        for schedule in self.building.schedule_compact:
-            object_index = 1
-            result[schedule.name] = {}
-            result[schedule.name]['Type'] = schedule.schedule_type_limits_name.name
-            # Extract objects where scheduler is present as value field
-            for table in self.building:
-                if table.get_name() != 'Schedule:Compact':
-                    for record in table:
-                        for i, value in enumerate(record):
-                            if isinstance(value, Record):
-                                if value._table._dev_descriptor.table_name == 'Schedule:Compact' and value.name == schedule.name:
-                                    result[schedule.name]['Object' + str(object_index)] = {'object_name': record.name,
-                                                                                           'object_field_name': record._table._dev_descriptor._field_descriptors[i].ref,
-                                                                                           'object_type': record._table._dev_descriptor.table_name}
-                                    object_index += 1
-
-        return result
-
     # ---------------------------------------------------------------------------- #
     #                  Working Folder for Simulation Management                    #
     # ---------------------------------------------------------------------------- #
@@ -632,81 +570,35 @@ class Config(object):
                 # Check config parameters values
                 # Timesteps
                 if config_key == 'timesteps_per_hour':
-                    assert self.config[config_key] > 0, 'timestep_per_hour must be a positive int value.'
+                    assert self.config[config_key] > 0, 'Extra Config: timestep_per_hour must be a positive int value.'
                 # Runperiod
                 elif config_key == 'runperiod':
                     assert isinstance(
                         self.config[config_key], tuple) and len(
-                        self.config[config_key]) == 6, 'Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).'
+                        self.config[config_key]) == 6, 'Extra Config: Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).'
                 else:
                     raise KeyError(
-                        F'Key name specified in config called [{config_key}] has no support in Sinergym.')
+                        F'Extra Config: Key name specified in config called [{config_key}] has no support in Sinergym.')
         # ACTION DEFINITION
         if self.action_definition is not None:
-            for component_name in self.action_definition.keys():
-                # Check ThermostatSetpoint:DualSetpoint
-                if component_name == 'ThermostatSetpoint:DualSetpoint':
-                    for thermostat in self.action_definition[component_name]:
-                        # Check Thermostates fields
-                        assert set(thermostat.keys()) == set(['name', 'heating_name', 'cooling_name', 'heating_initial_value',
-                                                              'cooling_initial_value', 'zones']), 'Action definition: {} key names incorrect, check them please.'.format(component_name)
-                        assert thermostat['heating_name'] in self.variables['action'], 'Action definition: {} should be in action variables.'.format(
-                            thermostat['heating_name'])
-                        assert thermostat['cooling_name'] in self.variables['action'], 'Action definition: {} should be in action variables.'.format(
-                            thermostat['cooling_name'])
-                        assert isinstance(thermostat['heating_initial_value'], float) and isinstance(
-                            thermostat['cooling_initial_value'], float), 'Action_definition: Initial values for {} must be float values.'. format(component_name)
-                        assert isinstance(
-                            thermostat['zones'], list) or isinstance(
-                            thermostat['zones'], str), 'Action definition: thermostat zones must be a list or a str.'
-                        if isinstance(thermostat['zones'], list):
-                            for zone in thermostat['zones']:
-                                assert zone.lower() in self.idf_zone_names, 'Action definition: Zone called {} does not exist in IDF building model.'.format(
-                                    zone)
-                        elif isinstance(thermostat['zones'], str):
-                            assert thermostat['zones'] == '*' or thermostat['zones'].lower(
-                            ) == 'all', 'Action definition: If thermostat zones is a str instead of a list, must be "*" or "all" value, not {}.'.format(thermostat['zones'])
-                elif component_name == 'ThermostatSetpoint:SingleHeating':
-                    for thermostat in self.action_definition[component_name]:
-                        # Check Thermostates fields
-                        assert set(thermostat.keys()) == set(['name', 'heating_name', 'heating_initial_value', 'zones']
-                                                             ), 'Action definition: {} key names incorrect, check them please.'.format(component_name)
-                        assert thermostat['heating_name'] in self.variables['action'], 'Action definition: {} should be in action variables.'.format(
-                            thermostat['heating_name'])
-                        assert isinstance(
-                            thermostat['heating_initial_value'], float), 'Action_definition: Initial values for {} must be float values.'. format(component_name)
-                        assert isinstance(
-                            thermostat['zones'], list) or isinstance(
-                            thermostat['zones'], str), 'Action definition: thermostat zones must be a list or a str.'
-                        if isinstance(thermostat['zones'], list):
-                            for zone in thermostat['zones']:
-                                assert zone.lower() in self.idf_zone_names, 'Action definition: Zone called {} does not exist in IDF building model.'.format(
-                                    zone)
-                        elif isinstance(thermostat['zones'], str):
-                            assert thermostat['zones'] == '*' or thermostat['zones'].lower(
-                            ) == 'all', 'Action definition: If thermostat zones is a str instead of a list, must be "*" or "all" value, not {}.'.format(thermostat['zones'])
-                elif component_name == 'ThermostatSetpoint:SingleCooling':
-                    for thermostat in self.action_definition[component_name]:
-                        # Check Thermostates fields
-                        assert set(thermostat.keys()) == set(['name', 'cooling_name', 'cooling_initial_value', 'zones']
-                                                             ), 'Action definition: {} key names unknown, check them please.'.format(component_name)
-                        assert thermostat['cooling_name'] in self.variables['action'], 'Action definition: {} should be in action variables.'.format(
-                            thermostat['cooling_name'])
-                        assert isinstance(
-                            thermostat['cooling_initial_value'], float), 'Action_definition: Initial values for {} must be float values.'. format(component_name)
-                        assert isinstance(
-                            thermostat['zones'], list) or isinstance(
-                            thermostat['zones'], str), 'Action definition: thermostat zones must be a list or a str.'
-                        if isinstance(thermostat['zones'], list):
-                            for zone in thermostat['zones']:
-                                assert zone.lower() in self.idf_zone_names, 'Action definition: Zone called {} does not exist in IDF building model.'.format(
-                                    zone)
-                        elif isinstance(thermostat['zones'], str):
-                            assert thermostat['zones'] == '*' or thermostat['zones'].lower(
-                            ) == 'all', 'Action definition: If thermostat zones is a str instead of a list, must be "*" or "all" value, not {}.'.format(thermostat['zones'])
-                else:
-                    raise KeyError(
-                        F'Controller type specified in action_definition called [{component_name}] has no support in Sinergym.')
+            for original_sch_name, new_sch in self.action_definition.items():
+                # Check action definition format
+                assert isinstance(
+                    original_sch_name, str), 'Action definition: Keys must be str.'
+                assert isinstance(
+                    new_sch, dict), 'Action definition: New scheduler definition must be a dict.'
+                assert set(
+                    new_sch.keys()) == set(
+                    ['name', 'initial_value']), 'Action definition: keys in new scheduler definition must be name and initial_value.'
+                assert isinstance(
+                    new_sch['name'], str), 'Action definition: Name field in new scheduler must be a str element.'
+                # Check action definition component is in schedulers available
+                # in building model
+                assert original_sch_name.lower() in self.schedulers.keys(
+                ), 'Action definition: Object called {} is not an existing component in building model.'.format(original_sch_name)
+                # Check new variable is present in action variables
+                assert new_sch['name'] in self.variables['action'], 'Action definition: {} external variable should be in action variables.'.format(
+                    new_sch['name'])
 
     def _check_observation_variables(self) -> None:
         """This method checks whether observation variables zones are available in building model definition
@@ -730,26 +622,26 @@ class Config(object):
     #                                    OTHERS                                    #
     # ---------------------------------------------------------------------------- #
 
-    def _set_thermostat_zone_control(self,
-                                     zone_control: Record,
-                                     controller_type: str,
-                                     controller: Dict[str,
-                                                      Any]) -> None:
-        """Modify Thermostat:ZoneControl object from IDF model in order to set a new controller
+    # def _set_thermostat_zone_control(self,
+    #                                  zone_control: Record,
+    #                                  controller_type: str,
+    #                                  controller: Dict[str,
+    #                                                   Any]) -> None:
+    #     """Modify Thermostat:ZoneControl object from IDF model in order to set a new controller
 
-        Args:
-            zone_control (Record): Zone Control to be modified.
-            controller_type (str): Controller type you want to change.
-            controller (Dict[str, Any]): controller to set in Zone Control.
-        """
-        # We iterate all record fields searching
-        # controller_type value
-        for i in range(len(get_record_keys(zone_control))):
-            if isinstance(zone_control[i], str):
-                if zone_control[i].lower() == controller_type.lower():
-                    # Then, the next field will be always the DualSetpoint
-                    # thermostat name, so we change it
-                    zone_control[i + 1] = controller['name']
-                    # We do not need to search more fields in that record
-                    # specifically, so break it
-                    break
+    #     Args:
+    #         zone_control (Record): Zone Control to be modified.
+    #         controller_type (str): Controller type you want to change.
+    #         controller (Dict[str, Any]): controller to set in Zone Control.
+    #     """
+    #     # We iterate all record fields searching
+    #     # controller_type value
+    #     for i in range(len(get_record_keys(zone_control))):
+    #         if isinstance(zone_control[i], str):
+    #             if zone_control[i].lower() == controller_type.lower():
+    #                 # Then, the next field will be always the DualSetpoint
+    #                 # thermostat name, so we change it
+    #                 zone_control[i + 1] = controller['name']
+    #                 # We do not need to search more fields in that record
+    #                 # specifically, so break it
+    #                 break

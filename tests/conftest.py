@@ -268,16 +268,7 @@ def config(idf_path, weather_path2, variables_5zone):
         env_name=env_name,
         variables=variables_5zone,
         max_ep_store=max_ep_store,
-        action_definition={
-            'ThermostatSetpoint:DualSetpoint': [{
-                'name': 'Space1-DualSetP-RL',
-                'heating_name': 'Space1-HtgSetP-RL',
-                'cooling_name': 'Space1-ClgSetP-RL',
-                'heating_initial_value': 21.0,
-                'cooling_initial_value': 25.0,
-                'zones': ['space1-1']
-            }]
-        },
+        action_definition=DEFAULT_5ZONE_ACTION_DEFINITION,
         extra_config={
             'timesteps_per_hour': 2,
             'runperiod': (1, 2, 1993, 2, 3, 1993),
