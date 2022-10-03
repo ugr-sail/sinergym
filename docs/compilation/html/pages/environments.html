@@ -62,12 +62,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#maximum-episode-data-stored-in-sinergym-output">Maximum Episode Data Stored in Sinergym Output</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#observation-action-spaces">Observation/action spaces</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#environment-name">Environment name</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#action-definition">Action definition</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#thermostat-dualsetpoint">Thermostat:DualSetpoint</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#thermostatsetpoint-singleheating">ThermostatSetpoint:SingleHeating</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#thermostatsetpoint-singlecooling">ThermostatSetpoint:SingleCooling</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#action-definition">Action definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#extra-configuration">Extra configuration</a></li>
 </ul>
 </li>
@@ -89,7 +84,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/schedulers.html">Controlling schedulers in building models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">Logger Wrapper personalization/configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">Rule Controller example</a></li>
@@ -601,6 +595,11 @@ table above or creating a new one.</p>
         <span class="p">)</span>
 
         <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                       Detection of controllable planners                     #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedulers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_schedulers</span><span class="p">()</span>
+
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
         <span class="c1">#        Adding simulation date to observation (not needed in simulator)       #</span>
         <span class="c1"># ---------------------------------------------------------------------------- #</span>
 
@@ -736,9 +735,9 @@ so space must be reserved for these fields in the definition. If an inconsistenc
 found, <em>Sinergym</em> will notify you so that it can be fixed easily.</p></li>
 <li><p><strong>action_variables</strong>: List of the action variables that simulator is going to process
 like schedule control actuator in the building model. These variables
-must be defined in the building model (<em>IDF</em> file) correctly before simulation. You can
-modify <strong>manually</strong> in the <em>IDF</em> file or using our <strong>action definition</strong> field
-in which you set what you want to control and <em>Sinergym</em>
+must be defined in the building model (<em>IDF</em> file) correctly before simulation like an
+<code class="docutils literal notranslate"><span class="pre">external</span> <span class="pre">interface</span></code>. You can modify <strong>manually</strong> in the <em>IDF</em> file or using our
+<strong>action definition</strong> field in which you set what you want to control and <em>Sinergym</em>
 takes care of modifying this file for you automatically. For more information about
 this automatic adaptation in section <a class="reference internal" href="#action-definition"><span class="std std-ref">Action definition</span></a>.</p></li>
 <li><p><strong>action_space</strong>: Definition of the action space following the <strong>OpenAI gym standard</strong>.
@@ -802,62 +801,38 @@ in <a class="reference internal" href="#observation-action-spaces"><span class="
 <p>For this purpose,  we have available <em>action_definition</em> parameter in environments. Its value is a
 dictionary with the next structure:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">action_definition_example</span><span class="o">=</span><span class="p">{</span>
-  <span class="o">&lt;</span><span class="n">controller_type</span><span class="o">&gt;</span><span class="p">:[</span><span class="o">&lt;</span><span class="n">controller1_definition</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">controller2_definition</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
-  <span class="o">&lt;</span><span class="n">other_type</span><span class="o">&gt;</span><span class="p">:</span> <span class="o">...</span>
+  <span class="o">&lt;</span><span class="n">Original_IDF_scheduler_name</span><span class="o">&gt;</span><span class="p">:</span><span class="s1">&#39;name&#39;</span><span class="p">:{</span><span class="o">&lt;</span><span class="n">external_variable_name</span><span class="o">&gt;</span><span class="p">,</span><span class="s1">&#39;initial_value&#39;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">},</span>
+  <span class="o">...</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">&lt;controller_definition&gt;</span></code> will depend on the specific type of controller that we are
-going to create, we have the next support:</p>
-<section id="thermostat-dualsetpoint">
-<h4>Thermostat:DualSetpoint<a class="headerlink" href="#thermostat-dualsetpoint" title="Permalink to this heading"></a></h4>
-<p>This controller has the next values in its definition:</p>
-<ul class="simple">
-<li><p><em>name</em>: DualSetpoint resource name (str).</p></li>
-<li><p><em>heating_name</em>: Heating setpoint name. This name should be an action variable defined
-in your environment (str).</p></li>
-<li><p><em>cooling_name</em>: Cooling setpoint name. This name should be an action variable defined
-in your environment (str).</p></li>
-<li><p><em>heating_initial_value</em>: Initial value the heating thermostat initialize the simulation with (float).</p></li>
-<li><p><em>cooling_initial_value</em>: Initial value the cooling thermostat initialize the simulation with (float).</p></li>
-<li><p><em>zones</em>: An thermostat can manage several building zones at the same time. Then, you
-can specify one or more zones (List(str)). If the zone name specified is not
-exist in building, Sinergym will report the error.</p></li>
-</ul>
-</section>
-<section id="thermostatsetpoint-singleheating">
-<h4>ThermostatSetpoint:SingleHeating<a class="headerlink" href="#thermostatsetpoint-singleheating" title="Permalink to this heading"></a></h4>
-<p>This controller has the next values in its definition:</p>
-<ul class="simple">
-<li><p><em>name</em>: SingleHeating Setpoint resource name (str).</p></li>
-<li><p><em>heating_name</em>: Heating setpoint name. This name should be an action variable defined
-in your environment (str).</p></li>
-<li><p><em>heating_initial_value</em>: Initial value the heating thermostat initialize the simulation with.</p></li>
-<li><p><em>zones</em>: An thermostat can manage several building zones at the same time. Then, you
-can specify one or more zones (List(str)). If the zone name specified is not
-exist in building, Sinergym will report the error.</p></li>
-</ul>
-</section>
-<section id="thermostatsetpoint-singlecooling">
-<h4>ThermostatSetpoint:SingleCooling<a class="headerlink" href="#thermostatsetpoint-singlecooling" title="Permalink to this heading"></a></h4>
-<p>This controller has the next values in its definition:</p>
-<ul class="simple">
-<li><p><em>name</em>: SingleCooling Setpoint resource name (str).</p></li>
-<li><p><em>cooling_name</em>: Cooling setpoint name. This name should be an action variable defined
-in your environment (str).</p></li>
-<li><p><em>cooling_initial_value</em>: Initial value the cooling thermostat initialize the simulation with.</p></li>
-<li><p><em>zones</em>: An thermostat can manage several building zones at the same time. Then, you
-can specify one or more zones (List(str)). If the zone name specified is not
-exist in building, Sinergym will report the error.</p></li>
-</ul>
-<p>For an example about how to use it, see <a class="reference internal" href="usage-example.html#adding-a-new-action-definition"><span class="std std-ref">Adding a new action definition</span></a>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you want to create your own controller type compatibilities,
-please see the method <code class="docutils literal notranslate"><span class="pre">adapt_idf_to_action_definition</span></code> from
-<a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/config.py">Config class</a>.</p>
+<p>For an example about how to use this action definition functionality,
+visit section <a class="reference internal" href="usage-example.html#adding-a-new-action-definition"><span class="std std-ref">Adding a new action definition</span></a>.</p>
+<p>Sinergym obtains a list of the schedulers available in the building model that is loaded in that
+environment and is stored as an environment attribute. The information that appears in this dictionary has the following structure:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># env.schedulers</span>
+<span class="p">{</span>
+  <span class="o">&lt;</span><span class="n">scheduler_name</span><span class="o">&gt;</span><span class="p">:{</span><span class="s1">&#39;Type&#39;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">scheduler_value_type</span><span class="o">&gt;</span><span class="p">,</span>
+                    <span class="s1">&#39;Object1&#39;</span><span class="p">:{</span><span class="s1">&#39;&#39;</span><span class="p">:,</span><span class="s1">&#39;&#39;</span><span class="p">:,</span><span class="s1">&#39;&#39;</span><span class="p">:},</span>
+                    <span class="s1">&#39;Object2&#39;</span><span class="p">:{</span><span class="s1">&#39;&#39;</span><span class="p">:,</span><span class="s1">&#39;&#39;</span><span class="p">:,</span><span class="s1">&#39;&#39;</span><span class="p">:},</span>
+                    <span class="o">...</span>
+                   <span class="p">},</span>
+  <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
 </div>
-</section>
+<p>For each scheduler found, a new entry is created in the dictionary in which the <strong>key</strong> is its
+name, the data <strong>type</strong> and <strong>objects</strong> in which the value of the scheduler is used are included.
+Sinergym will use this information to perform the automatic changes you want in the action definition
+we have seen above.</p>
+<p>Sinergym replaces the original scheduler with an external interface created and used in each of the
+objects it handled. The data type does not need to be specified, since Sinergym uses the data type
+of the replaced scheduler.</p>
+<p>This allows any component to be handled by an external interface with a simple definition by the user.
+Although it is first necessary to know the components that are included in the building.</p>
+<p>If you do not want to read directly the dictionary of <code class="docutils literal notranslate"><span class="pre">env.schedulers</span></code>, it is also possible to export
+a pdf with such information in a better presented form to study those things that you want to manage.
+For an example about how to use it, see <a class="reference internal" href="notebooks/change_environment.html#Getting-information-about-building-model-with-Sinergym"><span class="std std-ref">Getting information about building model with Sinergym</span></a>.</p>
 </section>
 <section id="extra-configuration">
 <h3>Extra configuration<a class="headerlink" href="#extra-configuration" title="Permalink to this heading"></a></h3>
@@ -891,7 +866,7 @@ read the <code class="docutils literal notranslate"><span class="pre">DesignDay<
 available in the simulation before starting. In order to be able to do these checks,
 you need to copy <strong>RDD file</strong> with the same name than <em>IDF</em> file (except extension)
 to <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/variables">variables</a>.
-To obtain this <strong>RDD file</strong> you have to run a simulation with <em>Energyplus</em> directly
+To obtain this <strong>RDD file</strong>, you have to run a simulation with <em>Energyplus</em> directly
 and extract from output folder.
 Make sure that <strong>Output:VariableDictionary</strong> object in <em>IDF</em> has the value <em>Regular</em>
 in order to <em>RDD</em> file has the correct format for <em>Sinergym</em>.</p></li>

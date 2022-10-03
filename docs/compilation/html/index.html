@@ -65,7 +65,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pages/notebooks/basic_example.html">Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/schedulers.html">Controlling schedulers in building models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/notebooks/wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/notebooks/personalize_loggerwrapper.html">Logger Wrapper personalization/configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/notebooks/rule_controller_example.html">Rule Controller example</a></li>
@@ -170,16 +169,12 @@ adapted to specification of each simulation by the user. For example, <code clas
 simulation starts by <em>Sinergym</em>, this definition depends on action and observation space and variables defined.
 In short, <em>Sinergym</em> automates the whole process of model adaptation so that the user
 only has to define what he wants for his environment.</p></li>
-<li><p><strong>Automatic external interface integration for actions</strong>. As far as building model (<em>IDF</em>) adaptation
-is concerned, it is not enough to set up an external interface and set user-specified
-variable names. It is also necessary to make certain adjustments to the building components to be
-controlled, so that they use the external variables defined by the user instead of the default
-controllers implicitly provided by the building model. To do this, <em>Sinergym</em> provides a functionality
-that can adapt actuators to the desired building zones by providing a specification by the user.
-The building model will be manipulated based on this information automatically. In other words,
-if the components to be controlled are directly supported by <em>Sinergym</em>, the building model can be modified
-accordingly to be controlled, otherwise the user will have to modify the <em>IDF</em> file manually. More actuator
-types will be directly supported by <em>Sinergym</em> in the future.</p></li>
+<li><p><strong>Automatic external interface integration for actions</strong>. Sinergym provides functionality to obtain information
+about the environments such as the zones or the schedulers available in the environment model. Using that information,
+which is possible to export in a excel, users can know which controllers are available in the building and, then, control
+them with an external interface from an agent. To do this, users will make an <strong>action definition</strong> in which it is
+indicated which default controllers they want to replace in a specific format and <em>Sinergym</em> will take care of the relevant internal
+changes in the model.</p></li>
 <li><p><strong>Stable Baseline 3 Integration</strong>. Some functionalities like callbacks
 have been customized by our team in order to test easily these environments
 with deep reinforcement learning algorithms.
@@ -195,6 +190,8 @@ in real-time.</p></li>
 <li><p><strong>Notebooks examples</strong>. <em>Sinergym</em> develops code in notebook format with the purpose of offering use cases to
 the users in order to help them become familiar with the tool. They are constantly updated, along with the updates
 and improvements of the tool itself.</p></li>
+<li><p>This project is accompanied by extensive <strong>documentation</strong>, <strong>unit tests</strong> and <strong>github actions workflows</strong> to make
+<em>Sinergym</em> an efficient ecosystem for both understanding and development.</p></li>
 <li><p>Many more!</p></li>
 </ul>
 <div class="admonition note">

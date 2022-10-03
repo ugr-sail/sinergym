@@ -77,7 +77,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/schedulers.html">Controlling schedulers in building models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">Logger Wrapper personalization/configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">Rule Controller example</a></li>
@@ -182,19 +181,22 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.close" title="sinergym.envs.eplus_env.EplusEnv.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
 <td><p>End simulation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.get_actuators" title="sinergym.envs.eplus_env.EplusEnv.get_actuators"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_actuators</span></code></a>([path])</p></td>
-<td><p>Extract all actuators available in the building model</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.get_schedulers" title="sinergym.envs.eplus_env.EplusEnv.get_schedulers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_schedulers</span></code></a>([path])</p></td>
+<td><p>Extract all schedulers available in the building model to be controlled.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.render" title="sinergym.envs.eplus_env.EplusEnv.render"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code></a>([mode])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.get_zones" title="sinergym.envs.eplus_env.EplusEnv.get_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_zones</span></code></a>()</p></td>
+<td><p>Get the zone names available in the building model of that environment.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.render" title="sinergym.envs.eplus_env.EplusEnv.render"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code></a>([mode])</p></td>
 <td><p>Environment rendering.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.reset" title="sinergym.envs.eplus_env.EplusEnv.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.reset" title="sinergym.envs.eplus_env.EplusEnv.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>()</p></td>
 <td><p>Reset the environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">seed</span></code>([seed])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">seed</span></code>([seed])</p></td>
 <td><p>Sets the seed for this env's random number generator(s).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.step" title="sinergym.envs.eplus_env.EplusEnv.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.step" title="sinergym.envs.eplus_env.EplusEnv.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
 <td><p>Sends action to the environment</p></td>
 </tr>
 </tbody>
@@ -233,9 +235,9 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.get_actuators">
-<span class="sig-name descname"><span class="pre">get_actuators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.get_actuators" title="Permalink to this definition"></a></dt>
-<dd><p>Extract all actuators available in the building model</p>
+<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.get_schedulers">
+<span class="sig-name descname"><span class="pre">get_schedulers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.get_schedulers" title="Permalink to this definition"></a></dt>
+<dd><p>Extract all schedulers available in the building model to be controlled.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – If path is specified, then this method export a xlsx file version in addition to return the dictionary.</p>
@@ -245,6 +247,20 @@
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.get_zones">
+<span class="sig-name descname"><span class="pre">get_zones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.get_zones" title="Permalink to this definition"></a></dt>
+<dd><p>Get the zone names available in the building model of that environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of the zone names.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[str]</p>
 </dd>
 </dl>
 </dd></dl>

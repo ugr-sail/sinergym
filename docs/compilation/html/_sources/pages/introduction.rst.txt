@@ -51,16 +51,12 @@ The main functionalities of *Sinergym* are the following:
    In short, *Sinergym* automates the whole process of model adaptation so that the user 
    only has to define what he wants for his environment.
 
--  **Automatic external interface integration for actions**. As far as building model (*IDF*) adaptation 
-   is concerned, it is not enough to set up an external interface and set user-specified
-   variable names. It is also necessary to make certain adjustments to the building components to be 
-   controlled, so that they use the external variables defined by the user instead of the default 
-   controllers implicitly provided by the building model. To do this, *Sinergym* provides a functionality 
-   that can adapt actuators to the desired building zones by providing a specification by the user. 
-   The building model will be manipulated based on this information automatically. In other words, 
-   if the components to be controlled are directly supported by *Sinergym*, the building model can be modified 
-   accordingly to be controlled, otherwise the user will have to modify the *IDF* file manually. More actuator 
-   types will be directly supported by *Sinergym* in the future.
+-  **Automatic external interface integration for actions**. Sinergym provides functionality to obtain information 
+   about the environments such as the zones or the schedulers available in the environment model. Using that information,
+   which is possible to export in a excel, users can know which controllers are available in the building and, then, control 
+   them with an external interface from an agent. To do this, users will make an **action definition** in which it is
+   indicated which default controllers they want to replace in a specific format and *Sinergym* will take care of the relevant internal 
+   changes in the model.
 
 -  **Stable Baseline 3 Integration**. Some functionalities like callbacks
    have been customized by our team in order to test easily these environments
@@ -81,6 +77,9 @@ The main functionalities of *Sinergym* are the following:
 -  **Notebooks examples**. *Sinergym* develops code in notebook format with the purpose of offering use cases to 
    the users in order to help them become familiar with the tool. They are constantly updated, along with the updates 
    and improvements of the tool itself.
+
+-  This project is accompanied by extensive **documentation**, **unit tests** and **github actions workflows** to make 
+   *Sinergym* an efficient ecosystem for both understanding and development.
 
 -  Many more!
 

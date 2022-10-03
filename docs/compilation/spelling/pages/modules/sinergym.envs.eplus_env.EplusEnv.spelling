@@ -1,1 +1,1 @@
-../sinergym/envs/eplus_env.py:docstring of sinergym.envs.eplus_env.EplusEnv.get_actuators:1: (xlsx)  If path is specified, then this method export a xlsx file version in addition to return the dictionary.
+../sinergym/envs/eplus_env.py:docstring of sinergym.envs.eplus_env.EplusEnv.get_schedulers:1: (xlsx)  If path is specified, then this method export a xlsx file version in addition to return the dictionary.

@@ -87,7 +87,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/schedulers.html">Controlling schedulers in building models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">Logger Wrapper personalization/configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">Rule Controller example</a></li>
@@ -187,7 +186,7 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.adapt_idf_to_action_definition" title="sinergym.utils.config.Config.adapt_idf_to_action_definition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adapt_idf_to_action_definition</span></code></a>()</p></td>
-<td><p>If action_definition is supported by Sinergym, this method will update building model in order to adapt components to external Interface.</p></td>
+<td><p>Interpret action definition and apply changes in IDF in order to control schedulers specified.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.adapt_idf_to_epw" title="sinergym.utils.config.Config.adapt_idf_to_epw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adapt_idf_to_epw</span></code></a>([summerday, winterday])</p></td>
 <td><p>Given a summer day name and winter day name from DDY file, this method modify IDF Location and DesingDay's in order to adapt IDF to EPW.</p></td>
@@ -201,19 +200,22 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.apply_weather_variability" title="sinergym.utils.config.Config.apply_weather_variability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_weather_variability</span></code></a>([columns, variation])</p></td>
 <td><p>Modify weather data using Ornstein-Uhlenbeck process.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.save_building_model" title="sinergym.utils.config.Config.save_building_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_building_model</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.get_schedulers" title="sinergym.utils.config.Config.get_schedulers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_schedulers</span></code></a>()</p></td>
+<td><p>Extract all schedulers available in the building model to be controlled.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.save_building_model" title="sinergym.utils.config.Config.save_building_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_building_model</span></code></a>()</p></td>
 <td><p>Take current building model and save as IDF in current env_working_dir episode folder.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.save_variables_cfg" title="sinergym.utils.config.Config.save_variables_cfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_variables_cfg</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.save_variables_cfg" title="sinergym.utils.config.Config.save_variables_cfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_variables_cfg</span></code></a>()</p></td>
 <td><p>This method saves current XML variables tree model into a variables.cfg file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.set_episode_working_dir" title="sinergym.utils.config.Config.set_episode_working_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_episode_working_dir</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.set_episode_working_dir" title="sinergym.utils.config.Config.set_episode_working_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_episode_working_dir</span></code></a>()</p></td>
 <td><p>Set episode working dir path like config attribute for current simulation execution.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.set_experiment_working_dir" title="sinergym.utils.config.Config.set_experiment_working_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_experiment_working_dir</span></code></a>(env_name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.set_experiment_working_dir" title="sinergym.utils.config.Config.set_experiment_working_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_experiment_working_dir</span></code></a>(env_name)</p></td>
 <td><p>Set experiment working dir path like config attribute for current simulation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.set_external_interface" title="sinergym.utils.config.Config.set_external_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_external_interface</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.config.Config.set_external_interface" title="sinergym.utils.config.Config.set_external_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_external_interface</span></code></a>()</p></td>
 <td><p>Set an empty external interface with Ptolemy server if is not in the current building</p></td>
 </tr>
 </tbody>
@@ -233,7 +235,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.config.Config.adapt_idf_to_action_definition">
 <span class="sig-name descname"><span class="pre">adapt_idf_to_action_definition</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.config.Config.adapt_idf_to_action_definition" title="Permalink to this definition"></a></dt>
-<dd><p>If action_definition is supported by Sinergym, this method will update building model in order to adapt components to external Interface.</p>
+<dd><p>Interpret action definition and apply changes in IDF in order to control schedulers specified.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -278,6 +280,20 @@
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.config.Config.get_schedulers">
+<span class="sig-name descname"><span class="pre">get_schedulers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.config.Config.get_schedulers" title="Permalink to this definition"></a></dt>
+<dd><p>Extract all schedulers available in the building model to be controlled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[str, Any]</p>
 </dd>
 </dl>
 </dd></dl>
