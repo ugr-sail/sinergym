@@ -98,7 +98,7 @@ class RBCDatacenter(object):
 
         # Mean temp in datacenter zones
         mean_temp = np.mean([obs_dict['Zone Air Temperature(West Zone)'],
-                            obs_dict['Zone Air Temperature(East Zone)']])
+                             obs_dict['Zone Air Temperature(East Zone)']])
 
         current_heat_setpoint = obs_dict[
             'Zone Thermostat Heating Setpoint Temperature(West Zone)']

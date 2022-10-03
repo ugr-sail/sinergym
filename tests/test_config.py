@@ -288,7 +288,7 @@ def test_get_schedulers(config):
                 assert 'Object' in key
                 assert isinstance(value, dict)
                 assert set(['object_name', 'object_field_name',
-                           'object_type']) == set(value.keys())
+                            'object_type']) == set(value.keys())
                 assert isinstance(
                     value['object_name'],
                     str) and isinstance(
