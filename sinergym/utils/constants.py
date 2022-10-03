@@ -161,24 +161,24 @@ DEFAULT_5ZONE_OBSERVATION_SPACE = gym.spaces.Box(
     dtype=np.float32)
 
 DEFAULT_5ZONE_ACTION_MAPPING = {
-    0: (15, 30, 0.5),
-    1: (16, 29, 0.5),
-    2: (17, 28, 0.5),
-    3: (18, 27, 0.5),
-    4: (19, 26, 0.5),
-    5: (20, 25, 0.5),
-    6: (21, 24, 0.5),
-    7: (22, 23, 0.5),
-    8: (22, 22, 0.5),
-    9: (21, 21, 0.5)
+    0: (15, 30),
+    1: (16, 29),
+    2: (17, 28),
+    3: (18, 27),
+    4: (19, 26),
+    5: (20, 25),
+    6: (21, 24),
+    7: (22, 23),
+    8: (22, 22),
+    9: (21, 21)
 }
 
 DEFAULT_5ZONE_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 22.5, 0.0]),
-    high=np.array([22.5, 30.0, 1.0]),
-    shape=(3,),
+    low=np.array([15.0, 22.5]),
+    high=np.array([22.5, 30.0]),
+    shape=(2,),
     dtype=np.float32
 )
 
