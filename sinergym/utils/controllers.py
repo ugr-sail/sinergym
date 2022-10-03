@@ -1,6 +1,7 @@
 """Implementation of basic controllers."""
 from datetime import datetime
 from typing import Any, List, Sequence
+import numpy as np
 
 from ..utils.common import parse_variables
 
@@ -94,44 +95,25 @@ class RBCDatacenter(object):
         """
         obs_dict = dict(zip(self.variables['observation'], observation))
 
-        # West Zone
-        west_in_temp = obs_dict['Zone Air Temperature(West Zone)']
+        # Mean temp in datacenter zones
+        mean_temp = np.mean([obs_dict['Zone Air Temperature(West Zone)'],
+                            obs_dict['Zone Air Temperature(East Zone)']])
 
-        west_current_heat_setpoint = obs_dict[
+        current_heat_setpoint = obs_dict[
             'Zone Thermostat Heating Setpoint Temperature(West Zone)']
-        west_current_cool_setpoint = obs_dict[
+        current_cool_setpoint = obs_dict[
             'Zone Thermostat Cooling Setpoint Temperature(West Zone)']
 
-        west_new_heat_setpoint = west_current_heat_setpoint
-        west_new_cool_setpoint = west_current_cool_setpoint
+        new_heat_setpoint = current_heat_setpoint
+        new_cool_setpoint = current_cool_setpoint
 
-        if west_in_temp < self.range_datacenter[0]:
-            west_new_heat_setpoint = west_current_heat_setpoint + 1
-            west_new_cool_setpoint = west_current_cool_setpoint + 1
-        elif west_in_temp > self.range_datacenter[1]:
-            west_new_cool_setpoint = west_current_cool_setpoint - 1
-            west_new_heat_setpoint = west_current_heat_setpoint - 1
-
-        # East Zone
-        east_in_temp = obs_dict['Zone Air Temperature(East Zone)']
-
-        east_current_heat_setpoint = obs_dict[
-            'Zone Thermostat Heating Setpoint Temperature(East Zone)']
-        east_current_cool_setpoint = obs_dict[
-            'Zone Thermostat Cooling Setpoint Temperature(East Zone)']
-
-        east_new_heat_setpoint = east_current_heat_setpoint
-        east_new_cool_setpoint = east_current_cool_setpoint
-
-        if east_in_temp < self.range_datacenter[0]:
-            east_new_heat_setpoint = east_current_heat_setpoint + 1
-            east_new_cool_setpoint = east_current_cool_setpoint + 1
-        elif east_in_temp > self.range_datacenter[1]:
-            east_new_cool_setpoint = east_current_cool_setpoint - 1
-            east_new_heat_setpoint = east_current_heat_setpoint - 1
+        if mean_temp < self.range_datacenter[0]:
+            new_heat_setpoint = current_heat_setpoint + 1
+            new_cool_setpoint = current_cool_setpoint + 1
+        elif mean_temp > self.range_datacenter[1]:
+            new_cool_setpoint = current_cool_setpoint - 1
+            new_heat_setpoint = current_heat_setpoint - 1
 
         return (
-            west_new_heat_setpoint,
-            west_new_cool_setpoint,
-            east_new_heat_setpoint,
-            east_new_cool_setpoint)
+            new_heat_setpoint,
+            new_cool_setpoint)
