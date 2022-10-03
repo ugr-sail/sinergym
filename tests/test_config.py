@@ -279,7 +279,7 @@ def test_rm_past_history_dir(config):
 def test_get_schedulers(config):
     # Testing scheduler attribute structure is correct
     assert len(config.schedulers) == len(config.building.Schedule_Compact)
-    for scheduler_name, definition in config.schedulers.items:
+    for scheduler_name, definition in config.schedulers.items():
         assert isinstance(scheduler_name, str)
         assert isinstance(definition, dict)
         assert isinstance(definition['Type'], str)
