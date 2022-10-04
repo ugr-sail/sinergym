@@ -189,7 +189,7 @@ Current algorithms checked by <em>Sinergym</em> are:</p>
 <p><a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html">Callbacks</a>
 are a set of functions that will be called at given <strong>stages of the training procedure</strong>.
 You can use callbacks to access internal state of the RL model <strong>during training</strong>.
-It allows one to do monitoring, auto saving, model manipulation, progress bars, …</p>
+It allows one to do monitoring, auto saving, model manipulation, progress bars, ...</p>
 <p>This structure allows to custom our own logger for DRL executions. Our objective
 is to <strong>log all information about our custom environment</strong> specifically.
 Therefore, <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/callbacks.py">sinergym/sinergym/utils/callbacks.py</a>
@@ -204,7 +204,7 @@ simulation interactions during training at the same time using
 </div>
 <p>This callback derives <code class="docutils literal notranslate"><span class="pre">BaseCallback</span></code> from Stable Baselines 3 while <code class="docutils literal notranslate"><span class="pre">BaseCallBack</span></code>
 uses <a class="reference external" href="https://www.tensorflow.org/tensorboard?hl=es-419">Tensorboard</a> on the
-background at the same time. With <em>Tensorboard</em>, it’s possible to visualize all DRL
+background at the same time. With <em>Tensorboard</em>, it's possible to visualize all DRL
 training in real time and compare between different executions. This is an example:</p>
 <a class="reference internal image-reference" href="../_images/tensorboard_example.png"><img alt="Tensorboard example" class="align-center" src="../_images/tensorboard_example.png" style="width: 800px;" /></a>
 <p>There are tables which are in some algorithms and not in others and vice versa.
@@ -256,7 +256,7 @@ has been <strong>wrapped with normalization</strong> (see <a class="reference in
 will train with this normalized values and they will be recorded both;
 original observation and normalized observation.</p></li>
 <li><p><strong>rollout</strong>: Algorithm metrics in <strong>Stable Baselines by default</strong>. For example,
-DQN has <code class="docutils literal notranslate"><span class="pre">exploration_rate</span></code> and this value doesn’t appear in other algorithms.</p></li>
+DQN has <code class="docutils literal notranslate"><span class="pre">exploration_rate</span></code> and this value doesn't appear in other algorithms.</p></li>
 <li><p><strong>time</strong>: Monitoring time of execution.</p></li>
 <li><p><strong>train</strong>: Record specific neural network information for each algorithm,
 provided by <strong>Stable baselines</strong> as well as rollout.</p></li>

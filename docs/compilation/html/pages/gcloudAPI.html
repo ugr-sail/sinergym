@@ -162,7 +162,7 @@ with this option.</p>
 <section id="first-steps-configuration">
 <h3>1. First steps (configuration)<a class="headerlink" href="#first-steps-configuration" title="Permalink to this heading"></a></h3>
 <p>Firstly, it is necessary that you have a Google Cloud account set up and
-SDK configured (auth, invoicing, project ID, etc). If you don’t have this,
+SDK configured (auth, invoicing, project ID, etc). If you don't have this,
 it is recommended to check <a class="reference external" href="https://cloud.google.com/sdk/docs/install">their documentation</a>.
 Secondly, It is important to have installed
 <a class="reference external" href="https://www.docker.com/">Docker</a> in order to be able to manage these
@@ -172,13 +172,13 @@ containers in Google Cloud.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ gcloud auth configure-docker
 </pre></div>
 </div>
-<p>If you don’t want to have several problems in the future with the image
+<p>If you don't want to have several problems in the future with the image
 build and Google Cloud functionality in general, we recommend you to
 <strong>allow permissions for google cloud build</strong> at the beginning
 (see <a class="reference external" href="https://cloud.google.com/build/docs/securing-builds/configure-access-for-cloud-build-service-account">this documentation</a>).</p>
 <a class="reference internal image-reference" href="../_images/service-account-permissions.png"><img alt="Permissions required for cloud build." class="align-center" src="../_images/service-account-permissions.png" style="width: 500px;" /></a>
 <p>On the other hand, we are going to enable <strong>Google Cloud services</strong>
-in <em>API library</em>. These are API’s which we need currently:</p>
+in <em>API library</em>. These are API's which we need currently:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Google Container Registry API.</p></li>
@@ -257,7 +257,7 @@ up your own VM with your preferences (see
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p><code class="docutils literal notranslate"><span class="pre">--boot-disk-size</span></code> is really important, by default
-VM set 10GB and it isn’t enough at all for <em>Sinergym</em> container.
+VM set 10GB and it isn't enough at all for <em>Sinergym</em> container.
 This derive in a silence error for Google Cloud Build
 (and you would need to check logs, which incident is not clear).</p>
 </div>
@@ -314,7 +314,7 @@ with our <strong>Dockerfile</strong> for this purpose:</p>
 <div><ol class="arabic simple">
 <li><p>Write in <strong>cache</strong> for quick updates
 (if a older container was uploaded already).</p></li>
-<li><p><strong>Build</strong> image (using cache if it’s available)</p></li>
+<li><p><strong>Build</strong> image (using cache if it's available)</p></li>
 <li><p><strong>Push</strong> image built to Container Registry</p></li>
 <li><p>Make container public inner Container Registry.</p></li>
 </ol>
@@ -334,8 +334,8 @@ case it may fail.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>If your local computer doesn’t have enough free space
-it might report the same error (there isn’t difference
+<p>If your local computer doesn't have enough free space
+it might report the same error (there isn't difference
 by Google cloud error manager), so be careful.</p>
 </div>
 <p>In order to execute <strong>cloudbuild.yaml</strong>, you have to do the next:</p>
@@ -347,7 +347,7 @@ by Google cloud error manager), so be careful.</p>
 parameters if they are needed.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>“.” in <code class="docutils literal notranslate"><span class="pre">--config</span></code> refers to <strong>Dockerfile</strong>, which is
+<p>&quot;.&quot; in <code class="docutils literal notranslate"><span class="pre">--config</span></code> refers to <strong>Dockerfile</strong>, which is
 necessary to build container image (see
 <a class="reference external" href="https://cloud.google.com/build/docs/build-config">build-config</a>).</p>
 </div>
@@ -355,8 +355,8 @@ necessary to build container image (see
 <p class="admonition-title">Note</p>
 <p>In <strong>cloudbuild.yaml</strong> there is a variable named <em>PROJECT_ID</em>.
 However, it is not defined in substitutions. This is because
-it’s a predetermined variable by Google Cloud. When build begins
-<em>“$PROJECT_ID”</em> is set to current value in gcloud configuration
+it's a predetermined variable by Google Cloud. When build begins
+<em>&quot;$PROJECT_ID&quot;</em> is set to current value in gcloud configuration
 (see <a class="reference external" href="https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values">substitutions-variables</a>).</p>
 </div>
 </section>
@@ -377,13 +377,13 @@ it’s a predetermined variable by Google Cloud. When build begins
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">--container-restart-policy</span> <span class="pre">never</span></code> it’s really important for a
+<p><code class="docutils literal notranslate"><span class="pre">--container-restart-policy</span> <span class="pre">never</span></code> it's really important for a
 correct functionality.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>If you decide enter in VM after create it immediately, it is
-possible container hasn’t been created yet.
+possible container hasn't been created yet.
 You can think that is an error, Google cloud should notify this.
 If this issue happens, you should wait for a several minutes.</p>
 </div>
@@ -418,8 +418,8 @@ since they require a previous configuration.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>It is possible that quote doesn’t let you have more than one
-VM at the same time. Hence, the rest of VM’s probably will
+<p>It is possible that quote doesn't let you have more than one
+VM at the same time. Hence, the rest of VM's probably will
 be <em>initializing</em> always but never ready. If it is your case,
 we recommend you check your quotes
 <a class="reference external" href="https://console.cloud.google.com/iam-admin/quotas">here</a></p>
@@ -1018,7 +1018,7 @@ will have no effect in experiment. This experiments results
 could be sent to bucket and mlflow artifacts if it is specified.
 We will see it.</p>
 </div>
-<p>The list of parameter is pretty large. Let’s see it:</p>
+<p>The list of parameter is pretty large. Let's see it:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">--environment</span></code> or <code class="docutils literal notranslate"><span class="pre">-env</span></code>: Environment name you want to use
 (see <a class="reference internal" href="environments.html#environments"><span class="std std-ref">Environments</span></a>).</p></li>
@@ -1028,20 +1028,20 @@ be different).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--algorithm</span></code> or <code class="docutils literal notranslate"><span class="pre">-alg</span></code>: Algorithm you want to use to train
 (Currently, it is available <em>PPO</em>, <em>A2C</em>, <em>DQN</em>, <em>DDPG</em> and <em>SAC</em>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--reward</span></code> or <code class="docutils literal notranslate"><span class="pre">-rw</span></code>: Reward class you want to use for reward
-function. Currently, possible values are “linear” and “exponential”
+function. Currently, possible values are &quot;linear&quot; and &quot;exponential&quot;
 (see <a class="reference internal" href="rewards.html#rewards"><span class="std std-ref">Rewards</span></a>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--normalization</span></code> or <code class="docutils literal notranslate"><span class="pre">-norm</span></code>: Apply normalization wrapper to
-observations during training. If it isn’t specified wrapper will
+observations during training. If it isn't specified wrapper will
 not be applied (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--multiobs</span></code> or <code class="docutils literal notranslate"><span class="pre">-mobs</span></code>: Apply Multi-Observation wrapper to
-observations during training. If it isn’t specified wrapper will
+observations during training. If it isn't specified wrapper will
 not be applied (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--logger</span></code> or <code class="docutils literal notranslate"><span class="pre">-log</span></code>: Apply Sinergym logger wrapper during
-training. If it isn’t specified wrapper will not be applied
+training. If it isn't specified wrapper will not be applied
 (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a> and <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> or <code class="docutils literal notranslate"><span class="pre">-tens</span></code>: This parameter will contain a
 <strong>path-file</strong> or <strong>path-remote-bucket</strong> to allocate tensorboard
-training logs. If it isn’t specified this log will be deactivate
+training logs. If it isn't specified this log will be deactivate
 (see <a class="reference internal" href="deep-reinforcement-learning.html#drl-logger"><span class="std std-ref">DRL Logger</span></a>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--evaluation</span></code> or <code class="docutils literal notranslate"><span class="pre">-eval</span></code>: If it is specified, evaluation
 callback will be activate, else model evaluation will be deactivate
@@ -1066,7 +1066,7 @@ tensorboard log (when a local path is specified and not a remote bucket
 path) will be sent to a Mlflow Artifact, else will be allocate in remote
 container memory only.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--group_name</span></code> or <code class="docutils literal notranslate"><span class="pre">-group</span></code>: It specify to which MIG the host instance
-belongs, it is important if –auto-delete is activated.</p></li>
+belongs, it is important if --auto-delete is activated.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--auto_delete</span></code> or <code class="docutils literal notranslate"><span class="pre">-del</span></code>: Whether this parameter is specified,
 remote instance will be auto removed when its job has finished.</p></li>
 <li><p><strong>algorithm hyperparameters</strong>: Execute <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">DRL_battery</span> <span class="pre">--help</span></code>
@@ -1074,7 +1074,7 @@ for more information.</p></li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>For a correct auto_delete functionality, please, use MIG’s
+<p>For a correct auto_delete functionality, please, use MIG's
 instead of individual instances.</p>
 </div>
 <p>This script do the next:</p>
@@ -1145,17 +1145,17 @@ or a Google Cloud Storage resource (bucket like <code class="docutils literal no
 available <em>PPO</em>, <em>A2C</em>, <em>DQN</em>, <em>DDPG</em> and <em>SAC</em>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--reward</span></code> or <code class="docutils literal notranslate"><span class="pre">-rw</span></code>: Reward class you want to use for reward function (same reward
 than training model is recommended). Currently, possible values are
-“linear” and “exponential”.</p></li>
+&quot;linear&quot; and &quot;exponential&quot;.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--normalization</span></code> or <code class="docutils literal notranslate"><span class="pre">-norm</span></code>: Apply normalization wrapper to observations during
-evaluation. If it isn’t specified wrapper will not be applied.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--logger</span></code> or <code class="docutils literal notranslate"><span class="pre">-log</span></code>: Apply Sinergym logger wrapper during evaluation. If it isn’t
+evaluation. If it isn't specified wrapper will not be applied.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--logger</span></code> or <code class="docutils literal notranslate"><span class="pre">-log</span></code>: Apply Sinergym logger wrapper during evaluation. If it isn't
 specified wrapper will not be applied.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--seed</span></code> or <code class="docutils literal notranslate"><span class="pre">-sd</span></code>: Seed for evaluation, random components in process will be able
 to be recreated.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--remote_store</span></code> or <code class="docutils literal notranslate"><span class="pre">-sto</span></code>: Determine if sinergym output will be sent to a common resource
 (Bucket), else will be allocate in container or host memory only.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--group_name</span></code> or <code class="docutils literal notranslate"><span class="pre">-group</span></code>: It specify to which MIG the host instance belongs, it is important
-if –auto-delete is activated.</p></li>
+if --auto-delete is activated.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--auto_delete</span></code> or <code class="docutils literal notranslate"><span class="pre">-del</span></code>: Whether this parameter is specified, remote instance will be auto
 removed when its job has finished.</p></li>
 </ul>
@@ -1179,18 +1179,18 @@ can have whatever you want.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If in <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> you have specified a gs path, <code class="docutils literal notranslate"><span class="pre">--remote_store</span></code>
-or <code class="docutils literal notranslate"><span class="pre">--mlflow_store</span></code> parameters don’t store tensorboard logs.</p>
+or <code class="docutils literal notranslate"><span class="pre">--mlflow_store</span></code> parameters don't store tensorboard logs.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Whether you have written a bucket path, don’t write <code class="docutils literal notranslate"><span class="pre">/</span></code> at the end
+<p>Whether you have written a bucket path, don't write <code class="docutils literal notranslate"><span class="pre">/</span></code> at the end
 (<code class="docutils literal notranslate"><span class="pre">gs://experiments-storage/tensorboard_log/</span></code>), this causes that real-time
-remote storage doesn’t work correctly.</p>
+remote storage doesn't work correctly.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>In the case that gs URI isn’t recognized. Maybe is due to your tensorboard
-installation hasn’t got access your google account. Try
+<p>In the case that gs URI isn't recognized. Maybe is due to your tensorboard
+installation hasn't got access your google account. Try
 <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login">gcloud auth application-default login</a> command.</p>
 </div>
 <section id="visualize-remote-tensorboard-log-in-real-time">
@@ -1216,7 +1216,7 @@ and shut down local service when we finish.</p>
 your own experiments (<a class="reference internal" href="deep-reinforcement-learning.html#mlflow"><span class="std std-ref">Mlflow</span></a>). You can separate <strong>back-end</strong> (SQL database)
 from tracking server.
 In this way, you can shut down or delete server instance without loose your experiments
-run data, since SQL is always up. Let’s see how:</p>
+run data, since SQL is always up. Let's see how:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
 
 <span class="c1"># This scrip is used to build a mlflow server in Google Cloud, it is important</span>
@@ -1307,7 +1307,7 @@ gcloud compute firewall-rules create allow-mlflow-tracking --network default --p
 </pre></div>
 </div>
 <p>This bash script defines all the process to configure this functionality automatically.
-(Once you execute it you don’t have to use this script anymore). The arguments
+(Once you execute it you don't have to use this script anymore). The arguments
 it needs are: <em>PROJECT_ID</em>, <em>BUCKET_NAME</em>, <em>ZONE</em> and <em>DB_ROOT_PASSWORD</em>.</p>
 <p>This script do the next for you:</p>
 <blockquote>

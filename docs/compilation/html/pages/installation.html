@@ -151,7 +151,7 @@ and testing:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ docker build -t example1/sinergym:latest --build-arg <span class="nv">SINERGYM_EXTRAS</span><span class="o">=[</span>doc,test<span class="o">]</span> .
 </pre></div>
 </div>
-<p>On the other hand, if you don’t want any extra library, it’s necessary
+<p>On the other hand, if you don't want any extra library, it's necessary
 to write an empty value like this:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ docker build -t example1/sinergym:latest --build-arg <span class="nv">SINERGYM_EXTRAS</span><span class="o">=</span> .
 </pre></div>
@@ -202,7 +202,7 @@ $ conda activate sinergym
 </pre></div>
 </div>
 <p>Now, we have a correct python version with required modules to run <em>Sinergym</em>.
-Let’s continue with the rest of the programs that are needed outside of Python
+Let's continue with the rest of the programs that are needed outside of Python
 to run the simulations:</p>
 </section>
 <section id="install-energyplus-9-5-0">
@@ -228,7 +228,7 @@ been tested, but code may also work with other versions. <em>Sinergym</em> ensur
 </tr>
 </tbody>
 </table>
-<p>Other combination may works, but they don’t have been tested.</p>
+<p>Other combination may works, but they don't have been tested.</p>
 <p>Follow the instructions <a class="reference external" href="https://energyplus.net/downloads">here</a> and
 install it for Linux (only <strong>Ubuntu</strong> is supported by us). Choose any location
 to install the software. Once installed, a folder called
@@ -265,7 +265,7 @@ $ pip install -e .
 <p>Extra libraries can be installed by typing <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.[extras]</span></code>.
 <em>extras</em> include all optional libraries which have been considered in this project such as
 testing, visualization, Deep Reinforcement Learning, monitoring , etc.
-It’s possible to select a subset of these libraries instead of ‘extras’ tag in which
+It's possible to select a subset of these libraries instead of 'extras' tag in which
 we select all optional libraries, for example:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> sinergym
 $ pip install -e .<span class="o">[</span>test,doc<span class="o">]</span>
