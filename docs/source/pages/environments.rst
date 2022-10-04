@@ -358,6 +358,25 @@ It is a Python Dictionary where this values are specified. For more information 
 available for *Sinergym* visit section :ref:`Extra Configuration in Sinergym simulations`.
 
 **************************************
+Adding new weathers for environments
+**************************************
+
+Sinergym includes several weathers covering different types of climate in different areas of the world. 
+The aim is to provide the greatest possible diversity for the experiments taking into account certain 
+characteristics.
+
+However, you may need or want to include a **new weather** for an experiment. Therefore, this section 
+is dedicated to give an explanation of how to do it:
+
+1. Download **EPW** file and **DDY** file in `Energyplus page <https://energyplus.net/weather>`__. *DDY* file
+   contains information about different design days available for that weather.
+2. Both files (*EPW* and *DDY*) must have exactly the same name, the only difference being the extension. 
+   They should be placed in the `weathers <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/weather>`__ folder.
+
+That is all! Sinergym should be able to adapt ``DesignDays`` and ``Location`` in *IDF* file using *DDY* 
+automatically for that weather.
+
+**************************************
 Adding new buildings for environments
 **************************************
 
@@ -376,10 +395,8 @@ The main steps you have to follow are the next:
    you will have to update *IDF* manually before starting
    simulation. **Be sure that new IDF model version is compatible with EnergyPlus version**.
 
-2. Add your own *EPW* file for weather conditions or use ours in environment constructor. 
-   *Sinergym* will adapt ``DesignDays`` and ``Location`` in *IDF* file using *EPW* automatically.
-   It is important to add the *DDY* file too, with the same name than *EPW* in order to
-   read the ``DesignDay`` correctly.
+2. Add your own *EPW* file for weather conditions (section :ref:`Adding new weathers for environments`) 
+   or use ours in environment constructor. 
 
 3. *Sinergym* will check that observation variables specified in environments constructor are 
    available in the simulation before starting. In order to be able to do these checks, 
@@ -391,7 +408,9 @@ The main steps you have to follow are the next:
    in order to *RDD* file has the correct format for *Sinergym*.
 
 4. Register your own environment ID `here <https://github.com/ugr-sail/sinergym/blob/main/sinergym/__init__.py>`__ 
-   following the same structure than the rest.
+   following the same structure than the rest. You will have to specify environment components you want to control,
+   action/observation space, etc. We have examples about how to do it (:ref:`Getting information about building model with Sinergym`, 
+   :ref:`Updating the action definition of the environment`, etc).
 
 5. Now, you can use your own environment ID with ``gym.make()`` like our documentation examples.
 
