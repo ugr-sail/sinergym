@@ -3,6 +3,7 @@
 import csv
 import logging
 import os
+import sys
 from typing import Any, Dict, List, Optional, Union
 
 import numpy as np
@@ -29,7 +30,7 @@ class Logger():
 
         """
         logger = logging.getLogger(name)
-        consoleHandler = logging.StreamHandler()
+        consoleHandler = logging.StreamHandler(stream=sys.stdout)
         consoleHandler.setFormatter(logging.Formatter(formatter))
         logger.addHandler(consoleHandler)
         logger.setLevel(level)

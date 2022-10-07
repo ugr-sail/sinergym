@@ -4,7 +4,7 @@ Rewards
 
 Defining a reward function is one of the most important things in reinforcement learning. 
 Consequently, *Sinergym* allows you to define your own reward functions or use 
-the ones we have already implemented (see code below).
+the ones we have already implemented (see section bellow).
 
 -  ``LinearReward`` implements a **linear reward** function, where both energy consumption and 
    thermal discomfort are normalized and add together with different weights. 
