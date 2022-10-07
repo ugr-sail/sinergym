@@ -438,10 +438,11 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-08-24 09:07:06,521] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-08-24 09:07:06,522] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-08-24 09:07:06,524] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-08-24 09:07:06,526] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-10-06 18:23:25,816] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2022-10-06 18:23:25,817] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-10-06 18:23:25,820] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-10-06 18:23:25,823] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-10-06 18:23:25,824] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
 </pre></div></div>
 </div>
 <p>We can add also a Wrapper to the environment, we are going to use a Logger (extension of <code class="docutils literal notranslate"><span class="pre">gym.Wrapper</span></code>) this is used to monitor and log the interactions with the environment and save the data into a CSV.</p>
@@ -539,11 +540,11 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-08-24 09:07:07,060] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-08-24 09:07:07,069] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run1
-[2022-08-24 09:07:20,353] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-08-24 09:07:20,354] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-08-24 09:07:20,362] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run2
+[2022-10-06 18:23:51,306] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-06 18:23:51,318] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res3/Eplus-env-sub_run1
+[2022-10-06 18:24:17,309] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-10-06 18:24:17,311] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-06 18:24:17,324] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res3/Eplus-env-sub_run2
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -554,12 +555,12 @@ Wrapping the env in a DummyVecEnv.
 -----------------------------------
 | rollout/            |           |
 |    ep_len_mean      | 3.5e+04   |
-|    ep_rew_mean      | -2.24e+04 |
+|    ep_rew_mean      | -2.36e+04 |
 |    exploration_rate | 0.05      |
 | time/               |           |
 |    episodes         | 1         |
-|    fps              | 2536      |
-|    time_elapsed     | 13        |
+|    fps              | 1310      |
+|    time_elapsed     | 26        |
 |    total_timesteps  | 35040     |
 -----------------------------------
 </pre></div></div>
@@ -569,28 +570,28 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-08-24 09:07:42,057] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-08-24 09:07:42,058] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-08-24 09:07:42,075] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run3
-/usr/local/lib/python3.10/dist-packages/numpy/core/fromnumeric.py:3474: RuntimeWarning: Mean of empty slice.
+[2022-10-06 18:25:03,107] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-10-06 18:25:03,108] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-06 18:25:03,123] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res3/Eplus-env-sub_run3
+/usr/local/lib/python3.10/dist-packages/numpy/core/fromnumeric.py:3432: RuntimeWarning: Mean of empty slice.
   return _methods._mean(a, axis=axis, dtype=dtype,
-/usr/local/lib/python3.10/dist-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+/usr/local/lib/python3.10/dist-packages/numpy/core/_methods.py:190: RuntimeWarning: invalid value encountered in double_scalars
   ret = ret.dtype.type(ret / rcount)
-/usr/local/lib/python3.10/dist-packages/numpy/core/_methods.py:264: RuntimeWarning: Degrees of freedom &lt;= 0 for slice
+/usr/local/lib/python3.10/dist-packages/numpy/core/_methods.py:265: RuntimeWarning: Degrees of freedom &lt;= 0 for slice
   ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
-/usr/local/lib/python3.10/dist-packages/numpy/core/_methods.py:222: RuntimeWarning: invalid value encountered in true_divide
+/usr/local/lib/python3.10/dist-packages/numpy/core/_methods.py:223: RuntimeWarning: invalid value encountered in divide
   arrmean = um.true_divide(arrmean, div, out=arrmean, casting=&#39;unsafe&#39;,
-/usr/local/lib/python3.10/dist-packages/numpy/core/_methods.py:256: RuntimeWarning: invalid value encountered in double_scalars
+/usr/local/lib/python3.10/dist-packages/numpy/core/_methods.py:257: RuntimeWarning: invalid value encountered in double_scalars
   ret = ret.dtype.type(ret / rcount)
-[2022-08-24 09:07:46,890] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-08-24 09:07:46,891] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-08-24 09:07:46,899] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run4
-[2022-08-24 09:08:00,708] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-08-24 09:08:00,711] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-08-24 09:08:00,726] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run5
-[2022-08-24 09:08:14,972] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-08-24 09:08:14,973] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-08-24 09:08:14,980] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run6
+[2022-10-06 18:25:10,029] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-10-06 18:25:10,031] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-06 18:25:10,043] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res3/Eplus-env-sub_run4
+[2022-10-06 18:25:41,406] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-10-06 18:25:41,407] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-06 18:25:41,419] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res3/Eplus-env-sub_run5
+[2022-10-06 18:26:12,706] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-10-06 18:26:12,708] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-06 18:26:12,719] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res3/Eplus-env-sub_run6
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -598,32 +599,32 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Eval num_timesteps=70080, episode_reward=-17522.75 +/- 0.00
+Eval num_timesteps=70080, episode_reward=-22492.15 +/- 0.00
 Episode length: 35040.00 +/- 0.00
 New best mean reward!
------------------------------------------
-| eval/                     |           |
-|    comfort_penalty        | -1.67e+04 |
-|    comfort_violation(%)   | 35.7      |
-|    mean_ep_length         | 3.5e+04   |
-|    mean_power_consumption | 1.83e+08  |
-|    mean_rewards           | -17522.75 |
-|    power_penalty          | -1.83e+04 |
-|    std_rewards            | 0.0       |
-| rollout/                  |           |
-|    ep_len_mean            | 3.5e+04   |
-|    ep_rew_mean            | -2.06e+04 |
-|    exploration_rate       | 0.05      |
-| time/                     |           |
-|    episodes               | 2         |
-|    fps                    | 1024      |
-|    time_elapsed           | 68        |
-|    total_timesteps        | 70080     |
-| train/                    |           |
-|    learning_rate          | 0.0001    |
-|    loss                   | 61.9      |
-|    n_updates              | 5019      |
------------------------------------------
+------------------------------------------
+| eval/                     |            |
+|    comfort_penalty        | -1.49e+04  |
+|    comfort_violation(%)   | 32.9       |
+|    mean_ep_length         | 3.5e+04    |
+|    mean_power_consumption | 3.01e+08   |
+|    mean_rewards           | -22492.148 |
+|    power_penalty          | -3.01e+04  |
+|    std_rewards            | 0.0        |
+| rollout/                  |            |
+|    ep_len_mean            | 3.5e+04    |
+|    ep_rew_mean            | -2.34e+04  |
+|    exploration_rate       | 0.05       |
+| time/                     |            |
+|    episodes               | 2          |
+|    fps                    | 492        |
+|    time_elapsed           | 142        |
+|    total_timesteps        | 70080      |
+| train/                    |            |
+|    learning_rate          | 0.0001     |
+|    loss                   | 100        |
+|    n_updates              | 5019       |
+------------------------------------------
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -631,9 +632,9 @@ New best mean reward!
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-08-24 09:08:42,072] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-08-24 09:08:42,073] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-08-24 09:08:42,080] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run7
+[2022-10-06 18:27:10,504] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-10-06 18:27:10,506] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-06 18:27:10,518] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res3/Eplus-env-sub_run7
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -644,16 +645,16 @@ New best mean reward!
 -----------------------------------
 | rollout/            |           |
 |    ep_len_mean      | 3.5e+04   |
-|    ep_rew_mean      | -1.96e+04 |
+|    ep_rew_mean      | -2.31e+04 |
 |    exploration_rate | 0.05      |
 | time/               |           |
 |    episodes         | 3         |
-|    fps              | 1100      |
-|    time_elapsed     | 95        |
+|    fps              | 525       |
+|    time_elapsed     | 200       |
 |    total_timesteps  | 105120    |
 | train/              |           |
 |    learning_rate    | 0.0001    |
-|    loss             | 15.4      |
+|    loss             | 43.6      |
 |    n_updates        | 13779     |
 -----------------------------------
 </pre></div></div>
@@ -663,18 +664,18 @@ New best mean reward!
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-08-24 09:09:09,600] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-08-24 09:09:09,602] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-08-24 09:09:09,617] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run8
-[2022-08-24 09:09:14,436] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-08-24 09:09:14,436] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-08-24 09:09:14,444] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run9
-[2022-08-24 09:09:28,929] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-08-24 09:09:28,929] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-08-24 09:09:28,936] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run10
-[2022-08-24 09:09:43,141] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-08-24 09:09:43,143] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-08-24 09:09:43,157] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res2/Eplus-env-sub_run11
+[2022-10-06 18:28:12,107] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-10-06 18:28:12,108] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-06 18:28:12,123] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res3/Eplus-env-sub_run8
+[2022-10-06 18:28:19,242] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-10-06 18:28:19,243] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-06 18:28:19,262] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res3/Eplus-env-sub_run9
+[2022-10-06 18:28:49,740] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-10-06 18:28:49,741] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-06 18:28:49,752] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res3/Eplus-env-sub_run10
+[2022-10-06 18:29:20,948] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2022-10-06 18:29:20,950] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-06 18:29:20,970] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res3/Eplus-env-sub_run11
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -682,29 +683,29 @@ New best mean reward!
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Eval num_timesteps=140160, episode_reward=-21405.96 +/- 0.00
+Eval num_timesteps=140160, episode_reward=-25727.77 +/- 0.00
 Episode length: 35040.00 +/- 0.00
 ------------------------------------------
 | eval/                     |            |
-|    comfort_penalty        | -2.55e+04  |
-|    comfort_violation(%)   | 40.5       |
+|    comfort_penalty        | -2.07e+04  |
+|    comfort_violation(%)   | 34.3       |
 |    mean_ep_length         | 3.5e+04    |
-|    mean_power_consumption | 1.73e+08   |
-|    mean_rewards           | -21405.959 |
-|    power_penalty          | -1.73e+04  |
+|    mean_power_consumption | 3.08e+08   |
+|    mean_rewards           | -25727.768 |
+|    power_penalty          | -3.08e+04  |
 |    std_rewards            | 0.0        |
 | rollout/                  |            |
 |    ep_len_mean            | 3.5e+04    |
-|    ep_rew_mean            | -1.94e+04  |
+|    ep_rew_mean            | -2.31e+04  |
 |    exploration_rate       | 0.05       |
 | time/                     |            |
 |    episodes               | 4          |
-|    fps                    | 895        |
-|    time_elapsed           | 156        |
+|    fps                    | 424        |
+|    time_elapsed           | 330        |
 |    total_timesteps        | 140160     |
 | train/                    |            |
 |    learning_rate          | 0.0001     |
-|    loss                   | 28.4       |
+|    loss                   | 27.3       |
 |    n_updates              | 22539      |
 ------------------------------------------
 </pre></div></div>
@@ -715,7 +716,7 @@ Episode length: 35040.00 +/- 0.00
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;stable_baselines3.dqn.dqn.DQN at 0x7fa912391f60&gt;
+&lt;stable_baselines3.dqn.dqn.DQN at 0x7fcddc7551b0&gt;
 </pre></div></div>
 </div>
 <p>Now we save the current model.</p>
@@ -741,7 +742,7 @@ Episode length: 35040.00 +/- 0.00
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-[2022-08-24 09:09:48,272] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-10-06 18:33:30,146] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
 </pre></div></div>
 </div>
 </section>
