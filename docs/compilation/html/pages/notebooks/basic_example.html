@@ -394,18 +394,25 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
 /usr/local/lib/python3.10/dist-packages/gym/spaces/box.py:73: UserWarning: <span class="ansi-yellow-fg">WARN: Box bound precision lowered by casting to float32</span>
   logger.warn(
-[2022-10-06 18:01:28,162] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-10-06 18:01:28,163] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-10-06 18:01:28,165] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-10-06 18:01:28,166] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-10-06 18:01:28,167] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[2022-10-07 09:00:27,602] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2022-10-07 09:00:27,603] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-10-07 09:00:27,605] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-10-07 09:00:27,606] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-10-07 09:00:27,607] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
 </pre></div></div>
 </div>
 <p>At first glance may appear that sinergym is only imported but never used, but by importing Sinergym all its <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/html/pages/environments.html">Environments</a> are defined to be used, in this case ‘Eplus-demo-v1’ with all the information contained in the idf file and the config file.</p>
@@ -429,33 +436,26 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-[2022-10-06 18:01:41,820] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-10-06 18:01:41,834] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Reward:  -0.5693658209031192 {&#39;timestep&#39;: 1, &#39;time_elapsed&#39;: 900, &#39;year&#39;: 1991, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 3780.170717786078, &#39;total_power_no_units&#39;: -0.3780170717786078, &#39;comfort_penalty&#39;: -0.7607145700276305, &#39;abs_comfort&#39;: 0.7607145700276305, &#39;temperatures&#39;: [19.23928542997237], &#39;out_temperature&#39;: 1.8, &#39;action_&#39;: [15, 30]}
-Reward:  -2098.733619243228 {&#39;timestep&#39;: 2976, &#39;time_elapsed&#39;: 2678400, &#39;year&#39;: 1991, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 4166.516853564798, &#39;total_power_no_units&#39;: -0.41665168535647984, &#39;comfort_penalty&#39;: -2.3043905142467516, &#39;abs_comfort&#39;: 2.3043905142467516, &#39;temperatures&#39;: [17.69560948575325], &#39;out_temperature&#39;: -7.0, &#39;action_&#39;: [16, 29]}
-Reward:  -4092.2076816763133 {&#39;timestep&#39;: 5664, &#39;time_elapsed&#39;: 5097600, &#39;year&#39;: 1991, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 498.7226036713867, &#39;total_power_no_units&#39;: -0.049872260367138675, &#39;comfort_penalty&#39;: -0.8225982572911086, &#39;abs_comfort&#39;: 0.8225982572911086, &#39;temperatures&#39;: [19.17740174270889], &#39;out_temperature&#39;: 8.1, &#39;action_&#39;: [16, 29]}
-Reward:  -5422.713783528127 {&#39;timestep&#39;: 8640, &#39;time_elapsed&#39;: 7776000, &#39;year&#39;: 1991, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 152.4868953414246, &#39;total_power_no_units&#39;: -0.01524868953414246, &#39;comfort_penalty&#39;: -0.45487229193413015, &#39;abs_comfort&#39;: 0.45487229193413015, &#39;temperatures&#39;: [19.54512770806587], &#39;out_temperature&#39;: 7.7, &#39;action_&#39;: [16, 29]}
-Reward:  -6317.257519984942 {&#39;timestep&#39;: 11520, &#39;time_elapsed&#39;: 10368000, &#39;year&#39;: 1991, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 1788.258702175562, &#39;total_power_no_units&#39;: -0.1788258702175562, &#39;comfort_penalty&#39;: -0.01673125581292112, &#39;abs_comfort&#39;: 0.01673125581292112, &#39;temperatures&#39;: [19.98326874418708], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [20, 25]}
-Reward:  -7171.7752272903535 {&#39;timestep&#39;: 14496, &#39;time_elapsed&#39;: 13046400, &#39;year&#39;: 1991, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 257.3247299498616, &#39;total_power_no_units&#39;: -0.02573247299498616, &#39;comfort_penalty&#39;: -1.6066728573882116, &#39;abs_comfort&#39;: 1.6066728573882116, &#39;temperatures&#39;: [21.39332714261179], &#39;out_temperature&#39;: 18.4, &#39;action_&#39;: [19, 26]}
-Reward:  -10053.826572571523 {&#39;timestep&#39;: 17376, &#39;time_elapsed&#39;: 15638400, &#39;year&#39;: 1991, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 175.7866565716585, &#39;total_power_no_units&#39;: -0.017578665657165853, &#39;comfort_penalty&#39;: -1.6425680376744793, &#39;abs_comfort&#39;: 1.6425680376744793, &#39;temperatures&#39;: [21.35743196232552], &#39;out_temperature&#39;: 17.7, &#39;action_&#39;: [21, 24]}
-Reward:  -13313.71055332669 {&#39;timestep&#39;: 20352, &#39;time_elapsed&#39;: 18316800, &#39;year&#39;: 1991, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 20953.41836722818, &#39;total_power_no_units&#39;: -2.095341836722818, &#39;comfort_penalty&#39;: -1.3554176694770312, &#39;abs_comfort&#39;: 1.3554176694770312, &#39;temperatures&#39;: [21.64458233052297], &#39;out_temperature&#39;: 20.6, &#39;action_&#39;: [22, 23]}
-Reward:  -16546.260328442124 {&#39;timestep&#39;: 23328, &#39;time_elapsed&#39;: 20995200, &#39;year&#39;: 1991, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 296.4185446687031, &#39;total_power_no_units&#39;: -0.02964185446687031, &#39;comfort_penalty&#39;: -2.17941492507612, &#39;abs_comfort&#39;: 2.17941492507612, &#39;temperatures&#39;: [20.82058507492388], &#39;out_temperature&#39;: 18.8, &#39;action_&#39;: [15, 30]}
-Reward:  -19354.756004766172 {&#39;timestep&#39;: 26208, &#39;time_elapsed&#39;: 23587200, &#39;year&#39;: 1991, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 5971.429306306477, &#39;total_power_no_units&#39;: -0.5971429306306477, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.99013258410595], &#39;out_temperature&#39;: 13.3, &#39;action_&#39;: [21, 24]}
-Reward:  -20418.658736416906 {&#39;timestep&#39;: 29184, &#39;time_elapsed&#39;: 26265600, &#39;year&#39;: 1991, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 152.4868953414246, &#39;total_power_no_units&#39;: -0.01524868953414246, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.51137256907888], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [15, 30]}
-Reward:  -21602.378772908734 {&#39;timestep&#39;: 32064, &#39;time_elapsed&#39;: 28857600, &#39;year&#39;: 1991, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 16566.98815782792, &#39;total_power_no_units&#39;: -1.656698815782792, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.44128026723553], &#39;out_temperature&#39;: 5.1, &#39;action_&#39;: [22, 23]}
-Reward:  -23641.92190932824 {&#39;timestep&#39;: 35040, &#39;time_elapsed&#39;: 31536000, &#39;year&#39;: 1992, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 9884.771470481655, &#39;total_power_no_units&#39;: -0.9884771470481656, &#39;comfort_penalty&#39;: -0.7924755454007091, &#39;abs_comfort&#39;: 0.7924755454007091, &#39;temperatures&#39;: [19.20752445459929], &#39;out_temperature&#39;: -12.0, &#39;action_&#39;: [19, 26]}
+[2022-10-07 09:00:27,862] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-07 09:00:27,873] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1
+Reward:  -0.5693658209031192 {&#39;timestep&#39;: 1, &#39;time_elapsed&#39;: 900, &#39;year&#39;: 1991, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 3780.170717786078, &#39;total_power_no_units&#39;: -0.3780170717786078, &#39;comfort_penalty&#39;: -0.7607145700276305, &#39;abs_comfort&#39;: 0.7607145700276305, &#39;temperatures&#39;: [19.23928542997237], &#39;out_temperature&#39;: 1.8, &#39;action_&#39;: [18, 27]}
+Reward:  -2112.7625904745278 {&#39;timestep&#39;: 2976, &#39;time_elapsed&#39;: 2678400, &#39;year&#39;: 1991, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 22348.47236479097, &#39;total_power_no_units&#39;: -2.234847236479097, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.18911065438731], &#39;out_temperature&#39;: -7.0, &#39;action_&#39;: [22, 23]}
+Reward:  -4104.265504441257 {&#39;timestep&#39;: 5664, &#39;time_elapsed&#39;: 5097600, &#39;year&#39;: 1991, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 12948.13071758654, &#39;total_power_no_units&#39;: -1.2948130717586541, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.87810890551877], &#39;out_temperature&#39;: 8.1, &#39;action_&#39;: [21, 24]}
+Reward:  -5417.441233237612 {&#39;timestep&#39;: 8640, &#39;time_elapsed&#39;: 7776000, &#39;year&#39;: 1991, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 152.4868953414246, &#39;total_power_no_units&#39;: -0.01524868953414246, &#39;comfort_penalty&#39;: -0.12519567758555894, &#39;abs_comfort&#39;: 0.12519567758555894, &#39;temperatures&#39;: [19.87480432241444], &#39;out_temperature&#39;: 7.7, &#39;action_&#39;: [19, 26]}
+Reward:  -6334.076617115651 {&#39;timestep&#39;: 11520, &#39;time_elapsed&#39;: 10368000, &#39;year&#39;: 1991, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 9909.57629951364, &#39;total_power_no_units&#39;: -0.9909576299513639, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.98956711598672], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [22, 22]}
+Reward:  -7196.337141748097 {&#39;timestep&#39;: 14496, &#39;time_elapsed&#39;: 13046400, &#39;year&#39;: 1991, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 257.32472912215, &#39;total_power_no_units&#39;: -0.025732472912215004, &#39;comfort_penalty&#39;: -1.6342081608280488, &#39;abs_comfort&#39;: 1.6342081608280488, &#39;temperatures&#39;: [21.36579183917195], &#39;out_temperature&#39;: 18.4, &#39;action_&#39;: [19, 26]}
+Reward:  -10119.078686707608 {&#39;timestep&#39;: 17376, &#39;time_elapsed&#39;: 15638400, &#39;year&#39;: 1991, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 175.7796758221068, &#39;total_power_no_units&#39;: -0.017577967582210682, &#39;comfort_penalty&#39;: -2.308881942532789, &#39;abs_comfort&#39;: 2.308881942532789, &#39;temperatures&#39;: [20.69111805746721], &#39;out_temperature&#39;: 17.7, &#39;action_&#39;: [20, 25]}
+Reward:  -13344.34795468286 {&#39;timestep&#39;: 20352, &#39;time_elapsed&#39;: 18316800, &#39;year&#39;: 1991, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 4274.841504910937, &#39;total_power_no_units&#39;: -0.42748415049109373, &#39;comfort_penalty&#39;: -2.6746607947314196, &#39;abs_comfort&#39;: 2.6746607947314196, &#39;temperatures&#39;: [20.32533920526858], &#39;out_temperature&#39;: 20.6, &#39;action_&#39;: [16, 29]}
+Reward:  -16532.561015096362 {&#39;timestep&#39;: 23328, &#39;time_elapsed&#39;: 20995200, &#39;year&#39;: 1991, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 296.4221825034278, &#39;total_power_no_units&#39;: -0.02964221825034278, &#39;comfort_penalty&#39;: -2.1542061821218716, &#39;abs_comfort&#39;: 2.1542061821218716, &#39;temperatures&#39;: [20.84579381787813], &#39;out_temperature&#39;: 18.8, &#39;action_&#39;: [17, 28]}
+Reward:  -19347.21771433634 {&#39;timestep&#39;: 26208, &#39;time_elapsed&#39;: 23587200, &#39;year&#39;: 1991, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 152.4868953414246, &#39;total_power_no_units&#39;: -0.01524868953414246, &#39;comfort_penalty&#39;: -0.14597880471529123, &#39;abs_comfort&#39;: 0.14597880471529123, &#39;temperatures&#39;: [19.85402119528471], &#39;out_temperature&#39;: 13.3, &#39;action_&#39;: [15, 30]}
+Reward:  -20424.606228211076 {&#39;timestep&#39;: 29184, &#39;time_elapsed&#39;: 26265600, &#39;year&#39;: 1991, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 152.4868953414246, &#39;total_power_no_units&#39;: -0.01524868953414246, &#39;comfort_penalty&#39;: -0.1659288529232903, &#39;abs_comfort&#39;: 0.1659288529232903, &#39;temperatures&#39;: [19.83407114707671], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [15, 30]}
+Reward:  -21596.063810147996 {&#39;timestep&#39;: 32064, &#39;time_elapsed&#39;: 28857600, &#39;year&#39;: 1991, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 5255.294847641754, &#39;total_power_no_units&#39;: -0.5255294847641755, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.02303149966062], &#39;out_temperature&#39;: 5.1, &#39;action_&#39;: [21, 24]}
+Reward:  -23614.86930856602 {&#39;timestep&#39;: 35040, &#39;time_elapsed&#39;: 31536000, &#39;year&#39;: 1992, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 5016.972171658432, &#39;total_power_no_units&#39;: -0.5016972171658431, &#39;comfort_penalty&#39;: -1.9844573338465317, &#39;abs_comfort&#39;: 1.9844573338465317, &#39;temperatures&#39;: [18.01554266615347], &#39;out_temperature&#39;: -12.0, &#39;action_&#39;: [15, 30]}
 </pre></div></div>
 </div>
 <p>And as always don’t forget to close the environment:</p>
@@ -470,9 +470,9 @@ Reward:  -23641.92190932824 {&#39;timestep&#39;: 35040, &#39;time_elapsed&#39;: 
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area stderr docutils container">
+<div class="output_area docutils container">
 <div class="highlight"><pre>
-[2022-10-06 18:02:06,211] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2022-10-07 09:00:40,720] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
 </pre></div></div>
 </div>
 <p>Now we can see the final rewards:</p>
@@ -493,7 +493,7 @@ Reward:  -23641.92190932824 {&#39;timestep&#39;: 35040, &#39;time_elapsed&#39;: 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Mean reward:  -0.6747123832571069 Cumulative reward:  -23641.92190932824
+Mean reward:  -0.6739403341485966 Cumulative reward:  -23614.86930856602
 </pre></div></div>
 </div>
 <p>The <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/__init__.py">list of environments</a> that we have registered in Sinergym is extensive and we use buildings changing particularities. For example, continuous action space or discrete, noise over weather, runperiod, timesteps, reward function, etc. We will see it in the following notebooks.****</p>
