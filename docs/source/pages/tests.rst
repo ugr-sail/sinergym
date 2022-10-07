@@ -98,7 +98,7 @@ directory, they are organized by different modules:
   Here will be all tests that check Sinergym simulation environments 
   can be used correctly with Stable Baselines 3 algorithms.
   If Stable Baselines 3 package is not installed, these tests
-  will be ignored by *Sinergym*.
+  will be ignored by *Sinergym* automatically.
 
 
 If you want to **make new tests**, you can append to this modules or 
