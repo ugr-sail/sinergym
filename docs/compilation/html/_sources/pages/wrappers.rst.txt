@@ -45,4 +45,8 @@ An usage of these wrappers could be the next:
 .. warning:: The order of wrappers if you are going to use several at the same time is really important.
              The correct order is **Normalization - Logger - MultiObs** and subsets (for example, *Normalization* - *Multiobs* is valid).
 
+.. warning:: If you add new observation variables to the environment than the default ones, you have 
+             to update the **value range dictionary** in `sinergym/sinergym/utils/constants.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__ 
+             so that normalization can be applied correctly. Otherwise, you will encounter bug `#249 <https://github.com/ugr-sail/sinergym/issues/249>`__.
+
 .. note:: For more information about *Sinergym* Logger, visit :ref:`Logger`.

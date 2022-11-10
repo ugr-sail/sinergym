@@ -87,8 +87,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Wrappers</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Wrappers</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/pages/wrappers.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -165,6 +165,12 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <p class="admonition-title">Warning</p>
 <p>The order of wrappers if you are going to use several at the same time is really important.
 The correct order is <strong>Normalization - Logger - MultiObs</strong> and subsets (for example, <em>Normalization</em> - <em>Multiobs</em> is valid).</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you add new observation variables to the environment than the default ones, you have
+to update the <strong>value range dictionary</strong> in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py">sinergym/sinergym/utils/constants.py</a>
+so that normalization can be applied correctly. Otherwise, you will encounter bug <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/249">#249</a>.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

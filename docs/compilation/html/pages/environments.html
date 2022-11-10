@@ -106,8 +106,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Environments</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Environments</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/pages/environments.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -721,14 +721,23 @@ the summary data of each episode.</p>
 <h3>Observation/action spaces<a class="headerlink" href="#observation-action-spaces" title="Permalink to this heading"></a></h3>
 <p>Structure of observation and action space is defined in Environment constructor directly.
 This allows for a <strong>dynamic definition</strong> of these spaces. Let's see the fields required to do it:</p>
-<ul class="simple">
+<ul>
 <li><p><strong>observation_variables</strong>: List of observation variables that simulator is going to process like an observation.
 These variables names must follow the structure <code class="docutils literal notranslate"><span class="pre">&lt;variable_name&gt;(&lt;zone_name&gt;)</span></code> in order to register
 them correctly. <em>Sinergym</em> will check for you that the variable names are correct with respect to
 the building you are trying to simulate (<em>IDF</em> file).
 To do this, it will look at the list found in the
 <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/variables">variables</a>
-folder of the project (<em>RDD</em> file).</p></li>
+folder of the project (<em>RDD</em> file).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In case a new observation variable is added to the default ones for an environment, care must be
+taken in case normalization is to be done. This is because you have to update
+the dictionary of ranges of values available in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py">constants.py</a> as discussed in
+issue <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/249">#249</a>. You can use the range_getter function of <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py">common.py</a> to get these
+ranges automatically from a experiment output folder.</p>
+</div>
+</li>
 <li><p><strong>observation_space</strong>: Definition of the observation space following the <strong>OpenAI gym standard</strong>.
 This space is used to represent all the observations variables that we have previously
 defined. Remember that the <strong>year, month, day and hour</strong> are added by <em>Sinergym</em> later,
