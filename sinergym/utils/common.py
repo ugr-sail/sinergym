@@ -193,7 +193,7 @@ def ranges_getter(output_path: str,
     """Given a path with simulations outputs, this function is used to extract max and min absolute values of all episodes in each variable. If a dict ranges is given, will be updated.
 
     Args:
-        output_path (str): path with simulations directories (Eplus-env-<env_name>).
+        output_path (str): Path with simulation output (Eplus-env-<env_name>).
         last_result (Optional[Dict[str, List[float]]], optional): Last ranges dict to be updated. This will be created if it is not given.
 
     Returns:
@@ -207,33 +207,31 @@ def ranges_getter(output_path: str,
         result = {}
 
     content = os.listdir(output_path)
-    for simulation in content:
+    for episode_path in content:
         if os.path.isdir(
             output_path +
             '/' +
-                simulation) and simulation.startswith('Eplus-env'):
-            simulation_content = os.listdir(output_path + '/' + simulation)
-            for episode_dir in simulation_content:
-                if os.path.isdir(
-                    output_path +
-                    '/' +
-                    simulation +
-                    '/' +
-                        episode_dir):
-                    monitor_path = output_path + '/' + simulation + '/' + episode_dir + '/monitor.csv'
-                    print('Reading ' + monitor_path + ' limits.')
-                    data = pd.read_csv(monitor_path)
+                episode_path) and episode_path.startswith('Eplus-env'):
+            simulation_content = os.listdir(output_path + '/' + episode_path)
 
-                    if len(result) == 0:
-                        for column in data:
-                            # variable : [min,max]
-                            result[column] = [np.inf, -np.inf]
+            if os.path.isdir(
+                output_path +
+                '/' +
+                    episode_path):
+                monitor_path = output_path + '/' + episode_path + '/monitor.csv'
+                print('Reading ' + monitor_path + ' limits.')
+                data = pd.read_csv(monitor_path)
 
+                if len(result) == 0:
                     for column in data:
-                        if np.min(data[column]) < result[column][0]:
-                            result[column][0] = np.min(data[column])
-                        if np.max(data[column]) > result[column][1]:
-                            result[column][1] = np.max(data[column])
+                        # variable : [min,max]
+                        result[column] = [np.inf, -np.inf]
+
+                for column in data:
+                    if np.min(data[column]) < result[column][0]:
+                        result[column][0] = np.min(data[column])
+                    if np.max(data[column]) > result[column][1]:
+                        result[column][1] = np.max(data[column])
     return result
 
 

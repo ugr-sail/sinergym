@@ -228,6 +228,12 @@ This allows for a **dynamic definition** of these spaces. Let's see the fields r
   `variables <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/variables>`__ 
   folder of the project (*RDD* file). 
 
+  .. note:: In case a new observation variable is added to the default ones for an environment, care must be 
+            taken in case normalization is to be done. This is because you have to update 
+            the dictionary of ranges of values available in `constants.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__ as discussed in 
+            issue `#249 <https://github.com/ugr-sail/sinergym/issues/249>`__. You can use the range_getter function of `common.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py>`__ to get these 
+            ranges automatically from a experiment output folder.
+
 - **observation_space**: Definition of the observation space following the **OpenAI gym standard**. 
   This space is used to represent all the observations variables that we have previously 
   defined. Remember that the **year, month, day and hour** are added by *Sinergym* later, 
