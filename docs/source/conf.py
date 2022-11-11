@@ -34,6 +34,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.autosectionlabel',
     'sphinxcontrib.spelling',
+    'sphinx_multiversion',
     'IPython.sphinxext.ipython_console_highlighting',
     'nbsphinx',
     'nbsphinx_link']
@@ -42,6 +43,28 @@ autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+# VERSIONING configuration
+# Whitelist pattern for tags (set to None to ignore all tags)
+smv_tag_whitelist = r'^.*$'
+#smv_tag_whitelist = None
+
+# Whitelist pattern for branches (set to None to ignore all branches)
+smv_branch_whitelist = r'main'
+# smv_branch_whitelist = None
+
+# Whitelist pattern for remotes (set to None to use local branches only)
+smv_remote_whitelist = None
+
+# Pattern for released versions
+smv_released_pattern = r'^tags/.*$'
+
+# Format for versioned output directories inside the build directory
+smv_outputdir_format = '{ref.name}'
+
+# Determines whether remote or local git branches/tags are preferred if
+# their output dirs conflict
+smv_prefer_remote_refs = False
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -75,7 +98,9 @@ html_theme_options = {'style_nav_header_background': '#a9c1be'}
 
 # Enable global sidebar
 html_sidebars = {'**': ['globaltoc.html',
-                        'relations.html', 'sourcelink.html', 'searchbox.html']}
+                        'relations.html',
+                        'sourcelink.html',
+                        'searchbox.html', ]}
 
 # disable nbsphinx errors to suppres imports checks not working
 nbsphinx_allow_errors = True
