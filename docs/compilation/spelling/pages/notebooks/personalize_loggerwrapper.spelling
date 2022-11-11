@@ -1,6 +1,0 @@
-source/pages/notebooks/personalize_loggerwrapper.nblink:9: (personalization)  Logger Wrapper personalization/configuration
-source/pages/notebooks/personalize_loggerwrapper.nblink:86: (writen)  First we need to change the CSV logger to modify the values writen into the file on the funtion create_row_contents
-source/pages/notebooks/personalize_loggerwrapper.nblink:86: (funtion)  First we need to change the CSV logger to modify the values writen into the file on the funtion create_row_contents
-source/pages/notebooks/personalize_loggerwrapper.nblink:150: (Intanciate)  Step 2 Intanciate the LoggerWrapper
-source/pages/notebooks/personalize_loggerwrapper.nblink:161: (loggerwrapper)  now we need to instantiate the loggerwrapper and specify the new headers of our file and the csvlogger class we want to use.
-source/pages/notebooks/personalize_loggerwrapper.nblink:161: (csvlogger)  now we need to instantiate the loggerwrapper and specify the new headers of our file and the csvlogger class we want to use.
