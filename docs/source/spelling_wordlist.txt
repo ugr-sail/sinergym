@@ -31,6 +31,8 @@ Contrib
 couldn
 cpu
 csv
+csvlogger
+CSVLogger
 CSVLogger
 cuda
 customising
@@ -71,6 +73,7 @@ ffmpeg
 Firestore
 fn
 forkserver
+formatter
 func
 Gaussian
 gcloud
@@ -94,6 +97,7 @@ idf
 init
 isn
 isort
+iterable
 IWMullion
 kfac
 Khee
@@ -102,9 +106,11 @@ lifecycle
 LinearReward
 LoggerCallback
 LoggerEvalCallback
+loggerwrapper
 LoggerWrapper
 logits
 lstm
+middleware
 minibatch
 minibatches
 Mlflow
@@ -135,6 +141,8 @@ Ornstein
 parallelize
 param
 params
+pdf
+personalization
 Piecewise
 Poh
 Popen
@@ -164,6 +172,7 @@ rollouts
 RuleBasedController
 runperiod
 Runperiod
+scalable
 serializable
 setpoint
 setpoints
@@ -201,6 +210,7 @@ vf
 wEconomizer
 winterday
 wouldn
+xlsx
 Zhang
 Zhiang
 ZoneAutoDXVAV
