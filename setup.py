@@ -31,6 +31,7 @@ setup(name='sinergym',
               'sphinx',  # documentation
               'sphinx-rtd-theme',  # documentation theme
               'sphinxcontrib-spelling',  # documentation spelling
+              'sphinx-multiversion',  # documentation versioning
               'pyenchant',
               'google-api-python-client',
               'oauth2client',
@@ -54,6 +55,7 @@ setup(name='sinergym',
               'sphinx',
               'sphinx-rtd-theme',
               'sphinxcontrib-spelling',
+              'sphinx-multiversion',
               'pyenchant',
               'nbsphinx',
               'nbsphinx_link',
