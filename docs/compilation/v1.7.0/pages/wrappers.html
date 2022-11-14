@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wrappers &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/doc_theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Deep Reinforcement Learning Integration" href="deep-reinforcement-learning.html" />
+    <link rel="prev" title="Controllers" href="controllers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+            <a href="../index.html" class="icon icon-home"> sinergym
+            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Wrappers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/wrappers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="wrappers">
+<h1>Wrappers<a class="headerlink" href="#wrappers" title="Permalink to this heading"></a></h1>
+<p>Sinergym has several wrappers in order to add some functionality in the environment that it doesn’t have by default. Currently, we have developed a <strong>normalization wrapper</strong>,
+<strong>multi-observation wrapper</strong> and <strong>Logger wrapper</strong>. The code can be found in <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/utils/wrappers.py">sinergym/sinergym/utils/wrappers.py</a>.
+You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some of its variants:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Implementation of custom Gym environments.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">gym</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.common</span> <span class="kn">import</span> <span class="n">CSVLogger</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.common</span> <span class="kn">import</span> <span class="n">RANGES_5ZONE</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.env_util</span> <span class="kn">import</span> <span class="n">is_wrapped</span>
+
+
+<span class="k">class</span> <span class="nc">NormalizeObservation</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">ObservationWrapper</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">ranges</span><span class="o">=</span><span class="n">RANGES_5ZONE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Observations normalized to range [0, 1].</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            env (object): Original Sinergym environment.</span>
+<span class="sd">            ranges: Observation variables ranges to apply normalization (rely on environment)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NormalizeObservation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unwrapped_observation</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span> <span class="o">=</span> <span class="n">ranges</span>
+
+    <span class="k">def</span> <span class="nf">observation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Applies normalization to observation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obs (object): Original observation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            object: Normalized observation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Save original obs in class attribute</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unwrapped_observation</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c1"># NOTE: If you want to record day, month and hour, you should add that</span>
+        <span class="c1"># variables as keys</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">variable</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]):</span>
+            <span class="c1"># normalization (handle DivisionbyZero Error)</span>
+            <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">obs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="nb">min</span><span class="p">(</span>
+                        <span class="n">obs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">obs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> \
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+            <span class="c1"># If value is out</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+                <span class="n">obs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="n">obs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">obs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">obs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">obs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Return obs values in the SAME ORDER than obs argument.</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_unwrapped_obs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get last environment observation without normalization.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            object: Last original observation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unwrapped_observation</span>
+
+
+<span class="k">class</span> <span class="nc">MultiObsWrapper</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Stack of observations.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            env (object): Original Gym environment.</span>
+<span class="sd">            n (int, optional): Number of observations to be stacked. Defaults to 5.</span>
+<span class="sd">            flatten (bool, optional): Whether or not flat the observation vector. Defaults to True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MultiObsWrapper</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ind_flat</span> <span class="o">=</span> <span class="n">flatten</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([],</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span><span class="p">,)</span> <span class="k">if</span> <span class="n">flatten</span> <span class="k">else</span> <span class="p">((</span><span class="n">n</span><span class="p">,)</span> <span class="o">+</span> <span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=-</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Resets the environment.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: Stacked previous observations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_obs</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Performs the action in the new environment.&quot;&quot;&quot;</span>
+
+        <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_obs</span><span class="p">(),</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span>
+
+    <span class="k">def</span> <span class="nf">_get_obs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get observation history.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.array: Array of previous observations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ind_flat</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">LoggerWrapper</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;CSVLogger to log interactions with environment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            env (object): Original Gym environment.</span>
+<span class="sd">            flag (bool, optional): State of logger (activate or deactivate).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
+        <span class="c1"># Headers for csv logger</span>
+        <span class="n">monitor_header_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;timestep,month,day,hour&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span> <span class="o">+</span> \
+            <span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;time (seconds)&#39;</span><span class="p">,</span> <span class="s1">&#39;reward&#39;</span><span class="p">,</span>
+                                       <span class="s1">&#39;power_penalty&#39;</span><span class="p">,</span> <span class="s1">&#39;comfort_penalty&#39;</span><span class="p">,</span> <span class="s1">&#39;done&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">element_header</span> <span class="ow">in</span> <span class="n">monitor_header_list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span> <span class="o">+=</span> <span class="n">element_header</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_header</span> <span class="o">=</span> <span class="s1">&#39;episode_num,cumulative_reward,mean_reward,cumulative_power_consumption,mean_power_consumption,cumulative_comfort_penalty,mean_comfort_penalty,cumulative_power_penalty,mean_power_penalty,comfort_violation (%),length(timesteps),time_elapsed(seconds)&#39;</span>
+
+        <span class="c1"># Create simulation logger, by default is active (flag=True)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">CSVLogger</span><span class="p">(</span>
+            <span class="n">monitor_header</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span><span class="p">,</span>
+            <span class="n">progress_header</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_header</span><span class="p">,</span>
+            <span class="n">log_progress_file</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_env_working_dir_parent</span> <span class="o">+</span>
+            <span class="s1">&#39;/progress.csv&#39;</span><span class="p">,</span>
+            <span class="n">flag</span><span class="o">=</span><span class="n">flag</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Step the environment. Logging new information</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            action: Action executed in step</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (np.array(),float,bool,dict) tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="c1"># We added some extra values (month,day,hour) manually in env, so we</span>
+        <span class="c1"># need to delete them.</span>
+        <span class="k">if</span> <span class="n">is_wrapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">NormalizeObservation</span><span class="p">):</span>
+            <span class="c1"># Record action and new observation in simulator&#39;s csv</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step_normalize</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestep&#39;</span><span class="p">],</span>
+                                           <span class="n">date</span><span class="o">=</span><span class="p">[</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">],</span>
+                                                 <span class="n">info</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">],</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">]],</span>
+                                           <span class="n">observation</span><span class="o">=</span><span class="n">obs</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span>
+                                           <span class="n">action</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;action_&#39;</span><span class="p">],</span>
+                                           <span class="n">simulation_time</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;time_elapsed&#39;</span><span class="p">],</span>
+                                           <span class="n">reward</span><span class="o">=</span><span class="n">reward</span><span class="p">,</span>
+                                           <span class="n">total_power_no_units</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power_no_units&#39;</span><span class="p">],</span>
+                                           <span class="n">comfort_penalty</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;comfort_penalty&#39;</span><span class="p">],</span>
+                                           <span class="n">done</span><span class="o">=</span><span class="n">done</span><span class="p">)</span>
+            <span class="c1"># Record original observation too</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step</span><span class="p">(</span>
+                <span class="n">timestep</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestep&#39;</span><span class="p">],</span>
+                <span class="n">date</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">],</span>
+                    <span class="n">info</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">],</span>
+                    <span class="n">info</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">]],</span>
+                <span class="n">observation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_unwrapped_obs</span><span class="p">()[</span>
+                    <span class="p">:</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span>
+                <span class="n">action</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;action_&#39;</span><span class="p">],</span>
+                <span class="n">simulation_time</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;time_elapsed&#39;</span><span class="p">],</span>
+                <span class="n">reward</span><span class="o">=</span><span class="n">reward</span><span class="p">,</span>
+                <span class="n">total_power_no_units</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power_no_units&#39;</span><span class="p">],</span>
+                <span class="n">comfort_penalty</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;comfort_penalty&#39;</span><span class="p">],</span>
+                <span class="n">power</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power&#39;</span><span class="p">],</span>
+                <span class="n">done</span><span class="o">=</span><span class="n">done</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Only record observation without normalization</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestep&#39;</span><span class="p">],</span>
+                                 <span class="n">date</span><span class="o">=</span><span class="p">[</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">],</span>
+                                       <span class="n">info</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">],</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">]],</span>
+                                 <span class="n">observation</span><span class="o">=</span><span class="n">obs</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span>
+                                 <span class="n">action</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;action_&#39;</span><span class="p">],</span>
+                                 <span class="n">simulation_time</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;time_elapsed&#39;</span><span class="p">],</span>
+                                 <span class="n">reward</span><span class="o">=</span><span class="n">reward</span><span class="p">,</span>
+                                 <span class="n">total_power_no_units</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power_no_units&#39;</span><span class="p">],</span>
+                                 <span class="n">comfort_penalty</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;comfort_penalty&#39;</span><span class="p">],</span>
+                                 <span class="n">power</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;total_power&#39;</span><span class="p">],</span>
+                                 <span class="n">done</span><span class="o">=</span><span class="n">done</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span>
+
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Resets the environment. Recording episode summary in logger</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># It isn&#39;t first episode simulation, so we can logger last episode</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_episode_existed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">logger_main</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s1">&#39;End of episode, recording summary (progress.csv) if logger is active&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_episode</span><span class="p">(</span><span class="n">episode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_epi_num</span><span class="p">)</span>
+
+        <span class="c1"># Then, reset environment</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+        <span class="c1"># Create monitor.csv for information of this episode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">logger_main</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s1">&#39;Creating monitor.csv for current episode (episode &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_epi_num</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;) if logger is active&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">set_log_file</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_eplus_working_dir</span> <span class="o">+</span> <span class="s1">&#39;/monitor.csv&#39;</span><span class="p">)</span>
+        <span class="c1"># Store initial state of simulation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_step</span><span class="p">(</span><span class="n">timestep</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                             <span class="n">date</span><span class="o">=</span><span class="p">[</span><span class="n">obs</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">obs</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span> <span class="n">obs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+                             <span class="n">observation</span><span class="o">=</span><span class="n">obs</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span>
+                             <span class="n">action</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+                                 <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]))],</span>
+                             <span class="n">simulation_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                             <span class="n">reward</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">total_power_no_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">comfort_penalty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">power</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">done</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">obs</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Close env. Recording last episode summary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Record last episode summary before end simulation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">logger_main</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s1">&#39;End of episode, recording summary (progress.csv) if logger is active&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_episode</span><span class="p">(</span><span class="n">episode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_epi_num</span><span class="p">)</span>
+
+        <span class="c1"># Then, close env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">activate_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Activate logger if its flag False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">activate_flag</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">deactivate_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deactivate logger if its flag True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">deactivate_flag</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>An usage of these wrappers could be the next:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">MultiObsWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span><span class="p">,</span> <span class="n">LoggerWrapper</span>
+
+<span class="n">default_env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
+
+<span class="c1"># apply wrappers</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">MultiObsWrapper</span><span class="p">(</span><span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">default_env</span><span class="p">)))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
+            <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Episode &#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+        <span class="n">rewards</span><span class="p">),</span> <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The order of wrappers if you are going to use several at the same time is really important.
+The correct order is <strong>Normalization - Logger - MultiObs</strong> and subsets (for example, <em>Normalization - Multiobs</em> is valid).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information about Sinergym Logger, visit <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a></p>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="controllers.html" class="btn btn-neutral float-left" title="Controllers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deep-reinforcement-learning.html" class="btn btn-neutral float-right" title="Deep Reinforcement Learning Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v1.7.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v1.4.0/pages/wrappers.html">v1.4.0</a></dd>
+            <dd><a href="../../v1.6.0/pages/wrappers.html">v1.6.0</a></dd>
+            <dd><a href="wrappers.html">v1.7.0</a></dd>
+            <dd><a href="../../v1.7.2/pages/wrappers.html">v1.7.2</a></dd>
+            <dd><a href="../../v1.7.5/pages/wrappers.html">v1.7.5</a></dd>
+            <dd><a href="../../v1.7.6/pages/wrappers.html">v1.7.6</a></dd>
+            <dd><a href="../../v1.7.7/pages/wrappers.html">v1.7.7</a></dd>
+            <dd><a href="../../v1.7.8/pages/wrappers.html">v1.7.8</a></dd>
+            <dd><a href="../../v1.8.2/pages/wrappers.html">v1.8.2</a></dd>
+            <dd><a href="../../v1.8.4/pages/wrappers.html">v1.8.4</a></dd>
+            <dd><a href="../../v1.9.1/pages/wrappers.html">v1.9.1</a></dd>
+            <dd><a href="../../v1.9.5/pages/wrappers.html">v1.9.5</a></dd>
+            <dd><a href="../../v2.0.0/pages/wrappers.html">v2.0.0</a></dd>
+            <dd><a href="../../v2.1.0/pages/wrappers.html">v2.1.0</a></dd>
+            <dd><a href="../../v2.1.2/pages/wrappers.html">v2.1.2</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../main/pages/wrappers.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

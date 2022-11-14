@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Environments &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/doc_theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Rewards" href="rewards.html" />
+    <link rel="prev" title="Usage example" href="usage-example.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+            <a href="../index.html" class="icon icon-home"> sinergym
+            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Environments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#environments-list">Environments List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#observation-action-spaces">Observation/action spaces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#specification">Specification</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-new-buildings-for-environments">Adding new buildings for environments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/usage_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/MLflow_example.html">MLFlow example</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Environments</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/environments.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="environments">
+<h1>Environments<a class="headerlink" href="#environments" title="Permalink to this heading"></a></h1>
+<section id="environments-list">
+<h2>Environments List<a class="headerlink" href="#environments-list" title="Permalink to this heading"></a></h2>
+<p>The list of available environments is the following:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 10%" />
+<col style="width: 22%" />
+<col style="width: 17%" />
+<col style="width: 8%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Env. name</p></th>
+<th class="head"><p>Location</p></th>
+<th class="head"><p>IDF file</p></th>
+<th class="head"><p>Weather type (*)</p></th>
+<th class="head"><p>Action space</p></th>
+<th class="head"><p>Simulation period</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Eplus-demo-v1</p></td>
+<td><p>Pittsburgh, USA</p></td>
+<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>-</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/03</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-5Zone-hot-discrete-v1</p></td>
+<td><p>Arizona, USA</p></td>
+<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>Hot dry (2B)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-5Zone-mixed-discrete-v1</p></td>
+<td><p>New York, USA</p></td>
+<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>Mixed humid (4A)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-5Zone-cool-discrete-v1</p></td>
+<td><p>Washington, USA</p></td>
+<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>Cool marine (5C)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-5Zone-hot-continuous-v1</p></td>
+<td><p>Arizona, USA</p></td>
+<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>Hot dry (2B)</p></td>
+<td><p>Box(2)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-5Zone-mixed-continuous-v1</p></td>
+<td><p>New York, USA</p></td>
+<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>Mixed humid (4A)</p></td>
+<td><p>Box(2)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-5Zone-cool-continuous-v1</p></td>
+<td><p>Washington, USA</p></td>
+<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>Cool marine (5C)</p></td>
+<td><p>Box(2)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-5Zone-hot-discrete-stochastic-v1</p></td>
+<td><p>Arizona, USA</p></td>
+<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>Hot dry (2B) (**)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-5Zone-mixed-discrete-stochastic-v1</p></td>
+<td><p>New York, USA</p></td>
+<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>Mixed humid (4A) (**)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-5Zone-cool-discrete-stochastic-v1</p></td>
+<td><p>Washington, USA</p></td>
+<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>Cool marine (5C) (**)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-5Zone-hot-continuous-stochastic-v1</p></td>
+<td><p>Arizona, USA</p></td>
+<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>Hot dry (2B) (**)</p></td>
+<td><p>Box(2)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-5Zone-mixed-continuous-stochastic-v1</p></td>
+<td><p>New York, USA</p></td>
+<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>Mixed humid (4A) (**)</p></td>
+<td><p>Box(2)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-5Zone-cool-continuous-stochastic-v1</p></td>
+<td><p>Washington, USA</p></td>
+<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>Cool marine (5C) (**)</p></td>
+<td><p>Box(2)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-datacenter-hot-discrete-v1</p></td>
+<td><p>Arizona, USA</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>Hot dry (2B)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-datacenter-hot-continuous-v1</p></td>
+<td><p>Arizona, USA</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>Hot dry (2B)</p></td>
+<td><p>Box(4)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-datacenter-hot-discrete-stochastic-v1</p></td>
+<td><p>Arizona, USA</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>Hot dry (2B) (**)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-datacenter-hot-continuous-stochastic-v1</p></td>
+<td><p>Arizona, USA</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>Hot dry (2B) (**)</p></td>
+<td><p>Box(4)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-datacenter-mixed-discrete-stochastic-v1</p></td>
+<td><p>New York, USA</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>Mixed humid (4A) (**)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-datacenter-mixed-continuous-v1</p></td>
+<td><p>New York, USA</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>Mixed humid (4A)</p></td>
+<td><p>Box(4)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-datacenter-mixed-discrete-v1</p></td>
+<td><p>New York, USA</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>Mixed humid (4A)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-datacenter-mixed-continuous-stochastic-v1</p></td>
+<td><p>New York, USA</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>Mixed humid (4A) (**)</p></td>
+<td><p>Box(4)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-datacenter-cool-discrete-stochastic-v1</p></td>
+<td><p>Washington, USA</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>Mixed humid (4A) (**)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-datacenter-cool-continuous-v1</p></td>
+<td><p>Washington, USA</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>Mixed humid (4A)</p></td>
+<td><p>Box(4)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-datacenter-cool-discrete-v1</p></td>
+<td><p>Washington, USA</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>Mixed humid (4A)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-datacenter-cool-continuous-stochastic-v1</p></td>
+<td><p>Washington, USA</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>Mixed humid (4A) (**)</p></td>
+<td><p>Box(4)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-IWMullion-mixed-discrete-v1</p></td>
+<td><p>New York, USA</p></td>
+<td><p>IWMullion.idf</p></td>
+<td><p>Mixed humid (4A)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-IWMullion-mixed-discrete-stochastic-v1</p></td>
+<td><p>New York, USA</p></td>
+<td><p>IWMullion.idf</p></td>
+<td><p>Mixed humid (4A) (**)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/03</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-IWMullion-mixed-continuous-v1</p></td>
+<td><p>New York, USA</p></td>
+<td><p>IWMullion.idf</p></td>
+<td><p>Mixed humid (4A)</p></td>
+<td><p>Box(2)</p></td>
+<td><p>01/01 - 31/03</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-IWMullion-cool-discrete-v1</p></td>
+<td><p>Washington, USA</p></td>
+<td><p>IWMullion.idf</p></td>
+<td><p>Cool marine (5C) (**)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/03</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-IWMullion-mixed-continuous-stochastic-v1</p></td>
+<td><p>New York, USA</p></td>
+<td><p>IWMullion.idf</p></td>
+<td><p>Mixed humid (4A) (**)</p></td>
+<td><p>Box(2)</p></td>
+<td><p>01/01 - 31/03</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-IWMullion-cool-discrete-stochastic-v1</p></td>
+<td><p>Washington, USA</p></td>
+<td><p>IWMullion.idf</p></td>
+<td><p>Cool marine (5C) (**)</p></td>
+<td><p>Discrete(10)</p></td>
+<td><p>01/01 - 31/03</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-IWMullion-cool-continuous-v1</p></td>
+<td><p>Washington, USA</p></td>
+<td><p>IWMullion.idf</p></td>
+<td><p>Cool marine (5C)</p></td>
+<td><p>Box(2)</p></td>
+<td><p>01/01 - 31/03</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-IWMullion-cool-continuous-stochastic-v1</p></td>
+<td><p>Washington, USA</p></td>
+<td><p>IWMullion.idf</p></td>
+<td><p>Cool marine (5C) (**)</p></td>
+<td><p>Box(2)</p></td>
+<td><p>01/01 - 31/03</p></td>
+</tr>
+</tbody>
+</table>
+<p>(*) Weather types according to <a class="reference external" href="https://www.energycodes.gov/development/commercial/prototype_models#TMY3">DOE’s
+classification</a>.</p>
+<p>(**) In these environments, weather series change from episode to
+episode. Gaussian noise with 0 mean and 2.5 std is added to the original
+values in order to add stochastic.</p>
+</section>
+<section id="observation-action-spaces">
+<h2>Observation/action spaces<a class="headerlink" href="#observation-action-spaces" title="Permalink to this heading"></a></h2>
+<p>Structure of observation and action space is defined in Environment constructor directly. This allows for a <strong>dynamic definition</strong> of these spaces. Let’s see the fields required to do it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">idf_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">weather_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">observation_space</span><span class="p">:</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=-</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,)),</span>
+        <span class="n">observation_variables</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="n">action_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">,</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Discrete</span><span class="p">]</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,)),</span>
+        <span class="n">action_variables</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="n">action_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span>
+        <span class="n">weather_variability</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">reward</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">LinearReward</span><span class="p">,</span>
+        <span class="n">reward_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span>
+        <span class="n">act_repeat</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">max_ep_data_store_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">env_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;eplus-env-v1&#39;</span><span class="p">,</span>
+        <span class="n">config_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Environment with EnergyPlus simulator.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            idf_file (str): Name of the IDF file with the building definition.</span>
+<span class="sd">            weather_file (str): Name of the EPW file for weather conditions.</span>
+<span class="sd">            observation_space (gym.spaces.Box, optional): Gym Observation Space definition. Defaults to an empty observation_space (no control).</span>
+<span class="sd">            observation_variables (List[str], optional): List with variables names in IDF. Defaults to an empty observation variables (no control).</span>
+<span class="sd">            action_space (Union[gym.spaces.Box, gym.spaces.Discrete], optional): Gym Action Space definition. Defaults to an empty action_space (no control).</span>
+<span class="sd">            action_variables (List[str],optional): Action variables to be controlled in IDF, if that actions names have not been configured manually in IDF, you should configure or use extra_config. Default to empty List.</span>
+<span class="sd">            action_mapping (Dict[int, Tuple[float, ...]], optional): Action mapping list for discrete actions spaces only. Defaults to empty list.</span>
+<span class="sd">            weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.</span>
+<span class="sd">            reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.</span>
+<span class="sd">            reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.</span>
+<span class="sd">            act_repeat (int, optional): Number of timesteps that an action is repeated in the simulator, regardless of the actions it receives during that repetition interval.</span>
+<span class="sd">            max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.</span>
+<span class="sd">            env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.</span>
+<span class="sd">            config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                          Energyplus, BCVTB and paths                         #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="n">eplus_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;EPLUS_PATH&#39;</span><span class="p">]</span>
+        <span class="n">bcvtb_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;BCVTB_PATH&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pkg_data_path</span> <span class="o">=</span> <span class="n">PKG_DATA_PATH</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">idf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pkg_data_path</span><span class="p">,</span> <span class="s1">&#39;buildings&#39;</span><span class="p">,</span> <span class="n">idf_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weather_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pkg_data_path</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">,</span> <span class="n">weather_file</span><span class="p">)</span>
+
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                             Variables definition                             #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">observation_variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">action_variables</span>
+
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                                   Simulator                                  #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulator</span> <span class="o">=</span> <span class="n">EnergyPlus</span><span class="p">(</span>
+            <span class="n">env_name</span><span class="o">=</span><span class="n">env_name</span><span class="p">,</span>
+            <span class="n">eplus_path</span><span class="o">=</span><span class="n">eplus_path</span><span class="p">,</span>
+            <span class="n">bcvtb_path</span><span class="o">=</span><span class="n">bcvtb_path</span><span class="p">,</span>
+            <span class="n">idf_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">idf_path</span><span class="p">,</span>
+            <span class="n">weather_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weather_path</span><span class="p">,</span>
+            <span class="n">variables</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
+            <span class="n">act_repeat</span><span class="o">=</span><span class="n">act_repeat</span><span class="p">,</span>
+            <span class="n">max_ep_data_store_num</span><span class="o">=</span><span class="n">max_ep_data_store_num</span><span class="p">,</span>
+            <span class="n">config_params</span><span class="o">=</span><span class="n">config_params</span>
+        <span class="p">)</span>
+
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#        Adding simulation date to observation (not needed in simulator)       #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span>
+                                         <span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span>
+
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                              Weather variability                             #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weather_variability</span> <span class="o">=</span> <span class="n">weather_variability</span>
+
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                               Observation Space                              #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="o">=</span> <span class="n">observation_space</span>
+
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                                 Action Space                                 #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1"># Action space type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag_discrete</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">action_space</span><span class="p">,</span>
+                <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Discrete</span><span class="p">))</span>
+
+        <span class="c1"># Discrete</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag_discrete</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_mapping</span> <span class="o">=</span> <span class="n">action_mapping</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span> <span class="o">=</span> <span class="n">action_space</span>
+        <span class="c1"># Continuous</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Defining action values setpoints (one per value)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_space</span> <span class="o">=</span> <span class="n">action_space</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+                <span class="c1"># continuous_action_def[2] --&gt; shape</span>
+                <span class="n">low</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="n">high</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">action_space</span><span class="o">.</span><span class="n">dtype</span>
+            <span class="p">)</span>
+
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                                    Reward                                    #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reward_fn</span> <span class="o">=</span> <span class="n">reward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">reward_kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_dict</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+        <span class="c1">#                        Environment definition checker                        #</span>
+        <span class="c1"># ---------------------------------------------------------------------------- #</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_eplus_env</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>observation_variables</strong>: List of observation variables that simulator is going to process like an observation. These variables names must</dt><dd><p>follow the structure <cite>&lt;variable_name&gt;(&lt;zone_name&gt;)</cite> in order to register them correctly. Sinergym will check for
+you that the variable names are correct with respect to the building you are trying to simulate (IDF file).
+To do this, it will look at the list found in the <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables">variables</a> folder of the project (<strong>RDD</strong> file).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>observation_space</strong>: Definition of the observation space following the <strong>gym standard</strong>. This space is used to represent all the observations</dt><dd><p>variables that we have previously defined. Remember that the <strong>year, month, day and hour</strong> are added by Sinergym later,
+so space must be reserved for these fields in the definition. If an inconsistency is found, Sinergym will notify you
+so that it can be fixed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>action_variables</strong>: List of the action variables that simulator is going to process like schedule control actuator in the building model. These variables</dt><dd><p>must be defined in the building model (IDF file) correctly before simulation. You can modify <strong>manually</strong> in the IDF file or using
+our <strong>action definition</strong> extra configuration field in which you set what you want to control and Sinergym takes care of modifying
+this file for you automatically. For more information about this automatic adaptation in section HIPERENLACE.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>action_space</strong>: Definition of the action space following the <strong>gym standard</strong>. This definition can be discrete or continuous and must be consistent with</dt><dd><p>the previously defined action variables (Sinergym will show inconsistency as usual).</p>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order to make environments more generic in DRL solutions. We have updated action space for <strong>continuous problems</strong>. Gym action space is defined always between [-1,1]
+and Sinergym <strong>parse</strong> this values to action space defined in environment internally before to send it to EnergyPlus Simulator. The method in charge of parse this values
+from [-1,1] to real action space is called <code class="docutils literal notranslate"><span class="pre">_setpoints_transform(action)</span></code> in <em>sinergym/sinergym/envs/eplus_env.py</em></p>
+</div>
+<ul class="simple">
+<li><p><strong>action_mapping</strong>: It is only necessary to specify it in discrete action spaces. It is a dictionary that links an index to a specific configuration of values for each action variable.</p></li>
+</ul>
+<section id="specification">
+<h3>Specification<a class="headerlink" href="#specification" title="Permalink to this heading"></a></h3>
+<p>As we have told, Observation and action spaces are defined <strong>dinamically</strong> in Sinergym Environment constructor. Environmet ID’s registered in Sinergym use a <strong>default</strong> definition
+set up in <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/utils/constants.py">constants.py</a>.</p>
+<p>As can be seen in environments observations, the <strong>year, month, day and hour</strong> are included in, but is not configured in default observation variables definition.
+This is because they are not variables recognizable by the simulator as such (Energyplus) and Sinergym does the calculations and adds them in the states returned as
+output by the environment. This feature is common to all environments available in Sinergym and all supported building designs. In other words, you don’t need to
+add this variables (<strong>year, month, day and hour</strong>) to observation variables but yes to the observation space.</p>
+<p>As we told before, all environments ID’s registered in Sinergym use its respectively <strong>default action and observation spaces, variables and definition</strong>.
+However, you can <strong>change</strong> this values giving you the possibility of playing with different observation/action spaces in discrete and continuous environments in order to study how this affects the resolution of a building problem.</p>
+<p>Sinergym has several checkers to ensure that there are no inconsistencies in the alternative specifications made to the default ones. In case the specification offered is wrong, Sinergym will launch messages indicating where the error or inconsistency is located.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><cite>variables.cfg</cite> is a requirement in order to stablish a connection between gym environment and Simulator
+with a external interface (using BCVTB). Since Sinergym <cite>1.9.0</cite> version, it is created automatically using
+action and observation space definition in environment construction.</p>
+</div>
+</section>
+</section>
+<section id="adding-new-buildings-for-environments">
+<h2>Adding new buildings for environments<a class="headerlink" href="#adding-new-buildings-for-environments" title="Permalink to this heading"></a></h2>
+<p>This section is intended to provide information if someone decides to add new buildings for use with Sinergym. The main steps you have to follow are the next:</p>
+<ol class="arabic simple">
+<li><p>Add your building (IDF file) to <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/data/buildings">buildings</a>.
+As mentioned in section <a class="reference internal" href="#observation-action-spaces"><span class="std std-ref">Observation/action spaces</span></a>, the IDF must be previously adapted to your action space or use our <strong>action definition</strong> (section HIPERENLACE)
+to be automatically adapted to the action space and variables you have designed for it, as long as we provide support for the specific component you want to control..</p></li>
+<li><p>Add your own EPW file for weather conditions or use ours in environment constructor. Sinergym will adapt <cite>DesignDays</cite> in IDF file using EPW automatically.</p></li>
+<li><p>Sinergym will check that observation variables specified are available in the simulation before starting. In order to be able to do these checks,
+you need to copy <strong>RDD file</strong> with the same name than IDF file (except extension) to <a class="reference external" href="https://github.com/jajimer/sinergym/tree/main/sinergym/data/variables">variables</a>.
+To obtain this <strong>RDD file</strong> you have to run a simulation with <em>Energyplus</em> directly and extract from output folder.</p></li>
+<li><p>Register your own environment ID <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/sinergym/__init__.py">here</a> following the same structure than the rest.</p></li>
+<li><p>Now, you can use your own environment ID with <cite>gym.make()</cite> like our documentation examples.</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage-example.html" class="btn btn-neutral float-left" title="Usage example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rewards.html" class="btn btn-neutral float-right" title="Rewards" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v1.9.1
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v1.4.0/pages/environments.html">v1.4.0</a></dd>
+            <dd><a href="../../v1.6.0/pages/environments.html">v1.6.0</a></dd>
+            <dd><a href="../../v1.7.0/pages/environments.html">v1.7.0</a></dd>
+            <dd><a href="../../v1.7.2/pages/environments.html">v1.7.2</a></dd>
+            <dd><a href="../../v1.7.5/pages/environments.html">v1.7.5</a></dd>
+            <dd><a href="../../v1.7.6/pages/environments.html">v1.7.6</a></dd>
+            <dd><a href="../../v1.7.7/pages/environments.html">v1.7.7</a></dd>
+            <dd><a href="../../v1.7.8/pages/environments.html">v1.7.8</a></dd>
+            <dd><a href="../../v1.8.2/pages/environments.html">v1.8.2</a></dd>
+            <dd><a href="../../v1.8.4/pages/environments.html">v1.8.4</a></dd>
+            <dd><a href="environments.html">v1.9.1</a></dd>
+            <dd><a href="../../v1.9.5/pages/environments.html">v1.9.5</a></dd>
+            <dd><a href="../../v2.0.0/pages/environments.html">v2.0.0</a></dd>
+            <dd><a href="../../v2.1.0/pages/environments.html">v2.1.0</a></dd>
+            <dd><a href="../../v2.1.2/pages/environments.html">v2.1.2</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../main/pages/environments.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
