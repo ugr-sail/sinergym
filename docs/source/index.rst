@@ -39,7 +39,7 @@ If you use Sinergym in your work, please cite our `paper <https://dl.acm.org/doi
     }
 
 .. toctree::
-   :maxdepth: 2
+   :numbered: 
    :hidden:
    :caption: Start Here
 
@@ -48,7 +48,7 @@ If you use Sinergym in your work, please cite our `paper <https://dl.acm.org/doi
 
 
 .. toctree::
-   :maxdepth: 2
+   :numbered:
    :hidden:
    :caption: sinergym
 
@@ -66,7 +66,7 @@ If you use Sinergym in your work, please cite our `paper <https://dl.acm.org/doi
 
 
 .. toctree::
-   :maxdepth: 2
+   :numbered:
    :hidden:
    :caption: Examples
 

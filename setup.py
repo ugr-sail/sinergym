@@ -32,6 +32,7 @@ setup(name='sinergym',
               'sphinx-rtd-theme',  # documentation theme
               'sphinxcontrib-spelling',  # documentation spelling
               'sphinx-multiversion',  # documentation versioning
+              'sphinx-multitoc-numbering',  # Section numbering
               'pyenchant',
               'google-api-python-client',
               'oauth2client',
@@ -56,6 +57,7 @@ setup(name='sinergym',
               'sphinx-rtd-theme',
               'sphinxcontrib-spelling',
               'sphinx-multiversion',
+              'sphinx-multitoc-numbering',
               'pyenchant',
               'nbsphinx',
               'nbsphinx_link',

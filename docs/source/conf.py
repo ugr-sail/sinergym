@@ -35,6 +35,7 @@ extensions = [
     'sphinx.ext.autosectionlabel',
     'sphinxcontrib.spelling',
     'sphinx_multiversion',
+    'sphinx_multitoc_numbering',
     'IPython.sphinxext.ipython_console_highlighting',
     'nbsphinx',
     'nbsphinx_link']
