@@ -48,7 +48,7 @@ Manual installation
 To install *Sinergym* manually instead of through the container (**recommended**), 
 follow these steps:
 
-1. Configure Python environment
+Configure Python environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * First, clone this repository:
@@ -80,7 +80,7 @@ Now, we have a correct python version with required modules to run *Sinergym*.
 Let's continue with the rest of the programs that are needed outside of Python 
 to run the simulations:
 
-2. Install EnergyPlus 9.5.0
+Install EnergyPlus 9.5.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install *EnergyPlus*. Currently it has been update compatibility to ``9.5.0`` and it has
@@ -101,7 +101,7 @@ install it for Linux (only **Ubuntu** is supported by us). Choose any location
 to install the software. Once installed, a folder called
 ``Energyplus-9-5-0`` should appear in the selected location.
 
-3. Install BCVTB software
+Install BCVTB software
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Follow the instructions
@@ -110,7 +110,7 @@ installing *BCVTB software*. Another option is to copy the ``bcvtb``
 folder from `this
 repository <https://github.com/zhangzhizza/Gym-Eplus/tree/master/eplus_env/envs>`__.
 
-4. Set environment variables
+Set environment variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Two environment variables must be set: ``EPLUS_PATH`` and

@@ -39,7 +39,7 @@ If you use Sinergym in your work, please cite our `paper <https://dl.acm.org/doi
     }
 
 .. toctree::
-   :maxdepth: 2
+   :numbered: 
    :hidden:
    :caption: Start Here
 
@@ -48,7 +48,7 @@ If you use Sinergym in your work, please cite our `paper <https://dl.acm.org/doi
 
 
 .. toctree::
-   :maxdepth: 2
+   :numbered:
    :hidden:
    :caption: sinergym
 
@@ -62,11 +62,10 @@ If you use Sinergym in your work, please cite our `paper <https://dl.acm.org/doi
    pages/gcloudAPI.rst
    pages/github-actions.rst
    pages/tests.rst
-   pages/API-reference.rst
 
 
 .. toctree::
-   :maxdepth: 2
+   :numbered:
    :hidden:
    :caption: Examples
 
@@ -78,4 +77,11 @@ If you use Sinergym in your work, please cite our `paper <https://dl.acm.org/doi
    pages/notebooks/drl.nblink
    pages/notebooks/MLflow_example.nblink
    pages/notebooks/TensorBoard_example.nblink
+
+.. toctree::
+   :hidden:
+   :caption: API
+
+   pages/API-reference.rst
+
    

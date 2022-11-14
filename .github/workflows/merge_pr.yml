@@ -5,7 +5,6 @@ on:
       - main
 
 jobs:
-
   apply-autopep8:
     name: Autopep8 auto-format by a bot
     runs-on: ubuntu-latest
@@ -16,7 +15,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Apply isort
         id: isort-step
@@ -30,7 +29,7 @@ jobs:
         uses: peter-evans/autopep8@v1
         with:
           args: --exit-code --recursive --in-place --aggressive --aggressive .
-        
+
       - name: Detect changes by isort
         uses: tj-actions/verify-changed-files@v7.2
         id: verify-isort-update
@@ -50,7 +49,7 @@ jobs:
   apply-documentation:
     name: Documentation compilation update by bot
     needs: [apply-autopep8]
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -74,10 +73,10 @@ jobs:
           pip install --upgrade requests
       - name: Compile documentation
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: cd docs && sphinx-build -M html source compilation 
+        run: cd docs && sphinx-multiversion source compilation
       - name: Check sphinx spelling
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: cd docs && sphinx-build -M spelling source compilation 
+        run: cd docs && sphinx-build -M spelling source compilation
       - name: Pull local repository (for possible format commit)
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: git pull origin main
@@ -87,7 +86,7 @@ jobs:
         with:
           file_pattern: docs/compilation/*
           commit_message: Documentation source update detected and pushed compilation build directory for Github Pages
-      
+
   update-dockerhub:
     needs: [apply-autopep8, apply-documentation]
     env:
