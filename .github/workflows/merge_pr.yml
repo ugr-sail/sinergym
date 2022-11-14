@@ -53,6 +53,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Verify documentation update
         uses: dorny/paths-filter@v2
         id: verify-documentation-update

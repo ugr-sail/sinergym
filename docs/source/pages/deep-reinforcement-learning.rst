@@ -166,7 +166,7 @@ Mlflow
 ****************
 
 Our scripts to run DRL with *Sinergym* environments are using
-`Mlflow <https://mlflow.org/>`__ in order to **tracking experiments** 
+`Mlflow <https://mlflow.org/>`__, in order to **tracking experiments** 
 and recorded them methodically. It is recommended to use it.
 You can start a local server with information stored during the 
 battery of experiments such as initial and ending date of execution, 
