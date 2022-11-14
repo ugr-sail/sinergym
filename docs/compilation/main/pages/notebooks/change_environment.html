@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>14. Changing an environment registered in Sinergym &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/doc_theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="15. Wrappers example" href="wrappers_examples.html" />
+    <link rel="prev" title="13. Basic example" href="basic_example.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+            <a href="../../index.html" class="icon icon-home"> sinergym
+            <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">3. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">4. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">5. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">6. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">7. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">8. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">9. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">10. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">11. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">12. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">13. Basic example</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">14. Changing an environment registered in Sinergym</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Adding-a-new-reward">14.1. Adding a new reward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Adding-other-new-components-to-the-environment">14.2. Adding other new components to the environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Changing-observation-and-action-spaces">14.3. Changing observation and action spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Getting-information-about-building-model-with-Sinergym">14.4. Getting information about building model with Sinergym</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Updating-the-action-definition-of-the-environment">14.5. Updating the action definition of the environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Adding-more-extra-configuration">14.6. Adding more extra configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">15. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">16. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">17. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">18. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MLflow_example.html">19. MLFlow example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TensorBoard_example.html">20. TensorBoard example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">14. </span>Changing an environment registered in Sinergym</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/notebooks/change_environment.nblink.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars and line breaks on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+    white-space: pre;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Changing-an-environment-registered-in-Sinergym">
+<h1><span class="section-number">14. </span>Changing an environment registered in Sinergym<a class="headerlink" href="#Changing-an-environment-registered-in-Sinergym" title="Permalink to this heading"></a></h1>
+<p>As discussed above, Sinergym has a list of available environments that we can call with <code class="docutils literal notranslate"><span class="pre">gym.make(&lt;environment_id&gt;)</span></code> as long as the sinergym package is imported into the python script.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-hot-continuous-stochastic-v1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/gym/spaces/box.py:73: UserWarning: <span class="ansi-yellow-fg">WARN: Box bound precision lowered by casting to float32</span>
+  logger.warn(
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[2022-10-07 09:00:55,460] EPLUS_ENV_5Zone-hot-continuous-stochastic-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2022-10-07 09:00:55,462] EPLUS_ENV_5Zone-hot-continuous-stochastic-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-10-07 09:00:55,465] EPLUS_ENV_5Zone-hot-continuous-stochastic-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-10-07 09:00:55,467] EPLUS_ENV_5Zone-hot-continuous-stochastic-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-10-07 09:00:55,469] EPLUS_ENV_5Zone-hot-continuous-stochastic-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/gym/spaces/box.py:73: UserWarning: <span class="ansi-yellow-fg">WARN: Box bound precision lowered by casting to float32</span>
+  logger.warn(
+</pre></div></div>
+</div>
+<p>These environment IDs have a number of components defined, not only the building design (<em>IDF</em>), but also the reward function, the action and observation spaces, the defining variables, etc.</p>
+<p>If you want a new environment, you can define it from scratch in our <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/__init__.py">environment list</a> and run it locally.</p>
+<p>Another option (recommended) is to start from one of our environments and change the components you want. You can combine components you want to change obviously.</p>
+<p>The way to do that is to add in the <code class="docutils literal notranslate"><span class="pre">gym.make(&lt;environment_id&gt;)</span></code> those parameters of the constructor of the <em>Sinergym</em> environment we want to change. Let’s see what things we can change starting from any environment:</p>
+<section id="Adding-a-new-reward">
+<h2><span class="section-number">14.1. </span>Adding a new reward<a class="headerlink" href="#Adding-a-new-reward" title="Permalink to this heading"></a></h2>
+<p>As mentioned above, simply add the appropriate parameters to <code class="docutils literal notranslate"><span class="pre">gym.make()</span></code> after specifying the environment ID.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="n">LinearReward</span><span class="p">,</span> <span class="n">ExpReward</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-hot-continuous-v1&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">ExpReward</span><span class="p">,</span> <span class="n">reward_kwargs</span><span class="o">=</span><span class="p">{</span>
+                                                                    <span class="s1">&#39;temperature_variable&#39;</span><span class="p">:</span> <span class="s1">&#39;Zone Air Temperature (SPACE1-1)&#39;</span><span class="p">,</span>
+                                                                    <span class="s1">&#39;energy_variable&#39;</span><span class="p">:</span> <span class="s1">&#39;Facility Total HVAC Electricity Demand Rate (Whole Building)&#39;</span><span class="p">,</span>
+                                                                    <span class="s1">&#39;range_comfort_winter&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
+                                                                    <span class="s1">&#39;range_comfort_summer&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">),</span>
+                                                                    <span class="s1">&#39;energy_weight&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[2022-10-07 09:00:56,991] EPLUS_ENV_5Zone-hot-continuous-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2022-10-07 09:00:56,991] EPLUS_ENV_5Zone-hot-continuous-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-10-07 09:00:56,993] EPLUS_ENV_5Zone-hot-continuous-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-10-07 09:00:56,994] EPLUS_ENV_5Zone-hot-continuous-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-10-07 09:00:56,994] EPLUS_ENV_5Zone-hot-continuous-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/gym/spaces/box.py:73: UserWarning: <span class="ansi-yellow-fg">WARN: Box bound precision lowered by casting to float32</span>
+  logger.warn(
+</pre></div></div>
+</div>
+<p>You have to specify the <strong>reward</strong> class you are going to use in the environment. A reward function class has several parameters that can be specified by user like temperature variables, weights, etc. Depending on the reward function you are using. In order to be able to define it, we have <strong>reward_kwargs</strong> parameter. See <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/html/pages/rewards.html">reward documentation</a> for more information about reward classes and how to create a new one.</p>
+</section>
+<section id="Adding-other-new-components-to-the-environment">
+<h2><span class="section-number">14.2. </span>Adding other new components to the environment<a class="headerlink" href="#Adding-other-new-components-to-the-environment" title="Permalink to this heading"></a></h2>
+<p>In the same way that we can change the default reward function, as we have done in the second example, it is possible to substitute other default values of the environment ID.</p>
+<p>You can change the weather file, the number of timesteps an action repeats (default 1), the last n episodes you want to be stored in the Sinergym output folder (default 10), the name of the environment or the variability in stochastic environments:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
+                <span class="n">weather_file</span><span class="o">=</span><span class="s1">&#39;ESP_Granada.084190_SWEC.epw&#39;</span><span class="p">,</span>
+                <span class="n">weather_variability</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.001</span><span class="p">),</span>
+                <span class="n">env_name</span><span class="o">=</span><span class="s1">&#39;new_env_name&#39;</span><span class="p">,</span>
+                <span class="n">act_repeat</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                <span class="n">max_ep_data_store_num</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[2022-10-07 09:00:58,155] EPLUS_ENV_new_env_name_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2022-10-07 09:00:58,156] EPLUS_ENV_new_env_name_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-10-07 09:00:58,157] EPLUS_ENV_new_env_name_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-10-07 09:00:58,158] EPLUS_ENV_new_env_name_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-10-07 09:00:58,159] EPLUS_ENV_new_env_name_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/gym/spaces/box.py:73: UserWarning: <span class="ansi-yellow-fg">WARN: Box bound precision lowered by casting to float32</span>
+  logger.warn(
+</pre></div></div>
+</div>
+</section>
+<section id="Changing-observation-and-action-spaces">
+<h2><span class="section-number">14.3. </span>Changing observation and action spaces<a class="headerlink" href="#Changing-observation-and-action-spaces" title="Permalink to this heading"></a></h2>
+<p>By default, the IDs of the predefined environments in <em>Sinergym</em> already have a space of actions and observations set.</p>
+<p>However, it can be overwritten by a new definition of them. On the one hand, we will have to define the name of the <strong>variables</strong>, and on the other hand, the definition of the <strong>spaces</strong> (and an <strong>action mapping</strong> if it is a discrete environment).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">sinergym</span>
+
+<span class="n">new_observation_variables</span><span class="o">=</span><span class="p">[</span>
+    <span class="s1">&#39;Site Outdoor Air Drybulb Temperature(Environment)&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Site Outdoor Air Relative Humidity(Environment)&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Site Wind Speed(Environment)&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Zone Thermal Comfort Fanger Model PPD(East Zone PEOPLE)&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Zone People Occupant Count(East Zone)&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;People Air Temperature(East Zone PEOPLE)&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Facility Total HVAC Electricity Demand Rate(Whole Building)&#39;</span>
+<span class="p">]</span>
+
+<span class="n">new_action_variables</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;Heating_Setpoint_RL&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Cooling_Setpoint_RL&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">new_observation_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+    <span class="n">low</span><span class="o">=-</span><span class="mf">5e6</span><span class="p">,</span>
+    <span class="n">high</span><span class="o">=</span><span class="mf">5e6</span><span class="p">,</span>
+    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">new_observation_variables</span><span class="p">)</span> <span class="o">+</span> <span class="mi">4</span><span class="p">,),</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">new_action_mapping</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">29</span><span class="p">),</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">27</span><span class="p">),</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">26</span><span class="p">),</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">23</span><span class="p">),</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">new_action_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-datacenter-cool-discrete-stochastic-v1&#39;</span><span class="p">,</span>
+                <span class="n">observation_variables</span><span class="o">=</span><span class="n">new_observation_variables</span><span class="p">,</span>
+                <span class="n">observation_space</span><span class="o">=</span><span class="n">new_observation_space</span><span class="p">,</span>
+                <span class="n">action_variables</span><span class="o">=</span><span class="n">new_action_variables</span><span class="p">,</span>
+                <span class="n">action_mapping</span><span class="o">=</span><span class="n">new_action_mapping</span><span class="p">,</span>
+                <span class="n">action_space</span><span class="o">=</span><span class="n">new_action_space</span>
+            <span class="p">)</span>
+
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
+            <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s1">&#39;Episode &#39;</span><span class="p">,</span>
+        <span class="n">i</span><span class="p">,</span>
+        <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span>
+        <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span>
+        <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[2022-10-07 09:00:59,474] EPLUS_ENV_datacenter-cool-discrete-stochastic-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2022-10-07 09:00:59,475] EPLUS_ENV_datacenter-cool-discrete-stochastic-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-10-07 09:00:59,477] EPLUS_ENV_datacenter-cool-discrete-stochastic-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-10-07 09:00:59,478] EPLUS_ENV_datacenter-cool-discrete-stochastic-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-10-07 09:00:59,479] EPLUS_ENV_datacenter-cool-discrete-stochastic-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+[2022-10-07 09:00:59,480] EPLUS_ENV_datacenter-cool-discrete-stochastic-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-07 09:00:59,608] EPLUS_ENV_datacenter-cool-discrete-stochastic-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-datacenter-cool-discrete-stochastic-v1-res1/Eplus-env-sub_run1
+Reward:  -0.26775410632883273 {&#39;timestep&#39;: 1, &#39;time_elapsed&#39;: 900, &#39;year&#39;: 1991, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 5355.082126576654, &#39;total_power_no_units&#39;: -0.5355082126576655, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [], &#39;out_temperature&#39;: 1.186377523616978, &#39;action_&#39;: [21, 21]}
+Reward:  -669.4534184979221 {&#39;timestep&#39;: 2976, &#39;time_elapsed&#39;: 2678400, &#39;year&#39;: 1991, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 4208.635870777072, &#39;total_power_no_units&#39;: -0.42086358707770727, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [], &#39;out_temperature&#39;: 6.228479196022084, &#39;action_&#39;: [22, 23]}
+Reward:  -1247.5537459734599 {&#39;timestep&#39;: 5664, &#39;time_elapsed&#39;: 5097600, &#39;year&#39;: 1991, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 4421.637300732844, &#39;total_power_no_units&#39;: -0.4421637300732844, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [], &#39;out_temperature&#39;: 3.705059073313615, &#39;action_&#39;: [21, 24]}
+Reward:  -1855.7928063319255 {&#39;timestep&#39;: 8640, &#39;time_elapsed&#39;: 7776000, &#39;year&#39;: 1991, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 4987.415191462993, &#39;total_power_no_units&#39;: -0.49874151914629933, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [], &#39;out_temperature&#39;: 3.024777159060027, &#39;action_&#39;: [18, 27]}
+Reward:  -2636.641656051256 {&#39;timestep&#39;: 11520, &#39;time_elapsed&#39;: 10368000, &#39;year&#39;: 1991, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 2188.620052530483, &#39;total_power_no_units&#39;: -0.2188620052530483, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [], &#39;out_temperature&#39;: 9.963985853561047, &#39;action_&#39;: [16, 29]}
+Reward:  -3518.6464879098053 {&#39;timestep&#39;: 14496, &#39;time_elapsed&#39;: 13046400, &#39;year&#39;: 1991, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 4345.217932332002, &#39;total_power_no_units&#39;: -0.4345217932332003, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [], &#39;out_temperature&#39;: 9.61357774788482, &#39;action_&#39;: [21, 24]}
+Reward:  -5047.521248481572 {&#39;timestep&#39;: 17376, &#39;time_elapsed&#39;: 15638400, &#39;year&#39;: 1991, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 6249.758355257713, &#39;total_power_no_units&#39;: -0.6249758355257714, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [], &#39;out_temperature&#39;: 12.04954794846631, &#39;action_&#39;: [22, 23]}
+Reward:  -7116.313388281761 {&#39;timestep&#39;: 20352, &#39;time_elapsed&#39;: 18316800, &#39;year&#39;: 1991, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 2107.732366810708, &#39;total_power_no_units&#39;: -0.21077323668107079, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [], &#39;out_temperature&#39;: 11.53376534972051, &#39;action_&#39;: [15, 30]}
+Reward:  -9326.224323881572 {&#39;timestep&#39;: 23328, &#39;time_elapsed&#39;: 20995200, &#39;year&#39;: 1991, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 5939.453811738773, &#39;total_power_no_units&#39;: -0.5939453811738773, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [], &#39;out_temperature&#39;: 13.38570883464585, &#39;action_&#39;: [17, 28]}
+Reward:  -10853.890187701882 {&#39;timestep&#39;: 26208, &#39;time_elapsed&#39;: 23587200, &#39;year&#39;: 1991, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 2170.898935982922, &#39;total_power_no_units&#39;: -0.2170898935982922, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [], &#39;out_temperature&#39;: 7.302507096687205, &#39;action_&#39;: [17, 28]}
+Reward:  -11587.916685717913 {&#39;timestep&#39;: 29184, &#39;time_elapsed&#39;: 26265600, &#39;year&#39;: 1991, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 4190.456055889271, &#39;total_power_no_units&#39;: -0.4190456055889271, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [], &#39;out_temperature&#39;: 7.099445145523461, &#39;action_&#39;: [18, 27]}
+Reward:  -12180.885947073011 {&#39;timestep&#39;: 32064, &#39;time_elapsed&#39;: 28857600, &#39;year&#39;: 1991, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 4527.071835065274, &#39;total_power_no_units&#39;: -0.45270718350652744, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [], &#39;out_temperature&#39;: 3.246417930160787, &#39;action_&#39;: [22, 22]}
+Reward:  -12816.011905214418 {&#39;timestep&#39;: 35040, &#39;time_elapsed&#39;: 31536000, &#39;year&#39;: 1992, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 5262.280448896257, &#39;total_power_no_units&#39;: -0.5262280448896258, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [], &#39;out_temperature&#39;: 1.612621010536379, &#39;action_&#39;: [21, 21]}
+Episode  0 Mean reward:  -0.3657537644182542 Cumulative reward:  -12816.011905214418
+[2022-10-07 09:01:29,248] EPLUS_ENV_datacenter-cool-discrete-stochastic-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+</pre></div></div>
+</div>
+<p>In case the definition has some inconsistency, such as the <em>IDF</em> has not been adapted to the new actions, the spaces do not fit with the variables, the observation variables do not exist, etc. <em>Sinergym</em> will display an error.</p>
+<p><strong>Action variables</strong> defined must exists in IDF model like external interface. Then, you have two possibilities:</p>
+<ul class="simple">
+<li><p>First, you can modify IDF file directly, but it is necessary to update several components depending in order to connect them to the external interface (requires knowledge of the building and EnergyPlus).</p></li>
+<li><p>Second, you can use the <strong>action definition</strong> functionality of <em>Sinergym</em> (recommended). This functionality will modify the IDF file before starting the simulation automatically based on a simple definition of the components to be replaced by an external control. See “updating action definition” example to learn how to use it.</p></li>
+</ul>
+</section>
+<section id="Getting-information-about-building-model-with-Sinergym">
+<h2><span class="section-number">14.4. </span>Getting information about building model with Sinergym<a class="headerlink" href="#Getting-information-about-building-model-with-Sinergym" title="Permalink to this heading"></a></h2>
+<p>Sinergym can get the schedulers information automatically, in a Python dictionary and/or exporting that information in a excel file. This information lets you know what things can be controlled by an external interface in the building. The way to do it is very simple, just load the environment and call a method:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">sinergym</span>
+
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
+<span class="n">schedulers</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">get_schedulers</span><span class="p">()</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">schedulers</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[2022-10-07 09:01:30,579] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2022-10-07 09:01:30,580] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-10-07 09:01:30,583] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-10-07 09:01:30,586] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-10-07 09:01:30,587] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+{&#39;activitysch&#39;: {&#39;Type&#39;: &#39;any number&#39;},
+ &#39;actschd&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                         &#39;object_name&#39;: &#39;space1-1 people 1&#39;,
+                         &#39;object_type&#39;: &#39;People&#39;},
+             &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                         &#39;object_name&#39;: &#39;space2-1 people 1&#39;,
+                         &#39;object_type&#39;: &#39;People&#39;},
+             &#39;Object3&#39;: {&#39;object_field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                         &#39;object_name&#39;: &#39;space3-1 people 1&#39;,
+                         &#39;object_type&#39;: &#39;People&#39;},
+             &#39;Object4&#39;: {&#39;object_field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                         &#39;object_name&#39;: &#39;space4-1 people 1&#39;,
+                         &#39;object_type&#39;: &#39;People&#39;},
+             &#39;Object5&#39;: {&#39;object_field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                         &#39;object_name&#39;: &#39;space5-1 people 1&#39;,
+                         &#39;object_type&#39;: &#39;People&#39;},
+             &#39;Type&#39;: &#39;any number&#39;},
+ &#39;airvelocitysch&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                &#39;object_name&#39;: &#39;space1-1 people 1&#39;,
+                                &#39;object_type&#39;: &#39;People&#39;},
+                    &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                &#39;object_name&#39;: &#39;space2-1 people 1&#39;,
+                                &#39;object_type&#39;: &#39;People&#39;},
+                    &#39;Object3&#39;: {&#39;object_field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                &#39;object_name&#39;: &#39;space3-1 people 1&#39;,
+                                &#39;object_type&#39;: &#39;People&#39;},
+                    &#39;Object4&#39;: {&#39;object_field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                &#39;object_name&#39;: &#39;space4-1 people 1&#39;,
+                                &#39;object_type&#39;: &#39;People&#39;},
+                    &#39;Object5&#39;: {&#39;object_field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                &#39;object_name&#39;: &#39;space5-1 people 1&#39;,
+                                &#39;object_type&#39;: &#39;People&#39;},
+                    &#39;Type&#39;: &#39;any number&#39;},
+ &#39;basinheatersched&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;basin_heater_operating_schedule_name&#39;,
+                                  &#39;object_name&#39;: &#39;main cooling coil 1&#39;,
+                                  &#39;object_type&#39;: &#39;Coil:Cooling:DX:TwoSpeed&#39;},
+                      &#39;Type&#39;: &#39;on/off&#39;},
+ &#39;clg-setp-sch&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;cooling_setpoint_temperature_schedule_name&#39;,
+                              &#39;object_name&#39;: &#39;dualsetpoint&#39;,
+                              &#39;object_type&#39;: &#39;ThermostatSetpoint:DualSetpoint&#39;},
+                  &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;setpoint_temperature_schedule_name&#39;,
+                              &#39;object_name&#39;: &#39;coolingsetpoint&#39;,
+                              &#39;object_type&#39;: &#39;ThermostatSetpoint:SingleCooling&#39;},
+                  &#39;Type&#39;: &#39;temperature&#39;},
+ &#39;clothingsch&#39;: {&#39;Type&#39;: &#39;any number&#39;},
+ &#39;coolingcoilavailsched&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                                       &#39;object_name&#39;: &#39;main cooling coil 1&#39;,
+                                       &#39;object_type&#39;: &#39;Coil:Cooling:DX:TwoSpeed&#39;},
+                           &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                                       &#39;object_name&#39;: &#39;dx cooling coil system &#39;
+                                                      &#39;1&#39;,
+                                       &#39;object_type&#39;: &#39;CoilSystem:Cooling:DX&#39;},
+                           &#39;Type&#39;: &#39;fraction&#39;},
+ &#39;equip-1&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                         &#39;object_name&#39;: &#39;space1-1 eleceq 1&#39;,
+                         &#39;object_type&#39;: &#39;ElectricEquipment&#39;},
+             &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                         &#39;object_name&#39;: &#39;space2-1 eleceq 1&#39;,
+                         &#39;object_type&#39;: &#39;ElectricEquipment&#39;},
+             &#39;Object3&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                         &#39;object_name&#39;: &#39;space3-1 eleceq 1&#39;,
+                         &#39;object_type&#39;: &#39;ElectricEquipment&#39;},
+             &#39;Object4&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                         &#39;object_name&#39;: &#39;space4-1 eleceq 1&#39;,
+                         &#39;object_type&#39;: &#39;ElectricEquipment&#39;},
+             &#39;Object5&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                         &#39;object_name&#39;: &#39;space5-1 eleceq 1&#39;,
+                         &#39;object_type&#39;: &#39;ElectricEquipment&#39;},
+             &#39;Type&#39;: &#39;fraction&#39;},
+ &#39;fanavailsched&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                               &#39;object_name&#39;: &#39;vav sys 1 avail&#39;,
+                               &#39;object_type&#39;: &#39;AvailabilityManager:Scheduled&#39;},
+                   &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                               &#39;object_name&#39;: &#39;supply fan 1&#39;,
+                               &#39;object_type&#39;: &#39;Fan:VariableVolume&#39;},
+                   &#39;Type&#39;: &#39;fraction&#39;},
+ &#39;htg-setp-sch&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;heating_setpoint_temperature_schedule_name&#39;,
+                              &#39;object_name&#39;: &#39;dualsetpoint&#39;,
+                              &#39;object_type&#39;: &#39;ThermostatSetpoint:DualSetpoint&#39;},
+                  &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;setpoint_temperature_schedule_name&#39;,
+                              &#39;object_name&#39;: &#39;heatingsetpoint&#39;,
+                              &#39;object_type&#39;: &#39;ThermostatSetpoint:SingleHeating&#39;},
+                  &#39;Type&#39;: &#39;temperature&#39;},
+ &#39;infil-sch&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                           &#39;object_name&#39;: &#39;space1-1 infil 1&#39;,
+                           &#39;object_type&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                           &#39;object_name&#39;: &#39;space2-1 infil 1&#39;,
+                           &#39;object_type&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;Object3&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                           &#39;object_name&#39;: &#39;space3-1 infil 1&#39;,
+                           &#39;object_type&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;Object4&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                           &#39;object_name&#39;: &#39;space4-1 infil 1&#39;,
+                           &#39;object_type&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;Object5&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                           &#39;object_name&#39;: &#39;space5-1 infil 1&#39;,
+                           &#39;object_type&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;Type&#39;: &#39;fraction&#39;},
+ &#39;lights-1&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                          &#39;object_name&#39;: &#39;space1-1 lights 1&#39;,
+                          &#39;object_type&#39;: &#39;Lights&#39;},
+              &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                          &#39;object_name&#39;: &#39;space2-1 lights 1&#39;,
+                          &#39;object_type&#39;: &#39;Lights&#39;},
+              &#39;Object3&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                          &#39;object_name&#39;: &#39;space3-1 lights 1&#39;,
+                          &#39;object_type&#39;: &#39;Lights&#39;},
+              &#39;Object4&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                          &#39;object_name&#39;: &#39;space4-1 lights 1&#39;,
+                          &#39;object_type&#39;: &#39;Lights&#39;},
+              &#39;Object5&#39;: {&#39;object_field_name&#39;: &#39;schedule_name&#39;,
+                          &#39;object_name&#39;: &#39;space5-1 lights 1&#39;,
+                          &#39;object_type&#39;: &#39;Lights&#39;},
+              &#39;Type&#39;: &#39;fraction&#39;},
+ &#39;min oa sched&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;minimum_outdoor_air_schedule_name&#39;,
+                              &#39;object_name&#39;: &#39;oa controller 1&#39;,
+                              &#39;object_type&#39;: &#39;Controller:OutdoorAir&#39;},
+                  &#39;Type&#39;: &#39;fraction&#39;},
+ &#39;min oarequirements sched&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;outdoor_air_schedule_name&#39;,
+                                          &#39;object_name&#39;: &#39;zoneminoarequirements&#39;,
+                                          &#39;object_type&#39;: &#39;DesignSpecification:OutdoorAir&#39;},
+                              &#39;Type&#39;: &#39;any number&#39;},
+ &#39;occupy-1&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                          &#39;object_name&#39;: &#39;space1-1 people 1&#39;,
+                          &#39;object_type&#39;: &#39;People&#39;},
+              &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                          &#39;object_name&#39;: &#39;space2-1 people 1&#39;,
+                          &#39;object_type&#39;: &#39;People&#39;},
+              &#39;Object3&#39;: {&#39;object_field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                          &#39;object_name&#39;: &#39;space3-1 people 1&#39;,
+                          &#39;object_type&#39;: &#39;People&#39;},
+              &#39;Object4&#39;: {&#39;object_field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                          &#39;object_name&#39;: &#39;space4-1 people 1&#39;,
+                          &#39;object_type&#39;: &#39;People&#39;},
+              &#39;Object5&#39;: {&#39;object_field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                          &#39;object_name&#39;: &#39;space5-1 people 1&#39;,
+                          &#39;object_type&#39;: &#39;People&#39;},
+              &#39;Type&#39;: &#39;fraction&#39;},
+ &#39;plenumclg-setp-sch&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;setpoint_temperature_schedule_name&#39;,
+                                    &#39;object_name&#39;: &#39;plenumcoolingsetpoint&#39;,
+                                    &#39;object_type&#39;: &#39;ThermostatSetpoint:SingleCooling&#39;},
+                        &#39;Type&#39;: &#39;temperature&#39;},
+ &#39;plenumhtg-setp-sch&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;setpoint_temperature_schedule_name&#39;,
+                                    &#39;object_name&#39;: &#39;plenumheatingsetpoint&#39;,
+                                    &#39;object_type&#39;: &#39;ThermostatSetpoint:SingleHeating&#39;},
+                        &#39;Type&#39;: &#39;temperature&#39;},
+ &#39;reheatcoilavailsched&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                                      &#39;object_name&#39;: &#39;space1-1 vav reheat&#39;,
+                                      &#39;object_type&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;Object10&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                                       &#39;object_name&#39;: &#39;space5-1 zone coil&#39;,
+                                       &#39;object_type&#39;: &#39;Coil:Heating:Electric&#39;},
+                          &#39;Object11&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                                       &#39;object_name&#39;: &#39;main heating coil 1&#39;,
+                                       &#39;object_type&#39;: &#39;Coil:Heating:Electric&#39;},
+                          &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                                      &#39;object_name&#39;: &#39;space2-1 vav reheat&#39;,
+                                      &#39;object_type&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;Object3&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                                      &#39;object_name&#39;: &#39;space3-1 vav reheat&#39;,
+                                      &#39;object_type&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;Object4&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                                      &#39;object_name&#39;: &#39;space4-1 vav reheat&#39;,
+                                      &#39;object_type&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;Object5&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                                      &#39;object_name&#39;: &#39;space5-1 vav reheat&#39;,
+                                      &#39;object_type&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;Object6&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                                      &#39;object_name&#39;: &#39;space1-1 zone coil&#39;,
+                                      &#39;object_type&#39;: &#39;Coil:Heating:Electric&#39;},
+                          &#39;Object7&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                                      &#39;object_name&#39;: &#39;space2-1 zone coil&#39;,
+                                      &#39;object_type&#39;: &#39;Coil:Heating:Electric&#39;},
+                          &#39;Object8&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                                      &#39;object_name&#39;: &#39;space3-1 zone coil&#39;,
+                                      &#39;object_type&#39;: &#39;Coil:Heating:Electric&#39;},
+                          &#39;Object9&#39;: {&#39;object_field_name&#39;: &#39;availability_schedule_name&#39;,
+                                      &#39;object_name&#39;: &#39;space4-1 zone coil&#39;,
+                                      &#39;object_type&#39;: &#39;Coil:Heating:Electric&#39;},
+                          &#39;Type&#39;: &#39;fraction&#39;},
+ &#39;seasonal reset supply air temp sch&#39;: {&#39;Type&#39;: &#39;temperature&#39;},
+ &#39;shadetranssch&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;transmittance_schedule_name&#39;,
+                               &#39;object_name&#39;: &#39;main south overhang&#39;,
+                               &#39;object_type&#39;: &#39;Shading:Zone:Detailed&#39;},
+                   &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;transmittance_schedule_name&#39;,
+                               &#39;object_name&#39;: &#39;south door overhang&#39;,
+                               &#39;object_type&#39;: &#39;Shading:Zone:Detailed&#39;},
+                   &#39;Type&#39;: &#39;fraction&#39;},
+ &#39;workeffsch&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                            &#39;object_name&#39;: &#39;space1-1 people 1&#39;,
+                            &#39;object_type&#39;: &#39;People&#39;},
+                &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                            &#39;object_name&#39;: &#39;space2-1 people 1&#39;,
+                            &#39;object_type&#39;: &#39;People&#39;},
+                &#39;Object3&#39;: {&#39;object_field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                            &#39;object_name&#39;: &#39;space3-1 people 1&#39;,
+                            &#39;object_type&#39;: &#39;People&#39;},
+                &#39;Object4&#39;: {&#39;object_field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                            &#39;object_name&#39;: &#39;space4-1 people 1&#39;,
+                            &#39;object_type&#39;: &#39;People&#39;},
+                &#39;Object5&#39;: {&#39;object_field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                            &#39;object_name&#39;: &#39;space5-1 people 1&#39;,
+                            &#39;object_type&#39;: &#39;People&#39;},
+                &#39;Type&#39;: &#39;fraction&#39;},
+ &#39;zone control type sched&#39;: {&#39;Object1&#39;: {&#39;object_field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                         &#39;object_name&#39;: &#39;space1-1 control&#39;,
+                                         &#39;object_type&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;Object2&#39;: {&#39;object_field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                         &#39;object_name&#39;: &#39;space2-1 control&#39;,
+                                         &#39;object_type&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;Object3&#39;: {&#39;object_field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                         &#39;object_name&#39;: &#39;space3-1 control&#39;,
+                                         &#39;object_type&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;Object4&#39;: {&#39;object_field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                         &#39;object_name&#39;: &#39;space4-1 control&#39;,
+                                         &#39;object_type&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;Object5&#39;: {&#39;object_field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                         &#39;object_name&#39;: &#39;space5-1 control&#39;,
+                                         &#39;object_type&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;Type&#39;: &#39;control type&#39;}}
+</pre></div></div>
+</div>
+<p>The way to export an excel file with such organized information is by specifying a path to the method:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">actuators</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">get_schedulers</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;./example.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>It is possible to know the zones available in the environment too. You only have to do the next:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_zones</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;plenum-1&#39;, &#39;space1-1&#39;, &#39;space2-1&#39;, &#39;space3-1&#39;, &#39;space4-1&#39;, &#39;space5-1&#39;]
+</pre></div></div>
+</div>
+</section>
+<section id="Updating-the-action-definition-of-the-environment">
+<h2><span class="section-number">14.5. </span>Updating the action definition of the environment<a class="headerlink" href="#Updating-the-action-definition-of-the-environment" title="Permalink to this heading"></a></h2>
+<p>As we have explained in the action and observation space example, one of the problems that can arise when modifying the space of actions and observations is that the <em>IDF</em> is not adapted to the new space of actions established.</p>
+<p>For this purpose, the <em>Sinergym</em> <strong>action definition</strong> is available. With a dictionary we can build a definition of what scheduler we want to be replaced in the building by the external control.</p>
+<p>For this example, we are going to add lights control to the external interface for the agent. Then, is not only necessary to update that <strong>action definition</strong>, the list of the action variables and space is necessary to be updated too.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">new_action_variables</span><span class="o">=</span><span class="p">[</span>
+<span class="s1">&#39;Heating_Setpoint_RL&#39;</span><span class="p">,</span>
+<span class="s1">&#39;Cooling_Setpoint_RL&#39;</span><span class="p">,</span>
+<span class="s1">&#39;light_control&#39;</span>
+<span class="p">]</span>
+
+<span class="n">new_action_space</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+    <span class="n">low</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">22.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span>
+    <span class="n">high</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">22.5</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]),</span>
+    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+<span class="p">)</span>
+
+<span class="n">new_action_definition</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;Htg-SetP-Sch&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Heating_Setpoint_RL&#39;</span><span class="p">,</span> <span class="s1">&#39;initial_value&#39;</span><span class="p">:</span> <span class="mi">21</span><span class="p">},</span>
+    <span class="s1">&#39;Clg-SetP-Sch&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Cooling_Setpoint_RL&#39;</span><span class="p">,</span> <span class="s1">&#39;initial_value&#39;</span><span class="p">:</span> <span class="mi">25</span><span class="p">},</span>
+    <span class="s1">&#39;LIGHTS-1&#39;</span><span class="p">:{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;light_control&#39;</span><span class="p">,</span><span class="s1">&#39;initial_value&#39;</span><span class="p">:</span><span class="mf">0.2</span><span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
+                <span class="n">action_variables</span><span class="o">=</span><span class="n">new_action_variables</span><span class="p">,</span>
+                <span class="n">action_space</span><span class="o">=</span><span class="n">new_action_space</span><span class="p">,</span>
+                <span class="n">action_definition</span><span class="o">=</span><span class="n">new_action_definition</span>
+                <span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
+            <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s1">&#39;Episode &#39;</span><span class="p">,</span>
+        <span class="n">i</span><span class="p">,</span>
+        <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span>
+        <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span>
+        <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/gym/spaces/box.py:73: UserWarning: <span class="ansi-yellow-fg">WARN: Box bound precision lowered by casting to float32</span>
+  logger.warn(
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[2022-10-07 09:01:32,174] EPLUS_ENV_5Zone-cool-continuous-stochastic-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2022-10-07 09:01:32,175] EPLUS_ENV_5Zone-cool-continuous-stochastic-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-10-07 09:01:32,176] EPLUS_ENV_5Zone-cool-continuous-stochastic-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-10-07 09:01:32,177] EPLUS_ENV_5Zone-cool-continuous-stochastic-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-10-07 09:01:32,177] EPLUS_ENV_5Zone-cool-continuous-stochastic-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+[2022-10-07 09:01:32,179] EPLUS_ENV_5Zone-cool-continuous-stochastic-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2022-10-07 09:01:32,305] EPLUS_ENV_5Zone-cool-continuous-stochastic-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-5Zone-cool-continuous-stochastic-v1-res1/Eplus-env-sub_run1
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/gym/spaces/box.py:73: UserWarning: <span class="ansi-yellow-fg">WARN: Box bound precision lowered by casting to float32</span>
+  logger.warn(
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Reward:  -0.5111010314528696 {&#39;timestep&#39;: 1, &#39;time_elapsed&#39;: 900, &#39;year&#39;: 1991, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 2835.011953773881, &#39;total_power_no_units&#39;: -0.2835011953773881, &#39;comfort_penalty&#39;: -0.7387008675283511, &#39;abs_comfort&#39;: 0.7387008675283511, &#39;temperatures&#39;: [19.26129913247165], &#39;out_temperature&#39;: 1.421014390196424, &#39;action_&#39;: [16.317654, 26.96494, 0.31237173]}
+Reward:  -1374.28410120219 {&#39;timestep&#39;: 2976, &#39;time_elapsed&#39;: 2678400, &#39;year&#39;: 1991, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 6065.825052347422, &#39;total_power_no_units&#39;: -0.6065825052347422, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.74254870657726], &#39;out_temperature&#39;: 8.360682108922676, &#39;action_&#39;: [21.686012, 24.844059, 0.31142563]}
+Reward:  -2715.7611117082783 {&#39;timestep&#39;: 5664, &#39;time_elapsed&#39;: 5097600, &#39;year&#39;: 1991, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 3379.077746701543, &#39;total_power_no_units&#39;: -0.3379077746701543, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.08146212423063], &#39;out_temperature&#39;: 5.317330025625665, &#39;action_&#39;: [20.016264, 28.09283, 0.21295846]}
+Reward:  -3660.007455360811 {&#39;timestep&#39;: 8640, &#39;time_elapsed&#39;: 7776000, &#39;year&#39;: 1991, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 5457.280335251083, &#39;total_power_no_units&#39;: -0.5457280335251083, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.99796649838974], &#39;out_temperature&#39;: 4.966775407980537, &#39;action_&#39;: [21.124304, 22.553516, 0.9582741]}
+Reward:  -4564.380860934114 {&#39;timestep&#39;: 11520, &#39;time_elapsed&#39;: 10368000, &#39;year&#39;: 1991, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 6603.432140993574, &#39;total_power_no_units&#39;: -0.6603432140993574, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.99301384406026], &#39;out_temperature&#39;: 11.3890808542817, &#39;action_&#39;: [22.063656, 29.984705, 0.5942085]}
+Reward:  -5302.692402629544 {&#39;timestep&#39;: 14496, &#39;time_elapsed&#39;: 13046400, &#39;year&#39;: 1991, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 191.2911582802689, &#39;total_power_no_units&#39;: -0.01912911582802689, &#39;comfort_penalty&#39;: -2.4613144918713914, &#39;abs_comfort&#39;: 2.4613144918713914, &#39;temperatures&#39;: [20.53868550812861], &#39;out_temperature&#39;: 9.9969193980086, &#39;action_&#39;: [17.306587, 23.402065, 0.7618722]}
+Reward:  -7016.025434187163 {&#39;timestep&#39;: 17376, &#39;time_elapsed&#39;: 15638400, &#39;year&#39;: 1991, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 120.4056020773604, &#39;total_power_no_units&#39;: -0.01204056020773604, &#39;comfort_penalty&#39;: -1.8821997117836595, &#39;abs_comfort&#39;: 1.8821997117836595, &#39;temperatures&#39;: [21.11780028821634], &#39;out_temperature&#39;: 11.27473828933916, &#39;action_&#39;: [20.830227, 26.474812, 0.73397]}
+Reward:  -8777.25161267316 {&#39;timestep&#39;: 20352, &#39;time_elapsed&#39;: 18316800, &#39;year&#39;: 1991, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 178.4267301020354, &#39;total_power_no_units&#39;: -0.017842673010203543, &#39;comfort_penalty&#39;: -2.5277853133220205, &#39;abs_comfort&#39;: 2.5277853133220205, &#39;temperatures&#39;: [20.47221468667798], &#39;out_temperature&#39;: 10.60363543147483, &#39;action_&#39;: [17.934364, 26.353241, 0.6373596]}
+Reward:  -10438.464921588717 {&#39;timestep&#39;: 23328, &#39;time_elapsed&#39;: 20995200, &#39;year&#39;: 1991, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 120.4056020773604, &#39;total_power_no_units&#39;: -0.01204056020773604, &#39;comfort_penalty&#39;: -1.1929073594710715, &#39;abs_comfort&#39;: 1.1929073594710715, &#39;temperatures&#39;: [21.80709264052893], &#39;out_temperature&#39;: 12.1932378723401, &#39;action_&#39;: [15.998844, 24.359282, 0.98427457]}
+Reward:  -12367.057910085747 {&#39;timestep&#39;: 26208, &#39;time_elapsed&#39;: 23587200, &#39;year&#39;: 1991, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 428.6780367305225, &#39;total_power_no_units&#39;: -0.04286780367305225, &#39;comfort_penalty&#39;: -0.6108147937607988, &#39;abs_comfort&#39;: 0.6108147937607988, &#39;temperatures&#39;: [19.3891852062392], &#39;out_temperature&#39;: 7.843863403107411, &#39;action_&#39;: [16.794724, 25.592144, 0.3683012]}
+Reward:  -13218.089719275868 {&#39;timestep&#39;: 29184, &#39;time_elapsed&#39;: 26265600, &#39;year&#39;: 1991, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 439.8288126081056, &#39;total_power_no_units&#39;: -0.04398288126081056, &#39;comfort_penalty&#39;: -0.16923377015886132, &#39;abs_comfort&#39;: 0.16923377015886132, &#39;temperatures&#39;: [19.83076622984114], &#39;out_temperature&#39;: 7.710713063269523, &#39;action_&#39;: [16.533552, 27.096302, 0.40426022]}
+Reward:  -14225.5891712317 {&#39;timestep&#39;: 32064, &#39;time_elapsed&#39;: 28857600, &#39;year&#39;: 1991, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 120.4056020773604, &#39;total_power_no_units&#39;: -0.01204056020773604, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.38023912699316], &#39;out_temperature&#39;: 4.988834083817571, &#39;action_&#39;: [18.86006, 26.556025, 0.027832627]}
+Reward:  -15616.602179397853 {&#39;timestep&#39;: 35040, &#39;time_elapsed&#39;: 31536000, &#39;year&#39;: 1992, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 2767.822204079172, &#39;total_power_no_units&#39;: -0.2767822204079172, &#39;comfort_penalty&#39;: -1.3667378090425686, &#39;abs_comfort&#39;: 1.3667378090425686, &#39;temperatures&#39;: [18.63326219095743], &#39;out_temperature&#39;: 0.2879179385394967, &#39;action_&#39;: [17.618801, 29.638168, 0.5123796]}
+Episode  0 Mean reward:  -0.4456792859417381 Cumulative reward:  -15616.602179397853
+[2022-10-07 09:01:43,252] EPLUS_ENV_5Zone-cool-continuous-stochastic-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+</pre></div></div>
+</div>
+<p>Previously, it is recommended to know what controllers are available in the specific building model, see the previous example of this notebook. For more information about the format of the action definition dictionaries, visit the section called <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/html/pages/environments.html#action-definition">action definition</a>.</p>
+</section>
+<section id="Adding-more-extra-configuration">
+<h2><span class="section-number">14.6. </span>Adding more extra configuration<a class="headerlink" href="#Adding-more-extra-configuration" title="Permalink to this heading"></a></h2>
+<p>You can even add a dictionary with extra parameters that update IDF with some new context concerned with simulation directly.</p>
+<p>This new IDF version, which also adapts to the new weather you put in, is saved in the Sinergym output folder, leaving the original intact:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extra_conf</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;timesteps_per_hour&#39;</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span>
+    <span class="s1">&#39;runperiod&#39;</span><span class="p">:(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1991</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1992</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-datacenter-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
+                <span class="n">config_params</span><span class="o">=</span><span class="n">extra_conf</span>
+                <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[2022-10-07 09:01:44,485] EPLUS_ENV_datacenter-cool-continuous-stochastic-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2022-10-07 09:01:44,487] EPLUS_ENV_datacenter-cool-continuous-stochastic-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2022-10-07 09:01:44,490] EPLUS_ENV_datacenter-cool-continuous-stochastic-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2022-10-07 09:01:44,494] EPLUS_ENV_datacenter-cool-continuous-stochastic-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2022-10-07 09:01:44,496] EPLUS_ENV_datacenter-cool-continuous-stochastic-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/gym/spaces/box.py:73: UserWarning: <span class="ansi-yellow-fg">WARN: Box bound precision lowered by casting to float32</span>
+  logger.warn(
+</pre></div></div>
+</div>
+<p>For more information about extra configuration parameters, see our <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/html/pages/extra-configuration.html">Extra configuration documentation</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="basic_example.html" class="btn btn-neutral float-left" title="13. Basic example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="wrappers_examples.html" class="btn btn-neutral float-right" title="15. Wrappers example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: main
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="change_environment.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
