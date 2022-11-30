@@ -83,4 +83,6 @@ The main functionalities of *Sinergym* are the following:
 
 -  Many more!
 
+.. note:: If you want to introduce your own buildings in Sinergym, please visit :ref:`Adding new buildings for environments` section.
+
 .. note:: *This is a work in progress project. Stay tuned for upcoming releases!*
