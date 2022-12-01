@@ -10,7 +10,10 @@ This is a project based on Zhiang Zhang and Khee Poh Lam [Gym-Eplus](https://git
 
 The goal of this project is to create an environment following OpenAI Gym interface for wrapping simulation engines for building control using **deep reinforcement learning**.
 
+Please, help us to improve by **reporting your questions and issues** [here](https://github.com/ugr-sail/sinergym/issues). It is easy, just 2 clicks using our issue templates (questions, bugs, improvements, etc.). More detailed info on how to report issues [here](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue). 
+
 The main functionalities of *Sinergym* are the following :
+
 
 -  **Include different simulation engines**. Communication between
    Python and [EnergyPlus](https://energyplus.net/) is established
@@ -51,11 +54,11 @@ The main functionalities of *Sinergym* are the following :
    only has to define what he wants for his environment.
 
 -  **Automatic external interface integration for actions**. Sinergym provides functionality to obtain information 
-    about the environments such as the zones or the schedulers available in the environment model. Using that information, 
-    which is possible to export in a excel, users can know which controllers are available in the building and, then, 
-    control them with an external interface from an agent. To do this, users will make an **action definition** in which it 
-    is indicated which default controllers they want to replace in a specific format and Sinergym will take care of the 
-    relevant internal changes in the model.
+   about the environments such as the zones or the schedulers available in the environment model. Using that information,
+   which is possible to export in a excel, users can know which controllers are available in the building and, then, control 
+   them with an external interface from an agent. To do this, users will make an **action definition** in which it is
+   indicated which default controllers they want to replace in a specific format and *Sinergym* will take care of the relevant internal 
+   changes in the model.
 
 -  **Stable Baseline 3 Integration**. Some functionalities like callbacks
    have been customized by our team in order to test easily these environments
@@ -77,8 +80,8 @@ The main functionalities of *Sinergym* are the following :
    the users in order to help them become familiar with the tool. They are constantly updated, along with the updates 
    and improvements of the tool itself.
 
--  This project is accompanied by extensive **documentation**, **unit tests** and **github actions workflows** 
-   to make *Sinergym* an efficient ecosystem for both understanding and development.
+-  This project is accompanied by extensive **documentation**, **unit tests** and **github actions workflows** to make 
+   *Sinergym* an efficient ecosystem for both understanding and development.
 
 -  Many more!
 

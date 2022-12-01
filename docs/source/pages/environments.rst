@@ -286,6 +286,11 @@ affects the resolution of a building problem.
 specifications made to the default ones. In case the specification offered is wrong, 
 *Sinergym* will launch messages indicating where the error or inconsistency is located.
 
+Sinergym offers the possibility to create **empty action interfaces**, so that you can take advantage 
+of all its benefits instead of using the EnergyPlus simulator directly, meanwhile the control is 
+managed by **default IDF schedulers** (actuators). For more information, see the example of use 
+:ref:`Default building control setting up an empty action interface`.
+
 .. note:: ``variables.cfg`` is a requirement in order to establish a connection between gym environment and Simulator 
            with a external interface (using *BCVTB*). Since *Sinergym* ``1.9.0`` version, it is created automatically using 
            action and observation space definition in environment construction.
