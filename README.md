@@ -10,6 +10,8 @@ This is a project based on Zhiang Zhang and Khee Poh Lam [Gym-Eplus](https://git
 
 The goal of this project is to create an environment following OpenAI Gym interface for wrapping simulation engines for building control using **deep reinforcement learning**.
 
+Please, help us to improve by **reporting your questions and issues** [here](https://github.com/ugr-sail/sinergym/issues). It is easy, just 2 clicks using our issue templates (questions, bugs, improvements, etc.). More detailed info on how to report issues [here](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue). 
+
 The main functionalities of *Sinergym* are the following :
 
 -  **Include different simulation engines**. Communication between
