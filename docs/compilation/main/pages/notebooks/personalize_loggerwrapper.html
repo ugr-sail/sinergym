@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>16. Logger Wrapper personalization/configuration &mdash; sinergym  documentation</title>
+  <title>17. Logger Wrapper personalization/configuration &mdash; sinergym  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/doc_theme.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="17. Rule Controller example" href="rule_controller_example.html" />
-    <link rel="prev" title="15. Wrappers example" href="wrappers_examples.html" /> 
+    <link rel="next" title="18. Rule Controller example" href="rule_controller_example.html" />
+    <link rel="prev" title="16. Wrappers example" href="wrappers_examples.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -67,16 +67,17 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="basic_example.html">13. Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="change_environment.html">14. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">15. Wrappers example</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">16. Logger Wrapper personalization/configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Step-1-Inherit-and-modify-the-CSVloger">16.1. Step 1 Inherit and modify the CSVloger</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Step-2-Instantiate-the-LoggerWrapper">16.2. Step 2 Instantiate the LoggerWrapper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">15. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">16. Wrappers example</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">17. Logger Wrapper personalization/configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Step-1-Inherit-and-modify-the-CSVloger">17.1. Step 1 Inherit and modify the CSVloger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Step-2-Instantiate-the-LoggerWrapper">17.2. Step 2 Instantiate the LoggerWrapper</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">17. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="drl.html">18. DRL usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="MLflow_example.html">19. MLFlow example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="TensorBoard_example.html">20. TensorBoard example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">18. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">19. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MLflow_example.html">20. MLFlow example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TensorBoard_example.html">21. TensorBoard example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -97,7 +98,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">16. </span>Logger Wrapper personalization/configuration</li>
+      <li class="breadcrumb-item active"><span class="section-number">17. </span>Logger Wrapper personalization/configuration</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/notebooks/personalize_loggerwrapper.nblink.txt" rel="nofollow"> View page source</a>
       </li>
@@ -387,7 +388,7 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="Logger-Wrapper-personalization/configuration">
-<h1><span class="section-number">16. </span>Logger Wrapper personalization/configuration<a class="headerlink" href="#Logger-Wrapper-personalization/configuration" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">17. </span>Logger Wrapper personalization/configuration<a class="headerlink" href="#Logger-Wrapper-personalization/configuration" title="Permalink to this heading"></a></h1>
 <p>We will see on this notebook how to personalize the logger wrapper defined by sinergym.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -412,7 +413,7 @@ div.rendered_html tbody tr:hover {
 </pre></div></div>
 </div>
 <section id="Step-1-Inherit-and-modify-the-CSVloger">
-<h2><span class="section-number">16.1. </span>Step 1 Inherit and modify the CSVloger<a class="headerlink" href="#Step-1-Inherit-and-modify-the-CSVloger" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">17.1. </span>Step 1 Inherit and modify the CSVloger<a class="headerlink" href="#Step-1-Inherit-and-modify-the-CSVloger" title="Permalink to this heading"></a></h2>
 <p>First we need to change the CSV logger to modify the values written into the file on the function create_row_contents</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -463,7 +464,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Step-2-Instantiate-the-LoggerWrapper">
-<h2><span class="section-number">16.2. </span>Step 2 Instantiate the LoggerWrapper<a class="headerlink" href="#Step-2-Instantiate-the-LoggerWrapper" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">17.2. </span>Step 2 Instantiate the LoggerWrapper<a class="headerlink" href="#Step-2-Instantiate-the-LoggerWrapper" title="Permalink to this heading"></a></h2>
 <p>now we need to instantiate the loggerwrapper and specify the new headers of our file and the csvlogger class we want to use.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -542,8 +543,8 @@ Episode  0 Mean reward:  -0.672379345545623 Cumulative reward:  -23560.172267918
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="wrappers_examples.html" class="btn btn-neutral float-left" title="15. Wrappers example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rule_controller_example.html" class="btn btn-neutral float-right" title="17. Rule Controller example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="wrappers_examples.html" class="btn btn-neutral float-left" title="16. Wrappers example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rule_controller_example.html" class="btn btn-neutral float-right" title="18. Rule Controller example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

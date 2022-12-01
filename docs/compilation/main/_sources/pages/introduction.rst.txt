@@ -11,6 +11,12 @@ Gym* interface for wrapping simulation engines (*Energyplus*) for building contr
 
 |
 
+.. note:: Please, help us to improve by **reporting your questions and issues** 
+   `here <https://github.com/ugr-sail/sinergym/issues>`__. It is easy, just 2 clicks 
+   using our issue templates (questions, bugs, improvements, etc.). More detailed 
+   info on how to report issues 
+   `here <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__. 
+
 The main functionalities of *Sinergym* are the following:
 
 -  **Include different simulation engines**. Communication between
