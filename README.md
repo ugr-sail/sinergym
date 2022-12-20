@@ -93,11 +93,11 @@ _This is a work in progress project. Stay tuned for upcoming releases._
 
 ## List of available environments
 
-If you would like to see a complete and updated list of our available environments, please visit [our list](https://ugr-sail.github.io/sinergym/compilation/html/pages/environments.html) in the official *Sinergym* documentation.
+If you would like to see a complete and updated list of our available environments, please visit [our list](https://ugr-sail.github.io/sinergym/compilation/main/pages/environments.html#) in the official *Sinergym* documentation.
 
 ## Installation
 
-For more detailed information, please visit our [documentation](https://ugr-sail.github.io/sinergym/compilation/html/index.html).
+For more detailed information, please visit our [documentation](https://ugr-sail.github.io/sinergym/compilation/main/index.html).
 
 ### Docker container
 
@@ -251,13 +251,13 @@ env.close()
 
 Notice that a folder will be created in the working directory after creating the environment. It will contain the EnergyPlus outputs produced during the simulation.
 
-:pencil: For more examples and details, please visit our [usage examples](https://ugr-sail.github.io/sinergym/compilation/html/pages/usage-example.html) documentation section
+:pencil: For more examples and details, please visit our [usage examples](https://ugr-sail.github.io/sinergym/compilation/main/pages/notebooks/basic_example.html#Basic-example) documentation section.
 
 ## Google Cloud Platform support
 
 Cloud Computing 
 
-For more information about this functionality, please, visit our documentation [here](https://ugr-sail.github.io/sinergym/compilation/html/pages/gcloudAPI.html).
+For more information about this functionality, please, visit our documentation [here](https://ugr-sail.github.io/sinergym/compilation/main/pages/gcloudAPI.html#sinergym-with-google-cloud).
 
 ## Citing Sinergym
 
