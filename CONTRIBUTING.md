@@ -12,7 +12,7 @@ into two categories:
 
 Once you finish implementing a feature or bug-fix, please send a Pull Request to
 https://github.com/ugr-sail/sinergym main branch. Please, follow our pull request template for this purpose
-(it will appear in text box so you only have to complete it). Please, be sure that you include the number of your issue (for instance "123") as `Fixes #123` (the placeholder is already in the template) so the issue will be close when the pull request is accepted.
+(it will appear in text box so you only have to complete it). Please, be sure that you include the number of your issue (for instance "123") as `Fixes #123` (the placeholder is already in the template) so the issue will be closed when the pull request is accepted.
 
 You can create a pull request when the issue is not finished yet and work on it. If you prefer to work in this way, please, select [Draft pull request](https://github.blog/2019-02-14-introducing-draft-pull-requests/) and select *ready for review* when you are ready.
 
