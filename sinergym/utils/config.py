@@ -82,9 +82,17 @@ class Config(object):
             self.idf_zone_names.append(idf_zone.name.lower())
         # Extract rdd observation variables names
         data = pandas.read_csv(self._rdd_path, skiprows=1)
-        self.rdd_variables_names = list(map(
+        rdd_variable_names = list(map(
             lambda name: name.split(' [')[0],
             data['Variable Name [Units]'].tolist()))
+        rdd_variable_types = data['Var Type (reported time step)'].tolist()
+        assert len(rdd_variable_names) == len(
+            rdd_variable_types), 'RDD file: Number of variable names and variables types column should be the same.'
+        # self.rdd_variables is a dict with keys as name of the variable and
+        # body as variable type (Zone or HVAC)
+        self.rdd_variables = dict()
+        for i, variable_name in enumerate(rdd_variable_names):
+            self.rdd_variables[variable_name] = rdd_variable_types[i]
 
         # Extract schedulers available in building model
         self.schedulers = self.get_schedulers()
@@ -601,47 +609,56 @@ class Config(object):
                     new_sch['name'])
 
     def _check_observation_variables(self) -> None:
-        """This method checks whether observation variables zones are available in building model definition
+        """This method checks whether observation variables are available in building model definition (Checking variable type definition too).
         """
         for obs_var in self.variables['observation']:
+            # Name of the observation variable and element (Zone or HVAC
+            # element name)
             obs_name = obs_var.split('(')[0]
-            obs_zone = obs_var.split('(')[1][:-1]
+            obs_element_name = obs_var.split('(')[1][:-1]
 
             # Check observarion variables names
-            assert obs_name in self.rdd_variables_names, 'Observation variables: Variable called {} in observation variables is not valid for IDF building model'.format(
-                obs_name)
-            # Check observation variables zones
-            if obs_zone.lower() != 'Environment'.lower(
-            ) and obs_zone.lower() != 'Whole Building'.lower():
-                # zones names with people 1 or lights 1, etc. The second name
-                # is ignored, only check that zone is a substr from obs zone
-                assert any(list(map(lambda zone: zone.lower() in obs_zone.lower(), self.idf_zone_names))
-                           ), 'Observation variables: Zone called {} in observation variables does not exist in IDF building model.'.format(obs_zone)
+            assert obs_name in list(self.rdd_variables.keys(
+            )), 'Observation variables: Variable called {} in observation variables is not valid for IDF building model'.format(obs_name)
+            # Check observation variables about zones (if variable type is
+            # Zone)
+            if self.rdd_variables[obs_name] == 'Zone':
+                # Check that obs zone is not Environment or Whole building tag
+                if obs_element_name.lower() != 'Environment'.lower(
+                ) and obs_element_name.lower() != 'Whole Building'.lower():
+                    # zones names with people 1 or lights 1, etc. The second name
+                    # is ignored, only check that zone is a substr from obs
+                    # zone
+                    assert any(list(map(lambda zone: zone.lower() in obs_element_name.lower(), self.idf_zone_names))
+                               ), 'Observation variables: Zone called {} in observation variables does not exist in IDF building model.'.format(obs_element_name)
+            # Check observation variables about HVAC
+            elif self.rdd_variables[obs_name] == 'HVAC':
+                pass
 
-    # ---------------------------------------------------------------------------- #
-    #                                    OTHERS                                    #
-    # ---------------------------------------------------------------------------- #
+                # ---------------------------------------------------------------------------- #
+                #                                    OTHERS                                    #
+                # ---------------------------------------------------------------------------- #
 
-    # def _set_thermostat_zone_control(self,
-    #                                  zone_control: Record,
-    #                                  controller_type: str,
-    #                                  controller: Dict[str,
-    #                                                   Any]) -> None:
-    #     """Modify Thermostat:ZoneControl object from IDF model in order to set a new controller
+                # def _set_thermostat_zone_control(self,
+                #                                  zone_control: Record,
+                #                                  controller_type: str,
+                #                                  controller: Dict[str,
+                #                                                   Any]) -> None:
+                #     """Modify Thermostat:ZoneControl object from IDF model in order to set a new controller
 
-    #     Args:
-    #         zone_control (Record): Zone Control to be modified.
-    #         controller_type (str): Controller type you want to change.
-    #         controller (Dict[str, Any]): controller to set in Zone Control.
-    #     """
-    #     # We iterate all record fields searching
-    #     # controller_type value
-    #     for i in range(len(get_record_keys(zone_control))):
-    #         if isinstance(zone_control[i], str):
-    #             if zone_control[i].lower() == controller_type.lower():
-    #                 # Then, the next field will be always the DualSetpoint
-    #                 # thermostat name, so we change it
-    #                 zone_control[i + 1] = controller['name']
-    #                 # We do not need to search more fields in that record
-    #                 # specifically, so break it
-    #                 break
+                #     Args:
+                #         zone_control (Record): Zone Control to be modified.
+                #         controller_type (str): Controller type you want to change.
+                #         controller (Dict[str, Any]): controller to set in Zone Control.
+                #     """
+                #     # We iterate all record fields searching
+                #     # controller_type value
+                #     for i in range(len(get_record_keys(zone_control))):
+                #         if isinstance(zone_control[i], str):
+                #             if zone_control[i].lower() == controller_type.lower():
+                #                 # Then, the next field will be always the DualSetpoint
+                #                 # thermostat name, so we change it
+                #                 zone_control[i + 1] = controller['name']
+                #                 # We do not need to search more fields in that record
+                #                 # specifically, so break it
+                #                 break
