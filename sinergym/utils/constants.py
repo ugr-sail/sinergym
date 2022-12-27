@@ -461,6 +461,175 @@ DEFAULT_OFFICE_ACTION_DEFINITION = {
         'name': 'Office_Cooling_RL',
         'initial_value': 25}}
 
+# ----------------------------------OFFICEGRID---------------------------- #
+
+DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES = [
+    'Electric Storage Simple Charge State(Battery)',
+    'Site Outdoor Air Drybulb Temperature(Environment)',
+    'Site Outdoor Air Relative Humidity(Environment)',
+    'Site Wind Speed(Environment)',
+    'Site Wind Direction(Environment)',
+    'Site Diffuse Solar Radiation Rate per Area(Environment)',
+    'Site Direct Solar Radiation Rate per Area(Environment)',
+    'Zone Thermostat Heating Setpoint Temperature(Basement)',
+    'Zone Thermostat Cooling Setpoint Temperature(Basement)',
+    'Zone Air Temperature(Basement)',
+    'Zone Air Temperature(core_bottom)',
+    'Zone Air Temperature(core_mid)',
+    'Zone Air Temperature(core_top)',
+    'Zone Air Temperature(Perimeter_bot_ZN_1)',
+    'Zone Air Temperature(Perimeter_bot_ZN_2)',
+    'Zone Air Temperature(Perimeter_bot_ZN_3)',
+    'Zone Air Temperature(Perimeter_bot_ZN_4)',
+    'Zone Air Temperature(Perimeter_mid_ZN_1)',
+    'Zone Air Temperature(Perimeter_mid_ZN_2)',
+    'Zone Air Temperature(Perimeter_mid_ZN_3)',
+    'Zone Air Temperature(Perimeter_mid_ZN_4)',
+    'Zone Air Temperature(Perimeter_top_ZN_1)',
+    'Zone Air Temperature(Perimeter_top_ZN_2)',
+    'Zone Air Temperature(Perimeter_top_ZN_3)',
+    'Zone Air Temperature(Perimeter_top_ZN_4)',
+    'Zone Air Temperature(GroundFloor_Plenum)',
+    'Zone Air Temperature(MidFloor_Plenum)',
+    'Zone Air Temperature(TopFloor_Plenum)',
+    'Zone Air Relative Humidity(Basement)',
+    'Zone Air Relative Humidity(core_bottom)',
+    'Zone Air Relative Humidity(core_mid)',
+    'Zone Air Relative Humidity(core_top)',
+    'Zone Air Relative Humidity(Perimeter_bot_ZN_1)',
+    'Zone Air Relative Humidity(Perimeter_bot_ZN_2)',
+    'Zone Air Relative Humidity(Perimeter_bot_ZN_3)',
+    'Zone Air Relative Humidity(Perimeter_bot_ZN_4)',
+    'Zone Air Relative Humidity(Perimeter_mid_ZN_1)',
+    'Zone Air Relative Humidity(Perimeter_mid_ZN_2)',
+    'Zone Air Relative Humidity(Perimeter_mid_ZN_3)',
+    'Zone Air Relative Humidity(Perimeter_mid_ZN_4)',
+    'Zone Air Relative Humidity(Perimeter_top_ZN_1)',
+    'Zone Air Relative Humidity(Perimeter_top_ZN_2)',
+    'Zone Air Relative Humidity(Perimeter_top_ZN_3)',
+    'Zone Air Relative Humidity(Perimeter_top_ZN_4)',
+    'Zone Air Relative Humidity(GroundFloor_Plenum)',
+    'Zone Air Relative Humidity(MidFloor_Plenum)',
+    'Zone Air Relative Humidity(TopFloor_Plenum)',
+    'Zone People Occupant Count(Basement)',
+    'Zone People Occupant Count(core_bottom)',
+    'Zone People Occupant Count(core_mid)',
+    'Zone People Occupant Count(core_top)',
+    'Zone People Occupant Count(Perimeter_bot_ZN_1)',
+    'Zone People Occupant Count(Perimeter_bot_ZN_2)',
+    'Zone People Occupant Count(Perimeter_bot_ZN_3)',
+    'Zone People Occupant Count(Perimeter_bot_ZN_4)',
+    'Zone People Occupant Count(Perimeter_mid_ZN_1)',
+    'Zone People Occupant Count(Perimeter_mid_ZN_2)',
+    'Zone People Occupant Count(Perimeter_mid_ZN_3)',
+    'Zone People Occupant Count(Perimeter_mid_ZN_4)',
+    'Zone People Occupant Count(Perimeter_top_ZN_1)',
+    'Zone People Occupant Count(Perimeter_top_ZN_2)',
+    'Zone People Occupant Count(Perimeter_top_ZN_3)',
+    'Zone People Occupant Count(Perimeter_top_ZN_4)',
+    'Facility Total HVAC Electricity Demand Rate(Whole Building)']
+
+DEFAULT_OFFICEGRID_ACTION_VARIABLES = [
+    'Heating_Setpoint_RL',
+    'Cooling_Setpoint_RL',
+    'Charge_Rate_RL',
+    'Discharge_Rate_RL'
+]
+
+DEFAULT_OFFICEGRID_OBSERVATION_SPACE = gym.spaces.Box(
+    low=-5e6,
+    high=5e6,
+    shape=(len(DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES) + 4,),
+    dtype=np.float32)
+
+DEFAULT_OFFICEGRID_ACTION_MAPPING = {
+    0: (15, 30, 0.0, 0.0),
+    1: (16, 29, 0.0, 0.0),
+    2: (17, 28, 0.0, 0.0),
+    3: (18, 27, 0.0, 0.0),
+    4: (19, 26, 0.0, 0.0),
+    5: (20, 25, 0.0, 0.0),
+    6: (21, 24, 0.0, 0.0),
+    7: (22, 23, 0.0, 0.0),
+    8: (22, 22, 0.0, 0.0),
+    9: (21, 21, 0.0, 0.0)
+}
+
+DEFAULT_OFFICEGRID_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
+
+DEFAULT_OFFICEGRID_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
+    low=np.array([15.0, 22.5, 0.0, 0.0]),
+    high=np.array([22.5, 30.0, 1.0, 1.0]),
+    shape=(4,),
+    dtype=np.float32
+)
+
+DEFAULT_OFFICEGRID_ACTION_DEFINITION = {
+    'HTGSETP_SCH': {'name': 'Heating_Setpoint_RL', 'initial_value': 21},
+    'CLGSETP_SCH': {'name': 'Cooling_Setpoint_RL', 'initial_value': 25},
+    'Charge Schedule': {'name': 'Charge_Rate_RL', 'initial_value': 0.0},
+    'Discharge Schedule': {'name': 'Discharge_Rate_RL', 'initial_value': 0.0},
+}
+
+# ----------------------------------SHOP--------------------- #
+
+DEFAULT_SHOP_OBSERVATION_VARIABLES = [
+    'Site Outdoor Air Drybulb Temperature(Environment)',
+    'Site Outdoor Air Relative Humidity(Environment)',
+    'Site Wind Speed(Environment)',
+    'Site Wind Direction(Environment)',
+    'Site Diffuse Solar Radiation Rate per Area(Environment)',
+    'Site Direct Solar Radiation Rate per Area(Environment)',
+    'Zone Thermostat Heating Setpoint Temperature(SPACE1-1)',
+    'Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)',
+    'Zone Air Temperature(SPACE1-1)',
+    'Zone Thermal Comfort Mean Radiant Temperature(SPACE1-1 PEOPLE 1)',
+    'Zone Air Relative Humidity(SPACE1-1)',
+    'Zone Thermal Comfort Clothing Value(SPACE1-1 PEOPLE 1)',
+    'Zone Thermal Comfort Fanger Model PPD(SPACE1-1 PEOPLE 1)',
+    'Zone People Occupant Count(SPACE1-1)',
+    'People Air Temperature(SPACE1-1 PEOPLE 1)',
+    'Facility Total HVAC Electricity Demand Rate(Whole Building)'
+]
+
+DEFAULT_SHOP_ACTION_VARIABLES = [
+    'Heating_Setpoint_RL',
+    'Cooling_Setpoint_RL',
+]
+
+DEFAULT_SHOP_OBSERVATION_SPACE = gym.spaces.Box(
+    low=-5e6,
+    high=5e6,
+    shape=(len(DEFAULT_SHOP_OBSERVATION_VARIABLES) + 4,),
+    dtype=np.float32)
+
+DEFAULT_SHOP_ACTION_MAPPING = {
+    0: (15, 30),
+    1: (16, 29),
+    2: (17, 28),
+    3: (18, 27),
+    4: (19, 26),
+    5: (20, 25),
+    6: (21, 24),
+    7: (22, 23),
+    8: (22, 22),
+    9: (21, 21)
+}
+
+DEFAULT_SHOP_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
+
+DEFAULT_SHOP_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
+    low=np.array([15.0, 22.5]),
+    high=np.array([22.5, 30.0]),
+    shape=(2,),
+    dtype=np.float32
+)
+
+DEFAULT_SHOP_ACTION_DEFINITION = {
+    'Htg-SetP-Sch': {'name': 'Heating_Setpoint_RL', 'initial_value': 21},
+    'Clg-SetP-Sch': {'name': 'Cooling_Setpoint_RL', 'initial_value': 25},
+}
+
 # ----------------------------------HOSPITAL--------------------------------- #
 # DEFAULT_HOSPITAL_OBSERVATION_VARIABLES = [
 #     'Zone Air Temperature(Basement)',
