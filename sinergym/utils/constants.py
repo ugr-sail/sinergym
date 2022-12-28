@@ -573,22 +573,38 @@ DEFAULT_OFFICEGRID_ACTION_DEFINITION = {
 
 # ----------------------------------SHOP--------------------- #
 
+# Kibam is the name of ElectricLoadCenter:Storage:Battery object
 DEFAULT_SHOP_OBSERVATION_VARIABLES = [
+    'Electric Storage Charge Power(Kibam)',
+    'Electric Storage Charge Energy(Kibam)',
+    'Electric Storage Discharge Power(Kibam)',
+    'Electric Storage Discharge Energy(Kibam)',
+    'Electric Storage Thermal Loss Rate(Kibam)',
+    'Electric Storage Thermal Loss Energy(Kibam)',
+    'Electric Storage Battery Charge State(Kibam)',
     'Site Outdoor Air Drybulb Temperature(Environment)',
     'Site Outdoor Air Relative Humidity(Environment)',
     'Site Wind Speed(Environment)',
     'Site Wind Direction(Environment)',
     'Site Diffuse Solar Radiation Rate per Area(Environment)',
     'Site Direct Solar Radiation Rate per Area(Environment)',
-    'Zone Thermostat Heating Setpoint Temperature(SPACE1-1)',
-    'Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)',
-    'Zone Air Temperature(SPACE1-1)',
-    'Zone Thermal Comfort Mean Radiant Temperature(SPACE1-1 PEOPLE 1)',
-    'Zone Air Relative Humidity(SPACE1-1)',
-    'Zone Thermal Comfort Clothing Value(SPACE1-1 PEOPLE 1)',
-    'Zone Thermal Comfort Fanger Model PPD(SPACE1-1 PEOPLE 1)',
-    'Zone People Occupant Count(SPACE1-1)',
-    'People Air Temperature(SPACE1-1 PEOPLE 1)',
+    'Zone Thermostat Heating Setpoint Temperature(ZN_1_FLR_1_SEC_5)',
+    'Zone Thermostat Cooling Setpoint Temperature(ZN_1_FLR_1_SEC_5)',
+    'Zone Air Temperature(ZN_1_FLR_1_SEC_1)',
+    'Zone Air Temperature(ZN_1_FLR_1_SEC_2)',
+    'Zone Air Temperature(ZN_1_FLR_1_SEC_3)',
+    'Zone Air Temperature(ZN_1_FLR_1_SEC_4)',
+    'Zone Air Temperature(ZN_1_FLR_1_SEC_5)',
+    'Zone Air Relative Humidity(ZN_1_FLR_1_SEC_1)',
+    'Zone Air Relative Humidity(ZN_1_FLR_1_SEC_2)',
+    'Zone Air Relative Humidity(ZN_1_FLR_1_SEC_3)',
+    'Zone Air Relative Humidity(ZN_1_FLR_1_SEC_4)',
+    'Zone Air Relative Humidity(ZN_1_FLR_1_SEC_5)',
+    'Zone People Occupant Count(ZN_1_FLR_1_SEC_1)',
+    'Zone People Occupant Count(ZN_1_FLR_1_SEC_2)',
+    'Zone People Occupant Count(ZN_1_FLR_1_SEC_3)',
+    'Zone People Occupant Count(ZN_1_FLR_1_SEC_4)',
+    'Zone People Occupant Count(ZN_1_FLR_1_SEC_5)',
     'Facility Total HVAC Electricity Demand Rate(Whole Building)'
 ]
 
@@ -626,8 +642,8 @@ DEFAULT_SHOP_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
 )
 
 DEFAULT_SHOP_ACTION_DEFINITION = {
-    'Htg-SetP-Sch': {'name': 'Heating_Setpoint_RL', 'initial_value': 21},
-    'Clg-SetP-Sch': {'name': 'Cooling_Setpoint_RL', 'initial_value': 25},
+    'HTGSETP_SCH': {'name': 'Heating_Setpoint_RL', 'initial_value': 21},
+    'CLGSETP_SCH': {'name': 'Cooling_Setpoint_RL', 'initial_value': 25},
 }
 
 # ----------------------------------HOSPITAL--------------------------------- #
