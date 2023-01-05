@@ -537,8 +537,8 @@ DEFAULT_OFFICEGRID_ACTION_VARIABLES = [
 ]
 
 DEFAULT_OFFICEGRID_OBSERVATION_SPACE = gym.spaces.Box(
-    low=-5e6,
-    high=5e6,
+    low=-5e11,
+    high=5e11,
     shape=(len(DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES) + 4,),
     dtype=np.float32)
 
@@ -614,8 +614,8 @@ DEFAULT_SHOP_ACTION_VARIABLES = [
 ]
 
 DEFAULT_SHOP_OBSERVATION_SPACE = gym.spaces.Box(
-    low=-5e6,
-    high=5e6,
+    low=-5e11,
+    high=5e11,
     shape=(len(DEFAULT_SHOP_OBSERVATION_VARIABLES) + 4,),
     dtype=np.float32)
 
