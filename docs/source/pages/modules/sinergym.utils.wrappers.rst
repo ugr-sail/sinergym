@@ -1,4 +1,4 @@
-sinergym.utils.wrappers
+﻿sinergym.utils.wrappers
 =======================
 
 .. automodule:: sinergym.utils.wrappers
@@ -22,6 +22,7 @@ sinergym.utils.wrappers
       LoggerWrapper
       MultiObsWrapper
       NormalizeObservation
+      OfficeGridStorageSmoothingActionConstraintsWrapper
    
    
 
