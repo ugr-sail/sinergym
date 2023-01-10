@@ -1,0 +1,5 @@
+source/pages/github-actions.rst:17: (standar)  In case the code does not follow the standar, a warning will rise during the workflow execution.
+source/pages/github-actions.rst:43: (attemps)   in the workflow, for instances, attemps to ignore tests.
+source/pages/github-actions.rst:66: (execured)   tag automatically. This update is execured only when the preivous format and documentation workflows have succesfully finished.
+source/pages/github-actions.rst:66: (preivous)   tag automatically. This update is execured only when the preivous format and documentation workflows have succesfully finished.
+source/pages/github-actions.rst:66: (succesfully)   tag automatically. This update is execured only when the preivous format and documentation workflows have succesfully finished.
