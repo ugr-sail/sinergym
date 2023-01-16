@@ -37,7 +37,7 @@ Our callbacks inherit from Stable Baselines 3 and are available in
 
 ********************
 DRL Callback Logger
-*******************
+********************
 
 A callback allows to custom our own logger for DRL Sinergym executions. Our objective 
 is to **log all information about our custom environment** specifically in real-time.
