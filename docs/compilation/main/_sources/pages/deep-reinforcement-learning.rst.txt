@@ -24,30 +24,31 @@ Current algorithms checked by *Sinergym* are:
 | TD3       |    NO    |     YES    | OffPolicyAlgorithm |
 +-----------+----------+------------+--------------------+
 
+For that purpose, we are going to refine and develop 
+`Callbacks <https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html>`__ 
+which are a set of functions that will be called at given **stages of the training procedure**. 
+You can use callbacks to access internal state of the RL model **during training**. 
+It allows one to do monitoring, auto saving, model manipulation, progress bars, ...
+Our callbacks inherit from Stable Baselines 3 and are available in 
+`sinergym/sinergym/utils/callbacks.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/callbacks.py>`__.
+
 ``Type`` column has been specified due to its importance about 
 *Stable Baselines callback* functionality.
 
-****************
-DRL Logger
-****************
+********************
+DRL Callback Logger
+********************
 
-`Callbacks <https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html>`__ 
-are a set of functions that will be called at given **stages of the training procedure**. 
-You can use callbacks to access internal state of the RL model **during training**. 
-It allows one to do monitoring, auto saving, model manipulation, progress bars, ...
-
-This structure allows to custom our own logger for DRL executions. Our objective 
-is to **log all information about our custom environment** specifically.
-Therefore, `sinergym/sinergym/utils/callbacks.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/callbacks.py>`__ 
-has been created with this proposal. Each algorithm has its own differences 
-about how information is extracted which is why its implementation. ``LoggerCallback``
-can deal with those subtleties.
+A callback allows to custom our own logger for DRL Sinergym executions. Our objective 
+is to **log all information about our custom environment** specifically in real-time.
+Each algorithm has its own differences 
+about how information is extracted which is why its implementation.
 
 .. note:: You can specify if you want Sinergym logger (see :ref:`Logger`) to record 
           simulation interactions during training at the same time using 
           ``sinergym_logger`` attribute in constructor. 
 
-This callback derives ``BaseCallback`` from Stable Baselines 3 while ``BaseCallBack`` 
+``LoggerCallback`` inherits from Stable Baselines 3 ``BaseCallback`` and 
 uses `Tensorboard <https://www.tensorflow.org/tensorboard?hl=es-419>`__ on the 
 background at the same time. With *Tensorboard*, it's possible to visualize all DRL 
 training in real time and compare between different executions. This is an example: 
@@ -69,9 +70,33 @@ It is important the difference between ``OnPolicyAlgorithms`` and ``OffPolicyAlg
   Thus, Off Policy Algorithms record a **mean value** of whole episode values instead 
   of values steps by steps (see ``LoggerCallback`` class implementation).
 
-~~~~~~~~~~~~~~~~~~~~~~
+********************
+Evaluation Callback
+********************
+
+A callback has also been refined for the evaluation of the model versions obtained during 
+the training process with Sinergym, so that it stores the best model obtained (not the one resulting 
+at the end of the training).
+
+Its name is ``LoggerEvalCallback`` and it inherits from Stable Baselines 3 ``EvalCallback``. 
+The main feature added is that the model evaluation is logged in a particular section in 
+Tensorboard too for the concrete metrics of the building model.
+
+We have to define in ``LoggerEvalCallback`` construction how many training episodes we want 
+the evaluation process to take place. On the other hand, we have to define how many episodes 
+are going to occupy each of the evaluations to be performed. 
+
+The more episodes, the more accurate the averages of the reward-based indicators will be, and, 
+therefore, the more faithful it will be to reality in terms of how good the current model is 
+turning out to be. However, it will take more time.
+
+It calculates timestep and episode average for power consumption, comfort penalty and power penalty.
+On the other hand, it calculates too comfort violation percentage in episodes too.
+Currently, only mean reward is taken into account to decide when a model is better.
+
+***********************
 Tensorboard structure
-~~~~~~~~~~~~~~~~~~~~~~
+***********************
 
 The main structure for *Sinergym* with *Tensorboard* is:
 
