@@ -2,8 +2,8 @@
 Github Actions
 ################
 
-This project is automatically processed using `Github Action <https://docs.github.com/es/actions/>`__ 
-which allows building continuous integration and continuous deployment pipelines
+This project is automatically processed using `Github Actions <https://docs.github.com/es/actions/>`__, 
+a tool to build continuous integration and continuous deployment pipelines
 for testing, releasing and deploying software without the use of third-party 
 websites/platforms.
 
@@ -16,41 +16,35 @@ Pull Request
 - **Python Code format check**: Python code format is checked in every pull 
   request following **Pep8** `standard <https://www.python.org/dev/peps/pep-0008/>`__ 
   (Level 2 aggressive) and `isort <https://github.com/PyCQA/isort>`__ to sort imports. 
-  If format is incorrect, a bot will comment in pull request advising that issue 
-  and notifying it will be correct merging with main.
+  In case the code does not follow the standar, a warning will rise during the workflow execution.
 
 - **Code type check**: We are using `pytype <https://github.com/google/pytype>`__ in 
-  *Sinergym* module. This let dynamic types in Python like it is usual, but controlling 
-  input and output types in functions and methods. This workflow ignore `import-error` 
+  *Sinergym* module. This check controls input and output types in functions and methods. This workflow ignores `import-error` 
   type using command `pytype -d import-error sinergym/`.
   For example, **pytype** cannot include google cloud storage module, so this option 
-  specification is necessary. If some type error happens, the workflow show error until 
-  user fix it.
+  specification is necessary. If some type error happens, the workflow shows an error until the
+  user fixes it.
 
-- **Documentation Checks**: This action checks whether source documentation has been 
+- **Documentation checks**: This action checks whether source documentation has been 
   modified in every pull-request. If source documentation has been updated, it will 
-  **compile** documentation with *Sphinx* and raise errors if exist.
-  This workflow checks **vocabulary spelling** too. If you have a mistake and sphinx 
-  finds a unknown word, this workflow will return an error. Writing documentation
-  about this topic is very possible that you want to use a word that is not in default 
-  dictionary. In that case, you have to add that word to `docs/source/spelling_wordlist.txt` 
-  (please, respect alphabetical order) and Sphinx-spelling will accept words allocated 
-  in the list.
+  **compile** documentation with *Sphinx* and raise errors if they exist.
+  This workflow checks **vocabulary spelling** too. If you have a mistake and *Sphinx* 
+  finds an unknown word, this workflow will return an error. In case you want to use a word that is not in the default 
+  dictionary, please add that word to `docs/source/spelling_wordlist.txt` 
+  (please, respect alphabetical order) because Sphinx-spelling accepts words allocated 
+  in that list.
 
-.. warning:: Sphinx Warning messages behave like errors for workflow status.
+.. Warning:: Sphinx Warning messages behave like errors for workflow status.
 
-.. note:: Sphinx Spelling works on code docstring too.
+.. Note:: Sphinx Spelling works on code docstring too.
 
-- **Testing**: There is another action which builds a remote container using *Dockerfile* 
-  and executes **Pytest** inner.
+- **Testing**: It is an action that builds a remote container using *Dockerfile* and executes **Pytest** inside that container. It is a remote container because it is built in Github, just for testing purposes.
 
-- **Repository security**: There is a workflow which compare differences in workflows 
-  and tests from source to base. It execute that functionality only in forked 
-  repositories in order to **prevent malicious software** in workflow or ignore tests. 
-  Event is *pull_request_target*, this means workflow is checkout from base repository 
-  (our main branch) and it cannot be manipulate by third-parties.
+- **Repository security**: This workflow identifies differences between source and base in workflows and tests. It executes that functionality only in forked repositories in order to **prevent malicious software** in the workflow, for instances, attemps to ignore tests. 
+  The event is *pull_request_target*, this means the workflow is checkout from base repository 
+  (our main branch) and it cannot be manipulated by third-parties.
 
-.. note:: These checks can be skipped in a specific commit writing `[ci skip]` string 
+.. Note:: These checks can be skipped in a specific commit writing `[ci skip]` string 
           in commit message. For more information, see issue 
           `#161 <https://github.com/ugr-sail/sinergym/issues/161>`__.
 
@@ -58,43 +52,40 @@ Pull Request
 Push main (or merge a pull request)
 ************************************
 
-This workflows will be executed in sequential order:
+These workflows will be executed in sequential order:
 
-- **Apply format**: A bot generates a commit in main branch applying 
+- **Apply format**: A bot generates a commit in the main branch applying 
   format changes when it is necessary (**autopep8** 2 level aggressive 
   and/or **isort** module).
 
 - **Update Documentation build to GitHub pages**: A bot generates a commit 
   in **main** branch applying new documentation build when it is necessary 
   (spelling check included here too) in a folder called **docs/compilation**. 
-  Repository ignore default folder name *build* in order to compile locally 
-  to check changes.
+  The version control ignores the default folder name *build*.
 
-- **Update our Docker Hub repository**: This job builds container with all extra 
-  requires and it is pushed to our 
+- **Update our Docker Hub repository**: This job builds a container with all extra 
+  requirements and it is pushed to our 
   `Docker Hub repository <https://hub.docker.com/r/sailugr/sinergym>`__ 
-  using *latest* tag automatically. It needs format and documentation jobs finish 
-  for possible changes.
+  using *latest* tag automatically. This update is execured only when the preivous format and documentation workflows have succesfully finished.
 
 ********************************
 New release created or modified
 ********************************
 
 - When a **release** is *published* or *edited* manually in the repository, 
-  there is an action which catches release tag version and uses it to build 
+  an action catches the release tag version and it uses it to build 
   a container and upload/update on Docker Hub with that tag version.
 
 - At the same time, another job will update the **PyPi** *Sinergym* repository 
   with its current version tag.
 
-.. note:: See `.github/workflows YML files 
-          <https://github.com/ugr-sail/sinergym/tree/develop/.github/workflows>`__ 
-          to see code used.
+.. Note:: See `.github/workflows YML files <https://github.com/ugr-sail/sinergym/tree/main/.github/workflows>`__ 
+          to see the code we use.
 
-.. note:: Whether you have a forked repository from *Sinergym*, we recommend you to
+.. Note:: If you forked the repository from *Sinergym*, we recommend you to
           **enable Github Action in your project** in order to take advantage of 
           this functionality in your developments.
 
-.. note:: Currently, the workflows explained above upload two containers. A 
+.. Note:: Currently, the workflows explained above upload two containers. A 
           container with **all extra packages** and a container with **minimal**
           installation.

@@ -342,7 +342,7 @@ The list of parameter is pretty large. Let's see it:
 - ``--tensorboard`` or ``-tens``: This parameter will contain a 
   **path-file** or **path-remote-bucket** to allocate tensorboard 
   training logs. If it isn't specified this log will be deactivate 
-  (see :ref:`DRL Logger`).
+  (see :ref:`Tensorboard structure`).
 
 - ``--evaluation`` or ``-eval``: If it is specified, evaluation 
   callback will be activate, else model evaluation will be deactivate 
