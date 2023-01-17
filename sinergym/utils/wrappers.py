@@ -1,11 +1,11 @@
 """Implementation of custom Gym environments."""
 
+import random
 from collections import deque
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import gym
 import numpy as np
-import random
 
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.logger import CSVLogger
