@@ -23,53 +23,53 @@ setup(name='sinergym',
       extras_require={
           'extras': [
               'matplotlib',  # visualization
-              'stable-baselines3',  # DRL with pytorch
-              'mlflow',  # tracking ML experiments
-              'tensorflow',
-              'tensorboard_plugin_profile',  # Training logger
-              'pytest',  # Unit test repository
-              'sphinx',  # documentation
-              'sphinx-rtd-theme',  # documentation theme
-              'sphinxcontrib-spelling',  # documentation spelling
-              'sphinx-multiversion',  # documentation versioning
-              'sphinx-multitoc-numbering',  # Section numbering
-              'pyenchant',
-              'google-api-python-client',
-              'oauth2client',
-              'google-cloud-storage',
-              'nbsphinx',
-              'nbsphinx_link',
+              'stable-baselines3==1.6.0',  # DRL with pytorch
+              'mlflow==1.28.0',  # tracking ML experiments
+              'tensorflow==2.9.1',
+              'tensorboard_plugin_profile==2.8.0',  # Training logger
+              'pytest==7.1.2',  # Unit test repository
+              'sphinx==5.1.1',  # documentation
+              'sphinx-rtd-theme==1.0.0',  # documentation theme
+              'sphinxcontrib-spelling==7.7.0',  # documentation spelling
+              'sphinx-multiversion==0.2.4',  # documentation versioning
+              'sphinx-multitoc-numbering==0.1.3',  # Section numbering
+              'pyenchant==3.2.0',
+              'nbsphinx==0.8.9',
+              'nbsphinx_link==1.3.0',
+              'google-api-python-client==2.58.0',
+              'oauth2client==4.1.3',
+              'google-cloud-storage==2.3.2',
               'IPython'
           ],
           'test': [
-              'pytest',
-              'stable-baselines3'
+              'pytest==7.1.2',
+              'stable-baselines3==1.6.0'
           ],
-          'dev': ['pytest'],
+          'dev': ['pytest==7.1.2'],
           'DRL': [
-              'stable-baselines3',
-              'mlflow',
-              'tensorflow',
-              'tensorboard_plugin_profile'
+              'stable-baselines3==1.6.0',
+              'mlflow==1.28.0',
+              'tensorflow==2.9.1',
+              'tensorboard_plugin_profile==2.8.0'
           ],
           'doc': [
-              'sphinx',
-              'sphinx-rtd-theme',
-              'sphinxcontrib-spelling',
-              'sphinx-multiversion',
-              'sphinx-multitoc-numbering',
-              'pyenchant',
-              'nbsphinx',
-              'nbsphinx_link',
+              'sphinx==5.1.1',
+              'sphinx-rtd-theme==1.0.0',
+              'sphinxcontrib-spelling==7.7.0',
+              'sphinx-multiversion==0.2.4',
+              'sphinx-multitoc-numbering==0.1.3',
+              'pyenchant==3.2.0',
+              'nbsphinx==0.8.9',
+              'nbsphinx_link==1.3.0',
               'IPython'
           ],
           'visualization': [
               'matplotlib',
           ],
           'gcloud': [
-              'google-api-python-client',
-              'oauth2client',
-              'google-cloud-storage'
+              'google-api-python-client==2.58.0',
+              'oauth2client==4.1.3',
+              'google-cloud-storage==2.3.2',
           ]
       }
       )
