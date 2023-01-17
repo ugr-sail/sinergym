@@ -98,7 +98,7 @@ OfficeGridStorageSmoothing
   :align: center
 
 **OfficeGridStorageSmoothing.idf:**
-It is an office building with 12 floors + a basement, with a rectangular aspect and 46,320 m2. 
+It is a large office building with 12 floors and a basement, with a rectangular aspect and 46,320 m2. 
 The building is organized in 19 zones: the basement, bot, mid and top level. Each level has a
 core zone and 4 perimeter zones. Floor zone is described for bot, mid and top level too.
 It has a battery control for charging and discharging from the grid.
