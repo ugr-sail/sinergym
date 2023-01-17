@@ -8,7 +8,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>10. Sinergym with Google Cloud &mdash; sinergym  documentation</title>
+  <title>12. Sinergym with Google Cloud &mdash; sinergym  documentation</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="11. Github Actions" href="github-actions.html" />
-    <link rel="prev" title="9. Deep Reinforcement Learning Integration" href="deep-reinforcement-learning.html" /> 
+    <link rel="next" title="13. Github Actions" href="github-actions.html" />
+    <link rel="prev" title="11. Deep Reinforcement Learning Integration" href="deep-reinforcement-learning.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -96,49 +96,51 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="environments.html">3. Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rewards.html">4. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="controllers.html">5. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers.html">6. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">7. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="output.html">8. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">9. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">10. Sinergym with Google Cloud</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#preparing-google-cloud">10.1. Preparing Google Cloud</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#first-steps-configuration">10.1.1. 1. First steps (configuration)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#use-our-container-in-google-cloud-platform">10.1.2. 2. Use our container in Google Cloud Platform</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#use-your-own-container">10.1.3. 3. Use your own container</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#create-your-vm-or-mig">10.1.4. 4. Create your VM or MIG</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#initiate-your-vm">10.1.5. 5. Initiate your VM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">5. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">6. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">7. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">8. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">10. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">12. Sinergym with Google Cloud</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#preparing-google-cloud">12.1. Preparing Google Cloud</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#first-steps-configuration">12.1.1. 1. First steps (configuration)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-our-container-in-google-cloud-platform">12.1.2. 2. Use our container in Google Cloud Platform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-your-own-container">12.1.3. 3. Use your own container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-your-vm-or-mig">12.1.4. 4. Create your VM or MIG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initiate-your-vm">12.1.5. 5. Initiate your VM</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#executing-experiments-in-remote-containers">10.2. Executing experiments in remote containers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#containers-permission-to-bucket-storage-output">10.2.1. Containers permission to bucket storage output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#executing-experiments-in-remote-containers">12.2. Executing experiments in remote containers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#containers-permission-to-bucket-storage-output">12.2.1. Containers permission to bucket storage output</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#load-a-trained-model">10.3. Load a trained model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#remote-tensorboard-log">10.4. Remote Tensorboard log</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#visualize-remote-tensorboard-log-in-real-time">10.4.1. Visualize remote Tensorboard log in real-time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#load-a-trained-model">12.3. Load a trained model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#remote-tensorboard-log">12.4. Remote Tensorboard log</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#visualize-remote-tensorboard-log-in-real-time">12.4.1. Visualize remote Tensorboard log in real-time</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#mlflow-tracking-server-set-up">10.5. Mlflow tracking server set up</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#google-cloud-alerts">10.6. Google Cloud Alerts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mlflow-tracking-server-set-up">12.5. Mlflow tracking server set up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#google-cloud-alerts">12.6. Google Cloud Alerts</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="github-actions.html">11. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">12. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">13. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">14. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">13. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">14. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">15. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">16. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">17. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">18. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">19. DRL usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/MLflow_example.html">20. MLFlow example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/TensorBoard_example.html">21. TensorBoard example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">15. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">16. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">17. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">18. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">20. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">21. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/MLflow_example.html">22. MLFlow example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/TensorBoard_example.html">23. TensorBoard example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -191,7 +193,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li><span class="section-number">10. </span>Sinergym with Google Cloud</li>
+      <li><span class="section-number">12. </span>Sinergym with Google Cloud</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -235,7 +237,7 @@
 }
 </style>
 <section id="sinergym-with-google-cloud">
-<h1><span class="section-number">10. </span>Sinergym with Google Cloud<a class="headerlink" href="#sinergym-with-google-cloud" title="Permalink to this heading">¶</a></h1>
+<h1><span class="section-number">12. </span>Sinergym with Google Cloud<a class="headerlink" href="#sinergym-with-google-cloud" title="Permalink to this heading">¶</a></h1>
 <p>In this project, we have defined some functionality based in gcloud API
 python in <code class="docutils literal notranslate"><span class="pre">sinergym/utils/gcloud.py</span></code>. Our team aim to configure a Google
 Cloud account and combine with <em>Sinergym</em> easily.</p>
@@ -249,9 +251,9 @@ instance from Google Cloud Platform if experiments has been configured
 with this option.</p>
 <p>Let’s see a detailed explanation above.</p>
 <section id="preparing-google-cloud">
-<h2><span class="section-number">10.1. </span>Preparing Google Cloud<a class="headerlink" href="#preparing-google-cloud" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">12.1. </span>Preparing Google Cloud<a class="headerlink" href="#preparing-google-cloud" title="Permalink to this heading">¶</a></h2>
 <section id="first-steps-configuration">
-<h3><span class="section-number">10.1.1. </span>1. First steps (configuration)<a class="headerlink" href="#first-steps-configuration" title="Permalink to this heading">¶</a></h3>
+<h3><span class="section-number">12.1.1. </span>1. First steps (configuration)<a class="headerlink" href="#first-steps-configuration" title="Permalink to this heading">¶</a></h3>
 <p>Firstly, it is necessary that you have a Google Cloud account set up and
 SDK configured (auth, invoicing, project ID, etc). If you don’t have this,
 it is recommended to check <a class="reference external" href="https://cloud.google.com/sdk/docs/install">their documentation</a>.
@@ -318,7 +320,7 @@ the future (for example, <em>Tensorboard</em>). Please, execute the next in your
 </div>
 </section>
 <section id="use-our-container-in-google-cloud-platform">
-<h3><span class="section-number">10.1.2. </span>2. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Permalink to this heading">¶</a></h3>
+<h3><span class="section-number">12.1.2. </span>2. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Permalink to this heading">¶</a></h3>
 <p>Our <em>Sinergym</em> container is uploaded in <strong>Container Registry</strong> as a public one
 currently. You can use it <strong>locally</strong>:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>eu.gcr.io/sinergym/sinergym:latest
@@ -354,7 +356,7 @@ This derive in a silence error for Google Cloud Build
 </div>
 </section>
 <section id="use-your-own-container">
-<h3><span class="section-number">10.1.3. </span>3. Use your own container<a class="headerlink" href="#use-your-own-container" title="Permalink to this heading">¶</a></h3>
+<h3><span class="section-number">12.1.3. </span>3. Use your own container<a class="headerlink" href="#use-your-own-container" title="Permalink to this heading">¶</a></h3>
 <p>Suppose you have this repository forked and you want to upload <strong>your own
 container on Google Cloud</strong> and to use it. You can use <strong>cloudbuild.yaml</strong>
 with our <strong>Dockerfile</strong> for this purpose:</p>
@@ -452,7 +454,7 @@ it’s a predetermined variable by Google Cloud. When build begins
 </div>
 </section>
 <section id="create-your-vm-or-mig">
-<h3><span class="section-number">10.1.4. </span>4. Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Permalink to this heading">¶</a></h3>
+<h3><span class="section-number">12.1.4. </span>4. Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Permalink to this heading">¶</a></h3>
 <p>To create a <strong>VM</strong> that uses this container, here there is an example:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>create-with-container<span class="w"> </span>sinergym<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--container-image<span class="w"> </span>eu.gcr.io/sinergym/sinergym<span class="w"> </span><span class="se">\</span>
@@ -517,7 +519,7 @@ we recommend you check your quotes
 </div>
 </section>
 <section id="initiate-your-vm">
-<h3><span class="section-number">10.1.5. </span>5. Initiate your VM<a class="headerlink" href="#initiate-your-vm" title="Permalink to this heading">¶</a></h3>
+<h3><span class="section-number">12.1.5. </span>5. Initiate your VM<a class="headerlink" href="#initiate-your-vm" title="Permalink to this heading">¶</a></h3>
 <p>Your virtual machine is ready! To connect you can use ssh
 (see <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh">gcloud-ssh</a>):</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>&lt;machine-name&gt;
@@ -538,7 +540,7 @@ you can enter in remote container with <em>gcloud ssh</em> and execute
 </section>
 </section>
 <section id="executing-experiments-in-remote-containers">
-<h2><span class="section-number">10.2. </span>Executing experiments in remote containers<a class="headerlink" href="#executing-experiments-in-remote-containers" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">12.2. </span>Executing experiments in remote containers<a class="headerlink" href="#executing-experiments-in-remote-containers" title="Permalink to this heading">¶</a></h2>
 <p>This script, called <em>DRL_battery.py</em>, will be allocated in every remote
 container and it is used to execute experiments and combine it with
 <strong>Google Cloud Bucket</strong>, <strong>Mlflow Artifacts</strong>, <strong>auto-remove</strong>, etc:</p>
@@ -1192,7 +1194,7 @@ outputs in Mlflow run artifact.</p></li>
 </ol>
 </div></blockquote>
 <section id="containers-permission-to-bucket-storage-output">
-<h3><span class="section-number">10.2.1. </span>Containers permission to bucket storage output<a class="headerlink" href="#containers-permission-to-bucket-storage-output" title="Permalink to this heading">¶</a></h3>
+<h3><span class="section-number">12.2.1. </span>Containers permission to bucket storage output<a class="headerlink" href="#containers-permission-to-bucket-storage-output" title="Permalink to this heading">¶</a></h3>
 <p>As you see in sinergym template explained in <a class="reference internal" href="#create-your-vm-or-mig"><span class="std std-ref">4. Create your VM or MIG</span></a>,
 it is specified <code class="docutils literal notranslate"><span class="pre">--scope</span></code>, <code class="docutils literal notranslate"><span class="pre">--service-account</span></code> and <code class="docutils literal notranslate"><span class="pre">--container-env</span></code>.
 This aim to <em>remote_store</em> option in <em>DRL_battery.py</em> works correctly.
@@ -1219,7 +1221,7 @@ in order to gcloud SDK knows that it has to use that token to authenticate.</p>
 </section>
 </section>
 <section id="load-a-trained-model">
-<h2><span class="section-number">10.3. </span>Load a trained model<a class="headerlink" href="#load-a-trained-model" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">12.3. </span>Load a trained model<a class="headerlink" href="#load-a-trained-model" title="Permalink to this heading">¶</a></h2>
 <p>For this purpose, we have a script called <em>load_agent.py</em> which can be used both
 on a remote machine and locally on our computer, just like <em>DRL_battery.py</em>.</p>
 <p>So, what this script does is to use the path that we pass as a parameter where our
@@ -1255,7 +1257,7 @@ states during the agreed episodes. The information is collected and sent to a cl
 if it has been specified, otherwise it is stored in local memory.</p>
 </section>
 <section id="remote-tensorboard-log">
-<h2><span class="section-number">10.4. </span>Remote Tensorboard log<a class="headerlink" href="#remote-tensorboard-log" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">12.4. </span>Remote Tensorboard log<a class="headerlink" href="#remote-tensorboard-log" title="Permalink to this heading">¶</a></h2>
 <p>In <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> parameter we have to specify a <strong>local path</strong> or a <strong>Bucket path</strong>.</p>
 <p>If we specify a <strong>local path</strong>, tensorboard logs will be stored in remote containers memory.
 If you have specified <code class="docutils literal notranslate"><span class="pre">--remote_store</span></code> or <code class="docutils literal notranslate"><span class="pre">--mlflow_store</span></code>, this logs will be sent to
@@ -1285,7 +1287,7 @@ installation hasn’t got access your google account. Try
 <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login">gcloud auth application-default login</a> command.</p>
 </div>
 <section id="visualize-remote-tensorboard-log-in-real-time">
-<h3><span class="section-number">10.4.1. </span>Visualize remote Tensorboard log in real-time<a class="headerlink" href="#visualize-remote-tensorboard-log-in-real-time" title="Permalink to this heading">¶</a></h3>
+<h3><span class="section-number">12.4.1. </span>Visualize remote Tensorboard log in real-time<a class="headerlink" href="#visualize-remote-tensorboard-log-in-real-time" title="Permalink to this heading">¶</a></h3>
 <p>You have two options:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -1302,7 +1304,7 @@ and shut down local service when we finish.</p>
 </section>
 </section>
 <section id="mlflow-tracking-server-set-up">
-<h2><span class="section-number">10.5. </span>Mlflow tracking server set up<a class="headerlink" href="#mlflow-tracking-server-set-up" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">12.5. </span>Mlflow tracking server set up<a class="headerlink" href="#mlflow-tracking-server-set-up" title="Permalink to this heading">¶</a></h2>
 <p>Mlflow tracking server can be set up into your google account in order to organize
 your own experiments (<a class="reference internal" href="deep-reinforcement-learning.html#mlflow"><span class="std std-ref">Mlflow</span></a>). You can separate <strong>back-end</strong> (SQL database)
 from tracking server.
@@ -1438,7 +1440,7 @@ as artifacts. These artifacts will be stored in the same bucket where is allocat
 </div>
 </section>
 <section id="google-cloud-alerts">
-<h2><span class="section-number">10.6. </span>Google Cloud Alerts<a class="headerlink" href="#google-cloud-alerts" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">12.6. </span>Google Cloud Alerts<a class="headerlink" href="#google-cloud-alerts" title="Permalink to this heading">¶</a></h2>
 <p><strong>Google Cloud Platform</strong> include functionality in order to trigger some events and generate
 alerts in consequence. Then, a trigger has been created in our gcloud project which aim to
 advertise when an experiment has finished.
@@ -1454,8 +1456,8 @@ If you want to do the same, please, check Google Cloud Alerts documentation
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="github-actions.html" class="btn btn-neutral float-right" title="11. Github Actions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="deep-reinforcement-learning.html" class="btn btn-neutral float-left" title="9. Deep Reinforcement Learning Integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="github-actions.html" class="btn btn-neutral float-right" title="13. Github Actions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="deep-reinforcement-learning.html" class="btn btn-neutral float-left" title="11. Deep Reinforcement Learning Integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
@@ -1508,6 +1510,7 @@ If you want to do the same, please, check Google Cloud Alerts documentation
             <dd><a href="../../v2.1.0/pages/gcloudAPI.html">v2.1.0</a></dd>
             <dd><a href="../../v2.1.2/pages/gcloudAPI.html">v2.1.2</a></dd>
             <dd><a href="../../v2.1.3/pages/gcloudAPI.html">v2.1.3</a></dd>
+            <dd><a href="../../v2.1.5/pages/gcloudAPI.html">v2.1.5</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

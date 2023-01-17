@@ -8,7 +8,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>9. Deep Reinforcement Learning Integration &mdash; sinergym  documentation</title>
+  <title>11. Deep Reinforcement Learning Integration &mdash; sinergym  documentation</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="10. Sinergym with Google Cloud" href="gcloudAPI.html" />
-    <link rel="prev" title="8. Output format" href="output.html" /> 
+    <link rel="next" title="12. Sinergym with Google Cloud" href="gcloudAPI.html" />
+    <link rel="prev" title="10. Output format" href="output.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -96,35 +96,37 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="environments.html">3. Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rewards.html">4. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="controllers.html">5. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers.html">6. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">7. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="output.html">8. Output format</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">9. Deep Reinforcement Learning Integration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#drl-callback-logger">9.1. DRL Callback Logger</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#evaluation-callback">9.2. Evaluation Callback</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tensorboard-structure">9.3. Tensorboard structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#how-use">9.4. How use</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#mlflow">9.5. Mlflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">5. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">6. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">7. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">8. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">10. Output format</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">11. Deep Reinforcement Learning Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#drl-callback-logger">11.1. DRL Callback Logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#evaluation-callback">11.2. Evaluation Callback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tensorboard-structure">11.3. Tensorboard structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-use">11.4. How use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mlflow">11.5. Mlflow</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">10. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="github-actions.html">11. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">12. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">13. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">14. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">13. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">14. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">15. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">16. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">17. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">18. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">19. DRL usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/MLflow_example.html">20. MLFlow example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/TensorBoard_example.html">21. TensorBoard example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">15. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">16. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">17. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">18. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">20. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">21. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/MLflow_example.html">22. MLFlow example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/TensorBoard_example.html">23. TensorBoard example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -177,7 +179,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li><span class="section-number">9. </span>Deep Reinforcement Learning Integration</li>
+      <li><span class="section-number">11. </span>Deep Reinforcement Learning Integration</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -221,7 +223,7 @@
 }
 </style>
 <section id="deep-reinforcement-learning-integration">
-<h1><span class="section-number">9. </span>Deep Reinforcement Learning Integration<a class="headerlink" href="#deep-reinforcement-learning-integration" title="Permalink to this heading">¶</a></h1>
+<h1><span class="section-number">11. </span>Deep Reinforcement Learning Integration<a class="headerlink" href="#deep-reinforcement-learning-integration" title="Permalink to this heading">¶</a></h1>
 <p><em>Sinergym</em> integrates some facilities in order to use <strong>Deep Reinforcement Learning algorithms</strong>
 provided by <a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/">Stable Baselines 3</a>.
 Current algorithms checked by <em>Sinergym</em> are:</p>
@@ -276,7 +278,7 @@ Our callbacks inherit from Stable Baselines 3 and are available in
 <p><code class="docutils literal notranslate"><span class="pre">Type</span></code> column has been specified due to its importance about
 <em>Stable Baselines callback</em> functionality.</p>
 <section id="drl-callback-logger">
-<h2><span class="section-number">9.1. </span>DRL Callback Logger<a class="headerlink" href="#drl-callback-logger" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">11.1. </span>DRL Callback Logger<a class="headerlink" href="#drl-callback-logger" title="Permalink to this heading">¶</a></h2>
 <p>A callback allows to custom our own logger for DRL Sinergym executions. Our objective
 is to <strong>log all information about our custom environment</strong> specifically in real-time.
 Each algorithm has its own differences
@@ -305,7 +307,7 @@ of values steps by steps (see <code class="docutils literal notranslate"><span c
 </ul>
 </section>
 <section id="evaluation-callback">
-<h2><span class="section-number">9.2. </span>Evaluation Callback<a class="headerlink" href="#evaluation-callback" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">11.2. </span>Evaluation Callback<a class="headerlink" href="#evaluation-callback" title="Permalink to this heading">¶</a></h2>
 <p>A callback has also been refined for the evaluation of the model versions obtained during
 the training process with Sinergym, so that it stores the best model obtained (not the one resulting
 at the end of the training).</p>
@@ -323,7 +325,7 @@ On the other hand, it calculates too comfort violation percentage in episodes to
 Currently, only mean reward is taken into account to decide when a model is better.</p>
 </section>
 <section id="tensorboard-structure">
-<h2><span class="section-number">9.3. </span>Tensorboard structure<a class="headerlink" href="#tensorboard-structure" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">11.3. </span>Tensorboard structure<a class="headerlink" href="#tensorboard-structure" title="Permalink to this heading">¶</a></h2>
 <p>The main structure for <em>Sinergym</em> with <em>Tensorboard</em> is:</p>
 <ul>
 <li><p><strong>action</strong>: This section has action values during training. When algorithm
@@ -372,7 +374,7 @@ to model learn method.</p>
 </div>
 </section>
 <section id="how-use">
-<h2><span class="section-number">9.4. </span>How use<a class="headerlink" href="#how-use" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">11.4. </span>How use<a class="headerlink" href="#how-use" title="Permalink to this heading">¶</a></h2>
 <p>You can try your own experiments and benefit from this functionality.
 <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery.py">sinergym/scripts/DRL_battery.py</a>
 is a example code to use it. You can use <code class="docutils literal notranslate"><span class="pre">DRL_battery.py</span></code> directly from
@@ -398,7 +400,7 @@ will load the model and execute to train.</p></li>
 </ul>
 </section>
 <section id="mlflow">
-<h2><span class="section-number">9.5. </span>Mlflow<a class="headerlink" href="#mlflow" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">11.5. </span>Mlflow<a class="headerlink" href="#mlflow" title="Permalink to this heading">¶</a></h2>
 <p>Our scripts to run DRL with <em>Sinergym</em> environments are using
 <a class="reference external" href="https://mlflow.org/">Mlflow</a>, in order to <strong>tracking experiments</strong>
 and recorded them methodically. It is recommended to use it.
@@ -427,8 +429,8 @@ algorithms is being planned for the future!</em></p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="gcloudAPI.html" class="btn btn-neutral float-right" title="10. Sinergym with Google Cloud" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="output.html" class="btn btn-neutral float-left" title="8. Output format" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gcloudAPI.html" class="btn btn-neutral float-right" title="12. Sinergym with Google Cloud" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="output.html" class="btn btn-neutral float-left" title="10. Output format" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
@@ -481,6 +483,7 @@ algorithms is being planned for the future!</em></p>
             <dd><a href="../../v2.1.0/pages/deep-reinforcement-learning.html">v2.1.0</a></dd>
             <dd><a href="../../v2.1.2/pages/deep-reinforcement-learning.html">v2.1.2</a></dd>
             <dd><a href="../../v2.1.3/pages/deep-reinforcement-learning.html">v2.1.3</a></dd>
+            <dd><a href="../../v2.1.5/pages/deep-reinforcement-learning.html">v2.1.5</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
