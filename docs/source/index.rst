@@ -52,6 +52,8 @@ If you use Sinergym in your work, please cite our `paper <https://dl.acm.org/doi
    :hidden:
    :caption: sinergym
 
+   pages/buildings.rst
+   pages/weathers.rst
    pages/environments.rst
    pages/rewards.rst
    pages/controllers.rst

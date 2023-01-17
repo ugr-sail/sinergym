@@ -5,6 +5,7 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import gym
 import numpy as np
+import random
 
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.logger import CSVLogger
@@ -41,7 +42,7 @@ class NormalizeObservation(gym.ObservationWrapper):
         # variables as keys
         for i, variable in enumerate(self.env.variables['observation']):
             # normalization (handle DivisionbyZero Error)
-            if(self.ranges[variable][1] - self.ranges[variable][0] == 0):
+            if (self.ranges[variable][1] - self.ranges[variable][0] == 0):
                 obs[i] = max(
                     self.ranges[variable][0], min(
                         obs[i], self.ranges[variable][1]))
@@ -288,3 +289,32 @@ class LoggerWrapper(gym.Wrapper):
         """Deactivate logger if its flag True.
         """
         self.logger.deactivate_flag()
+
+# ---------------------- Specific environment wrappers ---------------------#
+
+
+class OfficeGridStorageSmoothingActionConstraintsWrapper(gym.ActionWrapper):
+    def __init__(self, env):
+        assert env.idf_path.split(
+            '/')[-1] == 'OfficeGridStorageSmoothing.idf', 'OfficeGridStorageSmoothingActionConstraintsWrapper: This wrapper is not valid for this environment.'
+        super().__init__(env)
+
+    def action(self, act: np.ndarray) -> np.ndarray:
+        """Due to Charge rate and Discharge rate can't be more than 0.0 simultaneously (in OfficeGridStorageSmoothing.idf),
+           this wrapper clips one of the to 0.0 when both have a value upper than 0.0 (randomly).
+
+        Args:
+            act (np.ndarray): Action to be clipped
+
+        Returns:
+            np.ndarray: Action Clipped
+        """
+        if self.flag_discrete:
+            null_value = 0.0
+        else:
+            # -1.0 is 0.0 when action space transformation to simulator action space.
+            null_value = -1.0
+        if act[2] > null_value and act[3] > null_value:
+            random_rate_index = random.randint(2, 3)
+            act[random_rate_index] = null_value
+        return act
