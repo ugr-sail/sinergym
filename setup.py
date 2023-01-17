@@ -38,7 +38,7 @@ setup(name='sinergym',
               'nbsphinx_link==1.3.0',
               'google-api-python-client==2.58.0',
               'oauth2client==4.1.3',
-              'google-cloud-storage==2.3.2',
+              'google-cloud-storage==2.5.0',
               'IPython'
           ],
           'test': [
@@ -69,7 +69,7 @@ setup(name='sinergym',
           'gcloud': [
               'google-api-python-client==2.58.0',
               'oauth2client==4.1.3',
-              'google-cloud-storage==2.3.2',
+              'google-cloud-storage==2.5.0',
           ]
       }
       )
