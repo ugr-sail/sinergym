@@ -56,7 +56,7 @@
 
   Version,9.5;
 
-  Timestep,6;
+  Timestep,4;
 
   SimulationControl,
     Yes,                     !- Do Zone Sizing Calculation

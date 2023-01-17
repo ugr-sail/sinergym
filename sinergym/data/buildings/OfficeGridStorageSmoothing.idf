@@ -63,10 +63,10 @@
     annual,                  !- Name
     1,                       !- Begin Month
     1,                       !- Begin Day of Month
-    ,                        !- Begin Year
+    1991,                        !- Begin Year
     12,                      !- End Month
     31,                      !- End Day of Month
-    ,                        !- End Year
+    1991,                        !- End Year
     Sunday,                  !- Day of Week for Start Day
     No,                      !- Use Weather File Holidays and Special Days
     No,                      !- Use Weather File Daylight Saving Period
@@ -213,7 +213,7 @@
     7,                       !- Shading Calculation Update Frequency
     15000;                   !- Maximum Figures in Shadow Overlap Calculations
 
-  Timestep,6;
+  Timestep,4;
 
 ! WeatherFileName=USA_IL_Chicago-OHare_TMY2.epw
 
