@@ -4,7 +4,7 @@ from typing import Union
 
 import gymnasium as gym
 import numpy as np
-from gym import spaces
+from gymnasium import spaces
 
 
 def _is_numpy_array_space(space: spaces.Space) -> bool:
@@ -133,7 +133,7 @@ def _check_returned_values(
 def _check_spaces(env: gym.Env) -> None:
     """
     Check that the observation and action spaces are defined
-    and inherit from gym.spaces.Space.
+    and inherit from gymnasium.spaces.Space.
     """
     # Helper to link to the code, because gym has no proper documentation
     gym_spaces = " cf https://github.com/openai/gym/blob/master/gym/spaces/"
@@ -144,9 +144,9 @@ def _check_spaces(env: gym.Env) -> None:
         env, "action_space"), "You must specify an action space (cf gym.spaces)" + gym_spaces
 
     assert isinstance(env.observation_space,
-                      spaces.Space), "The observation space must inherit from gym.spaces" + gym_spaces
+                      spaces.Space), "The observation space must inherit from gymnasium.spaces" + gym_spaces
     assert isinstance(
-        env.action_space, spaces.Space), "The action space must inherit from gym.spaces" + gym_spaces
+        env.action_space, spaces.Space), "The action space must inherit from gymnasium.spaces" + gym_spaces
 
 
 # Check render cannot be covered by CI

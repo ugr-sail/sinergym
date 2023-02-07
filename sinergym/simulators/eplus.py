@@ -143,9 +143,6 @@ class EnergyPlus(object):
         self._eplus_run_stepsize = 3600 / self._eplus_n_steps_per_hour
 
     def reset(self,
-              weather_variability: Optional[Tuple[float,
-                                                  float,
-                                                  float]] = None,
               options: Optional[Dict[str,
                                      Any]] = None) -> Tuple[List[float],
                                                             Dict[str,
@@ -161,13 +158,15 @@ class EnergyPlus(object):
         7. Uses a new weather file if passed.
 
         Args:
-            weather_variability (Optional[Tuple[float, float, float]], optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
-            options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
+            options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset (weather variability for example). Defaults to None.
 
         Returns:
             Tuple[List[float], Dict[str, Any]]: EnergyPlus results in a 1-D list corresponding to the variables in
             variables.cfg and year, month, day and hour in simulation. A Python dictionary with additional information is included.
         """
+        # options empty
+        if options is None:
+            options = {}
         # End the last episode if exists
         if self._episode_existed:
             self._end_episode()
@@ -184,7 +183,7 @@ class EnergyPlus(object):
         eplus_working_var_path = self._config.save_variables_cfg()
         eplus_working_out_path = (eplus_working_dir + '/' + 'output')
         eplus_working_weather_path = self._config.apply_weather_variability(
-            variation=weather_variability)
+            variation=options.get('weather_variability'))
 
         self._create_socket_cfg(self._host,
                                 self._port,

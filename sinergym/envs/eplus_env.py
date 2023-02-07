@@ -109,9 +109,13 @@ class EplusEnv(gym.Env):
                                          'day', 'hour'] + self.variables['observation']
 
         # ---------------------------------------------------------------------------- #
-        #                              Weather variability                             #
+        #                          reset default options                               #
         # ---------------------------------------------------------------------------- #
-        self.weather_variability = weather_variability
+        self.default_options = {}
+        # Weather Variability
+        if weather_variability:
+            self.default_options['weather_variability'] = weather_variability
+        # ... more reset option implementations here
 
         # ---------------------------------------------------------------------------- #
         #                               Observation Space                              #
@@ -177,8 +181,13 @@ class EplusEnv(gym.Env):
         super().reset(seed=seed)
 
         # Change to next episode
-        obs, info = self.simulator.reset(
-            self.weather_variability, options)
+        # if no options specified and environment has default reset options
+        if not options and len(self.default_options) > 0:
+            obs, info = self.simulator.reset(
+                self.default_options)
+        else:
+            obs, info = self.simulator.reset(
+                options)
 
         return np.array(obs, dtype=np.float32), info
 
