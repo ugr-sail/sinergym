@@ -241,7 +241,19 @@ class EnergyPlus(object):
         if is_terminal:
             self._end_episode()
 
-        return (curSimTim, Dblist, is_terminal)
+        # Setting up info return (additional reset data)
+        info = {
+            'eplus_working_dir': eplus_working_dir,
+            'episode_num': self._epi_num,
+            'socket_host': addr[0],
+            'socket_port': addr[1],
+            'init_year': time_info[0],
+            'init_month': time_info[1],
+            'init_day': time_info[2],
+            'init_hour': time_info[3]
+        }
+
+        return Dblist, info
 
     def step(self, action: Union[int, float, np.integer, np.ndarray, List[Any],
                                  Tuple[Any]]

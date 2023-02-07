@@ -6,7 +6,7 @@ import os
 from sqlite3 import DatabaseError
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-import gym
+import gymnasium as gym
 import numpy as np
 
 from sinergym.simulators import EnergyPlus
@@ -158,16 +158,16 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     #                                     RESET                                    #
     # ---------------------------------------------------------------------------- #
-    def reset(self) -> np.ndarray:
+    def reset(self) -> Tuple[np.ndarray, Dict[str, Any]]:
         """Reset the environment.
 
         Returns:
             np.ndarray: Current observation.
         """
         # Change to next episode
-        _, obs, _ = self.simulator.reset(self.weather_variability)
+        obs, info = self.simulator.reset(self.weather_variability)
 
-        return np.array(obs, dtype=np.float32)
+        return np.array(obs, dtype=np.float32), info
 
     # ---------------------------------------------------------------------------- #
     #                                     STEP                                     #
