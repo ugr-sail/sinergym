@@ -158,14 +158,27 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     #                                     RESET                                    #
     # ---------------------------------------------------------------------------- #
-    def reset(self) -> Tuple[np.ndarray, Dict[str, Any]]:
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
         """Reset the environment.
 
+        Args:
+            seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). if value is None, a seed will be chosen from some source of entropy. Defaults to None.
+            options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
+
         Returns:
-            np.ndarray: Current observation.
+            Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
         """
+        # We need the following line to seed self.np_random
+        super().reset(seed=seed)
+
         # Change to next episode
-        obs, info = self.simulator.reset(self.weather_variability)
+        obs, info = self.simulator.reset(
+            self.weather_variability, options)
 
         return np.array(obs, dtype=np.float32), info
 

@@ -142,9 +142,14 @@ class EnergyPlus(object):
         # Stepsize in seconds
         self._eplus_run_stepsize = 3600 / self._eplus_n_steps_per_hour
 
-    def reset(
-        self, weather_variability: Optional[Tuple[float, float, float]] = None
-    ) -> Tuple[float, List[float], bool]:
+    def reset(self,
+              weather_variability: Optional[Tuple[float,
+                                                  float,
+                                                  float]] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[List[float],
+                                                            Dict[str,
+                                                                 Any]]:
         """Resets the environment.
         This method does the following:
         1. Makes a new EnergyPlus working directory.
@@ -157,11 +162,11 @@ class EnergyPlus(object):
 
         Args:
             weather_variability (Optional[Tuple[float, float, float]], optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
+            options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
 
         Returns:
-            Tuple[float, List[float], bool]: The first element is a value with simulation time elapsed;
-            the second element consist on EnergyPlus results in a 1-D list corresponding to the variables in
-            variables.cfg and year, month, day and hour in simulation. The last element is a boolean indicating whether the episode terminates.
+            Tuple[List[float], Dict[str, Any]]: EnergyPlus results in a 1-D list corresponding to the variables in
+            variables.cfg and year, month, day and hour in simulation. A Python dictionary with additional information is included.
         """
         # End the last episode if exists
         if self._episode_existed:
