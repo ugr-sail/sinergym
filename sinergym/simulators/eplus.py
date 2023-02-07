@@ -262,7 +262,7 @@ class EnergyPlus(object):
 
     def step(self, action: Union[int, float, np.integer, np.ndarray, List[Any],
                                  Tuple[Any]]
-             ) -> Tuple[float, List[float], bool]:
+             ) -> Tuple[List[float], bool, bool, Dict[str, Any]]:
         """Executes a given action.
         This method does the following:
         1. Sends a list of floats to EnergyPlus.
@@ -275,9 +275,9 @@ class EnergyPlus(object):
             RuntimeError: When you try to step in an terminated episode (you should be reset before).
 
         Returns:
-            Tuple[float, List[float], bool]: The first element is a float with simulation time elapsed;
-            the second element consist on EnergyPlus results in a 1-D list corresponding to the variables in
-            variables.cfg. The last element is a boolean indicating whether the episode terminates.
+            Tuple[List[float], bool, bool, Dict[str, Any]]: EnergyPlus results in a 1-D list corresponding to the
+            variables in variables.cfg. Second element is wether episode has terminated state, third wether episode
+            has truncated state (always False), and last element is a Python Dictionary with additional information about step
         """
         # Check if terminal
         if self._curSimTim >= self._eplus_one_epi_len:
@@ -318,7 +318,19 @@ class EnergyPlus(object):
         self._curSimTim = curSimTim
         self._last_action = action
 
-        return (curSimTim, Dblist, is_terminal)
+        # info dictionary
+        info = {
+            'timestep': int(
+                curSimTim / self._eplus_run_stepsize),
+            'time_elapsed': int(curSimTim),
+            'year': time_info[0],
+            'month': time_info[1],
+            'day': time_info[2],
+            'hour': time_info[3],
+            'action': action
+        }
+
+        return Dblist, is_terminal, False, info
 
     def _create_eplus(
             self,
