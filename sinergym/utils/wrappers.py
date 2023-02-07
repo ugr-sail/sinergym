@@ -4,7 +4,7 @@ import random
 from collections import deque
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-import gym
+import gymnasium as gym
 import numpy as np
 
 from sinergym.utils.common import is_wrapped

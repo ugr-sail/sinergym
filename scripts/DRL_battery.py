@@ -2,7 +2,7 @@ import argparse
 import os
 from datetime import datetime
 
-import gym
+import gymnasium as gym
 import mlflow
 import numpy as np
 import tensorboard

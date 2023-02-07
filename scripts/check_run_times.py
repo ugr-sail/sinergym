@@ -4,7 +4,7 @@ import shutil
 from datetime import datetime
 from glob import glob
 
-import gym
+import gymnasium as gym
 
 import sinergym
 

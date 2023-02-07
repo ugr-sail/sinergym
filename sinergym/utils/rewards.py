@@ -5,7 +5,7 @@ from datetime import datetime
 from math import exp
 from typing import Any, Dict, List, Tuple, Union
 
-from gym import Env
+from gymnasium import Env
 
 
 class BaseReward(object):

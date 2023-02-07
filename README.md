@@ -233,7 +233,7 @@ If you used our Dockerfile during installation, you should have the *try_env.py*
 
 ```python
 
-import gym
+import gymnasium as gym
 import sinergym
 # Create the environment
 env = gym.make('Eplus-datacenter-mixed-continuous-stochastic-v1')
