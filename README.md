@@ -1,5 +1,7 @@
 # Sinergym
 
+> :warning: Stable Baselines 3 are working in order to have [gymnasium support](https://github.com/DLR-RM/stable-baselines3/pull/780). It is possible that SB3 algorithms don't work correctly with Sinergym environments temporally.
+
 <div align="center">
   <img src="images/logo.png" width=40%><br><br>
 </div>

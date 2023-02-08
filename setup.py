@@ -23,7 +23,7 @@ setup(name='sinergym',
       extras_require={
           'extras': [
               'matplotlib',  # visualization
-              'stable-baselines3==1.6.0',  # DRL with pytorch
+              # 'stable-baselines3',  # DRL with pytorch
               'mlflow==1.28.0',  # tracking ML experiments
               'tensorflow==2.9.1',
               'tensorboard_plugin_profile==2.8.0',  # Training logger
@@ -43,11 +43,11 @@ setup(name='sinergym',
           ],
           'test': [
               'pytest==7.1.2',
-              'stable-baselines3==1.6.0'
+              # 'stable-baselines3'
           ],
           'dev': ['pytest==7.1.2'],
           'DRL': [
-              'stable-baselines3==1.6.0',
+              # 'stable-baselines3',
               'mlflow==1.28.0',
               'tensorflow==2.9.1',
               'tensorboard_plugin_profile==2.8.0'
