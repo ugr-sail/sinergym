@@ -56,7 +56,7 @@ class EnergyPlus(object):
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
         """
         self._env_name = env_name
-        self._thread_name = threading.current_thread().getName()
+        self._thread_name = threading.current_thread().name
         self.logger_main = Logger().getLogger(
             'EPLUS_ENV_%s_%s_ROOT' %
             (env_name, self._thread_name), LOG_LEVEL_MAIN, LOG_FMT)
