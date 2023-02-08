@@ -85,7 +85,7 @@ def _check_returned_values(
     """
     # because env inherits from gym.Env, we assume that `reset()` and `step()`
     # methods exists
-    obs = env.reset()
+    obs, info = env.reset()
 
     if isinstance(observation_space, spaces.Dict):
         assert isinstance(
@@ -104,10 +104,10 @@ def _check_returned_values(
     data = env.step(action)
 
     assert len(
-        data) == 4, "The `step()` method must return four values: obs, reward, done, info"
+        data) == 5, "The `step()` method must return four values: obs, reward, terminated, truncated, info"
 
     # Unpack
-    obs, reward, done, info = data
+    obs, reward, terminated, truncated, info = data
 
     if isinstance(observation_space, spaces.Dict):
         assert isinstance(
@@ -125,7 +125,8 @@ def _check_returned_values(
     # We also allow int because the reward will be cast to float
     assert isinstance(reward, (float, int)
                       ), "The reward returned by `step()` must be a float"
-    assert isinstance(done, bool), "The `done` signal must be a boolean"
+    assert isinstance(
+        terminated, bool), "The `terminated` signal must be a boolean"
     assert isinstance(
         info, dict), "The `info` returned by `step()` must be a python dictionary"
 

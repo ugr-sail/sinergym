@@ -52,16 +52,14 @@ def test_close(env_demo):
 
 def test_all_environments():
 
-    envs_id = [env_spec.id for env_spec in gym.envs.registry.all()
-               if env_spec.id.startswith('Eplus')]
+    envs_id = [env_id for env_id in gym.envs.registration.registry.keys(
+    ) if env_id.startswith('Eplus')]
     # Select 10 environments randomly (test would be too large)
     samples_id = sample(envs_id, 5)
     for env_id in samples_id:
         # Create env with TEST name
         env = gym.make(env_id)
 
-        # stable_baselines 3 environment checker. Check if environment follows
-        # Gym API.
         check_env(env)
 
         # Rename directory with name TEST for future remove
