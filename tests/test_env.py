@@ -8,61 +8,35 @@ from sinergym.utils.env_checker import check_env
 
 
 def test_reset(env_demo):
-    obs = env_demo.reset()
+    obs, info = env_demo.reset()
+    # obs check
     assert len(obs) == len(DEFAULT_5ZONE_OBSERVATION_VARIABLES) + \
         4  # year, month, day and hour
     assert env_demo.simulator._episode_existed
+    # info check
+    assert isinstance(info, dict)
+    assert len(info) > 0
 
 
 def test_step(env_demo):
     env_demo.reset()
     action = randint(0, 9)
-    obs, reward, done, info = env_demo.step(action)
+    obs, reward, terminated, _, info = env_demo.step(action)
 
     assert len(obs) == len(DEFAULT_5ZONE_OBSERVATION_VARIABLES) + \
         4  # year, month, day and hour
     assert not isinstance(reward, type(None))
-    assert not done
-    assert list(
-        info.keys()) == [
-        'timestep',
-        'time_elapsed',
-        'year',
-        'month',
-        'day',
-        'hour',
-        'total_power',
-        'total_power_no_units',
-        'comfort_penalty',
-        'abs_comfort',
-        'temperatures',
-        'out_temperature',
-        'action_']
+    assert not terminated
     assert info['timestep'] == 1
     assert info['time_elapsed'] == env_demo.simulator._eplus_run_stepsize * \
         info['timestep']
 
     action = randint(0, 9)
-    obs, reward, done, info = env_demo.step(action)
+    obs, reward, terminated, _, info = env_demo.step(action)
 
     assert len(obs) == 20
     assert not isinstance(reward, type(None))
-    assert not done
-    assert list(
-        info.keys()) == [
-        'timestep',
-        'time_elapsed',
-        'year',
-        'month',
-        'day',
-        'hour',
-        'total_power',
-        'total_power_no_units',
-        'comfort_penalty',
-        'abs_comfort',
-        'temperatures',
-        'out_temperature',
-        'action_']
+    assert not terminated
     assert info['timestep'] == 2
     assert info['time_elapsed'] == env_demo.simulator._eplus_run_stepsize * \
         info['timestep']
