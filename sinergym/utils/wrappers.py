@@ -88,19 +88,24 @@ class MultiObsWrapper(gym.Wrapper):
         self.observation_space = gym.spaces.Box(
             low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
 
-    def reset(self) -> np.ndarray:
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
         """Resets the environment.
 
         Returns:
             np.ndarray: Stacked previous observations.
         """
-        obs = self.env.reset()
+        obs = self.env.reset(seed, options)
         for _ in range(self.n):
             self.history.append(obs)
         return self._get_obs()
 
     def step(self, action: Union[int, np.ndarray]
-             ) -> Tuple[np.ndarray, float, bool, Dict[str, Any]]:
+             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
         """Performs the action in the new environment.
 
         Args:
@@ -110,9 +115,10 @@ class MultiObsWrapper(gym.Wrapper):
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated episode and dict with extra information.
         """
 
-        observation, reward, done, info = self.env.step(action)
+        observation, reward, terminated, truncated, info = self.env.step(
+            action)
         self.history.append(observation)
-        return self._get_obs(), reward, done, info
+        return self._get_obs(), reward, terminated, truncated, info
 
     def _get_obs(self) -> np.ndarray:
         """Get observation history.
@@ -183,49 +189,58 @@ class LoggerWrapper(gym.Wrapper):
             flag=flag)
 
     def step(self, action: Union[int, np.ndarray]
-             ) -> Tuple[np.ndarray, float, bool, Dict[str, Any]]:
-        """Step the environment. Logging new information
+             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
+        """Sends action to the environment. Logging new information in monitor.csv.
 
         Args:
-            action (Union[int, np.ndarray]): Action executed in step
+            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
 
         Returns:
-            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated episode and dict with extra information.
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Wheather episode has been truncated or not, and a dictionary with extra information
         """
-        obs, reward, done, info = self.env.step(action)
+        obs, reward, terminated, truncated, info = self.env.step(action)
         # We added some extra values (month,day,hour) manually in env, so we
         # need to delete them.
         if is_wrapped(self, NormalizeObservation):
             # Record action and new observation in simulator's csv
             self.logger.log_step_normalize(
                 obs=obs,
-                action=info['action_'],
+                action=info['action'],
                 reward=reward,
-                done=done,
+                done=terminated,
                 info=info)
             # Record original observation too
             self.logger.log_step(
                 obs=self.env.get_unwrapped_obs(),
-                action=info['action_'],
+                action=info['action'],
                 reward=reward,
-                done=done,
+                done=terminated,
                 info=info)
         else:
             # Only record observation without normalization
             self.logger.log_step(
                 obs=obs,
-                action=info['action_'],
+                action=info['action'],
                 reward=reward,
-                done=done,
+                done=terminated,
                 info=info)
 
-        return obs, reward, done, info
+        return obs, reward, terminated, truncated, info
 
-    def reset(self) -> np.ndarray:
-        """Resets the environment. Recording episode summary in logger
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
+        """Reset the environment. Recording episode summary in logger
+
+        Args:
+            seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). if value is None, a seed will be chosen from some source of entropy. Defaults to None.
+            options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
 
         Returns:
-            np.ndarray: First observation given
+            Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
         """
         # It isn't first episode simulation, so we can logger last episode
         if self.env.simulator._episode_existed:
@@ -234,7 +249,7 @@ class LoggerWrapper(gym.Wrapper):
             self.logger.log_episode(episode=self.env.simulator._epi_num)
 
         # Then, reset environment
-        obs = self.env.reset()
+        obs, info = self.env.reset(seed=seed, options=options)
 
         # Create monitor.csv for information of this episode
         self.env.simulator.logger_main.debug(
@@ -267,7 +282,7 @@ class LoggerWrapper(gym.Wrapper):
                                  done=False,
                                  info=None)
 
-        return obs
+        return obs, info
 
     def close(self) -> None:
         """Recording last episode summary and close env.
