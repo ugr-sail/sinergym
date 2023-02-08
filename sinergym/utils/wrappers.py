@@ -153,8 +153,8 @@ class LoggerWrapper(gym.Wrapper):
         """
         gym.Wrapper.__init__(self, env)
         # Headers for csv logger
-        monitor_header_list = monitor_header if monitor_header is not None else [
-            'timestep'] + env.variables['observation'] + env.variables['action'] + ['time (seconds)', 'reward', 'power_penalty', 'comfort_penalty', 'abs_comfort', 'done']
+        monitor_header_list = monitor_header if monitor_header is not None else ['timestep'] + env.variables['observation'] + env.variables['action'] + [
+            'time (seconds)', 'reward', 'power_penalty', 'comfort_penalty', 'abs_comfort', 'terminated']
         self.monitor_header = ''
         for element_header in monitor_header_list:
             self.monitor_header += element_header + ','
@@ -207,14 +207,14 @@ class LoggerWrapper(gym.Wrapper):
                 obs=obs,
                 action=info['action'],
                 reward=reward,
-                done=terminated,
+                terminated=terminated,
                 info=info)
             # Record original observation too
             self.logger.log_step(
                 obs=self.env.get_unwrapped_obs(),
                 action=info['action'],
                 reward=reward,
-                done=terminated,
+                terminated=terminated,
                 info=info)
         else:
             # Only record observation without normalization
@@ -222,7 +222,7 @@ class LoggerWrapper(gym.Wrapper):
                 obs=obs,
                 action=info['action'],
                 reward=reward,
-                done=terminated,
+                terminated=terminated,
                 info=info)
 
         return obs, reward, terminated, truncated, info
@@ -264,14 +264,14 @@ class LoggerWrapper(gym.Wrapper):
                                            action=[None for _ in range(
                                                len(self.env.variables['action']))],
                                            reward=None,
-                                           done=False,
+                                           terminated=False,
                                            info=None)
             # And store original obs
             self.logger.log_step(obs=self.env.get_unwrapped_obs(),
                                  action=[None for _ in range(
                                      len(self.env.variables['action']))],
                                  reward=None,
-                                 done=False,
+                                 terminated=False,
                                  info=None)
         else:
             # Only store original step
@@ -279,7 +279,7 @@ class LoggerWrapper(gym.Wrapper):
                                  action=[None for _ in range(
                                      len(self.env.variables['action']))],
                                  reward=None,
-                                 done=False,
+                                 terminated=False,
                                  info=None)
 
         return obs, info
