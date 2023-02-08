@@ -99,10 +99,10 @@ class MultiObsWrapper(gym.Wrapper):
         Returns:
             np.ndarray: Stacked previous observations.
         """
-        obs = self.env.reset(seed, options)
+        obs, info = self.env.reset(seed, options)
         for _ in range(self.n):
             self.history.append(obs)
-        return self._get_obs()
+        return self._get_obs(), info
 
     def step(self, action: Union[int, np.ndarray]
              ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
