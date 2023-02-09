@@ -99,7 +99,7 @@ class MultiObsWrapper(gym.Wrapper):
         Returns:
             np.ndarray: Stacked previous observations.
         """
-        obs, info = self.env.reset(seed, options)
+        obs, info = self.env.reset(seed=seed, options=options)
         for _ in range(self.n):
             self.history.append(obs)
         return self._get_obs(), info
