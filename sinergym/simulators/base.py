@@ -13,18 +13,18 @@ class BaseSimulator(object):
         """Class constructor."""
         pass
 
-    def start_simulation(self) -> None:
+    def start_simulation(self) -> bool:
         """Start a new simulation."""
         raise NotImplementedError
 
-    def stop_simulation(self) -> None:
+    def stop_simulation(self) -> bool:
         """Stop the current simulation."""
         raise NotImplementedError
 
-    def send_action(self, action: Union[int, np.ndarray]) -> None:
+    def send_action(self, action: Union[int, np.ndarray]) -> bool:
         """Send a control action to the simulator."""
         raise NotImplementedError
 
-    def receive_observation(self) -> None:
+    def receive_observation(self) -> bool:
         """Method for reading an observation from the simulator."""
         raise NotImplementedError
