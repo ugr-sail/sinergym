@@ -17,7 +17,7 @@ from sinergym.utils.rewards import ExpReward, LinearReward
 
 class EplusEnv(gym.Env):
 
-    metadata = {'render.modes': ['human']}
+    metadata = {'render_modes': ['human']}
 
     # ---------------------------------------------------------------------------- #
     #                            ENVIRONMENT CONSTRUCTOR                           #
@@ -27,10 +27,10 @@ class EplusEnv(gym.Env):
         idf_file: str,
         weather_file: str,
         observation_space: gym.spaces.Box = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(4,)),
+            low=-5e6, high=5e6, shape=(4,), dtype=np.float32),
         observation_variables: List[str] = [],
         action_space: Union[gym.spaces.Box, gym.spaces.Discrete] = gym.spaces.Box(
-            low=0, high=0, shape=(0,)),
+            low=0, high=0, shape=(0,), dtype=np.float32),
         action_variables: List[str] = [],
         action_mapping: Dict[int, Tuple[float, ...]] = {},
         weather_variability: Optional[Tuple[float]] = None,
@@ -142,8 +142,10 @@ class EplusEnv(gym.Env):
 
             self.action_space = gym.spaces.Box(
                 # continuous_action_def[2] --> shape
-                low=np.repeat(-1, action_space.shape[0]),
-                high=np.repeat(1, action_space.shape[0]),
+                low=np.array(
+                    np.repeat(-1, action_space.shape[0]), dtype=np.float32),
+                high=np.array(
+                    np.repeat(1, action_space.shape[0]), dtype=np.float32),
                 dtype=action_space.dtype
             )
 
