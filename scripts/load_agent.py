@@ -1,6 +1,6 @@
 import argparse
 
-import gym
+import gymnasium as gym
 import numpy as np
 from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
 
@@ -187,13 +187,13 @@ else:
 #                             Execute loaded agent                             #
 # ---------------------------------------------------------------------------- #
 for i in range(args.episodes):
-    obs = env.reset()
+    obs, info = env.reset()
     rewards = []
-    done = False
+    terminated = False
     current_month = 0
-    while not done:
+    while not terminated:
         a, _ = model.predict(obs)
-        obs, reward, done, info = env.step(a)
+        obs, reward, terminated, truncated, info = env.step(a)
         rewards.append(reward)
         if info['month'] != current_month:
             current_month = info['month']

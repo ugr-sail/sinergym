@@ -3,7 +3,7 @@
 import os
 from typing import Optional, Union
 
-import gym
+import gymnasium as gym
 import numpy as np
 from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
 from stable_baselines3.common.env_util import is_wrapped
@@ -118,7 +118,7 @@ class LoggerCallback(BaseCallback):
         self.ep_powers.append(info['total_power'])
         self.ep_term_comfort.append(info['comfort_penalty'])
         self.ep_term_energy.append(info['total_power_no_units'])
-        if(info['comfort_penalty'] != 0):
+        if (info['comfort_penalty'] != 0):
             self.num_comfort_violation += 1
         self.ep_timesteps += 1
 

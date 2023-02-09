@@ -26,7 +26,7 @@ def test_normalization_wrapper(env_name, request):
     assert env.ranges == RANGES_5ZONE
 
     # Initialize env
-    obs = env.reset()
+    obs, _ = env.reset()
 
     # Check observation normalization
     assert (obs >= 0).all() and (obs <= 1).all()
@@ -35,14 +35,13 @@ def test_normalization_wrapper(env_name, request):
 
     # Simulation random step
     a = env.action_space.sample()
-    obs, reward, done, info = env.step(a)
+    obs, _, _, _, _ = env.step(a)
 
     assert (obs >= 0).all() and (obs <= 1).all()
     assert env.unwrapped_observation is not None
 
 
 def test_multiobs_wrapper(env_wrapper_multiobs, env_demo_continuous):
-    shape = env_wrapper_multiobs
 
     # Check attributes don't exist in original env
     assert not (hasattr(
@@ -70,7 +69,7 @@ def test_multiobs_wrapper(env_wrapper_multiobs, env_demo_continuous):
     assert wrapped_shape == original_shape * env_wrapper_multiobs.n
 
     # Check reset obs
-    obs = env_wrapper_multiobs.reset()
+    obs, _ = env_wrapper_multiobs.reset()
     assert len(obs) == wrapped_shape
     for i in range(env_wrapper_multiobs.n - 1):
         # Check store same observation n times
@@ -82,7 +81,7 @@ def test_multiobs_wrapper(env_wrapper_multiobs, env_demo_continuous):
 
     # Check step obs
     a = env_wrapper_multiobs.action_space.sample()
-    obs, reward, done, info = env_wrapper_multiobs.step(a)
+    obs, _, _, _, _ = env_wrapper_multiobs.step(a)
 
     # Last observation must be different of the rest of them
     assert (obs[original_shape * (env_wrapper_multiobs.n - 1):]
@@ -143,7 +142,7 @@ def test_env_wrappers(env_all_wrappers):
     # Check history multiobs is empty
     assert env_all_wrappers.history == deque([])
     # Start env
-    obs = env_all_wrappers.reset()
+    obs, _ = env_all_wrappers.reset()
     # Check history has obs and any more
     assert len(env_all_wrappers.history) == env_all_wrappers.n
     assert (env_all_wrappers._get_obs() == obs).all()

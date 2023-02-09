@@ -87,7 +87,7 @@ class CSVLogger(object):
             obs: List[Any],
             action: Union[int, np.ndarray, List[Any]],
             reward: Optional[float],
-            done: bool,
+            terminated: bool,
             info: Optional[Dict[str, Any]]) -> List:
         """Assemble the array data to log in the new row
 
@@ -95,7 +95,7 @@ class CSVLogger(object):
             obs (List[Any]): Observation from step.
             action (Union[int, np.ndarray, List[Any]]): Action done in step.
             reward (float): Reward returned in step.
-            done (bool): Done flag in step.
+            terminated (bool): terminated flag in step.
             info (Optional[Dict[str, Any]]): Extra info collected in step.
 
         Returns:
@@ -103,7 +103,7 @@ class CSVLogger(object):
         """
         if info is None:  # In a reset
             return [0] + list(obs) + list(action) + \
-                [0, reward, None, None, None, done]
+                [0, reward, None, None, None, terminated]
         else:
             return [
                 info['timestep']] + list(obs) + list(action) + [
@@ -112,14 +112,14 @@ class CSVLogger(object):
                 info['total_power_no_units'],
                 info['comfort_penalty'],
                 info['abs_comfort'],
-                done]
+                terminated]
 
     def _store_step_information(
             self,
             obs: List[Any],
             action: Union[int, np.ndarray, List[Any]],
             reward: Optional[float],
-            done: bool,
+            terminated: bool,
             info: Optional[Dict[str, Any]]) -> None:
         """Store relevant data to episode summary in progress.csv.
 
@@ -127,7 +127,7 @@ class CSVLogger(object):
             obs (List[Any]): Observation from step.
             action (Union[int, np.ndarray, List[Any]]): Action done in step.
             reward (Optional[float]): Reward returned in step.
-            done (bool): Done flag in step.
+            terminated (bool): terminated flag in step.
             info (Optional[Dict[str, Any]]): Extra info collected in step.
 
 
@@ -171,7 +171,7 @@ class CSVLogger(object):
             obs: List[Any],
             action: Union[int, np.ndarray, List[Any]],
             reward: Optional[float],
-            done: bool,
+            terminated: bool,
             info: Optional[Dict[str, Any]]) -> None:
         """Log step information and store it in steps_data attribute.
 
@@ -179,16 +179,16 @@ class CSVLogger(object):
             obs (List[Any]): Observation from step.
             action (Union[int, np.ndarray, List[Any]]): Action done in step.
             reward (float): Reward returned in step.
-            done (bool): Done flag in step.
+            terminated (bool): terminated flag in step.
             info (Dict[str, Any]): Extra info collected in step.
         """
         if self.flag:
             self.steps_data.append(
                 self._create_row_content(
-                    obs, action, reward, done, info))
+                    obs, action, reward, terminated, info))
             # Store step information for episode
             self._store_step_information(
-                obs, action, reward, done, info)
+                obs, action, reward, terminated, info)
         else:
             pass
 
@@ -197,7 +197,7 @@ class CSVLogger(object):
             obs: List[Any],
             action: Union[int, np.ndarray, List[Any]],
             reward: Optional[float],
-            done: bool,
+            terminated: bool,
             info: Optional[Dict[str, Any]]) -> None:
         """Log step information and store it in steps_data attribute.
 
@@ -205,13 +205,13 @@ class CSVLogger(object):
             obs (List[Any]): Observation from step.
             action (Union[int, np.ndarray, List[Any]]): Action done in step.
             reward (Optional[float]): Reward returned in step.
-            done (bool): Done flag in step.
+            terminated (bool): terminated flag in step.
             info (Optional[Dict[str, Any]]): Extra info collected in step.
         """
         if self.flag:
             self.steps_data_normalized.append(
                 self._create_row_content(
-                    obs, action, reward, done, info))
+                    obs, action, reward, terminated, info))
         else:
             pass
 

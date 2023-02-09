@@ -13,17 +13,13 @@ from sinergym.simulators.eplus import EnergyPlus
 def test_reset(simulator):
     assert not simulator._episode_existed
 
-    output = simulator.reset()
+    obs, info = simulator.reset()
 
     # Checking output
-    # Fist element is a tuple with simulation date + time_elapsed
-    assert isinstance(output[0], float)
-    # time_elapsed must be 0
-    assert output[0] == 0
-    assert isinstance(output[1], list)
-    assert len(output[1]) == 20
-    assert isinstance(output[2], bool)
-    assert output[2] == False
+    assert isinstance(info, dict)
+    assert len(info) == 8
+    assert isinstance(obs, list)
+    assert len(obs) == 20
 
     # Checking simulator state
     assert simulator._eplus_run_stepsize == 900
@@ -32,6 +28,7 @@ def test_reset(simulator):
     assert simulator._env_working_dir_parent.split(
         '/')[-1] == 'Eplus-env-' + simulator._env_name + '-res1'
     assert simulator._epi_num == 0
+    assert simulator._epi_num == info['episode_num']
     assert simulator._episode_existed
     path_list = simulator._eplus_working_dir.split('/')
     assert path_list[-2] + '/' + path_list[-1] == 'Eplus-env-' + \
@@ -52,48 +49,45 @@ def test_reset(simulator):
 
 def test_step(simulator):
     simulator.reset()
-    output = simulator.step(action=[20.0, 24.0])
+    obs, terminated, truncated, info = simulator.step(action=[20.0, 24.0])
 
     # Checking output
-    # Fist element is a tuple with simulation date + time_elapsed
-    assert isinstance(output[0], float)
-    # must be time_elapsed > 0 (since we have a step executed)
-    assert output[0] > 0
-    assert isinstance(output[1], list)
-    assert len(output[1]) == 20
-    assert isinstance(output[2], bool)
+    assert isinstance(obs, list)
+    assert len(obs) == 20
+    assert isinstance(terminated, bool)
+    assert not terminated
+    assert isinstance(truncated, bool)
+    assert not truncated
+    assert isinstance(info, dict)
+    assert len(info) == 7
+    assert info['time_elapsed'] > 0
+    assert info['time_elapsed'] == simulator._eplus_run_stepsize
+    assert info['timestep'] == 1
 
-    # Check simulation advance with step
-    assert simulator._curSimTim > 0
-    # Simulation time elapsed at each timestep is defined in the simulator
-    assert simulator._curSimTim == simulator._eplus_run_stepsize
-    assert simulator._curSimTim == output[0]
     # Check if simulator return done flag correctly
-    assert (simulator._curSimTim >= simulator._eplus_one_epi_len) == output[2]
+    assert (simulator._curSimTim >= simulator._eplus_one_epi_len) == terminated
 
     assert simulator._last_action == [20.0, 24.0]
 
     # Another step
-    output = simulator.step(action=[20.0, 24.0])
+    _, _, _, info = simulator.step(action=[20.0, 24.0])
 
     # Check simulation advance with step
-    assert simulator._curSimTim == output[0]
-    assert simulator._curSimTim > 0
-    # Simulation time elapsed at each timestep is defined in the simulator
-    assert simulator._curSimTim == simulator._eplus_run_stepsize * 2
+    assert info['timestep'] == 2
+    assert info['time_elapsed'] == simulator._eplus_run_stepsize * 2
 
 
 def test_episode_transition_with_steps(simulator):
 
     is_terminal = False
     simulator.reset()
-    while(not is_terminal):
-        is_terminal = simulator.step(action=[20.0, 24.0])[2]
+    while (not is_terminal):
+        _, is_terminal, _, info = simulator.step(action=[20.0, 24.0])
 
     # When we raise a terminal state it is only because our Current Simulation
     # Time is greater or equeal to episode length
-    assert simulator._curSimTim >= simulator._eplus_one_epi_len
-
+    assert info['time_elapsed'] >= simulator._eplus_one_epi_len
+    assert simulator._curSimTim >= info['time_elapsed']
     # If we try to do one step more, it shouldn't change environment
     # One step more...
     with pytest.raises(RuntimeError):

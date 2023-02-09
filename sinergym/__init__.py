@@ -1,7 +1,7 @@
 import os
 
-import gym
-from gym.envs.registration import register
+import gymnasium as gym
+from gymnasium.envs.registration import register
 
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *

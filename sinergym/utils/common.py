@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from pydoc import locate
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
-import gym
+import gymnasium as gym
 import numpy as np
 import pandas as pd
 import xlsxwriter

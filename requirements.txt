@@ -1,6 +1,6 @@
 autopep8
 eppy
-gym<0.25.0
+gymnasium
 isort[requirements_deprecated_finder,pipfile_deprecated_finder]
 numpy
 opyplus

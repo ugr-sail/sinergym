@@ -56,7 +56,7 @@ class EnergyPlus(object):
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
         """
         self._env_name = env_name
-        self._thread_name = threading.current_thread().getName()
+        self._thread_name = threading.current_thread().name
         self.logger_main = Logger().getLogger(
             'EPLUS_ENV_%s_%s_ROOT' %
             (env_name, self._thread_name), LOG_LEVEL_MAIN, LOG_FMT)
@@ -142,9 +142,11 @@ class EnergyPlus(object):
         # Stepsize in seconds
         self._eplus_run_stepsize = 3600 / self._eplus_n_steps_per_hour
 
-    def reset(
-        self, weather_variability: Optional[Tuple[float, float, float]] = None
-    ) -> Tuple[float, List[float], bool]:
+    def reset(self,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[List[float],
+                                                            Dict[str,
+                                                                 Any]]:
         """Resets the environment.
         This method does the following:
         1. Makes a new EnergyPlus working directory.
@@ -156,13 +158,15 @@ class EnergyPlus(object):
         7. Uses a new weather file if passed.
 
         Args:
-            weather_variability (Optional[Tuple[float, float, float]], optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
+            options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset (weather variability for example). Defaults to None.
 
         Returns:
-            Tuple[float, List[float], bool]: The first element is a value with simulation time elapsed;
-            the second element consist on EnergyPlus results in a 1-D list corresponding to the variables in
-            variables.cfg and year, month, day and hour in simulation. The last element is a boolean indicating whether the episode terminates.
+            Tuple[List[float], Dict[str, Any]]: EnergyPlus results in a 1-D list corresponding to the variables in
+            variables.cfg and year, month, day and hour in simulation. A Python dictionary with additional information is included.
         """
+        # options empty
+        if options is None:
+            options = {}
         # End the last episode if exists
         if self._episode_existed:
             self._end_episode()
@@ -179,7 +183,7 @@ class EnergyPlus(object):
         eplus_working_var_path = self._config.save_variables_cfg()
         eplus_working_out_path = (eplus_working_dir + '/' + 'output')
         eplus_working_weather_path = self._config.apply_weather_variability(
-            variation=weather_variability)
+            variation=options.get('weather_variability'))
 
         self._create_socket_cfg(self._host,
                                 self._port,
@@ -241,11 +245,23 @@ class EnergyPlus(object):
         if is_terminal:
             self._end_episode()
 
-        return (curSimTim, Dblist, is_terminal)
+        # Setting up info return (additional reset data)
+        info = {
+            'eplus_working_dir': eplus_working_dir,
+            'episode_num': self._epi_num,
+            'socket_host': addr[0],
+            'socket_port': addr[1],
+            'init_year': time_info[0],
+            'init_month': time_info[1],
+            'init_day': time_info[2],
+            'init_hour': time_info[3]
+        }
+
+        return Dblist, info
 
     def step(self, action: Union[int, float, np.integer, np.ndarray, List[Any],
                                  Tuple[Any]]
-             ) -> Tuple[float, List[float], bool]:
+             ) -> Tuple[List[float], bool, bool, Dict[str, Any]]:
         """Executes a given action.
         This method does the following:
         1. Sends a list of floats to EnergyPlus.
@@ -258,9 +274,9 @@ class EnergyPlus(object):
             RuntimeError: When you try to step in an terminated episode (you should be reset before).
 
         Returns:
-            Tuple[float, List[float], bool]: The first element is a float with simulation time elapsed;
-            the second element consist on EnergyPlus results in a 1-D list corresponding to the variables in
-            variables.cfg. The last element is a boolean indicating whether the episode terminates.
+            Tuple[List[float], bool, bool, Dict[str, Any]]: EnergyPlus results in a 1-D list corresponding to the
+            variables in variables.cfg. Second element is wether episode has terminated state, third wether episode
+            has truncated state (always False), and last element is a Python Dictionary with additional information about step
         """
         # Check if terminal
         if self._curSimTim >= self._eplus_one_epi_len:
@@ -301,7 +317,19 @@ class EnergyPlus(object):
         self._curSimTim = curSimTim
         self._last_action = action
 
-        return (curSimTim, Dblist, is_terminal)
+        # info dictionary
+        info = {
+            'timestep': int(
+                curSimTim / self._eplus_run_stepsize),
+            'time_elapsed': int(curSimTim),
+            'year': time_info[0],
+            'month': time_info[1],
+            'day': time_info[2],
+            'hour': time_info[3],
+            'action': action
+        }
+
+        return Dblist, is_terminal, False, info
 
     def _create_eplus(
             self,

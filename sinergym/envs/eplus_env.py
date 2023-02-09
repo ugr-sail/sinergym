@@ -6,7 +6,7 @@ import os
 from sqlite3 import DatabaseError
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-import gym
+import gymnasium as gym
 import numpy as np
 
 from sinergym.simulators import EnergyPlus
@@ -17,7 +17,7 @@ from sinergym.utils.rewards import ExpReward, LinearReward
 
 class EplusEnv(gym.Env):
 
-    metadata = {'render.modes': ['human']}
+    metadata = {'render_modes': ['human']}
 
     # ---------------------------------------------------------------------------- #
     #                            ENVIRONMENT CONSTRUCTOR                           #
@@ -27,10 +27,10 @@ class EplusEnv(gym.Env):
         idf_file: str,
         weather_file: str,
         observation_space: gym.spaces.Box = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(4,)),
+            low=-5e6, high=5e6, shape=(4,), dtype=np.float32),
         observation_variables: List[str] = [],
         action_space: Union[gym.spaces.Box, gym.spaces.Discrete] = gym.spaces.Box(
-            low=0, high=0, shape=(0,)),
+            low=0, high=0, shape=(0,), dtype=np.float32),
         action_variables: List[str] = [],
         action_mapping: Dict[int, Tuple[float, ...]] = {},
         weather_variability: Optional[Tuple[float]] = None,
@@ -109,9 +109,13 @@ class EplusEnv(gym.Env):
                                          'day', 'hour'] + self.variables['observation']
 
         # ---------------------------------------------------------------------------- #
-        #                              Weather variability                             #
+        #                          reset default options                               #
         # ---------------------------------------------------------------------------- #
-        self.weather_variability = weather_variability
+        self.default_options = {}
+        # Weather Variability
+        if weather_variability:
+            self.default_options['weather_variability'] = weather_variability
+        # ... more reset option implementations here
 
         # ---------------------------------------------------------------------------- #
         #                               Observation Space                              #
@@ -138,8 +142,10 @@ class EplusEnv(gym.Env):
 
             self.action_space = gym.spaces.Box(
                 # continuous_action_def[2] --> shape
-                low=np.repeat(-1, action_space.shape[0]),
-                high=np.repeat(1, action_space.shape[0]),
+                low=np.array(
+                    np.repeat(-1, action_space.shape[0]), dtype=np.float32),
+                high=np.array(
+                    np.repeat(1, action_space.shape[0]), dtype=np.float32),
                 dtype=action_space.dtype
             )
 
@@ -158,16 +164,34 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     #                                     RESET                                    #
     # ---------------------------------------------------------------------------- #
-    def reset(self) -> np.ndarray:
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
         """Reset the environment.
 
-        Returns:
-            np.ndarray: Current observation.
-        """
-        # Change to next episode
-        _, obs, _ = self.simulator.reset(self.weather_variability)
+        Args:
+            seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). if value is None, a seed will be chosen from some source of entropy. Defaults to None.
+            options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
 
-        return np.array(obs, dtype=np.float32)
+        Returns:
+            Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
+        """
+        # We need the following line to seed self.np_random
+        super().reset(seed=seed)
+
+        # Change to next episode
+        # if no options specified and environment has default reset options
+        if not options and len(self.default_options) > 0:
+            obs, info = self.simulator.reset(
+                self.default_options)
+        else:
+            obs, info = self.simulator.reset(
+                options)
+
+        return np.array(obs, dtype=np.float32), info
 
     # ---------------------------------------------------------------------------- #
     #                                     STEP                                     #
@@ -179,46 +203,38 @@ class EplusEnv(gym.Env):
                            np.ndarray,
                            List[Any],
                            Tuple[Any]]
-             ) -> Tuple[np.ndarray, float, bool, Dict[str, Any]]:
+             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
         """Sends action to the environment
 
         Args:
             action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
 
         Returns:
-            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not and a dictionary with extra information
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Wheather episode has been truncated or not, and a dictionary with extra information
         """
 
         # Get action
         action_ = self._get_action(action)
         # Send action to the simulator
         self.simulator.logger_main.debug(action_)
-        # time_info = (current simulation year, month, day, hour, time_elapsed)
-        time_elapsed, obs, done = self.simulator.step(action_)
+        # Execute action in simulation
+        obs, terminated, truncated, info = self.simulator.step(action_)
         # Create dictionary with observation
         self.obs_dict = dict(zip(self.variables['observation'], obs))
 
         # Calculate reward
         reward, terms = self.reward_fn()
 
-        # Extra info
-        info = {
-            'timestep': int(
-                time_elapsed / self.simulator._eplus_run_stepsize),
-            'time_elapsed': int(time_elapsed),
-            'year': self.obs_dict['year'],
-            'month': self.obs_dict['month'],
-            'day': self.obs_dict['day'],
-            'hour': self.obs_dict['hour'],
+        # info update with reward information
+        info.update({
             'total_power': terms.get('total_energy'),
             'total_power_no_units': terms.get('reward_energy'),
             'comfort_penalty': terms.get('reward_comfort'),
             'abs_comfort': terms.get('abs_comfort'),
-            'temperatures': terms.get('temperatures'),
-            'out_temperature': self.obs_dict['Site Outdoor Air Drybulb Temperature(Environment)'],
-            'action_': action_}
+            'temperatures': terms.get('temperatures')})
 
-        return np.array(obs, dtype=np.float32), reward, done, info
+        return np.array(
+            obs, dtype=np.float32), reward, terminated, truncated, info
 
     # ---------------------------------------------------------------------------- #
     #                                RENDER (empty)                                #

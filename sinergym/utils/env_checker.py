@@ -2,9 +2,9 @@
 import warnings
 from typing import Union
 
-import gym
+import gymnasium as gym
 import numpy as np
-from gym import spaces
+from gymnasium import spaces
 
 
 def _is_numpy_array_space(space: spaces.Space) -> bool:
@@ -85,7 +85,7 @@ def _check_returned_values(
     """
     # because env inherits from gym.Env, we assume that `reset()` and `step()`
     # methods exists
-    obs = env.reset()
+    obs, info = env.reset()
 
     if isinstance(observation_space, spaces.Dict):
         assert isinstance(
@@ -104,10 +104,10 @@ def _check_returned_values(
     data = env.step(action)
 
     assert len(
-        data) == 4, "The `step()` method must return four values: obs, reward, done, info"
+        data) == 5, "The `step()` method must return four values: obs, reward, terminated, truncated, info"
 
     # Unpack
-    obs, reward, done, info = data
+    obs, reward, terminated, truncated, info = data
 
     if isinstance(observation_space, spaces.Dict):
         assert isinstance(
@@ -125,7 +125,8 @@ def _check_returned_values(
     # We also allow int because the reward will be cast to float
     assert isinstance(reward, (float, int)
                       ), "The reward returned by `step()` must be a float"
-    assert isinstance(done, bool), "The `done` signal must be a boolean"
+    assert isinstance(
+        terminated, bool), "The `terminated` signal must be a boolean"
     assert isinstance(
         info, dict), "The `info` returned by `step()` must be a python dictionary"
 
@@ -133,7 +134,7 @@ def _check_returned_values(
 def _check_spaces(env: gym.Env) -> None:
     """
     Check that the observation and action spaces are defined
-    and inherit from gym.spaces.Space.
+    and inherit from gymnasium.spaces.Space.
     """
     # Helper to link to the code, because gym has no proper documentation
     gym_spaces = " cf https://github.com/openai/gym/blob/master/gym/spaces/"
@@ -144,9 +145,9 @@ def _check_spaces(env: gym.Env) -> None:
         env, "action_space"), "You must specify an action space (cf gym.spaces)" + gym_spaces
 
     assert isinstance(env.observation_space,
-                      spaces.Space), "The observation space must inherit from gym.spaces" + gym_spaces
+                      spaces.Space), "The observation space must inherit from gymnasium.spaces" + gym_spaces
     assert isinstance(
-        env.action_space, spaces.Space), "The action space must inherit from gym.spaces" + gym_spaces
+        env.action_space, spaces.Space), "The action space must inherit from gymnasium.spaces" + gym_spaces
 
 
 # Check render cannot be covered by CI

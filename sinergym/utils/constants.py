@@ -2,7 +2,7 @@
 
 import os
 
-import gym
+import gymnasium as gym
 import numpy as np
 import pkg_resources
 
@@ -373,8 +373,8 @@ DEFAULT_5ZONE_ACTION_MAPPING = {
 DEFAULT_5ZONE_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 22.5]),
-    high=np.array([22.5, 30.0]),
+    low=np.array([15.0, 22.5], dtype=np.float32),
+    high=np.array([22.5, 30.0], dtype=np.float32),
     shape=(2,),
     dtype=np.float32
 )
@@ -440,8 +440,8 @@ DEFAULT_DATACENTER_ACTION_MAPPING = {
 DEFAULT_DATACENTER_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 22.5]),
-    high=np.array([22.5, 30.0]),
+    low=np.array([15.0, 22.5], dtype=np.float32),
+    high=np.array([22.5, 30.0], dtype=np.float32),
     shape=(2,),
     dtype=np.float32)
 
@@ -503,8 +503,8 @@ DEFAULT_WAREHOUSE_ACTION_MAPPING = {
 DEFAULT_WAREHOUSE_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 22.5, 15.0, 22.5, 15.0]),
-    high=np.array([22.5, 30.0, 22.5, 30.0, 22.5]),
+    low=np.array([15.0, 22.5, 15.0, 22.5, 15.0], dtype=np.float32),
+    high=np.array([22.5, 30.0, 22.5, 30.0, 22.5], dtype=np.float32),
     shape=(5,),
     dtype=np.float32)
 
@@ -580,8 +580,8 @@ DEFAULT_OFFICE_ACTION_MAPPING = {
 DEFAULT_OFFICE_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 22.5]),
-    high=np.array([22.5, 30.0]),
+    low=np.array([15.0, 22.5], dtype=np.float32),
+    high=np.array([22.5, 30.0], dtype=np.float32),
     shape=(2,),
     dtype=np.float32)
 
@@ -690,8 +690,8 @@ DEFAULT_OFFICEGRID_ACTION_MAPPING = {
 DEFAULT_OFFICEGRID_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 DEFAULT_OFFICEGRID_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 22.5, 0.0, 0.0]),
-    high=np.array([22.5, 30.0, 1.0, 1.0]),
+    low=np.array([15.0, 22.5, 0.0, 0.0], dtype=np.float32),
+    high=np.array([22.5, 30.0, 1.0, 1.0], dtype=np.float32),
     shape=(4,),
     dtype=np.float32
 )
@@ -767,8 +767,8 @@ DEFAULT_SHOP_ACTION_MAPPING = {
 DEFAULT_SHOP_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 DEFAULT_SHOP_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 22.5]),
-    high=np.array([22.5, 30.0]),
+    low=np.array([15.0, 22.5], dtype=np.float32),
+    high=np.array([22.5, 30.0], dtype=np.float32),
     shape=(2,),
     dtype=np.float32
 )
@@ -812,8 +812,8 @@ DEFAULT_SHOP_ACTION_DEFINITION = {
 # DEFAULT_HOSPITAL_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 # DEFAULT_HOSPITAL_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-#     low=np.array([15.0, 22.5]),
-#     high=np.array([22.5, 30.0]),
+#     low=np.array([15.0, 22.5], dtype=np.float32),
+#     high=np.array([22.5, 30.0], dtype=np.float32),
 #     shape=(2,),
 #     dtype=np.float32)
 
