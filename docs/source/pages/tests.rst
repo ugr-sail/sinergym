@@ -82,7 +82,7 @@ directory, they are organized by different modules:
 
 - **test_env.py**: Tests for 
   `sinergym/sinergym/envs/\* <https://github.com/ugr-sail/sinergym/tree/main/sinergym/envs>`__. 
-  Here will be all tests that check Sinergym simulation environments based on OpenAI Gym.
+  Here will be all tests that check Sinergym simulation environments based on Gymnasium.
 
 - **test_controller.py**: Tests for 
   `sinergym/sinergym/utils/controllers.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/controllers.py>`__. 

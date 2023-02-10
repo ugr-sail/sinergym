@@ -1,7 +1,5 @@
-.. seealso:: This is a project based on Zhiang Zhang and Khee Poh Lam `Gym-Eplus <https://github.com/zhangzhizza/Gym-Eplus>`__.
-
-The goal of *sinergym* is to create an environment following *OpenAI
-Gym* interface for wrapping simulation engines (*Energyplus*) for building control using
+The goal of *sinergym* is to create an environment following *Gymnasium*
+interface for wrapping simulation engines (*Energyplus*) for building control using
 **deep reinforcement learning**.
 
 .. image:: /_static/operation_diagram.jpg
@@ -25,7 +23,7 @@ The main functionalities of *Sinergym* are the following:
    Since this tool allows for interacting with several simulation
    engines, more of them (e.g.
    `OpenModelica <https://openmodelica.org/>`__) could be included in
-   the backend while maintaining the Gym API.
+   the backend while maintaining the Gymnasium API.
 
 -  **Benchmark environments**. Similarly to *Atari* or *Mujoco* environments
    for RL community, we are designing a set of environments for
@@ -67,7 +65,7 @@ The main functionalities of *Sinergym* are the following:
 -  **Stable Baseline 3 Integration**. Some functionalities like callbacks
    have been customized by our team in order to test easily these environments
    with deep reinforcement learning algorithms. 
-   This tool can be used with any other DRL library that supports the *OpenAI gym* interface as well.
+   This tool can be used with any other DRL library that supports the *Gymnasium* interface as well.
 
 -  **Google Cloud Integration**. Whether you have a Google Cloud account and you want to
    use your infrastructure with *Sinergym*, we tell you some details about how doing it.

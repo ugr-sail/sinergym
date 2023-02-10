@@ -12,7 +12,7 @@ An usage of these wrappers could be the next:
 
 .. code:: python
 
-    import gym
+    import gymnasium as gym
     import sinergym
     from sinergym.utils.wrapper import LoggerWrapper, NormalizeObservation
 

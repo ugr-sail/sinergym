@@ -24,7 +24,7 @@ The **Sinergym import** is really important, because without it the ID's of our 
 
 We create our env with **gym.make** and we run the simulation for one episode (`for i in range(1)`). We collect the rewards returned by the environment and calculate their average each month of simulation.
 
-The action taken at each step is randomly chosen from its action space defined under the gym standard. When we have finished displaying the results on the screen and the episode is finished, we close the environment with `env.close()`.
+The action taken at each step is randomly chosen from its action space defined under the Gymnasium standard. When we have finished displaying the results on the screen and the episode is finished, we close the environment with `env.close()`.
 
 .. note:: We will use this simple example as a basis and will add new elements in the following examples in this section.
 
@@ -37,7 +37,7 @@ By default, all our environment ID's make use of a default (linear) reward. But 
 
 .. code:: python
 
-    import gym
+    import gymnasium as gym
     import numpy as np
 
     import sinergym
@@ -84,7 +84,7 @@ By default, the ID's of our environments do not include any wrapper, but we can 
 
 .. code:: python
 
-    import gym
+    import gymnasium as gym
     import numpy as np
 
     import sinergym
@@ -127,7 +127,7 @@ You can replace the random actions we have used in the previous examples with on
 
 .. code:: python
 
-    import gym
+    import gymnasium as gym
     import numpy as np
 
     import sinergym
@@ -173,7 +173,7 @@ the name of the environment or the variability in stochastic environments:
 
 .. code:: python
 
-    import gym
+    import gymnasium as gym
     import numpy as np
 
     import sinergym
@@ -220,7 +220,7 @@ However, it can be overwritten by a new definition of them. On the one hand, we 
 
 .. code:: python
 
-    import gym
+    import gymnasium as gym
     import numpy as np
 
     import sinergym
@@ -316,7 +316,7 @@ it using the action space of the environment:
 
 .. code:: python
 
-    import gym
+    import gymnasium as gym
     import numpy as np
 
     import sinergym
@@ -382,7 +382,7 @@ output folder, leaving the original intact:
 
 .. code:: python
 
-    import gym
+    import gymnasium as gym
     import numpy as np
 
     import sinergym
