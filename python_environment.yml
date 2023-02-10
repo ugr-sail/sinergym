@@ -2,8 +2,8 @@ name: sinergym
 channels:
   - nodefaults
 dependencies:
-  - python=3.10   
+  - python=3.11
   - anaconda
   - pip
   - pip:
-    - sinergym[extras]
+      - sinergym[extras]
