@@ -1,5 +1,5 @@
 # Base on nrel/energyplus from Nicholas Long but using 
-# Ubuntu, Python 3.10 and BCVTB
+# Ubuntu, Python 3.11 and BCVTB
 ARG UBUNTU_VERSION=22.04
 FROM ubuntu:${UBUNTU_VERSION}
 
@@ -12,7 +12,7 @@ ARG ENERGYPLUS_SHA=de239b2e5f
 ARG SINERGYM_EXTRAS=[extras]
 
 # Argument for choosing Python version
-ARG PYTHON_VERSION=3.10
+ARG PYTHON_VERSION=3.11
 
 ENV ENERGYPLUS_VERSION=$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
@@ -34,6 +34,7 @@ ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_F
 ENV BCVTB_PATH=/usr/local/bcvtb
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y ca-certificates curl libx11-6 libexpat1 \
+    && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata \
     #Energyplus installation
     && curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
     && chmod +x $ENERGYPLUS_DOWNLOAD_FILENAME \
@@ -50,8 +51,14 @@ RUN apt-get update && apt-get upgrade -y \
     && yes "1" | java -jar bcvtb-install-linux64-v1.6.0.jar \
     && cp -R 1/ $BCVTB_PATH && rm -R 1/ \
     # Install pip, and make python point to python3
+    && apt-get install -y software-properties-common \
+    && rm -rf /var/lib/apt/lists/* \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt update -y \
+    && apt install python$PYTHON_VERSION -y \
+    && apt-get remove --auto-remove python3.10 -y \
     && apt install python3-pip -y \
-    && ln -s /usr/bin/python3 /usr/bin/python \
+    && ln -s /usr/bin/python$PYTHON_VERSION /usr/bin/python \
     # Install some apt dependencies
     && echo "Y\r" | apt-get install python3-enchant -y \
     && echo "Y\r" | apt-get install pandoc -y \
