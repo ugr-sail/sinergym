@@ -197,7 +197,7 @@ It implements the `Ornstein-Uhlenbeck process <https://citeseerx.ist.psu.edu/vie
 in order to introduce **noise** to the weather data episode to episode. Then, parameter established is a Python tuple of three variables
 (*sigma*, *mu* and *tau*) whose values define the nature of that noise.
 
-.. image:: /_static/weather_variability.png
+.. image:: /_static/ornstein_noise.png
   :scale: 120 %
   :alt: Ornstein-Uhlenbeck process noise with different hyperparameters.
   :align: center

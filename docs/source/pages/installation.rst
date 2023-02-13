@@ -107,17 +107,7 @@ Install EnergyPlus 9.5.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install *EnergyPlus*. Currently it has been update compatibility to ``9.5.0`` and it has
-been tested, but code may also work with other versions. *Sinergym* ensure this support:
-
-+------------------+--------------------+
-| Sinergym Version | EnergyPlus version |
-+==================+====================+
-| 1.0.0 or before  | 8.6.0              | 
-+------------------+--------------------+
-| 1.1.0 or later   | 9.5.0              | 
-+------------------+--------------------+
-
-Other combination may works, but they don't have been tested.
+been tested, but code may also work with other versions, but they don't have been tested.
 
 Follow the instructions `here <https://energyplus.net/downloads>`__ and
 install it for Linux (only **Ubuntu** is supported by us). Choose any location
