@@ -40,6 +40,8 @@ extensions = [
     'nbsphinx',
     'nbsphinx_link']
 
+autodoc_mock_imports = ["stable_baselines3"]
+
 autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.

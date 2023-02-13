@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.MultiObsWrapper
+﻿sinergym.utils.wrappers.MultiObsWrapper
 =======================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -18,10 +18,8 @@ sinergym.utils.wrappers.MultiObsWrapper
       ~MultiObsWrapper.__init__
       ~MultiObsWrapper.class_name
       ~MultiObsWrapper.close
-      ~MultiObsWrapper.compute_reward
       ~MultiObsWrapper.render
       ~MultiObsWrapper.reset
-      ~MultiObsWrapper.seed
       ~MultiObsWrapper.step
    
    
@@ -34,7 +32,9 @@ sinergym.utils.wrappers.MultiObsWrapper
    
       ~MultiObsWrapper.action_space
       ~MultiObsWrapper.metadata
+      ~MultiObsWrapper.np_random
       ~MultiObsWrapper.observation_space
+      ~MultiObsWrapper.render_mode
       ~MultiObsWrapper.reward_range
       ~MultiObsWrapper.spec
       ~MultiObsWrapper.unwrapped
