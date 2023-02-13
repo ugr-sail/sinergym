@@ -45,3 +45,9 @@ dist/
 
 #.pytype
 .pytype/
+
+#CodeCov
+*.gcno
+*.gcda
+*.gcov
+.coverage
