@@ -42,8 +42,11 @@ setup(name='sinergym',
               'IPython'
           ],
           'test': [
-              'pytest==7.1.2',
-              # 'stable-baselines3'
+            # Run tests and coverage
+            "pytest",
+            "pytest-cov",
+            "pytest-env",
+            "pytest-xdist",
           ],
           'dev': ['pytest==7.1.2'],
           'DRL': [
