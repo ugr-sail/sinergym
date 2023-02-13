@@ -6,6 +6,33 @@
   <img src="images/logo.png" width=40%><br><br>
 </div>
 
+</p>
+  <p align="center">
+    <a href="https://github.com/ugr-sail/sinergym/actions">
+      <img alt="Tests Passing" src="https://github.com/ugr-sail/sinergym/workflows/Test/badge.svg" />
+    </a>
+    <a href="https://github.com/ugr-sail/sinergym/graphs/contributors">
+      <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/ugr-sail/sinergym" />
+    </a>
+    <a href="https://codecov.io/gh/ugr-sail/sinergym">
+      <img src="https://codecov.io/gh/ugr-sail/sinergym/branch/master/graph/badge.svg" />
+    </a>
+    <a href="https://github.com/ugr-sail/sinergym/issues">
+      <img alt="Issues" src="https://img.shields.io/github/issues/ugr-sail/sinergym?color=0088ff" />
+    </a>
+    <a href="https://github.com/ugr-sail/sinergym/pulls">
+      <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/ugr-sail/sinergym?color=0088ff" />
+    </a>
+    <br />
+    <br />
+    <a href="https://a.paddle.com/v2/click/16413/119403?link=1227">
+      <img src="https://img.shields.io/badge/Supported%20by-VSCode%20Power%20User%20%E2%86%92-gray.svg?colorA=655BE1&colorB=4F44D6&style=for-the-badge"/>
+    </a>
+    <a href="https://a.paddle.com/v2/click/16413/119403?link=2345">
+      <img src="https://img.shields.io/badge/Supported%20by-Node%20Cli.com%20%E2%86%92-gray.svg?colorA=61c265&colorB=4CAF50&style=for-the-badge"/>
+    </a>
+  </p>
+
 **Welcome to Sinergym!**
 
 The goal of this project is to create an environment following [Gymnasium interface](https://gymnasium.farama.org/), for wrapping simulation engines for building control using **deep reinforcement learning**.
