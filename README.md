@@ -6,6 +6,39 @@
   <img src="images/logo.png" width=40%><br><br>
 </div>
 
+</p>
+  <p align="center">
+    <a href="https://github.com/ugr-sail/sinergym/graphs/contributors">
+      <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/ugr-sail/sinergym" />
+    </a>
+    <a href="https://codecov.io/gh/ugr-sail/sinergym">
+      <img src="https://codecov.io/gh/ugr-sail/sinergym/branch/main/graph/badge.svg" />
+    </a>
+    <a href="https://github.com/ugr-sail/sinergym/issues">
+      <img alt="Issues" src="https://img.shields.io/github/issues/ugr-sail/sinergym?color=0088ff" />
+    </a>
+    <a href="https://github.com/ugr-sail/sinergym/pulls">
+      <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/ugr-sail/sinergym?color=0088ff" />
+    </a>
+    <a href="https://github.com/ugr-sail/sinergym/commits/main">
+      <img alt="Github last commit" src="https://img.shields.io/github/last-commit/ugr-sail/sinergym" />
+    </a>
+    <a href="https://github.com/ugr-sail/sinergym/releases">
+      <img alt="Github lastest release" src="https://img.shields.io/github/release-date/ugr-sail/sinergym" />
+    </a>
+    <a href="https://github.com/ugr-sail/sinergym/blob/main/LICENSE">
+      <img alt="Github License" src="https://img.shields.io/aur/license/sinergym" />
+    </a>
+    <a href="https://www.python.org/downloads/release/python-3100/">
+      <img alt="Github Python version" src="https://img.shields.io/pypi/pyversions/sinergym" />
+    </a>
+    <br />
+    <br />
+    <a href="https://code.visualstudio.com/">
+      <img src="https://img.shields.io/badge/Supported%20by-VSCode%20Power%20User%20%E2%86%92-gray.svg?colorA=655BE1&colorB=4F44D6&style=for-the-badge"/>
+    </a>
+  </p>
+
 **Welcome to Sinergym!**
 
 This is a project based on Zhiang Zhang and Khee Poh Lam [Gym-Eplus](https://github.com/zhangzhizza/Gym-Eplus).

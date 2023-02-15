@@ -45,3 +45,8 @@ dist/
 
 #.pytype
 .pytype/
+
+#coverage
+.coverage
+codecov
+coverage.xml
