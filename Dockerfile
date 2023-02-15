@@ -3,7 +3,7 @@
 ARG UBUNTU_VERSION=22.04
 FROM ubuntu:${UBUNTU_VERSION}
 
-# Arguments for EnergyPlus version (default values of version 8.6.0 if is not specified)
+# Arguments for EnergyPlus version (default values of version 9.5.0 if is not specified)
 ARG ENERGYPLUS_VERSION=9.5.0
 ARG ENERGYPLUS_INSTALL_VERSION=9-5-0
 ARG ENERGYPLUS_SHA=de239b2e5f
@@ -23,17 +23,18 @@ ENV ENERGYPLUS_INSTALL_VERSION=$ENERGYPLUS_INSTALL_VERSION
 ENV EPLUS_PATH=/usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION
 
 # Downloading from Github
-# e.g. https://github.com/NREL/EnergyPlus/releases/download/v9.5.0/EnergyPlus-9.5.0-de239b2e5f-Linux-Ubuntu18.04-x86_64.sh
+# e.g. https://github.com/NREL/EnergyPlus/releases/download/v9.5.0/EnergyPlus-9.5.0-de239b2e5f-Linux-Ubuntu$UBUNTU_VERSION-x86_64.sh
 ENV ENERGYPLUS_DOWNLOAD_BASE_URL https://github.com/NREL/EnergyPlus/releases/download/$ENERGYPLUS_TAG
-ENV ENERGYPLUS_DOWNLOAD_FILENAME EnergyPlus-$ENERGYPLUS_VERSION-$ENERGYPLUS_SHA-Linux-Ubuntu18.04-x86_64.sh
+ENV ENERGYPLUS_DOWNLOAD_FILENAME EnergyPlus-$ENERGYPLUS_VERSION-$ENERGYPLUS_SHA-Linux-Ubuntu20.04-x86_64.sh
 ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_FILENAME
+ENV BCVTB_PATH=/usr/local/bcvtb
 
 # Collapse the update of packages, download and installation into one command
 # to make the container smaller & remove a bunch of the auxiliary apps/files
 # that are not needed in the container
-ENV BCVTB_PATH=/usr/local/bcvtb
 RUN apt-get update && apt-get upgrade -y \
-    && apt-get install -y ca-certificates curl libx11-6 libexpat1 \
+    # General apt modules requires
+    && apt-get install -y ca-certificates curl libx11-6 libexpat1 git wget iputils-ping pandoc \
     && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata \
     #Energyplus installation
     && curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
@@ -46,22 +47,27 @@ RUN apt-get update && apt-get upgrade -y \
     && cd /usr/local/bin find -L . -type l -delete \
     # BCVTB installation
     && echo "Y\r" | apt-get install default-jre openjdk-8-jdk \ 
-    && apt-get install -y git wget iputils-ping \
     && wget http://github.com/lbl-srg/bcvtb/releases/download/v1.6.0/bcvtb-install-linux64-v1.6.0.jar \
     && yes "1" | java -jar bcvtb-install-linux64-v1.6.0.jar \
     && cp -R 1/ $BCVTB_PATH && rm -R 1/ \
-    # Install pip, and make python point to python3
+    # PYTHON
+    && apt update -y \
+    # Install python software
     && apt-get install -y software-properties-common \
     && rm -rf /var/lib/apt/lists/* \
+    # Add ppa:deadsnakes/ppa in order to choose python version and not SO default
     && add-apt-repository ppa:deadsnakes/ppa \
-    && apt update -y \
-    && apt install python$PYTHON_VERSION -y \
+    # Remove default SO python version
     && apt-get remove --auto-remove python3.10 -y \
-    && apt install python3-pip -y \
+    && apt update -y \
+    # Install custom version
+    && apt install python$PYTHON_VERSION -y \
+    # Link version to python and python3 command
+    && ln -s /usr/bin/python$PYTHON_VERSION /usr/bin/python3 \
     && ln -s /usr/bin/python$PYTHON_VERSION /usr/bin/python \
-    # Install some apt dependencies
-    && echo "Y\r" | apt-get install python3-enchant -y \
-    && echo "Y\r" | apt-get install pandoc -y \
+    # Download pip installer and execution (command line break custom python installation)
+    && wget https://bootstrap.pypa.io/get-pip.py \
+    && python get-pip.py \ 
     # clean files
     && apt-get autoremove -y && apt-get autoclean -y \
     && rm -rf /var/lib/apt/lists/* 
@@ -76,8 +82,7 @@ COPY tests /sinergym/tests
 COPY examples /sinergym/examples
 RUN pip install -e .${SINERGYM_EXTRAS}
 
-#RUN pip install idna && pip install six
 CMD ["/bin/bash"]
 
-# Build: docker build -t sinergym:1.1.0 --build-arg ENERGYPLUS_VERSION=9.5.0 --build-arg ENERGYPLUS_INSTALL_VERSION=9-5-0 --build-arg ENERGYPLUS_SHA=de239b2e5f .
-# Run: docker run -it --rm -p 5005:5005 sinergym:1.1.0
+# Example Build: docker build -t sinergym:latest --build-arg ENERGYPLUS_VERSION=9.5.0 --build-arg ENERGYPLUS_INSTALL_VERSION=9-5-0 --build-arg ENERGYPLUS_SHA=de239b2e5f .
+# Example Run: docker run -it --rm -p 5005:5005 sinergym:latest
