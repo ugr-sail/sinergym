@@ -114,7 +114,7 @@ jobs:
         run: docker run -v "$PWD/shared:/shared" -t pullrequest/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym --cov-report=xml tests/ && mv coverage.xml shared'
 
       - name: Upload to CodeCov
-        run: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./shared/coverage.xml # optional
