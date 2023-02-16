@@ -41,9 +41,7 @@
 
 **Welcome to Sinergym!**
 
-This is a project based on Zhiang Zhang and Khee Poh Lam [Gym-Eplus](https://github.com/zhangzhizza/Gym-Eplus).
-
-The goal of this project is to create an environment following OpenAI Gym interface for wrapping simulation engines for building control using **deep reinforcement learning**.
+The goal of this project is to create an environment following [Gymnasium interface](https://gymnasium.farama.org/), for wrapping simulation engines for building control using **deep reinforcement learning**.
 
 Please, help us to improve by **reporting your questions and issues** [here](https://github.com/ugr-sail/sinergym/issues). It is easy, just 2 clicks using our issue templates (questions, bugs, improvements, etc.). More detailed info on how to report issues [here](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue). 
 
@@ -56,7 +54,7 @@ The main functionalities of *Sinergym* are the following :
    Since this tool allows for interacting with several simulation
    engines, more of them (e.g.
    [OpenModelica](https://openmodelica.org/)) could be included in
-   the backend while maintaining the Gym API.
+   the backend while maintaining the Gymnasium API.
 
 -  **Benchmark environments**. Similarly to *Atari* or *Mujoco* environments
    for RL community, we are designing a set of environments for
@@ -98,7 +96,7 @@ The main functionalities of *Sinergym* are the following :
 -  **Stable Baseline 3 Integration**. Some functionalities like callbacks
    have been customized by our team in order to test easily these environments
    with deep reinforcement learning algorithms. 
-   This tool can be used with any other DRL library that supports the *OpenAI gym* interface as well.
+   This tool can be used with any other DRL library that supports the * Gymnasium* interface as well.
 
 -  **Google Cloud Integration**. Whether you have a Google Cloud account and you want to
    use your infrastructure with *Sinergym*, we tell you some details about how doing it.
@@ -163,7 +161,7 @@ On the other hand, if you don't want any extra library, it's necessary to write 
 
 ### Manual installation
 
-To install *Sinergym* manually instead of through the container (recommended), follow these steps:
+To install *Sinergym* manually instead of through the container (not recommended), follow these steps:
 
 #### 1. Configure Python environment
 
@@ -191,19 +189,21 @@ To install *Sinergym* manually instead of through the container (recommended), f
   $ conda activate sinergym
 ```
 
+Sinergym has been updating the compatibility with different components, here it is a summary about important versions support:
+
+| **Sinergym version** | **Ubuntu version** | **Python version** | **EnergyPlus version** |
+| -------------------- | ------------------ | ------------------ | ---------------------- |
+| **0.0**              | 18.04 LTS          | 3.6                | 8.3.0                  |
+| **1.1.0**            | 18.04 LTS          | 3.6                | **9.5.0**              |
+| **1.7.0**            | 18.04 LTS          | **3.9**            | 9.5.0                  |
+| **1.9.5**            | **22.04 LTS**      | **3.10**           | 9.5.0                  |
+
 - Now, we have a correct python version with required modules to run *Sinergym*. Let's continue with the rest of the programs that are needed outside of Python to run the simulations:
 
 #### 2. Install EnergyPlus 9.5.0
 
 Install EnergyPlus. Currently it has been update compatibility to 9.5.0 and it has
-been tested, but code may also work with other versions. *Sinergym* ensure this support:
-
-| Sinergym Version | EnergyPlus version |
-| :--------------: | :----------------: |
-| 1.0.0 or before  |       8.6.0        |
-|  1.1.0 or later  |       9.5.0        |
-
-Other combination may works, but they don't have been tested.
+been tested, but code may also work with other versions. Other combination may works, but they don't have been tested.
 
 Follow the instructions [here](https://energyplus.net/downloads) and
 install it for Linux (only Ubuntu is supported). Choose any location
@@ -264,7 +264,7 @@ Anyway, every time *Sinergym* repository is updated, the tests will run automati
 
 If you used our Dockerfile during installation, you should have the *try_env.py* file in your workspace as soon as you enter in. In case you have installed everything on your local machine directly, place it inside our cloned repository. In any case, we start from the point that you have at your disposal a terminal with the appropriate python version and *Sinergym* running correctly.
 
-*Sinergym* uses the standard OpenAI gym API. So basic loop should be something like:
+*Sinergym* uses the standard Gymnasium API. So basic loop should be something like:
 
 ```python
 
@@ -273,12 +273,12 @@ import sinergym
 # Create the environment
 env = gym.make('Eplus-datacenter-mixed-continuous-stochastic-v1')
 # Initialize the episode
-obs = env.reset()
-done = False
+obs, info = env.reset()
+terminated = False
 R = 0.0
-while not done:
+while not terminated:
     a = env.action_space.sample() # random action selection
-    obs, reward, done, info = env.step(a) # get new observation and reward
+    obs, reward, terminated, truncated, info = env.step(a) # get new observation and reward
     R += reward
 print('Total reward for the episode: %.4f' % R)
 env.close()
