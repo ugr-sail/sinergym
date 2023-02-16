@@ -12,7 +12,7 @@ An usage of these wrappers could be the next:
 
 .. code:: python
 
-    import gym
+    import gymnasium as gym
     import sinergym
     from sinergym.utils.wrapper import LoggerWrapper, NormalizeObservation
 
@@ -22,13 +22,13 @@ An usage of these wrappers could be the next:
     ...
 
     for i in range(1):
-        obs = env.reset()
+        obs, info = env.reset()
         rewards = []
-        done = False
+        terminated = False
         current_month = 0
-        while not done:
+        while not terminated:
             a = env.action_space.sample()
-            obs, reward, done, info = env.step(a)
+            obs, reward, terminated, truncated, info = env.step(a)
             rewards.append(reward)
             if info['month'] != current_month:  # display results every month
                 current_month = info['month']

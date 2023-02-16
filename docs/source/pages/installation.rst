@@ -2,6 +2,27 @@
 Installation
 ############
 
+Sinergym has a set of dependencies (such as the simulator), which have 
+to be covered depending on the version. Below it is a summary table showing 
+the versions supported by Sinergym throughout its releases:
+
++----------------------+--------------------+--------------------+------------------------+
+| **Sinergym version** | **Ubuntu version** | **Python version** | **EnergyPlus version** |
++----------------------+--------------------+--------------------+------------------------+
+| **0.0**              | 18.04 LTS          | 3.6                | 8.3.0                  |
++----------------------+--------------------+--------------------+------------------------+
+| **1.1.0**            | 18.04 LTS          | 3.6                | **9.5.0**              |
++----------------------+--------------------+--------------------+------------------------+
+| **1.7.0**            | 18.04 LTS          | **3.9**            | 9.5.0                  |
++----------------------+--------------------+--------------------+------------------------+
+| **1.9.5**            | **22.04 LTS**      | **3.10**           | 9.5.0                  |
++----------------------+--------------------+--------------------+------------------------+
+
+In any case, it is recommended to always use the latest version of Sinergym 
+supported by the container to avoid having to go into the installation details. 
+In case you want to perform a manual installation on your computer, documentation 
+is also provided in the following sections.
+
 ****************
 Docker container
 ****************
@@ -84,17 +105,7 @@ Install EnergyPlus 9.5.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install *EnergyPlus*. Currently it has been update compatibility to ``9.5.0`` and it has
-been tested, but code may also work with other versions. *Sinergym* ensure this support:
-
-+------------------+--------------------+
-| Sinergym Version | EnergyPlus version |
-+==================+====================+
-| 1.0.0 or before  | 8.6.0              | 
-+------------------+--------------------+
-| 1.1.0 or later   | 9.5.0              | 
-+------------------+--------------------+
-
-Other combination may works, but they don't have been tested.
+been tested, but code may also work with other versions, but they don't have been tested.
 
 Follow the instructions `here <https://energyplus.net/downloads>`__ and
 install it for Linux (only **Ubuntu** is supported by us). Choose any location
