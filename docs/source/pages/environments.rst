@@ -353,7 +353,7 @@ dictionary with the next structure:
     }
 
 For an example about how to use this action definition functionality, 
-visit section :ref:`Adding a new action definition`.
+visit section :ref:`Updating the action definition of the environment`.
 
 Sinergym obtains a list of the schedulers available in the building model that is loaded in that 
 environment and is stored as an environment attribute. The information that appears in this dictionary has the following structure:

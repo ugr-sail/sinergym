@@ -21,7 +21,6 @@
       ~EplusEnv.get_zones
       ~EplusEnv.render
       ~EplusEnv.reset
-      ~EplusEnv.seed
       ~EplusEnv.step
    
    
@@ -32,11 +31,13 @@
 
    .. autosummary::
    
-      ~EplusEnv.action_space
       ~EplusEnv.metadata
-      ~EplusEnv.observation_space
+      ~EplusEnv.np_random
+      ~EplusEnv.render_mode
       ~EplusEnv.reward_range
       ~EplusEnv.spec
       ~EplusEnv.unwrapped
+      ~EplusEnv.action_space
+      ~EplusEnv.observation_space
    
    
