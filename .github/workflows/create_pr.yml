@@ -111,13 +111,13 @@ jobs:
         run: mkdir shared
 
       - name: Execute tests from container
-        run: docker run -v "$PWD/shared:/workspace/sinergym/shared" -t pullrequest/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym --cov-report=xml tests/ && mv coverage.xml shared'
+        run: docker run -v "$PWD/shared:/shared" -t pullrequest/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym --cov-report=xml tests/test_common.py && mv coverage.xml /shared && cat /shared/coverage.xml'
 
       - name: Upload to CodeCov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./shared/coverage.xml # optional
+          files: $PWD/shared/coverage.xml # optional
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
 
