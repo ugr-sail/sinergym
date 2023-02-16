@@ -111,7 +111,7 @@ jobs:
         run: mkdir shared
 
       - name: Execute tests from container
-        run: docker run -v "$PWD/shared:/shared" -t pullrequest/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym --cov-report=xml tests/test_common.py && mv coverage.xml /shared && cat /shared/coverage.xml'
+        run: docker run -v "$PWD/shared:/shared" -t pullrequest/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym --cov-report=xml tests/ && mv coverage.xml /shared && cat /shared/coverage.xml'
 
       - name: Upload to CodeCov
         uses: codecov/codecov-action@v3
