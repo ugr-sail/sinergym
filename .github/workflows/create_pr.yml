@@ -105,7 +105,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build the latest Docker image
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[dev] --tag pullrequest/sinergym:latest
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[test] --tag pullrequest/sinergym:latest
 
       - name: Create a shared folder for coverage output
         run: mkdir shared

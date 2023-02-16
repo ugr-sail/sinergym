@@ -49,7 +49,6 @@ setup(name='sinergym',
               'pytest-xdist',
               # 'stable-baselines3'
           ],
-          'dev': ['pytest'],
           'DRL': [
               # 'stable-baselines3',
               'mlflow==1.28.0',
