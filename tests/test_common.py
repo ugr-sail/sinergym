@@ -1,5 +1,6 @@
 import shutil
 
+import os
 import pytest
 from opyplus import Epm, WeatherData
 
@@ -36,6 +37,21 @@ def test_is_wrapped(
     assert not common.is_wrapped(env_demo_continuous, NormalizeObservation)
     assert common.is_wrapped(env_wrapper_normalization, NormalizeObservation)
     assert common.is_wrapped(env_all_wrappers, NormalizeObservation)
+
+
+def test_to_idf(epm):
+    common.to_idf(epm, 'sinergym/data/buildings/TESTepm.idf')
+    assert os.path.exists('sinergym/data/buildings/TESTepm.idf')
+
+
+@pytest.mark.parametrize(
+    'year,month,day,expected',
+    [(1991, 2, 13, (20.0, 23.5)),
+     (1991, 9, 9, (23.0, 26.0))]
+)
+def test_get_season_comfort_range(year, month, day, expected):
+    output_range = common.get_season_comfort_range(year, month, day)
+    assert output_range == expected
 
 
 @pytest.mark.parametrize(

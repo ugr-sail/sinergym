@@ -420,7 +420,12 @@ def pytest_sessionfinish(session, exitstatus):
     for directory in directories:
         shutil.rmtree(directory)
 
-    # Deleting new random weather files once it has been checked
+    # Deleting new IDF files generated during tests
+    files = glob('sinergym/data/buildings/TEST*.idf')
+    for file in files:
+        os.remove(file)
+
+    # Deleting new random weather files generated during tests
     files = glob('sinergym/data/weather/*Random*.epw')
     for file in files:
         os.remove(file)

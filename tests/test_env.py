@@ -2,7 +2,6 @@ import os
 from random import randint, sample
 
 import gymnasium as gym
-import pytest
 
 from sinergym.utils.constants import *
 from sinergym.utils.env_checker import check_env
