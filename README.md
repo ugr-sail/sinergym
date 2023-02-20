@@ -8,26 +8,26 @@
 
 </p>
   <p align="center">
-    <a href="https://github.com/ugr-sail/sinergym/graphs/contributors">
-      <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/ugr-sail/sinergym" />
-    </a>
-    <a href="https://codecov.io/gh/ugr-sail/sinergym">
-      <img src="https://codecov.io/gh/ugr-sail/sinergym/branch/main/graph/badge.svg" />
-    </a>
-    <a href="https://github.com/ugr-sail/sinergym/issues">
-      <img alt="Issues" src="https://img.shields.io/github/issues/ugr-sail/sinergym?color=0088ff" />
-    </a>
-    <a href="https://github.com/ugr-sail/sinergym/pulls">
-      <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/ugr-sail/sinergym?color=0088ff" />
+    <a href="https://github.com/ugr-sail/sinergym/releases">
+      <img alt="Github latest release" src="https://img.shields.io/github/release-date/ugr-sail/sinergym" />
     </a>
     <a href="https://github.com/ugr-sail/sinergym/commits/main">
       <img alt="Github last commit" src="https://img.shields.io/github/last-commit/ugr-sail/sinergym" />
     </a>
-    <a href="https://github.com/ugr-sail/sinergym/releases">
-      <img alt="Github lastest release" src="https://img.shields.io/github/release-date/ugr-sail/sinergym" />
+    <a href="https://codecov.io/gh/ugr-sail/sinergym">
+      <img src="https://codecov.io/gh/ugr-sail/sinergym/branch/main/graph/badge.svg" />
+    </a>
+    <a href="https://github.com/ugr-sail/sinergym/graphs/contributors">
+      <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/ugr-sail/sinergym" />
+    </a>
+    <a href="https://github.com/ugr-sail/sinergym/issues">
+      <img alt="Github issues" src="https://img.shields.io/github/issues/ugr-sail/sinergym?color=0088ff" />
+    </a>
+    <a href="https://github.com/ugr-sail/sinergym/pulls">
+      <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/ugr-sail/sinergym?color=0088ff" />
     </a>
     <a href="https://github.com/ugr-sail/sinergym/blob/main/LICENSE">
-      <img alt="Github License" src="https://img.shields.io/aur/license/sinergym" />
+      <img alt="Github License" src="https://img.shields.io/github/license/ugr-sail/sinergym" />
     </a>
     <a href="https://www.python.org/downloads/release/python-3100/">
       <img alt="Github Python version" src="https://img.shields.io/pypi/pyversions/sinergym" />
