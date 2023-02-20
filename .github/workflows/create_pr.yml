@@ -119,6 +119,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: /home/runner/work/sinergym/sinergym/shared/coverage.xml # optional
+          override_branch: main #All coverage in the same branch
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
 
