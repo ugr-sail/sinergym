@@ -160,7 +160,7 @@ def create_variable_weather(
 
 def ranges_getter(output_path: str,
                   last_result: Optional[Dict[str, List[float]]] = None
-                  ) -> Dict[str, List[float]]:
+                  ) -> Dict[str, List[float]]:  # pragma: no cover
     """Given a path with simulations outputs, this function is used to extract max and min absolute values of all episodes in each variable. If a dict ranges is given, will be updated.
 
     Args:
