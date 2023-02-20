@@ -107,8 +107,8 @@ jobs:
       - name: Build the latest Docker image
         run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[test] --tag pullrequest/sinergym:latest
 
-      - name: Create a shared folder for coverage output
-        run: mkdir $PWD/shared
+      - name: consult working dir
+        run: pwd
 
       - name: Execute tests from container
         run: docker run -v "$PWD/shared:/shared" -t pullrequest/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym --cov-report=xml tests/ && mv coverage.xml /shared'
