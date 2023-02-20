@@ -97,7 +97,7 @@ def unwrap_wrapper(env: gym.Env,
     env_tmp = env
     while isinstance(env_tmp, gym.Wrapper):
         if isinstance(env_tmp, wrapper_class):
-            return env_tmp
+            return env_tmp.env
         env_tmp = env_tmp.env
     return None
 
