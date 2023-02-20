@@ -11,5 +11,5 @@ it is very useful in order to perform benchmarks as a reference point to study D
 The functionality is very simple; given an environment observation, these instances return 
 an action to interact with the environment. You can develop your own
 controllers or modify current rules, for example. You can see an example of usage in 
-section :ref:`Using a rule-based controller`.
+section :ref:`Rule Controller example`.
 

@@ -504,12 +504,12 @@ class EnergyPlus(object):
     def _assembleMsg(
             self,
             version: int,
-            flag: int,
+            flag: float,
             nDb: int,
             nIn: int,
             nBl: int,
             curSimTim: float,
-            Dblist: Union[float, np.ndarray]) -> str:
+            Dblist: Union[float, np.ndarray, List[float]]) -> str:
         """Assembles the sent message to EnergyPlus based on the protocol.
         The message must be a blank space separated string set with the fields defined as arguments.
 

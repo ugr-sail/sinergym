@@ -27,7 +27,9 @@ setup(name='sinergym',
               'mlflow==1.28.0',  # tracking ML experiments
               'tensorflow==2.9.1',
               'tensorboard_plugin_profile==2.8.0',  # Training logger
-              'pytest==7.1.2',  # Unit test repository
+              'pytest',
+              'pytest-cov',
+              'pytest-xdist',  # Unit test repository
               'sphinx==5.1.1',  # documentation
               'sphinx-rtd-theme==1.0.0',  # documentation theme
               'sphinxcontrib-spelling==7.7.0',  # documentation spelling
@@ -42,10 +44,11 @@ setup(name='sinergym',
               'IPython'
           ],
           'test': [
-              'pytest==7.1.2',
+              'pytest',
+              'pytest-cov',
+              'pytest-xdist',
               # 'stable-baselines3'
           ],
-          'dev': ['pytest==7.1.2'],
           'DRL': [
               # 'stable-baselines3',
               'mlflow==1.28.0',

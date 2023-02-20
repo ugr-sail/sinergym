@@ -40,6 +40,8 @@ extensions = [
     'nbsphinx',
     'nbsphinx_link']
 
+autodoc_mock_imports = ["stable_baselines3"]
+
 autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
@@ -48,7 +50,7 @@ templates_path = ['_templates']
 # VERSIONING configuration
 # Whitelist pattern for tags (set to None to ignore all tags)
 smv_tag_whitelist = r'^.*$'
-#smv_tag_whitelist = None
+# smv_tag_whitelist = None
 
 # Whitelist pattern for branches (set to None to ignore all branches)
 smv_branch_whitelist = r'main'
