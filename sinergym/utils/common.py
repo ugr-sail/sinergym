@@ -298,7 +298,7 @@ def get_season_comfort_range(
 
 
 def export_actuators_to_excel(
-        actuators: Dict[str, Dict[str, Union[str, Dict[str, str]]]], path: str) -> None:
+        actuators: Dict[str, Dict[str, Union[str, Dict[str, str]]]], path: str) -> None:  # pragma: no cover
     """Given a python dictionary with actuators with Config:_get_actuators() format, this method export that information in a excel file
 
     Args:
