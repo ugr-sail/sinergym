@@ -14,6 +14,12 @@
     <a href="https://github.com/ugr-sail/sinergym/commits/main">
       <img alt="Github last commit" src="https://img.shields.io/github/last-commit/ugr-sail/sinergym" />
     </a>
+    <a href="https://pypi.org/project/sinergym/">
+      <img alt="Pypi version" src="https://img.shields.io/pypi/v/sinergym" />
+    </a>
+    <a href="https://github.com/ugr-sail/sinergym/stargazers">
+      <img alt="Pypi downloads" src="https://img.shields.io/pypi/dm/sinergym" />
+    </a>
     <a href="https://codecov.io/gh/ugr-sail/sinergym">
       <img src="https://codecov.io/gh/ugr-sail/sinergym/branch/main/graph/badge.svg" />
     </a>
@@ -30,7 +36,7 @@
       <img alt="Github License" src="https://img.shields.io/github/license/ugr-sail/sinergym" />
     </a>
     <a href="https://www.python.org/downloads/release/python-3100/">
-      <img alt="Github Python version" src="https://img.shields.io/pypi/pyversions/sinergym" />
+      <img alt="Pypi Python version" src="https://img.shields.io/pypi/pyversions/sinergym" />
     </a>
     <br />
     <br />
