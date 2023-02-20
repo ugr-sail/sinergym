@@ -74,35 +74,6 @@ def get_current_time_info(
     ]
 
 
-# def parse_variables(var_file: str) -> Dict[str, List[str]]:
-#     """Parse observation and action to dictionary.
-
-#     Args:
-#         var_file (str): Variables file path.
-
-#     Returns:
-#         Dict[str, List[str]]: observation and action keys; a list with the name of the observation <variables> (<zone>) and a list with the name of the action <variables> respectively.
-#     """
-
-#     tree = ET.parse(var_file)
-#     root = tree.getroot()
-
-#     variables = {}
-#     observation = []
-#     action = []
-#     for var in root.findall('variable'):
-#         if var.attrib['source'] == 'EnergyPlus':
-#             observation.append(var[0].attrib['type'] +
-#                                ' (' + var[0].attrib['name'] + ')')
-#         if var.attrib['source'] == 'Ptolemy':
-#             action.append(var[0].attrib['schedule'])
-
-#     variables['observation'] = observation
-#     variables['action'] = action
-
-#     return variables
-
-
 def is_wrapped(env: Type[gym.Env], wrapper_class: Type[gym.Wrapper]) -> bool:
     """
     Check if a given environment has been wrapped with a given wrapper.
