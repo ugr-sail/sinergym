@@ -1,6 +1,7 @@
 name: Pull request workflows
 on: pull_request
 
+# pwd: /home/runner/work/sinergym/sinergym
 jobs:
   format-check:
     # Skip CI if [ci skip] in the commit message
@@ -107,17 +108,17 @@ jobs:
       - name: Build the latest Docker image
         run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[test] --tag pullrequest/sinergym:latest
 
-      - name: consult working dir
-        run: pwd
+      - name: Create a shared folder for coverage output
+        run: mkdir shared
 
       - name: Execute tests from container
-        run: docker run -v "$PWD/shared:/shared" -t pullrequest/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym --cov-report=xml tests/ && mv coverage.xml /shared'
+        run: docker run -v "/home/runner/work/sinergym/sinergym/shared:/shared" -t pullrequest/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym --cov-report=xml tests/ && mv coverage.xml /shared'
 
       - name: Upload to CodeCov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: $PWD/shared/coverage.xml # optional
+          files: /home/runner/work/sinergym/sinergym/shared/coverage.xml # optional
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
 
