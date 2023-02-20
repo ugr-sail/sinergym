@@ -2,6 +2,7 @@ import os
 from random import randint, sample
 
 import gymnasium as gym
+import pytest
 
 from sinergym.utils.constants import *
 from sinergym.utils.env_checker import check_env
@@ -48,6 +49,10 @@ def test_close(env_demo):
     env_demo.close()
     assert not env_demo.simulator._episode_existed
     assert env_demo.simulator._conn is None
+
+
+def test_render(env_demo):
+    env_demo.render()
 
 
 def test_all_environments():
