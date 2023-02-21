@@ -185,6 +185,10 @@ def test_save_variables_cfg(config):
             assert variable.find('EnergyPlus') is not None
             assert list(variable.find('EnergyPlus').attrib.keys()) == [
                 'schedule']
+    # Check save runtime error if path is not specified
+    config.episode_path = None
+    with pytest.raises(RuntimeError):
+        config.save_variables_cfg()
 
 
 def test_set_experiment_working_dir(config):
@@ -213,6 +217,10 @@ def test_save_building_model(config, eplus_path, idf_path):
     idd = Idd(os.path.join(eplus_path, 'Energy+.idd'))
     building = Epm.from_idf(idf_path, idd_or_version=idd)
     assert (building.get_info() is not None) or (building.get_info() != '')
+    # Check save runtime error if path is not specified
+    config.episode_path = None
+    with pytest.raises(RuntimeError):
+        config.save_building_model()
 
 
 def test_apply_weather_variability(config):
@@ -252,6 +260,10 @@ def test_set_episode_working_dir(config):
     episode_path = config.set_episode_working_dir()
     # Check if new episode dir exists
     assert os.path.isdir(episode_path)
+    # Check if experiment_dir is none raise an error
+    config.experiment_path = None
+    with pytest.raises(Exception):
+        config.set_episode_working_dir()
 
 
 def test_get_working_folder(config):
