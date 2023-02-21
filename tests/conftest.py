@@ -174,6 +174,34 @@ def env_demo_continuous(idf_path, weather_path):
 
 
 @pytest.fixture(scope='function')
+def env_demo_continuous_stochastic(idf_path, weather_path):
+    idf_file = idf_path.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        observation_space=DEFAULT_5ZONE_OBSERVATION_SPACE,
+        observation_variables=DEFAULT_5ZONE_OBSERVATION_VARIABLES,
+        action_space=DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS,
+        action_variables=DEFAULT_5ZONE_ACTION_VARIABLES,
+        action_mapping=DEFAULT_5ZONE_ACTION_MAPPING,
+        reward=LinearReward,
+        reward_kwargs={
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (
+                20.0,
+                23.5),
+            'range_comfort_summer': (
+                23.0,
+                26.0)},
+        weather_variability=(1.0, 0.0, 0.001),
+        action_definition=DEFAULT_5ZONE_ACTION_DEFINITION)
+
+
+@pytest.fixture(scope='function')
 def env_datacenter(idf_path2, weather_path):
     idf_file = idf_path2.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
@@ -419,6 +447,11 @@ def pytest_sessionfinish(session, exitstatus):
     directories = glob('Eplus-env-TEST*/')
     for directory in directories:
         shutil.rmtree(directory)
+
+    # Deleting all temporal files generated during tests
+    files = glob('./TEST*.xlsx')
+    for file in files:
+        os.remove(file)
 
     # Deleting new IDF files generated during tests
     files = glob('sinergym/data/buildings/TEST*.idf')

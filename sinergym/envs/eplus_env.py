@@ -300,13 +300,14 @@ class EplusEnv(gym.Env):
             elif isinstance(action, tuple) or isinstance(action, list):
                 # stable-baselines DQN bug prevention
                 if len(action) == 1:
-                    setpoints = self.action_mapping[action.item()]
+                    setpoints = self.action_mapping[action[0]]
                 else:
                     setpoints = action
             elif isinstance(action, np.ndarray):
                 setpoints = self.action_mapping[action.item()]
             else:
-                print("ERROR: ", type(action))
+                raise RuntimeError(
+                    'action type not supported by Sinergym environment')
             action_ = list(setpoints)
         else:
             # transform action to setpoints simulation
@@ -345,7 +346,7 @@ class EplusEnv(gym.Env):
 
                 action_.append(
                     self.setpoints_space.low[i] + (value - self.action_space.low[i]) * sp_max_min / a_max_min)
-            else:
+            else:  # pragma: no cover
                 # If action is outer action_space already, it don't need
                 # transformation
                 action_.append(value)
