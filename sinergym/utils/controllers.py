@@ -4,8 +4,6 @@ from typing import Any, List, Sequence
 
 import numpy as np
 
-from ..utils.common import parse_variables
-
 
 class RandomController(object):
 
