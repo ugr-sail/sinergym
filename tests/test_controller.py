@@ -1,58 +1,44 @@
 import pytest
+import numpy as np
 
-from sinergym.utils.controllers import RBC5Zone, RBCDatacenter
+
+def test_random_controller(random_controller):
+    env = random_controller.env
+    env.reset()
+
+    for i in range(3):
+        action = random_controller.act()
+        assert action is not None
+    env.close()
 
 
-@pytest.mark.parametrize(
-    'env_name',
-    [
-        (
-            'env_demo'
-        ),
-        (
-            'env_demo_continuous'
-        ),
-    ]
-)
-def test_rule_based_controller_5Zone(env_name, request):
-    env = request.getfixturevalue(env_name)
-    rule_based_agent = RBC5Zone(env)
+def test_controller_5Zone(zone5_controller):
+    env = zone5_controller.env
     obs, info = env.reset()
 
     for i in range(3):
-        action = rule_based_agent.act(obs)
+        action = zone5_controller.act(obs)
         assert isinstance(action, tuple)
+        assert len(action) == 2
         for value in action:
             assert value is not None
-        obs, reward, terminated, _, info = env.step(action)
+        obs, _, _, _, info = env.step(action)
 
         assert tuple(info['action']) == action
 
     env.close()
 
 
-@pytest.mark.parametrize(
-    'env_name',
-    [
-        (
-            'env_datacenter'
-        ),
-        (
-            'env_datacenter_continuous'
-        ),
-    ]
-)
-def test_rule_based_controller_datacenter(env_name, request):
-    env = request.getfixturevalue(env_name)
-    rule_based_agent = RBCDatacenter(env)
+def test_controller_datacenter(datacenter_controller):
+    env = datacenter_controller.env
     obs, info = env.reset()
 
     for i in range(3):
-        action = rule_based_agent.act(obs)
+        action = datacenter_controller.act(obs)
         assert isinstance(action, tuple)
         for value in action:
             assert value is not None
-        obs, reward, terminated, _, info = env.step(action)
+        obs, _, _, _, info = env.step(action)
 
         assert tuple(info['action']) == action
 

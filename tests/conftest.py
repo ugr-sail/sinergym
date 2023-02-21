@@ -13,6 +13,7 @@ from sinergym.utils.constants import *
 from sinergym.utils.rewards import BaseReward, LinearReward
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
                                      NormalizeObservation)
+from sinergym.utils.controllers import *
 
 # ---------------------------------------------------------------------------- #
 #                                Root Directory                                #
@@ -329,6 +330,24 @@ def env_all_wrappers(env_demo_continuous):
     env = MultiObsWrapper(env=env, n=5, flatten=True)
     return env
 
+# ---------------------------------------------------------------------------- #
+#                                  Controllers                                 #
+# ---------------------------------------------------------------------------- #
+
+
+@pytest.fixture(scope='function')
+def random_controller(env_demo):
+    return RandomController(env=env_demo)
+
+
+@pytest.fixture(scope='function')
+def zone5_controller(env_demo):
+    return RBC5Zone(env=env_demo)
+
+
+@pytest.fixture(scope='function')
+def datacenter_controller(env_datacenter):
+    return RBCDatacenter(env=env_datacenter)
 
 # ---------------------------------------------------------------------------- #
 #                      Building and weather python models                      #
