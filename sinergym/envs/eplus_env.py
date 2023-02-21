@@ -285,7 +285,7 @@ class EplusEnv(gym.Env):
                                                 np.integer,
                                                 np.ndarray,
                                                 List[Any],
-                                                Tuple[Any]]: :
+                                                Tuple[Any]]:
         """Transform the action for sending it to the simulator."""
 
         # Get action depending on flag_discrete
