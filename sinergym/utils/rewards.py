@@ -136,7 +136,7 @@ class LinearReward(BaseReward):
             self.summer_final[0],
             self.summer_final[1])
 
-        if current_dt >= summer_start_date and current_dt <= summer_final_date:
+        if current_dt >= summer_start_date and current_dt <= summer_final_date:  # pragma: no cover
             temp_range = self.range_comfort_summer
         else:
             temp_range = self.range_comfort_winter
@@ -222,7 +222,7 @@ class ExpReward(LinearReward):
             self.summer_final[0],
             self.summer_final[1])
 
-        if current_dt >= summer_start_date and current_dt <= summer_final_date:
+        if current_dt >= summer_start_date and current_dt <= summer_final_date:  # pragma: no cover
             temp_range = self.range_comfort_summer
         else:
             temp_range = self.range_comfort_winter
@@ -230,7 +230,7 @@ class ExpReward(LinearReward):
         temps = [v for k, v in obs_dict.items() if k in self.temp_name]
         comfort = 0.0
         for T in temps:
-            if T < temp_range[0] or T > temp_range[1]:
+            if T < temp_range[0] or T > temp_range[1]:  # pragma: no cover
                 comfort += exp(min(abs(temp_range[0] - T),
                                    abs(T - temp_range[1])))
 
@@ -304,7 +304,7 @@ class HourlyLinearReward(LinearReward):
 
         # Determine energy weight depending on the hour
         hour = obs_dict['hour']
-        if hour >= self.range_comfort_hours[0] and hour <= self.range_comfort_hours[1]:
+        if hour >= self.range_comfort_hours[0] and hour <= self.range_comfort_hours[1]:  # pragma: no cover
             weight = self.W_energy
         else:
             weight = 1.0

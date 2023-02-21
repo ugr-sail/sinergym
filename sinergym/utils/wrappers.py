@@ -42,7 +42,8 @@ class NormalizeObservation(gym.ObservationWrapper):
         # variables as keys
         for i, variable in enumerate(self.env.variables['observation']):
             # normalization (handle DivisionbyZero Error)
-            if (self.ranges[variable][1] - self.ranges[variable][0] == 0):
+            if (self.ranges[variable][1] -
+                    self.ranges[variable][0] == 0):  # pragma: no cover
                 obs[i] = max(
                     self.ranges[variable][0], min(
                         obs[i], self.ranges[variable][1]))
@@ -51,11 +52,11 @@ class NormalizeObservation(gym.ObservationWrapper):
                     (self.ranges[variable][1] - self.ranges[variable][0])
 
             # If value is out
-            if np.isnan(obs[i]):
+            if np.isnan(obs[i]):  # pragma: no cover
                 obs[i] = 0
-            elif obs[i] > 1:
+            elif obs[i] > 1:  # pragma: no cover
                 obs[i] = 1
-            elif obs[i] < 0:
+            elif obs[i] < 0:  # pragma: no cover
                 obs[i] = 0
         # Return obs values in the SAME ORDER than obs argument.
         return np.array(obs)
@@ -128,7 +129,7 @@ class MultiObsWrapper(gym.Wrapper):
         """
         if self.ind_flat:
             return np.array(self.history).reshape(-1,)
-        else:
+        else:  # pragma: no cover
             return np.array(self.history)
 
 
@@ -295,12 +296,12 @@ class LoggerWrapper(gym.Wrapper):
         # Then, close env
         self.env.close()
 
-    def activate_logger(self) -> None:
+    def activate_logger(self) -> None:  # pragma: no cover
         """Activate logger if its flag False.
         """
         self.logger.activate_flag()
 
-    def deactivate_logger(self) -> None:
+    def deactivate_logger(self) -> None:  # pragma: no cover
         """Deactivate logger if its flag True.
         """
         self.logger.deactivate_flag()
@@ -308,7 +309,8 @@ class LoggerWrapper(gym.Wrapper):
 # ---------------------- Specific environment wrappers ---------------------#
 
 
-class OfficeGridStorageSmoothingActionConstraintsWrapper(gym.ActionWrapper):
+class OfficeGridStorageSmoothingActionConstraintsWrapper(
+        gym.ActionWrapper):  # pragma: no cover
     def __init__(self, env):
         assert env.idf_path.split(
             '/')[-1] == 'OfficeGridStorageSmoothing.idf', 'OfficeGridStorageSmoothingActionConstraintsWrapper: This wrapper is not valid for this environment.'

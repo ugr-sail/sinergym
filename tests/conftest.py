@@ -10,7 +10,7 @@ from sinergym.envs.eplus_env import EplusEnv
 from sinergym.simulators.eplus import EnergyPlus
 from sinergym.utils.config import Config
 from sinergym.utils.constants import *
-from sinergym.utils.rewards import BaseReward, LinearReward
+from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
                                      NormalizeObservation)
 from sinergym.utils.controllers import *
@@ -370,14 +370,64 @@ def weather_data(weather_path):
 
 
 @pytest.fixture(scope='function')
-def custom_reward():
+def base_reward(env_demo):
+    return BaseReward(env_demo)
+
+
+@pytest.fixture(scope='function')
+def custom_reward(env_demo):
     class CustomReward(BaseReward):
         def __init__(self, env):
             super(CustomReward, self).__init__(env)
 
         def __call__(self):
             return -1.0, {}
-    return CustomReward
+
+    return CustomReward(env_demo)
+
+
+@pytest.fixture(scope='function')
+def linear_reward(env_demo):
+    return LinearReward(
+        env=env_demo,
+        temperature_variable='Zone Air Temperature(SPACE1-1)',
+        energy_variable='Facility Total HVAC Electricity Demand Rate(Whole Building)',
+        range_comfort_winter=(
+            20.0,
+            23.5),
+        range_comfort_summer=(
+            23.0,
+            26.0))
+
+
+@pytest.fixture(scope='function')
+def exponential_reward(env_demo):
+    return ExpReward(
+        env=env_demo,
+        temperature_variable=[
+            'Zone Air Temperature(SPACE1-1)',
+            'Zone Air Temperature(SPACE1-2)'],
+        energy_variable='Facility Total HVAC Electricity Demand Rate(Whole Building)',
+        range_comfort_winter=(
+            20.0,
+            23.5),
+        range_comfort_summer=(
+            23.0,
+            26.0))
+
+
+@pytest.fixture(scope='function')
+def hourly_linear_reward(env_demo):
+    return HourlyLinearReward(
+        env=env_demo,
+        temperature_variable='Zone Air Temperature(SPACE1-1)',
+        energy_variable='Facility Total HVAC Electricity Demand Rate(Whole Building)',
+        range_comfort_winter=(
+            20.0,
+            23.5),
+        range_comfort_summer=(
+            23.0,
+            26.0))
 
 
 @pytest.fixture(scope='function')
