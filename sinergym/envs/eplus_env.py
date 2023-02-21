@@ -280,7 +280,12 @@ class EplusEnv(gym.Env):
         """
         return self.simulator._config.idf_zone_names
 
-    def _get_action(self, action: Any):
+    def _get_action(self, action: Any) -> Union[int,
+                                                float,
+                                                np.integer,
+                                                np.ndarray,
+                                                List[Any],
+                                                Tuple[Any]]: :
         """Transform the action for sending it to the simulator."""
 
         # Get action depending on flag_discrete
