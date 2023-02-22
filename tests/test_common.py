@@ -1,11 +1,11 @@
+import os
 import shutil
 
-import os
 import pytest
 from opyplus import Epm, WeatherData
 
-from sinergym.utils.wrappers import NormalizeObservation
 import sinergym.utils.common as common
+from sinergym.utils.wrappers import NormalizeObservation
 
 
 def test_unwrap_wrapper(

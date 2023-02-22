@@ -1,5 +1,5 @@
-import pytest
 import numpy as np
+import pytest
 
 
 def test_random_controller(random_controller):

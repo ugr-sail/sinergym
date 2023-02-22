@@ -10,10 +10,10 @@ from sinergym.envs.eplus_env import EplusEnv
 from sinergym.simulators.eplus import EnergyPlus
 from sinergym.utils.config import Config
 from sinergym.utils.constants import *
+from sinergym.utils.controllers import *
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
                                      NormalizeObservation)
-from sinergym.utils.controllers import *
 
 # ---------------------------------------------------------------------------- #
 #                                Root Directory                                #
