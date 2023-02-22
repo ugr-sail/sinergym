@@ -189,8 +189,6 @@ class CSVLogger(object):
             # Store step information for episode
             self._store_step_information(
                 obs, action, reward, terminated, info)
-        else:  # pragma: no cover
-            pass
 
     def log_step_normalize(
             self,
@@ -212,8 +210,6 @@ class CSVLogger(object):
             self.steps_data_normalized.append(
                 self._create_row_content(
                     obs, action, reward, terminated, info))
-        else:  # pragma: no cover
-            pass
 
     def log_episode(self, episode: int) -> None:
         """Log episode main information using steps_data param.
@@ -294,8 +290,6 @@ class CSVLogger(object):
 
             # Reset episode information
             self._reset_logger()
-        else:  # pragma: no cover
-            pass
 
     def set_log_file(self, new_log_file: str) -> None:
         """Change log_file path for monitor.csv when an episode ends.
@@ -309,15 +303,13 @@ class CSVLogger(object):
             if self.log_file:
                 with open(self.log_file, 'a', newline='\n') as file_obj:
                     file_obj.write(self.monitor_header)
-        else:  # pragma: no cover
-            pass
 
-    def activate_flag(self) -> None:  # pragma: no cover
+    def activate_flag(self) -> None:
         """Activate Sinergym CSV logger
         """
         self.flag = True
 
-    def deactivate_flag(self) -> None:  # pragma: no cover
+    def deactivate_flag(self) -> None:
         """Deactivate Sinergym CSV logger
         """
         self.flag = False

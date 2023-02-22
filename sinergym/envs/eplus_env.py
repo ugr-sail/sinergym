@@ -346,7 +346,7 @@ class EplusEnv(gym.Env):
 
                 action_.append(
                     self.setpoints_space.low[i] + (value - self.action_space.low[i]) * sp_max_min / a_max_min)
-            else:  # pragma: no cover
+            else:
                 # If action is outer action_space already, it don't need
                 # transformation
                 action_.append(value)

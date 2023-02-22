@@ -138,6 +138,14 @@ def test_logger_wrapper(env_name, request):
     env.close()
 
 
+def test_logger_activation(env_wrapper_logger):
+    assert env_wrapper_logger.logger.flag
+    env_wrapper_logger.deactivate_logger()
+    assert not env_wrapper_logger.logger.flag
+    env_wrapper_logger.activate_logger()
+    assert env_wrapper_logger.logger.flag
+
+
 def test_env_wrappers(env_all_wrappers):
     # Check history multiobs is empty
     assert env_all_wrappers.history == deque([])

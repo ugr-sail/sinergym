@@ -43,7 +43,7 @@ class NormalizeObservation(gym.ObservationWrapper):
         for i, variable in enumerate(self.env.variables['observation']):
             # normalization (handle DivisionbyZero Error)
             if (self.ranges[variable][1] -
-                    self.ranges[variable][0] == 0):  # pragma: no cover
+                    self.ranges[variable][0] == 0):
                 obs[i] = max(
                     self.ranges[variable][0], min(
                         obs[i], self.ranges[variable][1]))
@@ -52,11 +52,11 @@ class NormalizeObservation(gym.ObservationWrapper):
                     (self.ranges[variable][1] - self.ranges[variable][0])
 
             # If value is out
-            if np.isnan(obs[i]):  # pragma: no cover
+            if np.isnan(obs[i]):
                 obs[i] = 0
-            elif obs[i] > 1:  # pragma: no cover
+            elif obs[i] > 1:
                 obs[i] = 1
-            elif obs[i] < 0:  # pragma: no cover
+            elif obs[i] < 0:
                 obs[i] = 0
         # Return obs values in the SAME ORDER than obs argument.
         return np.array(obs)
@@ -129,7 +129,7 @@ class MultiObsWrapper(gym.Wrapper):
         """
         if self.ind_flat:
             return np.array(self.history).reshape(-1,)
-        else:  # pragma: no cover
+        else:
             return np.array(self.history)
 
 
@@ -296,12 +296,12 @@ class LoggerWrapper(gym.Wrapper):
         # Then, close env
         self.env.close()
 
-    def activate_logger(self) -> None:  # pragma: no cover
+    def activate_logger(self) -> None:
         """Activate logger if its flag False.
         """
         self.logger.activate_flag()
 
-    def deactivate_logger(self) -> None:  # pragma: no cover
+    def deactivate_logger(self) -> None:
         """Deactivate logger if its flag True.
         """
         self.logger.deactivate_flag()
