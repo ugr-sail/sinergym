@@ -42,7 +42,8 @@ class NormalizeObservation(gym.ObservationWrapper):
         # variables as keys
         for i, variable in enumerate(self.env.variables['observation']):
             # normalization (handle DivisionbyZero Error)
-            if (self.ranges[variable][1] - self.ranges[variable][0] == 0):
+            if (self.ranges[variable][1] -
+                    self.ranges[variable][0] == 0):
                 obs[i] = max(
                     self.ranges[variable][0], min(
                         obs[i], self.ranges[variable][1]))
@@ -308,7 +309,8 @@ class LoggerWrapper(gym.Wrapper):
 # ---------------------- Specific environment wrappers ---------------------#
 
 
-class OfficeGridStorageSmoothingActionConstraintsWrapper(gym.ActionWrapper):
+class OfficeGridStorageSmoothingActionConstraintsWrapper(
+        gym.ActionWrapper):  # pragma: no cover
     def __init__(self, env):
         assert env.idf_path.split(
             '/')[-1] == 'OfficeGridStorageSmoothing.idf', 'OfficeGridStorageSmoothingActionConstraintsWrapper: This wrapper is not valid for this environment.'

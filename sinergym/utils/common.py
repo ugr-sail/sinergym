@@ -74,35 +74,6 @@ def get_current_time_info(
     ]
 
 
-def parse_variables(var_file: str) -> Dict[str, List[str]]:
-    """Parse observation and action to dictionary.
-
-    Args:
-        var_file (str): Variables file path.
-
-    Returns:
-        Dict[str, List[str]]: observation and action keys; a list with the name of the observation <variables> (<zone>) and a list with the name of the action <variables> respectively.
-    """
-
-    tree = ET.parse(var_file)
-    root = tree.getroot()
-
-    variables = {}
-    observation = []
-    action = []
-    for var in root.findall('variable'):
-        if var.attrib['source'] == 'EnergyPlus':
-            observation.append(var[0].attrib['type'] +
-                               ' (' + var[0].attrib['name'] + ')')
-        if var.attrib['source'] == 'Ptolemy':
-            action.append(var[0].attrib['schedule'])
-
-    variables['observation'] = observation
-    variables['action'] = action
-
-    return variables
-
-
 def is_wrapped(env: Type[gym.Env], wrapper_class: Type[gym.Wrapper]) -> bool:
     """
     Check if a given environment has been wrapped with a given wrapper.
@@ -126,7 +97,7 @@ def unwrap_wrapper(env: gym.Env,
     env_tmp = env
     while isinstance(env_tmp, gym.Wrapper):
         if isinstance(env_tmp, wrapper_class):
-            return env_tmp
+            return env_tmp.env
         env_tmp = env_tmp.env
     return None
 
@@ -189,7 +160,7 @@ def create_variable_weather(
 
 def ranges_getter(output_path: str,
                   last_result: Optional[Dict[str, List[float]]] = None
-                  ) -> Dict[str, List[float]]:
+                  ) -> Dict[str, List[float]]:  # pragma: no cover
     """Given a path with simulations outputs, this function is used to extract max and min absolute values of all episodes in each variable. If a dict ranges is given, will be updated.
 
     Args:
@@ -327,7 +298,7 @@ def get_season_comfort_range(
 
 
 def export_actuators_to_excel(
-        actuators: Dict[str, Dict[str, Union[str, Dict[str, str]]]], path: str) -> None:
+        actuators: Dict[str, Dict[str, Union[str, Dict[str, str]]]], path: str) -> None:  # pragma: no cover
     """Given a python dictionary with actuators with Config:_get_actuators() format, this method export that information in a excel file
 
     Args:

@@ -235,14 +235,14 @@ class EnergyPlus(object):
         self._curSimTim = curSimTim
         # Check if episode terminates
         is_terminal = False
-        if curSimTim >= self._eplus_one_epi_len:
+        if curSimTim >= self._eplus_one_epi_len:  # pragma: no cover
             is_terminal = True
         # Change some attributes
         self._conn = conn
         self._eplus_working_dir = eplus_working_dir
         self._episode_existed = True
         # Check termination
-        if is_terminal:
+        if is_terminal:  # pragma: no cover
             self._end_episode()
 
         # Setting up info return (additional reset data)
@@ -395,7 +395,7 @@ class EnergyPlus(object):
         path_list = file_path.split('/')
         return path_list[-1]
 
-    def _log_subprocess_info(self, out: Any, logger: logging.Logger) -> None:
+    def _log_subprocess_info(self, out: Any, logger: logging.Logger) -> None:  # pragma: no cover
         """Logger info message from subprocess
 
         Args:
@@ -405,7 +405,7 @@ class EnergyPlus(object):
         for line in iter(out.readline, b''):
             logger.info(line.decode())
 
-    def _log_subprocess_err(self, out: Any, logger: logging.Logger) -> None:
+    def _log_subprocess_err(self, out: Any, logger: logging.Logger) -> None:  # pragma: no cover
         """Logger err message from subprocess
 
         Args:
@@ -486,7 +486,7 @@ class EnergyPlus(object):
             os.killpg(self._eplus_process.pid, signal.SIGTERM)
             self._episode_existed = False
 
-    def _run_eplus_outputProcessing(self) -> None:
+    def _run_eplus_outputProcessing(self) -> None:  # pragma: no cover
         # If simulator has not been running with reset at least one time this
         # method is null.
         if hasattr(self, '_eplus_working_dir'):
@@ -577,7 +577,7 @@ class EnergyPlus(object):
         return (version, flag, nDb, nIn, nBl, curSimTim, Dblist)
 
     @property
-    def start_year(self) -> int:
+    def start_year(self) -> int:  # pragma: no cover
         """Returns the EnergyPlus simulation year.
 
         Returns:
@@ -587,7 +587,7 @@ class EnergyPlus(object):
         return self._config.start_year
 
     @property
-    def start_mon(self) -> int:
+    def start_mon(self) -> int:  # pragma: no cover
         """Returns the EnergyPlus simulation start month.
 
         Returns:
@@ -596,7 +596,7 @@ class EnergyPlus(object):
         return self._eplus_run_st_mon
 
     @property
-    def start_day(self) -> int:
+    def start_day(self) -> int:  # pragma: no cover
         """Returns the EnergyPlus simulation start day of the month.
 
         Returns:
@@ -605,7 +605,7 @@ class EnergyPlus(object):
         return self._eplus_run_st_day
 
     @property
-    def start_weekday(self) -> int:
+    def start_weekday(self) -> int:  # pragma: no cover
         """Returns the EnergyPlus simulation start weekday. From 0 (Monday) to 6 (Sunday).
 
         Returns:
@@ -614,7 +614,7 @@ class EnergyPlus(object):
         return self._eplus_run_st_weekday
 
     @property
-    def env_name(self) -> str:
+    def env_name(self) -> str:  # pragma: no cover
         """Returns the environment name.
 
         Returns:

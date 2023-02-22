@@ -280,7 +280,12 @@ class EplusEnv(gym.Env):
         """
         return self.simulator._config.idf_zone_names
 
-    def _get_action(self, action: Any):
+    def _get_action(self, action: Any) -> Union[int,
+                                                float,
+                                                np.integer,
+                                                np.ndarray,
+                                                List[Any],
+                                                Tuple[Any]]:
         """Transform the action for sending it to the simulator."""
 
         # Get action depending on flag_discrete
@@ -295,13 +300,14 @@ class EplusEnv(gym.Env):
             elif isinstance(action, tuple) or isinstance(action, list):
                 # stable-baselines DQN bug prevention
                 if len(action) == 1:
-                    setpoints = self.action_mapping[action.item()]
+                    setpoints = self.action_mapping[action[0]]
                 else:
                     setpoints = action
             elif isinstance(action, np.ndarray):
                 setpoints = self.action_mapping[action.item()]
             else:
-                print("ERROR: ", type(action))
+                raise RuntimeError(
+                    'action type not supported by Sinergym environment')
             action_ = list(setpoints)
         else:
             # transform action to setpoints simulation

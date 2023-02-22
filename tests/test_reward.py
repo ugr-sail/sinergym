@@ -1,31 +1,39 @@
 import pytest
 
 
-def test_reward(env_linear_reward):
-    _, _ = env_linear_reward.reset()
-    a = env_linear_reward.action_space.sample()
-    _, R, _, _, info = env_linear_reward.step(a)
-    env_linear_reward.close()
-    assert R <= 0.0
-    assert env_linear_reward.reward_fn.W_energy == 0.5
-    assert info.get('comfort_penalty') <= 0.0
+def test_base_reward(base_reward):
+    with pytest.raises(NotImplementedError):
+        base_reward()
 
 
-def test_reward_kwargs(env_linear_reward_args):
-    _, _ = env_linear_reward_args.reset()
-    a = env_linear_reward_args.action_space.sample()
-    _, R, _, _, info = env_linear_reward_args.step(a)
-    env_linear_reward_args.close()
-    assert R <= 0.0
-    assert env_linear_reward_args.reward_fn.W_energy == 0.2
-    assert env_linear_reward_args.reward_fn.range_comfort_summer == (
-        18.0, 20.0)
-    assert info.get('comfort_penalty') <= 0.0
+@pytest.mark.parametrize('reward_name',
+                         [('linear_reward'),
+                          ('exponential_reward'),
+                          ('hourly_linear_reward'),
+                          ])
+def test_rewards(reward_name, request):
+    reward = request.getfixturevalue(reward_name)
+    env = reward.env
+    env.reset()
+    a = env.action_space.sample()
+    env.step(a)
+    # Such as env has been created separately, it is important to calculate
+    # specifically in reward class.
+    R, terms = reward()
+    assert R <= 0
+    assert env.reward_fn.W_energy == 0.5
+    assert isinstance(terms, dict)
+    assert len(terms) > 0
 
 
-def test_custom_reward(env_custom_reward):
-    _, _ = env_custom_reward.reset()
-    a = env_custom_reward.action_space.sample()
-    _, R, _, _, _ = env_custom_reward.step(a)
-    env_custom_reward.close()
+def test_custom_reward(custom_reward):
+    env = custom_reward.env
+    env.reset()
+    a = env.action_space.sample()
+    env.step(a)
+    # Such as env has been created separately, it is important to calculate
+    # specifically in reward class.
+    R, terms = custom_reward()
     assert R == -1.0
+    assert isinstance(terms, dict)
+    assert len(terms) == 0

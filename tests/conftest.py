@@ -10,7 +10,8 @@ from sinergym.envs.eplus_env import EplusEnv
 from sinergym.simulators.eplus import EnergyPlus
 from sinergym.utils.config import Config
 from sinergym.utils.constants import *
-from sinergym.utils.rewards import BaseReward, LinearReward
+from sinergym.utils.controllers import *
+from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
                                      NormalizeObservation)
 
@@ -174,6 +175,34 @@ def env_demo_continuous(idf_path, weather_path):
 
 
 @pytest.fixture(scope='function')
+def env_demo_continuous_stochastic(idf_path, weather_path):
+    idf_file = idf_path.split('/')[-1]
+    weather_file = weather_path.split('/')[-1]
+
+    return EplusEnv(
+        env_name='TESTGYM',
+        idf_file=idf_file,
+        weather_file=weather_file,
+        observation_space=DEFAULT_5ZONE_OBSERVATION_SPACE,
+        observation_variables=DEFAULT_5ZONE_OBSERVATION_VARIABLES,
+        action_space=DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS,
+        action_variables=DEFAULT_5ZONE_ACTION_VARIABLES,
+        action_mapping=DEFAULT_5ZONE_ACTION_MAPPING,
+        reward=LinearReward,
+        reward_kwargs={
+            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
+            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'range_comfort_winter': (
+                20.0,
+                23.5),
+            'range_comfort_summer': (
+                23.0,
+                26.0)},
+        weather_variability=(1.0, 0.0, 0.001),
+        action_definition=DEFAULT_5ZONE_ACTION_DEFINITION)
+
+
+@pytest.fixture(scope='function')
 def env_datacenter(idf_path2, weather_path):
     idf_file = idf_path2.split('/')[-1]
     weather_file = weather_path.split('/')[-1]
@@ -301,6 +330,24 @@ def env_all_wrappers(env_demo_continuous):
     env = MultiObsWrapper(env=env, n=5, flatten=True)
     return env
 
+# ---------------------------------------------------------------------------- #
+#                                  Controllers                                 #
+# ---------------------------------------------------------------------------- #
+
+
+@pytest.fixture(scope='function')
+def random_controller(env_demo):
+    return RandomController(env=env_demo)
+
+
+@pytest.fixture(scope='function')
+def zone5_controller(env_demo):
+    return RBC5Zone(env=env_demo)
+
+
+@pytest.fixture(scope='function')
+def datacenter_controller(env_datacenter):
+    return RBCDatacenter(env=env_datacenter)
 
 # ---------------------------------------------------------------------------- #
 #                      Building and weather python models                      #
@@ -323,14 +370,64 @@ def weather_data(weather_path):
 
 
 @pytest.fixture(scope='function')
-def custom_reward():
+def base_reward(env_demo):
+    return BaseReward(env_demo)
+
+
+@pytest.fixture(scope='function')
+def custom_reward(env_demo):
     class CustomReward(BaseReward):
         def __init__(self, env):
             super(CustomReward, self).__init__(env)
 
         def __call__(self):
             return -1.0, {}
-    return CustomReward
+
+    return CustomReward(env_demo)
+
+
+@pytest.fixture(scope='function')
+def linear_reward(env_demo):
+    return LinearReward(
+        env=env_demo,
+        temperature_variable='Zone Air Temperature(SPACE1-1)',
+        energy_variable='Facility Total HVAC Electricity Demand Rate(Whole Building)',
+        range_comfort_winter=(
+            20.0,
+            23.5),
+        range_comfort_summer=(
+            23.0,
+            26.0))
+
+
+@pytest.fixture(scope='function')
+def exponential_reward(env_demo):
+    return ExpReward(
+        env=env_demo,
+        temperature_variable=[
+            'Zone Air Temperature(SPACE1-1)',
+            'Zone Air Temperature(SPACE1-2)'],
+        energy_variable='Facility Total HVAC Electricity Demand Rate(Whole Building)',
+        range_comfort_winter=(
+            20.0,
+            23.5),
+        range_comfort_summer=(
+            23.0,
+            26.0))
+
+
+@pytest.fixture(scope='function')
+def hourly_linear_reward(env_demo):
+    return HourlyLinearReward(
+        env=env_demo,
+        temperature_variable='Zone Air Temperature(SPACE1-1)',
+        energy_variable='Facility Total HVAC Electricity Demand Rate(Whole Building)',
+        range_comfort_winter=(
+            20.0,
+            23.5),
+        range_comfort_summer=(
+            23.0,
+            26.0))
 
 
 @pytest.fixture(scope='function')
@@ -420,7 +517,17 @@ def pytest_sessionfinish(session, exitstatus):
     for directory in directories:
         shutil.rmtree(directory)
 
-    # Deleting new random weather files once it has been checked
+    # Deleting all temporal files generated during tests
+    files = glob('./TEST*.xlsx')
+    for file in files:
+        os.remove(file)
+
+    # Deleting new IDF files generated during tests
+    files = glob('sinergym/data/buildings/TEST*.idf')
+    for file in files:
+        os.remove(file)
+
+    # Deleting new random weather files generated during tests
     files = glob('sinergym/data/weather/*Random*.epw')
     for file in files:
         os.remove(file)

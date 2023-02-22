@@ -10,28 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
+        uses: actions/checkout@v3
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
-
+          python-version: ${{ vars.PYTHON_VERSION }}
       - name: Apply isort
         id: isort-step
         # default configuration use --check-only and --diff instead of --in-place options.
         uses: isort/isort-action@master
         with:
           configuration: --only-modified
-
       - name: autopep8 check and fix
         id: autopep8
-        uses: peter-evans/autopep8@v1
+        uses: peter-evans/autopep8@v2
         with:
           args: --exit-code --recursive --in-place --aggressive --aggressive .
-
       - name: Detect changes by isort
-        uses: tj-actions/verify-changed-files@v7.2
+        uses: tj-actions/verify-changed-files@v13
         id: verify-isort-update
         with:
           files: |
@@ -39,7 +35,6 @@ jobs:
             sinergym/
             examples/
             *.py
-
       - name: Commit format changes
         if: steps.autopep8.outputs.exit-code == 2 || steps.verify-isort-update.outputs.files_changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v4
@@ -52,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Verify documentation update
@@ -79,7 +74,7 @@ jobs:
       - name: Check sphinx spelling
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: cd docs && sphinx-build -M spelling source compilation
-      - name: Pull local repository (for possible format commit)
+      - name: Pull local repository (needed if format commit has been done before)
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: git pull origin main
       - name: Commit and push changes if exists
@@ -89,8 +84,29 @@ jobs:
           file_pattern: docs/compilation/*
           commit_message: Documentation source update detected and pushed compilation build directory for Github Pages
 
+  tests:
+    needs: [apply-autopep8]
+    name: tests execution and CodeCov upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build the latest Docker image
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[test] --tag pushmain/sinergym:latest
+      - name: Create a shared folder for coverage output
+        run: mkdir shared
+      - name: Execute tests from container
+        run: docker run -v "/home/runner/work/sinergym/sinergym/shared:/shared" -t pushmain/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym --cov-report=xml tests/ && mv coverage.xml /shared'
+      - name: Upload to CodeCov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: /home/runner/work/sinergym/sinergym/shared/coverage.xml
+          fail_ci_if_error: true
+          verbose: true
+
   update-dockerhub:
-    needs: [apply-autopep8, apply-documentation]
+    needs: [apply-autopep8]
     env:
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -100,7 +116,7 @@ jobs:
     steps:
       - name: Checkout code
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Build the latest Docker image
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extras] --tag $DOCKER_USER/sinergym:latest

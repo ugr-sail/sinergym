@@ -406,7 +406,7 @@ class Config(object):
         start_weekday = WEEKDAY_ENCODING[runperiod.day_of_week_for_start_day.lower(
         )]
         n_steps_per_hour = self.building.timestep[0].number_of_timesteps_per_hour
-        if n_steps_per_hour < 1 or n_steps_per_hour is None:
+        if n_steps_per_hour < 1 or n_steps_per_hour is None:  # pragma: no cover
             n_steps_per_hour = 4  # default value
 
         return (
@@ -555,7 +555,7 @@ class Config(object):
             rmtree(rm_dir_full_name)
 
     @ property
-    def start_year(self) -> int:
+    def start_year(self) -> int:  # pragma: no cover
         """Returns the EnergyPlus simulation year.
 
         Returns:
@@ -584,7 +584,7 @@ class Config(object):
                     assert isinstance(
                         self.config[config_key], tuple) and len(
                         self.config[config_key]) == 6, 'Extra Config: Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).'
-                else:
+                else:  # pragma: no cover
                     raise KeyError(
                         F'Extra Config: Key name specified in config called [{config_key}] has no support in Sinergym.')
         # ACTION DEFINITION

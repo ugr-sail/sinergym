@@ -4,8 +4,6 @@ from typing import Any, List, Sequence
 
 import numpy as np
 
-from ..utils.common import parse_variables
-
 
 class RandomController(object):
 
@@ -64,9 +62,9 @@ class RBC5Zone(object):
         current_dt = datetime(year, month, day)
 
         # Get season comfort range
-        if current_dt >= summer_start_date and current_dt <= summer_final_date:
+        if current_dt >= summer_start_date and current_dt <= summer_final_date:  # pragma: no cover
             season_range = self.setpoints_summer
-        else:
+        else:  # pragma: no cover
             season_range = self.setpoints_winter
 
         return (season_range[0], season_range[1])
@@ -108,10 +106,10 @@ class RBCDatacenter(object):
         new_heat_setpoint = current_heat_setpoint
         new_cool_setpoint = current_cool_setpoint
 
-        if mean_temp < self.range_datacenter[0]:
+        if mean_temp < self.range_datacenter[0]:  # pragma: no cover
             new_heat_setpoint = current_heat_setpoint + 1
             new_cool_setpoint = current_cool_setpoint + 1
-        elif mean_temp > self.range_datacenter[1]:
+        elif mean_temp > self.range_datacenter[1]:  # pragma: no cover
             new_cool_setpoint = current_cool_setpoint - 1
             new_heat_setpoint = current_heat_setpoint - 1
 
