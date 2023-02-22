@@ -228,7 +228,7 @@ class LoggerEvalCallback(EvalCallback):
 
             # Reset success rate buffer
             self._is_success_buffer = []
-            #episodes_rewards, episodes_lengths, episodes_powers, episodes_comfort_violations, episodes_comfort_penalties, episodes_power_penalties
+            # episodes_rewards, episodes_lengths, episodes_powers, episodes_comfort_violations, episodes_comfort_penalties, episodes_power_penalties
             episodes_data = evaluate_policy(
                 self.model,
                 self.eval_env,

@@ -182,7 +182,7 @@ parser.add_argument('--sigma', '-sig', type=float, default=0.1)
 parser.add_argument('--rms_prop_eps', '-rpe', type=float, default=1e-5)
 
 args = parser.parse_args()
-#------------------------------------------------------------------------------#
+# ------------------------------------------------------------------------------#
 
 # ---------------------------------------------------------------------------- #
 #                               Register run name                              #
@@ -303,9 +303,9 @@ with mlflow.start_run(run_name=name):
 
     if args.model is None:
 
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         #                           DQN                          #
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         if args.algorithm == 'DQN':
             model = DQN('MlpPolicy', env, verbose=1,
                         learning_rate=args.learning_rate,
@@ -323,9 +323,9 @@ with mlflow.start_run(run_name=name):
                         max_grad_norm=args.max_grad_norm,
                         seed=args.seed,
                         tensorboard_log=args.tensorboard)
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         #                           DDPG                         #
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         elif args.algorithm == 'DDPG':
             if args.sigma:
                 # noise objects for DDPG
@@ -339,9 +339,9 @@ with mlflow.start_run(run_name=name):
                          verbose=1,
                          seed=args.seed,
                          tensorboard_log=args.tensorboard)
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         #                           A2C                          #
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         elif args.algorithm == 'A2C':
             model = A2C('MlpPolicy', env, verbose=1,
                         learning_rate=args.learning_rate,
@@ -354,9 +354,9 @@ with mlflow.start_run(run_name=name):
                         rms_prop_eps=args.rms_prop_eps,
                         seed=args.seed,
                         tensorboard_log=args.tensorboard)
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         #                           PPO                          #
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         elif args.algorithm == 'PPO':
             model = PPO('MlpPolicy', env, verbose=1,
                         learning_rate=args.learning_rate,
@@ -371,9 +371,9 @@ with mlflow.start_run(run_name=name):
                         max_grad_norm=args.max_grad_norm,
                         seed=args.seed,
                         tensorboard_log=args.tensorboard)
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         #                           SAC                          #
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         elif args.algorithm == 'SAC':
             model = SAC(policy='MlpPolicy',
                         env=env,
@@ -384,9 +384,9 @@ with mlflow.start_run(run_name=name):
                         tau=args.tau,
                         gamma=args.gamma,
                         tensorboard_log=args.tensorboard)
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         #                           TD3                          #
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         elif args.algorithm == 'TD3':
             model = TD3(policy='MlpPolicy',
                         env=env, seed=args.seed,
@@ -409,9 +409,9 @@ with mlflow.start_run(run_name=name):
                         verbose=0,
                         device='auto',
                         _init_setup_model=True)
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         #                           Error                        #
-        #--------------------------------------------------------#
+        # --------------------------------------------------------#
         else:
             raise RuntimeError(
                 F'Algorithm specified [{args.algorithm}] is not registered.')
