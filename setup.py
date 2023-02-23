@@ -33,7 +33,8 @@ setup(name='sinergym',
               'sphinx',  # documentation
               'sphinx-rtd-theme',  # documentation theme
               'sphinxcontrib-spelling',  # documentation spelling
-              'sphinx-multiversion @ git+https://github.com/Holzhaus/sphinx-multiversion#egg=sphinx-multiversion',  # documentation versioning
+              # documentation versioning
+              'sphinx-multiversion @ git+https://github.com/Holzhaus/sphinx-multiversion#egg=sphinx-multiversion',
               'sphinx-multitoc-numbering',  # Section numbering
               'pyenchant',
               'nbsphinx',
