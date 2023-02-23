@@ -10,14 +10,10 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import sinergym
 import os
 import sys
 
 sys.path.insert(0, os.path.abspath('../../'))
-modnames = [mname for mname in sys.modules if mname.startswith("sinergym")]
-for modname in modnames:
-    del sys.modules[modname]
 
 # -- Project information -----------------------------------------------------
 
