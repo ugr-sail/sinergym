@@ -1,4 +1,4 @@
-sinergym.utils.callbacks.LoggerCallback
+﻿sinergym.utils.callbacks.LoggerCallback
 =======================================
 
 .. currentmodule:: sinergym.utils.callbacks

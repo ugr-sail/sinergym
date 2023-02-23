@@ -22,7 +22,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="sinergym.utils.callbacks.LoggerEvalCallback" href="sinergym.utils.callbacks.LoggerEvalCallback.html" />
-    <link rel="prev" title="sinergym.utils.callbacks" href="sinergym.utils.callbacks.html" /> 
+    <link rel="prev" title="sinergym.utils.callbacks.evaluate_policy" href="sinergym.utils.callbacks.evaluate_policy.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -60,18 +60,14 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../API-reference.html">API reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.callbacks.evaluate_policy.html">sinergym.utils.callbacks.evaluate_policy</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.callbacks.LoggerCallback</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.callbacks.LoggerEvalCallback.html">sinergym.utils.callbacks.LoggerEvalCallback</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.config.html">sinergym.utils.config</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
 </ul>
@@ -139,6 +135,7 @@
 <dt class="sig sig-object py" id="sinergym.utils.callbacks.LoggerCallback">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.callbacks.</span></span><span class="sig-name descname"><span class="pre">LoggerCallback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.callbacks.LoggerCallback" title="Permalink to this definition"></a></dt>
 <dd><p>Custom callback for plotting additional values in tensorboard.
+:param sinergym_logger: Boolean, indicate if CSVLogger inner Sinergym will be activated or not.
 :param ep_rewards: Here will be stored all rewards during episode.
 :param ep_powers: Here will be stored all consumption data during episode.
 :param ep_term_comfort: Here will be stored all comfort terms (reward component) during episode.
@@ -148,16 +145,13 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.callbacks.LoggerCallback.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sinergym_logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.callbacks.LoggerCallback.__init__" title="Permalink to this definition"></a></dt>
-<dd><p>Custom callback for plotting additional values in tensorboard.
-:param sinergym_logger: Indicate if CSVLogger inner Sinergym will be activated or not.
-:type sinergym_logger: boolean</p>
-</dd></dl>
+<dd></dd></dl>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.callbacks.LoggerCallback.__init__" title="sinergym.utils.callbacks.LoggerCallback.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([sinergym_logger, verbose])</p></td>
-<td><p>Custom callback for plotting additional values in tensorboard.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.callbacks.LoggerCallback.on_training_end" title="sinergym.utils.callbacks.LoggerCallback.on_training_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_training_end</span></code></a>()</p></td>
 <td><p></p></td>
@@ -177,7 +171,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sinergym.utils.callbacks.html" class="btn btn-neutral float-left" title="sinergym.utils.callbacks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sinergym.utils.callbacks.evaluate_policy.html" class="btn btn-neutral float-left" title="sinergym.utils.callbacks.evaluate_policy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="sinergym.utils.callbacks.LoggerEvalCallback.html" class="btn btn-neutral float-right" title="sinergym.utils.callbacks.LoggerEvalCallback" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

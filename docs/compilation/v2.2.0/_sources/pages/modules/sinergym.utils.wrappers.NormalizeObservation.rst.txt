@@ -16,29 +16,11 @@
    .. autosummary::
    
       ~NormalizeObservation.__init__
-      ~NormalizeObservation.class_name
-      ~NormalizeObservation.close
       ~NormalizeObservation.get_unwrapped_obs
       ~NormalizeObservation.observation
-      ~NormalizeObservation.render
-      ~NormalizeObservation.reset
-      ~NormalizeObservation.step
    
    
 
    
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-   
-      ~NormalizeObservation.action_space
-      ~NormalizeObservation.metadata
-      ~NormalizeObservation.np_random
-      ~NormalizeObservation.observation_space
-      ~NormalizeObservation.render_mode
-      ~NormalizeObservation.reward_range
-      ~NormalizeObservation.spec
-      ~NormalizeObservation.unwrapped
    
    

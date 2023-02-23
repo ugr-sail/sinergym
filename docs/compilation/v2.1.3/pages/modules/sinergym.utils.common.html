@@ -87,6 +87,7 @@
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_record_keys.html">sinergym.utils.common.get_record_keys</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_season_comfort_range.html">sinergym.utils.common.get_season_comfort_range</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.is_wrapped.html">sinergym.utils.common.is_wrapped</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.parse_variables.html">sinergym.utils.common.parse_variables</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.prepare_batch_from_records.html">sinergym.utils.common.prepare_batch_from_records</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.ranges_getter.html">sinergym.utils.common.ranges_getter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.to_idf.html">sinergym.utils.common.to_idf</a></li>
@@ -187,16 +188,19 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.is_wrapped.html#sinergym.utils.common.is_wrapped" title="sinergym.utils.common.is_wrapped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_wrapped</span></code></a>(env, wrapper_class)</p></td>
 <td><p>Check if a given environment has been wrapped with a given wrapper.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.prepare_batch_from_records.html#sinergym.utils.common.prepare_batch_from_records" title="sinergym.utils.common.prepare_batch_from_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepare_batch_from_records</span></code></a>(records)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.parse_variables.html#sinergym.utils.common.parse_variables" title="sinergym.utils.common.parse_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_variables</span></code></a>(var_file)</p></td>
+<td><p>Parse observation and action to dictionary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.prepare_batch_from_records.html#sinergym.utils.common.prepare_batch_from_records" title="sinergym.utils.common.prepare_batch_from_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepare_batch_from_records</span></code></a>(records)</p></td>
 <td><p>Prepare a list of dictionaries in order to use Epm.add_batch directly</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.ranges_getter.html#sinergym.utils.common.ranges_getter" title="sinergym.utils.common.ranges_getter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ranges_getter</span></code></a>(output_path[, last_result])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.ranges_getter.html#sinergym.utils.common.ranges_getter" title="sinergym.utils.common.ranges_getter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ranges_getter</span></code></a>(output_path[, last_result])</p></td>
 <td><p>Given a path with simulations outputs, this function is used to extract max and min absolute values of all episodes in each variable.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.to_idf.html#sinergym.utils.common.to_idf" title="sinergym.utils.common.to_idf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_idf</span></code></a>(building, file_path)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.to_idf.html#sinergym.utils.common.to_idf" title="sinergym.utils.common.to_idf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_idf</span></code></a>(building, file_path)</p></td>
 <td><p>Given a building model (opyplus Epm object), this function export an IDF file with all content specified.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.unwrap_wrapper.html#sinergym.utils.common.unwrap_wrapper" title="sinergym.utils.common.unwrap_wrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrap_wrapper</span></code></a>(env, wrapper_class)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.unwrap_wrapper.html#sinergym.utils.common.unwrap_wrapper" title="sinergym.utils.common.unwrap_wrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrap_wrapper</span></code></a>(env, wrapper_class)</p></td>
 <td><p>Retrieve a <code class="docutils literal notranslate"><span class="pre">VecEnvWrapper</span></code> object by recursively searching.</p></td>
 </tr>
 </tbody>

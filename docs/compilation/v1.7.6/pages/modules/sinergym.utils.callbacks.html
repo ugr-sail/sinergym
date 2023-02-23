@@ -21,7 +21,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.callbacks.LoggerCallback" href="sinergym.utils.callbacks.LoggerCallback.html" />
+    <link rel="next" title="sinergym.utils.callbacks.evaluate_policy" href="sinergym.utils.callbacks.evaluate_policy.html" />
     <link rel="prev" title="sinergym.utils" href="sinergym.utils.html" /> 
 </head>
 
@@ -61,18 +61,15 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../API-reference.html">API reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">sinergym.utils.callbacks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.callbacks.evaluate_policy.html">sinergym.utils.callbacks.evaluate_policy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.callbacks.LoggerCallback.html">sinergym.utils.callbacks.LoggerCallback</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.callbacks.LoggerEvalCallback.html">sinergym.utils.callbacks.LoggerEvalCallback</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.config.html">sinergym.utils.config</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
 </ul>
@@ -136,6 +133,14 @@
 <section id="module-sinergym.utils.callbacks">
 <span id="sinergym-utils-callbacks"></span><h1>sinergym.utils.callbacks<a class="headerlink" href="#module-sinergym.utils.callbacks" title="Permalink to this heading"></a></h1>
 <p>Custom Callbacks for stable baselines 3 algorithms.</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.callbacks.evaluate_policy.html#sinergym.utils.callbacks.evaluate_policy" title="sinergym.utils.callbacks.evaluate_policy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate_policy</span></code></a>(model, env[, ...])</p></td>
+<td><p>Runs policy for <code class="docutils literal notranslate"><span class="pre">n_eval_episodes</span></code> episodes and returns average reward.</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -154,7 +159,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="sinergym.utils.html" class="btn btn-neutral float-left" title="sinergym.utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.callbacks.LoggerCallback.html" class="btn btn-neutral float-right" title="sinergym.utils.callbacks.LoggerCallback" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.callbacks.evaluate_policy.html" class="btn btn-neutral float-right" title="sinergym.utils.callbacks.evaluate_policy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -21,8 +21,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.gcloud.delete_instance_MIG_from_container" href="sinergym.utils.gcloud.delete_instance_MIG_from_container.html" />
-    <link rel="prev" title="sinergym.utils.evaluation.evaluate_policy" href="sinergym.utils.evaluation.evaluate_policy.html" /> 
+    <link rel="next" title="sinergym.utils.gcloud.create_bucket" href="sinergym.utils.gcloud.create_bucket.html" />
+    <link rel="prev" title="sinergym.utils.controllers.RuleBasedController" href="sinergym.utils.controllers.RuleBasedController.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -61,20 +61,27 @@
 <li class="toctree-l2 current"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.config.html">sinergym.utils.config</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">sinergym.utils.gcloud</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.create_bucket.html">sinergym.utils.gcloud.create_bucket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.create_instance_group.html">sinergym.utils.gcloud.create_instance_group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.delete_instance.html">sinergym.utils.gcloud.delete_instance</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.delete_instance_MIG_from_container.html">sinergym.utils.gcloud.delete_instance_MIG_from_container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.delete_instance_from_container.html">sinergym.utils.gcloud.delete_instance_from_container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.delete_instance_group.html">sinergym.utils.gcloud.delete_instance_group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.execute_remote_command_instance.html">sinergym.utils.gcloud.execute_remote_command_instance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.get_bucket.html">sinergym.utils.gcloud.get_bucket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.get_container_id.html">sinergym.utils.gcloud.get_container_id</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.get_service_account_token.html">sinergym.utils.gcloud.get_service_account_token</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.init_gcloud_service.html">sinergym.utils.gcloud.init_gcloud_service</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.init_storage_client.html">sinergym.utils.gcloud.init_storage_client</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.list_instance_groups.html">sinergym.utils.gcloud.list_instance_groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.list_instances.html">sinergym.utils.gcloud.list_instances</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.read_from_bucket.html">sinergym.utils.gcloud.read_from_bucket</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.upload_to_bucket.html">sinergym.utils.gcloud.upload_to_bucket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.wait_for_operation.html">sinergym.utils.gcloud.wait_for_operation</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
 </ul>
@@ -137,24 +144,59 @@
 </style>
 <section id="module-sinergym.utils.gcloud">
 <span id="sinergym-utils-gcloud"></span><h1>sinergym.utils.gcloud<a class="headerlink" href="#module-sinergym.utils.gcloud" title="Permalink to this heading"></a></h1>
-<p>Utilities to use Google Cloud Python API and Google Cloud API REST easier.</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.gcloud.delete_instance_MIG_from_container.html#sinergym.utils.gcloud.delete_instance_MIG_from_container" title="sinergym.utils.gcloud.delete_instance_MIG_from_container"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_instance_MIG_from_container</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.gcloud.create_bucket.html#sinergym.utils.gcloud.create_bucket" title="sinergym.utils.gcloud.create_bucket"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_bucket</span></code></a>(client[, bucket_name, location])</p></td>
+<td><p>Create bucket in Google Cloud.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.gcloud.create_instance_group.html#sinergym.utils.gcloud.create_instance_group" title="sinergym.utils.gcloud.create_instance_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_instance_group</span></code></a>(service, project, ...)</p></td>
+<td><p>Create an instance group (MIG) in Google Cloud.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.gcloud.delete_instance.html#sinergym.utils.gcloud.delete_instance" title="sinergym.utils.gcloud.delete_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_instance</span></code></a>(service, project, zone, name)</p></td>
+<td><p>Delete an instance inner Google Cloud.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.gcloud.delete_instance_MIG_from_container.html#sinergym.utils.gcloud.delete_instance_MIG_from_container" title="sinergym.utils.gcloud.delete_instance_MIG_from_container"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_instance_MIG_from_container</span></code></a>(...)</p></td>
 <td><p>Delete the instance group inner Managed Instance Groups where container is executing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.gcloud.delete_instance_from_container.html#sinergym.utils.gcloud.delete_instance_from_container" title="sinergym.utils.gcloud.delete_instance_from_container"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_instance_from_container</span></code></a>(token)</p></td>
+<td><p>Delete an individual instance group (this functionality doesn't work in Managed Instance Groups) where container is executing.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.gcloud.delete_instance_group.html#sinergym.utils.gcloud.delete_instance_group" title="sinergym.utils.gcloud.delete_instance_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_instance_group</span></code></a>(service, project, ...)</p></td>
+<td><p>Delete a whole instance group inner Google Cloud.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.gcloud.execute_remote_command_instance.html#sinergym.utils.gcloud.execute_remote_command_instance" title="sinergym.utils.gcloud.execute_remote_command_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">execute_remote_command_instance</span></code></a>(...)</p></td>
+<td><p>Execute a specified command in an instance previously created inner Google Cloud (Terminal is free after sending command).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.gcloud.get_bucket.html#sinergym.utils.gcloud.get_bucket" title="sinergym.utils.gcloud.get_bucket"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_bucket</span></code></a>(client, bucket_name)</p></td>
+<td><p>Get bucket object into Google Account using client.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.gcloud.get_container_id.html#sinergym.utils.gcloud.get_container_id" title="sinergym.utils.gcloud.get_container_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_container_id</span></code></a>(instance_name[, base])</p></td>
+<td><p>Get container id inner an instance.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.gcloud.get_service_account_token.html#sinergym.utils.gcloud.get_service_account_token" title="sinergym.utils.gcloud.get_service_account_token"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_service_account_token</span></code></a>()</p></td>
 <td><p>Get token authorization if container has a valid service account.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.gcloud.init_storage_client.html#sinergym.utils.gcloud.init_storage_client" title="sinergym.utils.gcloud.init_storage_client"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_storage_client</span></code></a>()</p></td>
-<td><p>Initiate gcloud storage client to send petitions.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.gcloud.init_gcloud_service.html#sinergym.utils.gcloud.init_gcloud_service" title="sinergym.utils.gcloud.init_gcloud_service"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_gcloud_service</span></code></a>()</p></td>
+<td><p>Init gcloud service to do operations.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.gcloud.read_from_bucket.html#sinergym.utils.gcloud.read_from_bucket" title="sinergym.utils.gcloud.read_from_bucket"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_from_bucket</span></code></a>(client, bucket_name, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.gcloud.init_storage_client.html#sinergym.utils.gcloud.init_storage_client" title="sinergym.utils.gcloud.init_storage_client"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_storage_client</span></code></a>()</p></td>
+<td><p>Init gcloud storage client to send petitions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.gcloud.list_instance_groups.html#sinergym.utils.gcloud.list_instance_groups" title="sinergym.utils.gcloud.list_instance_groups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_instance_groups</span></code></a>(service, project, zone)</p></td>
+<td><p>List instances groups names created in Google Cloud currently.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.gcloud.list_instances.html#sinergym.utils.gcloud.list_instances" title="sinergym.utils.gcloud.list_instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_instances</span></code></a>(service, project, zone[, ...])</p></td>
+<td><p>List instances names created in Google Cloud currently.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.gcloud.read_from_bucket.html#sinergym.utils.gcloud.read_from_bucket" title="sinergym.utils.gcloud.read_from_bucket"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_from_bucket</span></code></a>(client, src_path, ...)</p></td>
 <td><p>Read a file or a directory (recursively) from specified bucket to local file system.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.gcloud.upload_to_bucket.html#sinergym.utils.gcloud.upload_to_bucket" title="sinergym.utils.gcloud.upload_to_bucket"><code class="xref py py-obj docutils literal notranslate"><span class="pre">upload_to_bucket</span></code></a>(client, src_path, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.gcloud.upload_to_bucket.html#sinergym.utils.gcloud.upload_to_bucket" title="sinergym.utils.gcloud.upload_to_bucket"><code class="xref py py-obj docutils literal notranslate"><span class="pre">upload_to_bucket</span></code></a>(client, src_path, ...)</p></td>
 <td><p>Upload a file or a directory (recursively) from local file system to specified bucket.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.gcloud.wait_for_operation.html#sinergym.utils.gcloud.wait_for_operation" title="sinergym.utils.gcloud.wait_for_operation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wait_for_operation</span></code></a>(service, project, zone, ...)</p></td>
+<td><p>Sleep script execution until response status is DONE.</p></td>
 </tr>
 </tbody>
 </table>
@@ -164,8 +206,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sinergym.utils.evaluation.evaluate_policy.html" class="btn btn-neutral float-left" title="sinergym.utils.evaluation.evaluate_policy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.gcloud.delete_instance_MIG_from_container.html" class="btn btn-neutral float-right" title="sinergym.utils.gcloud.delete_instance_MIG_from_container" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.controllers.RuleBasedController.html" class="btn btn-neutral float-left" title="sinergym.utils.controllers.RuleBasedController" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sinergym.utils.gcloud.create_bucket.html" class="btn btn-neutral float-right" title="sinergym.utils.gcloud.create_bucket" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

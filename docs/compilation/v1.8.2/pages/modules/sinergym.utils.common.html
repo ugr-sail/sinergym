@@ -63,25 +63,23 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">sinergym.utils.common</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.create_variable_weather.html">sinergym.utils.common.create_variable_weather</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.export_actuators_to_excel.html">sinergym.utils.common.export_actuators_to_excel</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_current_time_info.html">sinergym.utils.common.get_current_time_info</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_delta_seconds.html">sinergym.utils.common.get_delta_seconds</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_record_keys.html">sinergym.utils.common.get_record_keys</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_season_comfort_range.html">sinergym.utils.common.get_season_comfort_range</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.is_wrapped.html">sinergym.utils.common.is_wrapped</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.parse_observation_action_space.html">sinergym.utils.common.parse_observation_action_space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.parse_variables.html">sinergym.utils.common.parse_variables</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.prepare_batch_from_records.html">sinergym.utils.common.prepare_batch_from_records</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.ranges_getter.html">sinergym.utils.common.ranges_getter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.to_idf.html">sinergym.utils.common.to_idf</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.unwrap_wrapper.html">sinergym.utils.common.unwrap_wrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.setpoints_transform.html">sinergym.utils.common.setpoints_transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.CSVLogger.html">sinergym.utils.common.CSVLogger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.Logger.html">sinergym.utils.common.Logger</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.config.html">sinergym.utils.config</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
 </ul>
@@ -151,23 +149,23 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.create_variable_weather.html#sinergym.utils.common.create_variable_weather" title="sinergym.utils.common.create_variable_weather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_variable_weather</span></code></a>(weather_data, ...[, ...])</p></td>
 <td><p>Create a new weather file using Ornstein-Uhlenbeck process.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.export_actuators_to_excel.html#sinergym.utils.common.export_actuators_to_excel" title="sinergym.utils.common.export_actuators_to_excel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_actuators_to_excel</span></code></a>(actuators, path)</p></td>
-<td><p>Given a python dictionary with actuators with Config:_get_actuators() format, this method export that information in a excel file</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.get_current_time_info.html#sinergym.utils.common.get_current_time_info" title="sinergym.utils.common.get_current_time_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_current_time_info</span></code></a>(epm, sec_elapsed)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.get_current_time_info.html#sinergym.utils.common.get_current_time_info" title="sinergym.utils.common.get_current_time_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_current_time_info</span></code></a>(epm, sec_elapsed)</p></td>
 <td><p>Returns the current day, month and hour given the seconds elapsed since the simulation started.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.get_delta_seconds.html#sinergym.utils.common.get_delta_seconds" title="sinergym.utils.common.get_delta_seconds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_delta_seconds</span></code></a>(st_year, st_mon, st_day, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.get_delta_seconds.html#sinergym.utils.common.get_delta_seconds" title="sinergym.utils.common.get_delta_seconds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_delta_seconds</span></code></a>(st_year, st_mon, st_day, ...)</p></td>
 <td><p>Returns the delta seconds between st year:st mon:st day:0:0:0 and end year:end mon:end day:24:0:0.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.get_record_keys.html#sinergym.utils.common.get_record_keys" title="sinergym.utils.common.get_record_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_record_keys</span></code></a>(record)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.get_record_keys.html#sinergym.utils.common.get_record_keys" title="sinergym.utils.common.get_record_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_record_keys</span></code></a>(record)</p></td>
 <td><p>Given an opyplus Epm Record (one element from opyplus.epm object) this function returns list of keys (opyplus hasn't got this functionality explicitly)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.get_season_comfort_range.html#sinergym.utils.common.get_season_comfort_range" title="sinergym.utils.common.get_season_comfort_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_season_comfort_range</span></code></a>(year, month, day)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.get_season_comfort_range.html#sinergym.utils.common.get_season_comfort_range" title="sinergym.utils.common.get_season_comfort_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_season_comfort_range</span></code></a>(year, month, day)</p></td>
 <td><p>Get comfort temperature range depending on season.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.is_wrapped.html#sinergym.utils.common.is_wrapped" title="sinergym.utils.common.is_wrapped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_wrapped</span></code></a>(env, wrapper_class)</p></td>
-<td><p>Check if a given environment has been wrapped with a given wrapper.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.parse_observation_action_space.html#sinergym.utils.common.parse_observation_action_space" title="sinergym.utils.common.parse_observation_action_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_observation_action_space</span></code></a>(space_file)</p></td>
+<td><p>Parse observation space definition to gym env.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.parse_variables.html#sinergym.utils.common.parse_variables" title="sinergym.utils.common.parse_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_variables</span></code></a>(var_file)</p></td>
+<td><p>Parse observation and action to dictionary.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.prepare_batch_from_records.html#sinergym.utils.common.prepare_batch_from_records" title="sinergym.utils.common.prepare_batch_from_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepare_batch_from_records</span></code></a>(records)</p></td>
 <td><p>Prepare a list of dictionaries in order to use Epm.add_batch directly</p></td>
@@ -175,11 +173,19 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.ranges_getter.html#sinergym.utils.common.ranges_getter" title="sinergym.utils.common.ranges_getter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ranges_getter</span></code></a>(output_path[, last_result])</p></td>
 <td><p>Given a path with simulations outputs, this function is used to extract max and min absolute values of all episodes in each variable.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.to_idf.html#sinergym.utils.common.to_idf" title="sinergym.utils.common.to_idf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_idf</span></code></a>(building, file_path)</p></td>
-<td><p>Given a building model (opyplus Epm object), this function export an IDF file with all content specified.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.setpoints_transform.html#sinergym.utils.common.setpoints_transform" title="sinergym.utils.common.setpoints_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setpoints_transform</span></code></a>(action, action_space, ...)</p></td>
+<td><p>Given an action inner gym action_space, this will be converted into an action inner setpoints_space (Sinergym Simulation).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.unwrap_wrapper.html#sinergym.utils.common.unwrap_wrapper" title="sinergym.utils.common.unwrap_wrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrap_wrapper</span></code></a>(env, wrapper_class)</p></td>
-<td><p>Retrieve a <code class="docutils literal notranslate"><span class="pre">VecEnvWrapper</span></code> object by recursively searching.</p></td>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.CSVLogger.html#sinergym.utils.common.CSVLogger" title="sinergym.utils.common.CSVLogger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CSVLogger</span></code></a>(monitor_header, progress_header, ...)</p></td>
+<td><p>CSV Logger for agent interaction with environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.Logger.html#sinergym.utils.common.Logger" title="sinergym.utils.common.Logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Logger</span></code></a>()</p></td>
+<td><p>Sinergym terminal logger for simulation executions.</p></td>
 </tr>
 </tbody>
 </table>

@@ -16,6 +16,7 @@ sinergym.utils.rewards.LinearReward
    .. autosummary::
    
       ~LinearReward.__init__
+      ~LinearReward.calculate
    
    
 

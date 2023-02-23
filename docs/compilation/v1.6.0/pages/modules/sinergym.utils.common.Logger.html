@@ -20,7 +20,9 @@
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="sinergym.utils.controllers" href="sinergym.utils.controllers.html" />
+    <link rel="prev" title="sinergym.utils.common.CSVLogger" href="sinergym.utils.common.CSVLogger.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,7 +45,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github Actions</a></li>
@@ -55,7 +57,31 @@
 <li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../API-reference.html">API reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API-reference.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.create_variable_weather.html">sinergym.utils.common.create_variable_weather</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_current_time_info.html">sinergym.utils.common.get_current_time_info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_delta_seconds.html">sinergym.utils.common.get_delta_seconds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.parse_observation_action_space.html">sinergym.utils.common.parse_observation_action_space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.parse_variables.html">sinergym.utils.common.parse_variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.ranges_getter.html">sinergym.utils.common.ranges_getter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.setpoints_transform.html">sinergym.utils.common.setpoints_transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.CSVLogger.html">sinergym.utils.common.CSVLogger</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.common.Logger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sinergym.envs.html">sinergym.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sinergym.simulators.html">sinergym.simulators</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -72,6 +98,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API-reference.html">API reference</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.utils.html">sinergym.utils</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.utils.common.html">sinergym.utils.common</a></li>
       <li class="breadcrumb-item active">sinergym.utils.common.Logger</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/modules/sinergym.utils.common.Logger.rst.txt" rel="nofollow"> View page source</a>
@@ -108,12 +137,55 @@
 </style>
 <section id="sinergym-utils-common-logger">
 <h1>sinergym.utils.common.Logger<a class="headerlink" href="#sinergym-utils-common-logger" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="sinergym.utils.common.Logger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.common.</span></span><span class="sig-name descname"><span class="pre">Logger</span></span><a class="headerlink" href="#sinergym.utils.common.Logger" title="Permalink to this definition"></a></dt>
+<dd><p>Sinergym terminal logger for simulation executions.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.common.Logger.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.common.Logger.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.common.Logger.__init__" title="sinergym.utils.common.Logger.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.common.Logger.getLogger" title="sinergym.utils.common.Logger.getLogger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getLogger</span></code></a>(name, level, formatter)</p></td>
+<td><p>Return Sinergym logger for the progress output in terminal.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.common.Logger.getLogger">
+<span class="sig-name descname"><span class="pre">getLogger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.common.Logger.getLogger" title="Permalink to this definition"></a></dt>
+<dd><p>Return Sinergym logger for the progress output in terminal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – logger name</p></li>
+<li><p><strong>level</strong> (<em>str</em>) – logger level</p></li>
+<li><p><strong>formatter</strong> (<em>str</em>) – logger formatter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>logging.logger</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sinergym.utils.common.CSVLogger.html" class="btn btn-neutral float-left" title="sinergym.utils.common.CSVLogger" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sinergym.utils.controllers.html" class="btn btn-neutral float-right" title="sinergym.utils.controllers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

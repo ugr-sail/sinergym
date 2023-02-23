@@ -21,7 +21,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper" href="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.html" />
+    <link rel="next" title="sinergym.envs" href="sinergym.envs.html" />
     <link rel="prev" title="sinergym.utils.wrappers.MultiObsWrapper" href="sinergym.utils.wrappers.MultiObsWrapper.html" /> 
 </head>
 
@@ -63,18 +63,14 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.config.html">sinergym.utils.config</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.LoggerWrapper.html">sinergym.utils.wrappers.LoggerWrapper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.MultiObsWrapper.html">sinergym.utils.wrappers.MultiObsWrapper</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.wrappers.NormalizeObservation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.html">sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper</a></li>
 </ul>
 </li>
 </ul>
@@ -140,16 +136,16 @@
 <h1>sinergym.utils.wrappers.NormalizeObservation<a class="headerlink" href="#sinergym-utils-wrappers-normalizeobservation" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.NormalizeObservation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">NormalizeObservation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">NormalizeObservation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation" title="Permalink to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.NormalizeObservation.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'Facility</span> <span class="pre">Total</span> <span class="pre">HVAC</span> <span class="pre">Electricity</span> <span class="pre">Demand</span> <span class="pre">Rate</span> <span class="pre">(Whole</span> <span class="pre">Building)':</span> <span class="pre">[173.6583692738386,</span> <span class="pre">32595.57259261767],</span> <span class="pre">'People</span> <span class="pre">Air</span> <span class="pre">Temperature</span> <span class="pre">(SPACE1-1</span> <span class="pre">PEOPLE</span> <span class="pre">1)':</span> <span class="pre">[0.0,</span> <span class="pre">30.00826655379267],</span> <span class="pre">'Site</span> <span class="pre">Diffuse</span> <span class="pre">Solar</span> <span class="pre">Radiation</span> <span class="pre">Rate</span> <span class="pre">per</span> <span class="pre">Area</span> <span class="pre">(Environment)':</span> <span class="pre">[0.0,</span> <span class="pre">588.0],</span> <span class="pre">'Site</span> <span class="pre">Direct</span> <span class="pre">Solar</span> <span class="pre">Radiation</span> <span class="pre">Rate</span> <span class="pre">per</span> <span class="pre">Area</span> <span class="pre">(Environment)':</span> <span class="pre">[0.0,</span> <span class="pre">1033.0],</span> <span class="pre">'Site</span> <span class="pre">Outdoor</span> <span class="pre">Air</span> <span class="pre">Drybulb</span> <span class="pre">Temperature</span> <span class="pre">(Environment)':</span> <span class="pre">[-31.05437255409474,</span> <span class="pre">60.72839186915495],</span> <span class="pre">'Site</span> <span class="pre">Outdoor</span> <span class="pre">Air</span> <span class="pre">Relative</span> <span class="pre">Humidity</span> <span class="pre">(Environment)':</span> <span class="pre">[3.0,</span> <span class="pre">100.0],</span> <span class="pre">'Site</span> <span class="pre">Wind</span> <span class="pre">Direction</span> <span class="pre">(Environment)':</span> <span class="pre">[0.0,</span> <span class="pre">357.5],</span> <span class="pre">'Site</span> <span class="pre">Wind</span> <span class="pre">Speed</span> <span class="pre">(Environment)':</span> <span class="pre">[0.0,</span> <span class="pre">23.1],</span> <span class="pre">'Space1-ClgSetP-RL':</span> <span class="pre">[21.0,</span> <span class="pre">30.0],</span> <span class="pre">'Space1-HtgSetP-RL':</span> <span class="pre">[15.0,</span> <span class="pre">22.49999],</span> <span class="pre">'Zone</span> <span class="pre">Air</span> <span class="pre">Relative</span> <span class="pre">Humidity</span> <span class="pre">(SPACE1-1)':</span> <span class="pre">[3.287277410867238,</span> <span class="pre">87.60662171287048],</span> <span class="pre">'Zone</span> <span class="pre">Air</span> <span class="pre">Temperature</span> <span class="pre">(SPACE1-1)':</span> <span class="pre">[15.22565264653451,</span> <span class="pre">30.00826655379267],</span> <span class="pre">'Zone</span> <span class="pre">People</span> <span class="pre">Occupant</span> <span class="pre">Count</span> <span class="pre">(SPACE1-1)':</span> <span class="pre">[0.0,</span> <span class="pre">11.0],</span> <span class="pre">'Zone</span> <span class="pre">Thermal</span> <span class="pre">Comfort</span> <span class="pre">Clothing</span> <span class="pre">Value</span> <span class="pre">(SPACE1-1</span> <span class="pre">PEOPLE</span> <span class="pre">1)':</span> <span class="pre">[0.0,</span> <span class="pre">1.0],</span> <span class="pre">'Zone</span> <span class="pre">Thermal</span> <span class="pre">Comfort</span> <span class="pre">Fanger</span> <span class="pre">Model</span> <span class="pre">PPD</span> <span class="pre">(SPACE1-1</span> <span class="pre">PEOPLE</span> <span class="pre">1)':</span> <span class="pre">[0.0,</span> <span class="pre">98.37141259444684],</span> <span class="pre">'Zone</span> <span class="pre">Thermal</span> <span class="pre">Comfort</span> <span class="pre">Mean</span> <span class="pre">Radiant</span> <span class="pre">Temperature</span> <span class="pre">(SPACE1-1</span> <span class="pre">PEOPLE</span> <span class="pre">1)':</span> <span class="pre">[0.0,</span> <span class="pre">35.98853496778508],</span> <span class="pre">'Zone</span> <span class="pre">Thermostat</span> <span class="pre">Cooling</span> <span class="pre">Setpoint</span> <span class="pre">Temperature</span> <span class="pre">(SPACE1-1)':</span> <span class="pre">[21.0,</span> <span class="pre">30.0],</span> <span class="pre">'Zone</span> <span class="pre">Thermostat</span> <span class="pre">Heating</span> <span class="pre">Setpoint</span> <span class="pre">Temperature</span> <span class="pre">(SPACE1-1)':</span> <span class="pre">[15.0,</span> <span class="pre">22.49999046325684],</span> <span class="pre">'comfort_penalty':</span> <span class="pre">[-6.508266553792669,</span> <span class="pre">-0.0],</span> <span class="pre">'day':</span> <span class="pre">[1,</span> <span class="pre">31],</span> <span class="pre">'done':</span> <span class="pre">[False,</span> <span class="pre">True],</span> <span class="pre">'hour':</span> <span class="pre">[0,</span> <span class="pre">23],</span> <span class="pre">'month':</span> <span class="pre">[1,</span> <span class="pre">12],</span> <span class="pre">'reward':</span> <span class="pre">[-3.550779087370951,</span> <span class="pre">-0.0086829184636919],</span> <span class="pre">'time</span> <span class="pre">(seconds)':</span> <span class="pre">[0,</span> <span class="pre">31536000],</span> <span class="pre">'timestep':</span> <span class="pre">[0,</span> <span class="pre">35040],</span> <span class="pre">'total_power_no_units':</span> <span class="pre">[-3.259557259261767,</span> <span class="pre">-0.0173658369273838]}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Observations normalized to range [0, 1].</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>env</strong> (<em>Any</em>) – Original Sinergym environment.</p></li>
-<li><p><strong>ranges</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – Observation variables ranges to apply normalization (rely on environment).</p></li>
+<li><p><strong>ranges</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>Any</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Observation variables ranges to apply normalization (rely on environment). Defaults to RANGES_5ZONE.</p></li>
 </ul>
 </dd>
 </dl>
@@ -158,58 +154,14 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.__init__" title="sinergym.utils.wrappers.NormalizeObservation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env, ranges)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.__init__" title="sinergym.utils.wrappers.NormalizeObservation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env[, ranges])</p></td>
 <td><p>Observations normalized to range [0, 1].</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_name</span></code>()</p></td>
-<td><p>Returns the class name of the wrapper.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code>()</p></td>
-<td><p>Closes the wrapper and <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.get_unwrapped_obs" title="sinergym.utils.wrappers.NormalizeObservation.get_unwrapped_obs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_unwrapped_obs</span></code></a>()</p></td>
 <td><p>Get last environment observation without normalization.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.observation" title="sinergym.utils.wrappers.NormalizeObservation.observation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation</span></code></a>(obs)</p></td>
 <td><p>Applies normalization to observation.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
-<td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code>(*[, seed, options])</p></td>
-<td><p>Modifies the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> after calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code>, returning a modified observation using <code class="xref py py-meth docutils literal notranslate"><span class="pre">self.observation()</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code>(action)</p></td>
-<td><p>Modifies the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> after calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> using <code class="xref py py-meth docutils literal notranslate"><span class="pre">self.observation()</span></code> on the returned observations.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_space</span></code></p></td>
-<td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">action_space</span></code> unless overwritten then the wrapper <code class="xref py py-attr docutils literal notranslate"><span class="pre">action_space</span></code> is used.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata</span></code></p></td>
-<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">metadata</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_random</span></code></p></td>
-<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">np_random</span></code> attribute.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation_space</span></code></p></td>
-<td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">observation_space</span></code> unless overwritten then the wrapper <code class="xref py py-attr docutils literal notranslate"><span class="pre">observation_space</span></code> is used.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_mode</span></code></p></td>
-<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">render_mode</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reward_range</span></code></p></td>
-<td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code> unless overwritten then the wrapper <code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code> is used.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></p></td>
-<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">spec</span></code> attribute.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></p></td>
-<td><p>Returns the base environment of the wrapper.</p></td>
 </tr>
 </tbody>
 </table>
@@ -253,7 +205,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="sinergym.utils.wrappers.MultiObsWrapper.html" class="btn btn-neutral float-left" title="sinergym.utils.wrappers.MultiObsWrapper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.html" class="btn btn-neutral float-right" title="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.envs.html" class="btn btn-neutral float-right" title="sinergym.envs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

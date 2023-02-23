@@ -63,19 +63,14 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.config.html">sinergym.utils.config</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.gcloud.delete_instance_MIG_from_container</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.get_service_account_token.html">sinergym.utils.gcloud.get_service_account_token</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.init_storage_client.html">sinergym.utils.gcloud.init_storage_client</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.read_from_bucket.html">sinergym.utils.gcloud.read_from_bucket</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.gcloud.upload_to_bucket.html">sinergym.utils.gcloud.upload_to_bucket</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
 </ul>
@@ -141,20 +136,20 @@
 <h1>sinergym.utils.gcloud.delete_instance_MIG_from_container<a class="headerlink" href="#sinergym-utils-gcloud-delete-instance-mig-from-container" title="Permalink to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="sinergym.utils.gcloud.delete_instance_MIG_from_container">
-<span class="sig-prename descclassname"><span class="pre">sinergym.utils.gcloud.</span></span><span class="sig-name descname"><span class="pre">delete_instance_MIG_from_container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_group_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="headerlink" href="#sinergym.utils.gcloud.delete_instance_MIG_from_container" title="Permalink to this definition"></a></dt>
-<dd><p>Delete the instance group inner Managed Instance Groups where container is executing. Whether this VM is alone in MIG, MIG will be removed too.</p>
+<span class="sig-prename descclassname"><span class="pre">sinergym.utils.gcloud.</span></span><span class="sig-name descname"><span class="pre">delete_instance_MIG_from_container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_group_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.gcloud.delete_instance_MIG_from_container" title="Permalink to this definition"></a></dt>
+<dd><p>Delete the instance group inner Managed Instance Groups where container is executing. Whether this vm is alone in MIG, MIG will be removed too.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>instance_group_name</strong> (<em>str</em>) – Instance group name where container is executing.</p></li>
-<li><p><strong>token</strong> (<em>str</em>) – str to auth in Google Cloud Account service from container</p></li>
+<li><p><strong>instance_group_name</strong> – Instance group name where container is executing.</p></li>
+<li><p><strong>token</strong> – str to auth in Google Cloud Account service from container</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>REST response</p>
+<dd class="field-even"><p>REST reponse</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>requests.Response</p>
+<dd class="field-odd"><p>Request object</p>
 </dd>
 </dl>
 </dd></dl>
