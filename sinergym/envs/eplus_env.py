@@ -120,7 +120,7 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         #                               Observation Space                              #
         # ---------------------------------------------------------------------------- #
-        self.observation_space = observation_space
+        self._observation_space = observation_space
 
         # ---------------------------------------------------------------------------- #
         #                                 Action Space                                 #
@@ -134,13 +134,13 @@ class EplusEnv(gym.Env):
         # Discrete
         if self.flag_discrete:
             self.action_mapping = action_mapping
-            self.action_space = action_space
+            self._action_space = action_space
         # Continuous
         else:
             # Defining action values setpoints (one per value)
             self.setpoints_space = action_space
 
-            self.action_space = gym.spaces.Box(
+            self._action_space = gym.spaces.Box(
                 # continuous_action_def[2] --> shape
                 low=np.array(
                     np.repeat(-1, action_space.shape[0]), dtype=np.float32),
@@ -338,14 +338,19 @@ class EplusEnv(gym.Env):
         action_ = []
 
         for i, value in enumerate(action):
-            if self.action_space.low[i] <= value <= self.action_space.high[i]:
-                a_max_min = self.action_space.high[i] - \
-                    self.action_space.low[i]
+            if self._action_space.low[i] <= value <= self._action_space.high[i]:
+                a_max_min = self._action_space.high[i] - \
+                    self._action_space.low[i]
                 sp_max_min = self.setpoints_space.high[i] - \
                     self.setpoints_space.low[i]
 
                 action_.append(
-                    self.setpoints_space.low[i] + (value - self.action_space.low[i]) * sp_max_min / a_max_min)
+                    self.setpoints_space.low[i] +
+                    (
+                        value -
+                        self._action_space.low[i]) *
+                    sp_max_min /
+                    a_max_min)
             else:
                 # If action is outer action_space already, it don't need
                 # transformation
@@ -357,7 +362,7 @@ class EplusEnv(gym.Env):
         """This method checks that environment definition is correct and it has not inconsistencies.
         """
         # OBSERVATION
-        assert len(self.variables['observation']) == self.observation_space.shape[
+        assert len(self.variables['observation']) == self._observation_space.shape[
             0], 'Observation space has not the same length than variable names specified.'
 
         # ACTION
@@ -366,17 +371,40 @@ class EplusEnv(gym.Env):
                 self, 'action_mapping'), 'Discrete environment: action mapping should have been defined.'
             assert not hasattr(
                 self, 'setpoints_space'), 'Discrete environment: setpoints space should not have been defined.'
-            assert self.action_space.n == len(
+            assert self._action_space.n == len(
                 self.action_mapping), 'Discrete environment: The length of the action_mapping must match the dimension of the discrete action space.'
             for values in self.action_mapping.values():
                 assert len(values) == len(
                     self.variables['action']), 'Discrete environment: Action mapping tuples values must have the same length than action variables specified.'
         else:
-            assert len(
-                self.variables['action']) == self.action_space.shape[0], 'Action space shape must match with number of action variables specified.'
+            assert len(self.variables['action']) == self._action_space.shape[
+                0], 'Action space shape must match with number of action variables specified.'
             assert hasattr(
                 self, 'setpoints_space'), 'Continuous environment: setpoints_space attribute should have been defined.'
             assert not hasattr(
                 self, 'action_mapping'), 'Continuous environment: action mapping should not have been defined.'
-            assert len(self.action_space.low) == len(self.variables['action']) and len(self.action_space.high) == len(
+            assert len(self._action_space.low) == len(self.variables['action']) and len(self._action_space.high) == len(
                 self.variables['action']), 'Continuous environment: low and high values action space definition should have the same number of values than action variables.'
+
+    # ---------------------------------------------------------------------------- #
+    #                                  Properties                                  #
+    # ---------------------------------------------------------------------------- #
+    @property
+    def action_space(
+        self,
+    ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
+        return self._action_space
+
+    @action_space.setter
+    def action_space(self, space: gym.spaces.Space[Any]):
+        self._action_space = space
+
+    @property
+    def observation_space(
+        self,
+    ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
+        return self._observation_space
+
+    @observation_space.setter
+    def observation_space(self, space: gym.spaces.Space[Any]):
+        self._observation_space = space

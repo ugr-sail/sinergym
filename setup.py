@@ -30,14 +30,14 @@ setup(name='sinergym',
               'pytest',
               'pytest-cov',
               'pytest-xdist',  # Unit test repository
-              'sphinx==5.1.1',  # documentation
-              'sphinx-rtd-theme==1.0.0',  # documentation theme
-              'sphinxcontrib-spelling==7.7.0',  # documentation spelling
-              'sphinx-multiversion==0.2.4',  # documentation versioning
-              'sphinx-multitoc-numbering==0.1.3',  # Section numbering
-              'pyenchant==3.2.0',
-              'nbsphinx==0.8.9',
-              'nbsphinx_link==1.3.0',
+              'sphinx',  # documentation
+              'sphinx-rtd-theme',  # documentation theme
+              'sphinxcontrib-spelling',  # documentation spelling
+              'sphinx-multiversion @ git+https://github.com/Holzhaus/sphinx-multiversion#egg=sphinx-multiversion',  # documentation versioning
+              'sphinx-multitoc-numbering',  # Section numbering
+              'pyenchant',
+              'nbsphinx',
+              'nbsphinx_link',
               'google-api-python-client==2.58.0',
               'oauth2client==4.1.3',
               'google-cloud-storage==2.5.0',
@@ -56,14 +56,14 @@ setup(name='sinergym',
               'tensorboard_plugin_profile==2.8.0'
           ],
           'doc': [
-              'sphinx==5.1.1',
-              'sphinx-rtd-theme==1.0.0',
-              'sphinxcontrib-spelling==7.7.0',
-              'sphinx-multiversion==0.2.4',
-              'sphinx-multitoc-numbering==0.1.3',
-              'pyenchant==3.2.0',
-              'nbsphinx==0.8.9',
-              'nbsphinx_link==1.3.0',
+              'sphinx',
+              'sphinx-rtd-theme',
+              'sphinxcontrib-spelling',
+              'sphinx-multiversion @ git+https://github.com/Holzhaus/sphinx-multiversion#egg=sphinx-multiversion',
+              'sphinx-multitoc-numbering',
+              'pyenchant',
+              'nbsphinx',
+              'nbsphinx_link',
               'IPython'
           ],
           'visualization': [

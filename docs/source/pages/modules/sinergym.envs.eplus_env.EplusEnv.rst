@@ -31,13 +31,13 @@
 
    .. autosummary::
    
+      ~EplusEnv.action_space
       ~EplusEnv.metadata
       ~EplusEnv.np_random
+      ~EplusEnv.observation_space
       ~EplusEnv.render_mode
       ~EplusEnv.reward_range
       ~EplusEnv.spec
       ~EplusEnv.unwrapped
-      ~EplusEnv.action_space
-      ~EplusEnv.observation_space
    
    

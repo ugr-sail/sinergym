@@ -14,6 +14,10 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath('../../'))
+modnames = [mname for mname in sys.modules if mname.startswith("sinergym")]
+for modname in modnames:
+    del sys.modules[modname]
+import sinergym
 
 # -- Project information -----------------------------------------------------
 
@@ -40,7 +44,7 @@ extensions = [
     'nbsphinx',
     'nbsphinx_link']
 
-autodoc_mock_imports = ["stable_baselines3"]
+autodoc_mock_imports = ['stable_baselines3', 'gym']
 
 autosummary_generate = True
 
