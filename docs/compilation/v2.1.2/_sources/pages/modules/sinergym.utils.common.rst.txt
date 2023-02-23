@@ -21,7 +21,6 @@
       get_record_keys
       get_season_comfort_range
       is_wrapped
-      parse_variables
       prepare_batch_from_records
       ranges_getter
       to_idf

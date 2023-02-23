@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>sinergym.utils.callbacks.LoggerCallback &mdash; sinergym  documentation</title>
@@ -13,11 +13,10 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -31,12 +30,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../../index.html" class="icon icon-home"> sinergym
-            <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -64,9 +67,12 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.config.html">sinergym.utils.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
 </ul>
@@ -90,11 +96,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../API-reference.html">API reference</a> &raquo;</li>
-          <li><a href="sinergym.utils.html">sinergym.utils</a> &raquo;</li>
-          <li><a href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a> &raquo;</li>
-      <li>sinergym.utils.callbacks.LoggerCallback</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API-reference.html">API reference</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.utils.html">sinergym.utils</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
+      <li class="breadcrumb-item active">sinergym.utils.callbacks.LoggerCallback</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/modules/sinergym.utils.callbacks.LoggerCallback.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -132,7 +138,7 @@
 <h1>sinergym.utils.callbacks.LoggerCallback<a class="headerlink" href="#sinergym-utils-callbacks-loggercallback" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.callbacks.LoggerCallback">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.callbacks.</span></span><span class="sig-name descname"><span class="pre">LoggerCallback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sinergym_logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.callbacks.LoggerCallback" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.callbacks.</span></span><span class="sig-name descname"><span class="pre">LoggerCallback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.callbacks.LoggerCallback" title="Permalink to this definition"></a></dt>
 <dd><p>Custom callback for plotting additional values in tensorboard.
 :param ep_rewards: Here will be stored all rewards during episode.
 :param ep_powers: Here will be stored all consumption data during episode.
@@ -150,37 +156,12 @@
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.callbacks.LoggerCallback.__init__" title="sinergym.utils.callbacks.LoggerCallback.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([sinergym_logger, verbose])</p></td>
 <td><p>Custom callback for plotting additional values in tensorboard.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_callback</span></code>(model)</p></td>
-<td><p>Initialize the callback by saving references to the RL model and the training environment for convenience.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_rollout_end</span></code>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_rollout_start</span></code>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_step</span></code>()</p></td>
-<td><p>This method will be called by the model after each call to <code class="docutils literal notranslate"><span class="pre">env.step()</span></code>.</p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.callbacks.LoggerCallback.on_training_end" title="sinergym.utils.callbacks.LoggerCallback.on_training_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_training_end</span></code></a>()</p></td>
 <td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_training_start</span></code>(locals_, globals_)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_child_locals</span></code>(locals_)</p></td>
-<td><p>Update the references to the local variables on sub callbacks.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_locals</span></code>(locals_)</p></td>
-<td><p>Update the references to the local variables.</p></td>
 </tr>
 </tbody>
 </table>

@@ -1,4 +1,4 @@
-sinergym.envs.eplus\_env.EplusEnv
+﻿sinergym.envs.eplus\_env.EplusEnv
 =================================
 
 .. currentmodule:: sinergym.envs.eplus_env
@@ -17,9 +17,10 @@ sinergym.envs.eplus\_env.EplusEnv
    
       ~EplusEnv.__init__
       ~EplusEnv.close
+      ~EplusEnv.get_schedulers
+      ~EplusEnv.get_zones
       ~EplusEnv.render
       ~EplusEnv.reset
-      ~EplusEnv.seed
       ~EplusEnv.step
    
    
@@ -32,7 +33,9 @@ sinergym.envs.eplus\_env.EplusEnv
    
       ~EplusEnv.action_space
       ~EplusEnv.metadata
+      ~EplusEnv.np_random
       ~EplusEnv.observation_space
+      ~EplusEnv.render_mode
       ~EplusEnv.reward_range
       ~EplusEnv.spec
       ~EplusEnv.unwrapped

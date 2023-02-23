@@ -9,7 +9,7 @@ To use this functionality easily, you can provide this extra parameters in **env
 
 .. code:: python
 
-    import gym
+    import gymnasium as gym
     import sinergym
 
     extra_params={'timesteps_per_hour' : 6

@@ -15,27 +15,20 @@ sinergym.utils.common
       :toctree:                                          
    
       create_variable_weather
+      export_actuators_to_excel
       get_current_time_info
       get_delta_seconds
       get_record_keys
-      parse_observation_action_space
-      parse_variables
+      get_season_comfort_range
+      is_wrapped
       prepare_batch_from_records
       ranges_getter
-      setpoints_transform
+      to_idf
+      unwrap_wrapper
    
    
 
    
-   
-   .. rubric:: Classes
-
-   .. autosummary::
-      :toctree:                                          
-      :template: custom-class-template.rst               
-   
-      CSVLogger
-      Logger
    
    
 

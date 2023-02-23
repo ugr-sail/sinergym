@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>sinergym.utils.common.get_delta_seconds &mdash; sinergym  documentation</title>
@@ -13,11 +13,10 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -31,12 +30,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../../index.html" class="icon icon-home"> sinergym
-            <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -64,12 +67,12 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.create_variable_weather.html">sinergym.utils.common.create_variable_weather</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.export_actuators_to_excel.html">sinergym.utils.common.export_actuators_to_excel</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_current_time_info.html">sinergym.utils.common.get_current_time_info</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.common.get_delta_seconds</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_record_keys.html">sinergym.utils.common.get_record_keys</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_season_comfort_range.html">sinergym.utils.common.get_season_comfort_range</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.is_wrapped.html">sinergym.utils.common.is_wrapped</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.parse_variables.html">sinergym.utils.common.parse_variables</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.prepare_batch_from_records.html">sinergym.utils.common.prepare_batch_from_records</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.ranges_getter.html">sinergym.utils.common.ranges_getter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.to_idf.html">sinergym.utils.common.to_idf</a></li>
@@ -117,11 +120,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../API-reference.html">API reference</a> &raquo;</li>
-          <li><a href="sinergym.utils.html">sinergym.utils</a> &raquo;</li>
-          <li><a href="sinergym.utils.common.html">sinergym.utils.common</a> &raquo;</li>
-      <li>sinergym.utils.common.get_delta_seconds</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API-reference.html">API reference</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.utils.html">sinergym.utils</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.utils.common.html">sinergym.utils.common</a></li>
+      <li class="breadcrumb-item active">sinergym.utils.common.get_delta_seconds</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/modules/sinergym.utils.common.get_delta_seconds.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -163,7 +166,7 @@
 <dd><p>Returns the delta seconds between st year:st mon:st day:0:0:0 and
 end year:end mon:end day:24:0:0.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>st_year</strong> (<em>int</em>) – Start year.</p></li>
 <li><p><strong>st_mon</strong> (<em>int</em>) – Start month.</p></li>
@@ -173,10 +176,10 @@ end year:end mon:end day:24:0:0.</p>
 <li><p><strong>end_day</strong> (<em>int</em>) – End day.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Time difference in seconds.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>5. Environments &mdash; sinergym  documentation</title>
@@ -13,11 +13,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -31,12 +30,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../index.html" class="icon icon-home"> sinergym
-            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -111,8 +114,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li><span class="section-number">5. </span>Environments</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5. </span>Environments</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/pages/environments.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -152,14 +155,6 @@
 <h2><span class="section-number">5.1. </span>Environments List<a class="headerlink" href="#environments-list" title="Permalink to this heading"></a></h2>
 <p>The <strong>list of available environments</strong> is the following:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 24%" />
-<col style="width: 19%" />
-<col style="width: 31%" />
-<col style="width: 10%" />
-<col style="width: 7%" />
-<col style="width: 9%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Env. name</p></th>
 <th class="head"><p>IDF file</p></th>
@@ -615,10 +610,10 @@ table above or creating a new one.</p>
         <span class="n">idf_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">weather_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">observation_space</span><span class="p">:</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
-            <span class="n">low</span><span class="o">=-</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,)),</span>
+            <span class="n">low</span><span class="o">=-</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
         <span class="n">observation_variables</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
         <span class="n">action_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">,</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Discrete</span><span class="p">]</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
-            <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,)),</span>
+            <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
         <span class="n">action_variables</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
         <span class="n">action_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span>
         <span class="n">weather_variability</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -630,7 +625,7 @@ table above or creating a new one.</p>
         <span class="n">env_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;eplus-env-v1&#39;</span><span class="p">,</span>
         <span class="n">config_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Environment with EnergyPlus simulator.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Environment with EnergyPlus simulator.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            idf_file (str): Name of the IDF file with the building definition.</span>
@@ -697,14 +692,18 @@ table above or creating a new one.</p>
                                          <span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span>
 
         <span class="c1"># ---------------------------------------------------------------------------- #</span>
-        <span class="c1">#                              Weather variability                             #</span>
+        <span class="c1">#                          reset default options                               #</span>
         <span class="c1"># ---------------------------------------------------------------------------- #</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">weather_variability</span> <span class="o">=</span> <span class="n">weather_variability</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_options</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Weather Variability</span>
+        <span class="k">if</span> <span class="n">weather_variability</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">default_options</span><span class="p">[</span><span class="s1">&#39;weather_variability&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weather_variability</span>
+        <span class="c1"># ... more reset option implementations here</span>
 
         <span class="c1"># ---------------------------------------------------------------------------- #</span>
         <span class="c1">#                               Observation Space                              #</span>
         <span class="c1"># ---------------------------------------------------------------------------- #</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="o">=</span> <span class="n">observation_space</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_observation_space</span> <span class="o">=</span> <span class="n">observation_space</span>
 
         <span class="c1"># ---------------------------------------------------------------------------- #</span>
         <span class="c1">#                                 Action Space                                 #</span>
@@ -718,16 +717,18 @@ table above or creating a new one.</p>
         <span class="c1"># Discrete</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag_discrete</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">action_mapping</span> <span class="o">=</span> <span class="n">action_mapping</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span> <span class="o">=</span> <span class="n">action_space</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_action_space</span> <span class="o">=</span> <span class="n">action_space</span>
         <span class="c1"># Continuous</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Defining action values setpoints (one per value)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_space</span> <span class="o">=</span> <span class="n">action_space</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_action_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
                 <span class="c1"># continuous_action_def[2] --&gt; shape</span>
-                <span class="n">low</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-                <span class="n">high</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="n">low</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                <span class="n">high</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
                 <span class="n">dtype</span><span class="o">=</span><span class="n">action_space</span><span class="o">.</span><span class="n">dtype</span>
             <span class="p">)</span>
 
@@ -776,7 +777,7 @@ fields automatically using the weather data, without the need for user intervent
 <p>It implements the <a class="reference external" href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.4200&amp;rep=rep1&amp;type=pdf">Ornstein-Uhlenbeck process</a>
 in order to introduce <strong>noise</strong> to the weather data episode to episode. Then, parameter established is a Python tuple of three variables
 (<em>sigma</em>, <em>mu</em> and <em>tau</em>) whose values define the nature of that noise.</p>
-<a class="reference internal image-reference" href="../_images/weather_variability.png"><img alt="Ornstein-Uhlenbeck process noise with different hyperparameters." class="align-center" src="../_images/weather_variability.png" style="width: 1866.0px; height: 285.59999999999997px;" /></a>
+<a class="reference internal image-reference" href="../_images/ornstein_noise.png"><img alt="Ornstein-Uhlenbeck process noise with different hyperparameters." class="align-center" src="../_images/ornstein_noise.png" style="width: 2144.4px; height: 1136.3999999999999px;" /></a>
 </section>
 <section id="reward">
 <h3><span class="section-number">5.2.4. </span>Reward<a class="headerlink" href="#reward" title="Permalink to this heading"></a></h3>
@@ -827,7 +828,7 @@ issue <a class="reference external" href="https://github.com/ugr-sail/sinergym/i
 ranges automatically from a experiment output folder.</p>
 </div>
 </li>
-<li><p><strong>observation_space</strong>: Definition of the observation space following the <strong>OpenAI gym standard</strong>.
+<li><p><strong>observation_space</strong>: Definition of the observation space following the <strong>gymnasium standard</strong>.
 This space is used to represent all the observations variables that we have previously
 defined. Remember that the <strong>year, month, day and hour</strong> are added by <em>Sinergym</em> later,
 so space must be reserved for these fields in the definition. If an inconsistency is
@@ -839,14 +840,14 @@ must be defined in the building model (<em>IDF</em> file) correctly before simul
 <strong>action definition</strong> field in which you set what you want to control and <em>Sinergym</em>
 takes care of modifying this file for you automatically. For more information about
 this automatic adaptation in section <a class="reference internal" href="#action-definition"><span class="std std-ref">Action definition</span></a>.</p></li>
-<li><p><strong>action_space</strong>: Definition of the action space following the <strong>OpenAI gym standard</strong>.
+<li><p><strong>action_space</strong>: Definition of the action space following the <strong>gymnasium standard</strong>.
 This definition can be discrete or continuous and must be consistent with
 the previously defined action variables (<em>Sinergym</em> will show inconsistency as usual).</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In order to make environments more generic in DRL solutions. We have updated
-action space for <strong>continuous problems</strong>. Gym action space is defined always
+action space for <strong>continuous problems</strong>. Gymnasium action space is defined always
 between [-1,1] and Sinergym <strong>parse</strong> this values to action space defined in
 environment internally before to send it to EnergyPlus Simulator.
 The method in charge of parse this values from [-1,1] to real action space is
@@ -882,9 +883,15 @@ managed by <strong>default IDF schedulers</strong> (actuators). For more informa
 <a class="reference internal" href="notebooks/default_building_control.html#Default-building-control-setting-up-an-empty-action-interface"><span class="std std-ref">Default building control setting up an empty action interface</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">variables.cfg</span></code> is a requirement in order to establish a connection between gym environment and Simulator
+<p><code class="docutils literal notranslate"><span class="pre">variables.cfg</span></code> is a requirement in order to establish a connection between Gymnasium environment and Simulator
 with a external interface (using <em>BCVTB</em>). Since <em>Sinergym</em> <code class="docutils literal notranslate"><span class="pre">1.9.0</span></code> version, it is created automatically using
 action and observation space definition in environment construction.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sinergym backend was initially developed as an extension of Zhiang Zhang and Khee Poh Lam
+<a class="reference external" href="https://github.com/zhangzhizza/Gym-Eplus">Gym-Eplus</a> project. It has since evolved into
+a tool with its own identity.</p>
 </div>
 </section>
 <section id="environment-name">
@@ -910,7 +917,7 @@ dictionary with the next structure:</p>
 </pre></div>
 </div>
 <p>For an example about how to use this action definition functionality,
-visit section <a class="reference internal" href="usage-example.html#adding-a-new-action-definition"><span class="std std-ref">Adding a new action definition</span></a>.</p>
+visit section <a class="reference internal" href="notebooks/change_environment.html#Updating-the-action-definition-of-the-environment"><span class="std std-ref">Updating the action definition of the environment</span></a>.</p>
 <p>Sinergym obtains a list of the schedulers available in the building model that is loaded in that
 environment and is stored as an environment attribute. The information that appears in this dictionary has the following structure:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># env.schedulers</span>

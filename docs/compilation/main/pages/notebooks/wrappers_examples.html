@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>18. Wrappers example &mdash; sinergym  documentation</title>
@@ -13,11 +13,10 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -33,12 +32,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../../index.html" class="icon icon-home"> sinergym
-            <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -100,8 +103,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li><span class="section-number">18. </span>Wrappers example</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">18. </span>Wrappers example</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/notebooks/wrappers_examples.nblink.txt" rel="nofollow"> View page source</a>
       </li>
@@ -221,10 +224,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -392,11 +396,11 @@ div.rendered_html tbody tr:hover {
 <section id="Wrappers-example">
 <h1><span class="section-number">18. </span>Wrappers example<a class="headerlink" href="#Wrappers-example" title="Permalink to this heading"></a></h1>
 <p>We will see on this notebook what are the wrappers defined by sinergym and how to use them. Currently, we have developed a <strong>normalization wrapper</strong>, <strong>multi-observation wrapper</strong> and <strong>Logger wrapper</strong></p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">sinergym</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">MultiObsWrapper</span><span class="p">,</span>
@@ -404,15 +408,6 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">sinergym.utils.constants</span> <span class="kn">import</span> <span class="n">RANGES_5ZONE</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/usr/local/lib/python3.10/dist-packages/gym/spaces/box.py:73: UserWarning: <span class="ansi-yellow-fg">WARN: Box bound precision lowered by casting to float32</span>
-  logger.warn(
-</pre></div></div>
 </div>
 <section id="Normalization-Wrapper">
 <h2><span class="section-number">18.1. </span>Normalization Wrapper<a class="headerlink" href="#Normalization-Wrapper" title="Permalink to this heading"></a></h2>
@@ -422,12 +417,12 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Original env</span>
 <span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
-<span class="n">obs</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">obs</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BEFORE NORMILIZATION: &#39;</span><span class="p">,</span><span class="n">obs</span><span class="p">)</span>
 
 <span class="c1">#Normalize env</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="n">ranges</span><span class="o">=</span><span class="n">RANGES_5ZONE</span><span class="p">)</span>
-<span class="n">obs</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">obs</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;AFTER NORMILIZATION: &#39;</span><span class="p">,</span><span class="n">obs</span><span class="p">)</span>
 <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
@@ -438,25 +433,25 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[2022-10-07 09:15:34,778] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-10-07 09:15:34,780] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-10-07 09:15:34,783] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-10-07 09:15:34,785] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-10-07 09:15:34,786] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
-[2022-10-07 09:15:34,789] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-10-07 09:15:34,805] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res16/Eplus-env-sub_run1
+[2023-02-09 12:29:17,002] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2023-02-09 12:29:17,003] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2023-02-09 12:29:17,005] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2023-02-09 12:29:17,006] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2023-02-09 12:29:17,007] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+[2023-02-09 12:29:17,008] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2023-02-09 12:29:17,016] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res3/Eplus-env-sub_run1
 BEFORE NORMILIZATION:  [1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+00 0.0000000e+00
  9.5000000e+01 4.0999999e+00 2.9000000e+02 0.0000000e+00 0.0000000e+00
  2.1000000e+01 2.5000000e+01 2.0999992e+01 0.0000000e+00 3.9707859e+01
  0.0000000e+00 0.0000000e+00 0.0000000e+00 0.0000000e+00 1.8362732e+04]
-[2022-10-07 09:15:40,486] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-10-07 09:15:40,488] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-10-07 09:15:40,505] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res16/Eplus-env-sub_run2
+[2023-02-09 12:29:21,706] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2023-02-09 12:29:21,707] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2023-02-09 12:29:21,715] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res3/Eplus-env-sub_run2
 AFTER NORMILIZATION:  [0.98466104 0.         0.         0.         0.33834645 0.9484536
  0.17748918 0.8111888  0.         0.         0.800001   0.44444445
  0.39061695 0.         0.43193626 0.         0.         0.
  0.         0.56101173]
-[2022-10-07 09:15:45,445] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2023-02-09 12:29:26,190] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
 </pre></div></div>
 </div>
 </section>
@@ -476,16 +471,16 @@ AFTER NORMILIZATION:  [0.98466104 0.         0.         0.         0.33834645 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[2022-10-07 09:15:46,643] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-10-07 09:15:46,643] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-10-07 09:15:46,646] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-10-07 09:15:46,646] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-10-07 09:15:46,649] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-10-07 09:15:46,649] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-10-07 09:15:46,653] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-10-07 09:15:46,653] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-10-07 09:15:46,657] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
-[2022-10-07 09:15:46,657] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+[2023-02-09 12:29:36,848] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2023-02-09 12:29:36,848] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2023-02-09 12:29:36,849] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2023-02-09 12:29:36,849] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2023-02-09 12:29:36,851] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2023-02-09 12:29:36,851] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2023-02-09 12:29:36,852] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2023-02-09 12:29:36,852] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2023-02-09 12:29:36,853] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+[2023-02-09 12:29:36,853] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
 </pre></div></div>
 </div>
 <p>Now, you can see in Sinergym output folder that you will have available <code class="docutils literal notranslate"><span class="pre">progress.csv</span></code> file and <code class="docutils literal notranslate"><span class="pre">monitor.csv</span></code> files in each episode.</p>
@@ -498,12 +493,12 @@ AFTER NORMILIZATION:  [0.98466104 0.         0.         0.         0.33834645 0.
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Original environment</span>
 <span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
-<span class="n">obs</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">obs</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BEFORE MULTI OBSERVATION: &#39;</span><span class="p">,</span><span class="n">obs</span><span class="p">)</span>
 
 <span class="c1">#Multi Observation environment</span>
 <span class="n">env</span><span class="o">=</span><span class="n">MultiObsWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">obs</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">obs</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;AFTER MULTI OBSERVATION: &#39;</span><span class="p">,</span><span class="n">obs</span><span class="p">)</span>
 <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
@@ -514,40 +509,40 @@ AFTER NORMILIZATION:  [0.98466104 0.         0.         0.         0.33834645 0.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[2022-10-07 09:15:48,201] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-10-07 09:15:48,201] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-10-07 09:15:48,201] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-10-07 09:15:48,203] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-10-07 09:15:48,203] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-10-07 09:15:48,203] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-10-07 09:15:48,205] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-10-07 09:15:48,205] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-10-07 09:15:48,205] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-10-07 09:15:48,208] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-10-07 09:15:48,208] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-10-07 09:15:48,208] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-10-07 09:15:48,210] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
-[2022-10-07 09:15:48,210] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
-[2022-10-07 09:15:48,210] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
-[2022-10-07 09:15:48,213] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-10-07 09:15:48,213] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-10-07 09:15:48,213] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-10-07 09:15:48,225] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res18/Eplus-env-sub_run1
-[2022-10-07 09:15:48,225] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res18/Eplus-env-sub_run1
-[2022-10-07 09:15:48,225] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res18/Eplus-env-sub_run1
+[2023-02-09 12:29:39,973] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2023-02-09 12:29:39,973] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2023-02-09 12:29:39,973] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2023-02-09 12:29:39,974] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2023-02-09 12:29:39,974] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2023-02-09 12:29:39,974] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2023-02-09 12:29:39,976] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2023-02-09 12:29:39,976] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2023-02-09 12:29:39,976] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2023-02-09 12:29:39,978] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2023-02-09 12:29:39,978] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2023-02-09 12:29:39,978] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2023-02-09 12:29:39,979] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+[2023-02-09 12:29:39,979] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+[2023-02-09 12:29:39,979] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+[2023-02-09 12:29:39,980] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2023-02-09 12:29:39,980] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2023-02-09 12:29:39,980] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2023-02-09 12:29:39,989] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run1
+[2023-02-09 12:29:39,989] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run1
+[2023-02-09 12:29:39,989] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run1
 BEFORE MULTI OBSERVATION:  [1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+00 0.0000000e+00
  9.5000000e+01 4.0999999e+00 2.9000000e+02 0.0000000e+00 0.0000000e+00
  2.1000000e+01 2.5000000e+01 2.0999992e+01 0.0000000e+00 3.9707859e+01
  0.0000000e+00 0.0000000e+00 0.0000000e+00 0.0000000e+00 1.8362732e+04]
-[2022-10-07 09:15:53,099] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-10-07 09:15:53,099] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-10-07 09:15:53,099] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
-[2022-10-07 09:15:53,100] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-10-07 09:15:53,100] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-10-07 09:15:53,100] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-10-07 09:15:53,108] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res18/Eplus-env-sub_run2
-[2022-10-07 09:15:53,108] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res18/Eplus-env-sub_run2
-[2022-10-07 09:15:53,108] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res18/Eplus-env-sub_run2
+[2023-02-09 12:29:44,568] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2023-02-09 12:29:44,568] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2023-02-09 12:29:44,568] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus episode completed successfully.
+[2023-02-09 12:29:44,569] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2023-02-09 12:29:44,569] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2023-02-09 12:29:44,569] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2023-02-09 12:29:44,577] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run2
+[2023-02-09 12:29:44,577] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run2
+[2023-02-09 12:29:44,577] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res5/Eplus-env-sub_run2
 AFTER MULTI OBSERVATION:  [1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+00 0.0000000e+00
  9.5000000e+01 4.0999999e+00 2.9000000e+02 0.0000000e+00 0.0000000e+00
  2.1000000e+01 2.5000000e+01 2.0999992e+01 0.0000000e+00 3.9707859e+01
@@ -568,9 +563,9 @@ AFTER MULTI OBSERVATION:  [1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+
  9.5000000e+01 4.0999999e+00 2.9000000e+02 0.0000000e+00 0.0000000e+00
  2.1000000e+01 2.5000000e+01 2.0999992e+01 0.0000000e+00 3.9707859e+01
  0.0000000e+00 0.0000000e+00 0.0000000e+00 0.0000000e+00 1.8362732e+04]
-[2022-10-07 09:15:58,144] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-10-07 09:15:58,144] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-10-07 09:15:58,144] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2023-02-09 12:29:49,035] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2023-02-09 12:29:49,035] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2023-02-09 12:29:49,035] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
 </pre></div></div>
 </div>
 </section>
@@ -596,26 +591,26 @@ AFTER MULTI OBSERVATION:  [1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[2022-10-07 09:15:59,535] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-10-07 09:15:59,535] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-10-07 09:15:59,535] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-10-07 09:15:59,535] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
-[2022-10-07 09:15:59,537] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-10-07 09:15:59,537] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-10-07 09:15:59,537] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-10-07 09:15:59,537] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
-[2022-10-07 09:15:59,540] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-10-07 09:15:59,540] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-10-07 09:15:59,540] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-10-07 09:15:59,540] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
-[2022-10-07 09:15:59,543] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-10-07 09:15:59,543] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-10-07 09:15:59,543] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-10-07 09:15:59,543] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
-[2022-10-07 09:15:59,545] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
-[2022-10-07 09:15:59,545] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
-[2022-10-07 09:15:59,545] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
-[2022-10-07 09:15:59,545] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+[2023-02-09 12:30:25,870] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2023-02-09 12:30:25,870] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2023-02-09 12:30:25,870] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2023-02-09 12:30:25,870] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf ExternalInterface object if it is not present...
+[2023-02-09 12:30:25,872] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2023-02-09 12:30:25,872] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2023-02-09 12:30:25,872] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2023-02-09 12:30:25,872] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2023-02-09 12:30:25,874] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2023-02-09 12:30:25,874] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2023-02-09 12:30:25,874] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2023-02-09 12:30:25,874] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.
+[2023-02-09 12:30:25,876] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2023-02-09 12:30:25,876] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2023-02-09 12:30:25,876] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2023-02-09 12:30:25,876] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2023-02-09 12:30:25,877] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+[2023-02-09 12:30:25,877] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+[2023-02-09 12:30:25,877] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+[2023-02-09 12:30:25,877] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
 </pre></div></div>
 </div>
 <div class="admonition warning">
@@ -632,13 +627,13 @@ AFTER MULTI OBSERVATION:  [1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
     <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">terminated</span><span class="p">:</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
-        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
         <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
             <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
@@ -654,32 +649,32 @@ AFTER MULTI OBSERVATION:  [1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[2022-10-07 09:15:59,744] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-10-07 09:15:59,744] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-10-07 09:15:59,744] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-10-07 09:15:59,744] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
-[2022-10-07 09:15:59,754] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res19/Eplus-env-sub_run1
-[2022-10-07 09:15:59,754] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res19/Eplus-env-sub_run1
-[2022-10-07 09:15:59,754] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res19/Eplus-env-sub_run1
-[2022-10-07 09:15:59,754] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res19/Eplus-env-sub_run1
-Reward:  -0.9027267231826451 {&#39;timestep&#39;: 1, &#39;time_elapsed&#39;: 900, &#39;year&#39;: 1991, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 18054.5344636529, &#39;total_power_no_units&#39;: -1.8054534463652903, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.99998833869494], &#39;out_temperature&#39;: 1.8, &#39;action_&#39;: [21, 21]}
-Reward:  -2097.069513380396 {&#39;timestep&#39;: 2976, &#39;time_elapsed&#39;: 2678400, &#39;year&#39;: 1991, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 4420.417448015461, &#39;total_power_no_units&#39;: -0.44204174480154607, &#39;comfort_penalty&#39;: -1.5592545746684792, &#39;abs_comfort&#39;: 1.5592545746684792, &#39;temperatures&#39;: [18.44074542533152], &#39;out_temperature&#39;: -7.0, &#39;action_&#39;: [17, 28]}
-Reward:  -4115.586715117292 {&#39;timestep&#39;: 5664, &#39;time_elapsed&#39;: 5097600, &#39;year&#39;: 1991, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 15106.04831627059, &#39;total_power_no_units&#39;: -1.510604831627059, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.73615474040233], &#39;out_temperature&#39;: 8.1, &#39;action_&#39;: [21, 21]}
-Reward:  -5458.5534876380125 {&#39;timestep&#39;: 8640, &#39;time_elapsed&#39;: 7776000, &#39;year&#39;: 1991, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 7163.35210582586, &#39;total_power_no_units&#39;: -0.7163352105825861, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.99485496779759], &#39;out_temperature&#39;: 7.7, &#39;action_&#39;: [21, 21]}
-Reward:  -6378.342330065786 {&#39;timestep&#39;: 11520, &#39;time_elapsed&#39;: 10368000, &#39;year&#39;: 1991, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 152.4868953414246, &#39;total_power_no_units&#39;: -0.01524868953414246, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.75661867832585], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [16, 29]}
-Reward:  -7230.79295371363 {&#39;timestep&#39;: 14496, &#39;time_elapsed&#39;: 13046400, &#39;year&#39;: 1991, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 11573.19138929936, &#39;total_power_no_units&#39;: -1.157319138929936, &#39;comfort_penalty&#39;: -1.1447156088359804, &#39;abs_comfort&#39;: 1.1447156088359804, &#39;temperatures&#39;: [21.85528439116402], &#39;out_temperature&#39;: 18.4, &#39;action_&#39;: [22, 23]}
-Reward:  -10136.551748683549 {&#39;timestep&#39;: 17376, &#39;time_elapsed&#39;: 15638400, &#39;year&#39;: 1991, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 175.779675822106, &#39;total_power_no_units&#39;: -0.0175779675822106, &#39;comfort_penalty&#39;: -2.2201257903301403, &#39;abs_comfort&#39;: 2.2201257903301403, &#39;temperatures&#39;: [20.77987420966986], &#39;out_temperature&#39;: 17.7, &#39;action_&#39;: [18, 27]}
-Reward:  -13417.322446742612 {&#39;timestep&#39;: 20352, &#39;time_elapsed&#39;: 18316800, &#39;year&#39;: 1991, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 20438.77860937315, &#39;total_power_no_units&#39;: -2.043877860937315, &#39;comfort_penalty&#39;: -1.2761863833358795, &#39;abs_comfort&#39;: 1.2761863833358795, &#39;temperatures&#39;: [21.72381361666412], &#39;out_temperature&#39;: 20.6, &#39;action_&#39;: [22, 22]}
-Reward:  -16653.395519627065 {&#39;timestep&#39;: 23328, &#39;time_elapsed&#39;: 20995200, &#39;year&#39;: 1991, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 296.4058515355591, &#39;total_power_no_units&#39;: -0.029640585153555915, &#39;comfort_penalty&#39;: -2.0341594895709108, &#39;abs_comfort&#39;: 2.0341594895709108, &#39;temperatures&#39;: [20.96584051042909], &#39;out_temperature&#39;: 18.8, &#39;action_&#39;: [17, 28]}
-Reward:  -19473.56028227908 {&#39;timestep&#39;: 26208, &#39;time_elapsed&#39;: 23587200, &#39;year&#39;: 1991, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 152.4868953414246, &#39;total_power_no_units&#39;: -0.01524868953414246, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.33729078022685], &#39;out_temperature&#39;: 13.3, &#39;action_&#39;: [20, 25]}
-Reward:  -20476.057376697874 {&#39;timestep&#39;: 29184, &#39;time_elapsed&#39;: 26265600, &#39;year&#39;: 1991, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 12183.50538957212, &#39;total_power_no_units&#39;: -1.218350538957212, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.85073350665203], &#39;out_temperature&#39;: 13.0, &#39;action_&#39;: [22, 22]}
-Reward:  -21654.559762066197 {&#39;timestep&#39;: 32064, &#39;time_elapsed&#39;: 28857600, &#39;year&#39;: 1991, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 152.6211799169361, &#39;total_power_no_units&#39;: -0.01526211799169361, &#39;comfort_penalty&#39;: -1.027243301837089, &#39;abs_comfort&#39;: 1.027243301837089, &#39;temperatures&#39;: [18.97275669816291], &#39;out_temperature&#39;: 5.1, &#39;action_&#39;: [17, 28]}
-Reward:  -23670.370352311853 {&#39;timestep&#39;: 35040, &#39;time_elapsed&#39;: 31536000, &#39;year&#39;: 1992, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;total_power&#39;: 23172.08056052774, &#39;total_power_no_units&#39;: -2.317208056052774, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.13047508039367], &#39;out_temperature&#39;: -12.0, &#39;action_&#39;: [22, 22]}
-Episode  0 Mean reward:  -0.6755242680454563 Cumulative reward:  -23670.370352311853
-[2022-10-07 09:16:15,289] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-10-07 09:16:15,289] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-10-07 09:16:15,289] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
-[2022-10-07 09:16:15,289] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2023-02-09 12:30:29,498] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2023-02-09 12:30:29,498] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2023-02-09 12:30:29,498] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2023-02-09 12:30:29,498] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2023-02-09 12:30:29,506] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res6/Eplus-env-sub_run1
+[2023-02-09 12:30:29,506] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res6/Eplus-env-sub_run1
+[2023-02-09 12:30:29,506] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res6/Eplus-env-sub_run1
+[2023-02-09 12:30:29,506] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-demo-v1-res6/Eplus-env-sub_run1
+Reward:  -0.5795042490937325 {&#39;timestep&#39;: 1, &#39;time_elapsed&#39;: 900, &#39;year&#39;: 1991, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [19, 26], &#39;total_power&#39;: 4954.294078583251, &#39;total_power_no_units&#39;: -0.49542940785832507, &#39;comfort_penalty&#39;: -0.6635790903291401, &#39;abs_comfort&#39;: 0.6635790903291401, &#39;temperatures&#39;: [19.33642090967086]}
+Reward:  -2080.8989376044606 {&#39;timestep&#39;: 2976, &#39;time_elapsed&#39;: 2678400, &#39;year&#39;: 1991, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [15, 30], &#39;total_power&#39;: 4087.798034923634, &#39;total_power_no_units&#39;: -0.4087798034923634, &#39;comfort_penalty&#39;: -2.7466258814748308, &#39;abs_comfort&#39;: 2.7466258814748308, &#39;temperatures&#39;: [17.25337411852517]}
+Reward:  -4065.1033315986747 {&#39;timestep&#39;: 5664, &#39;time_elapsed&#39;: 5097600, &#39;year&#39;: 1991, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [21, 21], &#39;total_power&#39;: 14701.46747505827, &#39;total_power_no_units&#39;: -1.4701467475058272, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.75558933228888]}
+Reward:  -5425.781098043409 {&#39;timestep&#39;: 8640, &#39;time_elapsed&#39;: 7776000, &#39;year&#39;: 1991, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [18, 27], &#39;total_power&#39;: 152.4868953414246, &#39;total_power_no_units&#39;: -0.01524868953414246, &#39;comfort_penalty&#39;: -0.5068384145088913, &#39;abs_comfort&#39;: 0.5068384145088913, &#39;temperatures&#39;: [19.49316158549111]}
+Reward:  -6364.562855590825 {&#39;timestep&#39;: 11520, &#39;time_elapsed&#39;: 10368000, &#39;year&#39;: 1991, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [17, 28], &#39;total_power&#39;: 152.4868953414246, &#39;total_power_no_units&#39;: -0.01524868953414246, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.18733190502239]}
+Reward:  -7224.206650085594 {&#39;timestep&#39;: 14496, &#39;time_elapsed&#39;: 13046400, &#39;year&#39;: 1991, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [20, 25], &#39;total_power&#39;: 257.3247299498267, &#39;total_power_no_units&#39;: -0.025732472994982672, &#39;comfort_penalty&#39;: -1.6487664070312498, &#39;abs_comfort&#39;: 1.6487664070312498, &#39;temperatures&#39;: [21.35123359296875]}
+Reward:  -10104.748221563972 {&#39;timestep&#39;: 17376, &#39;time_elapsed&#39;: 15638400, &#39;year&#39;: 1991, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [18, 27], &#39;total_power&#39;: 175.7796758221068, &#39;total_power_no_units&#39;: -0.017577967582210682, &#39;comfort_penalty&#39;: -2.3354266752778905, &#39;abs_comfort&#39;: 2.3354266752778905, &#39;temperatures&#39;: [20.66457332472211]}
+Reward:  -13315.11149357043 {&#39;timestep&#39;: 20352, &#39;time_elapsed&#39;: 18316800, &#39;year&#39;: 1991, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [22, 23], &#39;total_power&#39;: 18767.61482621497, &#39;total_power_no_units&#39;: -1.876761482621497, &#39;comfort_penalty&#39;: -1.0149530892897403, &#39;abs_comfort&#39;: 1.0149530892897403, &#39;temperatures&#39;: [21.98504691071026]}
+Reward:  -16559.060269466394 {&#39;timestep&#39;: 23328, &#39;time_elapsed&#39;: 20995200, &#39;year&#39;: 1991, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [15, 30], &#39;total_power&#39;: 296.4125097569019, &#39;total_power_no_units&#39;: -0.029641250975690193, &#39;comfort_penalty&#39;: -2.7799266971228214, &#39;abs_comfort&#39;: 2.7799266971228214, &#39;temperatures&#39;: [20.22007330287718]}
+Reward:  -19338.908867939994 {&#39;timestep&#39;: 26208, &#39;time_elapsed&#39;: 23587200, &#39;year&#39;: 1991, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [18, 27], &#39;total_power&#39;: 152.4868953414246, &#39;total_power_no_units&#39;: -0.01524868953414246, &#39;comfort_penalty&#39;: -0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.01284110337208]}
+Reward:  -20433.49273207556 {&#39;timestep&#39;: 29184, &#39;time_elapsed&#39;: 26265600, &#39;year&#39;: 1991, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [19, 26], &#39;total_power&#39;: 152.4868953414246, &#39;total_power_no_units&#39;: -0.01524868953414246, &#39;comfort_penalty&#39;: -0.397663507727831, &#39;abs_comfort&#39;: 0.397663507727831, &#39;temperatures&#39;: [19.60233649227217]}
+Reward:  -21587.371526589723 {&#39;timestep&#39;: 32064, &#39;time_elapsed&#39;: 28857600, &#39;year&#39;: 1991, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [16, 29], &#39;total_power&#39;: 176.0027364038165, &#39;total_power_no_units&#39;: -0.01760027364038165, &#39;comfort_penalty&#39;: -1.3077497918080283, &#39;abs_comfort&#39;: 1.3077497918080283, &#39;temperatures&#39;: [18.69225020819197]}
+Reward:  -23584.63983683139 {&#39;timestep&#39;: 35040, &#39;time_elapsed&#39;: 31536000, &#39;year&#39;: 1992, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [17, 28], &#39;total_power&#39;: 5004.005332780625, &#39;total_power_no_units&#39;: -0.5004005332780626, &#39;comfort_penalty&#39;: -2.0667573794890117, &#39;abs_comfort&#39;: 2.0667573794890117, &#39;temperatures&#39;: [17.93324262051099]}
+Episode  0 Mean reward:  -0.6730776209141628 Cumulative reward:  -23584.63983683139
+[2023-02-09 12:30:45,038] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2023-02-09 12:30:45,038] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2023-02-09 12:30:45,038] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+[2023-02-09 12:30:45,038] EPLUS_ENV_demo-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
 </pre></div></div>
 </div>
 </section>

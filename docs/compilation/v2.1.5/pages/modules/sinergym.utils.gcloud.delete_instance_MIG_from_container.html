@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>sinergym.utils.gcloud.delete_instance_MIG_from_container &mdash; sinergym  documentation</title>
@@ -13,11 +13,10 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -31,12 +30,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../../index.html" class="icon icon-home"> sinergym
-            <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -115,11 +118,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../API-reference.html">API reference</a> &raquo;</li>
-          <li><a href="sinergym.utils.html">sinergym.utils</a> &raquo;</li>
-          <li><a href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a> &raquo;</li>
-      <li>sinergym.utils.gcloud.delete_instance_MIG_from_container</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API-reference.html">API reference</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.utils.html">sinergym.utils</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
+      <li class="breadcrumb-item active">sinergym.utils.gcloud.delete_instance_MIG_from_container</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/modules/sinergym.utils.gcloud.delete_instance_MIG_from_container.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -160,16 +163,16 @@
 <span class="sig-prename descclassname"><span class="pre">sinergym.utils.gcloud.</span></span><span class="sig-name descname"><span class="pre">delete_instance_MIG_from_container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_group_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="headerlink" href="#sinergym.utils.gcloud.delete_instance_MIG_from_container" title="Permalink to this definition"></a></dt>
 <dd><p>Delete the instance group inner Managed Instance Groups where container is executing. Whether this VM is alone in MIG, MIG will be removed too.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>instance_group_name</strong> (<em>str</em>) – Instance group name where container is executing.</p></li>
 <li><p><strong>token</strong> (<em>str</em>) – str to auth in Google Cloud Account service from container</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>REST response</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>requests.Response</p>
 </dd>
 </dl>

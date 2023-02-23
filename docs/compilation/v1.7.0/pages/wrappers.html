@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wrappers &mdash; sinergym  documentation</title>
@@ -13,11 +13,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -31,12 +30,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../index.html" class="icon icon-home"> sinergym
-            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -71,8 +74,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Wrappers</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Wrappers</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/pages/wrappers.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -125,7 +128,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <span class="k">class</span> <span class="nc">NormalizeObservation</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">ObservationWrapper</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">ranges</span><span class="o">=</span><span class="n">RANGES_5ZONE</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Observations normalized to range [0, 1].</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Observations normalized to range [0, 1].</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            env (object): Original Sinergym environment.</span>
@@ -136,7 +139,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span> <span class="o">=</span> <span class="n">ranges</span>
 
     <span class="k">def</span> <span class="nf">observation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Applies normalization to observation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Applies normalization to observation.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            obs (object): Original observation.</span>
@@ -170,7 +173,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_unwrapped_obs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get last environment observation without normalization.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get last environment observation without normalization.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            object: Last original observation.</span>
@@ -181,7 +184,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <span class="k">class</span> <span class="nc">MultiObsWrapper</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Stack of observations.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stack of observations.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            env (object): Original Gym environment.</span>
@@ -198,7 +201,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
             <span class="n">low</span><span class="o">=-</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Resets the environment.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets the environment.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: Stacked previous observations.</span>
@@ -209,14 +212,14 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_obs</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Performs the action in the new environment.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs the action in the new environment.&quot;&quot;&quot;</span>
 
         <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_obs</span><span class="p">(),</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span>
 
     <span class="k">def</span> <span class="nf">_get_obs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get observation history.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get observation history.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            np.array: Array of previous observations.</span>
@@ -230,7 +233,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 <span class="k">class</span> <span class="nc">LoggerWrapper</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;CSVLogger to log interactions with environment.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;CSVLogger to log interactions with environment.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            env (object): Original Gym environment.</span>
@@ -256,7 +259,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
             <span class="n">flag</span><span class="o">=</span><span class="n">flag</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Step the environment. Logging new information</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Step the environment. Logging new information</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            action: Action executed in step</span>
@@ -312,7 +315,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span>
 
     <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Resets the environment. Recording episode summary in logger</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets the environment. Recording episode summary in logger</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># It isn&#39;t first episode simulation, so we can logger last episode</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_episode_existed</span><span class="p">:</span>
@@ -345,7 +348,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="k">return</span> <span class="n">obs</span>
 
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Close env. Recording last episode summary.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Close env. Recording last episode summary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Record last episode summary before end simulation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">logger_main</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
@@ -356,12 +359,12 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">activate_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Activate logger if its flag False.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Activate logger if its flag False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">activate_flag</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">deactivate_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Deactivate logger if its flag True.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Deactivate logger if its flag True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">deactivate_flag</span><span class="p">()</span>
 </pre></div>

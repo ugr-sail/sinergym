@@ -103,7 +103,7 @@ The main structure for *Sinergym* with *Tensorboard* is:
 * **action**: This section has action values during training. When algorithm 
   is On Policy, it will appear **action_simulation** too. This is because 
   algorithms in continuous environments has their own output and clipped 
-  with gym action space. Then, this output is parse to simulation action 
+  with gymnasium action space. Then, this output is parse to simulation action 
   space (See :ref:`Observation/action spaces` note box).
 
 * **episode**: Here is stored all information about entire episodes. 

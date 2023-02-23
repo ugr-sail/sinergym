@@ -21,6 +21,7 @@
       ~Config.adapt_variables_to_cfg_and_idf
       ~Config.apply_extra_conf
       ~Config.apply_weather_variability
+      ~Config.get_schedulers
       ~Config.save_building_model
       ~Config.save_variables_cfg
       ~Config.set_episode_working_dir

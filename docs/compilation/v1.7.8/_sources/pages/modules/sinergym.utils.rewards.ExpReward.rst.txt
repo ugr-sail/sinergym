@@ -16,7 +16,6 @@ sinergym.utils.rewards.ExpReward
    .. autosummary::
    
       ~ExpReward.__init__
-      ~ExpReward.calculate
    
    
 

@@ -19,11 +19,9 @@ sinergym.utils.wrappers.LoggerWrapper
       ~LoggerWrapper.activate_logger
       ~LoggerWrapper.class_name
       ~LoggerWrapper.close
-      ~LoggerWrapper.compute_reward
       ~LoggerWrapper.deactivate_logger
       ~LoggerWrapper.render
       ~LoggerWrapper.reset
-      ~LoggerWrapper.seed
       ~LoggerWrapper.step
    
    
@@ -36,7 +34,9 @@ sinergym.utils.wrappers.LoggerWrapper
    
       ~LoggerWrapper.action_space
       ~LoggerWrapper.metadata
+      ~LoggerWrapper.np_random
       ~LoggerWrapper.observation_space
+      ~LoggerWrapper.render_mode
       ~LoggerWrapper.reward_range
       ~LoggerWrapper.spec
       ~LoggerWrapper.unwrapped

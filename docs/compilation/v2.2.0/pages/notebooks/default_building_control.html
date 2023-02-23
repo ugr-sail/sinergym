@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>17. Default building control setting up an empty action interface &mdash; sinergym  documentation</title>
@@ -13,11 +13,10 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -33,12 +32,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../../index.html" class="icon icon-home"> sinergym
-            <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -94,8 +97,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li><span class="section-number">17. </span>Default building control setting up an empty action interface</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">17. </span>Default building control setting up an empty action interface</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/notebooks/default_building_control.nblink.txt" rel="nofollow"> View page source</a>
       </li>
@@ -215,10 +218,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -386,7 +390,7 @@ div.rendered_html tbody tr:hover {
 <section id="Default-building-control-setting-up-an-empty-action-interface">
 <h1><span class="section-number">17. </span>Default building control setting up an empty action interface<a class="headerlink" href="#Default-building-control-setting-up-an-empty-action-interface" title="Permalink to this heading"></a></h1>
 <p>When you want to run a simulation with all the default building controllers (specified in the IDF file). You can directly use the <strong>EnergyPlus simulation engine</strong>. For example, placing us in the workspace of the container would be to run the following:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ energyplus -w sinergym/data/weather/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw sinergym/data/buildings/5ZoneAutoDXVAV.idf
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>energyplus<span class="w"> </span>-w<span class="w"> </span>sinergym/data/weather/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw<span class="w"> </span>sinergym/data/buildings/5ZoneAutoDXVAV.idf
 </pre></div>
 </div>
 <p>However, doing so without our framework has some <strong>disadvantages</strong>. You will have EnergyPlus default output and will not have some <strong>added outputs</strong> such as our wrapper logger that monitors all interactions with the environment. The IDFs have a default <em>location</em> and <em>designday</em>, which Sinergym changes automatically depending on the specified weather, so you would have to <strong>adjust it</strong> before using the simulator manually. Finally, the <em>runperiod</em> of the IDFs are set to one episode for DRL, which

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome to sinergym! &mdash; sinergym  documentation</title>
@@ -13,11 +13,10 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -30,12 +29,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="#" class="icon icon-home"> sinergym
-            <img src="_static/logo-sidebar.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="#" class="icon icon-home">
+            sinergym
+              <img src="_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -91,8 +94,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li>Welcome to <strong>sinergym</strong>!</li>
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to <strong>sinergym</strong>!</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -128,12 +131,7 @@
 </style>
 <section id="welcome-to-sinergym">
 <h1>Welcome to <strong>sinergym</strong>!<a class="headerlink" href="#welcome-to-sinergym" title="Permalink to this heading"></a></h1>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>This is a project based on Zhiang Zhang and Khee Poh Lam <a class="reference external" href="https://github.com/zhangzhizza/Gym-Eplus">Gym-Eplus</a>.</p>
-</div>
-<p>The goal of <em>sinergym</em> is to create an environment following <em>OpenAI
-Gym</em> interface for wrapping simulation engines (<em>Energyplus</em>) for building control using
+<p>The goal of <em>sinergym</em> is to create an environment following <em>Gymnasium</em> interface for wrapping simulation engines (<em>Energyplus</em>) for building control using
 <strong>deep reinforcement learning</strong>.</p>
 <a class="reference internal image-reference" href="_images/operation_diagram.jpg"><img alt="Sinergym diagram" class="align-center" src="_images/operation_diagram.jpg" style="width: 800px;" /></a>
 <div class="line-block">
@@ -155,7 +153,7 @@ using <a class="reference external" href="https://simulationresearch.lbl.gov/bcv
 Since this tool allows for interacting with several simulation
 engines, more of them (e.g.
 <a class="reference external" href="https://openmodelica.org/">OpenModelica</a>) could be included in
-the backend while maintaining the Gym API.</p></li>
+the backend while maintaining the Gymnasium API.</p></li>
 <li><p><strong>Benchmark environments</strong>. Similarly to <em>Atari</em> or <em>Mujoco</em> environments
 for RL community, we are designing a set of environments for
 benchmarking and testing deep RL algorithms. These environments may
@@ -191,7 +189,7 @@ changes in the model.</p></li>
 <li><p><strong>Stable Baseline 3 Integration</strong>. Some functionalities like callbacks
 have been customized by our team in order to test easily these environments
 with deep reinforcement learning algorithms.
-This tool can be used with any other DRL library that supports the <em>OpenAI gym</em> interface as well.</p></li>
+This tool can be used with any other DRL library that supports the <em>Gymnasium</em> interface as well.</p></li>
 <li><p><strong>Google Cloud Integration</strong>. Whether you have a Google Cloud account and you want to
 use your infrastructure with <em>Sinergym</em>, we tell you some details about how doing it.</p></li>
 <li><p><strong>Mlflow tracking server</strong>. <a class="reference external" href="https://mlflow.org/">Mlflow</a> is an open source platform for the machine

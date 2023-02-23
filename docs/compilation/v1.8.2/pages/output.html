@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Output format &mdash; sinergym  documentation</title>
@@ -13,11 +13,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -31,12 +30,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../index.html" class="icon icon-home"> sinergym
-            <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -74,8 +77,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Output format</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Output format</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/pages/output.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -159,7 +162,7 @@ all the interactions that are carried out in a simulation,
 regardless of the training technique which may be being used or any other external factor.</p>
 <p>Recording is managed by a instance of the class <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code> which is present as a environment attribute and is called in each timestep and in the end of a episode:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CSVLogger</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;CSV Logger for agent interaction with environment.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;CSV Logger for agent interaction with environment.</span>
 
 <span class="sd">        :param monitor_header: CSV header for sub_run_N/monitor.csv which record interaction step by step.</span>
 <span class="sd">        :param progress_header: CSV header for res_N/progress.csv which record main data episode by episode.</span>
@@ -211,7 +214,7 @@ regardless of the training technique which may be being used or any other extern
             <span class="n">comfort_penalty</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
             <span class="n">power</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
             <span class="n">done</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Log step information and store it in steps_data attribute.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Log step information and store it in steps_data attribute.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            timestep (int): Current episode timestep in simulation.</span>
@@ -254,7 +257,7 @@ regardless of the training technique which may be being used or any other extern
             <span class="n">total_power_no_units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
             <span class="n">comfort_penalty</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
             <span class="n">done</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Log step information and store it in steps_data_normalized attribute.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Log step information and store it in steps_data_normalized attribute.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            timestep (int): Current episode timestep in simulation.</span>
@@ -276,7 +279,7 @@ regardless of the training technique which may be being used or any other extern
             <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">log_episode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">episode</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Log episode main information using steps_data param.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Log episode main information using steps_data param.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            episode (int): Current simulation episode number.</span>
@@ -346,7 +349,7 @@ regardless of the training technique which may be being used or any other extern
             <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">set_log_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_log_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Change log_file path for monitor.csv when an episode ends.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change log_file path for monitor.csv when an episode ends.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            new_log_file (str): New log path depending on simulation.</span>
@@ -368,7 +371,7 @@ regardless of the training technique which may be being used or any other extern
             <span class="n">power_penalty</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
             <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
             <span class="n">simulation_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Store relevant data to episode summary in progress.csv.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Store relevant data to episode summary in progress.csv.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            reward (float): Current reward achieved.</span>
@@ -393,7 +396,7 @@ regardless of the training technique which may be being used or any other extern
         <span class="bp">self</span><span class="o">.</span><span class="n">total_time_elapsed</span> <span class="o">=</span> <span class="n">simulation_time</span>
 
     <span class="k">def</span> <span class="nf">_reset_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Reset relevant data to next episode summary in progress.csv.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset relevant data to next episode summary in progress.csv.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">steps_data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">steps_data_normalized</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">monitor_header</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
@@ -406,12 +409,12 @@ regardless of the training technique which may be being used or any other extern
         <span class="bp">self</span><span class="o">.</span><span class="n">comfort_violation_timesteps</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="nf">activate_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Activate Sinergym CSV logger</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Activate Sinergym CSV logger</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">deactivate_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Deactivate Sinergym CSV logger</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Deactivate Sinergym CSV logger</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
 </pre></div>

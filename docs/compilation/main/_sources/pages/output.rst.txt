@@ -35,7 +35,7 @@ this directory is the result of the simulation and we have:
       simulation. **Environment.idf** does not have to be the same as the original 
       hosted in the repository. Since the simulation can be modified to suit the 
       specific weather or apply extra user-defined settings when building the 
-      gym environment.
+      gymnasium environment.
 
     * A copy of **Weather.epw** appears only when the weather change for one 
       episode to another (using variability, for example). If weather does not 

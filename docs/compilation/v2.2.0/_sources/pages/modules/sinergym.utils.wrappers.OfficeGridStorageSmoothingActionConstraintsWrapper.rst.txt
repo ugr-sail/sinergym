@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper
+﻿sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper
 ==========================================================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -19,11 +19,8 @@ sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.action
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.class_name
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.close
-      ~OfficeGridStorageSmoothingActionConstraintsWrapper.compute_reward
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.render
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.reset
-      ~OfficeGridStorageSmoothingActionConstraintsWrapper.reverse_action
-      ~OfficeGridStorageSmoothingActionConstraintsWrapper.seed
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.step
    
    
@@ -36,7 +33,9 @@ sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper
    
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.action_space
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.metadata
+      ~OfficeGridStorageSmoothingActionConstraintsWrapper.np_random
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.observation_space
+      ~OfficeGridStorageSmoothingActionConstraintsWrapper.render_mode
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.reward_range
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.spec
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.unwrapped

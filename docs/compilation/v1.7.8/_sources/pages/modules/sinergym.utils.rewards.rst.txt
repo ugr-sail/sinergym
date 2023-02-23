@@ -19,7 +19,9 @@ sinergym.utils.rewards
       :toctree:                                          
       :template: custom-class-template.rst               
    
+      BaseReward
       ExpReward
+      HourlyLinearReward
       LinearReward
    
    

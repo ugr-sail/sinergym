@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>sinergym.utils.callbacks &mdash; sinergym  documentation</title>
@@ -13,16 +13,15 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.callbacks.evaluate_policy" href="sinergym.utils.callbacks.evaluate_policy.html" />
+    <link rel="next" title="sinergym.utils.callbacks.LoggerCallback" href="sinergym.utils.callbacks.LoggerCallback.html" />
     <link rel="prev" title="sinergym.utils" href="sinergym.utils.html" /> 
 </head>
 
@@ -31,12 +30,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../../index.html" class="icon icon-home"> sinergym
-            <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -57,14 +60,18 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../API-reference.html">API reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">sinergym.utils.callbacks</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.callbacks.evaluate_policy.html">sinergym.utils.callbacks.evaluate_policy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.callbacks.LoggerCallback.html">sinergym.utils.callbacks.LoggerCallback</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.callbacks.LoggerEvalCallback.html">sinergym.utils.callbacks.LoggerEvalCallback</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.config.html">sinergym.utils.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
 </ul>
@@ -88,10 +95,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../API-reference.html">API reference</a> &raquo;</li>
-          <li><a href="sinergym.utils.html">sinergym.utils</a> &raquo;</li>
-      <li>sinergym.utils.callbacks</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API-reference.html">API reference</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.utils.html">sinergym.utils</a></li>
+      <li class="breadcrumb-item active">sinergym.utils.callbacks</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/modules/sinergym.utils.callbacks.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -127,29 +134,14 @@
 </style>
 <section id="module-sinergym.utils.callbacks">
 <span id="sinergym-utils-callbacks"></span><h1>sinergym.utils.callbacks<a class="headerlink" href="#module-sinergym.utils.callbacks" title="Permalink to this heading"></a></h1>
-<p class="rubric">Functions</p>
-<table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.callbacks.evaluate_policy.html#sinergym.utils.callbacks.evaluate_policy" title="sinergym.utils.callbacks.evaluate_policy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate_policy</span></code></a>(model, env[, ...])</p></td>
-<td><p>Runs policy for <code class="docutils literal notranslate"><span class="pre">n_eval_episodes</span></code> episodes and returns average reward.</p></td>
-</tr>
-</tbody>
-</table>
+<p>Custom Callbacks for stable baselines 3 algorithms.</p>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.callbacks.LoggerCallback.html#sinergym.utils.callbacks.LoggerCallback" title="sinergym.utils.callbacks.LoggerCallback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LoggerCallback</span></code></a>([sinergym_logger, verbose])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.callbacks.LoggerCallback.html#sinergym.utils.callbacks.LoggerCallback" title="sinergym.utils.callbacks.LoggerCallback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LoggerCallback</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Custom callback for plotting additional values in tensorboard.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.callbacks.LoggerEvalCallback.html#sinergym.utils.callbacks.LoggerEvalCallback" title="sinergym.utils.callbacks.LoggerEvalCallback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code></a>(eval_env[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.callbacks.LoggerEvalCallback.html#sinergym.utils.callbacks.LoggerEvalCallback" title="sinergym.utils.callbacks.LoggerEvalCallback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Callback for evaluating an agent.</p></td>
 </tr>
 </tbody>
@@ -161,7 +153,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="sinergym.utils.html" class="btn btn-neutral float-left" title="sinergym.utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.callbacks.evaluate_policy.html" class="btn btn-neutral float-right" title="sinergym.utils.callbacks.evaluate_policy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.callbacks.LoggerCallback.html" class="btn btn-neutral float-right" title="sinergym.utils.callbacks.LoggerCallback" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -22,6 +22,7 @@ sinergym.utils.wrappers
       LoggerWrapper
       MultiObsWrapper
       NormalizeObservation
+      OfficeGridStorageSmoothingActionConstraintsWrapper
    
    
 

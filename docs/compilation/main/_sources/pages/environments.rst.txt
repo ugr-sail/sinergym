@@ -197,7 +197,7 @@ It implements the `Ornstein-Uhlenbeck process <https://citeseerx.ist.psu.edu/vie
 in order to introduce **noise** to the weather data episode to episode. Then, parameter established is a Python tuple of three variables
 (*sigma*, *mu* and *tau*) whose values define the nature of that noise.
 
-.. image:: /_static/weather_variability.png
+.. image:: /_static/ornstein_noise.png
   :scale: 120 %
   :alt: Ornstein-Uhlenbeck process noise with different hyperparameters.
   :align: center
@@ -258,7 +258,7 @@ This allows for a **dynamic definition** of these spaces. Let's see the fields r
             issue `#249 <https://github.com/ugr-sail/sinergym/issues/249>`__. You can use the range_getter function of `common.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py>`__ to get these 
             ranges automatically from a experiment output folder.
 
-- **observation_space**: Definition of the observation space following the **OpenAI gym standard**. 
+- **observation_space**: Definition of the observation space following the **gymnasium standard**. 
   This space is used to represent all the observations variables that we have previously 
   defined. Remember that the **year, month, day and hour** are added by *Sinergym* later, 
   so space must be reserved for these fields in the definition. If an inconsistency is 
@@ -272,12 +272,12 @@ This allows for a **dynamic definition** of these spaces. Let's see the fields r
   takes care of modifying this file for you automatically. For more information about 
   this automatic adaptation in section :ref:`Action definition`.
                 
-- **action_space**: Definition of the action space following the **OpenAI gym standard**. 
+- **action_space**: Definition of the action space following the **gymnasium standard**. 
   This definition can be discrete or continuous and must be consistent with 
   the previously defined action variables (*Sinergym* will show inconsistency as usual).
 
 .. note:: In order to make environments more generic in DRL solutions. We have updated 
-          action space for **continuous problems**. Gym action space is defined always 
+          action space for **continuous problems**. Gymnasium action space is defined always 
           between [-1,1] and Sinergym **parse** this values to action space defined in 
           environment internally before to send it to EnergyPlus Simulator. 
           The method in charge of parse this values from [-1,1] to real action space is 
@@ -315,9 +315,13 @@ of all its benefits instead of using the EnergyPlus simulator directly, meanwhil
 managed by **default IDF schedulers** (actuators). For more information, see the example of use 
 :ref:`Default building control setting up an empty action interface`.
 
-.. note:: ``variables.cfg`` is a requirement in order to establish a connection between gym environment and Simulator 
+.. note:: ``variables.cfg`` is a requirement in order to establish a connection between Gymnasium environment and Simulator 
            with a external interface (using *BCVTB*). Since *Sinergym* ``1.9.0`` version, it is created automatically using 
            action and observation space definition in environment construction.
+
+.. note:: Sinergym backend was initially developed as an extension of Zhiang Zhang and Khee Poh Lam 
+          `Gym-Eplus <https://github.com/zhangzhizza/Gym-Eplus>`__ project. It has since evolved into 
+          a tool with its own identity.
 
 Environment name
 ================
@@ -349,7 +353,7 @@ dictionary with the next structure:
     }
 
 For an example about how to use this action definition functionality, 
-visit section :ref:`Adding a new action definition`.
+visit section :ref:`Updating the action definition of the environment`.
 
 Sinergym obtains a list of the schedulers available in the building model that is loaded in that 
 environment and is stored as an environment attribute. The information that appears in this dictionary has the following structure:

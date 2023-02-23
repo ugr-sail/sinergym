@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>sinergym.utils.controllers.RandomController &mdash; sinergym  documentation</title>
@@ -13,17 +13,16 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.controllers.RuleBasedController" href="sinergym.utils.controllers.RuleBasedController.html" />
-    <link rel="prev" title="sinergym.utils.controllers" href="sinergym.utils.controllers.html" /> 
+    <link rel="next" title="sinergym.utils.env_checker" href="sinergym.utils.env_checker.html" />
+    <link rel="prev" title="sinergym.utils.controllers.RBCDatacenter" href="sinergym.utils.controllers.RBCDatacenter.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -31,12 +30,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #a9c1be" >
-            <a href="../../index.html" class="icon icon-home"> sinergym
-            <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -60,12 +63,17 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.config.html">sinergym.utils.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.controllers.RBC5Zone.html">sinergym.utils.controllers.RBC5Zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.controllers.RBCDatacenter.html">sinergym.utils.controllers.RBCDatacenter</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.controllers.RandomController</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.controllers.RuleBasedController.html">sinergym.utils.controllers.RuleBasedController</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
 </ul>
@@ -89,11 +97,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../API-reference.html">API reference</a> &raquo;</li>
-          <li><a href="sinergym.utils.html">sinergym.utils</a> &raquo;</li>
-          <li><a href="sinergym.utils.controllers.html">sinergym.utils.controllers</a> &raquo;</li>
-      <li>sinergym.utils.controllers.RandomController</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API-reference.html">API reference</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.utils.html">sinergym.utils</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
+      <li class="breadcrumb-item active">sinergym.utils.controllers.RandomController</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/modules/sinergym.utils.controllers.RandomController.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -137,7 +145,7 @@
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.controllers.RandomController.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Random agent. It selects available actions randomly.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>env</strong> (<em>Any</em>) – Simulation environment.</p>
 </dd>
 </dl>
@@ -145,32 +153,25 @@
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.controllers.RandomController.__init__" title="sinergym.utils.controllers.RandomController.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env)</p></td>
 <td><p>Random agent.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.controllers.RandomController.act" title="sinergym.utils.controllers.RandomController.act"><code class="xref py py-obj docutils literal notranslate"><span class="pre">act</span></code></a>([observation])</p></td>
-<td><p>Selects a random action from the environment's <cite>action_space</cite>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.controllers.RandomController.act" title="sinergym.utils.controllers.RandomController.act"><code class="xref py py-obj docutils literal notranslate"><span class="pre">act</span></code></a>()</p></td>
+<td><p>Selects a random action from the environment's action_space.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.controllers.RandomController.act">
-<span class="sig-name descname"><span class="pre">act</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.controllers.RandomController.act" title="Permalink to this definition"></a></dt>
-<dd><p>Selects a random action from the environment’s <cite>action_space</cite>.</p>
+<span class="sig-name descname"><span class="pre">act</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.controllers.RandomController.act" title="Permalink to this definition"></a></dt>
+<dd><p>Selects a random action from the environment’s action_space.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>observation</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>Any</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Perceived observation. Defaults to None.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Action chosen.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Action chosen.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Sequence[Any]</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sequence[Any]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -183,8 +184,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sinergym.utils.controllers.html" class="btn btn-neutral float-left" title="sinergym.utils.controllers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.controllers.RuleBasedController.html" class="btn btn-neutral float-right" title="sinergym.utils.controllers.RuleBasedController" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.controllers.RBCDatacenter.html" class="btn btn-neutral float-left" title="sinergym.utils.controllers.RBCDatacenter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sinergym.utils.env_checker.html" class="btn btn-neutral float-right" title="sinergym.utils.env_checker" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
