@@ -47,6 +47,10 @@
 
 **Welcome to Sinergym!**
 
+<div align="center">
+  <img src="images/general_blueprint.png" width=80%><br><br>
+</div>
+
 The goal of this project is to create an environment following [Gymnasium interface](https://gymnasium.farama.org/), for wrapping simulation engines for building control using **deep reinforcement learning**.
 
 Please, help us to improve by **reporting your questions and issues** [here](https://github.com/ugr-sail/sinergym/issues). It is easy, just 2 clicks using our issue templates (questions, bugs, improvements, etc.). More detailed info on how to report issues [here](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue). 
