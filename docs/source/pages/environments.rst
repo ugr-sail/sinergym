@@ -2,6 +2,29 @@
 Environments
 ############
 
+As mentioned in introduction, Sinergym follows the next structure:
+
+.. image:: /_static/sinergym_diagram.png
+  :width: 800
+  :alt: Sinergym backend
+  :align: center
+
+|
+
+Sinergym is composed of three main components: agent,
+communication interface and simulation. The agent sends actions and receives observations from the environment
+through the Gymnasium interface. At the same time, the gym interface communicates with the simulator engine
+via BCVTB, which provide the socket in order to parse the information in EnergyPlus format.
+
+The next image shows that socket connection:
+
+.. image:: /_static/socket.png
+  :width: 800
+  :alt: Sinergym backend
+  :align: center
+
+|
+
 **************************
 Environments List
 **************************
@@ -198,7 +221,7 @@ in order to introduce **noise** to the weather data episode to episode. Then, pa
 (*sigma*, *mu* and *tau*) whose values define the nature of that noise.
 
 .. image:: /_static/ornstein_noise.png
-  :scale: 120 %
+  :scale: 80 %
   :alt: Ornstein-Uhlenbeck process noise with different hyperparameters.
   :align: center
 
