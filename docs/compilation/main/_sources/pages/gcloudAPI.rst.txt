@@ -273,22 +273,13 @@ Google Cloud use a **Container-Optimized OS** (see
 `documentation <https://cloud.google.com/container-optimized-os/docs>`__) 
 in VM. This SO have docker pre-installed with *Sinergym* container.
 
-.. image:: /_static/container1.png
-  :width: 800
-  :alt: GCE VM containers list
-  :align: center
-
-
 To use this container in our machine you only have to do:
 
 .. code:: sh
 
     $ docker attach <container-name-or-ID>
 
-.. image:: /_static/container2.png
-  :width: 800
-  :alt: GCE VM container usage.
-  :align: center
+
 
 And now you can execute your own experiments in Google Cloud! For example, 
 you can enter in remote container with *gcloud ssh* and execute 

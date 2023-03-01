@@ -1,12 +1,15 @@
 The goal of *sinergym* is to create an environment following *Gymnasium* interface for wrapping simulation engines (*Energyplus*) for building control using
 **deep reinforcement learning**.
 
-.. image:: /_static/operation_diagram.jpg
+.. image:: /_static/general_blueprint.png
   :width: 800
   :alt: Sinergym diagram
   :align: center
 
 |
+
+.. raw:: html
+    :file: ../_templates/shields.html
 
 .. note:: Please, help us to improve by **reporting your questions and issues** 
    `here <https://github.com/ugr-sail/sinergym/issues>`__. It is easy, just 2 clicks 

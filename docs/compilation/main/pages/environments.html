@@ -151,6 +151,20 @@
 </style>
 <section id="environments">
 <h1><span class="section-number">5. </span>Environments<a class="headerlink" href="#environments" title="Permalink to this heading"></a></h1>
+<p>As mentioned in introduction, Sinergym follows the next structure:</p>
+<a class="reference internal image-reference" href="../_images/sinergym_diagram.png"><img alt="Sinergym backend" class="align-center" src="../_images/sinergym_diagram.png" style="width: 800px;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Sinergym is composed of three main components: agent,
+communication interface and simulation. The agent sends actions and receives observations from the environment
+through the Gymnasium interface. At the same time, the gym interface communicates with the simulator engine
+via BCVTB, which provide the socket in order to parse the information in EnergyPlus format.</p>
+<p>The next image shows that socket connection:</p>
+<a class="reference internal image-reference" href="../_images/socket.png"><img alt="Sinergym backend" class="align-center" src="../_images/socket.png" style="width: 800px;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <section id="environments-list">
 <h2><span class="section-number">5.1. </span>Environments List<a class="headerlink" href="#environments-list" title="Permalink to this heading"></a></h2>
 <p>The <strong>list of available environments</strong> is the following:</p>
@@ -777,7 +791,7 @@ fields automatically using the weather data, without the need for user intervent
 <p>It implements the <a class="reference external" href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.4200&amp;rep=rep1&amp;type=pdf">Ornstein-Uhlenbeck process</a>
 in order to introduce <strong>noise</strong> to the weather data episode to episode. Then, parameter established is a Python tuple of three variables
 (<em>sigma</em>, <em>mu</em> and <em>tau</em>) whose values define the nature of that noise.</p>
-<a class="reference internal image-reference" href="../_images/ornstein_noise.png"><img alt="Ornstein-Uhlenbeck process noise with different hyperparameters." class="align-center" src="../_images/ornstein_noise.png" style="width: 2144.4px; height: 1136.3999999999999px;" /></a>
+<a class="reference internal image-reference" href="../_images/ornstein_noise.png"><img alt="Ornstein-Uhlenbeck process noise with different hyperparameters." class="align-center" src="../_images/ornstein_noise.png" style="width: 1429.6000000000001px; height: 757.6px;" /></a>
 </section>
 <section id="reward">
 <h3><span class="section-number">5.2.4. </span>Reward<a class="headerlink" href="#reward" title="Permalink to this heading"></a></h3>
@@ -1014,7 +1028,7 @@ action/observation space, etc. We have examples about how to do it (<a class="re
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -1055,6 +1069,7 @@ action/observation space, etc. We have examples about how to do it (<a class="re
             <dd><a href="../../v2.1.3/pages/environments.html">v2.1.3</a></dd>
             <dd><a href="../../v2.1.5/pages/environments.html">v2.1.5</a></dd>
             <dd><a href="../../v2.2.0/pages/environments.html">v2.2.0</a></dd>
+            <dd><a href="../../v2.2.3/pages/environments.html">v2.2.3</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

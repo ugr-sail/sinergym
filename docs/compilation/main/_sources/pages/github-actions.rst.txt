@@ -72,6 +72,10 @@ These workflows will be executed in sequential order:
   using *latest* tag automatically. This update is executed only when the previous format 
   and documentation workflows have successfully finished.
 
+- **Testing and CodeCov update**: Project tests are executed in the same way than pull request event. 
+  However, when test are executed, the coverage report is uploaded to CodeCov service in order to
+  register the code coverage percentage in the project.
+
 ********************************
 New release created or modified
 ********************************
