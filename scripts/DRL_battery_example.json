@@ -1,0 +1,69 @@
+{
+    "id": "PRUEBAALEX",
+    "environment": "Eplus-5Zone-hot-continuous-stochastic-v1",
+    "algorithm": {
+        "name": "SB3-PPO",
+        "log_interval": 100,
+        "parameters": {
+            "policy": "MlpPolicy",
+            "verbose": 1,
+            "learning_rate": 0.0003,
+            "n_steps": 2048,
+            "batch_size": 64,
+            "n_epochs": 10,
+            "gamma": 0.99,
+            "gae_lambda": 0.95,
+            "clip_range": 0.2,
+            "ent_coef": 0,
+            "vf_coef": 0.5,
+            "max_grad_norm": 0.5
+        }
+    },
+    "episodes": 5,
+    "seed": 3,
+    "model": null,
+    "reward": {
+        "class": "LinearReward",
+        "parameters": {
+            "temperature_variable": [
+                "Zone Air Temperature(SPACE1-1)",
+                "Zone Air Temperature(SPACE1-2)"
+            ],
+            "energy_variable": "Facility Total HVAC Electricity Demand Rate(Whole Building)",
+            "range_comfort_winter": [
+                20.0,
+                23.5
+            ],
+            "range_comfort_summer": [
+                23.0,
+                26.0
+            ]
+        }
+    },
+    "wrappers": [
+        {
+            "class": "NormalizeObservation",
+            "parameters": {
+                "ranges": "sinergym.utils.constants.RANGES_5ZONE"
+            }
+        },
+        {
+            "class": "LoggerWrapper",
+            "parameters": {
+                "logger_class": "sinergym.utils.logger.CSVLogger",
+                "flag": true
+            }
+        }
+    ],
+    "evaluation": {
+        "eval_freq": 2,
+        "eval_length": 1
+    },
+    "tensorboard": "./tensorboard_log/",
+    "cloud": {
+        "remote_store": "bucket_example",
+        "mlflow_store": true,
+        "group_name": "example_group",
+        "autodelete": true
+    }
+}
