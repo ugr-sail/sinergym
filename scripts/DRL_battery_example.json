@@ -1,6 +1,7 @@
 {
     "id": "PRUEBAALEX",
     "environment": "Eplus-5Zone-hot-continuous-stochastic-v1",
+    "episodes": 5,
     "algorithm": {
         "name": "SB3-PPO",
         "log_interval": 100,
@@ -19,7 +20,6 @@
             "max_grad_norm": 0.5
         }
     },
-    "episodes": 5,
     "seed": 3,
     "model": null,
     "reward": {
@@ -40,21 +40,15 @@
             ]
         }
     },
-    "wrappers": [
-        {
-            "class": "NormalizeObservation",
-            "parameters": {
-                "ranges": "sinergym.utils.constants.RANGES_5ZONE"
-            }
+    "wrappers": {
+        "NormalizeObservation": {
+            "ranges": "sinergym.utils.constants.RANGES_5ZONE"
         },
-        {
-            "class": "LoggerWrapper",
-            "parameters": {
-                "logger_class": "sinergym.utils.logger.CSVLogger",
-                "flag": true
-            }
+        "LoggerWrapper": {
+            "logger_class": "sinergym.utils.logger.CSVLogger",
+            "flag": true
         }
-    ],
+    },
     "evaluation": {
         "eval_freq": 2,
         "eval_length": 1
@@ -64,6 +58,6 @@
         "remote_store": "bucket_example",
         "mlflow_store": true,
         "group_name": "example_group",
-        "autodelete": true
+        "auto_delete": true
     }
 }
