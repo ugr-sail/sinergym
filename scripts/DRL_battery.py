@@ -8,15 +8,15 @@ import gymnasium as gym
 import mlflow
 import numpy as np
 import tensorboard
-# from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
-# from stable_baselines3.common.callbacks import CallbackList
-# from stable_baselines3.common.logger import configure
-# from stable_baselines3.common.noise import NormalActionNoise
-# from stable_baselines3.common.vec_env import DummyVecEnv
+from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
+from stable_baselines3.common.callbacks import CallbackList
+from stable_baselines3.common.logger import configure
+from stable_baselines3.common.noise import NormalActionNoise
+from stable_baselines3.common.vec_env import DummyVecEnv
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
-# from sinergym.utils.callbacks import LoggerCallback, LoggerEvalCallback
+from sinergym.utils.callbacks import LoggerCallback, LoggerEvalCallback
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
@@ -73,34 +73,36 @@ with mlflow.start_run(run_name=name):
     # sinergym and python versions
     mlflow.log_param('sinergym-version', sinergym.__version__)
     mlflow.log_param('python-version', sys.version)
-
+    # Main
     mlflow.log_param('environment', conf['environment'])
     mlflow.log_param('episodes', conf['episodes'])
     mlflow.log_param('algorithm', conf['algorithm']['name'])
     mlflow.log_param('reward', conf['reward']['class'])
+    # Optional
+    mlflow.log_param('tensorboard', conf.get('tensorboard', False))
     mlflow.log_param(
-        'normalization', bool(
-            conf.get('wrappers').get('class') == 'NormalizeObservation'))
-    mlflow.log_param(
-        'multi-observations',
-        bool(
-            conf.get('wrappers').get('class') == 'MultiObsWrapper'))
-    mlflow.log_param(
-        'logger', bool(
-            conf.get('wrappers').get('class') == 'LoggerWrapper'))
-    mlflow.log_param('tensorboard', conf.get('tensorboard'))
-    mlflow.log_param('evaluation', bool(conf.get('evaluation')))
-    mlflow.log_param('evaluation-frequency',
-                     conf.get('evaluation').get('eval_freq'))
-    mlflow.log_param(
-        'evaluation-length',
-        conf.get('evaluation').get('eval_length'))
-    mlflow.log_param('log-interval', conf['algorithm'].get('log_interval'))
-    mlflow.log_param('seed', conf.get('seed'))
-    mlflow.log_param(
-        'remote-store',
-        bool(
-            conf.get('cloud').get('remote_store')))
+        'log-interval',
+        conf['algorithm'].get(
+            'log_interval',
+            False))
+    mlflow.log_param('seed', conf.get('seed', False))
+    if conf.get('cloud', False):
+        mlflow.log_param(
+            'remote-store',
+            conf['cloud'].get(
+                'remote_store',
+                False))
+    if conf.get('wrappers'):
+        for key in conf['wrappers']:
+            mlflow.log_param(key, True)
+    mlflow.log_param('evaluation', bool(conf.get('evaluation', False)))
+    if conf.get('evaluation'):
+        mlflow.log_param(
+            'evaluation-frequency',
+            conf['evaluation'].get('eval_freq'))
+        mlflow.log_param(
+            'evaluation-length',
+            conf['evaluation'].get('eval_length'))
 
     # algorithm params
     mlflow.log_params(conf['algorithm'].get('parameters'))
@@ -114,7 +116,7 @@ with mlflow.start_run(run_name=name):
     reward_kwargs = conf['reward']['parameters']
 
     env = gym.make(
-        args.environment,
+        conf['environment'],
         reward=reward,
         reward_kwargs=reward_kwargs)
 
@@ -122,7 +124,7 @@ with mlflow.start_run(run_name=name):
     eval_env = None
     if conf.get('evaluation'):
         eval_env = gym.make(
-            args.environment,
+            conf['environment'],
             reward=reward,
             reward_kwargs=reward_kwargs)
 
@@ -130,74 +132,78 @@ with mlflow.start_run(run_name=name):
     #                                   Wrappers                                   #
     # ---------------------------------------------------------------------------- #
     if conf.get('wrappers'):
-        wrappers = conf['wrappers']
-        for wrapper in wrappers:
-            wrapper_class = eval(wrapper['class'])
-            env = wrapper_class(env, **wrapper['parameters'])
-        if eval_env is not None:
-            eval_env = wrapper_class(eval_env, **wrapper['parameters'])
+        for key, parameters in conf['wrappers']:
+            wrapper_class = eval(key)
+            # parse str parameters to sinergym variables
+            for name, value in parameters:
+                if 'sinergym.' in name:
+                    parameters[name] = eval(value)
+            env = wrapper_class(env=env, ** parameters)
+            if eval_env is not None:
+                eval_env = wrapper_class(env=eval_env, ** parameters)
 
     # ---------------------------------------------------------------------------- #
     #                           Defining model (algorithm)                         #
     # ---------------------------------------------------------------------------- #
-
-    if args.model is None:
+    algorithm_name = conf['algorithm']['name']
+    algorithm_parameters = conf['algorithm']['parameters']
+    if conf.get('model') is None:
 
         # --------------------------------------------------------#
         #                           DQN                          #
         # --------------------------------------------------------#
-        if conf['algorithm']['name'] == 'SB3-DQN':
+        if algorithm_name == 'SB3-DQN':
 
             model = DQN(env=env,
                         seed=conf.get('seed', None),
                         tensorboard_log=conf.get('tensorboard', None),
-                        ** conf['algorithm']['parameters'])
+                        ** algorithm_parameters)
         # --------------------------------------------------------#
         #                           DDPG                         #
         # --------------------------------------------------------#
-        elif conf['algorithm']['name'] == 'SB3-DDPG':
+        elif algorithm_name == 'SB3-DDPG':
             model = DDPG(env,
                          seed=conf.get('seed', None),
                          tensorboard_log=conf.get('tensorboard', None),
-                         ** conf['algorithm']['parameters'])
+                         ** algorithm_parameters)
         # --------------------------------------------------------#
         #                           A2C                          #
         # --------------------------------------------------------#
-        elif conf['algorithm']['name'] == 'SB3-A2C':
+        elif algorithm_name == 'SB3-A2C':
             model = A2C(env,
                         seed=conf.get('seed', None),
                         tensorboard_log=conf.get('tensorboard', None),
-                        ** conf['algorithm']['parameters'])
+                        ** algorithm_parameters)
         # --------------------------------------------------------#
         #                           PPO                          #
         # --------------------------------------------------------#
-        elif conf['algorithm']['name'] == 'SB3-PPO':
+        elif algorithm_name == 'SB3-PPO':
             model = PPO(env,
                         seed=conf.get('seed', None),
                         tensorboard_log=conf.get('tensorboard', None),
-                        ** conf['algorithm']['parameters'])
+                        ** algorithm_parameters)
         # --------------------------------------------------------#
         #                           SAC                          #
         # --------------------------------------------------------#
-        elif conf['algorithm']['name'] == 'SB3-SAC':
+        elif algorithm_name == 'SB3-SAC':
             model = SAC(env,
                         seed=conf.get('seed', None),
                         tensorboard_log=conf.get('tensorboard', None),
-                        ** conf['algorithm']['parameters'])
+                        ** algorithm_parameters)
         # --------------------------------------------------------#
         #                           TD3                          #
         # --------------------------------------------------------#
-        elif conf['algorithm']['name'] == 'SB3-TD3':
+        elif algorithm_name == 'SB3-TD3':
             model = TD3(env,
                         seed=conf.get('seed', None),
                         tensorboard_log=conf.get('tensorboard', None),
-                        ** conf['algorithm']['parameters'])
+                        ** algorithm_parameters)
         # --------------------------------------------------------#
         #                           Error                        #
         # --------------------------------------------------------#
         else:
             raise RuntimeError(
-                F'Algorithm specified [{conf["algorithm"]["name"]} ] is not registered.')
+                F'Algorithm specified [{algorithm_name} ] is not registered.')
 
     else:
         model_path = ''
@@ -212,27 +218,27 @@ with mlflow.start_run(run_name=name):
             model_path = conf['model']
 
         model = None
-        if conf['algorithm']['name'] == 'SB3-DQN':
+        if algorithm_name == 'SB3-DQN':
             model = DQN.load(
                 model_path, tensorboard_log=conf.get(
                     'tensorboard', None))
-        elif conf['algorithm']['name'] == 'SB3-DDPG':
+        elif algorithm_name == 'SB3-DDPG':
             model = DDPG.load(
                 model_path, tensorboard_log=conf.get(
                     'tensorboard', None))
-        elif conf['algorithm']['name'] == 'SB3-A2C':
+        elif algorithm_name == 'SB3-A2C':
             model = A2C.load(
                 model_path, tensorboard_log=conf.get(
                     'tensorboard', None))
-        elif conf['algorithm']['name'] == 'SB3-PPO':
+        elif algorithm_name == 'SB3-PPO':
             model = PPO.load(
                 model_path, tensorboard_log=conf.get(
                     'tensorboard', None))
-        elif conf['algorithm']['name'] == 'SB3-SAC':
+        elif algorithm_name == 'SB3-SAC':
             model = SAC.load(
                 model_path, tensorboard_log=conf.get(
                     'tensorboard', None))
-        elif conf['algorithm']['name'] == 'SB3-TD3':
+        elif algorithm_name == 'SB3-TD3':
             model = TD3.load(
                 model_path, tensorboard_log=conf.get(
                     'tensorboard', None))
@@ -293,55 +299,48 @@ with mlflow.start_run(run_name=name):
         env.close()
 
     # ---------------------------------------------------------------------------- #
-    #                           Mlflow artifacts storege                           #
+    #          Mlflow artifacts storege and Google Cloud Bucket Storage            #
     # ---------------------------------------------------------------------------- #
-    if conf.get('cloud').get('mlflow_store'):
-        # Code for send output and tensorboard to mlflow artifacts.
-        mlflow.log_artifacts(
-            local_dir=env.simulator._env_working_dir_parent,
-            artifact_path=name)
-        if conf.get('evaluation'):
+    if conf.get('cloud'):
+        if conf['cloud'].get('remote_store'):
+            # Initiate Google Cloud client
+            client = gcloud.init_storage_client()
+            # Code for send output and tensorboard to common resource here.
+            gcloud.upload_to_bucket(
+                client,
+                src_path=env.simulator._env_working_dir_parent,
+                dest_bucket_name=conf['cloud']['remote_store'],
+                dest_path=name)
+            # Code for send output and tensorboard to mlflow artifacts.
             mlflow.log_artifacts(
-                local_dir='best_model/' + name,
-                artifact_path='best_model/' + name)
-        # If tensorboard is active (in local) we should send to mlflow
-        if conf.get('tensorboard') and 'gs://' + \
-                conf['cloud']['remote_store'] not in conf['tensorboard']:
-            mlflow.log_artifacts(
-                local_dir=conf['tensorboard'] + '/' + name,
-                artifact_path=os.path.abspath(conf['tensorboard']).split('/')[-1] + '/' + name)
+                local_dir=env.simulator._env_working_dir_parent,
+                artifact_path=name)
+            if conf.get('evaluation'):
+                gcloud.upload_to_bucket(
+                    client,
+                    src_path='best_model/' + name + '/',
+                    dest_bucket_name=conf['cloud']['remote_store'],
+                    dest_path='best_model/' + name + '/')
+                mlflow.log_artifacts(
+                    local_dir='best_model/' + name,
+                    artifact_path='best_model/' + name)
+            # If tensorboard is active (in local) we should send to mlflow
+            if conf.get('tensorboard') and 'gs://' + \
+                    conf['cloud']['remote_store'] not in conf.get('tensorboard'):
+                gcloud.upload_to_bucket(
+                    client,
+                    src_path=conf['tensorboard'] + '/' + name + '/',
+                    dest_bucket_name=conf['cloud']['remote_store'],
+                    dest_path=os.path.abspath(conf['tensorboard']).split('/')[-1] + '/' + name + '/')
+                mlflow.log_artifacts(
+                    local_dir=conf['tensorboard'] + '/' + name,
+                    artifact_path=os.path.abspath(conf['tensorboard']).split('/')[-1] + '/' + name)
 
-    # ---------------------------------------------------------------------------- #
-    #                          Google Cloud Bucket Storage                         #
-    # ---------------------------------------------------------------------------- #
-    if conf.get('cloud').get('remote_store'):
-        # Initiate Google Cloud client
-        client = gcloud.init_storage_client()
-        # Code for send output and tensorboard to common resource here.
-        gcloud.upload_to_bucket(
-            client,
-            src_path=env.simulator._env_working_dir_parent,
-            dest_bucket_name=conf['cloud']['remote_store'],
-            dest_path=name)
-        if conf.get('evaluation'):
-            gcloud.upload_to_bucket(
-                client,
-                src_path='best_model/' + name + '/',
-                dest_bucket_name=conf['cloud']['remote_store'],
-                dest_path='best_model/' + name + '/')
-        # If tensorboard is active (in local) we should send to bucket
-        if conf['tensorboard'] and 'gs://' + \
-                conf['cloud']['remote_store'] not in conf['tensorboard']:
-            gcloud.upload_to_bucket(
-                client,
-                src_path=conf['tensorboard'] + '/' + name + '/',
-                dest_bucket_name=conf['cloud']['remote_store'],
-                dest_path=os.path.abspath(conf['tensorboard']).split('/')[-1] + '/' + name + '/')
-        # gcloud.upload_to_bucket(
-        #     client,
-        #     src_path='mlruns/',
-        #     dest_bucket_name=args.bucket_name,
-        #     dest_path='mlruns/')
+            # gcloud.upload_to_bucket(
+            #     client,
+            #     src_path='mlruns/',
+            #     dest_bucket_name=conf['cloud']['remote_store'],
+            #     dest_path='mlruns/')
 
     # End mlflow run
     mlflow.end_run()
@@ -349,7 +348,9 @@ with mlflow.start_run(run_name=name):
     # ---------------------------------------------------------------------------- #
     #                   Autodelete option if is a cloud resource                   #
     # ---------------------------------------------------------------------------- #
-    if args.group_name and conf['cloud']['auto_delete']:
-        token = gcloud.get_service_account_token()
-        gcloud.delete_instance_MIG_from_container(
-            conf['cloud']['group_name'], token)
+    if conf.get('cloud'):
+        if conf['cloud'].get(
+                'remote_store') and conf['cloud'].get('auto_delete'):
+            token = gcloud.get_service_account_token()
+            gcloud.delete_instance_MIG_from_container(
+                conf['cloud']['group_name'], token)
