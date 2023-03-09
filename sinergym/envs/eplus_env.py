@@ -226,12 +226,8 @@ class EplusEnv(gym.Env):
         reward, terms = self.reward_fn()
 
         # info update with reward information
-        info.update({
-            'total_power': terms.get('total_energy'),
-            'total_power_no_units': terms.get('reward_energy'),
-            'comfort_penalty': terms.get('reward_comfort'),
-            'abs_comfort': terms.get('abs_comfort'),
-            'temperatures': terms.get('temperatures')})
+        info.update({'reward': reward})
+        info.update(terms)
 
         return np.array(
             obs, dtype=np.float32), reward, terminated, truncated, info
