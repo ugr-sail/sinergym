@@ -34,7 +34,7 @@ class MultiObjectiveReward(gym.Wrapper):
             Tuple[ np.ndarray, List[float], bool, bool, Dict[str, Any]]: observation, vector reward, terminated, truncated and info.
         """
         # Execute normal reward
-        obs, reward, terminated, truncated, info = self.env.step(action)
+        obs, _, terminated, truncated, info = self.env.step(action)
         reward_vector = [
             value for key,
             value in info.items() if key in self.reward_terms]
@@ -239,14 +239,12 @@ class LoggerWrapper(gym.Wrapper):
             self.logger.log_step_normalize(
                 obs=obs,
                 action=info['action'],
-                reward=reward,
                 terminated=terminated,
                 info=info)
             # Record original observation too
             self.logger.log_step(
                 obs=self.env.get_unwrapped_obs(),
                 action=info['action'],
-                reward=reward,
                 terminated=terminated,
                 info=info)
         else:
@@ -254,7 +252,6 @@ class LoggerWrapper(gym.Wrapper):
             self.logger.log_step(
                 obs=obs,
                 action=info['action'],
-                reward=reward,
                 terminated=terminated,
                 info=info)
 
@@ -293,27 +290,21 @@ class LoggerWrapper(gym.Wrapper):
 
         if is_wrapped(self, NormalizeObservation):
             # Store initial state of simulation (normalized)
-            self.logger.log_step_normalize(obs=obs,
-                                           action=[None for _ in range(
-                                               len(self.env.variables['action']))],
-                                           reward=None,
-                                           terminated=False,
-                                           info=None)
+            self.logger.log_step_normalize(obs=obs, action=[None for _ in range(
+                len(self.env.variables['action']))], terminated=False, info=info)
             # And store original obs
             self.logger.log_step(obs=self.env.get_unwrapped_obs(),
                                  action=[None for _ in range(
                                      len(self.env.variables['action']))],
-                                 reward=None,
                                  terminated=False,
-                                 info=None)
+                                 info=info)
         else:
             # Only store original step
             self.logger.log_step(obs=obs,
                                  action=[None for _ in range(
                                      len(self.env.variables['action']))],
-                                 reward=None,
                                  terminated=False,
-                                 info=None)
+                                 info=info)
 
         return obs, info
 
