@@ -20,6 +20,7 @@
       :template: custom-class-template.rst               
    
       LoggerWrapper
+      MultiObjectiveReward
       MultiObsWrapper
       NormalizeObservation
       OfficeGridStorageSmoothingActionConstraintsWrapper
