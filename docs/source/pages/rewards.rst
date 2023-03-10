@@ -76,6 +76,9 @@ But you can change this configuration using ``gym.make()`` as follows:
                                                                             'range_comfort_summer': (23.0, 26.0),
                                                                             'energy_weight': 0.1})
 
+.. note:: By default, reward class will return the reward value and the terms used in its calculation. 
+          This terms will be added to info dict in environment automatically.
+
 .. warning:: When specifying a different reward with `gym.make` than the 
              default environment ID, it is very important to set the `reward_kwargs` 
              that are required and therefore do not have a default value. 
