@@ -17,7 +17,7 @@ def test_reset(simulator):
 
     # Checking output
     assert isinstance(info, dict)
-    assert len(info) == 8
+    assert len(info) == 10
     assert isinstance(obs, list)
     assert len(obs) == 20
 
