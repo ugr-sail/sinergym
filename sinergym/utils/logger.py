@@ -87,13 +87,12 @@ class CSVLogger(object):
             obs: List[Any],
             action: Union[int, np.ndarray, List[Any]],
             terminated: bool,
-            info: Optional[Dict[str, Any]]) -> List:
+            info: Dict[str, Any]) -> List:
         """Assemble the array data to log in the new row
 
         Args:
             obs (List[Any]): Observation from step.
             action (Union[int, np.ndarray, List[Any]]): Action done in step.
-            reward (float): Reward returned in step.
             terminated (bool): terminated flag in step.
             info (Optional[Dict[str, Any]]): Extra info collected in step.
 
@@ -111,7 +110,7 @@ class CSVLogger(object):
 
     def _store_step_information(
             self,
-            info: Optional[Dict[str, Any]]) -> None:
+            info: Dict[str, Any]) -> None:
         """Store relevant data to episode summary in progress.csv.
 
         Args:
@@ -123,24 +122,24 @@ class CSVLogger(object):
 
 
         """
+        # In reset, info this keys are not available
         if info.get('reward'):
             self.episode_data['rewards'].append(info.get('reward'))
-        if info is not None:
-            if info.get('total_energy'):
-                self.episode_data['powers'].append(info.get('total_energy'))
-            if info.get('reward_comfort'):
-                self.episode_data['comfort_penalties'].append(
-                    info.get('reward_comfort'))
-            if info.get('reward_energy') is not None:
-                self.episode_data['power_penalties'].append(
-                    info.get('reward_energy'))
-            if info.get('abs_comfort') is not None:
-                self.episode_data['abs_comfort'].append(
-                    info.get('abs_comfort'))
-            if info.get('reward_comfort') != 0:
-                self.episode_data['comfort_violation_timesteps'] += 1
-            self.episode_data['total_timesteps'] = info.get('timestep')
-            self.episode_data['total_time_elapsed'] = info.get('time_elapsed')
+        if info.get('total_energy'):
+            self.episode_data['powers'].append(info.get('total_energy'))
+        if info.get('reward_comfort'):
+            self.episode_data['comfort_penalties'].append(
+                info.get('reward_comfort'))
+        if info.get('reward_energy') is not None:
+            self.episode_data['power_penalties'].append(
+                info.get('reward_energy'))
+        if info.get('abs_comfort') is not None:
+            self.episode_data['abs_comfort'].append(
+                info.get('abs_comfort'))
+        if info.get('reward_comfort') != 0:
+            self.episode_data['comfort_violation_timesteps'] += 1
+        self.episode_data['total_timesteps'] = info.get('timestep')
+        self.episode_data['total_time_elapsed'] = info.get('time_elapsed')
 
     def _reset_logger(self) -> None:
         """Reset relevant data to next episode summary in progress.csv.
@@ -163,13 +162,12 @@ class CSVLogger(object):
             obs: List[Any],
             action: Union[int, np.ndarray, List[Any]],
             terminated: bool,
-            info: Optional[Dict[str, Any]]) -> None:
+            info: Dict[str, Any]) -> None:
         """Log step information and store it in steps_data attribute.
 
         Args:
             obs (List[Any]): Observation from step.
             action (Union[int, np.ndarray, List[Any]]): Action done in step.
-            reward (float): Reward returned in step.
             terminated (bool): terminated flag in step.
             info (Dict[str, Any]): Extra info collected in step.
         """
@@ -185,7 +183,7 @@ class CSVLogger(object):
             obs: List[Any],
             action: Union[int, np.ndarray, List[Any]],
             terminated: bool,
-            info: Optional[Dict[str, Any]]) -> None:
+            info: Dict[str, Any]) -> None:
         """Log step information and store it in steps_data attribute.
 
         Args:
