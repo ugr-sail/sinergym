@@ -4,49 +4,25 @@ Wrappers
 
 *Sinergym* has several **wrappers** in order to add some functionality in the environment 
 that it doesn't have by default. Currently, we have developed a **normalization wrapper**, 
-**multi-observation wrapper** and **Logger wrapper**. The code can be found in 
+**multi-observation wrapper**, **multi-objective wrapper** and **Logger wrapper**. The code can be found in 
 `sinergym/sinergym/utils/wrappers.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/wrappers.py>`__.
 You can implement your own wrappers inheriting from *gym.Wrapper* or some of its variants.
 
-An usage of these wrappers could be the next:
+- **NormalizeObservation**: It is used to transform observation received from simulator in values between 0 and 1.
 
-.. code:: python
+- **LoggerWrapper**: Wrapper for logging all interactions between agent and environment. Logger class can be selected
+  in the constructor if other type of logging is required. For more information about *Sinergym* Logger visit :ref:`Logger`.
 
-    import gymnasium as gym
-    import sinergym
-    from sinergym.utils.wrapper import LoggerWrapper, NormalizeObservation
+- **MultiObjectiveReward**: Environment step will return a vector reward (selected elements in wrapper constructor, 
+  one for each objective) instead of a traditional scalar value.
 
-    env = gym.make('Eplus-5Zone-hot-continuous-v1')
-    env = NormalizeObservation(env)
-    env = LoggerWrapper(env)
-    ...
+- **MultiObsWrapper**: Stack observation received in a history queue (size customizable).
 
-    for i in range(1):
-        obs, info = env.reset()
-        rewards = []
-        terminated = False
-        current_month = 0
-        while not terminated:
-            a = env.action_space.sample()
-            obs, reward, terminated, truncated, info = env.step(a)
-            rewards.append(reward)
-            if info['month'] != current_month:  # display results every month
-                current_month = info['month']
-                print('Reward: ', sum(rewards), info)
-        print(
-            'Episode ',
-            i,
-            'Mean reward: ',
-            np.mean(rewards),
-            'Cumulative reward: ',
-            sum(rewards))
-    env.close()
+.. note:: For examples about how to use these wrappers, visit :ref:`Wrappers example`.
 
 .. warning:: The order of wrappers if you are going to use several at the same time is really important.
-             The correct order is **Normalization - Logger - MultiObs** and subsets (for example, *Normalization* - *Multiobs* is valid).
+             The correct order is **Normalization - Logger - Multi-Objectives - MultiObs** and subsets (for example, *Normalization* - *Multiobs* is valid).
 
 .. warning:: If you add new observation variables to the environment than the default ones, you have 
              to update the **value range dictionary** in `sinergym/sinergym/utils/constants.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__ 
              so that normalization can be applied correctly. Otherwise, you will encounter bug `#249 <https://github.com/ugr-sail/sinergym/issues/249>`__.
-
-.. note:: For more information about *Sinergym* Logger, visit :ref:`Logger`.
