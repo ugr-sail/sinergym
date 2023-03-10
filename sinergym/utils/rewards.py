@@ -103,8 +103,8 @@ class LinearReward(BaseReward):
 
         reward_terms = {
             'reward_energy': reward_energy,
-            'total_energy': obs_dict[self.energy_name],
             'reward_comfort': reward_comfort,
+            'total_energy': obs_dict[self.energy_name],
             'abs_comfort': comfort,
             'temperatures': temps
         }
@@ -314,8 +314,9 @@ class HourlyLinearReward(LinearReward):
 
         reward_terms = {
             'reward_energy': reward_energy,
-            'total_energy': obs_dict[self.energy_name],
             'reward_comfort': reward_comfort,
+            'total_energy': obs_dict[self.energy_name],
+            'abs_comfort': comfort,
             'temperatures': temps
         }
 

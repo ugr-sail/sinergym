@@ -254,7 +254,9 @@ class EnergyPlus(object):
             'init_year': time_info[0],
             'init_month': time_info[1],
             'init_day': time_info[2],
-            'init_hour': time_info[3]
+            'init_hour': time_info[3],
+            'timestep': 0,
+            'time_elapsed': 0
         }
 
         return Dblist, info
