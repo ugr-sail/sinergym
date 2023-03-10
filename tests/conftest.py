@@ -12,8 +12,7 @@ from sinergym.utils.config import Config
 from sinergym.utils.constants import *
 from sinergym.utils.controllers import *
 from sinergym.utils.rewards import *
-from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
-                                     NormalizeObservation)
+from sinergym.utils.wrappers import *
 
 # ---------------------------------------------------------------------------- #
 #                                Root Directory                                #
@@ -314,6 +313,13 @@ def env_wrapper_normalization(env_demo_continuous):
 
 
 @pytest.fixture(scope='function')
+def env_wrapper_multiobjective(env_demo_continuous):
+    return MultiObjectiveReward(
+        env=env_demo_continuous, reward_terms=[
+            'reward_energy', 'reward_comfort'])
+
+
+@pytest.fixture(scope='function')
 def env_wrapper_logger(env_demo_continuous):
     return LoggerWrapper(env=env_demo_continuous, flag=True)
 
@@ -326,6 +332,11 @@ def env_wrapper_multiobs(env_demo_continuous):
 @pytest.fixture(scope='function')
 def env_all_wrappers(env_demo_continuous):
     env = NormalizeObservation(env=env_demo_continuous, ranges=RANGES_5ZONE)
+    env = MultiObjectiveReward(
+        env=env,
+        reward_terms=[
+            'reward_energy',
+            'reward_comfort'])
     env = LoggerWrapper(env=env, flag=True)
     env = MultiObsWrapper(env=env, n=5, flatten=True)
     return env

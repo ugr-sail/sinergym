@@ -41,6 +41,16 @@ def test_normalization_wrapper(env_name, request):
     assert env.unwrapped_observation is not None
 
 
+def test_multiobjective_wrapper(env_wrapper_multiobjective):
+
+    assert hasattr(env_wrapper_multiobjective, 'reward_terms')
+    env_wrapper_multiobjective.reset()
+    action = env_wrapper_multiobjective.action_space.sample()
+    _, reward, _, _, info = env_wrapper_multiobjective.step(action)
+    assert isinstance(reward, list)
+    assert len(reward) == len(env_wrapper_multiobjective.reward_terms)
+
+
 def test_multiobs_wrapper(env_wrapper_multiobs, env_demo_continuous):
 
     # Check attributes don't exist in original env
@@ -162,11 +172,14 @@ def test_env_wrappers(env_all_wrappers):
     logger = env_all_wrappers.logger
     tmp_log_file = logger.log_file
     for _ in range(10):
-        env_all_wrappers.step(env_all_wrappers.action_space.sample())
+        _, reward, _, _, info = env_all_wrappers.step(
+            env_all_wrappers.action_space.sample())
+        # reward should be a vector
+        assert isinstance(reward, list)
     env_all_wrappers.reset()
 
     # Let's check if history has been completed succesfully
-    assert len(env_all_wrappers.history) == 5
+    assert len(env_all_wrappers.history) == env_all_wrappers.n
     assert isinstance(env_all_wrappers.history[0], np.ndarray)
 
     # check logger

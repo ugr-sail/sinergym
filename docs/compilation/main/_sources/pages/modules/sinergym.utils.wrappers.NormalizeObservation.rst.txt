@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.NormalizeObservation
+sinergym.utils.wrappers.NormalizeObservation
 ============================================
 
 .. currentmodule:: sinergym.utils.wrappers

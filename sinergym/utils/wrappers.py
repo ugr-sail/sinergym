@@ -11,6 +11,38 @@ from sinergym.utils.common import is_wrapped
 from sinergym.utils.logger import CSVLogger
 
 
+class MultiObjectiveReward(gym.Wrapper):
+
+    def __init__(self, env: Any, reward_terms: List[str]):
+        """The environment will return a reward vector of each objective instead of a scalar value.
+
+        Args:
+            env (Any): Original Sinergym environment.
+            reward_terms (List[str]): List of keys in reward terms which will be included in reward vector.
+        """
+        super(MultiObjectiveReward, self).__init__(env)
+        self.reward_terms = reward_terms
+
+    def step(self, action: Union[int, np.ndarray]) -> Tuple[
+            np.ndarray, List[float], bool, bool, Dict[str, Any]]:
+        """Perform the action and environment return reward vector.
+
+        Args:
+            action (Union[int, np.ndarray]): Action to be executed in environment.
+
+        Returns:
+            Tuple[ np.ndarray, List[float], bool, bool, Dict[str, Any]]: observation, vector reward, terminated, truncated and info.
+        """
+        # Execute normal reward
+        obs, _, terminated, truncated, info = self.env.step(action)
+        reward_vector = [
+            value for key,
+            value in info.items() if key in self.reward_terms]
+        assert len(reward_vector) == len(
+            self.reward_terms), 'Some reward term is unknown'
+        return obs, reward_vector, terminated, truncated, info
+
+
 class NormalizeObservation(gym.ObservationWrapper):
 
     def __init__(self,
@@ -207,14 +239,12 @@ class LoggerWrapper(gym.Wrapper):
             self.logger.log_step_normalize(
                 obs=obs,
                 action=info['action'],
-                reward=reward,
                 terminated=terminated,
                 info=info)
             # Record original observation too
             self.logger.log_step(
                 obs=self.env.get_unwrapped_obs(),
                 action=info['action'],
-                reward=reward,
                 terminated=terminated,
                 info=info)
         else:
@@ -222,7 +252,6 @@ class LoggerWrapper(gym.Wrapper):
             self.logger.log_step(
                 obs=obs,
                 action=info['action'],
-                reward=reward,
                 terminated=terminated,
                 info=info)
 
@@ -261,27 +290,21 @@ class LoggerWrapper(gym.Wrapper):
 
         if is_wrapped(self, NormalizeObservation):
             # Store initial state of simulation (normalized)
-            self.logger.log_step_normalize(obs=obs,
-                                           action=[None for _ in range(
-                                               len(self.env.variables['action']))],
-                                           reward=None,
-                                           terminated=False,
-                                           info=None)
+            self.logger.log_step_normalize(obs=obs, action=[None for _ in range(
+                len(self.env.variables['action']))], terminated=False, info=info)
             # And store original obs
             self.logger.log_step(obs=self.env.get_unwrapped_obs(),
                                  action=[None for _ in range(
                                      len(self.env.variables['action']))],
-                                 reward=None,
                                  terminated=False,
-                                 info=None)
+                                 info=info)
         else:
             # Only store original step
             self.logger.log_step(obs=obs,
                                  action=[None for _ in range(
                                      len(self.env.variables['action']))],
-                                 reward=None,
                                  terminated=False,
-                                 info=None)
+                                 info=info)
 
         return obs, info
 

@@ -134,55 +134,31 @@
 <h1><span class="section-number">8. </span>Wrappers<a class="headerlink" href="#wrappers" title="Permalink to this heading"></a></h1>
 <p><em>Sinergym</em> has several <strong>wrappers</strong> in order to add some functionality in the environment
 that it doesn’t have by default. Currently, we have developed a <strong>normalization wrapper</strong>,
-<strong>multi-observation wrapper</strong> and <strong>Logger wrapper</strong>. The code can be found in
+<strong>multi-observation wrapper</strong>, <strong>multi-objective wrapper</strong> and <strong>Logger wrapper</strong>. The code can be found in
 <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/wrappers.py">sinergym/sinergym/utils/wrappers.py</a>.
 You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some of its variants.</p>
-<p>An usage of these wrappers could be the next:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">sinergym</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.wrapper</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
-
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-hot-continuous-v1&#39;</span><span class="p">)</span>
-<span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-<span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-<span class="o">...</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="ow">not</span> <span class="n">terminated</span><span class="p">:</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
-        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-        <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
-            <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span>
-        <span class="s1">&#39;Episode &#39;</span><span class="p">,</span>
-        <span class="n">i</span><span class="p">,</span>
-        <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span>
-        <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span>
-        <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
-<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
+<ul class="simple">
+<li><p><strong>NormalizeObservation</strong>: It is used to transform observation received from simulator in values between 0 and 1.</p></li>
+<li><p><strong>LoggerWrapper</strong>: Wrapper for logging all interactions between agent and environment. Logger class can be selected
+in the constructor if other type of logging is required. For more information about <em>Sinergym</em> Logger visit <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>.</p></li>
+<li><p><strong>MultiObjectiveReward</strong>: Environment step will return a vector reward (selected elements in wrapper constructor,
+one for each objective) instead of a traditional scalar value. See <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/301">#301</a>.</p></li>
+<li><p><strong>MultiObsWrapper</strong>: Stack observation received in a history queue (size customizable).</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For examples about how to use these wrappers, visit <a class="reference internal" href="notebooks/wrappers_examples.html#Wrappers-example"><span class="std std-ref">Wrappers example</span></a>.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The order of wrappers if you are going to use several at the same time is really important.
-The correct order is <strong>Normalization - Logger - MultiObs</strong> and subsets (for example, <em>Normalization</em> - <em>Multiobs</em> is valid).</p>
+The correct order is <strong>Normalization - Logger - Multi-Objectives - MultiObs</strong> and subsets (for example, <em>Normalization</em> - <em>Multiobs</em> is valid).</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>If you add new observation variables to the environment than the default ones, you have
 to update the <strong>value range dictionary</strong> in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py">sinergym/sinergym/utils/constants.py</a>
 so that normalization can be applied correctly. Otherwise, you will encounter bug <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/249">#249</a>.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For more information about <em>Sinergym</em> Logger, visit <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>.</p>
 </div>
 </section>
 
