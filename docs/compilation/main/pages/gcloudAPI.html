@@ -13,7 +13,6 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
@@ -127,31 +126,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="sinergym-with-google-cloud">
+  <section id="sinergym-with-google-cloud">
 <h1><span class="section-number">12. </span>Sinergym with Google Cloud<a class="headerlink" href="#sinergym-with-google-cloud" title="Permalink to this heading"></a></h1>
 <p>In this project, we have defined some functionality based in gcloud API
 python in <code class="docutils literal notranslate"><span class="pre">sinergym/utils/gcloud.py</span></code>. Our team aim to configure a Google
@@ -458,201 +433,60 @@ you can enter in remote container with <em>gcloud ssh</em> and execute
 container and it is used to execute experiments and combine it with
 <strong>Google Cloud Bucket</strong>, <strong>Mlflow Artifacts</strong>, <strong>auto-remove</strong>, etc:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 <span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">mlflow</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tensorboard</span>
-<span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="n">A2C</span><span class="p">,</span> <span class="n">DDPG</span><span class="p">,</span> <span class="n">DQN</span><span class="p">,</span> <span class="n">PPO</span><span class="p">,</span> <span class="n">SAC</span><span class="p">,</span> <span class="n">TD3</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3.common.callbacks</span> <span class="kn">import</span> <span class="n">CallbackList</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3.common.logger</span> <span class="kn">import</span> <span class="n">configure</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3.common.noise</span> <span class="kn">import</span> <span class="n">NormalActionNoise</span>
 <span class="kn">from</span> <span class="nn">stable_baselines3.common.vec_env</span> <span class="kn">import</span> <span class="n">DummyVecEnv</span>
-
 <span class="kn">import</span> <span class="nn">sinergym</span>
 <span class="kn">import</span> <span class="nn">sinergym.utils.gcloud</span> <span class="k">as</span> <span class="nn">gcloud</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.callbacks</span> <span class="kn">import</span> <span class="n">LoggerCallback</span><span class="p">,</span> <span class="n">LoggerEvalCallback</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.constants</span> <span class="kn">import</span> <span class="n">RANGES_5ZONE</span><span class="p">,</span> <span class="n">RANGES_DATACENTER</span><span class="p">,</span> <span class="n">RANGES_IW</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.constants</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">MultiObsWrapper</span><span class="p">,</span>
-                                     <span class="n">NormalizeObservation</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.logger</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="c1">#                             Parameters definition                            #</span>
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-<span class="c1"># commons arguments for battery</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--environment&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-env&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;--configuration&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;-conf&#39;</span><span class="p">,</span>
     <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;environment&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Environment name of simulation (see sinergym/__init__.py).&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--model&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-mod&#39;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Path where model is stored, only when you want a model to continue training it.&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--episodes&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-ep&#39;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;episodes&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Number of episodes for training.&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--algorithm&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-alg&#39;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="s1">&#39;PPO&#39;</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;algorithm&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Algorithm used to train (possible values: PPO, A2C, DQN, DDPG, SAC, TD3).&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--reward&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-rw&#39;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;reward&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Reward function used by model, by default is linear (possible values: linear, exponential).&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--energy_weight&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-rew&#39;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;energy_weight&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Reward energy weight with compatible rewards types.&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--normalization&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-norm&#39;</span><span class="p">,</span>
-    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;normalization&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Apply normalization to observations if this flag is specified.&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--multiobs&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-mobs&#39;</span><span class="p">,</span>
-    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;multiobs&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Apply Multi observations if this flag is specified.&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--logger&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-log&#39;</span><span class="p">,</span>
-    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;logger&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Apply Sinergym CSVLogger class if this flag is specified.&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--tensorboard&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-tens&#39;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Tensorboard path for logging (if not specified, tensorboard log will not be stored).&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--evaluation&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-eval&#39;</span><span class="p">,</span>
-    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;evaluation&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Evaluation is processed during training with this flag (save best model online).&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--eval_freq&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-evalf&#39;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;eval_freq&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Episodes executed before applying evaluation (if evaluation flag is not specified, this value is useless).&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--eval_length&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-evall&#39;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;eval_length&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Episodes executed during evaluation (if evaluation flag is not specified, this value is useless).&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--log_interval&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-inter&#39;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;log_interval&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;model training log_interval parameter. See documentation since this value is different in every algorithm.&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--seed&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-sd&#39;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;seed&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Seed used to algorithm training.&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--id&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-id&#39;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Custom experiment identifier.&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--remote_store&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-sto&#39;</span><span class="p">,</span>
-    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;remote_store&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Determine if sinergym output will be sent to a Google Cloud Storage Bucket.&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--bucket_name&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-buc&#39;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="s1">&#39;experiments-storage&#39;</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;bucket_name&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Name of the bucket where experiments output will be stored if experiment is configured to that.&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--mlflow_store&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-mlflow&#39;</span><span class="p">,</span>
-    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;mlflow_store&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Determine if sinergym output will be sent to a mlflow artifact storage&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--group_name&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-group&#39;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;group_name&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;This field indicate instance group name&#39;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-    <span class="s1">&#39;--auto_delete&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;-del&#39;</span><span class="p">,</span>
-    <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;auto_delete&#39;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;If is a GCE instance and this flag is active, that instance will be removed from GCP.&#39;</span><span class="p">)</span>
-
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--learning_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;-lr&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">.0003</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--n_steps&#39;</span><span class="p">,</span> <span class="s1">&#39;-n&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--batch_size&#39;</span><span class="p">,</span> <span class="s1">&#39;-bs&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--n_epochs&#39;</span><span class="p">,</span> <span class="s1">&#39;-ne&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--gamma&#39;</span><span class="p">,</span> <span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">.99</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--gae_lambda&#39;</span><span class="p">,</span> <span class="s1">&#39;-gl&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">.95</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--ent_coef&#39;</span><span class="p">,</span> <span class="s1">&#39;-ec&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--vf_coef&#39;</span><span class="p">,</span> <span class="s1">&#39;-v&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--max_grad_norm&#39;</span><span class="p">,</span> <span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--buffer_size&#39;</span><span class="p">,</span> <span class="s1">&#39;-bfs&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--learning_starts&#39;</span><span class="p">,</span> <span class="s1">&#39;-ls&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--tau&#39;</span><span class="p">,</span> <span class="s1">&#39;-tu&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--gradient_steps&#39;</span><span class="p">,</span> <span class="s1">&#39;-gs&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--clip_range&#39;</span><span class="p">,</span> <span class="s1">&#39;-cr&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">.2</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;-sig&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--rms_prop_eps&#39;</span><span class="p">,</span> <span class="s1">&#39;-rpe&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
-
+    <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;configuration&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Path to experiment configuration (JSON file)&#39;</span>
+<span class="p">)</span>
 <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 <span class="c1"># ------------------------------------------------------------------------------#</span>
+
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+<span class="c1">#                             Read json parameters                             #</span>
+<span class="c1"># ---------------------------------------------------------------------------- #</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">configuration</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_conf</span><span class="p">:</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_conf</span><span class="p">)</span>
 
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="c1">#                               Register run name                              #</span>
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
 <span class="n">experiment_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">_%H:%M&#39;</span><span class="p">)</span>
-<span class="n">name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">environment</span> <span class="o">+</span> \
-    <span class="s1">&#39;-episodes-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">episodes</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">:</span>
-    <span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;-seed-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
-    <span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;-id-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="n">name</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;environment&#39;</span><span class="p">]</span> <span class="o">+</span> \
+    <span class="s1">&#39;-episodes-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;episodes&#39;</span><span class="p">])</span>
+<span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;seed&#39;</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;-seed-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;seed&#39;</span><span class="p">])</span>
+<span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;-id-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
 <span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">experiment_date</span>
 
 <span class="c1"># ---------------------------------------------------------------------------- #</span>
@@ -669,237 +503,189 @@ container and it is used to execute experiments and combine it with
 <span class="c1"># MLflow track</span>
 <span class="k">with</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">start_run</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">name</span><span class="p">):</span>
     <span class="c1"># Log experiment params</span>
+    <span class="c1"># sinergym and python versions</span>
     <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;sinergym-version&#39;</span><span class="p">,</span> <span class="n">sinergym</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;python-version&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+    <span class="c1"># Main</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;environment&#39;</span><span class="p">,</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;environment&#39;</span><span class="p">])</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;episodes&#39;</span><span class="p">,</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;episodes&#39;</span><span class="p">])</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;algorithm&#39;</span><span class="p">,</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+    <span class="c1"># Environment parameters overwriten</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_params</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;env_params&#39;</span><span class="p">))</span>
+    <span class="c1"># Optional</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span>
+        <span class="s1">&#39;log-interval&#39;</span><span class="p">,</span>
+        <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s1">&#39;log_interval&#39;</span><span class="p">,</span>
+            <span class="kc">False</span><span class="p">))</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;seed&#39;</span><span class="p">,</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;seed&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cloud&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span>
+            <span class="s1">&#39;remote-store&#39;</span><span class="p">,</span>
+            <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;cloud&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="s1">&#39;remote_store&#39;</span><span class="p">,</span>
+                <span class="kc">False</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;wrappers&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;wrappers&#39;</span><span class="p">]:</span>
+            <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;evaluation&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;evaluation&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;evaluation&#39;</span><span class="p">):</span>
+        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span>
+            <span class="s1">&#39;evaluation-frequency&#39;</span><span class="p">,</span>
+            <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;evaluation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;eval_freq&#39;</span><span class="p">))</span>
+        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span>
+            <span class="s1">&#39;evaluation-length&#39;</span><span class="p">,</span>
+            <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;evaluation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;eval_length&#39;</span><span class="p">))</span>
 
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;env&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">environment</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;episodes&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">episodes</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;algorithm&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;reward&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">reward</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;normalization&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">normalization</span><span class="p">))</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;multi-observations&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">multiobs</span><span class="p">))</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;logger&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">logger</span><span class="p">))</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;evaluation&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">evaluation</span><span class="p">))</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;evaluation-frequency&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">eval_freq</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;evaluation-length&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">eval_length</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;log-interval&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">log_interval</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;seed&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;remote-store&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">remote_store</span><span class="p">))</span>
+    <span class="c1"># algorithm params</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_params</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;parameters&#39;</span><span class="p">))</span>
 
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;learning-rate&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;n-steps&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">n_steps</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;batch-size&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;n-epochs&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">n_epochs</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">gamma</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;gae-lambda&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">gae_lambda</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;ent-coef&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">ent_coef</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;vf-coef&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">vf_coef</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;max-grad-norm&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">max_grad_norm</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;buffer-size&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">buffer_size</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;learning-starts&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">learning_starts</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;tau&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">tau</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;gradient-steps&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">gradient_steps</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;clip-range&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">clip_range</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">sigma</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;rms_prop_eps&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">rms_prop_eps</span><span class="p">)</span>
-    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="c1"># --------------------- Overwrite environment parameters --------------------- #</span>
+    <span class="n">env_params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Transform required str&#39;s into Callables</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;env_params&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;env_params&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;reward&#39;</span><span class="p">):</span>
+            <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;env_params&#39;</span><span class="p">][</span><span class="s1">&#39;reward&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;env_params&#39;</span><span class="p">][</span><span class="s1">&#39;reward&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;env_params&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;observation_space&#39;</span><span class="p">):</span>
+            <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;env_params&#39;</span><span class="p">][</span><span class="s1">&#39;observation_space&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span>
+                <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;env_params&#39;</span><span class="p">][</span><span class="s1">&#39;observation_space&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;env_params&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">):</span>
+            <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;env_params&#39;</span><span class="p">][</span><span class="s1">&#39;observation_space&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span>
+                <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;env_params&#39;</span><span class="p">][</span><span class="s1">&#39;action_space&#39;</span><span class="p">])</span>
+
+        <span class="n">env_params</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;env_params&#39;</span><span class="p">]</span>
 
     <span class="c1"># ---------------------------------------------------------------------------- #</span>
-    <span class="c1">#               Environment construction (with reward specified)               #</span>
+    <span class="c1">#                           Environment construction                           #</span>
     <span class="c1"># ---------------------------------------------------------------------------- #</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">reward</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
-        <span class="n">reward</span> <span class="o">=</span> <span class="n">LinearReward</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">reward</span> <span class="o">==</span> <span class="s1">&#39;exponential&#39;</span><span class="p">:</span>
-        <span class="n">reward</span> <span class="o">=</span> <span class="n">ExpReward</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="s1">&#39;Reward function [</span><span class="si">{}</span><span class="s1">] specified is not registered.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">args</span><span class="o">.</span><span class="n">reward</span><span class="p">))</span>
-
-    <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">environment</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">reward</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">reward_fn</span><span class="p">,</span> <span class="s1">&#39;W_energy&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">energy_weight</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">env</span><span class="o">.</span><span class="n">reward_fn</span><span class="o">.</span><span class="n">W_energy</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">energy_weight</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
+        <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;environment&#39;</span><span class="p">],</span>
+        <span class="o">**</span> <span class="n">env_params</span><span class="p">)</span>
 
     <span class="c1"># env for evaluation if is enabled</span>
     <span class="n">eval_env</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">evaluation</span><span class="p">:</span>
-        <span class="n">eval_env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">environment</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">reward</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">eval_env</span><span class="o">.</span><span class="n">reward_fn</span><span class="p">,</span> <span class="s1">&#39;W_energy&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">energy_weight</span><span class="p">:</span>
-            <span class="n">eval_env</span><span class="o">.</span><span class="n">reward_fn</span><span class="o">.</span><span class="n">W_energy</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">energy_weight</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;evaluation&#39;</span><span class="p">):</span>
+        <span class="n">eval_env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
+            <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;environment&#39;</span><span class="p">],</span>
+            <span class="o">**</span> <span class="n">env_params</span><span class="p">)</span>
 
     <span class="c1"># ---------------------------------------------------------------------------- #</span>
     <span class="c1">#                                   Wrappers                                   #</span>
     <span class="c1"># ---------------------------------------------------------------------------- #</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">normalization</span><span class="p">:</span>
-        <span class="c1"># dictionary ranges to use</span>
-        <span class="n">norm_range</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">env_type</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">env_type</span> <span class="o">==</span> <span class="s1">&#39;datacenter&#39;</span><span class="p">:</span>
-            <span class="n">norm_range</span> <span class="o">=</span> <span class="n">RANGES_DATACENTER</span>
-        <span class="k">elif</span> <span class="n">env_type</span> <span class="o">==</span> <span class="s1">&#39;5Zone&#39;</span><span class="p">:</span>
-            <span class="n">norm_range</span> <span class="o">=</span> <span class="n">RANGES_5ZONE</span>
-        <span class="k">elif</span> <span class="n">env_type</span> <span class="o">==</span> <span class="s1">&#39;IWMullion&#39;</span><span class="p">:</span>
-            <span class="n">norm_range</span> <span class="o">=</span> <span class="n">RANGES_IW</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span>
-                <span class="s1">&#39;Normalization cant be use on environment :&quot;</span><span class="si">{}</span><span class="s1">&quot;, check environment name or disable normalization&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">args</span><span class="o">.</span><span class="n">environment</span><span class="p">))</span>
-        <span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">ranges</span><span class="o">=</span><span class="n">norm_range</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">eval_env</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">eval_env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">eval_env</span><span class="p">,</span> <span class="n">ranges</span><span class="o">=</span><span class="n">norm_range</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">logger</span><span class="p">:</span>
-        <span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">eval_env</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">eval_env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">eval_env</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">multiobs</span><span class="p">:</span>
-        <span class="n">env</span> <span class="o">=</span> <span class="n">MultiObsWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">eval_env</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">eval_env</span> <span class="o">=</span> <span class="n">MultiObsWrapper</span><span class="p">(</span><span class="n">eval_env</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;wrappers&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">parameters</span> <span class="ow">in</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;wrappers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">wrapper_class</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># parse str parameters to sinergym Callable or Objects if it is</span>
+                <span class="c1"># required</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="s1">&#39;sinergym.&#39;</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                        <span class="n">parameters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">env</span> <span class="o">=</span> <span class="n">wrapper_class</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="o">**</span> <span class="n">parameters</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">eval_env</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">eval_env</span> <span class="o">=</span> <span class="n">wrapper_class</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">eval_env</span><span class="p">,</span> <span class="o">**</span> <span class="n">parameters</span><span class="p">)</span>
 
     <span class="c1"># ---------------------------------------------------------------------------- #</span>
     <span class="c1">#                           Defining model (algorithm)                         #</span>
     <span class="c1"># ---------------------------------------------------------------------------- #</span>
-
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">algorithm_name</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+    <span class="n">algorithm_parameters</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">][</span><span class="s1">&#39;parameters&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;model&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="c1"># --------------------------------------------------------#</span>
         <span class="c1">#                           DQN                          #</span>
         <span class="c1"># --------------------------------------------------------#</span>
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;DQN&#39;</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="s1">&#39;MlpPolicy&#39;</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                        <span class="n">learning_rate</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
-                        <span class="n">buffer_size</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">buffer_size</span><span class="p">,</span>
-                        <span class="n">learning_starts</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">learning_starts</span><span class="p">,</span>
-                        <span class="n">batch_size</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
-                        <span class="n">tau</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span>
-                        <span class="n">gamma</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
-                        <span class="n">train_freq</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-                        <span class="n">gradient_steps</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gradient_steps</span><span class="p">,</span>
-                        <span class="n">target_update_interval</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
-                        <span class="n">exploration_fraction</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span>
-                        <span class="n">exploration_initial_eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-                        <span class="n">exploration_final_eps</span><span class="o">=</span><span class="mf">.05</span><span class="p">,</span>
-                        <span class="n">max_grad_norm</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_grad_norm</span><span class="p">,</span>
-                        <span class="n">seed</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
-                        <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">algorithm_name</span> <span class="o">==</span> <span class="s1">&#39;SB3-DQN&#39;</span><span class="p">:</span>
+
+            <span class="n">model</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+                        <span class="n">seed</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;seed&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="o">**</span> <span class="n">algorithm_parameters</span><span class="p">)</span>
         <span class="c1"># --------------------------------------------------------#</span>
         <span class="c1">#                           DDPG                         #</span>
         <span class="c1"># --------------------------------------------------------#</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;DDPG&#39;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">sigma</span><span class="p">:</span>
-                <span class="c1"># noise objects for DDPG</span>
-                <span class="n">n_actions</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                <span class="n">action_noise</span> <span class="o">=</span> <span class="n">NormalActionNoise</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-                    <span class="n">n_actions</span><span class="p">),</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_actions</span><span class="p">))</span>
-
-            <span class="n">model</span> <span class="o">=</span> <span class="n">DDPG</span><span class="p">(</span><span class="s2">&quot;MlpPolicy&quot;</span><span class="p">,</span>
-                         <span class="n">env</span><span class="p">,</span>
-                         <span class="n">action_noise</span><span class="o">=</span><span class="n">action_noise</span><span class="p">,</span>
-                         <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                         <span class="n">seed</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
-                         <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">algorithm_name</span> <span class="o">==</span> <span class="s1">&#39;SB3-DDPG&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">DDPG</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+                         <span class="n">seed</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;seed&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                         <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                         <span class="o">**</span> <span class="n">algorithm_parameters</span><span class="p">)</span>
         <span class="c1"># --------------------------------------------------------#</span>
         <span class="c1">#                           A2C                          #</span>
         <span class="c1"># --------------------------------------------------------#</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;A2C&#39;</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">A2C</span><span class="p">(</span><span class="s1">&#39;MlpPolicy&#39;</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                        <span class="n">learning_rate</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
-                        <span class="n">n_steps</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">n_steps</span><span class="p">,</span>
-                        <span class="n">gamma</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
-                        <span class="n">gae_lambda</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gae_lambda</span><span class="p">,</span>
-                        <span class="n">ent_coef</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">ent_coef</span><span class="p">,</span>
-                        <span class="n">vf_coef</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">vf_coef</span><span class="p">,</span>
-                        <span class="n">max_grad_norm</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_grad_norm</span><span class="p">,</span>
-                        <span class="n">rms_prop_eps</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">rms_prop_eps</span><span class="p">,</span>
-                        <span class="n">seed</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
-                        <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">algorithm_name</span> <span class="o">==</span> <span class="s1">&#39;SB3-A2C&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">A2C</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+                        <span class="n">seed</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;seed&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="o">**</span> <span class="n">algorithm_parameters</span><span class="p">)</span>
         <span class="c1"># --------------------------------------------------------#</span>
         <span class="c1">#                           PPO                          #</span>
         <span class="c1"># --------------------------------------------------------#</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;PPO&#39;</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">PPO</span><span class="p">(</span><span class="s1">&#39;MlpPolicy&#39;</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                        <span class="n">learning_rate</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
-                        <span class="n">n_steps</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">n_steps</span><span class="p">,</span>
-                        <span class="n">batch_size</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
-                        <span class="n">n_epochs</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">n_epochs</span><span class="p">,</span>
-                        <span class="n">gamma</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
-                        <span class="n">gae_lambda</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gae_lambda</span><span class="p">,</span>
-                        <span class="n">clip_range</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">clip_range</span><span class="p">,</span>
-                        <span class="n">ent_coef</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">ent_coef</span><span class="p">,</span>
-                        <span class="n">vf_coef</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">vf_coef</span><span class="p">,</span>
-                        <span class="n">max_grad_norm</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">max_grad_norm</span><span class="p">,</span>
-                        <span class="n">seed</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
-                        <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">algorithm_name</span> <span class="o">==</span> <span class="s1">&#39;SB3-PPO&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">PPO</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+                        <span class="n">seed</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;seed&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="o">**</span> <span class="n">algorithm_parameters</span><span class="p">)</span>
         <span class="c1"># --------------------------------------------------------#</span>
         <span class="c1">#                           SAC                          #</span>
         <span class="c1"># --------------------------------------------------------#</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;SAC&#39;</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">SAC</span><span class="p">(</span><span class="n">policy</span><span class="o">=</span><span class="s1">&#39;MlpPolicy&#39;</span><span class="p">,</span>
-                        <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
-                        <span class="n">seed</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
-                        <span class="n">learning_rate</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
-                        <span class="n">buffer_size</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">buffer_size</span><span class="p">,</span>
-                        <span class="n">batch_size</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
-                        <span class="n">tau</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span>
-                        <span class="n">gamma</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
-                        <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">algorithm_name</span> <span class="o">==</span> <span class="s1">&#39;SB3-SAC&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">SAC</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+                        <span class="n">seed</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;seed&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="o">**</span> <span class="n">algorithm_parameters</span><span class="p">)</span>
         <span class="c1"># --------------------------------------------------------#</span>
         <span class="c1">#                           TD3                          #</span>
         <span class="c1"># --------------------------------------------------------#</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;TD3&#39;</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">TD3</span><span class="p">(</span><span class="n">policy</span><span class="o">=</span><span class="s1">&#39;MlpPolicy&#39;</span><span class="p">,</span>
-                        <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
-                        <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">,</span>
-                        <span class="n">learning_rate</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
-                        <span class="n">buffer_size</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">buffer_size</span><span class="p">,</span>
-                        <span class="n">batch_size</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
-                        <span class="n">tau</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span>
-                        <span class="n">gamma</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">gamma</span><span class="p">,</span>
-                        <span class="n">train_freq</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;episode&#39;</span><span class="p">),</span>
-                        <span class="n">action_noise</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">replay_buffer_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">replay_buffer_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">optimize_memory_usage</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                        <span class="n">policy_delay</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                        <span class="n">target_policy_noise</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-                        <span class="n">target_noise_clip</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                        <span class="n">create_eval_env</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                        <span class="n">policy_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                        <span class="n">device</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
-                        <span class="n">_init_setup_model</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">algorithm_name</span> <span class="o">==</span> <span class="s1">&#39;SB3-TD3&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">TD3</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+                        <span class="n">seed</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;seed&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="o">**</span> <span class="n">algorithm_parameters</span><span class="p">)</span>
         <span class="c1"># --------------------------------------------------------#</span>
         <span class="c1">#                           Error                        #</span>
         <span class="c1"># --------------------------------------------------------#</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="sa">F</span><span class="s1">&#39;Algorithm specified [</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">algorithm</span><span class="si">}</span><span class="s1">] is not registered.&#39;</span><span class="p">)</span>
+                <span class="sa">F</span><span class="s1">&#39;Algorithm specified [</span><span class="si">{</span><span class="n">algorithm_name</span><span class="si">}</span><span class="s1"> ] is not registered.&#39;</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
         <span class="n">model_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">if</span> <span class="s1">&#39;gs://&#39;</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">model</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;gs://&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]:</span>
             <span class="c1"># Download from given bucket (gcloud configured with privileges)</span>
             <span class="n">client</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">init_storage_client</span><span class="p">()</span>
-            <span class="n">bucket_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
-            <span class="n">model_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">bucket_name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">bucket_name</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">model_path</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">bucket_name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">gcloud</span><span class="o">.</span><span class="n">read_from_bucket</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">model_path</span><span class="p">)</span>
             <span class="n">model_path</span> <span class="o">=</span> <span class="s1">&#39;./&#39;</span> <span class="o">+</span> <span class="n">model_path</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">model_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">model</span>
+            <span class="n">model_path</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span>
 
         <span class="n">model</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;DQN&#39;</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">DQN</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;DDPG&#39;</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">DDPG</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;A2C&#39;</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">A2C</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;PPO&#39;</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">PPO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;SAC&#39;</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">SAC</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;TD3&#39;</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">TD3</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">algorithm_name</span> <span class="o">==</span> <span class="s1">&#39;SB3-DQN&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">DQN</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                <span class="n">model_path</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">algorithm_name</span> <span class="o">==</span> <span class="s1">&#39;SB3-DDPG&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">DDPG</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                <span class="n">model_path</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">algorithm_name</span> <span class="o">==</span> <span class="s1">&#39;SB3-A2C&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">A2C</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                <span class="n">model_path</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">algorithm_name</span> <span class="o">==</span> <span class="s1">&#39;SB3-PPO&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">PPO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                <span class="n">model_path</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">algorithm_name</span> <span class="o">==</span> <span class="s1">&#39;SB3-SAC&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">SAC</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                <span class="n">model_path</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">algorithm_name</span> <span class="o">==</span> <span class="s1">&#39;SB3-TD3&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">TD3</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                <span class="n">model_path</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="s1">&#39;tensorboard&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Algorithm specified is not registered.&#39;</span><span class="p">)</span>
 
@@ -910,7 +696,7 @@ container and it is used to execute experiments and combine it with
     <span class="c1"># ---------------------------------------------------------------------------- #</span>
     <span class="n">n_timesteps_episode</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_eplus_one_epi_len</span> <span class="o">/</span> \
         <span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_eplus_run_stepsize</span>
-    <span class="n">timesteps</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">episodes</span> <span class="o">*</span> <span class="n">n_timesteps_episode</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">timesteps</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;episodes&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_timesteps_episode</span> <span class="o">-</span> <span class="mi">1</span>
 
     <span class="c1"># ---------------------------------------------------------------------------- #</span>
     <span class="c1">#                                   CALLBACKS                                  #</span>
@@ -918,24 +704,24 @@ container and it is used to execute experiments and combine it with
     <span class="n">callbacks</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1"># Set up Evaluation and saving best model</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">evaluation</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;evaluation&#39;</span><span class="p">):</span>
         <span class="n">eval_callback</span> <span class="o">=</span> <span class="n">LoggerEvalCallback</span><span class="p">(</span>
             <span class="n">eval_env</span><span class="p">,</span>
             <span class="n">best_model_save_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span>
             <span class="n">log_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
             <span class="n">eval_freq</span><span class="o">=</span><span class="n">n_timesteps_episode</span> <span class="o">*</span>
-            <span class="n">args</span><span class="o">.</span><span class="n">eval_freq</span><span class="p">,</span>
+            <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;evaluation&#39;</span><span class="p">][</span><span class="s1">&#39;eval_freq&#39;</span><span class="p">],</span>
             <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">render</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">n_eval_episodes</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">eval_length</span><span class="p">)</span>
+            <span class="n">n_eval_episodes</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;evaluation&#39;</span><span class="p">][</span><span class="s1">&#39;eval_length&#39;</span><span class="p">])</span>
         <span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eval_callback</span><span class="p">)</span>
 
     <span class="c1"># Set up tensorboard logger</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">:</span>
-        <span class="n">log_callback</span> <span class="o">=</span> <span class="n">LoggerCallback</span><span class="p">(</span><span class="n">sinergym_logger</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">logger</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">):</span>
+        <span class="n">log_callback</span> <span class="o">=</span> <span class="n">LoggerCallback</span><span class="p">()</span>
         <span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">log_callback</span><span class="p">)</span>
         <span class="c1"># lets change default dir for TensorboardFormatLogger only</span>
-        <span class="n">tb_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span>
+        <span class="n">tb_path</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span>
         <span class="n">new_logger</span> <span class="o">=</span> <span class="n">configure</span><span class="p">(</span><span class="n">tb_path</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;tensorboard&quot;</span><span class="p">])</span>
         <span class="n">model</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="n">new_logger</span><span class="p">)</span>
 
@@ -947,7 +733,7 @@ container and it is used to execute experiments and combine it with
     <span class="n">model</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span>
         <span class="n">total_timesteps</span><span class="o">=</span><span class="n">timesteps</span><span class="p">,</span>
         <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
-        <span class="n">log_interval</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">log_interval</span><span class="p">)</span>
+        <span class="n">log_interval</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;algorithm&#39;</span><span class="p">][</span><span class="s1">&#39;log_interval&#39;</span><span class="p">])</span>
     <span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_env_working_dir_parent</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
 
     <span class="c1"># If the algorithm doesn&#39;t reset or close the environment, this script will do it in</span>
@@ -957,53 +743,48 @@ container and it is used to execute experiments and combine it with
         <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="c1"># ---------------------------------------------------------------------------- #</span>
-    <span class="c1">#                           Mlflow artifacts storege                           #</span>
+    <span class="c1">#          Mlflow artifacts storege and Google Cloud Bucket Storage            #</span>
     <span class="c1"># ---------------------------------------------------------------------------- #</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">mlflow_store</span><span class="p">:</span>
-        <span class="c1"># Code for send output and tensorboard to mlflow artifacts.</span>
-        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span>
-            <span class="n">local_dir</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_env_working_dir_parent</span><span class="p">,</span>
-            <span class="n">artifact_path</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">evaluation</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cloud&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;cloud&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;remote_store&#39;</span><span class="p">):</span>
+            <span class="c1"># Initiate Google Cloud client</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">init_storage_client</span><span class="p">()</span>
+            <span class="c1"># Code for send output and tensorboard to common resource here.</span>
+            <span class="n">gcloud</span><span class="o">.</span><span class="n">upload_to_bucket</span><span class="p">(</span>
+                <span class="n">client</span><span class="p">,</span>
+                <span class="n">src_path</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_env_working_dir_parent</span><span class="p">,</span>
+                <span class="n">dest_bucket_name</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;cloud&#39;</span><span class="p">][</span><span class="s1">&#39;remote_store&#39;</span><span class="p">],</span>
+                <span class="n">dest_path</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="c1"># Code for send output and tensorboard to mlflow artifacts.</span>
             <span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span>
-                <span class="n">local_dir</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span>
-                <span class="n">artifact_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
-        <span class="c1"># If tensorboard is active (in local) we should send to mlflow</span>
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="ow">and</span> <span class="s1">&#39;gs://&#39;</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">bucket_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">:</span>
-            <span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span>
-                <span class="n">local_dir</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span>
-                <span class="n">artifact_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+                <span class="n">local_dir</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_env_working_dir_parent</span><span class="p">,</span>
+                <span class="n">artifact_path</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;evaluation&#39;</span><span class="p">):</span>
+                <span class="n">gcloud</span><span class="o">.</span><span class="n">upload_to_bucket</span><span class="p">(</span>
+                    <span class="n">client</span><span class="p">,</span>
+                    <span class="n">src_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+                    <span class="n">dest_bucket_name</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;cloud&#39;</span><span class="p">][</span><span class="s1">&#39;remote_store&#39;</span><span class="p">],</span>
+                    <span class="n">dest_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+                <span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span>
+                    <span class="n">local_dir</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span>
+                    <span class="n">artifact_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+            <span class="c1"># If tensorboard is active (in local) we should send to mlflow</span>
+            <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;gs://&#39;</span> <span class="o">+</span> \
+                    <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;cloud&#39;</span><span class="p">][</span><span class="s1">&#39;remote_store&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">):</span>
+                <span class="n">gcloud</span><span class="o">.</span><span class="n">upload_to_bucket</span><span class="p">(</span>
+                    <span class="n">client</span><span class="p">,</span>
+                    <span class="n">src_path</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+                    <span class="n">dest_bucket_name</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;cloud&#39;</span><span class="p">][</span><span class="s1">&#39;remote_store&#39;</span><span class="p">],</span>
+                    <span class="n">dest_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+                <span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span>
+                    <span class="n">local_dir</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span>
+                    <span class="n">artifact_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;tensorboard&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
 
-    <span class="c1"># ---------------------------------------------------------------------------- #</span>
-    <span class="c1">#                          Google Cloud Bucket Storage                         #</span>
-    <span class="c1"># ---------------------------------------------------------------------------- #</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">remote_store</span><span class="p">:</span>
-        <span class="c1"># Initiate Google Cloud client</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">init_storage_client</span><span class="p">()</span>
-        <span class="c1"># Code for send output and tensorboard to common resource here.</span>
-        <span class="n">gcloud</span><span class="o">.</span><span class="n">upload_to_bucket</span><span class="p">(</span>
-            <span class="n">client</span><span class="p">,</span>
-            <span class="n">src_path</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">simulator</span><span class="o">.</span><span class="n">_env_working_dir_parent</span><span class="p">,</span>
-            <span class="n">dest_bucket_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span>
-            <span class="n">dest_path</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">evaluation</span><span class="p">:</span>
-            <span class="n">gcloud</span><span class="o">.</span><span class="n">upload_to_bucket</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span>
-                <span class="n">src_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
-                <span class="n">dest_bucket_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span>
-                <span class="n">dest_path</span><span class="o">=</span><span class="s1">&#39;best_model/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
-        <span class="c1"># If tensorboard is active (in local) we should send to bucket</span>
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="ow">and</span> <span class="s1">&#39;gs://&#39;</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">bucket_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">:</span>
-            <span class="n">gcloud</span><span class="o">.</span><span class="n">upload_to_bucket</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span>
-                <span class="n">src_path</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
-                <span class="n">dest_bucket_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span>
-                <span class="n">dest_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tensorboard</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
-        <span class="c1"># gcloud.upload_to_bucket(</span>
-        <span class="c1">#     client,</span>
-        <span class="c1">#     src_path=&#39;mlruns/&#39;,</span>
-        <span class="c1">#     dest_bucket_name=args.bucket_name,</span>
-        <span class="c1">#     dest_path=&#39;mlruns/&#39;)</span>
+            <span class="c1"># gcloud.upload_to_bucket(</span>
+            <span class="c1">#     client,</span>
+            <span class="c1">#     src_path=&#39;mlruns/&#39;,</span>
+            <span class="c1">#     dest_bucket_name=conf[&#39;cloud&#39;][&#39;remote_store&#39;],</span>
+            <span class="c1">#     dest_path=&#39;mlruns/&#39;)</span>
 
     <span class="c1"># End mlflow run</span>
     <span class="n">mlflow</span><span class="o">.</span><span class="n">end_run</span><span class="p">()</span>
@@ -1011,9 +792,12 @@ container and it is used to execute experiments and combine it with
     <span class="c1"># ---------------------------------------------------------------------------- #</span>
     <span class="c1">#                   Autodelete option if is a cloud resource                   #</span>
     <span class="c1"># ---------------------------------------------------------------------------- #</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">group_name</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">auto_delete</span><span class="p">:</span>
-        <span class="n">token</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">get_service_account_token</span><span class="p">()</span>
-        <span class="n">gcloud</span><span class="o">.</span><span class="n">delete_instance_MIG_from_container</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">group_name</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cloud&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;cloud&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="s1">&#39;remote_store&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;cloud&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;auto_delete&#39;</span><span class="p">):</span>
+            <span class="n">token</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">get_service_account_token</span><span class="p">()</span>
+            <span class="n">gcloud</span><span class="o">.</span><span class="n">delete_instance_MIG_from_container</span><span class="p">(</span>
+                <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;cloud&#39;</span><span class="p">][</span><span class="s1">&#39;group_name&#39;</span><span class="p">],</span> <span class="n">token</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -1416,6 +1200,7 @@ If you want to do the same, please, check Google Cloud Alerts documentation
             <dd><a href="../../v2.1.5/pages/gcloudAPI.html">v2.1.5</a></dd>
             <dd><a href="../../v2.2.0/pages/gcloudAPI.html">v2.2.0</a></dd>
             <dd><a href="../../v2.2.3/pages/gcloudAPI.html">v2.2.3</a></dd>
+            <dd><a href="../../v2.2.5/pages/gcloudAPI.html">v2.2.5</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

@@ -13,7 +13,6 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
@@ -113,31 +112,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="deep-reinforcement-learning-integration">
+  <section id="deep-reinforcement-learning-integration">
 <h1><span class="section-number">11. </span>Deep Reinforcement Learning Integration<a class="headerlink" href="#deep-reinforcement-learning-integration" title="Permalink to this heading"></a></h1>
 <p><em>Sinergym</em> integrates some facilities in order to use <strong>Deep Reinforcement Learning algorithms</strong>
 provided by <a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/">Stable Baselines 3</a>.
@@ -293,7 +268,7 @@ to model learn method.</p>
 <p>You can try your own experiments and benefit from this functionality.
 <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery.py">sinergym/scripts/DRL_battery.py</a>
 is a example code to use it. You can use <code class="docutils literal notranslate"><span class="pre">DRL_battery.py</span></code> directly from
-your local computer specifying <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> flag in execution.</p>
+your local computer or using Google Cloud Platform.</p>
 <p>The most <strong>important information</strong> you must keep in mind when you try
 your own experiments are:</p>
 <ul class="simple">
@@ -307,11 +282,24 @@ instance from Stable Baselines 3.</p></li>
 <code class="docutils literal notranslate"><span class="pre">model.learn()</span></code> method. Here is where you
 specify train <code class="docutils literal notranslate"><span class="pre">timesteps</span></code>, <code class="docutils literal notranslate"><span class="pre">callbacks</span></code> and <code class="docutils literal notranslate"><span class="pre">log_interval</span></code>
 as we commented in type algorithms (On and Off Policy).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DRL_battery.py</span></code> requires some <strong>extra arguments</strong> to being
-executed like <code class="docutils literal notranslate"><span class="pre">-env</span></code> and <code class="docutils literal notranslate"><span class="pre">-ep</span></code>.</p></li>
 <li><p>You can execute <strong>Curriculum Learning</strong>, you only have to
-add <code class="docutils literal notranslate"><span class="pre">--model</span></code> field with a valid model path, this script
+add model field with a valid model path, this script
 will load the model and execute to train.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">DRL_battery.py</span></code> has a unique parameter to be able to execute it; <code class="docutils literal notranslate"><span class="pre">-conf</span></code>.
+This parameter is a str to indicate the JSON file in which there are allocated
+all information about the experiment you want to execute. You can see the
+JSON structure example in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery_example.json">sinergym/scripts/DRL_battery_example.json</a>:</p>
+<ul class="simple">
+<li><p>The <strong>obligatory</strong> parameters are: environment, episodes,
+algorithm (and parameters of the algorithm which don’t have
+default values).</p></li>
+<li><p>The <strong>optional</strong> parameters are: All environment parameters (if it is specified
+will be overwrite the default environment value) seed, model to load (before training),
+experiment ID, wrappers to use (respecting the order), training evaluation,
+tensorboard functionality and cloud options.</p></li>
+<li><p>The name of the fields must be like in example mentioned. Otherwise, the experiment
+will return an error.</p></li>
 </ul>
 </section>
 <section id="mlflow">
@@ -391,6 +379,7 @@ algorithms is being planned for the future!</em></p>
             <dd><a href="../../v2.1.5/pages/deep-reinforcement-learning.html">v2.1.5</a></dd>
             <dd><a href="../../v2.2.0/pages/deep-reinforcement-learning.html">v2.2.0</a></dd>
             <dd><a href="../../v2.2.3/pages/deep-reinforcement-learning.html">v2.2.3</a></dd>
+            <dd><a href="../../v2.2.5/pages/deep-reinforcement-learning.html">v2.2.5</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
