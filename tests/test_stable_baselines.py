@@ -56,13 +56,13 @@ if not missing:
 
         # Check model works
 
-        obs = env.reset()
+        obs, info = env.reset()
         a, _ = model.predict(obs)
-        obs, reward, done, info = env.step(a)
+        obs, reward, terminated, truncated, info = env.step(a)
 
         assert reward is not None and reward < 0
         assert a is not None
-        assert isinstance(done, bool)
+        assert isinstance(terminated, bool)
         assert info['timestep'] == 1
 
         env.close()
@@ -102,13 +102,13 @@ if not missing:
 
         # Check model works
 
-        obs = env.reset()
+        obs, info = env.reset()
         a, _ = model.predict(obs)
-        obs, reward, done, info = env.step(a)
+        obs, reward, terminated, truncated, info = env.step(a)
 
         assert reward is not None and reward < 0
         assert a is not None
-        assert isinstance(done, bool)
+        assert isinstance(terminated, bool)
         assert info['timestep'] == 1
 
         env.close()
@@ -172,13 +172,13 @@ if not missing:
 
             # Check model works
 
-            obs = env.reset()
+            obs, info = env.reset()
             a, _ = model.predict(obs)
-            obs, reward, done, info = env.step(a)
+            obs, reward, terminated, truncated, info = env.step(a)
 
             assert reward is not None and reward < 0
             assert a is not None
-            assert isinstance(done, bool)
+            assert isinstance(terminated, bool)
             assert info['timestep'] == 1
 
             env.close()
@@ -225,13 +225,13 @@ if not missing:
 
             # Check model works
 
-            obs = env.reset()
+            obs, info = env.reset()
             a, _ = model.predict(obs)
-            obs, reward, done, info = env.step(a)
+            obs, reward, terminated, truncated, info = env.step(a)
 
             assert reward is not None and reward < 0
             assert a is not None
-            assert isinstance(done, bool)
+            assert isinstance(terminated, bool)
             assert info['timestep'] == 1
 
             env.close()
@@ -272,13 +272,13 @@ if not missing:
 
             # Check model works
 
-            obs = env.reset()
+            obs, info = env.reset()
             a, _ = model.predict(obs)
-            obs, reward, done, info = env.step(a)
+            obs, reward, terminated, truncated, info = env.step(a)
 
             assert reward is not None and reward < 0
             assert a is not None
-            assert isinstance(done, bool)
+            assert isinstance(terminated, bool)
             assert info['timestep'] == 1
 
             env.close()
