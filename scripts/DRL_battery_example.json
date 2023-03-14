@@ -1,6 +1,25 @@
 {
     "id": "PRUEBAALEX",
     "environment": "Eplus-5Zone-hot-continuous-stochastic-v1",
+    "env_params": {
+        "reward": "LinearReward",
+        "reward_kwargs": {
+            "temperature_variable": [
+                "Zone Air Temperature(SPACE1-1)",
+                "Zone Air Temperature(SPACE1-2)"
+            ],
+            "energy_variable": "Facility Total HVAC Electricity Demand Rate(Whole Building)",
+            "range_comfort_winter": [
+                20.0,
+                23.5
+            ],
+            "range_comfort_summer": [
+                23.0,
+                26.0
+            ]
+        },
+        "act_repeat": 1
+    },
     "episodes": 5,
     "algorithm": {
         "name": "SB3-PPO",
@@ -22,24 +41,6 @@
     },
     "seed": 3,
     "model": null,
-    "reward": {
-        "class": "LinearReward",
-        "parameters": {
-            "temperature_variable": [
-                "Zone Air Temperature(SPACE1-1)",
-                "Zone Air Temperature(SPACE1-2)"
-            ],
-            "energy_variable": "Facility Total HVAC Electricity Demand Rate(Whole Building)",
-            "range_comfort_winter": [
-                20.0,
-                23.5
-            ],
-            "range_comfort_summer": [
-                23.0,
-                26.0
-            ]
-        }
-    },
     "wrappers": {
         "NormalizeObservation": {
             "ranges": "sinergym.utils.constants.RANGES_5ZONE"
@@ -53,11 +54,5 @@
         "eval_freq": 2,
         "eval_length": 1
     },
-    "tensorboard": "./tensorboard_log/",
-    "cloud": {
-        "remote_store": "bucket_example",
-        "mlflow_store": true,
-        "group_name": "example_group",
-        "auto_delete": true
-    }
+    "tensorboard": "./tensorboard_log/"
 }

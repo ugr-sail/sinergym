@@ -76,7 +76,8 @@ with mlflow.start_run(run_name=name):
     mlflow.log_param('environment', conf['environment'])
     mlflow.log_param('episodes', conf['episodes'])
     mlflow.log_param('algorithm', conf['algorithm']['name'])
-    mlflow.log_param('reward', conf['reward']['class'])
+    # Environment parameters overwriten
+    mlflow.log_params(conf.get('env_params'))
     # Optional
     mlflow.log_param('tensorboard', conf.get('tensorboard', False))
     mlflow.log_param(
@@ -105,27 +106,35 @@ with mlflow.start_run(run_name=name):
 
     # algorithm params
     mlflow.log_params(conf['algorithm'].get('parameters'))
-    # reward params
-    mlflow.log_params(conf['reward'].get('parameters'))
+
+    # --------------------- Overwrite environment parameters --------------------- #
+    env_params = {}
+    # Transform required str's into Callables
+    if conf.get('env_params'):
+        if conf['env_params'].get('reward'):
+            conf['env_params']['reward'] = eval(conf['env_params']['reward'])
+        if conf['env_params'].get('observation_space'):
+            conf['env_params']['observation_space'] = eval(
+                conf['env_params']['observation_space'])
+        if conf['env_params'].get('action_space'):
+            conf['env_params']['observation_space'] = eval(
+                conf['env_params']['action_space'])
+
+        env_params = conf['env_params']
 
     # ---------------------------------------------------------------------------- #
-    #               Environment construction (with reward specified)               #
+    #                           Environment construction                           #
     # ---------------------------------------------------------------------------- #
-    reward = eval(conf['reward']['class'])
-    reward_kwargs = conf['reward']['parameters']
-
     env = gym.make(
         conf['environment'],
-        reward=reward,
-        reward_kwargs=reward_kwargs)
+        ** env_params)
 
     # env for evaluation if is enabled
     eval_env = None
     if conf.get('evaluation'):
         eval_env = gym.make(
             conf['environment'],
-            reward=reward,
-            reward_kwargs=reward_kwargs)
+            ** env_params)
 
     # ---------------------------------------------------------------------------- #
     #                                   Wrappers                                   #
