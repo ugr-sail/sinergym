@@ -1,25 +1,6 @@
 {
-    "id": "PRUEBAALEX",
+    "id": "ExperimentExample",
     "environment": "Eplus-5Zone-hot-continuous-stochastic-v1",
-    "env_params": {
-        "reward": "LinearReward",
-        "reward_kwargs": {
-            "temperature_variable": [
-                "Zone Air Temperature(SPACE1-1)",
-                "Zone Air Temperature(SPACE1-2)"
-            ],
-            "energy_variable": "Facility Total HVAC Electricity Demand Rate(Whole Building)",
-            "range_comfort_winter": [
-                20.0,
-                23.5
-            ],
-            "range_comfort_summer": [
-                23.0,
-                26.0
-            ]
-        },
-        "act_repeat": 1
-    },
     "episodes": 5,
     "algorithm": {
         "name": "SB3-PPO",
@@ -38,6 +19,25 @@
             "vf_coef": 0.5,
             "max_grad_norm": 0.5
         }
+    },
+    "env_params": {
+        "reward": "LinearReward",
+        "reward_kwargs": {
+            "temperature_variable": [
+                "Zone Air Temperature(SPACE1-1)",
+                "Zone Air Temperature(SPACE1-2)"
+            ],
+            "energy_variable": "Facility Total HVAC Electricity Demand Rate(Whole Building)",
+            "range_comfort_winter": [
+                20.0,
+                23.5
+            ],
+            "range_comfort_summer": [
+                23.0,
+                26.0
+            ]
+        },
+        "act_repeat": 1
     },
     "seed": 3,
     "model": null,

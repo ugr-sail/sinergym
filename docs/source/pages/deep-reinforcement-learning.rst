@@ -186,15 +186,19 @@ your own experiments are:
 ``DRL_battery.py`` has a unique parameter to be able to execute it; ``-conf``.
 This parameter is a str to indicate the JSON file in which there are allocated
 all information about the experiment you want to execute. You can see the
-JSON structure in `sinergym/scripts/DRL_battery_example.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery_example.json>`__:
+JSON structure example in `sinergym/scripts/DRL_battery_example.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery_example.json>`__:
 
-* The **obligatory** parameters are: environment, train episodes, 
-  algorithm (and parameters) and reward function (and parameters).
+* The **obligatory** parameters are: environment, episodes, 
+  algorithm (and parameters of the algorithm which don't have 
+  default values).
 
-* The **optional** parameters are: seed, model to load (before training),
+* The **optional** parameters are: All environment parameters (if it is specified 
+  will be overwrite the default environment value) seed, model to load (before training),
   experiment ID, wrappers to use (respecting the order), training evaluation,
   tensorboard functionality and cloud options.
-  
+
+* The name of the fields must be like in example mentioned. Otherwise, the experiment
+  will return an error.
 
 ****************
 Mlflow
