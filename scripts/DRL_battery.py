@@ -8,19 +8,18 @@ import gymnasium as gym
 import mlflow
 import numpy as np
 import tensorboard
-from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
+from stable_baselines3 import *
 from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import configure
 from stable_baselines3.common.noise import NormalActionNoise
 from stable_baselines3.common.vec_env import DummyVecEnv
-
 import sinergym
 import sinergym.utils.gcloud as gcloud
 from sinergym.utils.callbacks import LoggerCallback, LoggerEvalCallback
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
-from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
-                                     NormalizeObservation)
+from sinergym.utils.wrappers import *
+from sinergym.utils.logger import *
 
 # ---------------------------------------------------------------------------- #
 #                             Parameters definition                            #
@@ -132,12 +131,14 @@ with mlflow.start_run(run_name=name):
     #                                   Wrappers                                   #
     # ---------------------------------------------------------------------------- #
     if conf.get('wrappers'):
-        for key, parameters in conf['wrappers']:
+        for key, parameters in conf['wrappers'].items():
             wrapper_class = eval(key)
-            # parse str parameters to sinergym variables
-            for name, value in parameters:
-                if 'sinergym.' in name:
-                    parameters[name] = eval(value)
+            for name, value in parameters.items():
+                # parse str parameters to sinergym Callable or Objects if it is
+                # required
+                if isinstance(value, str):
+                    if 'sinergym.' in value:
+                        parameters[name] = eval(value)
             env = wrapper_class(env=env, ** parameters)
             if eval_env is not None:
                 eval_env = wrapper_class(env=eval_env, ** parameters)
@@ -162,7 +163,7 @@ with mlflow.start_run(run_name=name):
         #                           DDPG                         #
         # --------------------------------------------------------#
         elif algorithm_name == 'SB3-DDPG':
-            model = DDPG(env,
+            model = DDPG(env=env,
                          seed=conf.get('seed', None),
                          tensorboard_log=conf.get('tensorboard', None),
                          ** algorithm_parameters)
@@ -170,7 +171,7 @@ with mlflow.start_run(run_name=name):
         #                           A2C                          #
         # --------------------------------------------------------#
         elif algorithm_name == 'SB3-A2C':
-            model = A2C(env,
+            model = A2C(env=env,
                         seed=conf.get('seed', None),
                         tensorboard_log=conf.get('tensorboard', None),
                         ** algorithm_parameters)
@@ -178,7 +179,7 @@ with mlflow.start_run(run_name=name):
         #                           PPO                          #
         # --------------------------------------------------------#
         elif algorithm_name == 'SB3-PPO':
-            model = PPO(env,
+            model = PPO(env=env,
                         seed=conf.get('seed', None),
                         tensorboard_log=conf.get('tensorboard', None),
                         ** algorithm_parameters)
@@ -186,7 +187,7 @@ with mlflow.start_run(run_name=name):
         #                           SAC                          #
         # --------------------------------------------------------#
         elif algorithm_name == 'SB3-SAC':
-            model = SAC(env,
+            model = SAC(env=env,
                         seed=conf.get('seed', None),
                         tensorboard_log=conf.get('tensorboard', None),
                         ** algorithm_parameters)
@@ -194,7 +195,7 @@ with mlflow.start_run(run_name=name):
         #                           TD3                          #
         # --------------------------------------------------------#
         elif algorithm_name == 'SB3-TD3':
-            model = TD3(env,
+            model = TD3(env=env,
                         seed=conf.get('seed', None),
                         tensorboard_log=conf.get('tensorboard', None),
                         ** algorithm_parameters)
