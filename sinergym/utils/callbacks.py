@@ -82,7 +82,7 @@ class LoggerCallback(BaseCallback):
         variables = self.training_env.get_attr('variables')[0]['action']
         action = None
         # sinergym action received inner its own setpoints range
-        action_ = info['action_']
+        action_ = info['action']
         try:
             # network output clipped with gym action space
             action = self.locals['clipped_actions'][-1]
@@ -115,10 +115,10 @@ class LoggerCallback(BaseCallback):
             except KeyError:
                 print('Algorithm reward key in locals dict unknown')
 
-        self.ep_powers.append(info['total_power'])
-        self.ep_term_comfort.append(info['comfort_penalty'])
-        self.ep_term_energy.append(info['total_power_no_units'])
-        if (info['comfort_penalty'] != 0):
+        self.ep_powers.append(info['total_energy'])
+        self.ep_term_comfort.append(info['reward_comfort'])
+        self.ep_term_energy.append(info['reward_energy'])
+        if (info['reward_comfort'] != 0):
             self.num_comfort_violation += 1
         self.ep_timesteps += 1
 

@@ -1,7 +1,7 @@
 autopep8
 eppy
 gymnasium
-isort[requirements_deprecated_finder,pipfile_deprecated_finder]
+isort
 numpy
 opyplus
 pandas

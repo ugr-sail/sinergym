@@ -160,7 +160,7 @@ How use
 You can try your own experiments and benefit from this functionality. 
 `sinergym/scripts/DRL_battery.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery.py>`__
 is a example code to use it. You can use ``DRL_battery.py`` directly from 
-your local computer specifying ``--tensorboard`` flag in execution.
+your local computer or using Google Cloud Platform.
 
 The most **important information** you must keep in mind when you try 
 your own experiments are:
@@ -179,12 +179,26 @@ your own experiments are:
   specify train ``timesteps``, ``callbacks`` and ``log_interval`` 
   as we commented in type algorithms (On and Off Policy).
 
-* ``DRL_battery.py`` requires some **extra arguments** to being 
-  executed like ``-env`` and ``-ep``.
-
 * You can execute **Curriculum Learning**, you only have to 
-  add ``--model`` field with a valid model path, this script 
+  add model field with a valid model path, this script 
   will load the model and execute to train.
+
+``DRL_battery.py`` has a unique parameter to be able to execute it; ``-conf``.
+This parameter is a str to indicate the JSON file in which there are allocated
+all information about the experiment you want to execute. You can see the
+JSON structure example in `sinergym/scripts/DRL_battery_example.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery_example.json>`__:
+
+* The **obligatory** parameters are: environment, episodes, 
+  algorithm (and parameters of the algorithm which don't have 
+  default values).
+
+* The **optional** parameters are: All environment parameters (if it is specified 
+  will be overwrite the default environment value) seed, model to load (before training),
+  experiment ID, wrappers to use (respecting the order), training evaluation,
+  tensorboard functionality and cloud options.
+
+* The name of the fields must be like in example mentioned. Otherwise, the experiment
+  will return an error.
 
 ****************
 Mlflow
