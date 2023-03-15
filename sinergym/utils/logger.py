@@ -4,7 +4,9 @@ import csv
 import logging
 import os
 import sys
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union, Tuple
+from stable_baselines3.common.logger import Logger, KVWriter
+import wandb
 
 import numpy as np
 
@@ -300,3 +302,27 @@ class CSVLogger(object):
         """Deactivate Sinergym CSV logger
         """
         self.flag = False
+
+
+class WandBOutputFormat(KVWriter):
+    """
+    Dumps key/value pairs onto WandB. This class is based on SB3 used in logger callback
+    """
+
+    def write(
+        self,
+        key_values: Dict[str, Any],
+        key_excluded: Dict[str, Union[str, Tuple[str, ...]]],
+        step: int = 0,
+    ) -> None:
+
+        for (key, value), (_, excluded) in zip(
+            sorted(key_values.items()), sorted(key_excluded.items())
+        ):
+
+            if excluded is not None and "wandb" in excluded:
+                continue
+
+            if isinstance(value, np.ScalarType):
+                if not isinstance(value, str):
+                    wandb.log({key: value}, step=step)
