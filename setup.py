@@ -24,6 +24,7 @@ setup(name='sinergym',
           'extras': [
               'matplotlib',  # visualization
               # 'stable-baselines3',  # DRL with pytorch
+              'wandb',
               'mlflow==1.28.0',  # tracking ML experiments
               'tensorflow==2.9.1',
               'tensorboard_plugin_profile==2.8.0',  # Training logger
@@ -54,7 +55,8 @@ setup(name='sinergym',
               # 'stable-baselines3',
               'mlflow==1.28.0',
               'tensorflow==2.9.1',
-              'tensorboard_plugin_profile==2.8.0'
+              'tensorboard_plugin_profile==2.8.0',
+              'wandb'
           ],
           'doc': [
               'sphinx',
