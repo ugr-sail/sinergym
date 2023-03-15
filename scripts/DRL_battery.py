@@ -133,7 +133,6 @@ if conf.get('model') is None:
 
         model = DQN(env=env,
                     seed=conf.get('seed', None),
-                    tensorboard_log=conf.get('tensorboard', None),
                     ** algorithm_parameters)
     # --------------------------------------------------------#
     #                           DDPG                         #
@@ -141,7 +140,6 @@ if conf.get('model') is None:
     elif algorithm_name == 'SB3-DDPG':
         model = DDPG(env=env,
                      seed=conf.get('seed', None),
-                     tensorboard_log=conf.get('tensorboard', None),
                      ** algorithm_parameters)
     # --------------------------------------------------------#
     #                           A2C                          #
@@ -149,7 +147,6 @@ if conf.get('model') is None:
     elif algorithm_name == 'SB3-A2C':
         model = A2C(env=env,
                     seed=conf.get('seed', None),
-                    tensorboard_log=conf.get('tensorboard', None),
                     ** algorithm_parameters)
     # --------------------------------------------------------#
     #                           PPO                          #
@@ -157,7 +154,6 @@ if conf.get('model') is None:
     elif algorithm_name == 'SB3-PPO':
         model = PPO(env=env,
                     seed=conf.get('seed', None),
-                    tensorboard_log=conf.get('tensorboard', None),
                     ** algorithm_parameters)
     # --------------------------------------------------------#
     #                           SAC                          #
@@ -165,7 +161,6 @@ if conf.get('model') is None:
     elif algorithm_name == 'SB3-SAC':
         model = SAC(env=env,
                     seed=conf.get('seed', None),
-                    tensorboard_log=conf.get('tensorboard', None),
                     ** algorithm_parameters)
     # --------------------------------------------------------#
     #                           TD3                          #
@@ -173,7 +168,6 @@ if conf.get('model') is None:
     elif algorithm_name == 'SB3-TD3':
         model = TD3(env=env,
                     seed=conf.get('seed', None),
-                    tensorboard_log=conf.get('tensorboard', None),
                     ** algorithm_parameters)
     # --------------------------------------------------------#
     #                           Error                        #
@@ -197,28 +191,22 @@ else:
     model = None
     if algorithm_name == 'SB3-DQN':
         model = DQN.load(
-            model_path, tensorboard_log=conf.get(
-                'tensorboard', None))
+            model_path)
     elif algorithm_name == 'SB3-DDPG':
         model = DDPG.load(
-            model_path, tensorboard_log=conf.get(
-                'tensorboard', None))
+            model_path)
     elif algorithm_name == 'SB3-A2C':
         model = A2C.load(
-            model_path, tensorboard_log=conf.get(
-                'tensorboard', None))
+            model_path)
     elif algorithm_name == 'SB3-PPO':
         model = PPO.load(
-            model_path, tensorboard_log=conf.get(
-                'tensorboard', None))
+            model_path)
     elif algorithm_name == 'SB3-SAC':
         model = SAC.load(
-            model_path, tensorboard_log=conf.get(
-                'tensorboard', None))
+            model_path)
     elif algorithm_name == 'SB3-TD3':
         model = TD3.load(
-            model_path, tensorboard_log=conf.get(
-                'tensorboard', None))
+            model_path)
     else:
         raise RuntimeError('Algorithm specified is not registered.')
 
@@ -288,37 +276,12 @@ if conf.get('cloud'):
             src_path=env.simulator._env_working_dir_parent,
             dest_bucket_name=conf['cloud']['remote_store'],
             dest_path=name)
-        # Code for send output and tensorboard to mlflow artifacts.
-        mlflow.log_artifacts(
-            local_dir=env.simulator._env_working_dir_parent,
-            artifact_path=name)
         if conf.get('evaluation'):
             gcloud.upload_to_bucket(
                 client,
                 src_path='best_model/' + name + '/',
                 dest_bucket_name=conf['cloud']['remote_store'],
                 dest_path='best_model/' + name + '/')
-            mlflow.log_artifacts(
-                local_dir='best_model/' + name,
-                artifact_path='best_model/' + name)
-        # If tensorboard is active (in local) we should send to mlflow
-        if conf.get('tensorboard') and 'gs://' + \
-                conf['cloud']['remote_store'] not in conf.get('tensorboard'):
-            gcloud.upload_to_bucket(
-                client,
-                src_path=conf['tensorboard'] + '/' + name + '/',
-                dest_bucket_name=conf['cloud']['remote_store'],
-                dest_path=os.path.abspath(conf['tensorboard']).split('/')[-1] + '/' + name + '/')
-            mlflow.log_artifacts(
-                local_dir=conf['tensorboard'] + '/' + name,
-                artifact_path=os.path.abspath(conf['tensorboard']).split('/')[-1] + '/' + name)
-
-        # gcloud.upload_to_bucket(
-        #     client,
-        #     src_path='mlruns/',
-        #     dest_bucket_name=conf['cloud']['remote_store'],
-        #     dest_path='mlruns/')
-
     # ---------------------------------------------------------------------------- #
     #                   Autodelete option if is a cloud resource                   #
     # ---------------------------------------------------------------------------- #
