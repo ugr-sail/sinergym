@@ -25,9 +25,6 @@ setup(name='sinergym',
               'matplotlib',  # visualization
               # 'stable-baselines3',  # DRL with pytorch
               'wandb',
-              'mlflow==1.28.0',  # tracking ML experiments
-              'tensorflow==2.9.1',
-              'tensorboard_plugin_profile==2.8.0',  # Training logger
               'pytest',
               'pytest-cov',
               'pytest-xdist',  # Unit test repository
@@ -53,9 +50,6 @@ setup(name='sinergym',
           ],
           'DRL': [
               # 'stable-baselines3',
-              'mlflow==1.28.0',
-              'tensorflow==2.9.1',
-              'tensorboard_plugin_profile==2.8.0',
               'wandb'
           ],
           'doc': [
