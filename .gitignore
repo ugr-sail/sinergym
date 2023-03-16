@@ -50,3 +50,6 @@ dist/
 .coverage
 codecov
 coverage.xml
+
+#wandb
+wandb/
