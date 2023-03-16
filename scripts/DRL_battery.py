@@ -1,25 +1,24 @@
 import argparse
-import sys
-import os
 import json
+import os
+import sys
 from datetime import datetime
 
 import gymnasium as gym
-import mlflow
 import numpy as np
-import tensorboard
-from stable_baselines3 import *
-from stable_baselines3.common.callbacks import CallbackList
-from stable_baselines3.common.logger import configure
-from stable_baselines3.common.noise import NormalActionNoise
-from stable_baselines3.common.vec_env import DummyVecEnv
 import sinergym
 import sinergym.utils.gcloud as gcloud
 from sinergym.utils.callbacks import *
 from sinergym.utils.constants import *
+from sinergym.utils.logger import CSVLogger, WandBOutputFormat
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import *
-from sinergym.utils.logger import *
+from stable_baselines3 import *
+from stable_baselines3.common.callbacks import CallbackList
+from stable_baselines3.common.logger import HumanOutputFormat, Logger
+from stable_baselines3.common.monitor import Monitor
+
+import wandb
 
 # ---------------------------------------------------------------------------- #
 #                             Parameters definition                            #
@@ -59,20 +58,22 @@ name += '_' + experiment_date
 #                              WandB registration                              #
 # ---------------------------------------------------------------------------- #
 
-# Create wandb.config object in order to log all experiment params
-wandb_params = {
-    'sinergym-version': sinergym.__version__,
-    'python-version': sys.version
-}
-wandb_params.update(conf)
+if conf.get('wandb'):
+    # Create wandb.config object in order to log all experiment params
+    experiment_params = {
+        'sinergym-version': sinergym.__version__,
+        'python-version': sys.version
+    }
+    experiment_params.update(conf)
 
-# Init wandb entry
-wandb.init(
-    project="sinergym",
-    entity="ugr-sail",
-    name=name,
-    config=wandb_params
-)
+    # Get wandb init params
+    wandb_params = conf['wandb']
+    # Init wandb entry
+    run = wandb.init(
+        name=name + '_' + wandb.util.generate_id(),
+        config=experiment_params,
+        ** wandb_params
+    )
 
 # --------------------- Overwrite environment parameters --------------------- #
 env_params = {}
@@ -95,6 +96,7 @@ if conf.get('env_params'):
 env = gym.make(
     conf['environment'],
     ** env_params)
+env = Monitor(env)
 
 # env for evaluation if is enabled
 eval_env = None
@@ -102,6 +104,7 @@ if conf.get('evaluation'):
     eval_env = gym.make(
         conf['environment'],
         ** env_params)
+    eval_env = Monitor(eval_env)
 
 # ---------------------------------------------------------------------------- #
 #                                   Wrappers                                   #
@@ -228,23 +231,30 @@ callbacks = []
 if conf.get('evaluation'):
     eval_callback = LoggerEvalCallback(
         eval_env,
-        best_model_save_path='best_model/' + name,
+        best_model_save_path='best_model/' +
+        name,
         log_path='best_model/' + name + '/',
-        eval_freq=n_timesteps_episode *
-        conf['evaluation']['eval_freq'],
+        eval_freq=n_timesteps_episode * conf['evaluation']['eval_freq'],
         deterministic=True,
         render=False,
         n_eval_episodes=conf['evaluation']['eval_length'])
     callbacks.append(eval_callback)
 
 # Set up tensorboard logger
-if conf.get('tensorboard'):
+if conf.get('wandb'):
+    # wandb logger and setting in SB3
+    logger = Logger(
+        folder=None,
+        output_formats=[
+            HumanOutputFormat(
+                sys.stdout,
+                max_length=120),
+            WandBOutputFormat()])
+    model.set_logger(logger)
+    # Append callback
     log_callback = LoggerCallback()
     callbacks.append(log_callback)
-    # lets change default dir for TensorboardFormatLogger only
-    tb_path = conf['tensorboard'] + '/' + name
-    new_logger = configure(tb_path, ["tensorboard"])
-    model.set_logger(new_logger)
+
 
 callback = CallbackList(callbacks)
 
@@ -264,7 +274,20 @@ if env.simulator._episode_existed:
     env.close()
 
 # ---------------------------------------------------------------------------- #
-#          Mlflow artifacts storege and Google Cloud Bucket Storage            #
+#                              Wandb artifact log                              #
+# ---------------------------------------------------------------------------- #
+
+if conf.get('wandb'):
+    artifact = wandb.Artifact('train', 'model')
+    artifact.add_dir(env.simulator._env_working_dir_parent)
+    artifact.add_dir('./best_model/')
+    run.log_artifact(artifact)
+
+# wandb has finished
+run.finish()
+
+# ---------------------------------------------------------------------------- #
+#                      Google Cloud Bucket Storage                             #
 # ---------------------------------------------------------------------------- #
 if conf.get('cloud'):
     if conf['cloud'].get('remote_store'):
@@ -285,9 +308,8 @@ if conf.get('cloud'):
     # ---------------------------------------------------------------------------- #
     #                   Autodelete option if is a cloud resource                   #
     # ---------------------------------------------------------------------------- #
-    if conf.get('cloud'):
-        if conf['cloud'].get(
-                'remote_store') and conf['cloud'].get('auto_delete'):
-            token = gcloud.get_service_account_token()
-            gcloud.delete_instance_MIG_from_container(
-                conf['cloud']['group_name'], token)
+    if conf['cloud'].get(
+            'remote_store') and conf['cloud'].get('auto_delete'):
+        token = gcloud.get_service_account_token()
+        gcloud.delete_instance_MIG_from_container(
+            conf['cloud']['group_name'], token)
