@@ -49,13 +49,30 @@ about how information is extracted which is why its implementation.
           ``sinergym_logger`` attribute in constructor. 
 
 ``LoggerCallback`` inherits from Stable Baselines 3 ``BaseCallback`` and 
-uses `Tensorboard <https://www.tensorflow.org/tensorboard?hl=es-419>`__ on the 
-background at the same time. With *Tensorboard*, it's possible to visualize all DRL 
-training in real time and compare between different executions. This is an example: 
+uses `Weights & Biases <https://wandb.ai/site>`__(*wandb*) in the background in order to host 
+all information extracted. With *wandb*, it's possible to track and visualize all DRL 
+training in real time, register hyperparameters and details of each execution, save artifacts 
+such as models and sinergym output, and compare between different executions. This is an example: 
 
-.. image:: /_static/tensorboard_example.png
+- Hyperparameter and summary registration:
+
+.. image:: /_static/wandb_example1.png
   :width: 800
-  :alt: Tensorboard example
+  :alt: WandB hyperparameters
+  :align: center
+
+- Artifacts registered (if evaluation is enabled, best model is registered too):
+
+.. image:: /_static/wandb_example2.png
+  :width: 800
+  :alt: WandB artifacts
+  :align: center
+
+- Metrics visualization in real time:
+
+.. image:: /_static/wandb_example3.png
+  :width: 800
+  :alt: WandB charts
   :align: center
 
 There are tables which are in some algorithms and not in others and vice versa. 
@@ -80,7 +97,7 @@ at the end of the training).
 
 Its name is ``LoggerEvalCallback`` and it inherits from Stable Baselines 3 ``EvalCallback``. 
 The main feature added is that the model evaluation is logged in a particular section in 
-Tensorboard too for the concrete metrics of the building model.
+*wandb* too for the concrete metrics of the building model.
 
 We have to define in ``LoggerEvalCallback`` construction how many training episodes we want 
 the evaluation process to take place. On the other hand, we have to define how many episodes 
@@ -91,14 +108,14 @@ therefore, the more faithful it will be to reality in terms of how good the curr
 turning out to be. However, it will take more time.
 
 It calculates timestep and episode average for power consumption, comfort penalty and power penalty.
-On the other hand, it calculates too comfort violation percentage in episodes too.
+On the other hand, it calculates comfort violation percentage in episodes too.
 Currently, only mean reward is taken into account to decide when a model is better.
 
-***********************
-Tensorboard structure
-***********************
+******************************
+Weights and Biases structure
+******************************
 
-The main structure for *Sinergym* with *Tensorboard* is:
+The main structure for *Sinergym* with *wandb* is:
 
 * **action**: This section has action values during training. When algorithm 
   is On Policy, it will appear **action_simulation** too. This is because 
@@ -195,33 +212,43 @@ JSON structure example in `sinergym/scripts/DRL_battery_example.json <https://gi
 * The **optional** parameters are: All environment parameters (if it is specified 
   will be overwrite the default environment value) seed, model to load (before training),
   experiment ID, wrappers to use (respecting the order), training evaluation,
-  tensorboard functionality and cloud options.
+  wandb functionality and cloud options.
 
 * The name of the fields must be like in example mentioned. Otherwise, the experiment
   will return an error.
 
-****************
-Mlflow
-****************
+This script do the next:
 
-Our scripts to run DRL with *Sinergym* environments are using
-`Mlflow <https://mlflow.org/>`__, in order to **tracking experiments** 
-and recorded them methodically. It is recommended to use it.
-You can start a local server with information stored during the 
-battery of experiments such as initial and ending date of execution, 
-hyperparameters, duration, etc.
+    1. Setting an appropriate name for the experiment. Following the next
+       format: ``<algorithm>-<environment_name>-episodes<episodes_int>-seed<seed_value>(<experiment_date>)``
 
-Here is an example: 
+    2. Starting WandB track experiment with that name (if configured in JSON), it will create an local path (*./wandb*) too.
 
-.. image:: /_static/mlflow_example.png
-  :width: 800
-  :alt: Tensorboard example
-  :align: center
+    3. Log all parameters allocated in JSON configuration (including *sinergym.__version__* and python version).
 
+    4. Setting env with parameters overwritten in case of establishing them.
 
-.. note:: For information about how use *Tensorboard* and *Mlflow* with a Cloud 
-          Computing paradigm, see :ref:`Remote Tensorboard log` and 
-          :ref:`Mlflow tracking server set up`.
+    5. Setting wrappers specified in JSON.
+
+    6. Defining model algorithm using hyperparameters defined.
+
+    7. Calculate training timesteps using number of episodes.
+
+    8. Setting up evaluation callback if it has been specified.
+
+    9. Setting up WandB logger callback if it has been specified.
+
+    10. Training with environment.
+
+    11. If remote store has been specified, saving all outputs in Google 
+        Cloud Bucket. If wandb has been specified, saving all 
+        outputs in wandb run artifact.
+
+    12. Auto-delete remote container in Google Cloud Platform when parameter 
+        auto-delete has been specified.
+
+.. note:: For information about how use *WandB* with a Cloud 
+          Computing paradigm, see :ref:`Remote Weights and Biases log`.
 
 .. note:: *This is a work in progress project. Direct support with others 
           algorithms is being planned for the future!*

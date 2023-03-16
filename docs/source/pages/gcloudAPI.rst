@@ -8,8 +8,7 @@ Cloud account and combine with *Sinergym* easily.
 
 The main idea is to construct a **virtual machine** (VM) using 
 **Google Cloud Engine** (GCE) in order to execute our **Sinergym container** 
-on it. At the same time, this remote container will update a **Google Cloud 
-Bucket with experiments results** and **mlflow tracking server** with artifacts 
+on it. At the same time, this remote container will update **Weights and Biases tracking server** with artifacts 
 if we configure that experiment with those options.
 
 When an instance has finished its job, container **auto-remove** its host 
@@ -231,7 +230,7 @@ firstly, for example:
     --container-privileged \
     --service-account storage-account@sinergym.iam.gserviceaccount.com \
     --scopes https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/devstorage.full_control \
-    --container-env=gce_zone=europe-west1-b,gce_project_id=sinergym,MLFLOW_TRACKING_URI=http://$(gcloud compute addresses describe mlflow-ip --format='get(address)'):5000 \
+    --container-env=gce_zone=europe-west1-b,gce_project_id=sinergym \
     --container-restart-policy never \
     --container-stdin \
     --container-tty \
@@ -291,119 +290,21 @@ Executing experiments in remote containers
 
 This script, called *DRL_battery.py*, will be allocated in every remote 
 container and it is used to execute experiments and combine it with 
-**Google Cloud Bucket**, **Mlflow Artifacts**, **auto-remove**, etc:
+**Google Cloud Bucket**, **Weights and Biases**, **auto-remove**, etc:
 
 .. literalinclude:: ../../../scripts/DRL_battery.py
     :language: python
 
 .. note:: **DRL_battery.py** is able to be used to local experiments 
-          into client computer. For example, ``--auto_delete`` parameter 
+          into client computer. For example, ``auto_delete`` parameter 
           will have no effect in experiment. This experiments results 
           could be sent to bucket and mlflow artifacts if it is specified. 
           We will see it.
 
-The list of parameter is pretty large. Let's see it:
-
-- ``--environment`` or ``-env``: Environment name you want to use 
-  (see :ref:`Environments`).
-
-- ``--episodes`` or ``-ep``: Number of episodes you want to train 
-  agent in simulation (Depending on environment episode length can 
-  be different).
-
-- ``--algorithm`` or ``-alg``: Algorithm you want to use to train 
-  (Currently, it is available *PPO*, *A2C*, *DQN*, *DDPG* and *SAC*).
-
-- ``--reward`` or ``-rw``: Reward class you want to use for reward 
-  function. Currently, possible values are "linear" and "exponential" 
-  (see :ref:`Rewards`).
-
-- ``--normalization`` or ``-norm``: Apply normalization wrapper to 
-  observations during training. If it isn't specified wrapper will 
-  not be applied (see :ref:`Wrappers`).
-
-- ``--multiobs`` or ``-mobs``: Apply Multi-Observation wrapper to 
-  observations during training. If it isn't specified wrapper will 
-  not be applied (see :ref:`Wrappers`).
-
-- ``--logger`` or ``-log``: Apply Sinergym logger wrapper during 
-  training. If it isn't specified wrapper will not be applied 
-  (see :ref:`Wrappers` and :ref:`Logger`).
-
-- ``--tensorboard`` or ``-tens``: This parameter will contain a 
-  **path-file** or **path-remote-bucket** to allocate tensorboard 
-  training logs. If it isn't specified this log will be deactivate 
-  (see :ref:`Tensorboard structure`).
-
-- ``--evaluation`` or ``-eval``: If it is specified, evaluation 
-  callback will be activate, else model evaluation will be deactivate 
-  during training (see :ref:`Deep Reinforcement Learning Integration`).
-
-- ``--eval_freq`` or ``-evalf``: Only if ``--evaluation`` flag has been 
-  written. Episode frequency for evaluation.
-
-- ``--eval_length`` or ``-evall``: Only if ``--evaluation`` flag has been 
-  written. Number of episodes for each evaluation.
-
-- ``--log_interval`` or ``-inter``: This parameter is used for ``learn()``
-   method in each algorithm. It is important specify a correct value.
-
-- ``--seed`` or ``-sd``: Seed for training, random components in process 
-  will be able to be recreated.
-
-- ``--remote_store`` or ``-sto``: Determine if sinergym output and 
-  tensorboard log (when a local path is specified and not a remote 
-  bucket path) will be sent to a common resource (Bucket), else will 
-  be allocate in remote container memory only.
-
-- ``--mlflow_store`` or ``-mlflow``: Determine if sinergym output and 
-  tensorboard log (when a local path is specified and not a remote bucket 
-  path) will be sent to a Mlflow Artifact, else will be allocate in remote 
-  container memory only.
-
-- ``--group_name`` or ``-group``: It specify to which MIG the host instance 
-  belongs, it is important if --auto-delete is activated.
-
-- ``--auto_delete`` or ``-del``: Whether this parameter is specified, 
-  remote instance will be auto removed when its job has finished.
-  
-- **algorithm hyperparameters**: Execute ``python DRL_battery --help`` 
-  for more information.
+The list of parameter is pretty large. See :ref:`How use` section.
 
 .. warning:: For a correct auto_delete functionality, please, use MIG's 
              instead of individual instances.
-
-This script do the next:
-
-    1. Setting an appropriate name for the experiment. Following the next
-       format: ``<algorithm>-<environment_name>-episodes<episodes_int>-seed<seed_value>(<experiment_date>)``
-
-    2. Starting Mlflow track experiment with that name, if mlflow server 
-       is not available, it will be used an local path (*./mlruns*) in 
-       remote container.
-
-    3. Log all MlFlow parameters (including *sinergym.__version__*).
-
-    4. Setting reward function specified in ``--reward`` parameter.
-
-    5. Setting wrappers specified in environment.
-
-    6. Defining model algorithm using hyperparameters.
-
-    7. Calculate training timesteps using number of episodes.
-
-    8. Setting up evaluation callback if it has been specified.
-
-    9. Setting up Tensorboard logger callback if it has been specified.
-
-    10. Training with environment.
-
-    11. If ``--remote_store`` has been specified, saving all outputs in Google 
-        Cloud Bucket. If ``--mlflow_store`` has been specified, saving all 
-        outputs in Mlflow run artifact.
-
-    12. Auto-delete remote container in Google Cloud Platform when parameter 
-        ``--auto_delete`` has been specified.
 
 Containers permission to bucket storage output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -413,8 +314,7 @@ it is specified ``--scope``, ``--service-account`` and ``--container-env``.
 This aim to *remote_store* option in *DRL_battery.py* works correctly.
 Those parameters provide each container with permissions to write in the bucket 
 and manage Google Cloud Platform (auto instance remove function).
-Container environment variables indicate zone, project_id and mlflow tracking 
-server uri need it in :ref:`Mlflow tracking server set up`.
+Container environment variables indicate zone and project_id.
 
 Hence, it is **necessary** to **set up this service account** and give privileges 
 in order to that objective. Then, following 
@@ -485,105 +385,11 @@ This script loads the model. Once the model is loaded, it predicts the actions f
 states during the agreed episodes. The information is collected and sent to a cloud storage 
 if it has been specified, otherwise it is stored in local memory.
 
-***********************
-Remote Tensorboard log
-***********************
 
-In ``--tensorboard`` parameter we have to specify a **local path** or a **Bucket path**.
-
-If we specify a **local path**, tensorboard logs will be stored in remote containers memory. 
-If you have specified ``--remote_store`` or ``--mlflow_store``, this logs will be sent to 
-those remote storage when experiment finishes.
-One of the strengths of Tensorboard is the ability to see the data in real time as the training 
-is running. Thus, it is recommended to define in ``--tensorboard`` the **bucket path** directly 
-in order to send that information
-as the training is generating it (see 
-`this issue <https://github.com/ContinualAI/avalanche/pull/628>`__ 
-for more information). In our project we have *gs://experiments-storage/tensorboard_log* but you
-can have whatever you want.
-
-.. note:: If in ``--tensorboard`` you have specified a gs path, ``--remote_store`` 
-          or ``--mlflow_store`` parameters don't store tensorboard logs.
-
-.. warning:: Whether you have written a bucket path, don't write ``/`` at the end 
-             (``gs://experiments-storage/tensorboard_log/``), this causes that real-time 
-             remote storage doesn't work correctly.
-
-.. warning:: In the case that gs URI isn't recognized. Maybe is due to your tensorboard 
-             installation hasn't got access your google account. Try 
-             `gcloud auth application-default login <https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login>`__ command.
-
-Visualize remote Tensorboard log in real-time
+Visualize remote wandb log in real-time
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You have two options:
-
-    1. Create a remote server with tensorboard service deployed.
-
-    2. Initiate that service in your local computer, reading from the bucket log, 
-    and access to the visualization in *http://localhost:6006*
-
-The second options is enough since we can read from bucket when we need directly
-and shut down local service when we finish.
-
-.. code:: sh
-
-    $ tensorboard --logdir gs://experiments-storage/tensorboard_log/
-
-
-******************************
-Mlflow tracking server set up
-******************************
-
-Mlflow tracking server can be set up into your google account in order to organize
-your own experiments (:ref:`Mlflow`). You can separate **back-end** (SQL database) 
-from tracking server.
-In this way, you can shut down or delete server instance without loose your experiments 
-run data, since SQL is always up. Let's see how:
-
-.. literalinclude:: ../../../mlflowbuild.sh
-    :language: sh
-
-This bash script defines all the process to configure this functionality automatically. 
-(Once you execute it you don't have to use this script anymore). The arguments 
-it needs are: *PROJECT_ID*, *BUCKET_NAME*, *ZONE* and *DB_ROOT_PASSWORD*.
-
-This script do the next for you:
-
-    1. Creating Service account for mlflow service `[mlflow-tracking-sa]`.
-
-    2. Creating Back-end artifact bucket.
-
-    3. Creating SQL instance with root password specified in argument 4.
-
-    4. Creating mlflow database inner SQL instance.
-
-    5. Creating service account privileges to use Back-end `[roles/cloudsql.editor]`
-
-    6. Generating an automatic script called **start_mlflow_tracking.sh** and sending to 
-       ``gs://<BUCKET_NAME>/scripts/``.
-
-    7. Deleting local **start_mlflow_tracking.sh** file.
-
-    8. Creating static external IP for ``mlflow-tracking-server``.
-
-    9. Deploying remote server ``[mlflow-tracking-server]``.
-
-Step 8 is very important, this allows you to delete server instance and create again when 
-you need it without redefining server IP in sinergym-template for remote container experiments.
-Notice that server instance creation use service account for mlflow, with this configuration 
-mlflow can read from SQL server. In :ref:`4. Create your VM or MIG` it is specified 
-MLFLOW_TRACKING_URI container environment variable using that external static IP.
-
-.. warning:: It is important execute this script before create sinergym-template instances in order 
-             to annotate `mlflow-server-ip`.
-
-.. note:: If you want to change any backend configuration, you can change any parameter of the 
-          script bellow.
-
-.. note:: Whether you have written ``--mlflow_store``, Sinergym outputs will be sent to mlflow server 
-          as artifacts. These artifacts will be stored in the same bucket where is allocated 
-          ``gs://<BUCKET_NAME>``.
+You only have to enter in `Weights & Biases <https://wandb.ai/site>`__ and log in with your GitHub account.
 
 ********************
 Google Cloud Alerts
