@@ -240,7 +240,7 @@ if conf.get('evaluation'):
         n_eval_episodes=conf['evaluation']['eval_length'])
     callbacks.append(eval_callback)
 
-# Set up tensorboard logger
+# Set up wandb logger
 if conf.get('wandb'):
     # wandb logger and setting in SB3
     logger = Logger(
@@ -278,9 +278,13 @@ if env.simulator._episode_existed:
 # ---------------------------------------------------------------------------- #
 
 if conf.get('wandb'):
-    artifact = wandb.Artifact('train', 'model')
-    artifact.add_dir(env.simulator._env_working_dir_parent)
-    artifact.add_dir('./best_model/')
+    artifact = wandb.Artifact(
+        name=conf['wandb']['artifact_name'],
+        type=conf['wandb']['artifact_type'])
+    artifact.add_dir(
+        env.simulator._env_working_dir_parent,
+        name='sinergym_output/')
+    artifact.add_dir('./best_model/', name='evaluation/')
     run.log_artifact(artifact)
 
 # wandb has finished
