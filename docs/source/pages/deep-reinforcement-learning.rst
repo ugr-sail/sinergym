@@ -247,8 +247,5 @@ This script do the next:
     12. Auto-delete remote container in Google Cloud Platform when parameter 
         auto-delete has been specified.
 
-.. note:: For information about how use *WandB* with a Cloud 
-          Computing paradigm, see :ref:`Remote Weights and Biases log`.
-
 .. note:: *This is a work in progress project. Direct support with others 
           algorithms is being planned for the future!*
