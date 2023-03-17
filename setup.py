@@ -23,7 +23,8 @@ setup(name='sinergym',
       extras_require={
           'extras': [
               'matplotlib',  # visualization
-              # 'stable-baselines3',  # DRL with pytorch
+              # DRL with pytorch
+              'stable-baselines3 @ git+https://github.com/DLR-RM/stable-baselines3@feat/gymnasium-support',
               'wandb',
               'pytest',
               'pytest-cov',
@@ -46,10 +47,10 @@ setup(name='sinergym',
               'pytest',
               'pytest-cov',
               'pytest-xdist',
-              # 'stable-baselines3'
+              'stable-baselines3 @ git+https://github.com/DLR-RM/stable-baselines3@feat/gymnasium-support',
           ],
           'DRL': [
-              # 'stable-baselines3',
+              'stable-baselines3 @ git+https://github.com/DLR-RM/stable-baselines3@feat/gymnasium-support',
               'wandb'
           ],
           'doc': [

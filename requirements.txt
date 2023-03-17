@@ -1,6 +1,6 @@
 autopep8
 eppy
-gymnasium
+gymnasium @ git+https://github.com/Farama-Foundation/Gymnasium@main
 isort
 numpy
 opyplus
