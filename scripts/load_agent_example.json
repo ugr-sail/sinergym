@@ -1,0 +1,52 @@
+{
+    "id": "LoadExample",
+    "environment": "Eplus-5Zone-hot-continuous-stochastic-v1",
+    "episodes": 5,
+    "algorithm": {
+        "name": "SB3-PPO"
+    },
+    "env_params": {
+        "reward": "LinearReward",
+        "reward_kwargs": {
+            "temperature_variable": [
+                "Zone Air Temperature(SPACE1-1)",
+                "Zone Air Temperature(SPACE1-2)"
+            ],
+            "energy_variable": "Facility Total HVAC Electricity Demand Rate(Whole Building)",
+            "range_comfort_winter": [
+                20.0,
+                23.5
+            ],
+            "range_comfort_summer": [
+                23.0,
+                26.0
+            ]
+        },
+        "act_repeat": 1
+    },
+    "seed": 3,
+    "model": "alex_ugr/sinergym/train:latest",
+    "wrappers": {
+        "NormalizeObservation": {
+            "ranges": "sinergym.utils.constants.RANGES_5ZONE"
+        },
+        "LoggerWrapper": {
+            "logger_class": "sinergym.utils.logger.CSVLogger",
+            "flag": true
+        }
+    },
+    "wandb": {
+        "project": "sinergym_evaluations",
+        "entity": "alex_ugr",
+        "artifact_name": "evaluating",
+        "artifact_type": "evaluation1",
+        "load_model": {
+            "project": "sinergym",
+            "entity": "alex_ugr",
+            "artifact_name": "training",
+            "artifact_type": "experiment1",
+            "artifact_tag": "v9",
+            "artifact_path": "sinergym_output/flag.zip"
+        }
+    }
+}
