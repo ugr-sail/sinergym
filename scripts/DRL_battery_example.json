@@ -55,9 +55,11 @@
         "eval_length": 1
     },
     "wandb": {
-        "project": "sinergym",
-        "entity": "alex_ugr",
+        "init_params": {
+            "project": "sinergym",
+            "entity": "alex_ugr"
+        },
         "artifact_name": "training",
-        "artifact_tag": "experiment1"
+        "artifact_type": "experiment1"
     }
 }

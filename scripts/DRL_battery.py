@@ -67,7 +67,7 @@ if conf.get('wandb'):
     experiment_params.update(conf)
 
     # Get wandb init params
-    wandb_params = conf['wandb']
+    wandb_params = conf['wandb']['init_params']
     # Init wandb entry
     run = wandb.init(
         name=name + '_' + wandb.util.generate_id(),
