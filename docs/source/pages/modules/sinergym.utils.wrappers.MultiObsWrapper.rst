@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.MultiObsWrapper
+﻿sinergym.utils.wrappers.MultiObsWrapper
 =======================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -21,6 +21,7 @@ sinergym.utils.wrappers.MultiObsWrapper
       ~MultiObsWrapper.render
       ~MultiObsWrapper.reset
       ~MultiObsWrapper.step
+      ~MultiObsWrapper.wrapper_spec
    
    
 

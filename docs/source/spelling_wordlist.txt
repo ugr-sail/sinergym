@@ -2,6 +2,7 @@ adam
 approximator
 argparse
 Argparse
+args
 ArgumentParser
 arxiv
 Arxiv
@@ -96,6 +97,8 @@ hyperparameters
 idd
 idf
 init
+initialise
+initialize
 isn
 isort
 iterable
@@ -119,6 +122,7 @@ mlflow
 mlp
 mon
 mujoco
+MultiObjectiveReward
 MultiObsWrapper
 multiprocess
 Multiprocessed
@@ -213,6 +217,9 @@ Utils
 VecEnv
 vectorized
 vf
+WandB
+wandb
+WandBOutputFormat
 wEconomizer
 winterday
 wouldn

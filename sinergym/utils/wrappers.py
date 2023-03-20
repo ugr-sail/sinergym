@@ -229,7 +229,7 @@ class LoggerWrapper(gym.Wrapper):
             action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
 
         Returns:
-            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Wheather episode has been truncated or not, and a dictionary with extra information
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
         """
         obs, reward, terminated, truncated, info = self.env.step(action)
         # We added some extra values (month,day,hour) manually in env, so we

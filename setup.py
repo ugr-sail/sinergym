@@ -23,10 +23,9 @@ setup(name='sinergym',
       extras_require={
           'extras': [
               'matplotlib',  # visualization
-              # 'stable-baselines3',  # DRL with pytorch
-              'mlflow==1.28.0',  # tracking ML experiments
-              'tensorflow==2.9.1',
-              'tensorboard_plugin_profile==2.8.0',  # Training logger
+              # DRL with pytorch
+              'stable-baselines3',
+              'wandb',
               'pytest',
               'pytest-cov',
               'pytest-xdist',  # Unit test repository
@@ -48,13 +47,12 @@ setup(name='sinergym',
               'pytest',
               'pytest-cov',
               'pytest-xdist',
-              # 'stable-baselines3'
+              'stable-baselines3',
+              'wandb'
           ],
           'DRL': [
-              # 'stable-baselines3',
-              'mlflow==1.28.0',
-              'tensorflow==2.9.1',
-              'tensorboard_plugin_profile==2.8.0'
+              'stable-baselines3',
+              'wandb'
           ],
           'doc': [
               'sphinx',

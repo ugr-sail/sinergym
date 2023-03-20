@@ -49,13 +49,30 @@ about how information is extracted which is why its implementation.
           ``sinergym_logger`` attribute in constructor. 
 
 ``LoggerCallback`` inherits from Stable Baselines 3 ``BaseCallback`` and 
-uses `Tensorboard <https://www.tensorflow.org/tensorboard?hl=es-419>`__ on the 
-background at the same time. With *Tensorboard*, it's possible to visualize all DRL 
-training in real time and compare between different executions. This is an example: 
+uses `Weights & Biases <https://wandb.ai/site>`__(*wandb*) in the background in order to host 
+all information extracted. With *wandb*, it's possible to track and visualize all DRL 
+training in real time, register hyperparameters and details of each execution, save artifacts 
+such as models and sinergym output, and compare between different executions. This is an example: 
 
-.. image:: /_static/tensorboard_example.png
+- Hyperparameter and summary registration:
+
+.. image:: /_static/wandb_example1.png
   :width: 800
-  :alt: Tensorboard example
+  :alt: WandB hyperparameters
+  :align: center
+
+- Artifacts registered (if evaluation is enabled, best model is registered too):
+
+.. image:: /_static/wandb_example2.png
+  :width: 800
+  :alt: WandB artifacts
+  :align: center
+
+- Metrics visualization in real time:
+
+.. image:: /_static/wandb_example3.png
+  :width: 800
+  :alt: WandB charts
   :align: center
 
 There are tables which are in some algorithms and not in others and vice versa. 
@@ -80,7 +97,7 @@ at the end of the training).
 
 Its name is ``LoggerEvalCallback`` and it inherits from Stable Baselines 3 ``EvalCallback``. 
 The main feature added is that the model evaluation is logged in a particular section in 
-Tensorboard too for the concrete metrics of the building model.
+*wandb* too for the concrete metrics of the building model.
 
 We have to define in ``LoggerEvalCallback`` construction how many training episodes we want 
 the evaluation process to take place. On the other hand, we have to define how many episodes 
@@ -91,14 +108,14 @@ therefore, the more faithful it will be to reality in terms of how good the curr
 turning out to be. However, it will take more time.
 
 It calculates timestep and episode average for power consumption, comfort penalty and power penalty.
-On the other hand, it calculates too comfort violation percentage in episodes too.
+On the other hand, it calculates comfort violation percentage in episodes too.
 Currently, only mean reward is taken into account to decide when a model is better.
 
-***********************
-Tensorboard structure
-***********************
+******************************
+Weights and Biases structure
+******************************
 
-The main structure for *Sinergym* with *Tensorboard* is:
+The main structure for *Sinergym* with *wandb* is:
 
 * **action**: This section has action values during training. When algorithm 
   is On Policy, it will appear **action_simulation** too. This is because 
@@ -153,13 +170,19 @@ The main structure for *Sinergym* with *Tensorboard* is:
 .. note:: Evaluation of models can be recorded too, adding ``EvalLoggerCallback`` 
           to model learn method.
 
-**********
-How use
-**********
+************
+How to use
+************
+
+For more information about how to use it with cloud computing, visit :ref:`Sinergym with Google Cloud`
+
+
+Train a model
+~~~~~~~~~~~~~~~~
 
 You can try your own experiments and benefit from this functionality. 
 `sinergym/scripts/DRL_battery.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery.py>`__
-is a example code to use it. You can use ``DRL_battery.py`` directly from 
+is a script to help you to do it. You can use ``DRL_battery.py`` directly from 
 your local computer or using Google Cloud Platform.
 
 The most **important information** you must keep in mind when you try 
@@ -193,35 +216,69 @@ JSON structure example in `sinergym/scripts/DRL_battery_example.json <https://gi
   default values).
 
 * The **optional** parameters are: All environment parameters (if it is specified 
-  will be overwrite the default environment value) seed, model to load (before training),
+  will be overwrite the default environment value), seed, model to load (before training),
   experiment ID, wrappers to use (respecting the order), training evaluation,
-  tensorboard functionality and cloud options.
+  wandb functionality and cloud options.
 
 * The name of the fields must be like in example mentioned. Otherwise, the experiment
   will return an error.
 
-****************
-Mlflow
-****************
+This script do the next:
 
-Our scripts to run DRL with *Sinergym* environments are using
-`Mlflow <https://mlflow.org/>`__, in order to **tracking experiments** 
-and recorded them methodically. It is recommended to use it.
-You can start a local server with information stored during the 
-battery of experiments such as initial and ending date of execution, 
-hyperparameters, duration, etc.
+    1. Setting an appropriate name for the experiment. Following the next
+       format: ``<algorithm>-<environment_name>-episodes<episodes_int>-seed<seed_value>(<experiment_date>)``
 
-Here is an example: 
+    2. Starting WandB track experiment with that name (if configured in JSON), it will create an local path (*./wandb*) too.
 
-.. image:: /_static/mlflow_example.png
-  :width: 800
-  :alt: Tensorboard example
-  :align: center
+    3. Log all parameters allocated in JSON configuration (including *sinergym.__version__* and python version).
+
+    4. Setting env with parameters overwritten in case of establishing them.
+
+    5. Setting wrappers specified in JSON.
+
+    6. Defining model algorithm using hyperparameters defined.
+
+    7. Calculate training timesteps using number of episodes.
+
+    8. Setting up evaluation callback if it has been specified.
+
+    9. Setting up WandB logger callback if it has been specified.
+
+    10. Training with environment.
+
+    11. If remote store has been specified, saving all outputs in Google 
+        Cloud Bucket. If wandb has been specified, saving all 
+        outputs in wandb run artifact.
+
+    12. Auto-delete remote container in Google Cloud Platform when parameter 
+        auto-delete has been specified.
 
 
-.. note:: For information about how use *Tensorboard* and *Mlflow* with a Cloud 
-          Computing paradigm, see :ref:`Remote Tensorboard log` and 
-          :ref:`Mlflow tracking server set up`.
+Load a trained model
+~~~~~~~~~~~~~~~~~~~~~~
+
+You can try load a previous trained model and evaluate or execute it. 
+`sinergym/scripts/load_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent.py>`__
+is a script to help you to do it. You can use ``load_agent.py`` directly from 
+your local computer or using Google Cloud Platform.
+
+``load_agent.py`` has a unique parameter to be able to execute it; ``-conf``.
+This parameter is a str to indicate the JSON file in which there are allocated
+all information about the evaluation you want to execute. You can see the
+JSON structure example in `sinergym/scripts/load_agent_example.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent_example.json>`__:
+
+* The **obligatory** parameters are: environment, episodes,
+  algorithm (only algorithm name is necessary) and model to load.
+
+* The **optional** parameters are: All environment parameters (if it is specified 
+  will be overwrite the default environment value),
+  experiment ID, wrappers to use (respecting the order),
+  wandb functionality and cloud options.
+
+This script loads the model. Once the model is loaded, it predicts the actions from the 
+states during the agreed episodes. The information is collected and sent to a remote
+storage if it is indicated (such as WandB), 
+otherwise it is stored in local memory.
 
 .. note:: *This is a work in progress project. Direct support with others 
           algorithms is being planned for the future!*

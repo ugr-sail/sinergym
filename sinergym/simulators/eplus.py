@@ -277,7 +277,7 @@ class EnergyPlus(object):
 
         Returns:
             Tuple[List[float], bool, bool, Dict[str, Any]]: EnergyPlus results in a 1-D list corresponding to the
-            variables in variables.cfg. Second element is wether episode has terminated state, third wether episode
+            variables in variables.cfg. Second element is whether episode has terminated state, third whether episode
             has truncated state (always False), and last element is a Python Dictionary with additional information about step
         """
         # Check if terminal

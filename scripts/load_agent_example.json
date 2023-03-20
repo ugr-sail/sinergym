@@ -1,24 +1,9 @@
 {
-    "id": "ExperimentExample",
+    "id": "LoadExample",
     "environment": "Eplus-5Zone-hot-continuous-stochastic-v1",
     "episodes": 5,
     "algorithm": {
-        "name": "SB3-PPO",
-        "log_interval": 1,
-        "parameters": {
-            "policy": "MlpPolicy",
-            "verbose": 1,
-            "learning_rate": 0.0003,
-            "n_steps": 2048,
-            "batch_size": 64,
-            "n_epochs": 10,
-            "gamma": 0.99,
-            "gae_lambda": 0.95,
-            "clip_range": 0.2,
-            "ent_coef": 0,
-            "vf_coef": 0.5,
-            "max_grad_norm": 0.5
-        }
+        "name": "SB3-PPO"
     },
     "env_params": {
         "reward": "LinearReward",
@@ -40,7 +25,7 @@
         "act_repeat": 1
     },
     "seed": 3,
-    "model": null,
+    "model": "alex_ugr/sinergym/training:latest",
     "wrappers": {
         "NormalizeObservation": {
             "ranges": "sinergym.utils.constants.RANGES_5ZONE"
@@ -50,16 +35,20 @@
             "flag": true
         }
     },
-    "evaluation": {
-        "eval_freq": 2,
-        "eval_length": 1
-    },
     "wandb": {
         "init_params": {
-            "project": "sinergym",
+            "project": "sinergym_evaluations",
             "entity": "alex_ugr"
         },
-        "artifact_name": "training",
-        "artifact_type": "experiment1"
+        "artifact_name": "evaluating",
+        "artifact_type": "evaluation1",
+        "load_model": {
+            "project": "sinergym",
+            "entity": "alex_ugr",
+            "artifact_name": "training",
+            "artifact_type": "experiment1",
+            "artifact_tag": "v0",
+            "artifact_path": "evaluation_output/best_model/model.zip"
+        }
     }
 }
