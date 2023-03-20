@@ -170,13 +170,19 @@ The main structure for *Sinergym* with *wandb* is:
 .. note:: Evaluation of models can be recorded too, adding ``EvalLoggerCallback`` 
           to model learn method.
 
-**********
-How use
-**********
+************
+How to use
+************
+
+For more information about how to use it with cloud computing, visit :ref:`Sinergym with Google Cloud`
+
+
+Train a model
+~~~~~~~~~~~~~~~~
 
 You can try your own experiments and benefit from this functionality. 
 `sinergym/scripts/DRL_battery.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery.py>`__
-is a example code to use it. You can use ``DRL_battery.py`` directly from 
+is a script to help you to do it. You can use ``DRL_battery.py`` directly from 
 your local computer or using Google Cloud Platform.
 
 The most **important information** you must keep in mind when you try 
@@ -210,7 +216,7 @@ JSON structure example in `sinergym/scripts/DRL_battery_example.json <https://gi
   default values).
 
 * The **optional** parameters are: All environment parameters (if it is specified 
-  will be overwrite the default environment value) seed, model to load (before training),
+  will be overwrite the default environment value), seed, model to load (before training),
   experiment ID, wrappers to use (respecting the order), training evaluation,
   wandb functionality and cloud options.
 
@@ -246,6 +252,33 @@ This script do the next:
 
     12. Auto-delete remote container in Google Cloud Platform when parameter 
         auto-delete has been specified.
+
+
+Load a trained model
+~~~~~~~~~~~~~~~~~~~~~~
+
+You can try load a previous trained model and evaluate or execute it. 
+`sinergym/scripts/load_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent.py>`__
+is a script to help you to do it. You can use ``load_agent.py`` directly from 
+your local computer or using Google Cloud Platform.
+
+``load_agent.py`` has a unique parameter to be able to execute it; ``-conf``.
+This parameter is a str to indicate the JSON file in which there are allocated
+all information about the evaluation you want to execute. You can see the
+JSON structure example in `sinergym/scripts/load_agent_example.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent_example.json>`__:
+
+* The **obligatory** parameters are: environment, episodes,
+  algorithm (only algorithm name is necessary) and model to load.
+
+* The **optional** parameters are: All environment parameters (if it is specified 
+  will be overwrite the default environment value),
+  experiment ID, wrappers to use (respecting the order),
+  wandb functionality and cloud options.
+
+This script loads the model. Once the model is loaded, it predicts the actions from the 
+states during the agreed episodes. The information is collected and sent to a remote
+storage if it is indicated (such as WandB), 
+otherwise it is stored in local memory.
 
 .. note:: *This is a work in progress project. Direct support with others 
           algorithms is being planned for the future!*

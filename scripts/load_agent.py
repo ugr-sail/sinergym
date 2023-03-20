@@ -202,7 +202,7 @@ if conf.get('cloud'):
     if conf.get('remote_store'):
         # Initiate Google Cloud client
         client = gcloud.init_storage_client()
-        # Code for send output and tensorboard to common resource here.
+        # Code for send output to common Google Cloud resource here.
         gcloud.upload_to_bucket(
             client,
             src_path=env.simulator._env_working_dir_parent,

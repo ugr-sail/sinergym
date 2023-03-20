@@ -97,7 +97,7 @@ Or you can use **Google Cloud Platform Console**:
 
 If you have installed *Sinergym* and *Sinergym extras*. **Google Cloud SDK must 
 be linked with other python modules** in order to some functionality works in 
-the future (for example, *Tensorboard*). Please, execute the next in your terminal:
+the future. Please, execute the next in your terminal:
 
 .. code:: sh
 
@@ -288,20 +288,16 @@ you can enter in remote container with *gcloud ssh* and execute
 Executing experiments in remote containers
 ********************************************
 
-This script, called *DRL_battery.py*, will be allocated in every remote 
-container and it is used to execute experiments and combine it with 
-**Google Cloud Bucket**, **Weights and Biases**, **auto-remove**, etc:
+`DRL_battery.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery.py>`__ and 
+`load_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent.py>`__
+will be allocated in every remote container and it is used to execute experiments and evaluations,
+being possible to combine with **Google Cloud Bucket**, **Weights and Biases**, **auto-remove**, etc:
 
-.. literalinclude:: ../../../scripts/DRL_battery.py
-    :language: python
+.. note:: **DRL_battery.py** can be used in local experiments 
+          and send output data and artifact to remote storage 
+          such as wandb without configure cloud computing too. 
 
-.. note:: **DRL_battery.py** is able to be used to local experiments 
-          into client computer. For example, ``auto_delete`` parameter 
-          will have no effect in experiment. This experiments results 
-          could be sent to bucket and mlflow artifacts if it is specified. 
-          We will see it.
-
-The list of parameter is pretty large. See :ref:`How use` section.
+The structure of the JSON to configure the experiment or evaluation is specified in :ref:`How to use` section.
 
 .. warning:: For a correct auto_delete functionality, please, use MIG's 
              instead of individual instances.
@@ -334,57 +330,6 @@ is create a file key (json) called **google-storage.json** in our project
 root (gitignore will ignore this file in remote).
 Finally, we export this file in **GOOGLE_CLOUD_CREDENTIALS** in our local computer 
 in order to gcloud SDK knows that it has to use that token to authenticate.
-
-**********************
-Load a trained model
-**********************
-
-For this purpose, we have a script called *load_agent.py* which can be used both 
-on a remote machine and locally on our computer, just like *DRL_battery.py*.
-
-So, what this script does is to use the path that we pass as a parameter where our 
-model is located. It loads the model and performs the evaluation that we want.
-
-The list of parameter is:
-
-- ``--environment`` or ``-env``: Environment name you want to use.
-
-- ``--model`` or ``-mod``: Trained model (zip file) you want to use to execute 
-  the evaluation. This path can be a local path file into your computer (remote or host) 
-  or a Google Cloud Storage resource (bucket like ``gs://<bucket_name>/<model_path>``).
-
-- ``--episodes`` or ``-ep``: Number of episodes you want to evaluate agent in simulation 
-  (Depending on environment episode length can be different).
-
-- ``--algorithm`` or ``-alg``: Algorithm which model was trained (Currently, it is 
-  available *PPO*, *A2C*, *DQN*, *DDPG* and *SAC*).
-
-- ``--reward`` or ``-rw``: Reward class you want to use for reward function (same reward 
-  than training model is recommended). Currently, possible values are 
-  "linear" and "exponential".
-
-- ``--normalization`` or ``-norm``: Apply normalization wrapper to observations during 
-  evaluation. If it isn't specified wrapper will not be applied.
-
-- ``--logger`` or ``-log``: Apply Sinergym logger wrapper during evaluation. If it isn't
-  specified wrapper will not be applied.
-
-- ``--seed`` or ``-sd``: Seed for evaluation, random components in process will be able 
-  to be recreated.
-
-- ``--remote_store`` or ``-sto``: Determine if sinergym output will be sent to a common resource
-  (Bucket), else will be allocate in container or host memory only.
-
-- ``--group_name`` or ``-group``: It specify to which MIG the host instance belongs, it is important
-  if --auto-delete is activated.
-
-- ``--auto_delete`` or ``-del``: Whether this parameter is specified, remote instance will be auto 
-  removed when its job has finished.
-
-This script loads the model. Once the model is loaded, it predicts the actions from the 
-states during the agreed episodes. The information is collected and sent to a cloud storage 
-if it has been specified, otherwise it is stored in local memory.
-
 
 Visualize remote wandb log in real-time
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
