@@ -6,6 +6,12 @@ from datetime import datetime
 
 import gymnasium as gym
 import numpy as np
+import wandb
+from stable_baselines3 import *
+from stable_baselines3.common.callbacks import CallbackList
+from stable_baselines3.common.logger import HumanOutputFormat, Logger
+from stable_baselines3.common.monitor import Monitor
+
 import sinergym
 import sinergym.utils.gcloud as gcloud
 from sinergym.utils.callbacks import *
@@ -13,12 +19,6 @@ from sinergym.utils.constants import *
 from sinergym.utils.logger import CSVLogger, WandBOutputFormat
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import *
-from stable_baselines3 import *
-from stable_baselines3.common.callbacks import CallbackList
-from stable_baselines3.common.logger import HumanOutputFormat, Logger
-from stable_baselines3.common.monitor import Monitor
-
-import wandb
 
 # ---------------------------------------------------------------------------- #
 #                             Parameters definition                            #

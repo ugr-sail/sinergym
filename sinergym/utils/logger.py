@@ -4,11 +4,11 @@ import csv
 import logging
 import os
 import sys
-from typing import Any, Dict, List, Optional, Union, Tuple
-from stable_baselines3.common.logger import Logger, KVWriter
-import wandb
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
+import wandb
+from stable_baselines3.common.logger import KVWriter, Logger
 
 
 class Logger():
