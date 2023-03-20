@@ -25,7 +25,7 @@
         "act_repeat": 1
     },
     "seed": 3,
-    "model": "alex_ugr/sinergym/train:latest",
+    "model": "alex_ugr/sinergym/training:latest",
     "wrappers": {
         "NormalizeObservation": {
             "ranges": "sinergym.utils.constants.RANGES_5ZONE"
@@ -36,8 +36,10 @@
         }
     },
     "wandb": {
-        "project": "sinergym_evaluations",
-        "entity": "alex_ugr",
+        "init_params": {
+            "project": "sinergym_evaluations",
+            "entity": "alex_ugr"
+        },
         "artifact_name": "evaluating",
         "artifact_type": "evaluation1",
         "load_model": {
@@ -45,8 +47,8 @@
             "entity": "alex_ugr",
             "artifact_name": "training",
             "artifact_type": "experiment1",
-            "artifact_tag": "v9",
-            "artifact_path": "sinergym_output/flag.zip"
+            "artifact_tag": "v0",
+            "artifact_path": "evaluation_output/best_model/model.zip"
         }
     }
 }

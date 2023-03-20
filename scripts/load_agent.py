@@ -39,10 +39,12 @@ with open(args.configuration) as json_conf:
 # ---------------------------------------------------------------------------- #
 #                                Evaluation name                               #
 # ---------------------------------------------------------------------------- #
-name = conf['model'].split('/')[-1] + '-EVAL-episodes-' + \
-    str(conf['episodes'])
+evaluation_date = datetime.today().strftime('%Y-%m-%d_%H:%M')
+evaluation_name = conf['algorithm']['name'] + '-' + conf['environment'] + \
+    '-episodes-' + str(conf['episodes'])
 if conf.get('id'):
-    name += '-id-' + conf['id']
+    evaluation_name += '-id-' + str(conf['id'])
+evaluation_name += '_' + evaluation_date
 
 # ---------------------------------------------------------------------------- #
 #                              WandB registration                              #
@@ -57,10 +59,10 @@ if conf.get('wandb'):
     experiment_params.update(conf)
 
     # Get wandb init params
-    wandb_params = conf['wandb']
+    wandb_params = conf['wandb']['init_params']
     # Init wandb entry
     run = wandb.init(
-        name=name + '_' + wandb.util.generate_id(),
+        name=evaluation_name + '_' + wandb.util.generate_id(),
         config=experiment_params,
         ** wandb_params
     )
@@ -83,6 +85,7 @@ if conf.get('env_params'):
 # ---------------------------------------------------------------------------- #
 #                            Environment definition                            #
 # ---------------------------------------------------------------------------- #
+env_params.update({'env_name': evaluation_name})
 env = gym.make(
     conf['environment'],
     ** env_params)
@@ -113,7 +116,7 @@ if conf.get('wandb'):
         artifact_tag = conf['wandb']['load_model'].get(
             'artifact_tag', 'latest')
         wandb_path = conf['wandb']['load_model']['entity'] + '/' + conf['wandb']['load_model']['project'] + \
-            '/' + conf['wandb']['load_model']['artifact_type'] + ':' + artifact_tag
+            '/' + conf['wandb']['load_model']['artifact_name'] + ':' + artifact_tag
         # Download artifact
         artifact = run.use_artifact(wandb_path)
         artifact.get_path(conf['wandb']['load_model']
@@ -174,6 +177,23 @@ for i in range(conf['episodes']):
         'Cumulative reward: ',
         sum(rewards))
 env.close()
+
+# ---------------------------------------------------------------------------- #
+#                                Wandb Artifacts                               #
+# ---------------------------------------------------------------------------- #
+
+if conf.get('wandb'):
+    artifact = wandb.Artifact(
+        name=conf['wandb']['artifact_name'],
+        type=conf['wandb']['artifact_type'])
+    artifact.add_dir(
+        env.simulator._env_working_dir_parent,
+        name='evaluation_output/')
+
+    run.log_artifact(artifact)
+
+# wandb has finished
+run.finish()
 
 # ---------------------------------------------------------------------------- #
 #                                 Store results                                #
