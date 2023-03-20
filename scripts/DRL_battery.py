@@ -46,13 +46,13 @@ with open(args.configuration) as json_conf:
 #                               Register run name                              #
 # ---------------------------------------------------------------------------- #
 experiment_date = datetime.today().strftime('%Y-%m-%d_%H:%M')
-name = conf['algorithm']['name'] + '-' + conf['environment'] + \
+experiment_name = conf['algorithm']['name'] + '-' + conf['environment'] + \
     '-episodes-' + str(conf['episodes'])
 if conf.get('seed'):
-    name += '-seed-' + str(conf['seed'])
+    experiment_name += '-seed-' + str(conf['seed'])
 if conf.get('id'):
-    name += '-id-' + str(conf['id'])
-name += '_' + experiment_date
+    experiment_name += '-id-' + str(conf['id'])
+experiment_name += '_' + experiment_date
 
 # ---------------------------------------------------------------------------- #
 #                              WandB registration                              #
@@ -70,7 +70,7 @@ if conf.get('wandb'):
     wandb_params = conf['wandb']['init_params']
     # Init wandb entry
     run = wandb.init(
-        name=name + '_' + wandb.util.generate_id(),
+        name=experiment_name + '_' + wandb.util.generate_id(),
         config=experiment_params,
         ** wandb_params
     )
@@ -93,6 +93,8 @@ if conf.get('env_params'):
 # ---------------------------------------------------------------------------- #
 #                           Environment construction                           #
 # ---------------------------------------------------------------------------- #
+# For this script, the execution name will be updated
+env_params.update({'env_name': experiment_name})
 env = gym.make(
     conf['environment'],
     ** env_params)
@@ -101,6 +103,8 @@ env = Monitor(env)
 # env for evaluation if is enabled
 eval_env = None
 if conf.get('evaluation'):
+    eval_name = conf['evaluation'].get('name', env.name + '-EVAL')
+    env_params.update({'env_name': eval_name})
     eval_env = gym.make(
         conf['environment'],
         ** env_params)
@@ -231,10 +235,12 @@ callbacks = []
 if conf.get('evaluation'):
     eval_callback = LoggerEvalCallback(
         eval_env,
-        best_model_save_path='best_model/' +
-        name,
-        log_path='best_model/' + name + '/',
-        eval_freq=n_timesteps_episode * conf['evaluation']['eval_freq'],
+        best_model_save_path=eval_env.simulator._env_working_dir_parent +
+        '/best_model/',
+        log_path=eval_env.simulator._env_working_dir_parent +
+        '/best_model/',
+        eval_freq=n_timesteps_episode *
+        conf['evaluation']['eval_freq'],
         deterministic=True,
         render=False,
         n_eval_episodes=conf['evaluation']['eval_length'])
@@ -265,7 +271,7 @@ model.learn(
     total_timesteps=timesteps,
     callback=callback,
     log_interval=conf['algorithm']['log_interval'])
-model.save(env.simulator._env_working_dir_parent + '/' + name)
+model.save(env.simulator._env_working_dir_parent + '/model')
 
 # If the algorithm doesn't reset or close the environment, this script will do it in
 # order to correctly log all the simulation data (Energyplus + Sinergym
@@ -283,8 +289,11 @@ if conf.get('wandb'):
         type=conf['wandb']['artifact_type'])
     artifact.add_dir(
         env.simulator._env_working_dir_parent,
-        name='sinergym_output/')
-    artifact.add_dir('./best_model/', name='evaluation/')
+        name='training_output/')
+    if conf.get('evaluation'):
+        artifact.add_dir(
+            eval_env.simulator._env_working_dir_parent,
+            name='evaluation_output/')
     run.log_artifact(artifact)
 
 # wandb has finished

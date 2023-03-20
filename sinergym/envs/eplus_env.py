@@ -80,6 +80,8 @@ class EplusEnv(gym.Env):
         self.variables['observation'] = observation_variables
         self.variables['action'] = action_variables
 
+        self.name = env_name
+
         # ---------------------------------------------------------------------------- #
         #                                   Simulator                                  #
         # ---------------------------------------------------------------------------- #
