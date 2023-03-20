@@ -16,7 +16,7 @@ You can implement your own wrappers inheriting from *gym.Wrapper* or some of its
 - **MultiObjectiveReward**: Environment step will return a vector reward (selected elements in wrapper constructor, 
   one for each objective) instead of a traditional scalar value. See `#301 <https://github.com/ugr-sail/sinergym/issues/301>`__.
 
-- **MultiObsWrapper**: Stack observation received in a history queue (size customizable).
+- **MultiObsWrapper**: Stack observation received in a history queue (size can be customized).
 
 .. note:: For examples about how to use these wrappers, visit :ref:`Wrappers example`.
 

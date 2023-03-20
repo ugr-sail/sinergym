@@ -62,9 +62,12 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">11. Deep Reinforcement Learning Integration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#drl-callback-logger">11.1. DRL Callback Logger</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#evaluation-callback">11.2. Evaluation Callback</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tensorboard-structure">11.3. Tensorboard structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#how-use">11.4. How use</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#mlflow">11.5. Mlflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#weights-and-biases-structure">11.3. Weights and Biases structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-use">11.4. How to use</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#train-a-model">11.4.1. Train a model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-a-trained-model">11.4.2. Load a trained model</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
@@ -180,10 +183,22 @@ simulation interactions during training at the same time using
 <code class="docutils literal notranslate"><span class="pre">sinergym_logger</span></code> attribute in constructor.</p>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">LoggerCallback</span></code> inherits from Stable Baselines 3 <code class="docutils literal notranslate"><span class="pre">BaseCallback</span></code> and
-uses <a class="reference external" href="https://www.tensorflow.org/tensorboard?hl=es-419">Tensorboard</a> on the
-background at the same time. With <em>Tensorboard</em>, it’s possible to visualize all DRL
-training in real time and compare between different executions. This is an example:</p>
-<a class="reference internal image-reference" href="../_images/tensorboard_example.png"><img alt="Tensorboard example" class="align-center" src="../_images/tensorboard_example.png" style="width: 800px;" /></a>
+uses <a href="#id1"><span class="problematic" id="id2">`</span></a>Weights &amp; Biases &lt;<a class="reference external" href="https://wandb.ai/site">https://wandb.ai/site</a>&gt;`__(<em>wandb</em>) in the background in order to host
+all information extracted. With <em>wandb</em>, it’s possible to track and visualize all DRL
+training in real time, register hyperparameters and details of each execution, save artifacts
+such as models and sinergym output, and compare between different executions. This is an example:</p>
+<ul class="simple">
+<li><p>Hyperparameter and summary registration:</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/wandb_example1.png"><img alt="WandB hyperparameters" class="align-center" src="../_images/wandb_example1.png" style="width: 800px;" /></a>
+<ul class="simple">
+<li><p>Artifacts registered (if evaluation is enabled, best model is registered too):</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/wandb_example2.png"><img alt="WandB artifacts" class="align-center" src="../_images/wandb_example2.png" style="width: 800px;" /></a>
+<ul class="simple">
+<li><p>Metrics visualization in real time:</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/wandb_example3.png"><img alt="WandB charts" class="align-center" src="../_images/wandb_example3.png" style="width: 800px;" /></a>
 <p>There are tables which are in some algorithms and not in others and vice versa.
 It is important the difference between <code class="docutils literal notranslate"><span class="pre">OnPolicyAlgorithms</span></code> and <code class="docutils literal notranslate"><span class="pre">OffPolicyAlgorithms</span></code>:</p>
 <ul class="simple">
@@ -203,7 +218,7 @@ the training process with Sinergym, so that it stores the best model obtained (n
 at the end of the training).</p>
 <p>Its name is <code class="docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code> and it inherits from Stable Baselines 3 <code class="docutils literal notranslate"><span class="pre">EvalCallback</span></code>.
 The main feature added is that the model evaluation is logged in a particular section in
-Tensorboard too for the concrete metrics of the building model.</p>
+<em>wandb</em> too for the concrete metrics of the building model.</p>
 <p>We have to define in <code class="docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code> construction how many training episodes we want
 the evaluation process to take place. On the other hand, we have to define how many episodes
 are going to occupy each of the evaluations to be performed.</p>
@@ -211,12 +226,12 @@ are going to occupy each of the evaluations to be performed.</p>
 therefore, the more faithful it will be to reality in terms of how good the current model is
 turning out to be. However, it will take more time.</p>
 <p>It calculates timestep and episode average for power consumption, comfort penalty and power penalty.
-On the other hand, it calculates too comfort violation percentage in episodes too.
+On the other hand, it calculates comfort violation percentage in episodes too.
 Currently, only mean reward is taken into account to decide when a model is better.</p>
 </section>
-<section id="tensorboard-structure">
-<h2><span class="section-number">11.3. </span>Tensorboard structure<a class="headerlink" href="#tensorboard-structure" title="Permalink to this heading"></a></h2>
-<p>The main structure for <em>Sinergym</em> with <em>Tensorboard</em> is:</p>
+<section id="weights-and-biases-structure">
+<h2><span class="section-number">11.3. </span>Weights and Biases structure<a class="headerlink" href="#weights-and-biases-structure" title="Permalink to this heading"></a></h2>
+<p>The main structure for <em>Sinergym</em> with <em>wandb</em> is:</p>
 <ul>
 <li><p><strong>action</strong>: This section has action values during training. When algorithm
 is On Policy, it will appear <strong>action_simulation</strong> too. This is because
@@ -263,11 +278,14 @@ provided by <strong>Stable baselines</strong> as well as rollout.</p></li>
 to model learn method.</p>
 </div>
 </section>
-<section id="how-use">
-<h2><span class="section-number">11.4. </span>How use<a class="headerlink" href="#how-use" title="Permalink to this heading"></a></h2>
+<section id="how-to-use">
+<h2><span class="section-number">11.4. </span>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this heading"></a></h2>
+<p>For more information about how to use it with cloud computing, visit <a class="reference internal" href="gcloudAPI.html#sinergym-with-google-cloud"><span class="std std-ref">Sinergym with Google Cloud</span></a></p>
+<section id="train-a-model">
+<h3><span class="section-number">11.4.1. </span>Train a model<a class="headerlink" href="#train-a-model" title="Permalink to this heading"></a></h3>
 <p>You can try your own experiments and benefit from this functionality.
 <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery.py">sinergym/scripts/DRL_battery.py</a>
-is a example code to use it. You can use <code class="docutils literal notranslate"><span class="pre">DRL_battery.py</span></code> directly from
+is a script to help you to do it. You can use <code class="docutils literal notranslate"><span class="pre">DRL_battery.py</span></code> directly from
 your local computer or using Google Cloud Platform.</p>
 <p>The most <strong>important information</strong> you must keep in mind when you try
 your own experiments are:</p>
@@ -295,34 +313,62 @@ JSON structure example in <a class="reference external" href="https://github.com
 algorithm (and parameters of the algorithm which don’t have
 default values).</p></li>
 <li><p>The <strong>optional</strong> parameters are: All environment parameters (if it is specified
-will be overwrite the default environment value) seed, model to load (before training),
+will be overwrite the default environment value), seed, model to load (before training),
 experiment ID, wrappers to use (respecting the order), training evaluation,
-tensorboard functionality and cloud options.</p></li>
+wandb functionality and cloud options.</p></li>
 <li><p>The name of the fields must be like in example mentioned. Otherwise, the experiment
 will return an error.</p></li>
 </ul>
+<p>This script do the next:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Setting an appropriate name for the experiment. Following the next
+format: <code class="docutils literal notranslate"><span class="pre">&lt;algorithm&gt;-&lt;environment_name&gt;-episodes&lt;episodes_int&gt;-seed&lt;seed_value&gt;(&lt;experiment_date&gt;)</span></code></p></li>
+<li><p>Starting WandB track experiment with that name (if configured in JSON), it will create an local path (<em>./wandb</em>) too.</p></li>
+<li><p>Log all parameters allocated in JSON configuration (including <em>sinergym.__version__</em> and python version).</p></li>
+<li><p>Setting env with parameters overwritten in case of establishing them.</p></li>
+<li><p>Setting wrappers specified in JSON.</p></li>
+<li><p>Defining model algorithm using hyperparameters defined.</p></li>
+<li><p>Calculate training timesteps using number of episodes.</p></li>
+<li><p>Setting up evaluation callback if it has been specified.</p></li>
+<li><p>Setting up WandB logger callback if it has been specified.</p></li>
+<li><p>Training with environment.</p></li>
+<li><p>If remote store has been specified, saving all outputs in Google
+Cloud Bucket. If wandb has been specified, saving all
+outputs in wandb run artifact.</p></li>
+<li><p>Auto-delete remote container in Google Cloud Platform when parameter
+auto-delete has been specified.</p></li>
+</ol>
+</div></blockquote>
 </section>
-<section id="mlflow">
-<h2><span class="section-number">11.5. </span>Mlflow<a class="headerlink" href="#mlflow" title="Permalink to this heading"></a></h2>
-<p>Our scripts to run DRL with <em>Sinergym</em> environments are using
-<a class="reference external" href="https://mlflow.org/">Mlflow</a>, in order to <strong>tracking experiments</strong>
-and recorded them methodically. It is recommended to use it.
-You can start a local server with information stored during the
-battery of experiments such as initial and ending date of execution,
-hyperparameters, duration, etc.</p>
-<p>Here is an example:</p>
-<a class="reference internal image-reference" href="../_images/mlflow_example.png"><img alt="Tensorboard example" class="align-center" src="../_images/mlflow_example.png" style="width: 800px;" /></a>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For information about how use <em>Tensorboard</em> and <em>Mlflow</em> with a Cloud
-Computing paradigm, see <a class="reference internal" href="gcloudAPI.html#remote-tensorboard-log"><span class="std std-ref">Remote Tensorboard log</span></a> and
-<a class="reference internal" href="gcloudAPI.html#mlflow-tracking-server-set-up"><span class="std std-ref">Mlflow tracking server set up</span></a>.</p>
-</div>
+<section id="load-a-trained-model">
+<h3><span class="section-number">11.4.2. </span>Load a trained model<a class="headerlink" href="#load-a-trained-model" title="Permalink to this heading"></a></h3>
+<p>You can try load a previous trained model and evaluate or execute it.
+<a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent.py">sinergym/scripts/load_agent.py</a>
+is a script to help you to do it. You can use <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code> directly from
+your local computer or using Google Cloud Platform.</p>
+<p><code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code> has a unique parameter to be able to execute it; <code class="docutils literal notranslate"><span class="pre">-conf</span></code>.
+This parameter is a str to indicate the JSON file in which there are allocated
+all information about the evaluation you want to execute. You can see the
+JSON structure example in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent_example.json">sinergym/scripts/load_agent_example.json</a>:</p>
+<ul class="simple">
+<li><p>The <strong>obligatory</strong> parameters are: environment, episodes,
+algorithm (only algorithm name is necessary) and model to load.</p></li>
+<li><p>The <strong>optional</strong> parameters are: All environment parameters (if it is specified
+will be overwrite the default environment value),
+experiment ID, wrappers to use (respecting the order),
+wandb functionality and cloud options.</p></li>
+</ul>
+<p>This script loads the model. Once the model is loaded, it predicts the actions from the
+states during the agreed episodes. The information is collected and sent to a remote
+storage if it is indicated (such as WandB),
+otherwise it is stored in local memory.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>This is a work in progress project. Direct support with others
 algorithms is being planned for the future!</em></p>
 </div>
+</section>
 </section>
 </section>
 
