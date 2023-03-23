@@ -9,6 +9,7 @@ import numpy as np
 import pandas
 from opyplus import Epm, Idd, WeatherData
 from opyplus.epm.record import Record
+import random
 
 from sinergym.utils.common import (get_delta_seconds, get_record_keys,
                                    prepare_batch_from_records, to_idf)
@@ -34,19 +35,34 @@ class Config(object):
 
     def __init__(
             self,
-            idf_path: str,
-            weather_path: str,
+            idf_file: str,
+            weather_file: Union[str, List[str]],
             variables: Dict[str, List[str]],
             env_name: str,
             max_ep_store: int,
             action_definition: Optional[Dict[str, Any]],
             extra_config: Dict[str, Any]):
 
-        self._idf_path = idf_path
-        self._weather_path = weather_path
+        self.pkg_data_path = PKG_DATA_PATH
+
+        # Transform IDF file name in path
+        self._idf_path = os.path.join(
+            self.pkg_data_path, 'buildings', idf_file)
+
+        # Transform EPW file name in path
+        self.weather_files = weather_file
+        # If unique weather file
+        if isinstance(self.weather_files, str):
+            w_file = self.weather_files
+        # Else (several weather files in a list)
+        else:
+            # Select one randomly
+            w_file = random.choice(self.weather_files)
+        self._weather_path = os.path.join(
+            self.pkg_data_path, 'weather', w_file)
         # RDD file name is deducible using idf name (only change .idf by .rdd)
         self._rdd_path = os.path.join(
-            PKG_DATA_PATH,
+            self.pkg_data_path,
             'variables',
             self._idf_path.split('/')[-1].split('.idf')[0] +
             '.rdd')

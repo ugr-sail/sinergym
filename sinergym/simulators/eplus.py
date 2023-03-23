@@ -33,9 +33,9 @@ class EnergyPlus(object):
     def __init__(
             self,
             eplus_path: str,
-            weather_path: str,
             bcvtb_path: str,
-            idf_path: str,
+            weather_file: Union[str, List[str]],
+            idf_file: str,
             env_name: str,
             variables: Dict[str, List[str]],
             act_repeat: int = 1,
@@ -46,9 +46,9 @@ class EnergyPlus(object):
 
         Args:
             eplus_path (str):  EnergyPlus installation path.
-            weather_path (str): EnergyPlus weather file (.epw) path.
             bcvtb_path (str): BCVTB installation path.
-            idf_path (str): EnergyPlus input description file (.idf) path.
+            weather_file (Union[str,List[str]]): EnergyPlus weather file or files list (sampling one in each episode).
+            idf_file (str): EnergyPlus input description file (.idf) file.
             env_name (str): The environment name.
             variables (Dict[str,List[str]]): Variables list with observation and action keys in a dictionary.
             act_repeat (int, optional): The number of times to repeat the control action. Defaults to 1.
@@ -81,8 +81,8 @@ class EnergyPlus(object):
 
         # Path attributes
         self._eplus_path = eplus_path
-        self._weather_path = weather_path
-        self._idf_path = idf_path
+        self._weather_file = weather_file
+        self._idf_file = idf_file
         # Episode existed
         self._episode_existed = False
 
@@ -93,8 +93,8 @@ class EnergyPlus(object):
 
         # Creating models config (with extra params if exits)
         self._config = Config(
-            idf_path=self._idf_path,
-            weather_path=self._weather_path,
+            idf_file=self._idf_file,
+            weather_file=self._weather_file,
             variables=variables,
             env_name=self._env_name,
             max_ep_store=self._max_ep_data_store_num,

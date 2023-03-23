@@ -8,10 +8,10 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
+import random
 
 from sinergym.simulators import EnergyPlus
 from sinergym.utils.common import export_actuators_to_excel
-from sinergym.utils.constants import PKG_DATA_PATH
 from sinergym.utils.rewards import ExpReward, LinearReward
 
 
@@ -25,7 +25,7 @@ class EplusEnv(gym.Env):
     def __init__(
         self,
         idf_file: str,
-        weather_file: str,
+        weather_file: Union[str, List[str]],
         observation_space: gym.spaces.Box = gym.spaces.Box(
             low=-5e6, high=5e6, shape=(4,), dtype=np.float32),
         observation_variables: List[str] = [],
@@ -46,7 +46,7 @@ class EplusEnv(gym.Env):
 
         Args:
             idf_file (str): Name of the IDF file with the building definition.
-            weather_file (str): Name of the EPW file for weather conditions.
+            weather_file (Union[str,List[str]]): Name of the EPW file for weather conditions. It can be specified a list of weathers files in order to sample a weather in each episode randomly.
             observation_space (gym.spaces.Box, optional): Gym Observation Space definition. Defaults to an empty observation_space (no control).
             observation_variables (List[str], optional): List with variables names in IDF. Defaults to an empty observation variables (no control).
             action_space (Union[gym.spaces.Box, gym.spaces.Discrete], optional): Gym Action Space definition. Defaults to an empty action_space (no control).
@@ -67,11 +67,11 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
-        self.pkg_data_path = PKG_DATA_PATH
 
-        self.idf_path = os.path.join(self.pkg_data_path, 'buildings', idf_file)
-        self.weather_path = os.path.join(
-            self.pkg_data_path, 'weather', weather_file)
+        # IDF file
+        self.idf_file = idf_file
+        # EPW file(s) (str or List of EPW's)
+        self.weather_file = weather_file
 
         # ---------------------------------------------------------------------------- #
         #                             Variables definition                             #
@@ -89,8 +89,8 @@ class EplusEnv(gym.Env):
             env_name=env_name,
             eplus_path=eplus_path,
             bcvtb_path=bcvtb_path,
-            idf_path=self.idf_path,
-            weather_path=self.weather_path,
+            idf_file=self.idf_file,
+            weather_file=self.weather_file,
             variables=self.variables,
             act_repeat=act_repeat,
             max_ep_data_store_num=max_ep_data_store_num,
