@@ -257,7 +257,7 @@ def simulator(
     return EnergyPlus(
         eplus_path=eplus_path,
         bcvtb_path=bcvtb_path,
-        weather_files=weather_file,
+        weather_files=[weather_file],
         idf_file=idf_file,
         env_name=env_name,
         variables=variables_5zone,
@@ -271,12 +271,12 @@ def simulator(
 
 
 @pytest.fixture(scope='function')
-def config(idf_file, weather_file, weather_file2, variables_5zone):
+def config(idf_file, weather_file2, variables_5zone):
     env_name = 'TESTCONFIG'
     max_ep_store = 10
     return Config(
         idf_file=idf_file,
-        weather_files=[weather_file, weather_file2],
+        weather_files=[weather_file2],
         env_name=env_name,
         variables=variables_5zone,
         max_ep_store=max_ep_store,

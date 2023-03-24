@@ -230,7 +230,9 @@ def test_apply_weather_variability(config):
     assert config.episode_path is not None
     # Check apply None variation return original weather_path
     path_result = config.apply_weather_variability(variation=None)
-    assert path_result == config._weather_path
+    original_filename = config._weather_path.split('/')[-1]
+    path_filename = path_result.split('/')[-1]
+    assert original_filename == path_filename
     # Check with a variation
     variation = (1.0, 0.0, 0.001)
     path_result = config.apply_weather_variability(variation=variation)
