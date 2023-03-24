@@ -20,7 +20,8 @@ class Config(object):
     """Config object to manage extra configuration in Sinergym experiments.
 
         :param _idf_path: IDF path origin for apply extra configuration.
-        :param _weather_path: EPW path origin for apply weather to simulation.
+        :param weather_files: weather available files for each episode
+        :param _weather_path: EPW path origin for apply weather to simulation in current episode.
         :param _ddy_path: DDY path origin for get DesignDays and weather Location
         :param experiment_path: Path for Sinergym experiment output
         :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None)
@@ -36,7 +37,7 @@ class Config(object):
     def __init__(
             self,
             idf_file: str,
-            weather_file: Union[str, List[str]],
+            weather_files: List[str],
             variables: Dict[str, List[str]],
             env_name: str,
             max_ep_store: int,
@@ -50,16 +51,11 @@ class Config(object):
             self.pkg_data_path, 'buildings', idf_file)
 
         # Transform EPW file name in path
-        self.weather_files = weather_file
-        # If unique weather file
-        if isinstance(self.weather_files, str):
-            w_file = self.weather_files
-        # Else (several weather files in a list)
-        else:
-            # Select one randomly
-            w_file = random.choice(self.weather_files)
+        self.weather_files = weather_files
+
+        # Select one weather randomly (if there are more than one)
         self._weather_path = os.path.join(
-            self.pkg_data_path, 'weather', w_file)
+            self.pkg_data_path, 'weather', random.choice(self.weather_files))
         # RDD file name is deducible using idf name (only change .idf by .rdd)
         self._rdd_path = os.path.join(
             self.pkg_data_path,
@@ -587,6 +583,14 @@ class Config(object):
     def _check_eplus_config(self) -> None:
         """Check Eplus Environment config definition is correct.
         """
+
+        # COMMON
+        # Check weather files exist
+        for w_file in self.weather_files:
+            w_path = os.path.join(
+                self.pkg_data_path, 'weather', w_file)
+            assert os.path.isfile(
+                w_path), 'Weather files: {} is not a weather file available in Sinergym.'.format(w_file)
 
         # EXTRA CONFIG
         if self.config is not None:

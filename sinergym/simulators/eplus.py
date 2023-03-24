@@ -34,7 +34,7 @@ class EnergyPlus(object):
             self,
             eplus_path: str,
             bcvtb_path: str,
-            weather_file: Union[str, List[str]],
+            weather_files: List[str],
             idf_file: str,
             env_name: str,
             variables: Dict[str, List[str]],
@@ -47,7 +47,7 @@ class EnergyPlus(object):
         Args:
             eplus_path (str):  EnergyPlus installation path.
             bcvtb_path (str): BCVTB installation path.
-            weather_file (Union[str,List[str]]): EnergyPlus weather file or files list (sampling one in each episode).
+            weather_files (List[str]): EnergyPlus weather file list (sampling one in each episode).
             idf_file (str): EnergyPlus input description file (.idf) file.
             env_name (str): The environment name.
             variables (Dict[str,List[str]]): Variables list with observation and action keys in a dictionary.
@@ -81,7 +81,7 @@ class EnergyPlus(object):
 
         # Path attributes
         self._eplus_path = eplus_path
-        self._weather_file = weather_file
+        self._weather_files = weather_files
         self._idf_file = idf_file
         # Episode existed
         self._episode_existed = False
@@ -94,7 +94,7 @@ class EnergyPlus(object):
         # Creating models config (with extra params if exits)
         self._config = Config(
             idf_file=self._idf_file,
-            weather_file=self._weather_file,
+            weather_files=self._weather_files,
             variables=variables,
             env_name=self._env_name,
             max_ep_store=self._max_ep_data_store_num,

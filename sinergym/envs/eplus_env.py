@@ -71,7 +71,10 @@ class EplusEnv(gym.Env):
         # IDF file
         self.idf_file = idf_file
         # EPW file(s) (str or List of EPW's)
-        self.weather_file = weather_file
+        if isinstance(weather_file, str):
+            self.weather_files = [weather_file]
+        else:
+            self.weather_files = weather_file
 
         # ---------------------------------------------------------------------------- #
         #                             Variables definition                             #
@@ -90,7 +93,7 @@ class EplusEnv(gym.Env):
             eplus_path=eplus_path,
             bcvtb_path=bcvtb_path,
             idf_file=self.idf_file,
-            weather_file=self.weather_file,
+            weather_files=self.weather_files,
             variables=self.variables,
             act_repeat=act_repeat,
             max_ep_data_store_num=max_ep_data_store_num,
