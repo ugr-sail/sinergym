@@ -118,6 +118,18 @@ class Config(object):
     #            IDF, variables and Building model adaptation                      #
     # ---------------------------------------------------------------------------- #
 
+    def update_weather_path(self) -> None:
+        """When this method is called, weather file is changed randomly and IDF is adapted to new one.
+        """
+        self._weather_path = os.path.join(
+            self.pkg_data_path, 'weather', random.choice(self.weather_files))
+        self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
+        self.ddy_model = Epm.from_idf(
+            self._ddy_path,
+            idd_or_version=self._idd,
+            check_length=False)
+        self.weather_data = WeatherData.from_epw(self._weather_path)
+
     def adapt_idf_to_epw(self,
                          summerday: str = 'Ann Clg .4% Condns DB=>MWB',
                          winterday: str = 'Ann Htg 99.6% Condns DB') -> None:
