@@ -356,11 +356,13 @@ class Config(object):
         Returns:
             str: New EPW file path generated in simulator working path in that episode or current EPW path if variation is not defined.
         """
-        if variation is None:
-            return self._weather_path
-        else:
-            # deepcopy for weather_data
-            weather_data_mod = deepcopy(self.weather_data)
+        # deepcopy for weather_data
+        weather_data_mod = deepcopy(self.weather_data)
+        filename = self._weather_path.split('/')[-1]
+
+        # Apply variation to EPW if exists
+        if variation is not None:
+
             # Get dataframe with weather series
             df = weather_data_mod.get_weather_series()
 
@@ -392,13 +394,14 @@ class Config(object):
             # Save new weather data
             weather_data_mod.set_weather_series(df)
 
-            filename = self._weather_path.split('/')[-1]
+            # Change name filename to specify variation nature in name
             filename = filename.split('.epw')[0]
             filename += '_Random_%s_%s_%s.epw' % (
                 str(sigma), str(mu), str(tau))
-            episode_weather_path = self.episode_path + '/' + filename
-            weather_data_mod.to_epw(episode_weather_path)
-            return episode_weather_path
+
+        episode_weather_path = self.episode_path + '/' + filename
+        weather_data_mod.to_epw(episode_weather_path)
+        return episode_weather_path
 
     # ---------------------------------------------------------------------------- #
     #                        Model and Config Functionality                        #
