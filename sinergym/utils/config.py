@@ -1,5 +1,6 @@
 """Class and utilities for set up extra configuration in experiments with Sinergym (extra params, weather_variability, building model modification and files management)"""
 import os
+import random
 import xml.etree.cElementTree as ElementTree
 from copy import deepcopy
 from shutil import rmtree
@@ -9,7 +10,6 @@ import numpy as np
 import pandas
 from opyplus import Epm, Idd, WeatherData
 from opyplus.epm.record import Record
-import random
 
 from sinergym.utils.common import (get_delta_seconds, get_record_keys,
                                    prepare_batch_from_records, to_idf)

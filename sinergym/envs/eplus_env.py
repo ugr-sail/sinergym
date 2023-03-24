@@ -3,12 +3,12 @@ Gym environment for simulation with EnergyPlus.
 """
 
 import os
+import random
 from sqlite3 import DatabaseError
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
-import random
 
 from sinergym.simulators import EnergyPlus
 from sinergym.utils.common import export_actuators_to_excel
