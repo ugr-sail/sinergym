@@ -122,6 +122,13 @@ def test_set_external_interface(config):
     ) == 'PtolemyServer'.lower()
 
 
+def test_update_weather_path(config_several_weathers):
+    assert len(config_several_weathers.weather_files) > 1
+    assert config_several_weathers._weather_path is not None
+    config_several_weathers.update_weather_path()
+    assert config_several_weathers._weather_path is not None
+
+
 def test_apply_extra_conf(config):
     # Check default config
     assert int(config.building.timestep[0].number_of_timesteps_per_hour) == 4
