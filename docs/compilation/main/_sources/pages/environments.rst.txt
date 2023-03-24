@@ -182,8 +182,8 @@ We will show which **parameters** are available and what their function is.
 IDF file 
 =========
 
-The parameter *idf_file* is the path to *IDF* (Intermediate Data Format) 
-file where *Energyplus* building model is defined.
+The parameter *idf_file* is the *IDF* (Intermediate Data Format) file name  
+where *Energyplus* building model is defined.
 
 *Sinergym* initially provides **"free" buildings**. This means that the *IDF* does not have the external 
 interface defined and default components, such as the ``timesteps``, the ``runperiod``, the 
@@ -199,17 +199,19 @@ and used by the simulator of that execution.
 EPW file
 =========
 
-The parameter *weather_file* is the path to *EPW* (EnergyPlus Weather) file where **climate conditions** during 
+The parameter *weather_file* is the *EPW* (EnergyPlus Weather) file name where **climate conditions** during 
 a year is defined.
-
-Initially, this file will not be copied to the specific output folder of the experiment, since the original 
-file present in *Sinergym* can be used directly. However, the user can set a year-to-year **variability** in 
-the climate (see section :ref:`Weather Variability`). In that case, the weather updated with such variability 
-will be copied and used in the output folder. 
 
 Depending on the climate that is set for the environment, some of building model components need to be **modified** 
 in such a way that it is **compatible** with that weather. Therefore, *Sinergym* updates the ``DesignDays`` and ``Location`` 
 fields automatically using the weather data, without the need for user intervention. 
+
+This parameter can be a weather file name (str) as mentioned, or a list of different weather files (List[str]).
+When a list of several files is defined, Sinergym will select an *EPW* file in each episode and re-adapt *IDF*
+randomly. This is done in order to increase the complexity in the environment whether is desired. 
+
+The weather file used in each episode is stored in Sinergym episode output folder, if **variability** 
+(section :ref:`Weather Variability` is defined), the *EPW* stored will have that noise included.
 
 Weather Variability
 ====================

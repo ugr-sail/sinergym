@@ -36,7 +36,13 @@ be used in each experiment.
 | USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3  | Washington, USA           | Cool Marine west coastal (warm summer, mild winter, rain all year).                        | 9.3         | 81.1       |
 +--------------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------+-------------+------------+
 
+*M.A.T: Mean Temperature*
+*M.A.H: Mean Humidity*
+
 Weather types according to `DOE's
 classification <https://www.energycodes.gov/development/commercial/prototype_models#TMY3>`__.
+
+Can be specified several weathers in the same experiment. Sinergym will sample one weather in each episode to use it. For more
+information, visit section :ref:`EPW file`
 
 If you are interested in including new weathers to this framework, please visit section :ref:`Adding new weathers for environments`.

@@ -597,7 +597,7 @@ table above or creating a new one.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">idf_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">weather_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">weather_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
         <span class="n">observation_space</span><span class="p">:</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
             <span class="n">low</span><span class="o">=-</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">5e6</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
         <span class="n">observation_variables</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
@@ -618,7 +618,7 @@ table above or creating a new one.</p>
 
 <span class="sd">        Args:</span>
 <span class="sd">            idf_file (str): Name of the IDF file with the building definition.</span>
-<span class="sd">            weather_file (str): Name of the EPW file for weather conditions.</span>
+<span class="sd">            weather_file (Union[str,List[str]]): Name of the EPW file for weather conditions. It can be specified a list of weathers files in order to sample a weather in each episode randomly.</span>
 <span class="sd">            observation_space (gym.spaces.Box, optional): Gym Observation Space definition. Defaults to an empty observation_space (no control).</span>
 <span class="sd">            observation_variables (List[str], optional): List with variables names in IDF. Defaults to an empty observation variables (no control).</span>
 <span class="sd">            action_space (Union[gym.spaces.Box, gym.spaces.Discrete], optional): Gym Action Space definition. Defaults to an empty action_space (no control).</span>
@@ -639,11 +639,14 @@ table above or creating a new one.</p>
         <span class="c1"># ---------------------------------------------------------------------------- #</span>
         <span class="n">eplus_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;EPLUS_PATH&#39;</span><span class="p">]</span>
         <span class="n">bcvtb_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;BCVTB_PATH&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pkg_data_path</span> <span class="o">=</span> <span class="n">PKG_DATA_PATH</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">idf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pkg_data_path</span><span class="p">,</span> <span class="s1">&#39;buildings&#39;</span><span class="p">,</span> <span class="n">idf_file</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">weather_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pkg_data_path</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">,</span> <span class="n">weather_file</span><span class="p">)</span>
+        <span class="c1"># IDF file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idf_file</span> <span class="o">=</span> <span class="n">idf_file</span>
+        <span class="c1"># EPW file(s) (str or List of EPW&#39;s)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weather_file</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weather_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">weather_file</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weather_files</span> <span class="o">=</span> <span class="n">weather_file</span>
 
         <span class="c1"># ---------------------------------------------------------------------------- #</span>
         <span class="c1">#                             Variables definition                             #</span>
@@ -661,8 +664,8 @@ table above or creating a new one.</p>
             <span class="n">env_name</span><span class="o">=</span><span class="n">env_name</span><span class="p">,</span>
             <span class="n">eplus_path</span><span class="o">=</span><span class="n">eplus_path</span><span class="p">,</span>
             <span class="n">bcvtb_path</span><span class="o">=</span><span class="n">bcvtb_path</span><span class="p">,</span>
-            <span class="n">idf_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">idf_path</span><span class="p">,</span>
-            <span class="n">weather_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weather_path</span><span class="p">,</span>
+            <span class="n">idf_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">idf_file</span><span class="p">,</span>
+            <span class="n">weather_files</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weather_files</span><span class="p">,</span>
             <span class="n">variables</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
             <span class="n">act_repeat</span><span class="o">=</span><span class="n">act_repeat</span><span class="p">,</span>
             <span class="n">max_ep_data_store_num</span><span class="o">=</span><span class="n">max_ep_data_store_num</span><span class="p">,</span>
@@ -739,8 +742,8 @@ table above or creating a new one.</p>
 <p>We will show which <strong>parameters</strong> are available and what their function is.</p>
 <section id="idf-file">
 <h3><span class="section-number">5.2.1. </span>IDF file<a class="headerlink" href="#idf-file" title="Permalink to this heading"></a></h3>
-<p>The parameter <em>idf_file</em> is the path to <em>IDF</em> (Intermediate Data Format)
-file where <em>Energyplus</em> building model is defined.</p>
+<p>The parameter <em>idf_file</em> is the <em>IDF</em> (Intermediate Data Format) file name
+where <em>Energyplus</em> building model is defined.</p>
 <p><em>Sinergym</em> initially provides <strong>“free” buildings</strong>. This means that the <em>IDF</em> does not have the external
 interface defined and default components, such as the <code class="docutils literal notranslate"><span class="pre">timesteps</span></code>, the <code class="docutils literal notranslate"><span class="pre">runperiod</span></code>, the
 <code class="docutils literal notranslate"><span class="pre">location</span></code> or <code class="docutils literal notranslate"><span class="pre">DesignDays</span></code>.</p>
@@ -752,15 +755,16 @@ and used by the simulator of that execution.</p>
 </section>
 <section id="epw-file">
 <h3><span class="section-number">5.2.2. </span>EPW file<a class="headerlink" href="#epw-file" title="Permalink to this heading"></a></h3>
-<p>The parameter <em>weather_file</em> is the path to <em>EPW</em> (EnergyPlus Weather) file where <strong>climate conditions</strong> during
+<p>The parameter <em>weather_file</em> is the <em>EPW</em> (EnergyPlus Weather) file name where <strong>climate conditions</strong> during
 a year is defined.</p>
-<p>Initially, this file will not be copied to the specific output folder of the experiment, since the original
-file present in <em>Sinergym</em> can be used directly. However, the user can set a year-to-year <strong>variability</strong> in
-the climate (see section <a class="reference internal" href="#weather-variability"><span class="std std-ref">Weather Variability</span></a>). In that case, the weather updated with such variability
-will be copied and used in the output folder.</p>
 <p>Depending on the climate that is set for the environment, some of building model components need to be <strong>modified</strong>
 in such a way that it is <strong>compatible</strong> with that weather. Therefore, <em>Sinergym</em> updates the <code class="docutils literal notranslate"><span class="pre">DesignDays</span></code> and <code class="docutils literal notranslate"><span class="pre">Location</span></code>
 fields automatically using the weather data, without the need for user intervention.</p>
+<p>This parameter can be a weather file name (str) as mentioned, or a list of different weather files (List[str]).
+When a list of several files is defined, Sinergym will select an <em>EPW</em> file in each episode and re-adapt <em>IDF</em>
+randomly. This is done in order to increase the complexity in the environment whether is desired.</p>
+<p>The weather file used in each episode is stored in Sinergym episode output folder, if <strong>variability</strong>
+(section <a class="reference internal" href="#weather-variability"><span class="std std-ref">Weather Variability</span></a> is defined), the <em>EPW</em> stored will have that noise included.</p>
 </section>
 <section id="weather-variability">
 <h3><span class="section-number">5.2.3. </span>Weather Variability<a class="headerlink" href="#weather-variability" title="Permalink to this heading"></a></h3>
