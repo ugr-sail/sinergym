@@ -27,6 +27,7 @@
       ~Config.set_episode_working_dir
       ~Config.set_experiment_working_dir
       ~Config.set_external_interface
+      ~Config.update_weather_path
    
    
 

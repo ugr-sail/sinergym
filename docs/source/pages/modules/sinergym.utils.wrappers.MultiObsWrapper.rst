@@ -21,7 +21,6 @@
       ~MultiObsWrapper.render
       ~MultiObsWrapper.reset
       ~MultiObsWrapper.step
-      ~MultiObsWrapper.wrapper_spec
    
    
 
