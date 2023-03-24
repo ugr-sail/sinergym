@@ -173,6 +173,13 @@ class EnergyPlus(object):
             self.logger_main.info(
                 'EnergyPlus episode completed successfully. ')
             self._epi_num += 1
+            # Update weather file used if it is specified more than one
+            if len(self._weather_files) > 1:
+                self.logger_main.info(
+                    'Updating weather file for new episode (sampling)...')
+                self._config.update_weather_path()
+                self.logger_main.info('Adapting idf to new weather file...')
+                self._config.adapt_idf_to_epw()
 
         # Create EnergyPlus simulation process
         self.logger_main.info('Creating new EnergyPlus simulation episode...')
