@@ -9,6 +9,7 @@ import numpy as np
 import pandas
 from opyplus import Epm, Idd, WeatherData
 from opyplus.epm.record import Record
+import random
 
 from sinergym.utils.common import (get_delta_seconds, get_record_keys,
                                    prepare_batch_from_records, to_idf)
@@ -19,7 +20,8 @@ class Config(object):
     """Config object to manage extra configuration in Sinergym experiments.
 
         :param _idf_path: IDF path origin for apply extra configuration.
-        :param _weather_path: EPW path origin for apply weather to simulation.
+        :param weather_files: weather available files for each episode
+        :param _weather_path: EPW path origin for apply weather to simulation in current episode.
         :param _ddy_path: DDY path origin for get DesignDays and weather Location
         :param experiment_path: Path for Sinergym experiment output
         :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None)
@@ -34,19 +36,29 @@ class Config(object):
 
     def __init__(
             self,
-            idf_path: str,
-            weather_path: str,
+            idf_file: str,
+            weather_files: List[str],
             variables: Dict[str, List[str]],
             env_name: str,
             max_ep_store: int,
             action_definition: Optional[Dict[str, Any]],
             extra_config: Dict[str, Any]):
 
-        self._idf_path = idf_path
-        self._weather_path = weather_path
+        self.pkg_data_path = PKG_DATA_PATH
+
+        # Transform IDF file name in path
+        self._idf_path = os.path.join(
+            self.pkg_data_path, 'buildings', idf_file)
+
+        # Transform EPW file name in path
+        self.weather_files = weather_files
+
+        # Select one weather randomly (if there are more than one)
+        self._weather_path = os.path.join(
+            self.pkg_data_path, 'weather', random.choice(self.weather_files))
         # RDD file name is deducible using idf name (only change .idf by .rdd)
         self._rdd_path = os.path.join(
-            PKG_DATA_PATH,
+            self.pkg_data_path,
             'variables',
             self._idf_path.split('/')[-1].split('.idf')[0] +
             '.rdd')
@@ -105,6 +117,18 @@ class Config(object):
     # ---------------------------------------------------------------------------- #
     #            IDF, variables and Building model adaptation                      #
     # ---------------------------------------------------------------------------- #
+
+    def update_weather_path(self) -> None:
+        """When this method is called, weather file is changed randomly and IDF is adapted to new one.
+        """
+        self._weather_path = os.path.join(
+            self.pkg_data_path, 'weather', random.choice(self.weather_files))
+        self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
+        self.ddy_model = Epm.from_idf(
+            self._ddy_path,
+            idd_or_version=self._idd,
+            check_length=False)
+        self.weather_data = WeatherData.from_epw(self._weather_path)
 
     def adapt_idf_to_epw(self,
                          summerday: str = 'Ann Clg .4% Condns DB=>MWB',
@@ -332,11 +356,13 @@ class Config(object):
         Returns:
             str: New EPW file path generated in simulator working path in that episode or current EPW path if variation is not defined.
         """
-        if variation is None:
-            return self._weather_path
-        else:
-            # deepcopy for weather_data
-            weather_data_mod = deepcopy(self.weather_data)
+        # deepcopy for weather_data
+        weather_data_mod = deepcopy(self.weather_data)
+        filename = self._weather_path.split('/')[-1]
+
+        # Apply variation to EPW if exists
+        if variation is not None:
+
             # Get dataframe with weather series
             df = weather_data_mod.get_weather_series()
 
@@ -368,13 +394,14 @@ class Config(object):
             # Save new weather data
             weather_data_mod.set_weather_series(df)
 
-            filename = self._weather_path.split('/')[-1]
+            # Change name filename to specify variation nature in name
             filename = filename.split('.epw')[0]
             filename += '_Random_%s_%s_%s.epw' % (
                 str(sigma), str(mu), str(tau))
-            episode_weather_path = self.episode_path + '/' + filename
-            weather_data_mod.to_epw(episode_weather_path)
-            return episode_weather_path
+
+        episode_weather_path = self.episode_path + '/' + filename
+        weather_data_mod.to_epw(episode_weather_path)
+        return episode_weather_path
 
     # ---------------------------------------------------------------------------- #
     #                        Model and Config Functionality                        #
@@ -571,6 +598,14 @@ class Config(object):
     def _check_eplus_config(self) -> None:
         """Check Eplus Environment config definition is correct.
         """
+
+        # COMMON
+        # Check weather files exist
+        for w_file in self.weather_files:
+            w_path = os.path.join(
+                self.pkg_data_path, 'weather', w_file)
+            assert os.path.isfile(
+                w_path), 'Weather files: {} is not a weather file available in Sinergym.'.format(w_file)
 
         # EXTRA CONFIG
         if self.config is not None:

@@ -62,35 +62,24 @@ def weather_path(pkg_data_path):
 
 
 @pytest.fixture(scope='session')
-def ddy_path(pkg_data_path):
-    return os.path.join(
-        pkg_data_path,
-        'weather',
-        'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.ddy')
+def idf_file():
+    return '5ZoneAutoDXVAV.idf'
 
 
 @pytest.fixture(scope='session')
-def idf_path2(pkg_data_path):
-    return os.path.join(
-        pkg_data_path,
-        'buildings',
-        '2ZoneDataCenterHVAC_wEconomizer.idf')
+def weather_file():
+    return 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw'
 
 
 @pytest.fixture(scope='session')
-def weather_path2(pkg_data_path):
-    return os.path.join(
-        pkg_data_path,
-        'weather',
-        'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw')
+def idf_file2():
+    return '2ZoneDataCenterHVAC_wEconomizer.idf'
 
 
 @pytest.fixture(scope='session')
-def ddy_path2(pkg_data_path):
-    return os.path.join(
-        pkg_data_path,
-        'weather',
-        'USA_AZ_Davis-Monthan.AFB.722745_TMY3.ddy')
+def weather_file2():
+    return 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw'
+
 
 # 5zones variables
 
@@ -118,9 +107,7 @@ def variables_datacenter():
 
 
 @pytest.fixture(scope='function')
-def env_demo(idf_path, weather_path):
-    idf_file = idf_path.split('/')[-1]
-    weather_file = weather_path.split('/')[-1]
+def env_demo(idf_file, weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',
@@ -146,9 +133,7 @@ def env_demo(idf_path, weather_path):
 
 
 @pytest.fixture(scope='function')
-def env_demo_continuous(idf_path, weather_path):
-    idf_file = idf_path.split('/')[-1]
-    weather_file = weather_path.split('/')[-1]
+def env_demo_continuous(idf_file, weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',
@@ -174,9 +159,7 @@ def env_demo_continuous(idf_path, weather_path):
 
 
 @pytest.fixture(scope='function')
-def env_demo_continuous_stochastic(idf_path, weather_path):
-    idf_file = idf_path.split('/')[-1]
-    weather_file = weather_path.split('/')[-1]
+def env_demo_continuous_stochastic(idf_file, weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',
@@ -202,13 +185,11 @@ def env_demo_continuous_stochastic(idf_path, weather_path):
 
 
 @pytest.fixture(scope='function')
-def env_datacenter(idf_path2, weather_path):
-    idf_file = idf_path2.split('/')[-1]
-    weather_file = weather_path.split('/')[-1]
+def env_datacenter(idf_file2, weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',
-        idf_file=idf_file,
+        idf_file=idf_file2,
         weather_file=weather_file,
         observation_space=DEFAULT_DATACENTER_OBSERVATION_SPACE,
         observation_variables=DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
@@ -233,14 +214,12 @@ def env_datacenter(idf_path2, weather_path):
 
 @pytest.fixture(scope='function')
 def env_datacenter_continuous(
-        idf_path2,
-        weather_path):
-    idf_file = idf_path2.split('/')[-1]
-    weather_file = weather_path.split('/')[-1]
+        idf_file2,
+        weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',
-        idf_file=idf_file,
+        idf_file=idf_file2,
         weather_file=weather_file,
         observation_space=DEFAULT_DATACENTER_OBSERVATION_SPACE,
         observation_variables=DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
@@ -268,14 +247,19 @@ def env_datacenter_continuous(
 
 
 @pytest.fixture(scope='function')
-def simulator(eplus_path, bcvtb_path, idf_path, weather_path, variables_5zone):
+def simulator(
+        eplus_path,
+        bcvtb_path,
+        idf_file,
+        weather_file,
+        variables_5zone):
     env_name = 'TEST'
     return EnergyPlus(
-        eplus_path,
-        weather_path,
-        bcvtb_path,
-        idf_path,
-        env_name,
+        eplus_path=eplus_path,
+        bcvtb_path=bcvtb_path,
+        weather_files=[weather_file],
+        idf_file=idf_file,
+        env_name=env_name,
         variables=variables_5zone,
         act_repeat=1,
         max_ep_data_store_num=10,
@@ -287,12 +271,33 @@ def simulator(eplus_path, bcvtb_path, idf_path, weather_path, variables_5zone):
 
 
 @pytest.fixture(scope='function')
-def config(idf_path, weather_path2, variables_5zone):
+def config(idf_file, weather_file2, variables_5zone):
     env_name = 'TESTCONFIG'
     max_ep_store = 10
     return Config(
-        idf_path=idf_path,
-        weather_path=weather_path2,
+        idf_file=idf_file,
+        weather_files=[weather_file2],
+        env_name=env_name,
+        variables=variables_5zone,
+        max_ep_store=max_ep_store,
+        action_definition=DEFAULT_5ZONE_ACTION_DEFINITION,
+        extra_config={
+            'timesteps_per_hour': 2,
+            'runperiod': (1, 2, 1993, 2, 3, 1993),
+        })
+
+
+@pytest.fixture(scope='function')
+def config_several_weathers(
+        idf_file,
+        weather_file,
+        weather_file2,
+        variables_5zone):
+    env_name = 'TESTCONFIG'
+    max_ep_store = 10
+    return Config(
+        idf_file=idf_file,
+        weather_files=[weather_file, weather_file2],
         env_name=env_name,
         variables=variables_5zone,
         max_ep_store=max_ep_store,
@@ -443,11 +448,9 @@ def hourly_linear_reward(env_demo):
 
 @pytest.fixture(scope='function')
 def env_custom_reward(
-        idf_path,
-        weather_path,
+        idf_file,
+        weather_file,
         custom_reward):
-    idf_file = idf_path.split('/')[-1]
-    weather_file = weather_path.split('/')[-1]
 
     return EplusEnv(
         env_name='TESTGYM',
@@ -465,9 +468,7 @@ def env_custom_reward(
 
 
 @pytest.fixture(scope='function')
-def env_linear_reward(idf_path, weather_path):
-    idf_file = idf_path.split('/')[-1]
-    weather_file = weather_path.split('/')[-1]
+def env_linear_reward(idf_file, weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',
@@ -493,9 +494,7 @@ def env_linear_reward(idf_path, weather_path):
 
 
 @pytest.fixture(scope='function')
-def env_linear_reward_args(idf_path, weather_path):
-    idf_file = idf_path.split('/')[-1]
-    weather_file = weather_path.split('/')[-1]
+def env_linear_reward_args(idf_file, weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',

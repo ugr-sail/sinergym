@@ -122,6 +122,13 @@ def test_set_external_interface(config):
     ) == 'PtolemyServer'.lower()
 
 
+def test_update_weather_path(config_several_weathers):
+    assert len(config_several_weathers.weather_files) > 1
+    assert config_several_weathers._weather_path is not None
+    config_several_weathers.update_weather_path()
+    assert config_several_weathers._weather_path is not None
+
+
 def test_apply_extra_conf(config):
     # Check default config
     assert int(config.building.timestep[0].number_of_timesteps_per_hour) == 4
@@ -230,7 +237,9 @@ def test_apply_weather_variability(config):
     assert config.episode_path is not None
     # Check apply None variation return original weather_path
     path_result = config.apply_weather_variability(variation=None)
-    assert path_result == config._weather_path
+    original_filename = config._weather_path.split('/')[-1]
+    path_filename = path_result.split('/')[-1]
+    assert original_filename == path_filename
     # Check with a variation
     variation = (1.0, 0.0, 0.001)
     path_result = config.apply_weather_variability(variation=variation)
