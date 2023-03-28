@@ -85,7 +85,7 @@ if conf.get('env_params'):
         conf['env_params']['observation_space'] = eval(
             conf['env_params']['observation_space'])
     if conf['env_params'].get('action_space'):
-        conf['env_params']['observation_space'] = eval(
+        conf['env_params']['action_space'] = eval(
             conf['env_params']['action_space'])
 
     env_params = conf['env_params']
