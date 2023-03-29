@@ -87,6 +87,9 @@ if conf.get('env_params'):
     if conf['env_params'].get('action_space'):
         conf['env_params']['action_space'] = eval(
             conf['env_params']['action_space'])
+    if conf['env_params'].get('action_mapping'):
+        for key in list(conf['env_params']['action_mapping'].keys()):
+            conf['env_params']['action_mapping'][int(key)] = conf['env_params']['action_mapping'].pop(key)
 
     env_params = conf['env_params']
 
