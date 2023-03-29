@@ -5,3 +5,7 @@ ignore:
   - "sinergym/utils/callbacks.py"
   - "sinergym/simulators/base.py"
   - "sinergym/simulators/eplus_alpha.py"
+
+coverage:
+  status:
+    project: false
