@@ -3,6 +3,8 @@
 import random
 from collections import deque
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
+from datetime import datetime
+from copy import deepcopy
 
 import gymnasium as gym
 import numpy as np
@@ -329,7 +331,72 @@ class LoggerWrapper(gym.Wrapper):
         """
         self.logger.deactivate_flag()
 
-# ---------------------- Specific environment wrappers ---------------------#
+
+class DatetimeWrapper(gym.ObservationWrapper):
+    """Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
+       Observation space is updated automatically."""
+
+    def __init__(self,
+                 env: Any):
+        super(DatetimeWrapper, self).__init__(env)
+        # Update new shape
+        new_shape = env.observation_space.shape[0] + 2
+        self.observation_space = gym.spaces.Box(
+            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+        # Save original observation variables
+        self.original_variables = deepcopy(env.variables)
+        # Update observation variables
+        day_index = self.variables['observation'].index('day')
+        self.variables['observation'][day_index] = 'is_weekend'
+        hour_index = self.variables['observation'].index('hour')
+        self.variables['observation'][hour_index] = 'hour_cos'
+        self.variables['observation'].insert(hour_index + 1, 'hour_sin')
+        month_index = self.variables['observation'].index('month')
+        self.variables['observation'][month_index] = 'month_cos'
+        self.variables['observation'].insert(month_index + 1, 'month_sin')
+
+    def observation(self, obs: np.ndarray) -> np.ndarray:
+        """Applies calculation in is_weekend flag, and sen and cos in hour and month
+
+        Args:
+            obs (np.ndarray): Original observation.
+
+        Returns:
+            np.ndarray: Transformed observation.
+        """
+        obs_dict = dict(zip(self.original_variables['observation'], obs))
+        new_obs = obs.tolist()
+        dt = datetime(
+            int(obs_dict['year']),
+            int(obs_dict['month']),
+            int(obs_dict['day']),
+            int(obs_dict['hour']))
+        # Calculate new values
+        is_weekend = 1.0 if dt.isoweekday() in [6, 7] else 0.0
+        hour_cos = np.cos(obs_dict['hour'])
+        hour_sin = np.sin(obs_dict['hour'])
+        month_cos = np.cos(obs_dict['month'])
+        month_sin = np.sin(obs_dict['month'])
+        # Update obs
+        day_index = self.original_variables['observation'].index('day')
+        new_obs[day_index] = is_weekend
+        hour_index = self.original_variables['observation'].index('hour')
+        new_obs[hour_index] = hour_cos
+        obs = np.insert(obs, hour_index + 1, hour_sin)
+        month_index = self.original_variables['observation'].index('month')
+        obs[month_index] = month_cos
+        obs = np.insert(obs, month_index + 1, month_sin)
+        return obs
+
+
+class PreviousObservationWrapper(gym.Wrapper):
+    pass
+
+
+class DiscreteIncrementalEnv(gym.ActionWrapper):
+    pass
+
+    # ---------------------- Specific environment wrappers ---------------------#
 
 
 class OfficeGridStorageSmoothingActionConstraintsWrapper(
