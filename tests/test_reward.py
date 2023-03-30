@@ -11,28 +11,22 @@ def test_base_reward(base_reward):
                           ('exponential_reward'),
                           ('hourly_linear_reward'),
                           ])
-def test_rewards(reward_name, request):
+def test_rewards(reward_name, env_demo_continuous, request):
     reward = request.getfixturevalue(reward_name)
-    env = reward.env
-    env.reset()
-    a = env.action_space.sample()
-    env.step(a)
+    env_demo_continuous.reset()
+    a = env_demo_continuous.action_space.sample()
+    obs, _, _, _, _ = env_demo_continuous.step(a)
     # Such as env has been created separately, it is important to calculate
     # specifically in reward class.
-    R, terms = reward()
+    obs_dict = dict(zip(env_demo_continuous.variables['observation'], obs))
+    R, terms = reward(obs_dict)
     assert R <= 0
-    assert env.reward_fn.W_energy == 0.5
+    assert env_demo_continuous.reward_fn.W_energy == 0.5
     assert isinstance(terms, dict)
     assert len(terms) > 0
 
 
 def test_custom_reward(custom_reward):
-    env = custom_reward.env
-    env.reset()
-    a = env.action_space.sample()
-    env.step(a)
-    # Such as env has been created separately, it is important to calculate
-    # specifically in reward class.
     R, terms = custom_reward()
     assert R == -1.0
     assert isinstance(terms, dict)
