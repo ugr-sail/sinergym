@@ -157,8 +157,7 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         #                                    Reward                                    #
         # ---------------------------------------------------------------------------- #
-        self.reward_fn = reward(self, **reward_kwargs)
-        self.obs_dict = None
+        self.reward_fn = reward(**reward_kwargs)
 
         # ---------------------------------------------------------------------------- #
         #                        Environment definition checker                        #
@@ -224,11 +223,10 @@ class EplusEnv(gym.Env):
         self.simulator.logger_main.debug(action_)
         # Execute action in simulation
         obs, terminated, truncated, info = self.simulator.step(action_)
-        # Create dictionary with observation
-        self.obs_dict = dict(zip(self.variables['observation'], obs))
+        obs_dict = dict(zip(self.variables['observation'], obs))
 
         # Calculate reward
-        reward, terms = self.reward_fn()
+        reward, terms = self.reward_fn(obs_dict)
 
         # info update with reward information
         info.update({'reward': reward})
