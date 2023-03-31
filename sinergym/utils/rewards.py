@@ -10,7 +10,7 @@ from gymnasium import Env
 
 class BaseReward(object):
 
-    def __init__(self, env):
+    def __init__(self):
         """
         Base reward class.
 
@@ -19,7 +19,6 @@ class BaseReward(object):
         Args:
             env (Env): Gym environment.
         """
-        self.env = env
 
     def __call__(self):
         """Method for calculating the reward function."""
@@ -31,7 +30,6 @@ class LinearReward(BaseReward):
 
     def __init__(
         self,
-        env: Env,
         temperature_variable: Union[str, list],
         energy_variable: str,
         range_comfort_winter: Tuple[int, int],
@@ -51,7 +49,6 @@ class LinearReward(BaseReward):
             R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))
 
         Args:
-            env (Env): Gym environment.
             temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
             energy_variable (str): Name of the energy/power variable.
             range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
@@ -63,7 +60,7 @@ class LinearReward(BaseReward):
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
         """
 
-        super(LinearReward, self).__init__(env)
+        super(LinearReward, self).__init__()
 
         # Name of the variables
         self.temp_name = temperature_variable
@@ -80,15 +77,16 @@ class LinearReward(BaseReward):
         self.summer_start = summer_start  # (month,day)
         self.summer_final = summer_final  # (month,day)
 
-    def __call__(self) -> Tuple[float, Dict[str, Any]]:
-        """
-        Calculate the reward function.
+    def __call__(self, obs_dict: Dict[str, Any]
+                 ) -> Tuple[float, Dict[str, Any]]:
+        """Calculate the reward function.
+
+        Args:
+            obs_dict (Dict[str, Any]): Dict with observation variable name (key) and observation variable value (value)
 
         Returns:
             Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
         """
-        # Current observation
-        obs_dict = self.env.obs_dict.copy()
 
         # Energy term
         reward_energy = - self.lambda_energy * obs_dict[self.energy_name]
@@ -124,15 +122,15 @@ class LinearReward(BaseReward):
         month = obs_dict['month']
         day = obs_dict['day']
         year = obs_dict['year']
-        current_dt = datetime(year, month, day)
+        current_dt = datetime(int(year), int(month), int(day))
 
         # Periods
         summer_start_date = datetime(
-            year,
+            int(year),
             self.summer_start[0],
             self.summer_start[1])
         summer_final_date = datetime(
-            year,
+            int(year),
             self.summer_final[0],
             self.summer_final[1])
 
@@ -154,7 +152,6 @@ class ExpReward(LinearReward):
 
     def __init__(
         self,
-        env: Env,
         temperature_variable: Union[str, list],
         energy_variable: str,
         range_comfort_winter: Tuple[int, int],
@@ -172,7 +169,6 @@ class ExpReward(LinearReward):
             R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T - T_{low}, 0) + max(T_{up} - T, 0)) )
 
         Args:
-            env (Env): Gym environment.
             temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
             energy_variable (str): Name of the energy/power variable.
             range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
@@ -185,7 +181,6 @@ class ExpReward(LinearReward):
         """
 
         super(ExpReward, self).__init__(
-            env,
             temperature_variable,
             energy_variable,
             range_comfort_winter,
@@ -210,15 +205,15 @@ class ExpReward(LinearReward):
         month = obs_dict['month']
         day = obs_dict['day']
         year = obs_dict['year']
-        current_dt = datetime(year, month, day)
+        current_dt = datetime(int(year), int(month), int(day))
 
         # Periods
         summer_start_date = datetime(
-            year,
+            int(year),
             self.summer_start[0],
             self.summer_start[1])
         summer_final_date = datetime(
-            year,
+            int(year),
             self.summer_final[0],
             self.summer_final[1])
 
@@ -241,7 +236,6 @@ class HourlyLinearReward(LinearReward):
 
     def __init__(
         self,
-        env: Env,
         temperature_variable: Union[str, list],
         energy_variable: str,
         range_comfort_winter: Tuple[int, int],
@@ -257,7 +251,6 @@ class HourlyLinearReward(LinearReward):
         Linear reward function with a time-dependent weight for consumption and energy terms.
 
         Args:
-            env (Env): Gym environment.
             temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
             energy_variable (str): Name of the energy/power variable.
             range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
@@ -271,7 +264,6 @@ class HourlyLinearReward(LinearReward):
         """
 
         super(HourlyLinearReward, self).__init__(
-            env,
             temperature_variable,
             energy_variable,
             range_comfort_winter,
@@ -286,15 +278,16 @@ class HourlyLinearReward(LinearReward):
         # Reward parameters
         self.range_comfort_hours = range_comfort_hours
 
-    def __call__(self) -> Tuple[float, Dict[str, Any]]:
+    def __call__(self, obs_dict: Dict[str, Any]
+                 ) -> Tuple[float, Dict[str, Any]]:
         """Calculate the reward function.
 
-        Returns:
-            Tuple[float, Dict[str, Any]]: Reward and dict with reward terms.
-            """
-        # Current observation
-        obs_dict = self.env.obs_dict.copy()
+        Args:
+            obs_dict (Dict[str, Any]): Dict with observation variable name (key) and observation variable value (value)
 
+        Returns:
+            Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
+        """
         # Energy term
         reward_energy = - self.lambda_energy * obs_dict[self.energy_name]
 

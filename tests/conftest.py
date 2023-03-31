@@ -387,25 +387,24 @@ def weather_data(weather_path):
 
 @pytest.fixture(scope='function')
 def base_reward(env_demo):
-    return BaseReward(env_demo)
+    return BaseReward()
 
 
 @pytest.fixture(scope='function')
 def custom_reward(env_demo):
     class CustomReward(BaseReward):
-        def __init__(self, env):
-            super(CustomReward, self).__init__(env)
+        def __init__(self):
+            super(CustomReward, self).__init__()
 
         def __call__(self):
             return -1.0, {}
 
-    return CustomReward(env_demo)
+    return CustomReward()
 
 
 @pytest.fixture(scope='function')
-def linear_reward(env_demo):
+def linear_reward():
     return LinearReward(
-        env=env_demo,
         temperature_variable='Zone Air Temperature(SPACE1-1)',
         energy_variable='Facility Total HVAC Electricity Demand Rate(Whole Building)',
         range_comfort_winter=(
@@ -417,9 +416,8 @@ def linear_reward(env_demo):
 
 
 @pytest.fixture(scope='function')
-def exponential_reward(env_demo):
+def exponential_reward():
     return ExpReward(
-        env=env_demo,
         temperature_variable=[
             'Zone Air Temperature(SPACE1-1)',
             'Zone Air Temperature(SPACE1-2)'],
@@ -433,9 +431,8 @@ def exponential_reward(env_demo):
 
 
 @pytest.fixture(scope='function')
-def hourly_linear_reward(env_demo):
+def hourly_linear_reward():
     return HourlyLinearReward(
-        env=env_demo,
         temperature_variable='Zone Air Temperature(SPACE1-1)',
         energy_variable='Facility Total HVAC Electricity Demand Rate(Whole Building)',
         range_comfort_winter=(
