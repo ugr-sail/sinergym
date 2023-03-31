@@ -83,6 +83,10 @@ class EplusEnv(gym.Env):
         self.variables['observation'] = observation_variables
         self.variables['action'] = action_variables
 
+        # Copy to use original variables in step.obs_dict for reward
+        self.original_obs = observation_variables
+        self.original_act = action_variables
+
         self.name = env_name
 
         # ---------------------------------------------------------------------------- #
@@ -112,6 +116,8 @@ class EplusEnv(gym.Env):
 
         self.variables['observation'] = ['year', 'month',
                                          'day', 'hour'] + self.variables['observation']
+        self.original_obs = ['year', 'month',
+                             'day', 'hour'] + self.original_obs
 
         # ---------------------------------------------------------------------------- #
         #                          reset default options                               #
@@ -223,7 +229,7 @@ class EplusEnv(gym.Env):
         self.simulator.logger_main.debug(action_)
         # Execute action in simulation
         obs, terminated, truncated, info = self.simulator.step(action_)
-        obs_dict = dict(zip(self.variables['observation'], obs))
+        obs_dict = dict(zip(self.original_obs, obs))
 
         # Calculate reward
         reward, terms = self.reward_fn(obs_dict)
