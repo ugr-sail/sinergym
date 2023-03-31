@@ -384,8 +384,43 @@ class DatetimeWrapper(gym.ObservationWrapper):
         return np.array(list(new_obs.values()))
 
 
-class PreviousObservationWrapper(gym.Wrapper):
-    pass
+class PreviousObservationWrapper(gym.ObservationWrapper):
+    """Wrapper to add observation values from previous timestep to
+    current environment observation"""
+
+    def __init__(self,
+                 env: Any,
+                 previous_variables: List[str]):
+        super(PreviousObservationWrapper, self).__init__(env)
+        # Check and apply previous variables to observation space and variables
+        # names
+        for obs_var in previous_variables:
+            assert obs_var in self.variables['observation'], '{} variable is not defined in observation space, revise the name.'.format(
+                obs_var)
+            self.variables['observation'].append(obs_var + '_previous')
+        # Update new shape
+        new_shape = env.observation_space.shape[0] + len(previous_variables)
+        self.observation_space = gym.spaces.Box(
+            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+
+        # previous observation initialization
+        self.previous_observation = np.zeros(
+            shape=len(previous_variables), dtype=np.float32)
+
+    def observation(self, obs: np.ndarray) -> np.ndarray:
+        """Add previous observation to the current one
+
+        Args:
+            obs (np.ndarray): Original observation.
+
+        Returns:
+            np.ndarray: observation with
+        """
+
+        new_obs = np.concatenate((obs, self.previous_observation))
+        self.previous_observation = obs
+
+        return new_obs
 
 
 class DiscreteIncrementalEnv(gym.ActionWrapper):
