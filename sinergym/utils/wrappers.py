@@ -343,8 +343,6 @@ class DatetimeWrapper(gym.ObservationWrapper):
         new_shape = env.observation_space.shape[0] + 2
         self.observation_space = gym.spaces.Box(
             low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
-        # Save original observation variables
-        self.original_variables = deepcopy(env.variables)
         # Update observation variables
         day_index = self.variables['observation'].index('day')
         self.variables['observation'][day_index] = 'is_weekend'
@@ -364,29 +362,26 @@ class DatetimeWrapper(gym.ObservationWrapper):
         Returns:
             np.ndarray: Transformed observation.
         """
-        obs_dict = dict(zip(self.original_variables['observation'], obs))
-        new_obs = obs.tolist()
+        obs_dict = dict(zip(self.original_obs, obs))
+        # New obs dict with same values than obs_dict but with new fields with
+        # None
+        new_obs = dict.fromkeys(self.variables['observation'])
+        for key, value in obs_dict.items():
+            if key in new_obs.keys():
+                new_obs[key] = value
         dt = datetime(
             int(obs_dict['year']),
             int(obs_dict['month']),
             int(obs_dict['day']),
             int(obs_dict['hour']))
-        # Calculate new values
-        is_weekend = 1.0 if dt.isoweekday() in [6, 7] else 0.0
-        hour_cos = np.cos(obs_dict['hour'])
-        hour_sin = np.sin(obs_dict['hour'])
-        month_cos = np.cos(obs_dict['month'])
-        month_sin = np.sin(obs_dict['month'])
         # Update obs
-        day_index = self.original_variables['observation'].index('day')
-        new_obs[day_index] = is_weekend
-        hour_index = self.original_variables['observation'].index('hour')
-        new_obs[hour_index] = hour_cos
-        obs = np.insert(obs, hour_index + 1, hour_sin)
-        month_index = self.original_variables['observation'].index('month')
-        obs[month_index] = month_cos
-        obs = np.insert(obs, month_index + 1, month_sin)
-        return obs
+        new_obs['is_weekend'] = 1.0 if dt.isoweekday() in [6, 7] else 0.0
+        new_obs['hour_cos'] = np.cos(obs_dict['hour'])
+        new_obs['hour_sin'] = np.sin(obs_dict['hour'])
+        new_obs['month_cos'] = np.cos(obs_dict['month'])
+        new_obs['month_sin'] = np.sin(obs_dict['month'])
+
+        return np.array(list(new_obs.values()))
 
 
 class PreviousObservationWrapper(gym.Wrapper):
