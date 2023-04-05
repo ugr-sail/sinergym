@@ -424,7 +424,53 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
 
 
 class DiscreteIncrementalEnv(gym.ActionWrapper):
-    pass
+    """A wrapper for an incremental setpoint discrete action space environment."""
+
+    def __init__(
+        self,
+        env: gym.Env,
+        setpoints_variables: List[str],
+        max_step: float = 2.0,
+        min_step: float = 0.5,
+    ):
+        """
+        Args:
+            env (gym.Env): Environment to wrap.
+            setpoints_variables (List[str]): Variable names of setpoints (these variables must be in environment action variables).
+            max_step (float, optional): Maximum setpoint variation in one timestep. Defaults to 2.0.
+            min_step (float, optional): Minimum setpoint variation in one timestep. Defaults to 0.5.
+        """
+
+        super().__init__(env)
+
+        # Params
+        self.env = env
+        variables_index = []
+        for i, variable in enumerate(setpoints_variables):
+            assert variable in self.variables['action'], '{} action variable is not present in environment variables.'
+            variables_index.append(i)
+
+        # Detectar cuales son las variables que deben de modificarse en el
+        # espacio de acciones y ponerlo entre el mínimo y el máximo
+        self.current_heating_setpoints
+        self.current_cooling_setpoints
+
+    def action(self, action):
+        """Takes the discrete action and transforms it to setpoints tuple."""
+        # Pero de esta manera esto no aprende, coger la acción de step y
+        # sumarla al setpoint actual antes de aplicarlo en el simulador
+        a = self.dict_actions[action]
+
+        obs = self.env.obs_dict
+        if obs is not None:
+            self.current_setpoints = [obs[var] for var in self.variable_names]
+
+        setpoints = np.clip(
+            np.array(self.current_setpoints) + np.array(a),
+            self.min_values,
+            self.max_values
+        )
+        return list(setpoints)
 
     # ---------------------- Specific environment wrappers ---------------------#
 
