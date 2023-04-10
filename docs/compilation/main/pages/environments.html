@@ -653,6 +653,10 @@ table above or creating a new one.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">observation_variables</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">action_variables</span>
 
+        <span class="c1"># Copy to use original variables in step.obs_dict for reward</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_obs</span> <span class="o">=</span> <span class="n">observation_variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_act</span> <span class="o">=</span> <span class="n">action_variables</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">env_name</span>
 
         <span class="c1"># ---------------------------------------------------------------------------- #</span>
@@ -682,6 +686,8 @@ table above or creating a new one.</p>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span>
                                          <span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;observation&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_obs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_obs</span>
 
         <span class="c1"># ---------------------------------------------------------------------------- #</span>
         <span class="c1">#                          reset default options                               #</span>

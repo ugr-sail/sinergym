@@ -117,6 +117,12 @@ in the constructor if other type of logging is required. For more information ab
 <li><p><strong>MultiObjectiveReward</strong>: Environment step will return a vector reward (selected elements in wrapper constructor,
 one for each objective) instead of a traditional scalar value. See <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/301">#301</a>.</p></li>
 <li><p><strong>MultiObsWrapper</strong>: Stack observation received in a history queue (size can be customized).</p></li>
+<li><p><strong>DatetimeWrapper</strong>: Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
+Observation space is updated automatically.</p></li>
+<li><p><strong>PreviousObservationWrapper</strong>: Wrapper to add observation values from previous timestep to current environment observation.
+It is possible to select the variables you want to track its previous observation values.</p></li>
+<li><p><strong>DiscreteIncrementalWrapper</strong>: A wrapper for an incremental discrete setpoint action space environment.
+A discrete environment with only temperature setpoints control must be used with this wrapper.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -125,7 +131,8 @@ one for each objective) instead of a traditional scalar value. See <a class="ref
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The order of wrappers if you are going to use several at the same time is really important.
-The correct order is <strong>Normalization - Logger - Multi-Objectives - MultiObs</strong> and subsets (for example, <em>Normalization</em> - <em>Multiobs</em> is valid).</p>
+The correct order is <strong>Normalization - Logger - Multi-Objectives - MultiObs</strong> and subsets (for example, <em>Normalization</em> - <em>Multiobs</em> is valid).
+It is recommended not to use several Wrappers whose action and/or observation space is modified at the same time.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>

@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.MultiObjectiveReward
+sinergym.utils.wrappers.MultiObjectiveReward
 ============================================
 
 .. currentmodule:: sinergym.utils.wrappers

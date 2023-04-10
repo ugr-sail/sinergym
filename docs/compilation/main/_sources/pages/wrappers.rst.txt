@@ -18,10 +18,20 @@ You can implement your own wrappers inheriting from *gym.Wrapper* or some of its
 
 - **MultiObsWrapper**: Stack observation received in a history queue (size can be customized).
 
+- **DatetimeWrapper**: Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values. 
+  Observation space is updated automatically.
+
+- **PreviousObservationWrapper**: Wrapper to add observation values from previous timestep to current environment observation.
+  It is possible to select the variables you want to track its previous observation values.
+
+- **DiscreteIncrementalWrapper**: A wrapper for an incremental discrete setpoint action space environment.
+  A discrete environment with only temperature setpoints control must be used with this wrapper.
+
 .. note:: For examples about how to use these wrappers, visit :ref:`Wrappers example`.
 
 .. warning:: The order of wrappers if you are going to use several at the same time is really important.
              The correct order is **Normalization - Logger - Multi-Objectives - MultiObs** and subsets (for example, *Normalization* - *Multiobs* is valid).
+             It is recommended not to use several Wrappers whose action and/or observation space is modified at the same time.
 
 .. warning:: If you add new observation variables to the environment than the default ones, you have 
              to update the **value range dictionary** in `sinergym/sinergym/utils/constants.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__ 
