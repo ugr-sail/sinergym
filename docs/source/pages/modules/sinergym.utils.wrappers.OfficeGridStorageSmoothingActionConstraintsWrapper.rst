@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper
+sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper
 ==========================================================================
 
 .. currentmodule:: sinergym.utils.wrappers
