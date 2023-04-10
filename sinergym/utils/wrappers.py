@@ -424,49 +424,87 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
 
 
 class DiscreteIncrementalEnv(gym.ActionWrapper):
-    """A wrapper for an incremental setpoint discrete action space environment."""
+    """A wrapper for an incremental setpoint discrete action space environment.
+    WARNING: A environment with only temperature setpoints control must be used
+    with this wrapper."""
 
     def __init__(
         self,
         env: gym.Env,
-        setpoints_variables: List[str],
-        max_step: float = 2.0,
-        min_step: float = 0.5,
+        max_values: List[float],
+        min_values: List[float],
+        delta_temp: float = 2.0,
+        step_temp: float = 0.5,
     ):
         """
         Args:
-            env (gym.Env): Environment to wrap.
-            setpoints_variables (List[str]): Variable names of setpoints (these variables must be in environment action variables).
-            max_step (float, optional): Maximum setpoint variation in one timestep. Defaults to 2.0.
-            min_step (float, optional): Minimum setpoint variation in one timestep. Defaults to 0.5.
+            env: The original Sinergym env.
+            action_names: Name of the action variables with the setpoint control you want to do incremental.
+            initial_values: Initial values of the setpoints. One list per zone: [[heating zone 1, cooling zone 1], [heating zone 2, cooling zone 2], ...]
+            heating_range: Acceptable values for the heating setpoint.
+            cooling_range: Acceptable values for the cooling setpoint.
+            delta_temp: Maximum temperature variation in the setpoints in one step.
+            step_temp: Minimum temperature variation in the setpoints in one step.
         """
 
         super().__init__(env)
 
         # Params
         self.env = env
-        variables_index = []
-        for i, variable in enumerate(setpoints_variables):
-            assert variable in self.variables['action'], '{} action variable is not present in environment variables.'
-            variables_index.append(i)
+        self.current_setpoints = []
+        self.max_values = max_values
+        self.min_values = min_values
 
-        # Detectar cuales son las variables que deben de modificarse en el
-        # espacio de acciones y ponerlo entre el mínimo y el máximo
-        self.current_heating_setpoints
-        self.current_cooling_setpoints
+        # calculate initial values for setpoints
+        for external_schedule in self.env.simulator._config.building.ExternalInterface_Schedule:
+            self.current_setpoints.append(external_schedule.initial_value)
+
+        # Check environment is valid
+        assert len(
+            self.current_setpoints) == len(
+            self.env.variables['action']), 'IncrementalWrapper: Number of variables is different from environment'
+        assert len(
+            self.current_setpoints) == len(
+            self.max_values), 'IncrementalWrapper: max_values specified is incorrect for the number of action variables'
+        assert len(
+            self.current_setpoints) == len(
+            self.min_values), 'IncrementalWrapper: min_values specified is incorrect for the number of action variables'
+        assert self.env.flag_discrete, 'IncrementalWrapper: Environment wrapped must be discrete'
+
+        # Define all posible setpoint variations
+        values = np.arange(step_temp, delta_temp + step_temp / 10, step_temp)
+        values = [v for v in [*values, *-values]]
+
+        # Reset default environment action_mapping
+        self.action_mapping = {}
+        do_nothing = [0.0 for _ in range(
+            len(self.env.variables['action']))]  # do nothing
+        self.action_mapping[0] = do_nothing
+        n = 1
+
+        # Generate all posible actions
+        for k in range(len(self.env.variables['action'])):
+            for v in values:
+                x = do_nothing.copy()
+                x[k] = v
+                self.action_mapping[n] = x
+                n += 1
+
+        self.action_space = gym.spaces.Discrete(n)
+        print(f'New incremental action mapping: {n}')
+        print(self.action_mapping)
 
     def action(self, action):
         """Takes the discrete action and transforms it to setpoints tuple."""
-        # Pero de esta manera esto no aprende, coger la acción de step y
-        # sumarla al setpoint actual antes de aplicarlo en el simulador
-        a = self.dict_actions[action]
-
-        obs = self.env.obs_dict
-        if obs is not None:
-            self.current_setpoints = [obs[var] for var in self.variable_names]
+        action_ = self.action_mapping[action]
+        # Update current setpoints values with incremental action
+        self.current_setpoints = [
+            sum(i) for i in zip(
+                self.current_setpoints,
+                action_)]
 
         setpoints = np.clip(
-            np.array(self.current_setpoints) + np.array(a),
+            np.array(self.current_setpoints),
             self.min_values,
             self.max_values
         )
