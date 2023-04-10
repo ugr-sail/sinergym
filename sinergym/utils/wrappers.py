@@ -3,6 +3,8 @@
 import random
 from collections import deque
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
+from datetime import datetime
+from copy import deepcopy
 
 import gymnasium as gym
 import numpy as np
@@ -329,7 +331,191 @@ class LoggerWrapper(gym.Wrapper):
         """
         self.logger.deactivate_flag()
 
-# ---------------------- Specific environment wrappers ---------------------#
+
+class DatetimeWrapper(gym.ObservationWrapper):
+    """Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
+       Observation space is updated automatically."""
+
+    def __init__(self,
+                 env: Any):
+        super(DatetimeWrapper, self).__init__(env)
+        # Update new shape
+        new_shape = env.observation_space.shape[0] + 2
+        self.observation_space = gym.spaces.Box(
+            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+        # Update observation variables
+        day_index = self.variables['observation'].index('day')
+        self.variables['observation'][day_index] = 'is_weekend'
+        hour_index = self.variables['observation'].index('hour')
+        self.variables['observation'][hour_index] = 'hour_cos'
+        self.variables['observation'].insert(hour_index + 1, 'hour_sin')
+        month_index = self.variables['observation'].index('month')
+        self.variables['observation'][month_index] = 'month_cos'
+        self.variables['observation'].insert(month_index + 1, 'month_sin')
+
+    def observation(self, obs: np.ndarray) -> np.ndarray:
+        """Applies calculation in is_weekend flag, and sen and cos in hour and month
+
+        Args:
+            obs (np.ndarray): Original observation.
+
+        Returns:
+            np.ndarray: Transformed observation.
+        """
+        obs_dict = dict(zip(self.original_obs, obs))
+        # New obs dict with same values than obs_dict but with new fields with
+        # None
+        new_obs = dict.fromkeys(self.variables['observation'])
+        for key, value in obs_dict.items():
+            if key in new_obs.keys():
+                new_obs[key] = value
+        dt = datetime(
+            int(obs_dict['year']),
+            int(obs_dict['month']),
+            int(obs_dict['day']),
+            int(obs_dict['hour']))
+        # Update obs
+        new_obs['is_weekend'] = 1.0 if dt.isoweekday() in [6, 7] else 0.0
+        new_obs['hour_cos'] = np.cos(obs_dict['hour'])
+        new_obs['hour_sin'] = np.sin(obs_dict['hour'])
+        new_obs['month_cos'] = np.cos(obs_dict['month'])
+        new_obs['month_sin'] = np.sin(obs_dict['month'])
+
+        return np.array(list(new_obs.values()))
+
+
+class PreviousObservationWrapper(gym.ObservationWrapper):
+    """Wrapper to add observation values from previous timestep to
+    current environment observation"""
+
+    def __init__(self,
+                 env: Any,
+                 previous_variables: List[str]):
+        super(PreviousObservationWrapper, self).__init__(env)
+        # Check and apply previous variables to observation space and variables
+        # names
+        self.original_variable_index = []
+        for obs_var in previous_variables:
+            assert obs_var in self.variables['observation'], '{} variable is not defined in observation space, revise the name.'.format(
+                obs_var)
+            self.original_variable_index.append(
+                self.variables['observation'].index(obs_var))
+            self.variables['observation'].append(obs_var + '_previous')
+        # Update new shape
+        new_shape = env.observation_space.shape[0] + len(previous_variables)
+        self.observation_space = gym.spaces.Box(
+            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+
+        # previous observation initialization
+        self.previous_observation = np.zeros(
+            shape=len(previous_variables), dtype=np.float32)
+
+    def observation(self, obs: np.ndarray) -> np.ndarray:
+        """Add previous observation to the current one
+
+        Args:
+            obs (np.ndarray): Original observation.
+
+        Returns:
+            np.ndarray: observation with
+        """
+
+        new_obs = np.concatenate((obs, self.previous_observation))
+        # Aquí tengo que seleccionar las variables que se correponden con lo
+        # que son
+        self.previous_observation = obs[self.original_variable_index]
+
+        return new_obs
+
+
+class DiscreteIncrementalWrapper(gym.ActionWrapper):
+    """A wrapper for an incremental setpoint discrete action space environment.
+    WARNING: A environment with only temperature setpoints control must be used
+    with this wrapper."""
+
+    def __init__(
+        self,
+        env: gym.Env,
+        max_values: List[float],
+        min_values: List[float],
+        delta_temp: float = 2.0,
+        step_temp: float = 0.5,
+    ):
+        """
+        Args:
+            env: The original Sinergym env.
+            action_names: Name of the action variables with the setpoint control you want to do incremental.
+            initial_values: Initial values of the setpoints. One list per zone: [[heating zone 1, cooling zone 1], [heating zone 2, cooling zone 2], ...]
+            heating_range: Acceptable values for the heating setpoint.
+            cooling_range: Acceptable values for the cooling setpoint.
+            delta_temp: Maximum temperature variation in the setpoints in one step.
+            step_temp: Minimum temperature variation in the setpoints in one step.
+        """
+
+        super().__init__(env)
+
+        # Params
+        self.env = env
+        self.current_setpoints = []
+        self.max_values = max_values
+        self.min_values = min_values
+
+        # calculate initial values for setpoints
+        for external_schedule in self.env.simulator._config.building.ExternalInterface_Schedule:
+            self.current_setpoints.append(external_schedule.initial_value)
+
+        # Check environment is valid
+        assert len(
+            self.current_setpoints) == len(
+            self.env.variables['action']), 'IncrementalWrapper: Number of variables is different from environment'
+        assert len(
+            self.current_setpoints) == len(
+            self.max_values), 'IncrementalWrapper: max_values specified is incorrect for the number of action variables'
+        assert len(
+            self.current_setpoints) == len(
+            self.min_values), 'IncrementalWrapper: min_values specified is incorrect for the number of action variables'
+        assert self.env.flag_discrete, 'IncrementalWrapper: Environment wrapped must be discrete'
+
+        # Define all posible setpoint variations
+        values = np.arange(step_temp, delta_temp + step_temp / 10, step_temp)
+        values = [v for v in [*values, *-values]]
+
+        # Reset default environment action_mapping
+        self.action_mapping = {}
+        do_nothing = [0.0 for _ in range(
+            len(self.env.variables['action']))]  # do nothing
+        self.action_mapping[0] = do_nothing
+        n = 1
+
+        # Generate all posible actions
+        for k in range(len(self.env.variables['action'])):
+            for v in values:
+                x = do_nothing.copy()
+                x[k] = v
+                self.action_mapping[n] = x
+                n += 1
+
+        self.action_space = gym.spaces.Discrete(n)
+        print(f'New incremental action mapping: {n}')
+        print(self.action_mapping)
+
+    def action(self, action):
+        """Takes the discrete action and transforms it to setpoints tuple."""
+        action_ = self.action_mapping[action]
+        # Update current setpoints values with incremental action
+        self.current_setpoints = [
+            sum(i) for i in zip(
+                self.current_setpoints,
+                action_)]
+
+        setpoints = np.clip(
+            np.array(self.current_setpoints),
+            self.min_values,
+            self.max_values
+        )
+        return list(setpoints)
+
+    # ---------------------- Specific environment wrappers ---------------------#
 
 
 class OfficeGridStorageSmoothingActionConstraintsWrapper(

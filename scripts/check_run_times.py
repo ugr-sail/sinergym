@@ -8,8 +8,8 @@ import gymnasium as gym
 
 import sinergym
 
-envs_id = [env_spec.id for env_spec in gym.envs.registry.all()
-           if env_spec.id.startswith('Eplus')]
+envs_id = [env_spec for env_spec in gym.envs.registration.registry.keys()
+           if env_spec.startswith('Eplus')]
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--environments', '-envs', default=envs_id, nargs='+')

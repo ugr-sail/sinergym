@@ -19,11 +19,14 @@
       :toctree:                                          
       :template: custom-class-template.rst               
    
+      DatetimeWrapper
+      DiscreteIncrementalWrapper
       LoggerWrapper
       MultiObjectiveReward
       MultiObsWrapper
       NormalizeObservation
       OfficeGridStorageSmoothingActionConstraintsWrapper
+      PreviousObservationWrapper
    
    
 
