@@ -394,9 +394,12 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         super(PreviousObservationWrapper, self).__init__(env)
         # Check and apply previous variables to observation space and variables
         # names
+        self.original_variable_index = []
         for obs_var in previous_variables:
             assert obs_var in self.variables['observation'], '{} variable is not defined in observation space, revise the name.'.format(
                 obs_var)
+            self.original_variable_index.append(
+                self.variables['observation'].index(obs_var))
             self.variables['observation'].append(obs_var + '_previous')
         # Update new shape
         new_shape = env.observation_space.shape[0] + len(previous_variables)
@@ -418,7 +421,9 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         """
 
         new_obs = np.concatenate((obs, self.previous_observation))
-        self.previous_observation = obs
+        # Aquí tengo que seleccionar las variables que se correponden con lo
+        # que son
+        self.previous_observation = obs[self.original_variable_index]
 
         return new_obs
 
