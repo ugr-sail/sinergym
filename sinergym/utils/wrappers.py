@@ -428,7 +428,7 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         return new_obs
 
 
-class DiscreteIncrementalEnv(gym.ActionWrapper):
+class DiscreteIncrementalWrapper(gym.ActionWrapper):
     """A wrapper for an incremental setpoint discrete action space environment.
     WARNING: A environment with only temperature setpoints control must be used
     with this wrapper."""

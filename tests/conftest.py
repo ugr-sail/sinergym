@@ -352,7 +352,7 @@ def env_wrapper_previousobs(env_demo_continuous):
 
 @pytest.fixture(scope='function')
 def env_wrapper_incremental(env_demo):
-    return DiscreteIncrementalEnv(
+    return DiscreteIncrementalWrapper(
         env=env_demo,
         max_values=[22.0, 34.0],
         min_values=[10.0, 22.0],
@@ -369,15 +369,6 @@ def env_all_wrappers(env_demo):
         reward_terms=[
             'reward_energy',
             'reward_comfort'])
-    env = DatetimeWrapper(env)
-    env = PreviousObservationWrapper(env, previous_variables=[
-        'Zone Thermostat Heating Setpoint Temperature(SPACE1-1)',
-        'Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)',
-        'Zone Air Temperature(SPACE1-1)'])
-    env = DiscreteIncrementalEnv(
-        env, max_values=[
-            22.0, 34.0], min_values=[
-            10.0, 22.0], delta_temp=2, step_temp=0.5)
     env = LoggerWrapper(env=env, flag=True)
     env = MultiObsWrapper(env=env, n=5, flatten=True)
     return env
