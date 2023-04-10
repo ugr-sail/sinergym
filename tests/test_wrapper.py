@@ -51,6 +51,88 @@ def test_multiobjective_wrapper(env_wrapper_multiobjective):
     assert len(reward) == len(env_wrapper_multiobjective.reward_terms)
 
 
+def test_datetime_wrapper(env_wrapper_datetime):
+
+    observation_variables = env_wrapper_datetime.variables['observation']
+    # Check observation varibles have been updated
+    assert 'day' not in observation_variables
+    assert 'month' not in observation_variables
+    assert 'hour' not in observation_variables
+    assert 'is_weekend' in observation_variables
+    assert 'month_sin' in observation_variables
+    assert 'month_cos' in observation_variables
+    assert 'hour_sin' in observation_variables
+    assert 'hour_cos' in observation_variables
+    # Check new returned observation values are valid
+    env_wrapper_datetime.reset()
+    action = env_wrapper_datetime.action_space.sample()
+    obs, _, _, _, _ = env_wrapper_datetime.step(action)
+    obs_dict = dict(zip(observation_variables, obs))
+    assert obs_dict['is_weekend'] is not None and obs_dict['month_sin'] is not None and obs_dict[
+        'month_cos'] is not None and obs_dict['hour_sin'] is not None and obs_dict['hour_cos'] is not None
+
+
+def test_previous_observation_wrapper(env_wrapper_previousobs):
+
+    # Check that the original variable names with previous name added is
+    # present
+    previous_variable_names = [
+        var for var in env_wrapper_previousobs.variables['observation'] if '_previous' in var]
+
+    # Check previous observation stored has the correct len and initial values
+    assert len(env_wrapper_previousobs.previous_observation) == 3
+    assert len(previous_variable_names) == len(
+        env_wrapper_previousobs.previous_observation)
+    assert (env_wrapper_previousobs.previous_observation == 0.0).all()
+    # Check reset and np.zeros is added in obs
+    obs1, _ = env_wrapper_previousobs.reset()
+    assert np.array_equal(env_wrapper_previousobs.previous_observation,
+                          obs1[env_wrapper_previousobs.original_variable_index])
+    # Check step and reset variables names is added in obs
+    action = env_wrapper_previousobs.action_space.sample()
+    obs2, _, _, _, _ = env_wrapper_previousobs.step(action)
+    assert np.array_equal(env_wrapper_previousobs.previous_observation,
+                          obs2[env_wrapper_previousobs.original_variable_index])
+    assert np.array_equal(
+        obs1[env_wrapper_previousobs.original_variable_index], obs2[-3:])
+
+
+def test_incremental_wrapper(env_wrapper_incremental):
+
+    # Check initial setpoints values is initialized
+    assert len(env_wrapper_incremental.current_setpoints) > 0
+    # Check if action selected is applied correctly
+    env_wrapper_incremental.reset()
+    action = env_wrapper_incremental.action_space.sample()
+    _, _, _, _, info = env_wrapper_incremental.step(action)
+    assert env_wrapper_incremental.current_setpoints == info['action']
+    # Check environment clip actions
+    # max values
+    env_wrapper_incremental.current_setpoints = [
+        env_wrapper_incremental.max_values[0] + 1,
+        env_wrapper_incremental.max_values[1] + 1]
+    _, _, _, _, info = env_wrapper_incremental.step(2)
+    assert info['action'] == [
+        env_wrapper_incremental.max_values[0],
+        env_wrapper_incremental.max_values[1]]
+    _, _, _, _, info = env_wrapper_incremental.step(11)
+    assert info['action'] == [
+        env_wrapper_incremental.max_values[0],
+        env_wrapper_incremental.max_values[1]]
+    # min values
+    env_wrapper_incremental.current_setpoints = [
+        env_wrapper_incremental.min_values[0] - 1,
+        env_wrapper_incremental.min_values[1] - 1]
+    _, _, _, _, info = env_wrapper_incremental.step(5)
+    assert info['action'] == [
+        env_wrapper_incremental.min_values[0],
+        env_wrapper_incremental.min_values[1]]
+    _, _, _, _, info = env_wrapper_incremental.step(16)
+    assert info['action'] == [
+        env_wrapper_incremental.min_values[0],
+        env_wrapper_incremental.min_values[1]]
+
+
 def test_multiobs_wrapper(env_wrapper_multiobs, env_demo_continuous):
 
     # Check attributes don't exist in original env
