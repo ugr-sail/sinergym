@@ -21,6 +21,7 @@
       ~MultiObjectiveReward.render
       ~MultiObjectiveReward.reset
       ~MultiObjectiveReward.step
+      ~MultiObjectiveReward.wrapper_spec
    
    
 

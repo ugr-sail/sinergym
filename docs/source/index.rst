@@ -78,9 +78,7 @@ If you use Sinergym in your work, please cite our `paper <https://dl.acm.org/doi
    pages/notebooks/personalize_loggerwrapper.nblink
    pages/notebooks/rule_controller_example.nblink
    pages/notebooks/drl.nblink
-   pages/notebooks/MLflow_example.nblink
-   pages/notebooks/TensorBoard_example.nblink
-
+   
 .. toctree::
    :hidden:
    :caption: API
