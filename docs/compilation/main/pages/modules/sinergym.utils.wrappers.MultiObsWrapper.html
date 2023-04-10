@@ -73,8 +73,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">20. Rule Controller example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">21. DRL usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/MLflow_example.html">22. MLFlow example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/TensorBoard_example.html">23. TensorBoard example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -174,6 +172,9 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.MultiObsWrapper.step" title="sinergym.utils.wrappers.MultiObsWrapper.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
 <td><p>Performs the action in the new environment.</p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
+<td><p>Generates a <cite>WrapperSpec</cite> for the wrappers.</p></td>
+</tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
@@ -198,7 +199,7 @@
 <td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code> unless overwritten then the wrapper <code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code> is used.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></p></td>
-<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">spec</span></code> attribute.</p></td>
+<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">spec</span></code> attribute with the <cite>WrapperSpec</cite> if the wrapper inherits from <cite>EzPickle</cite>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></p></td>
 <td><p>Returns the base environment of the wrapper.</p></td>
@@ -294,6 +295,7 @@
             <dd><a href="../../../v2.2.0/pages/modules/sinergym.utils.wrappers.MultiObsWrapper.html">v2.2.0</a></dd>
             <dd><a href="../../../v2.2.3/pages/modules/sinergym.utils.wrappers.MultiObsWrapper.html">v2.2.3</a></dd>
             <dd><a href="../../../v2.2.5/pages/modules/sinergym.utils.wrappers.MultiObsWrapper.html">v2.2.5</a></dd>
+            <dd><a href="../../../v2.2.9/pages/modules/sinergym.utils.wrappers.MultiObsWrapper.html">v2.2.9</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

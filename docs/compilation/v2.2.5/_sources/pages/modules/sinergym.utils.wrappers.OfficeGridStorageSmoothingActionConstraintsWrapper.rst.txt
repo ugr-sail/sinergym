@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper
+﻿sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper
 ==========================================================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -22,6 +22,7 @@ sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.render
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.reset
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.step
+      ~OfficeGridStorageSmoothingActionConstraintsWrapper.wrapper_spec
    
    
 

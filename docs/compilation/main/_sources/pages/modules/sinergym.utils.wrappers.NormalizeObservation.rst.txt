@@ -23,6 +23,7 @@
       ~NormalizeObservation.render
       ~NormalizeObservation.reset
       ~NormalizeObservation.step
+      ~NormalizeObservation.wrapper_spec
    
    
 

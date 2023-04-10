@@ -48,8 +48,8 @@ about how information is extracted which is why its implementation.
           simulation interactions during training at the same time using 
           ``sinergym_logger`` attribute in constructor. 
 
-``LoggerCallback`` inherits from Stable Baselines 3 ``BaseCallback`` and 
-uses `Weights & Biases <https://wandb.ai/site>`__(*wandb*) in the background in order to host 
+The ``LoggerCallback`` inherits from Stable Baselines 3 ``BaseCallback`` and 
+uses `Weights&Biases <https://wandb.ai/site>`__ (*wandb*) in the background in order to host 
 all information extracted. With *wandb*, it's possible to track and visualize all DRL 
 training in real time, register hyperparameters and details of each execution, save artifacts 
 such as models and sinergym output, and compare between different executions. This is an example: 

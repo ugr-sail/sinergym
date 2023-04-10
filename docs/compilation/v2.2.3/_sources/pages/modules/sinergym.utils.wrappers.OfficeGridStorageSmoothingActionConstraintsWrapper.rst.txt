@@ -22,6 +22,7 @@
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.render
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.reset
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.step
+      ~OfficeGridStorageSmoothingActionConstraintsWrapper.wrapper_spec
    
    
 
