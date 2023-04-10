@@ -83,8 +83,6 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">20. Rule Controller example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">21. DRL usage example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/MLflow_example.html">22. MLFlow example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/TensorBoard_example.html">23. TensorBoard example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -182,8 +180,8 @@ about how information is extracted which is why its implementation.</p>
 simulation interactions during training at the same time using
 <code class="docutils literal notranslate"><span class="pre">sinergym_logger</span></code> attribute in constructor.</p>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">LoggerCallback</span></code> inherits from Stable Baselines 3 <code class="docutils literal notranslate"><span class="pre">BaseCallback</span></code> and
-uses <a href="#id1"><span class="problematic" id="id2">`</span></a>Weights &amp; Biases &lt;<a class="reference external" href="https://wandb.ai/site">https://wandb.ai/site</a>&gt;`__(<em>wandb</em>) in the background in order to host
+<p>The <code class="docutils literal notranslate"><span class="pre">LoggerCallback</span></code> inherits from Stable Baselines 3 <code class="docutils literal notranslate"><span class="pre">BaseCallback</span></code> and
+uses <a class="reference external" href="https://wandb.ai/site">Weights&amp;Biases</a> (<em>wandb</em>) in the background in order to host
 all information extracted. With <em>wandb</em>, it’s possible to track and visualize all DRL
 training in real time, register hyperparameters and details of each execution, save artifacts
 such as models and sinergym output, and compare between different executions. This is an example:</p>
@@ -426,6 +424,7 @@ algorithms is being planned for the future!</em></p>
             <dd><a href="../../v2.2.0/pages/deep-reinforcement-learning.html">v2.2.0</a></dd>
             <dd><a href="../../v2.2.3/pages/deep-reinforcement-learning.html">v2.2.3</a></dd>
             <dd><a href="../../v2.2.5/pages/deep-reinforcement-learning.html">v2.2.5</a></dd>
+            <dd><a href="../../v2.2.9/pages/deep-reinforcement-learning.html">v2.2.9</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

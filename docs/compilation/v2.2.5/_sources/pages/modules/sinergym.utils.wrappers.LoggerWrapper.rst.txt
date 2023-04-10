@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.LoggerWrapper
+﻿sinergym.utils.wrappers.LoggerWrapper
 =====================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -23,6 +23,7 @@ sinergym.utils.wrappers.LoggerWrapper
       ~LoggerWrapper.render
       ~LoggerWrapper.reset
       ~LoggerWrapper.step
+      ~LoggerWrapper.wrapper_spec
    
    
 

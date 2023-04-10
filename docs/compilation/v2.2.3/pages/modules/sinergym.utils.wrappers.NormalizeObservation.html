@@ -178,6 +178,9 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code>(action)</p></td>
 <td><p>Modifies the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> after calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> using <code class="xref py py-meth docutils literal notranslate"><span class="pre">self.observation()</span></code> on the returned observations.</p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
+<td><p>Generates a <cite>WrapperSpec</cite> for the wrappers.</p></td>
+</tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
@@ -202,7 +205,7 @@
 <td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code> unless overwritten then the wrapper <code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code> is used.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></p></td>
-<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">spec</span></code> attribute.</p></td>
+<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">spec</span></code> attribute with the <cite>WrapperSpec</cite> if the wrapper inherits from <cite>EzPickle</cite>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></p></td>
 <td><p>Returns the base environment of the wrapper.</p></td>
@@ -298,6 +301,7 @@
             <dd><a href="../../../v2.2.0/pages/modules/sinergym.utils.wrappers.NormalizeObservation.html">v2.2.0</a></dd>
             <dd><a href="sinergym.utils.wrappers.NormalizeObservation.html">v2.2.3</a></dd>
             <dd><a href="../../../v2.2.5/pages/modules/sinergym.utils.wrappers.NormalizeObservation.html">v2.2.5</a></dd>
+            <dd><a href="../../../v2.2.9/pages/modules/sinergym.utils.wrappers.NormalizeObservation.html">v2.2.9</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

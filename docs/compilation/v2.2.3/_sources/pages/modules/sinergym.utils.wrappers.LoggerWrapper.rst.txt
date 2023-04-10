@@ -23,6 +23,7 @@
       ~LoggerWrapper.render
       ~LoggerWrapper.reset
       ~LoggerWrapper.step
+      ~LoggerWrapper.wrapper_spec
    
    
 
