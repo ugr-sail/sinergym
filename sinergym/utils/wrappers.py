@@ -49,16 +49,33 @@ class NormalizeObservation(gym.ObservationWrapper):
 
     def __init__(self,
                  env: Any,
-                 ranges: Dict[str, Sequence[Any]]):
+                 ranges: Dict[str, Sequence[Any]],
+                 variables: Optional[List[str]] = None):
         """Observations normalized to range [0, 1].
 
         Args:
             env (Any): Original Sinergym environment.
             ranges (Dict[str, Sequence[Any]]): Observation variables ranges to apply normalization (rely on environment).
+            variables (Optional[List[str]]): List of variables you want to normalize. If it is None, all environment variables are included.
         """
         super(NormalizeObservation, self).__init__(env)
         self.unwrapped_observation = None
         self.ranges = ranges
+        ranges_keys = list(self.ranges.keys())
+
+        # Normalized variables must be in ranges dict, if not the variable will
+        # not be normalized.
+        if variables is None:
+            self.normalized_variables = [
+                var for var in self.env.variables['observation'] if var in ranges_keys]
+        else:
+            self.normalized_variables = [
+                var for var in variables if var in ranges_keys]
+
+        for variable in self.normalized_variables:
+            # Check variables exist
+            assert variable in self.env.variables['observation'], 'NormalizeObservation: {} does not exist in environment.'.format(
+                variable)
 
     def observation(self, obs: np.ndarray) -> np.ndarray:
         """Applies normalization to observation.
@@ -72,26 +89,27 @@ class NormalizeObservation(gym.ObservationWrapper):
         # Save original obs in class attribute
         self.unwrapped_observation = obs.copy()
 
-        # NOTE: If you want to record day, month and hour, you should add that
-        # variables as keys
-        for i, variable in enumerate(self.env.variables['observation']):
+        for variable in self.normalized_variables:
+            # Calculate variable index for obs
+            variable_index = self.env.variables['observation'].index(variable)
             # normalization (handle DivisionbyZero Error)
             if (self.ranges[variable][1] -
                     self.ranges[variable][0] == 0):
-                obs[i] = max(
+                obs[variable_index] = max(
                     self.ranges[variable][0], min(
-                        obs[i], self.ranges[variable][1]))
+                        obs[variable_index], self.ranges[variable][1]))
             else:
-                obs[i] = (obs[i] - self.ranges[variable][0]) / \
-                    (self.ranges[variable][1] - self.ranges[variable][0])
+                obs[variable_index] = (
+                    obs[variable_index] - self.ranges[variable][0]) / (
+                    self.ranges[variable][1] - self.ranges[variable][0])
 
             # If value is out
-            if np.isnan(obs[i]):
-                obs[i] = 0
-            elif obs[i] > 1:
-                obs[i] = 1
-            elif obs[i] < 0:
-                obs[i] = 0
+            if np.isnan(obs[variable_index]):
+                obs[variable_index] = 0
+            elif obs[variable_index] > 1:
+                obs[variable_index] = 1
+            elif obs[variable_index] < 0:
+                obs[variable_index] = 0
         # Return obs values in the SAME ORDER than obs argument.
         return np.array(obs)
 
