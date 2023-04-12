@@ -357,6 +357,7 @@ class DatetimeWrapper(gym.ObservationWrapper):
     def __init__(self,
                  env: Any):
         super(DatetimeWrapper, self).__init__(env)
+        self.unwrapped_variables = deepcopy(self.variables['observation'])
         # Update new shape
         new_shape = env.observation_space.shape[0] + 2
         self.observation_space = gym.spaces.Box(
@@ -380,7 +381,8 @@ class DatetimeWrapper(gym.ObservationWrapper):
         Returns:
             np.ndarray: Transformed observation.
         """
-        obs_dict = dict(zip(self.original_obs, obs))
+        # Get obs_dict with observation variables from unwrapped env
+        obs_dict = dict(zip(self.unwrapped_variables, obs))
         # New obs dict with same values than obs_dict but with new fields with
         # None
         new_obs = dict.fromkeys(self.variables['observation'])
