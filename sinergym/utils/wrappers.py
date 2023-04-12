@@ -62,19 +62,21 @@ class NormalizeObservation(gym.ObservationWrapper):
         self.unwrapped_observation = None
         self.ranges = ranges
         ranges_keys = list(self.ranges.keys())
+        self.normalization_variables = deepcopy(
+            self.env.variables['observation'])
 
         # Normalized variables must be in ranges dict, if not the variable will
         # not be normalized.
         if variables is None:
             self.normalized_variables = [
-                var for var in self.env.variables['observation'] if var in ranges_keys]
+                var for var in self.normalization_variables if var in ranges_keys]
         else:
             self.normalized_variables = [
                 var for var in variables if var in ranges_keys]
 
         for variable in self.normalized_variables:
             # Check variables exist
-            assert variable in self.env.variables['observation'], 'NormalizeObservation: {} does not exist in environment.'.format(
+            assert variable in self.normalization_variables, 'NormalizeObservation: {} does not exist in environment.'.format(
                 variable)
 
     def observation(self, obs: np.ndarray) -> np.ndarray:
@@ -91,7 +93,7 @@ class NormalizeObservation(gym.ObservationWrapper):
 
         for variable in self.normalized_variables:
             # Calculate variable index for obs
-            variable_index = self.env.variables['observation'].index(variable)
+            variable_index = self.normalization_variables.index(variable)
             # normalization (handle DivisionbyZero Error)
             if (self.ranges[variable][1] -
                     self.ranges[variable][0] == 0):
@@ -357,7 +359,9 @@ class DatetimeWrapper(gym.ObservationWrapper):
     def __init__(self,
                  env: Any):
         super(DatetimeWrapper, self).__init__(env)
-        self.unwrapped_variables = deepcopy(self.variables['observation'])
+        # Save observation variables before wrapper
+        self.original_datetime_observation_variables = deepcopy(
+            self.variables['observation'])
         # Update new shape
         new_shape = env.observation_space.shape[0] + 2
         self.observation_space = gym.spaces.Box(
@@ -371,6 +375,9 @@ class DatetimeWrapper(gym.ObservationWrapper):
         month_index = self.variables['observation'].index('month')
         self.variables['observation'][month_index] = 'month_cos'
         self.variables['observation'].insert(month_index + 1, 'month_sin')
+        # Save observation variables after wrapper
+        self.datetime_observation_variables = deepcopy(
+            self.variables['observation'])
 
     def observation(self, obs: np.ndarray) -> np.ndarray:
         """Applies calculation in is_weekend flag, and sen and cos in hour and month
@@ -382,10 +389,10 @@ class DatetimeWrapper(gym.ObservationWrapper):
             np.ndarray: Transformed observation.
         """
         # Get obs_dict with observation variables from unwrapped env
-        obs_dict = dict(zip(self.unwrapped_variables, obs))
+        obs_dict = dict(zip(self.original_datetime_observation_variables, obs))
         # New obs dict with same values than obs_dict but with new fields with
         # None
-        new_obs = dict.fromkeys(self.variables['observation'])
+        new_obs = dict.fromkeys(self.datetime_observation_variables)
         for key, value in obs_dict.items():
             if key in new_obs.keys():
                 new_obs[key] = value
@@ -415,6 +422,8 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         # Check and apply previous variables to observation space and variables
         # names
         self.previous_variables = previous_variables
+        self.original_previous_observation_variables = deepcopy(
+            self.variables['observation'])
         for obs_var in previous_variables:
             assert obs_var in self.variables['observation'], '{} variable is not defined in observation space, revise the name.'.format(
                 obs_var)
@@ -423,6 +432,9 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         new_shape = env.observation_space.shape[0] + len(previous_variables)
         self.observation_space = gym.spaces.Box(
             low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+
+        self.previous_observation_variables = deepcopy(
+            self.variables['observation'])
 
         # previous observation initialization
         self.previous_observation = np.zeros(
@@ -442,7 +454,7 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         # Update previous observation to current observation
         self.previous_observation = []
         for variable in self.previous_variables:
-            index = self.variables['observation'].index(variable)
+            index = self.previous_observation_variables.index(variable)
             self.previous_observation.append(obs[index])
 
         return new_obs
