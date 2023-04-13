@@ -539,13 +539,13 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
             sum(i) for i in zip(
                 self.current_setpoints,
                 action_)]
-
-        setpoints = np.clip(
+        # clip setpoints returned
+        self.current_setpoints = np.clip(
             np.array(self.current_setpoints),
             self.min_values,
             self.max_values
         )
-        return list(setpoints)
+        return list(self.current_setpoints)
 
     # ---------------------- Specific environment wrappers ---------------------#
 
