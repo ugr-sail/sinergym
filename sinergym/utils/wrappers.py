@@ -206,7 +206,7 @@ class LoggerWrapper(gym.Wrapper):
             progress_header: Header for progress.csv in whole simulation. Default is None (default format).
             flag (bool, optional): State of logger (activate or deactivate). Defaults to True.
         """
-        gym.Wrapper.__init__(self, env)
+        super(LoggerWrapper, self).__init__(env)
         # Headers for csv logger
         monitor_header_list = monitor_header if monitor_header is not None else ['timestep'] + env.variables['observation'] + env.variables['action'] + [
             'time (seconds)', 'reward', 'power_penalty', 'comfort_penalty', 'abs_comfort', 'terminated']
