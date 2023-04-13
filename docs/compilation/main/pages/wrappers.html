@@ -106,23 +106,28 @@
   <section id="wrappers">
 <h1><span class="section-number">8. </span>Wrappers<a class="headerlink" href="#wrappers" title="Permalink to this heading"></a></h1>
 <p><em>Sinergym</em> has several <strong>wrappers</strong> in order to add some functionality in the environment
-that it doesn’t have by default. Currently, we have developed a <strong>normalization wrapper</strong>,
-<strong>multi-observation wrapper</strong>, <strong>multi-objective wrapper</strong> and <strong>Logger wrapper</strong>. The code can be found in
+that it doesn’t have by default. The code can be found in
 <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/wrappers.py">sinergym/sinergym/utils/wrappers.py</a>.
 You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some of its variants.</p>
 <ul class="simple">
-<li><p><strong>NormalizeObservation</strong>: It is used to transform observation received from simulator in values between 0 and 1.</p></li>
-<li><p><strong>LoggerWrapper</strong>: Wrapper for logging all interactions between agent and environment. Logger class can be selected
-in the constructor if other type of logging is required. For more information about <em>Sinergym</em> Logger visit <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>.</p></li>
 <li><p><strong>MultiObjectiveReward</strong>: Environment step will return a vector reward (selected elements in wrapper constructor,
 one for each objective) instead of a traditional scalar value. See <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/301">#301</a>.</p></li>
-<li><p><strong>MultiObsWrapper</strong>: Stack observation received in a history queue (size can be customized).</p></li>
-<li><p><strong>DatetimeWrapper</strong>: Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
-Observation space is updated automatically.</p></li>
 <li><p><strong>PreviousObservationWrapper</strong>: Wrapper to add observation values from previous timestep to current environment observation.
 It is possible to select the variables you want to track its previous observation values.</p></li>
-<li><p><strong>DiscreteIncrementalWrapper</strong>: A wrapper for an incremental discrete setpoint action space environment.
+<li><p><strong>DatetimeWrapper</strong>: Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
+Observation space is updated automatically.</p></li>
+<li><p><strong>DiscreteIncrementalWrapper</strong>: A wrapper for an incremental discrete setpoint action space environment. This wrapper
+will update environment action mapping and action space depending on the step and delta specified. The action will be sum
+with current setpoint values instead of overwrite the latest action.
 A discrete environment with only temperature setpoints control must be used with this wrapper.</p></li>
+<li><p><strong>NormalizeObservation</strong>: It is used to transform observation received from simulator in values between 0 and 1.
+It is possible to define a list of variables you want to normalize, if you don’t define this list, all environment
+variables will be included. In order to normalize values, it is necessary a dictionary in order to store max and min values.
+Then, if a environment variable is not included in the dictionary specified in wrapper constructor, then the normalization
+for that variable will be skipped.</p></li>
+<li><p><strong>LoggerWrapper</strong>: Wrapper for logging all interactions between agent and environment. Logger class can be selected
+in the constructor if other type of logging is required. For more information about <em>Sinergym</em> Logger visit <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>.</p></li>
+<li><p><strong>MultiObsWrapper</strong>: Stack observation received in a history queue (size can be customized).</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -130,15 +135,14 @@ A discrete environment with only temperature setpoints control must be used with
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The order of wrappers if you are going to use several at the same time is really important.
-The correct order is <strong>Normalization - Logger - Multi-Objectives - MultiObs</strong> and subsets (for example, <em>Normalization</em> - <em>Multiobs</em> is valid).
-It is recommended not to use several Wrappers whose action and/or observation space is modified at the same time.</p>
+<p>The <strong>order of wrappers</strong> if you are going to use several at the same time is really important.
+The correct order is the same than the list shown above or subsets of that order.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>If you add new observation variables to the environment than the default ones, you have
 to update the <strong>value range dictionary</strong> in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py">sinergym/sinergym/utils/constants.py</a>
-so that normalization can be applied correctly. Otherwise, you will encounter bug <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/249">#249</a>.</p>
+so that normalization can be applied correctly. Otherwise, the variable normalization will be skipped.</p>
 </div>
 </section>
 
@@ -197,6 +201,7 @@ so that normalization can be applied correctly. Otherwise, you will encounter bu
             <dd><a href="../../v2.2.3/pages/wrappers.html">v2.2.3</a></dd>
             <dd><a href="../../v2.2.5/pages/wrappers.html">v2.2.5</a></dd>
             <dd><a href="../../v2.2.9/pages/wrappers.html">v2.2.9</a></dd>
+            <dd><a href="../../v2.3.0/pages/wrappers.html">v2.3.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
