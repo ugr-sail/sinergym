@@ -56,7 +56,12 @@ RANGES_5ZONE = {'Facility Total HVAC Electricity Demand Rate(Whole Building)': [
                 'reward': [-3.550779087370951, -0.0086829184636919],
                 'time (seconds)': [0, 31536000],
                 'timestep': [0, 35040],
-                'total_power_no_units': [-3.259557259261767, -0.0173658369273838]}
+                'total_power_no_units': [-3.259557259261767, -0.0173658369273838],
+                # Added previous variables:
+                'Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)_previous': [21.0, 30.0],
+                'Zone Thermostat Heating Setpoint Temperature(SPACE1-1)_previous': [15.0,
+                                                                                    22.49999046325684],
+                'Zone Air Temperature(SPACE1-1)_previous': [15.22565264653451, 30.00826655379267]}
 
 
 RANGES_DATACENTER = {

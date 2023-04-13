@@ -49,16 +49,35 @@ class NormalizeObservation(gym.ObservationWrapper):
 
     def __init__(self,
                  env: Any,
-                 ranges: Dict[str, Sequence[Any]]):
+                 ranges: Dict[str, Sequence[Any]],
+                 variables: Optional[List[str]] = None):
         """Observations normalized to range [0, 1].
 
         Args:
             env (Any): Original Sinergym environment.
             ranges (Dict[str, Sequence[Any]]): Observation variables ranges to apply normalization (rely on environment).
+            variables (Optional[List[str]]): List of variables you want to normalize. If it is None, all environment variables are included.
         """
         super(NormalizeObservation, self).__init__(env)
         self.unwrapped_observation = None
         self.ranges = ranges
+        ranges_keys = list(self.ranges.keys())
+        self.normalization_variables = deepcopy(
+            self.env.variables['observation'])
+
+        # Normalized variables must be in ranges dict, if not the variable will
+        # not be normalized.
+        if variables is None:
+            self.normalized_variables = [
+                var for var in self.normalization_variables if var in ranges_keys]
+        else:
+            self.normalized_variables = [
+                var for var in variables if var in ranges_keys]
+
+        for variable in self.normalized_variables:
+            # Check variables exist
+            assert variable in self.normalization_variables, 'NormalizeObservation: {} does not exist in environment.'.format(
+                variable)
 
     def observation(self, obs: np.ndarray) -> np.ndarray:
         """Applies normalization to observation.
@@ -72,26 +91,27 @@ class NormalizeObservation(gym.ObservationWrapper):
         # Save original obs in class attribute
         self.unwrapped_observation = obs.copy()
 
-        # NOTE: If you want to record day, month and hour, you should add that
-        # variables as keys
-        for i, variable in enumerate(self.env.variables['observation']):
+        for variable in self.normalized_variables:
+            # Calculate variable index for obs
+            variable_index = self.normalization_variables.index(variable)
             # normalization (handle DivisionbyZero Error)
             if (self.ranges[variable][1] -
                     self.ranges[variable][0] == 0):
-                obs[i] = max(
+                obs[variable_index] = max(
                     self.ranges[variable][0], min(
-                        obs[i], self.ranges[variable][1]))
+                        obs[variable_index], self.ranges[variable][1]))
             else:
-                obs[i] = (obs[i] - self.ranges[variable][0]) / \
-                    (self.ranges[variable][1] - self.ranges[variable][0])
+                obs[variable_index] = (
+                    obs[variable_index] - self.ranges[variable][0]) / (
+                    self.ranges[variable][1] - self.ranges[variable][0])
 
             # If value is out
-            if np.isnan(obs[i]):
-                obs[i] = 0
-            elif obs[i] > 1:
-                obs[i] = 1
-            elif obs[i] < 0:
-                obs[i] = 0
+            if np.isnan(obs[variable_index]):
+                obs[variable_index] = 0
+            elif obs[variable_index] > 1:
+                obs[variable_index] = 1
+            elif obs[variable_index] < 0:
+                obs[variable_index] = 0
         # Return obs values in the SAME ORDER than obs argument.
         return np.array(obs)
 
@@ -186,7 +206,7 @@ class LoggerWrapper(gym.Wrapper):
             progress_header: Header for progress.csv in whole simulation. Default is None (default format).
             flag (bool, optional): State of logger (activate or deactivate). Defaults to True.
         """
-        gym.Wrapper.__init__(self, env)
+        super(LoggerWrapper, self).__init__(env)
         # Headers for csv logger
         monitor_header_list = monitor_header if monitor_header is not None else ['timestep'] + env.variables['observation'] + env.variables['action'] + [
             'time (seconds)', 'reward', 'power_penalty', 'comfort_penalty', 'abs_comfort', 'terminated']
@@ -339,6 +359,9 @@ class DatetimeWrapper(gym.ObservationWrapper):
     def __init__(self,
                  env: Any):
         super(DatetimeWrapper, self).__init__(env)
+        # Save observation variables before wrapper
+        self.original_datetime_observation_variables = deepcopy(
+            self.variables['observation'])
         # Update new shape
         new_shape = env.observation_space.shape[0] + 2
         self.observation_space = gym.spaces.Box(
@@ -352,6 +375,9 @@ class DatetimeWrapper(gym.ObservationWrapper):
         month_index = self.variables['observation'].index('month')
         self.variables['observation'][month_index] = 'month_cos'
         self.variables['observation'].insert(month_index + 1, 'month_sin')
+        # Save observation variables after wrapper
+        self.datetime_observation_variables = deepcopy(
+            self.variables['observation'])
 
     def observation(self, obs: np.ndarray) -> np.ndarray:
         """Applies calculation in is_weekend flag, and sen and cos in hour and month
@@ -362,10 +388,11 @@ class DatetimeWrapper(gym.ObservationWrapper):
         Returns:
             np.ndarray: Transformed observation.
         """
-        obs_dict = dict(zip(self.original_obs, obs))
+        # Get obs_dict with observation variables from unwrapped env
+        obs_dict = dict(zip(self.original_datetime_observation_variables, obs))
         # New obs dict with same values than obs_dict but with new fields with
         # None
-        new_obs = dict.fromkeys(self.variables['observation'])
+        new_obs = dict.fromkeys(self.datetime_observation_variables)
         for key, value in obs_dict.items():
             if key in new_obs.keys():
                 new_obs[key] = value
@@ -394,17 +421,20 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         super(PreviousObservationWrapper, self).__init__(env)
         # Check and apply previous variables to observation space and variables
         # names
-        self.original_variable_index = []
+        self.previous_variables = previous_variables
+        self.original_previous_observation_variables = deepcopy(
+            self.variables['observation'])
         for obs_var in previous_variables:
             assert obs_var in self.variables['observation'], '{} variable is not defined in observation space, revise the name.'.format(
                 obs_var)
-            self.original_variable_index.append(
-                self.variables['observation'].index(obs_var))
             self.variables['observation'].append(obs_var + '_previous')
         # Update new shape
         new_shape = env.observation_space.shape[0] + len(previous_variables)
         self.observation_space = gym.spaces.Box(
             low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+
+        self.previous_observation_variables = deepcopy(
+            self.variables['observation'])
 
         # previous observation initialization
         self.previous_observation = np.zeros(
@@ -419,11 +449,13 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         Returns:
             np.ndarray: observation with
         """
-
+        # Concatenate current obs with previous observation variables
         new_obs = np.concatenate((obs, self.previous_observation))
-        # Aquí tengo que seleccionar las variables que se correponden con lo
-        # que son
-        self.previous_observation = obs[self.original_variable_index]
+        # Update previous observation to current observation
+        self.previous_observation = []
+        for variable in self.previous_variables:
+            index = self.previous_observation_variables.index(variable)
+            self.previous_observation.append(obs[index])
 
         return new_obs
 
@@ -507,13 +539,13 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
             sum(i) for i in zip(
                 self.current_setpoints,
                 action_)]
-
-        setpoints = np.clip(
+        # clip setpoints returned
+        self.current_setpoints = np.clip(
             np.array(self.current_setpoints),
             self.min_values,
             self.max_values
         )
-        return list(setpoints)
+        return list(self.current_setpoints)
 
     # ---------------------- Specific environment wrappers ---------------------#
 
