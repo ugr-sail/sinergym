@@ -363,12 +363,31 @@ def env_wrapper_incremental(env_demo):
 
 @pytest.fixture(scope='function')
 def env_all_wrappers(env_demo):
-    env = NormalizeObservation(env=env_demo, ranges=RANGES_5ZONE)
+    env = gym.make('Eplus-5Zone-hot-discrete-v1')
     env = MultiObjectiveReward(
-        env=env,
+        env=env_demo,
         reward_terms=[
             'reward_energy',
             'reward_comfort'])
+    env = PreviousObservationWrapper(env, previous_variables=[
+        'Zone Thermostat Heating Setpoint Temperature(SPACE1-1)',
+        'Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)',
+        'Zone Air Temperature(SPACE1-1)'])
+    env = DatetimeWrapper(env)
+    env = DiscreteIncrementalWrapper(
+        env, max_values=[
+            22.5, 30.0], min_values=[
+            15.0, 22.5], delta_temp=2, step_temp=0.5)
+    env = NormalizeObservation(
+        env=env,
+        ranges=RANGES_5ZONE,
+        variables=[
+            'Zone Thermostat Heating Setpoint Temperature(SPACE1-1)',
+            'Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)',
+            'Zone Air Temperature(SPACE1-1)',
+            'Zone Thermostat Heating Setpoint Temperature(SPACE1-1)_previous',
+            'Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)_previous',
+            'Zone Air Temperature(SPACE1-1)_previous'])
     env = LoggerWrapper(env=env, flag=True)
     env = MultiObsWrapper(env=env, n=5, flatten=True)
     return env
@@ -378,17 +397,17 @@ def env_all_wrappers(env_demo):
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def random_controller(env_demo):
     return RandomController(env=env_demo)
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def zone5_controller(env_demo):
     return RBC5Zone(env=env_demo)
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def datacenter_controller(env_datacenter):
     return RBCDatacenter(env=env_datacenter)
 
@@ -397,13 +416,13 @@ def datacenter_controller(env_datacenter):
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def epm(idf_path, eplus_path):
     idd = Idd(os.path.join(eplus_path, 'Energy+.idd'))
     return Epm.from_idf(idf_path, idd_or_version=idd)
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def weather_data(weather_path):
     return WeatherData.from_epw(weather_path)
 
@@ -412,12 +431,12 @@ def weather_data(weather_path):
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def base_reward(env_demo):
     return BaseReward()
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def custom_reward(env_demo):
     class CustomReward(BaseReward):
         def __init__(self):
@@ -429,7 +448,7 @@ def custom_reward(env_demo):
     return CustomReward()
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def linear_reward():
     return LinearReward(
         temperature_variable='Zone Air Temperature(SPACE1-1)',
@@ -442,7 +461,7 @@ def linear_reward():
             26.0))
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def exponential_reward():
     return ExpReward(
         temperature_variable=[
@@ -457,7 +476,7 @@ def exponential_reward():
             26.0))
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def hourly_linear_reward():
     return HourlyLinearReward(
         temperature_variable='Zone Air Temperature(SPACE1-1)',
@@ -470,7 +489,7 @@ def hourly_linear_reward():
             26.0))
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def env_custom_reward(
         idf_file,
         weather_file,
@@ -491,7 +510,7 @@ def env_custom_reward(
     )
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def env_linear_reward(idf_file, weather_file):
 
     return EplusEnv(
@@ -517,7 +536,7 @@ def env_linear_reward(idf_file, weather_file):
         action_definition=DEFAULT_5ZONE_ACTION_DEFINITION)
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def env_linear_reward_args(idf_file, weather_file):
 
     return EplusEnv(
