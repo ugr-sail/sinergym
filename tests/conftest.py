@@ -363,7 +363,6 @@ def env_wrapper_incremental(env_demo):
 
 @pytest.fixture(scope='function')
 def env_all_wrappers(env_demo):
-    env = gym.make('Eplus-5Zone-hot-discrete-v1')
     env = MultiObjectiveReward(
         env=env_demo,
         reward_terms=[
