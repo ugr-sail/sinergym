@@ -1,2 +1,0 @@
-../sinergym/envs/eplus_env.py:docstring of sinergym.envs.eplus_env.EplusEnv.action_space:1:<autosummary>:1: (initialise)   that if not set will initialise with a random seed.
-../sinergym/envs/eplus_env.py:docstring of sinergym.envs.eplus_env.EplusEnv.step:1: (Wheather)  Observation for next timestep, reward obtained, Whether the episode has ended or not, Wheather episode has been truncated or not, and a dictionary with extra information
