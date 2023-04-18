@@ -74,7 +74,7 @@ jobs:
           pip install --upgrade requests
       - name: Compile documentation
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: cd docs && sphinx-multiversion source compilation
+        run: cd docs && rm -R compilation/ && sphinx-multiversion source compilation
       - name: Check sphinx spelling
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: cd docs && sphinx-build -M spelling source compilation

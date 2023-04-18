@@ -25,6 +25,52 @@ The next image shows that socket connection:
 
 |
 
+***********************************
+Additional observation information
+***********************************
+
+In addition to the observations returned in the step and reset methods as you can see in the images above, 
+both return a Python dictionary with additional information:
+
+- **Reset info:** This dictionary has the next keys:
+
+.. code-block:: python
+  info = {
+            'eplus_working_dir': eplus_working_dir,
+            'episode_num': self._epi_num,
+            'socket_host': addr[0],
+            'socket_port': addr[1],
+            'init_year': time_info[0],
+            'init_month': time_info[1],
+            'init_day': time_info[2],
+            'init_hour': time_info[3],
+            'timestep': 0,
+            'time_elapsed': 0
+        }
+
+Thus, we can get information about where episode output will be allocated, the episode num of the simulation, 
+socket information, when episode start and timestep and time elapsed (which is 0).
+
+- **step info:** This dictionary has the next keys:
+
+.. code-block:: python
+  info = {
+            'timestep': int(
+                curSimTim / self._eplus_run_stepsize),
+            'time_elapsed': int(curSimTim),
+            'year': time_info[0],
+            'month': time_info[1],
+            'day': time_info[2],
+            'hour': time_info[3],
+            'action': action,
+            'reward': reward,
+            # AND REWARD TERMS
+        }
+
+The additional information we can obtain in a step is the timestep number, simulation time elapsed, step datetime,
+action executed in simulator (which can be different to the step action parameter due to the transformations)
+and reward terms. The keys of reward terms depends on the reward class it has been used in the environment.    
+
 **************************
 Environments List
 **************************
