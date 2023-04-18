@@ -15,6 +15,8 @@ backend
 backpropagate
 BaseReward
 BaseSimulator
+bcvtb
+BCVTB
 benchmarking
 boolean
 cancelled
@@ -42,11 +44,15 @@ dataloader
 dataset
 datasets
 Datastore
+Datetime
+datetime
+DatetimeWrapper
 ddy
 Deprecations
 deserialized
 dicts
 dir
+DiscreteIncrementalWrapper
 Dockerfile
 docstring
 doesn
@@ -108,6 +114,7 @@ Khee
 kwargs
 lifecycle
 LinearReward
+Lisboa
 LoggerCallback
 LoggerEvalCallback
 loggerwrapper
@@ -164,6 +171,7 @@ preprocessed
 preprocessing
 pretrain
 pretrained
+PreviousObservationWrapper
 Ptolomy
 py
 Pyro
