@@ -9,7 +9,6 @@ import pytest
 required = {'stable-baselines3'}
 installed = {pkg.key for pkg in pkg_resources.working_set}
 missing = required - installed
-missing = True
 if not missing:
     import stable_baselines3
     from stable_baselines3.common.noise import (NormalActionNoise,
