@@ -35,6 +35,7 @@ both return a Python dictionary with additional information:
 - **Reset info:** This dictionary has the next keys:
 
 .. code-block:: python
+
   info = {
             'eplus_working_dir': eplus_working_dir,
             'episode_num': self._epi_num,
@@ -54,6 +55,7 @@ socket information, when episode start and timestep and time elapsed (which is 0
 - **step info:** This dictionary has the next keys:
 
 .. code-block:: python
+  
   info = {
             'timestep': int(
                 curSimTim / self._eplus_run_stepsize),
