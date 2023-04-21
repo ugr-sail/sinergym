@@ -21,7 +21,7 @@ Let’s see a detailed explanation above.
 Preparing Google Cloud
 ***********************
 
-1. First steps (configuration)
+First steps (configuration)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Firstly, it is necessary that you have a Google Cloud account set up and 
@@ -103,7 +103,7 @@ the future. Please, execute the next in your terminal:
 
     $ gcloud auth application-default login
 
-2. Use our container in Google Cloud Platform
+Use our container in Google Cloud Platform
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Our *Sinergym* container is uploaded in **Container Registry** as a public one 
@@ -140,7 +140,7 @@ our `repository <https://hub.docker.com/repository/docker/sailugr/sinergym>`__
              This derive in a silence error for Google Cloud Build 
              (and you would need to check logs, which incident is not clear).
 
-3. Use your own container
+Use your own container
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Suppose you have this repository forked and you want to upload **your own 
@@ -194,7 +194,7 @@ parameters if they are needed.
           *"$PROJECT_ID"* is set to current value in gcloud configuration 
           (see `substitutions-variables <https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values>`__).
 
-4. Create your VM or MIG
+Create your VM or MIG
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 To create a **VM** that uses this container, here there is an example:
@@ -258,7 +258,7 @@ Then, you can create a group-instances as large as you want:
              we recommend you check your quotes 
              `here <https://console.cloud.google.com/iam-admin/quotas>`__
 
-5. Initiate your VM
+Initiate your VM
 ~~~~~~~~~~~~~~~~~~~~
 
 Your virtual machine is ready! To connect you can use ssh 
@@ -305,7 +305,7 @@ The structure of the JSON to configure the experiment or evaluation is specified
 Containers permission to bucket storage output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As you see in sinergym template explained in :ref:`4. Create your VM or MIG`, 
+As you see in sinergym template explained in :ref:`Create your VM or MIG`, 
 it is specified ``--scope``, ``--service-account`` and ``--container-env``. 
 This aim to *remote_store* option in *DRL_battery.py* works correctly.
 Those parameters provide each container with permissions to write in the bucket 

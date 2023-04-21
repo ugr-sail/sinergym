@@ -63,11 +63,11 @@
 <li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">12. Sinergym with Google Cloud</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#preparing-google-cloud">12.1. Preparing Google Cloud</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#first-steps-configuration">12.1.1. 1. First steps (configuration)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#use-our-container-in-google-cloud-platform">12.1.2. 2. Use our container in Google Cloud Platform</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#use-your-own-container">12.1.3. 3. Use your own container</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#create-your-vm-or-mig">12.1.4. 4. Create your VM or MIG</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#initiate-your-vm">12.1.5. 5. Initiate your VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#first-steps-configuration">12.1.1. First steps (configuration)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-our-container-in-google-cloud-platform">12.1.2. Use our container in Google Cloud Platform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-your-own-container">12.1.3. Use your own container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-your-vm-or-mig">12.1.4. Create your VM or MIG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initiate-your-vm">12.1.5. Initiate your VM</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#executing-experiments-in-remote-containers">12.2. Executing experiments in remote containers</a><ul>
@@ -136,7 +136,7 @@ with this option.</p>
 <section id="preparing-google-cloud">
 <h2><span class="section-number">12.1. </span>Preparing Google Cloud<a class="headerlink" href="#preparing-google-cloud" title="Permalink to this heading"></a></h2>
 <section id="first-steps-configuration">
-<h3><span class="section-number">12.1.1. </span>1. First steps (configuration)<a class="headerlink" href="#first-steps-configuration" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">12.1.1. </span>First steps (configuration)<a class="headerlink" href="#first-steps-configuration" title="Permalink to this heading"></a></h3>
 <p>Firstly, it is necessary that you have a Google Cloud account set up and
 SDK configured (auth, invoicing, project ID, etc). If you don’t have this,
 it is recommended to check <a class="reference external" href="https://cloud.google.com/sdk/docs/install">their documentation</a>.
@@ -203,7 +203,7 @@ the future. Please, execute the next in your terminal:</p>
 </div>
 </section>
 <section id="use-our-container-in-google-cloud-platform">
-<h3><span class="section-number">12.1.2. </span>2. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">12.1.2. </span>Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Permalink to this heading"></a></h3>
 <p>Our <em>Sinergym</em> container is uploaded in <strong>Container Registry</strong> as a public one
 currently. You can use it <strong>locally</strong>:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>eu.gcr.io/sinergym/sinergym:latest
@@ -239,7 +239,7 @@ This derive in a silence error for Google Cloud Build
 </div>
 </section>
 <section id="use-your-own-container">
-<h3><span class="section-number">12.1.3. </span>3. Use your own container<a class="headerlink" href="#use-your-own-container" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">12.1.3. </span>Use your own container<a class="headerlink" href="#use-your-own-container" title="Permalink to this heading"></a></h3>
 <p>Suppose you have this repository forked and you want to upload <strong>your own
 container on Google Cloud</strong> and to use it. You can use <strong>cloudbuild.yaml</strong>
 with our <strong>Dockerfile</strong> for this purpose:</p>
@@ -337,7 +337,7 @@ it’s a predetermined variable by Google Cloud. When build begins
 </div>
 </section>
 <section id="create-your-vm-or-mig">
-<h3><span class="section-number">12.1.4. </span>4. Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">12.1.4. </span>Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Permalink to this heading"></a></h3>
 <p>To create a <strong>VM</strong> that uses this container, here there is an example:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>create-with-container<span class="w"> </span>sinergym<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--container-image<span class="w"> </span>eu.gcr.io/sinergym/sinergym<span class="w"> </span><span class="se">\</span>
@@ -402,7 +402,7 @@ we recommend you check your quotes
 </div>
 </section>
 <section id="initiate-your-vm">
-<h3><span class="section-number">12.1.5. </span>5. Initiate your VM<a class="headerlink" href="#initiate-your-vm" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">12.1.5. </span>Initiate your VM<a class="headerlink" href="#initiate-your-vm" title="Permalink to this heading"></a></h3>
 <p>Your virtual machine is ready! To connect you can use ssh
 (see <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh">gcloud-ssh</a>):</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>&lt;machine-name&gt;
@@ -440,7 +440,7 @@ instead of individual instances.</p>
 </div>
 <section id="containers-permission-to-bucket-storage-output">
 <h3><span class="section-number">12.2.1. </span>Containers permission to bucket storage output<a class="headerlink" href="#containers-permission-to-bucket-storage-output" title="Permalink to this heading"></a></h3>
-<p>As you see in sinergym template explained in <a class="reference internal" href="#create-your-vm-or-mig"><span class="std std-ref">4. Create your VM or MIG</span></a>,
+<p>As you see in sinergym template explained in <a class="reference internal" href="#create-your-vm-or-mig"><span class="std std-ref">Create your VM or MIG</span></a>,
 it is specified <code class="docutils literal notranslate"><span class="pre">--scope</span></code>, <code class="docutils literal notranslate"><span class="pre">--service-account</span></code> and <code class="docutils literal notranslate"><span class="pre">--container-env</span></code>.
 This aim to <em>remote_store</em> option in <em>DRL_battery.py</em> works correctly.
 Those parameters provide each container with permissions to write in the bucket
@@ -536,6 +536,7 @@ If you want to do the same, please, check Google Cloud Alerts documentation
             <dd><a href="../../v2.2.9/pages/gcloudAPI.html">v2.2.9</a></dd>
             <dd><a href="../../v2.3.0/pages/gcloudAPI.html">v2.3.0</a></dd>
             <dd><a href="../../v2.3.1/pages/gcloudAPI.html">v2.3.1</a></dd>
+            <dd><a href="../../v2.3.2/pages/gcloudAPI.html">v2.3.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

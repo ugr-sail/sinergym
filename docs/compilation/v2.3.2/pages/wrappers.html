@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8. Wrappers &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/doc_theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="9. Extra Configuration in Sinergym simulations" href="extra-configuration.html" />
+    <link rel="prev" title="7. Controllers" href="controllers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">2. Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">5. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">6. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">7. Controllers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">8. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">10. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">13. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">14. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">15. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">16. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">17. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">18. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">20. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">21. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8. </span>Wrappers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/wrappers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="wrappers">
+<h1><span class="section-number">8. </span>Wrappers<a class="headerlink" href="#wrappers" title="Permalink to this heading"></a></h1>
+<p><em>Sinergym</em> has several <strong>wrappers</strong> in order to add some functionality in the environment
+that it doesn’t have by default. The code can be found in
+<a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/wrappers.py">sinergym/sinergym/utils/wrappers.py</a>.
+You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some of its variants.</p>
+<ul class="simple">
+<li><p><strong>MultiObjectiveReward</strong>: Environment step will return a vector reward (selected elements in wrapper constructor,
+one for each objective) instead of a traditional scalar value. See <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/301">#301</a>.</p></li>
+<li><p><strong>PreviousObservationWrapper</strong>: Wrapper to add observation values from previous timestep to current environment observation.
+It is possible to select the variables you want to track its previous observation values.</p></li>
+<li><p><strong>DatetimeWrapper</strong>: Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
+Observation space is updated automatically.</p></li>
+<li><p><strong>DiscreteIncrementalWrapper</strong>: A wrapper for an incremental discrete setpoint action space environment. This wrapper
+will update environment action mapping and action space depending on the step and delta specified. The action will be sum
+with current setpoint values instead of overwrite the latest action.
+A discrete environment with only temperature setpoints control must be used with this wrapper.</p></li>
+<li><p><strong>NormalizeObservation</strong>: It is used to transform observation received from simulator in values between 0 and 1.
+It is possible to define a list of variables you want to normalize, if you don’t define this list, all environment
+variables will be included. In order to normalize values, it is necessary a dictionary in order to store max and min values.
+Then, if a environment variable is not included in the dictionary specified in wrapper constructor, then the normalization
+for that variable will be skipped.</p></li>
+<li><p><strong>LoggerWrapper</strong>: Wrapper for logging all interactions between agent and environment. Logger class can be selected
+in the constructor if other type of logging is required. For more information about <em>Sinergym</em> Logger visit <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>.</p></li>
+<li><p><strong>MultiObsWrapper</strong>: Stack observation received in a history queue (size can be customized).</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For examples about how to use these wrappers, visit <a class="reference internal" href="notebooks/wrappers_examples.html#Wrappers-example"><span class="std std-ref">Wrappers example</span></a>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <strong>order of wrappers</strong> if you are going to use several at the same time is really important.
+The correct order is the same than the list shown above or subsets of that order.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you add new observation variables to the environment than the default ones, you have
+to update the <strong>value range dictionary</strong> in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py">sinergym/sinergym/utils/constants.py</a>
+so that normalization can be applied correctly. Otherwise, the variable normalization will be skipped.</p>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="controllers.html" class="btn btn-neutral float-left" title="7. Controllers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="extra-configuration.html" class="btn btn-neutral float-right" title="9. Extra Configuration in Sinergym simulations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v2.3.2
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v1.4.0/pages/wrappers.html">v1.4.0</a></dd>
+            <dd><a href="../../v1.6.0/pages/wrappers.html">v1.6.0</a></dd>
+            <dd><a href="../../v1.7.0/pages/wrappers.html">v1.7.0</a></dd>
+            <dd><a href="../../v1.7.2/pages/wrappers.html">v1.7.2</a></dd>
+            <dd><a href="../../v1.7.5/pages/wrappers.html">v1.7.5</a></dd>
+            <dd><a href="../../v1.7.6/pages/wrappers.html">v1.7.6</a></dd>
+            <dd><a href="../../v1.7.7/pages/wrappers.html">v1.7.7</a></dd>
+            <dd><a href="../../v1.7.8/pages/wrappers.html">v1.7.8</a></dd>
+            <dd><a href="../../v1.8.2/pages/wrappers.html">v1.8.2</a></dd>
+            <dd><a href="../../v1.8.4/pages/wrappers.html">v1.8.4</a></dd>
+            <dd><a href="../../v1.9.1/pages/wrappers.html">v1.9.1</a></dd>
+            <dd><a href="../../v1.9.5/pages/wrappers.html">v1.9.5</a></dd>
+            <dd><a href="../../v2.0.0/pages/wrappers.html">v2.0.0</a></dd>
+            <dd><a href="../../v2.1.0/pages/wrappers.html">v2.1.0</a></dd>
+            <dd><a href="../../v2.1.2/pages/wrappers.html">v2.1.2</a></dd>
+            <dd><a href="../../v2.1.3/pages/wrappers.html">v2.1.3</a></dd>
+            <dd><a href="../../v2.1.5/pages/wrappers.html">v2.1.5</a></dd>
+            <dd><a href="../../v2.2.0/pages/wrappers.html">v2.2.0</a></dd>
+            <dd><a href="../../v2.2.3/pages/wrappers.html">v2.2.3</a></dd>
+            <dd><a href="../../v2.2.5/pages/wrappers.html">v2.2.5</a></dd>
+            <dd><a href="../../v2.2.9/pages/wrappers.html">v2.2.9</a></dd>
+            <dd><a href="../../v2.3.0/pages/wrappers.html">v2.3.0</a></dd>
+            <dd><a href="../../v2.3.1/pages/wrappers.html">v2.3.1</a></dd>
+            <dd><a href="wrappers.html">v2.3.2</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../main/pages/wrappers.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

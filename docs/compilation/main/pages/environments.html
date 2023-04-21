@@ -147,11 +147,39 @@ both return a Python dictionary with additional information:</p>
 <ul class="simple">
 <li><p><strong>Reset info:</strong> This dictionary has the next keys:</p></li>
 </ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="s1">&#39;eplus_working_dir&#39;</span><span class="p">:</span> <span class="n">eplus_working_dir</span><span class="p">,</span>
+          <span class="s1">&#39;episode_num&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epi_num</span><span class="p">,</span>
+          <span class="s1">&#39;socket_host&#39;</span><span class="p">:</span> <span class="n">addr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+          <span class="s1">&#39;socket_port&#39;</span><span class="p">:</span> <span class="n">addr</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+          <span class="s1">&#39;init_year&#39;</span><span class="p">:</span> <span class="n">time_info</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+          <span class="s1">&#39;init_month&#39;</span><span class="p">:</span> <span class="n">time_info</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+          <span class="s1">&#39;init_day&#39;</span><span class="p">:</span> <span class="n">time_info</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+          <span class="s1">&#39;init_hour&#39;</span><span class="p">:</span> <span class="n">time_info</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+          <span class="s1">&#39;timestep&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+          <span class="s1">&#39;time_elapsed&#39;</span><span class="p">:</span> <span class="mi">0</span>
+      <span class="p">}</span>
+</pre></div>
+</div>
 <p>Thus, we can get information about where episode output will be allocated, the episode num of the simulation,
 socket information, when episode start and timestep and time elapsed (which is 0).</p>
 <ul class="simple">
 <li><p><strong>step info:</strong> This dictionary has the next keys:</p></li>
 </ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="s1">&#39;timestep&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span>
+              <span class="n">curSimTim</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eplus_run_stepsize</span><span class="p">),</span>
+          <span class="s1">&#39;time_elapsed&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">curSimTim</span><span class="p">),</span>
+          <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="n">time_info</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+          <span class="s1">&#39;month&#39;</span><span class="p">:</span> <span class="n">time_info</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+          <span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="n">time_info</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+          <span class="s1">&#39;hour&#39;</span><span class="p">:</span> <span class="n">time_info</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+          <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="n">action</span><span class="p">,</span>
+          <span class="s1">&#39;reward&#39;</span><span class="p">:</span> <span class="n">reward</span><span class="p">,</span>
+          <span class="c1"># AND REWARD TERMS</span>
+      <span class="p">}</span>
+</pre></div>
+</div>
 <p>The additional information we can obtain in a step is the timestep number, simulation time elapsed, step datetime,
 action executed in simulator (which can be different to the step action parameter due to the transformations)
 and reward terms. The keys of reward terms depends on the reward class it has been used in the environment.</p>
@@ -1076,6 +1104,7 @@ action/observation space, etc. We have examples about how to do it (<a class="re
             <dd><a href="../../v2.2.9/pages/environments.html">v2.2.9</a></dd>
             <dd><a href="../../v2.3.0/pages/environments.html">v2.3.0</a></dd>
             <dd><a href="../../v2.3.1/pages/environments.html">v2.3.1</a></dd>
+            <dd><a href="../../v2.3.2/pages/environments.html">v2.3.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
