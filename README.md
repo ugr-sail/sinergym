@@ -180,9 +180,11 @@ The following are some of the projects benefiting from the advantages of Sinergy
 
 :pencil: If you want to appear in this list, do not hesitate to send us a PR and include the following badge in your repository:
 
-<a href="https://ugr-sail.github.io/sinergym/compilation/main/index.html">
-    <img src="https://img.shields.io/badge/Powered%20by-Sinergym%20%E2%86%92-gray.svg?colorA=00BABF&colorB=4BF2F7&style=for-the-badge"/>
-</a>
+<p align="center">
+  <a href="https://ugr-sail.github.io/sinergym/compilation/main/index.html">
+      <img src="https://img.shields.io/badge/Powered%20by-Sinergym%20%E2%86%92-gray.svg?colorA=00BABF&colorB=4BF2F7&style=for-the-badge"/>
+  </a>
+</p>
 
 ## Citing Sinergym
 
