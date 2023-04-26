@@ -176,7 +176,7 @@ This is the current list of projects which are benefiting from the advantages of
 
 - [Demosthen/ActiveRL](https://github.com/Demosthen/ActiveRL)
 - [VectorInstitute/HV-Ai-C](https://github.com/VectorInstitute/HV-Ai-C)
-- [rdnfn/beobench] (https://github.com/rdnfn/beobench)
+- [rdnfn/beobench](https://github.com/rdnfn/beobench)
 
 :pencil: If you want to appear in this list, do not hesitate to send us a PR
 
