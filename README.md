@@ -178,9 +178,9 @@ The following are some of the projects benefiting from the advantages of Sinergy
 - [VectorInstitute/HV-Ai-C](https://github.com/VectorInstitute/HV-Ai-C)
 - [rdnfn/beobench](https://github.com/rdnfn/beobench)
 
-:pencil: If you want to appear in this list, do not hesitate to send us a PR and use the next badge:
+:pencil: If you want to appear in this list, do not hesitate to send us a PR and include the following badge in your repo:
 
-<a href="https://ugr-sail.github.io/sinergym/compilation/main/index.html/">
+<a href="https://ugr-sail.github.io/sinergym/compilation/main/index.html">
     <img src="https://img.shields.io/badge/Powered%20by-Sinergym%20%E2%86%92-gray.svg?colorA=00BABF&colorB=4BF2F7&style=for-the-badge"/>
 </a>
 
