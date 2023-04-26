@@ -72,13 +72,12 @@ The main functionalities of *Sinergym* are the following:
 -  **Google Cloud Integration**. Whether you have a Google Cloud account and you want to
    use your infrastructure with *Sinergym*, we tell you some details about how doing it.
 
--  **Mlflow tracking server**. `Mlflow <https://mlflow.org/>`__ is an open source platform for the machine
-   learning lifecycle. This can be used with Google Cloud remote server (if you have Google Cloud account) 
-   or using local store. This will help you to manage and store your runs and artifacts generated in an orderly
-   manner.
-
--  **Data Visualization**. Using *Sinergym* logger or Tensorboard server to visualize training and evaluation information
-   in real-time.
+-  **Weights & Biases tracking and visualization**. One of Sinergym's objectives is to automate
+   and facilitate the training, reproducibility and comparison of agents in simulation-based 
+   building control problems, managing and monitoring model lifecycle from training to deployment. `WandB <https://wandb.ai/site>`__
+   is an open-source platform for the machine learning lifecycle helping us with this issue. 
+   It lets us register experiments hyperparameters, visualize data recorded in real-time, 
+   and store artifacts with experiment outputs and best obtained models. 
 
 -  **Notebooks examples**. *Sinergym* develops code in notebook format with the purpose of offering use cases to 
    the users in order to help them become familiar with the tool. They are constantly updated, along with the updates 
