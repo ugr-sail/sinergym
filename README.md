@@ -172,7 +172,7 @@ For more information about this functionality, please, visit our documentation [
 
 ## Projects using Sinergym
 
-This is the current list of projects which are benefiting from the advantages of Sinergym:
+The following are some of the projects benefiting from the advantages of Sinergym:
 
 - [Demosthen/ActiveRL](https://github.com/Demosthen/ActiveRL)
 - [VectorInstitute/HV-Ai-C](https://github.com/VectorInstitute/HV-Ai-C)
