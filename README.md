@@ -170,6 +170,16 @@ Notice that a folder will be created in the working directory after creating the
 
 For more information about this functionality, please, visit our documentation [here](https://ugr-sail.github.io/sinergym/compilation/main/pages/gcloudAPI.html#sinergym-with-google-cloud).
 
+## Projects using Sinergym
+
+This is the current list of projects which are benefiting from the advantages of Sinergym:
+
+- [Demosthen/ActiveRL](https://github.com/Demosthen/ActiveRL)
+- [VectorInstitute/HV-Ai-C](https://github.com/VectorInstitute/HV-Ai-C)
+- [rdnfn/beobench] (https://github.com/rdnfn/beobench)
+
+:pencil: If you want to appear in this list, do not hesitate to send us a PR
+
 ## Citing Sinergym
 
 If you use *Sinergym* in your work, please cite our [paper](https://dl.acm.org/doi/abs/10.1145/3486611.3488729):
