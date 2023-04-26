@@ -108,8 +108,8 @@ The main functionalities of *Sinergym* are the following :
 -  **Weights & Biases tracking and visualization**. One of Sinergym's objectives is to automate
    and facilitate the training, reproducibility and comparison of agents in simulation-based 
    building control problems, managing and monitoring model lifecycle from training to deployment. [WandB](https://wandb.ai/site) 
-   is an open source platform for the machine learning lifecycle which help us in this issue. 
-   It will let us to register experiments hyperparameters, visualize data recorded in real-time, 
+   is an open-source platform for the machine learning lifecycle helping us with this issue. 
+   It lets us register experiments hyperparameters, visualize data recorded in real-time, 
    and store artifacts with experiment outputs and best obtained models. 
 
 -  **Google Cloud Integration**. Whether you have a Google Cloud account and you want to
@@ -124,7 +124,7 @@ The main functionalities of *Sinergym* are the following :
 
 -  Many more!
 
-_This is a work in progress project. Stay tuned for upcoming releases._
+_This is a project in active development. Stay tuned for upcoming releases._
 
 <div align="center">
   <img src="images/operation_diagram.png"><br><br>
