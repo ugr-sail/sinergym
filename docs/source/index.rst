@@ -12,6 +12,21 @@ You can check `issues <https://github.com/ugr-sail/sinergym/issues>`__ in the re
 
 If you want to contribute, please read `CONTRIBUTING.md <https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md>`__ first.
 
+########################
+Projects using Sinergym
+########################
+
+The following are some of the projects benefiting from the advantages of Sinergym:
+
+- `Demosthen/ActiveRL <https://github.com/Demosthen/ActiveRL>`__
+- `VectorInstitute/HV-Ai-C <https://github.com/VectorInstitute/HV-Ai-C>`__
+- `rdnfn/beobench <https://github.com/rdnfn/beobench>`__
+
+If you want to appear in this list, do not hesitate to send us a PR and include the following badge in your repository:
+
+.. raw:: html
+    :file: ./_templates/sinergym.html
+
 ############
 Examples
 ############
