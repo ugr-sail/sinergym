@@ -184,6 +184,6 @@ Cloud Computing
 
 You can run your experiments in the Cloud too. We are using `Google Cloud <https://cloud.google.com/>`__ 
 in order to make it possible. Our team aim to set up an account in which execute our *Sinergym* container 
-with **remote storage** and **mlflow tracking**.
+with **remote storage** and **WandB tracking**.
 For more detail about installation and getting Google Cloud SDK ready to run your experiments, 
 visit our section :ref:`Preparing Google Cloud`.

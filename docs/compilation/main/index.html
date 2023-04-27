@@ -203,12 +203,12 @@ with deep reinforcement learning algorithms.
 This tool can be used with any other DRL library that supports the <em>Gymnasium</em> interface as well.</p></li>
 <li><p><strong>Google Cloud Integration</strong>. Whether you have a Google Cloud account and you want to
 use your infrastructure with <em>Sinergym</em>, we tell you some details about how doing it.</p></li>
-<li><p><strong>Mlflow tracking server</strong>. <a class="reference external" href="https://mlflow.org/">Mlflow</a> is an open source platform for the machine
-learning lifecycle. This can be used with Google Cloud remote server (if you have Google Cloud account)
-or using local store. This will help you to manage and store your runs and artifacts generated in an orderly
-manner.</p></li>
-<li><p><strong>Data Visualization</strong>. Using <em>Sinergym</em> logger or Tensorboard server to visualize training and evaluation information
-in real-time.</p></li>
+<li><p><strong>Weights &amp; Biases tracking and visualization</strong>. One of Sinergym’s objectives is to automate
+and facilitate the training, reproducibility and comparison of agents in simulation-based
+building control problems, managing and monitoring model lifecycle from training to deployment. <a class="reference external" href="https://wandb.ai/site">WandB</a>
+is an open-source platform for the machine learning lifecycle helping us with this issue.
+It lets us register experiments hyperparameters, visualize data recorded in real-time,
+and store artifacts with experiment outputs and best obtained models.</p></li>
 <li><p><strong>Notebooks examples</strong>. <em>Sinergym</em> develops code in notebook format with the purpose of offering use cases to
 the users in order to help them become familiar with the tool. They are constantly updated, along with the updates
 and improvements of the tool itself.</p></li>
@@ -230,6 +230,21 @@ and improvements of the tool itself.</p></li>
 You can check <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues">issues</a> in the repo.</p>
 <p>If you want to contribute, please read <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> first.</p>
 </section>
+<section id="projects-using-sinergym">
+<h2>Projects using Sinergym<a class="headerlink" href="#projects-using-sinergym" title="Permalink to this heading"></a></h2>
+<p>The following are some of the projects benefiting from the advantages of Sinergym:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/Demosthen/ActiveRL">Demosthen/ActiveRL</a></p></li>
+<li><p><a class="reference external" href="https://github.com/VectorInstitute/HV-Ai-C">VectorInstitute/HV-Ai-C</a></p></li>
+<li><p><a class="reference external" href="https://github.com/rdnfn/beobench">rdnfn/beobench</a></p></li>
+</ul>
+<p>If you want to appear in this list, do not hesitate to send us a PR and include the following badge in your repository:</p>
+<p align="center">
+    <a href="https://github.com/ugr-sail/sinergym">
+        <img
+            src="https://img.shields.io/badge/Powered%20by-Sinergym%20%E2%86%92-gray.svg?colorA=00BABF&colorB=4BF2F7&style=for-the-badge" />
+    </a>
+</p></section>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
 <p>The examples can be run if you have your computer or container properly configured (see <a class="reference internal" href="pages/installation.html#installation"><span class="std std-ref">Installation</span></a> section) from our notebooks hosted in the <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/examples">examples</a> folder of the official Sinergym repository.</p>
