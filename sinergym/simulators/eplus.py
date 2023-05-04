@@ -492,7 +492,7 @@ class EnergyPlus(object):
             time.sleep(1)
 
             # Kill subprocess
-            os.killpg(self._eplus_process.pid, signal.SIGTERM)
+            self._eplus_process.kill()
             self._episode_existed = False
 
     def _run_eplus_outputProcessing(self) -> None:  # pragma: no cover
