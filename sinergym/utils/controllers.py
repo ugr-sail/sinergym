@@ -39,7 +39,7 @@ class RBC5Zone(object):
 
         self.variables = env.variables
 
-        self.setpoints_summer = (26, 29.0)
+        self.setpoints_summer = (23, 26.0)
         self.setpoints_winter = (20.0, 23.5)
 
     def act(self, observation: List[Any]) -> Sequence[Any]:
