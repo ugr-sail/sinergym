@@ -63,5 +63,6 @@
 		"trond-snekvik.simple-rst",
 		"ue.alphabetical-sorter",
 		"yzhang.markdown-all-in-one",
+		"ms-vscode.makefile-tools",
 	]
 }
