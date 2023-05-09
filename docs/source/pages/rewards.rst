@@ -3,13 +3,36 @@ Rewards
 #######
 
 Defining a reward function is one of the most important things in reinforcement learning. 
-Consequently, *Sinergym* allows you to define your own reward functions or use 
-the ones we have already implemented (see section bellow).
+Consequently, *Sinergym* allows you to use pre-implemented reward functions or to define your 
+own reward functions(see section bellow).
 
--  ``LinearReward`` implements a **linear reward** function, where both energy consumption and 
-   thermal discomfort are normalized and add together with different weights. 
-   The discomfort is calculated as the absolute difference between current temperature and 
-   comfort range (so if the temperature is inside that range, the discomfort would be 0).
+Sinergym's predefined reward functions are developed as multi-objective, where both energy 
+consumption and thermal discomfort are normalized and add together with different weights.
+These rewards are **always negative**, meaning that perfect behavior has a cumulative 
+reward of 0. Notice also that there are two temperature comfort ranges defined, 
+one for the summer period and other for the winter period. The weights of each 
+term in the reward allow to adjust the importance of each aspect when evaluating 
+the environments.
+
+.. math:: r_t = - \omega \ \lambda_P \ P_t - (1 - \omega) \ \lambda_T \ (|T_t - T_{up}| + |T_t - T_{low}|)
+
+Where :math:`P_t` represents power consumption; :math:`T_t` is the current indoor temperature; 
+:math:`T_{up}` and :math:`T_{low}` are the imposed comfort range limits 
+(penalty is :math:`0` if :math:`T_t` is within this range); :math:`\omega` is the weight 
+assigned to power consumption (and consequently, :math:`1 - \omega`, the comfort weight), 
+and :math:`\lambda_P` and :math:`\lambda_T` are scaling constants for consumption and comfort, 
+respectively.
+
+.. warning:: :math:`\lambda_P` and :math:`\lambda_T` are constants established in order to set up a 
+             proportional concordance between energy and comfort penalties. If you are
+             using other buildings, be careful with these constants or update them.
+
+This is the main idea of reward system in Sinergym. However, depending some details,
+different kinds of reward function is developed:
+
+-  ``LinearReward`` implements a **linear reward** function where the discomfort is calculated 
+   as the absolute difference between current temperature and comfort range (so if the 
+   temperature is inside that range, the discomfort would be 0).
    This is a typically used function where thermal satisfaction of people inside the 
    controlled building has been taken into account.
 
@@ -23,13 +46,6 @@ the ones we have already implemented (see section bellow).
    hour of the simulation is in working hours (by default, from 9 AM to 7 PM) both 
    comfort and energy consumption weights equally, but outside those hours only energy 
    is considered.
-
-
-These rewards are **always negative**, meaning that perfect behavior has a cumulative 
-reward of 0. Notice also that there are two temperature comfort ranges defined, 
-one for the summer period and other for the winter period. The weights of each 
-term in the reward allow to adjust the importance of each aspect when evaluating 
-the environments.
 
 The reward functions have a series of **parameters** in their constructor whose values 
 may depend on the building we are using or other characteristics. For example, the 
@@ -86,6 +102,7 @@ But you can change this configuration using ``gym.make()`` as follows:
              **temperature_variable(s)**, **energy_variable**, 
              **range_comfort_winter**, **range_comfort_summer**. 
              The rest of them have default values and it is not necessary to specify.
+
 
 ***************
 Custom Rewards
