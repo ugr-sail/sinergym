@@ -18,6 +18,8 @@
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -110,13 +112,35 @@
   <section id="rewards">
 <h1><span class="section-number">6. </span>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading"></a></h1>
 <p>Defining a reward function is one of the most important things in reinforcement learning.
-Consequently, <em>Sinergym</em> allows you to define your own reward functions or use
-the ones we have already implemented (see section bellow).</p>
+Consequently, <em>Sinergym</em> allows you to use pre-implemented reward functions or to define your
+own reward functions(see section bellow).</p>
+<p>Sinergym’s predefined reward functions are developed as multi-objective, where both energy
+consumption and thermal discomfort are normalized and add together with different weights.
+These rewards are <strong>always negative</strong>, meaning that perfect behavior has a cumulative
+reward of 0. Notice also that there are two temperature comfort ranges defined,
+one for the summer period and other for the winter period. The weights of each
+term in the reward allow to adjust the importance of each aspect when evaluating
+the environments.</p>
+<div class="math notranslate nohighlight">
+\[r_t = - \omega \ \lambda_P \ P_t - (1 - \omega) \ \lambda_T \ (|T_t - T_{up}| + |T_t - T_{low}|)\]</div>
+<p>Where <span class="math notranslate nohighlight">\(P_t\)</span> represents power consumption; <span class="math notranslate nohighlight">\(T_t\)</span> is the current indoor temperature;
+<span class="math notranslate nohighlight">\(T_{up}\)</span> and <span class="math notranslate nohighlight">\(T_{low}\)</span> are the imposed comfort range limits
+(penalty is <span class="math notranslate nohighlight">\(0\)</span> if <span class="math notranslate nohighlight">\(T_t\)</span> is within this range); <span class="math notranslate nohighlight">\(\omega\)</span> is the weight
+assigned to power consumption (and consequently, <span class="math notranslate nohighlight">\(1 - \omega\)</span>, the comfort weight),
+and <span class="math notranslate nohighlight">\(\lambda_P\)</span> and <span class="math notranslate nohighlight">\(\lambda_T\)</span> are scaling constants for consumption and comfort,
+respectively.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><span class="math notranslate nohighlight">\(\lambda_P\)</span> and <span class="math notranslate nohighlight">\(\lambda_T\)</span> are constants established in order to set up a
+proportional concordance between energy and comfort penalties. If you are
+using other buildings, be careful with these constants or update them.</p>
+</div>
+<p>This is the main idea of reward system in Sinergym. However, depending some details,
+different kinds of reward function is developed:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">LinearReward</span></code> implements a <strong>linear reward</strong> function, where both energy consumption and
-thermal discomfort are normalized and add together with different weights.
-The discomfort is calculated as the absolute difference between current temperature and
-comfort range (so if the temperature is inside that range, the discomfort would be 0).
+<li><p><code class="docutils literal notranslate"><span class="pre">LinearReward</span></code> implements a <strong>linear reward</strong> function where the discomfort is calculated
+as the absolute difference between current temperature and comfort range (so if the
+temperature is inside that range, the discomfort would be 0).
 This is a typically used function where thermal satisfaction of people inside the
 controlled building has been taken into account.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ExpReward</span></code> is very similar, but in this case the discomfort is calculated
@@ -129,11 +153,6 @@ hour of the simulation is in working hours (by default, from 9 AM to 7 PM) both
 comfort and energy consumption weights equally, but outside those hours only energy
 is considered.</p></li>
 </ul>
-<p>These rewards are <strong>always negative</strong>, meaning that perfect behavior has a cumulative
-reward of 0. Notice also that there are two temperature comfort ranges defined,
-one for the summer period and other for the winter period. The weights of each
-term in the reward allow to adjust the importance of each aspect when evaluating
-the environments.</p>
 <p>The reward functions have a series of <strong>parameters</strong> in their constructor whose values
 may depend on the building we are using or other characteristics. For example, the
 internal temperature or energy variables used to calculate penalties may have a
@@ -269,6 +288,7 @@ The below code implements this.</p>
             <dd><a href="../../v2.3.0/pages/rewards.html">v2.3.0</a></dd>
             <dd><a href="../../v2.3.1/pages/rewards.html">v2.3.1</a></dd>
             <dd><a href="../../v2.3.2/pages/rewards.html">v2.3.2</a></dd>
+            <dd><a href="../../v2.3.3/pages/rewards.html">v2.3.3</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
