@@ -14,6 +14,9 @@ ARG SINERGYM_EXTRAS=[extras]
 # Argument for choosing Python version
 ARG PYTHON_VERSION=3.10
 
+# LC_ALL for python locale error (https://bobbyhadz.com/blog/locale-error-unsupported-locale-setting-in-python)
+ENV LC_ALL=C
+
 ENV ENERGYPLUS_VERSION=$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
 ENV ENERGYPLUS_SHA=$ENERGYPLUS_SHA
@@ -32,6 +35,7 @@ ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_F
 # to make the container smaller & remove a bunch of the auxiliary apps/files
 # that are not needed in the container
 ENV BCVTB_PATH=/usr/local/bcvtb
+
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y ca-certificates curl libx11-6 libexpat1 \
     #Energyplus installation
