@@ -82,8 +82,7 @@ to install the software. Once installed, a folder called
 
 Follow the instructions
 [here](https://simulationresearch.lbl.gov/bcvtb/Download) for
-installing BCVTB software. Another option is to copy the `bcvtb`
-folder from [this repository](https://github.com/zhangzhizza/Gym-Eplus/tree/master/eplus_env/envs)
+installing BCVTB software.
 
 #### 4. Set environment variables
 
