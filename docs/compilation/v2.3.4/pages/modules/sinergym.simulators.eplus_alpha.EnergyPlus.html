@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sinergym.simulators.eplus_alpha.EnergyPlus &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/doc_theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="sinergym.simulators.eplus_alpha" href="sinergym.simulators.eplus_alpha.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">5. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">6. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">7. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">8. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">10. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">13. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">14. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">15. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">16. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">17. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">18. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">20. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">21. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../API-reference.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sinergym.envs.html">sinergym.envs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="sinergym.simulators.html">sinergym.simulators</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="sinergym.simulators.base.html">sinergym.simulators.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.simulators.eplus.html">sinergym.simulators.eplus</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="sinergym.simulators.eplus_alpha.html">sinergym.simulators.eplus_alpha</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.simulators.eplus_alpha.EnergyPlus</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API-reference.html">API reference</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.simulators.html">sinergym.simulators</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.simulators.eplus_alpha.html">sinergym.simulators.eplus_alpha</a></li>
+      <li class="breadcrumb-item active">sinergym.simulators.eplus_alpha.EnergyPlus</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sinergym-simulators-eplus-alpha-energyplus">
+<h1>sinergym.simulators.eplus_alpha.EnergyPlus<a class="headerlink" href="#sinergym-simulators-eplus-alpha-energyplus" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="sinergym.simulators.eplus_alpha.EnergyPlus">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.simulators.eplus_alpha.</span></span><span class="sig-name descname"><span class="pre">EnergyPlus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.simulators.eplus_alpha.EnergyPlus" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="sinergym.simulators.eplus_alpha.EnergyPlus.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idf_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.simulators.eplus_alpha.EnergyPlus.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>EnergyPlus simulator connector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>idf_file</strong> (<em>str</em>) – IDF file with the building model.</p></li>
+<li><p><strong>weather_file</strong> (<em>str</em>) – EPW file with weather data.</p></li>
+<li><p><strong>variables_file</strong> (<em>str</em>) – Configuration file with the variables used in the simulation.</p></li>
+<li><p><strong>env_name</strong> (<em>str</em>) – Name of the environment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – the environment variable BCVTB_PATH has not been defined.</p></li>
+<li><p><strong>KeyError</strong> – the environment variable EPLUS_PATH has not been defined.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.simulators.eplus_alpha.EnergyPlus.__init__" title="sinergym.simulators.eplus_alpha.EnergyPlus.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(idf_file, weather_file, ...)</p></td>
+<td><p>EnergyPlus simulator connector.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.simulators.eplus_alpha.EnergyPlus.end_simulation" title="sinergym.simulators.eplus_alpha.EnergyPlus.end_simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_simulation</span></code></a>()</p></td>
+<td><p>Ends the simulation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.simulators.eplus_alpha.EnergyPlus.receive_observation" title="sinergym.simulators.eplus_alpha.EnergyPlus.receive_observation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">receive_observation</span></code></a>()</p></td>
+<td><p>Receive a new observation from the environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.simulators.eplus_alpha.EnergyPlus.send_action" title="sinergym.simulators.eplus_alpha.EnergyPlus.send_action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_action</span></code></a>()</p></td>
+<td><p>Sends a new action to the simulator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.simulators.eplus_alpha.EnergyPlus.start_simulation" title="sinergym.simulators.eplus_alpha.EnergyPlus.start_simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_simulation</span></code></a>()</p></td>
+<td><p>Starts the simulation.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop_simulation</span></code>()</p></td>
+<td><p>Stop the current simulation.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.simulators.eplus_alpha.EnergyPlus.end_simulation">
+<span class="sig-name descname"><span class="pre">end_simulation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#sinergym.simulators.eplus_alpha.EnergyPlus.end_simulation" title="Permalink to this definition"></a></dt>
+<dd><p>Ends the simulation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.simulators.eplus_alpha.EnergyPlus.receive_observation">
+<span class="sig-name descname"><span class="pre">receive_observation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#sinergym.simulators.eplus_alpha.EnergyPlus.receive_observation" title="Permalink to this definition"></a></dt>
+<dd><p>Receive a new observation from the environment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.simulators.eplus_alpha.EnergyPlus.send_action">
+<span class="sig-name descname"><span class="pre">send_action</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#sinergym.simulators.eplus_alpha.EnergyPlus.send_action" title="Permalink to this definition"></a></dt>
+<dd><p>Sends a new action to the simulator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.simulators.eplus_alpha.EnergyPlus.start_simulation">
+<span class="sig-name descname"><span class="pre">start_simulation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#sinergym.simulators.eplus_alpha.EnergyPlus.start_simulation" title="Permalink to this definition"></a></dt>
+<dd><p>Starts the simulation.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sinergym.simulators.eplus_alpha.html" class="btn btn-neutral float-left" title="sinergym.simulators.eplus_alpha" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v2.3.4
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v1.4.0/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v1.4.0</a></dd>
+            <dd><a href="../../../v1.6.0/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v1.6.0</a></dd>
+            <dd><a href="../../../v1.7.0/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v1.7.0</a></dd>
+            <dd><a href="../../../v1.7.2/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v1.7.2</a></dd>
+            <dd><a href="../../../v1.7.5/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v1.7.5</a></dd>
+            <dd><a href="../../../v1.7.6/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v1.7.6</a></dd>
+            <dd><a href="../../../v1.7.7/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v1.7.7</a></dd>
+            <dd><a href="../../../v1.7.8/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v1.7.8</a></dd>
+            <dd><a href="../../../v1.8.2/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v1.8.2</a></dd>
+            <dd><a href="../../../v1.8.4/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v1.8.4</a></dd>
+            <dd><a href="../../../v1.9.1/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v1.9.1</a></dd>
+            <dd><a href="../../../v1.9.5/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v1.9.5</a></dd>
+            <dd><a href="../../../v2.0.0/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.0.0</a></dd>
+            <dd><a href="../../../v2.1.0/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.1.0</a></dd>
+            <dd><a href="../../../v2.1.2/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.1.2</a></dd>
+            <dd><a href="../../../v2.1.3/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.1.3</a></dd>
+            <dd><a href="../../../v2.1.5/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.1.5</a></dd>
+            <dd><a href="../../../v2.2.0/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.2.0</a></dd>
+            <dd><a href="../../../v2.2.3/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.2.3</a></dd>
+            <dd><a href="../../../v2.2.5/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.2.5</a></dd>
+            <dd><a href="../../../v2.2.9/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.2.9</a></dd>
+            <dd><a href="../../../v2.3.0/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.3.0</a></dd>
+            <dd><a href="../../../v2.3.1/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.3.1</a></dd>
+            <dd><a href="../../../v2.3.2/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.3.2</a></dd>
+            <dd><a href="../../../v2.3.3/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.3.3</a></dd>
+            <dd><a href="sinergym.simulators.eplus_alpha.EnergyPlus.html">v2.3.4</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../../main/pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
