@@ -238,6 +238,27 @@ def prepare_batch_from_records(records: List[Record]) -> List[Dict[str, Any]]:
     return batch
 
 
+def record_to_dict(record: Record) -> Dict[str, Dict[str, Any]]:
+    """Given a individual opyplus Record object, this function will create a Python dict with the
+    Record name as key and the other features as embedding dictionary as value. This is the format
+    required for Energyplus epJSON standard.
+
+    Args:
+        record (Record): Opyplus record object to convert
+
+    Returns:
+        Dict[str, Dict[str, Any]]: Result: {Record name: {record features}}.
+    """
+    result = {}
+    aux_dict = {}
+    for key in get_record_keys(record):
+        if key != 'name':
+            aux_dict[key] = record[key]
+    result[record.name] = aux_dict
+
+    return result
+
+
 def to_idf(building: Epm, file_path: str) -> None:
     """Given a building model (opyplus Epm object), this function export an IDF file with all content specified.
 
