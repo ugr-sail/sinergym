@@ -46,33 +46,33 @@ class Config(object):
 
         self.pkg_data_path = PKG_DATA_PATH
 
-        # Transform IDF file name in path
+        # ----------------------- Transform filenames in paths ----------------------- #
+
+        # JSON
         self._json_path = os.path.join(
             self.pkg_data_path, 'buildings', json_file)
 
-        # Transform EPW file name in path
+        # EPW
         self.weather_files = weather_files
 
         # Select one weather randomly (if there are more than one)
         self._weather_path = os.path.join(
             self.pkg_data_path, 'weather', random.choice(self.weather_files))
-        # RDD file name is deducible using idf name (only change .idf by .rdd)
+
+        # RDD file name is deducible using json name (only change .epJSON by
+        # .rdd)
         self._rdd_path = os.path.join(
             self.pkg_data_path,
             'variables',
             self._json_path.split('/')[-1].split('.epJSON')[0] +
             '.rdd')
+
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
-        self.experiment_path = self.set_experiment_working_dir(env_name)
-        self.episode_path = None
-        self.max_ep_store = max_ep_store
 
-        # Set config and action definition as config attribute
-        self.config = extra_config
-        self.action_definition = action_definition
+        # -------------------------------- File Models ------------------------------- #
 
-        # Variables XML Tree (empty at the beginning)
+        # BCVTB variable as XMLtree
         self.variables = variables
         self.variables_tree = ElementTree.Element('BCVTB-variables')
 
@@ -88,9 +88,6 @@ class Config(object):
             check_length=False)
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
-        # Extract idf zone names
-        self.idf_zone_names = list(
-            map(lambda x: x.lower(), list(self.building['Zone'].keys())))
         # Extract rdd observation variables names
         data = pandas.read_csv(self._rdd_path, skiprows=1)
         rdd_variable_names = list(map(
@@ -105,8 +102,19 @@ class Config(object):
         for i, variable_name in enumerate(rdd_variable_names):
             self.rdd_variables[variable_name] = rdd_variable_types[i]
 
+        # ----------------------------- Other attributes ----------------------------- #
+
+        self.experiment_path = self.set_experiment_working_dir(env_name)
+        self.episode_path = None
+        self.max_ep_store = max_ep_store
+        self.config = extra_config
+        self.action_definition = action_definition
+        # Extract building zones
+        self.json_zone_names = list(self.building['Zone'].keys())
         # Extract schedulers available in building model
         self.schedulers = self.get_schedulers()
+
+        # ------------------------ Checking config definition ------------------------ #
 
         # Check observation variables definition
         self._check_observation_variables()
