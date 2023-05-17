@@ -5,21 +5,21 @@ import xml.etree.cElementTree as ElementTree
 from copy import deepcopy
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple, Union
+import json
 
 import numpy as np
 import pandas
 from opyplus import Epm, Idd, WeatherData
 from opyplus.epm.record import Record
 
-from sinergym.utils.common import (get_delta_seconds, get_record_keys,
-                                   prepare_batch_from_records, to_idf)
+from sinergym.utils.common import (get_delta_seconds, record_to_dict, to_idf)
 from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR
 
 
 class Config(object):
     """Config object to manage extra configuration in Sinergym experiments.
 
-        :param _idf_path: IDF path origin for apply extra configuration.
+        :param _json_path: JSON path origin for apply extra configuration.
         :param weather_files: weather available files for each episode
         :param _weather_path: EPW path origin for apply weather to simulation in current episode.
         :param _ddy_path: DDY path origin for get DesignDays and weather Location
@@ -36,7 +36,7 @@ class Config(object):
 
     def __init__(
             self,
-            idf_file: str,
+            json_file: str,
             weather_files: List[str],
             variables: Dict[str, List[str]],
             env_name: str,
@@ -47,8 +47,8 @@ class Config(object):
         self.pkg_data_path = PKG_DATA_PATH
 
         # Transform IDF file name in path
-        self._idf_path = os.path.join(
-            self.pkg_data_path, 'buildings', idf_file)
+        self._json_path = os.path.join(
+            self.pkg_data_path, 'buildings', json_file)
 
         # Transform EPW file name in path
         self.weather_files = weather_files
@@ -60,7 +60,7 @@ class Config(object):
         self._rdd_path = os.path.join(
             self.pkg_data_path,
             'variables',
-            self._idf_path.split('/')[-1].split('.idf')[0] +
+            self._json_path.split('/')[-1].split('.epJSON')[0] +
             '.rdd')
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
@@ -76,12 +76,12 @@ class Config(object):
         self.variables = variables
         self.variables_tree = ElementTree.Element('BCVTB-variables')
 
-        # Opyplus objects
+        # Building model object (Python dictionaty from epJSON file)
+        with open(self._json_path) as json_f:
+            self.building = json.load(json_f)
+
+        # Weather and DDY Object (opyplus object)
         self._idd = Idd(os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd'))
-        self.building = Epm.from_idf(
-            self._idf_path,
-            idd_or_version=self._idd,
-            check_length=False)
         self.ddy_model = Epm.from_idf(
             self._ddy_path,
             idd_or_version=self._idd,
@@ -89,9 +89,8 @@ class Config(object):
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
         # Extract idf zone names
-        self.idf_zone_names = []
-        for idf_zone in self.building.Zone:
-            self.idf_zone_names.append(idf_zone.name.lower())
+        self.idf_zone_names = list(
+            map(lambda x: x.lower(), list(self.building['Zone'].keys())))
         # Extract rdd observation variables names
         data = pandas.read_csv(self._rdd_path, skiprows=1)
         rdd_variable_names = list(map(
@@ -140,28 +139,21 @@ class Config(object):
             winterday (str): Design day for winter day specifically (DDY has several of them).
         """
 
-        old_location = self.building.site_location[0]
-        old_designdays = self.building.SizingPeriod_DesignDay
-
-        # Adding the new location and designdays based on ddy file
+        # Getting the new location and designdays based on ddy file (Records must be converted to dictionary)
         # LOCATION
-        new_location = prepare_batch_from_records(
-            [self.ddy_model.site_location[0]])
+        new_location = record_to_dict(self.ddy_model.site_location[0])
         # DESIGNDAYS
-        winter_designday = self.ddy_model.SizingPeriod_DesignDay.one(
+        winter_designday_record = self.ddy_model.SizingPeriod_DesignDay.one(
             lambda designday: winterday.lower() in designday.name.lower())
-        summer_designday = self.ddy_model.SizingPeriod_DesignDay.one(
+        summer_designday_record = self.ddy_model.SizingPeriod_DesignDay.one(
             lambda designday: summerday.lower() in designday.name.lower())
-        new_designdays = prepare_batch_from_records(
-            [winter_designday, summer_designday])
-
-        # Deleting the old location and old DesignDays from Epm
-        old_location.delete()
-        old_designdays.delete()
+        new_designdays = {
+            **record_to_dict(winter_designday_record),
+            **record_to_dict(summer_designday_record)}
 
         # Added New Location and DesignDays to Epm
-        self.building.site_location.batch_add(new_location)
-        self.building.SizingPeriod_DesignDay.batch_add(new_designdays)
+        self.building['Site:Location'] = new_location
+        self.building['SizingPeriod:DesignDay'] = new_designdays
 
     def adapt_variables_to_cfg_and_idf(self) -> None:
         """This method adds to XML variable tree all observation and action variables information. In addition, it modifies IDF Output:Variable in order to adapt to new observation variables set.
@@ -298,13 +290,15 @@ class Config(object):
         Returns:
             str: Path of IDF file stored (episode folder).
         """
+
         # If no path specified, then use idf_path to save it.
         if self.episode_path is not None:
-            episode_idf_path = os.path.join(self.episode_path,
-                                            os.path.basename(self._idf_path))
-            # self.building.save(episode_idf_path)
-            to_idf(building=self.building, file_path=episode_idf_path)
-            return episode_idf_path
+            episode_json_path = os.path.join(self.episode_path,
+                                             os.path.basename(self._json_path))
+            with open(episode_json_path, "w") as outfile:
+                json.dump(self.building, outfile, indent=4)
+
+            return episode_json_path
         else:
             raise RuntimeError(
                 '[Simulator Config] Episode path should be set before saving building model.')
