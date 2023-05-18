@@ -218,10 +218,12 @@ class Config(object):
         """
 
         # If no ExternalInterface object found
-        if len(self.building.ExternalInterface) == 0:
+        if 'ExternalInterface' not in self.building:
             # Create PtolemyServer interface in building
-            self.building.ExternalInterface.add(
-                name_of_external_interface='PtolemyServer')
+            self.building['ExternalInterface'] = {
+                'ExternalInterface 1': {
+                    'name_of_external_interface': 'PtolemyServer'}
+            }
 
     def apply_extra_conf(self) -> None:
         """Set extra configuration in building model
