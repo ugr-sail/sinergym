@@ -232,18 +232,21 @@ class Config(object):
 
             # Timesteps processed in a simulation hour
             if self.config.get('timesteps_per_hour'):
-                self.building.timestep[0].number_of_timesteps_per_hour = self.config['timesteps_per_hour']
+                list(self.building['Timestep'].values())[
+                    0]['number_of_timesteps_per_hour'] = self.config['timesteps_per_hour']
 
             # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
             # end_day, end_month, end_year)
             if self.config.get('runperiod'):
-                runperiod = self.building.RunPeriod[0]
-                runperiod.begin_day_of_month = int(self.config['runperiod'][0])
-                runperiod.begin_month = int(self.config['runperiod'][1])
-                runperiod.begin_year = int(self.config['runperiod'][2])
-                runperiod.end_day_of_month = int(self.config['runperiod'][3])
-                runperiod.end_month = int(self.config['runperiod'][4])
-                runperiod.end_year = int(self.config['runperiod'][5])
+                runperiod = list(self.building['RunPeriod'].values())[0]
+                runperiod['begin_day_of_month'] = int(
+                    self.config['runperiod'][0])
+                runperiod['begin_month'] = int(self.config['runperiod'][1])
+                runperiod['begin_year'] = int(self.config['runperiod'][2])
+                runperiod['end_day_of_month'] = int(
+                    self.config['runperiod'][3])
+                runperiod['end_month'] = int(self.config['runperiod'][4])
+                runperiod['end_year'] = int(self.config['runperiod'][5])
 
     def adapt_idf_to_action_definition(self) -> None:
         """Interpret action definition and apply changes in IDF in order to control schedulers specified.
