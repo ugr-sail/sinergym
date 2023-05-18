@@ -469,22 +469,22 @@ class Config(object):
         """Gets the length of one episode (an EnergyPlus process run to the end) depending on the config of simulation.
 
         Returns:
-            float: The simulation time step in which the simulation ends.
+            float: The simulation time in which the simulation ends (seconds).
         """
         # Get runperiod object inner IDF
-        runperiod = self.building.RunPeriod[0]
+        runperiod = list(self.building['RunPeriod'].values())[0]
         start_year = int(
-            YEAR if runperiod.begin_year is None else runperiod.begin_year)
+            YEAR if runperiod['begin_year'] is None else runperiod['begin_year'])
         start_month = int(
-            0 if runperiod.begin_month is None else runperiod.begin_month)
+            0 if runperiod['begin_month'] is None else runperiod['begin_month'])
         start_day = int(
-            0 if runperiod.begin_day_of_month is None else runperiod.begin_day_of_month)
+            0 if runperiod['begin_day_of_month'] is None else runperiod['begin_day_of_month'])
         end_year = int(
-            YEAR if runperiod.end_year is None else runperiod.end_year)
+            YEAR if runperiod['end_year'] is None else runperiod['end_year'])
         end_month = int(
-            0 if runperiod.end_month is None else runperiod.end_month)
-        end_day = int(
-            0 if runperiod.end_day_of_month is None else runperiod.end_day_of_month)
+            0 if runperiod['end_month'] is None else runperiod['end_month'])
+        end_day = int(0 if runperiod['end_day_of_month']
+                      is None else runperiod['end_day_of_month'])
 
         return get_delta_seconds(
             start_year,
