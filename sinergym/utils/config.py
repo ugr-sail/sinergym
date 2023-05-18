@@ -426,30 +426,32 @@ class Config(object):
 
     def _get_eplus_run_info(
             self) -> Tuple[int, int, int, int, int, int, int, int]:
-        """This method read the building model from config and finds the running start month, start day, start year, end month, end day, end year, start weekday and the number of steps in a hour simulation. If any value is Unknown, then value will be 0. If step per hour is < 1, then default value will be 4.
+        """This method read the building model from config and finds the running start month, start day, start year, end month, end day, end year, start weekday and the number of steps in a hour simulation.
+        If any value is Unknown, then value will be 0. If step per hour is < 1, then default value will be 4.
 
         Returns:
             Tuple[int, int, int, int, int, int, int, int]: A tuple with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.
         """
         # Get runperiod object inner IDF
-        runperiod = self.building.RunPeriod[0]
+        runperiod = list(self.building['RunPeriod'].values())[0]
 
         # Extract information about runperiod
         start_month = int(
-            0 if runperiod.begin_month is None else runperiod.begin_month)
+            0 if runperiod['begin_month'] is None else runperiod['begin_month'])
         start_day = int(
-            0 if runperiod.begin_day_of_month is None else runperiod.begin_day_of_month)
+            0 if runperiod['begin_day_of_month'] is None else runperiod['begin_day_of_month'])
         start_year = int(
-            YEAR if runperiod.begin_year is None else runperiod.begin_year)
+            YEAR if runperiod['begin_year'] is None else runperiod['begin_year'])
         end_month = int(
-            0 if runperiod.end_month is None else runperiod.end_month)
-        end_day = int(
-            0 if runperiod.end_day_of_month is None else runperiod.end_day_of_month)
+            0 if runperiod['end_month'] is None else runperiod['end_month'])
+        end_day = int(0 if runperiod['end_day_of_month']
+                      is None else runperiod['end_day_of_month'])
         end_year = int(
-            YEAR if runperiod.end_year is None else runperiod.end_year)
-        start_weekday = WEEKDAY_ENCODING[runperiod.day_of_week_for_start_day.lower(
+            YEAR if runperiod['end_year'] is None else runperiod['end_year'])
+        start_weekday = WEEKDAY_ENCODING[runperiod['day_of_week_for_start_day'].lower(
         )]
-        n_steps_per_hour = self.building.timestep[0].number_of_timesteps_per_hour
+        n_steps_per_hour = list(self.building['Timestep'].values())[
+            0]['number_of_timesteps_per_hour']
         if n_steps_per_hour < 1 or n_steps_per_hour is None:  # pragma: no cover
             n_steps_per_hour = 4  # default value
 
