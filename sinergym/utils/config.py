@@ -317,34 +317,43 @@ class Config(object):
             raise RuntimeError(
                 '[Simulator Config] Episode path should be set before saving building model.')
 
-    def get_schedulers(self) -> Dict[str, Any]:
+    def get_schedulers(self) -> Dict[str, Dict[str, Any]]:
         """Extract all schedulers available in the building model to be controlled.
 
         Returns:
-            Dict[str, Any]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).
+            Dict[str, Dict[str, Any]]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (table, object and field).
         """
         result = {}
-        schedule_tables = [
-            self.building.schedule_compact,
-            self.building.schedule_year]
-        for schedule_table in schedule_tables:
-            for schedule in schedule_table:
-                object_index = 1
-                result[schedule.name] = {}
-                result[schedule.name]['Type'] = schedule.schedule_type_limits_name.name
-                # Extract objects where scheduler is present as value field
-                for table in self.building:
-                    if table.get_name() != 'Schedule:Compact' and table.get_name() != 'Schedule:Year':
-                        for record in table:
-                            for i, value in enumerate(record):
-                                if isinstance(value, Record):
-                                    if (value._table._dev_descriptor.table_name == 'Schedule:Compact' or value._table._dev_descriptor.table_name ==
-                                            'Schedule:Year') and value.name == schedule.name:
-                                        result[schedule.name]['Object' + str(object_index)] = {'object_name': record.name,
-                                                                                               'object_field_name': record._table._dev_descriptor._field_descriptors[i].ref,
-                                                                                               'object_type': record._table._dev_descriptor.table_name}
-                                        object_index += 1
+        schedules = {}
+        # Mount a dict with only building schedulers
+        if 'Schedule:Compact' in self.building:
+            schedules.update(self.building['Schedule:Compact'])
+        if 'Schedule:Year' in self.building:
+            schedules.update(self.building['Schedule:Year'])
 
+        for sch_name, sch_info in schedules.items():
+            # Write sch_name and data type in output
+            result[sch_name] = {
+                'Type': sch_info['schedule_type_limits_name'],
+            }
+            # We are going to search in whole JSON building where that
+            # scheduler appears
+            for table, elements in self.building.items():
+                # Don't include themselves
+                if table != 'Schedule:Compact' and table != 'Schedule:Year':
+                    # For each object of a table type
+                    for element_name, element_fields in elements.items():
+                        # For each field in a object
+                        for field_key, field_value in element_fields.items():
+                            # If a field value is the schedule name
+                            if field_value == sch_name:
+                                # We annotate the object name as key and the
+                                # field name where sch name appears and the
+                                # table where belong to
+                                result[sch_name][element_name] = {
+                                    'field_name': field_key,
+                                    'table_name': table
+                                }
         return result
 
     # ---------------------------------------------------------------------------- #
