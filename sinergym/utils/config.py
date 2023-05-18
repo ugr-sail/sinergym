@@ -248,28 +248,28 @@ class Config(object):
                 runperiod['end_month'] = int(self.config['runperiod'][4])
                 runperiod['end_year'] = int(self.config['runperiod'][5])
 
-    def adapt_idf_to_action_definition(self) -> None:
-        """Interpret action definition and apply changes in IDF in order to control schedulers specified.
+    def adapt_json_to_action_definition(self) -> None:
+        """Interpret action definition and apply changes in JSON in order to control schedulers specified.
         """
         if self.action_definition is not None:
+            # Create ExternalInterface:Schedule table if it doesn't exist
+            if 'ExternalInterface:Schedule' not in self.building:
+                self.building['ExternalInterface:Schedule'] = {}
             # Iterate in schedulers to control in action definition
             for original_sch_name, new_sch in self.action_definition.items():
                 # Search original scheduler information in building model
-                original_sch = self.schedulers[original_sch_name.lower()]
-                # Add external interface to IDF
-                self.building.ExternalInterface_Schedule.add(
-                    name=new_sch['name'],
-                    schedule_type_limits_name=original_sch['Type'],
-                    initial_value=new_sch['initial_value'])
+                original_sch = self.schedulers[original_sch_name]
+                # Add external interface to JSON
+                self.building['ExternalInterface:Schedule'][new_sch['name']] = {
+                    'schedule_type_limits_name': original_sch['Type'],
+                    'initial_value': new_sch['initial_value']
+                }
                 # Look for scheduler elements where appear and substitute for new
                 # one name
-                for key, element in original_sch.items():
-                    if isinstance(element, dict):
-                        table_name = element['object_type'].replace(
-                            ':', '_').replace(' ', '_').lower()
-                        record = self.building._tables[table_name].one(
-                            lambda record: record.name == element['object_name'])
-                        record[element['object_field_name']] = new_sch['name']
+                for sch_name, sch_info in original_sch.items():
+                    if isinstance(sch_info, dict):  # this skip Type key
+                        self.building[sch_info['table_name']][sch_name
+                                                              ][sch_info['field_name']] = new_sch['name']
 
     def save_variables_cfg(self) -> str:
         """This method saves current XML variables tree model into a variables.cfg file.
