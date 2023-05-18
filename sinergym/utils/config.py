@@ -126,7 +126,7 @@ class Config(object):
     # ---------------------------------------------------------------------------- #
 
     def update_weather_path(self) -> None:
-        """When this method is called, weather file is changed randomly and IDF is adapted to new one.
+        """When this method is called, weather file is changed randomly and JSON is adapted to new one.
         """
         self._weather_path = os.path.join(
             self.pkg_data_path, 'weather', random.choice(self.weather_files))
@@ -137,19 +137,22 @@ class Config(object):
             check_length=False)
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
-    def adapt_idf_to_epw(self,
-                         summerday: str = 'Ann Clg .4% Condns DB=>MWB',
-                         winterday: str = 'Ann Htg 99.6% Condns DB') -> None:
-        """Given a summer day name and winter day name from DDY file, this method modify IDF Location and DesingDay's in order to adapt IDF to EPW.
+    def adapt_json_to_epw(self,
+                          summerday: str = 'Ann Clg .4% Condns DB=>MWB',
+                          winterday: str = 'Ann Htg 99.6% Condns DB') -> None:
+        """Given a summer day name and winter day name from DDY file, this method modify JSON Location and DesingDay's in order to adapt JSON to EPW.
 
         Args:
             summerday (str): Design day for summer day specifically (DDY has several of them).
             winterday (str): Design day for winter day specifically (DDY has several of them).
         """
 
-        # Getting the new location and designdays based on ddy file (Records must be converted to dictionary)
+        # Getting the new location and designdays based on ddy file (Records
+        # must be converted to dictionary)
+
         # LOCATION
         new_location = record_to_dict(self.ddy_model.site_location[0])
+
         # DESIGNDAYS
         winter_designday_record = self.ddy_model.SizingPeriod_DesignDay.one(
             lambda designday: winterday.lower() in designday.name.lower())
@@ -159,7 +162,7 @@ class Config(object):
             **record_to_dict(winter_designday_record),
             **record_to_dict(summer_designday_record)}
 
-        # Added New Location and DesignDays to Epm
+        # Addeding new location and DesignDays to Building model
         self.building['Site:Location'] = new_location
         self.building['SizingPeriod:DesignDay'] = new_designdays
 
