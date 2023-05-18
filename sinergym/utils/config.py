@@ -166,14 +166,16 @@ class Config(object):
         self.building['Site:Location'] = new_location
         self.building['SizingPeriod:DesignDay'] = new_designdays
 
-    def adapt_variables_to_cfg_and_idf(self) -> None:
-        """This method adds to XML variable tree all observation and action variables information. In addition, it modifies IDF Output:Variable in order to adapt to new observation variables set.
+    def adapt_variables_to_cfg_and_json(self) -> None:
+        """This method adds to XML variable tree all observation and action variables information.
+        In addition, it modifies JSON Output:Variable in order to adapt to new observation variables set.
         """
+
         # OBSERVATION VARIABLES
-        output_variables = []
+        output_variables = {}
         self.variables_tree.append(ElementTree.Comment(
             'Observation variables: Received from EnergyPlus'))
-        for obs_var in self.variables['observation']:
+        for i, obs_var in enumerate(self.variables['observation'], start=1):
             # obs_var = "<variable_name>(<variable_zone>)"
             var_elements = obs_var.split('(')
             var_name = var_elements[0]
@@ -188,20 +190,16 @@ class Config(object):
                 name=var_zone,
                 type=var_name)
 
-            # Add IDF record Output:Variable
-            if var_zone.lower() == 'Environment'.lower(
-            ) or var_zone.lower() == 'Whole Building'.lower():
+            # Add JSON element Output:Variable
+            if var_zone.lower() == 'environment' or var_zone.lower() == 'whole building':
                 var_zone = '*'
-            output_variables.append(
-                dict(
-                    key_value=var_zone,
-                    variable_name=var_name,
-                    reporting_frequency='timestep'))
+            output_variables['Output:Variable ' + str(i)] = {'key_value': var_zone,
+                                                             'variable_name': var_name,
+                                                             'reporting_frequency': 'timestep'}
 
         # Delete default Output:Variables and added observation_variables
         # specified
-        self.building.output_variable.delete()
-        self.building.output_variable.batch_add(output_variables)
+        self.building['Output:Variable'] = output_variables
 
         # ACTION VARIABLES
         self.variables_tree.append(
