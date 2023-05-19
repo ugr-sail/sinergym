@@ -1,23 +1,135 @@
 """Class and utilities for backend modeling in Python with Sinergym (extra params, weather_variability, building model modification and files management)"""
+import json
 import os
 import random
 import xml.etree.cElementTree as ElementTree
+from abc import ABC, abstractmethod
 from copy import deepcopy
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple, Union
-import json
 
 import numpy as np
 import pandas
 from opyplus import Epm, Idd, WeatherData
 from opyplus.epm.record import Record
 
-from sinergym.utils.common import (
-    get_delta_seconds,
-    record_to_dict,
-    to_idf,
-    prepare_batch_from_records)
+from sinergym.utils.common import (get_delta_seconds,
+                                   prepare_batch_from_records, record_to_dict,
+                                   to_idf)
 from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR
+
+
+class Model(ABC):
+    """Class to determine the Sinergym models' structure.
+    """
+
+    def __init__(self):
+        pass
+
+    # ---------------------------------------------------------------------------- #
+    #                  Variables and Building model adaptation                     #
+    # ---------------------------------------------------------------------------- #
+
+    @abstractmethod
+    def update_weather_path(self) -> None:
+        pass
+
+    @abstractmethod
+    def adapt_building_to_epw(
+            self,
+            summerday: str = 'Ann Clg .4% Condns DB=>MWB',
+            winterday: str = 'Ann Htg 99.6% Condns DB') -> None:
+        pass
+
+    @abstractmethod
+    def adapt_variables_to_cfg_and_building(self) -> None:
+        pass
+
+    @abstractmethod
+    def set_external_interface(self) -> None:
+        pass
+
+    @abstractmethod
+    def apply_extra_conf(self) -> None:
+        pass
+
+    @abstractmethod
+    def adapt_building_to_action_definition(self) -> None:
+        pass
+
+    @abstractmethod
+    def save_variables_cfg(self) -> str:
+        pass
+
+    @abstractmethod
+    def save_building_model(self) -> str:
+        pass
+
+    @abstractmethod
+    def get_schedulers(self) -> Dict[str, Dict[str, Any]]:
+        pass
+
+    # ---------------------------------------------------------------------------- #
+    #                        EPW and Weather Data management                       #
+    # ---------------------------------------------------------------------------- #
+
+    @abstractmethod
+    def apply_weather_variability(
+            self,
+            columns: List[str],
+            variation: Optional[Tuple[float, float, float]]) -> str:
+        pass
+
+    # ---------------------------------------------------------------------------- #
+    #                        Model and Config Functionality                        #
+    # ---------------------------------------------------------------------------- #
+
+    @abstractmethod
+    def _get_eplus_run_info(
+            self) -> Tuple[int, int, int, int, int, int, int, int]:
+        pass
+
+    @abstractmethod
+    def _get_one_epi_len(self) -> float:
+        pass
+
+    # ---------------------------------------------------------------------------- #
+    #                  Working Folder for Simulation Management                    #
+    # ---------------------------------------------------------------------------- #
+
+    @abstractmethod
+    def set_experiment_working_dir(self, env_name: str) -> str:
+        pass
+
+    @abstractmethod
+    def set_episode_working_dir(self) -> str:
+        pass
+
+    @abstractmethod
+    def _get_working_folder(
+            self,
+            directory_path: str,
+            base_name: str) -> str:
+        pass
+
+    @abstractmethod
+    def _rm_past_history_dir(
+            self,
+            episode_path: str,
+            base_name: str) -> None:
+        pass
+
+    # ---------------------------------------------------------------------------- #
+    #                             Config class checker                             #
+    # ---------------------------------------------------------------------------- #
+
+    @abstractmethod
+    def _check_eplus_config(self) -> None:
+        pass
+
+    @abstractmethod
+    def _check_observation_variables(self) -> None:
+        pass
 
 
 class ModelJSON(object):
@@ -126,7 +238,7 @@ class ModelJSON(object):
         self._check_eplus_config()
 
     # ---------------------------------------------------------------------------- #
-    #            IDF, variables and Building model adaptation                      #
+    #                 Variables and Building model adaptation                      #
     # ---------------------------------------------------------------------------- #
 
     def update_weather_path(self) -> None:
@@ -697,6 +809,7 @@ class ModelJSON(object):
 
 class ModelIDF(object):
     """Class to manage backend models (building, weathers...) and folders in Sinergym (IDF version).
+    WARNING: This is a deprecated class. Please, use ModelJSON version which is up-to-date.
 
         :param _idf_path: IDF path origin for apply configuration.
         :param weather_files: weather available files for each episode
