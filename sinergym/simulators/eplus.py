@@ -632,3 +632,21 @@ class EnergyPlus(object):
             str: Environment name
         """
         return self._env_name
+
+    @property
+    def zone_names(self) -> List[str]:  # pragma: no cover
+        """Returns the zone names available in the building.
+
+        Returns:
+            List[str]: Building zones
+        """
+        return self._config.zone_names
+
+    @property
+    def schedulers(self) -> Dict[str, Dict[str, Union[str, Dict[str, str]]]]:  # pragma: no cover
+        """Returns the schedulers information available in the building.
+
+        Returns:
+            Dict[str,Dict[str,Union[str,Dict[str,str]]]]: Dictionary structure with all the information.
+        """
+        return self._config.schedulers

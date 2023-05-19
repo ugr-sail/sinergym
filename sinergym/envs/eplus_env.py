@@ -263,27 +263,6 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #
     # ---------------------------------------------------------------------------- #
-    def get_schedulers(self, path: Optional[str] = None) -> Dict[str, Any]:
-        """Extract all schedulers available in the building model to be controlled.
-
-        Args:
-            path (str, optional): If path is specified, then this method export a xlsx file version in addition to return the dictionary.
-
-        Returns:
-            Dict[str, Any]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).
-        """
-        schedulers = self.simulator._config.schedulers
-        if path is not None:
-            export_actuators_to_excel(actuators=schedulers, path=path)
-        return schedulers
-
-    def get_zones(self) -> List[str]:
-        """Get the zone names available in the building model of that environment.
-
-        Returns:
-            List[str]: List of the zone names.
-        """
-        return self.simulator._config.zone_names
 
     def _get_action(self, action: Any) -> Union[int,
                                                 float,
@@ -390,6 +369,29 @@ class EplusEnv(gym.Env):
                 self, 'action_mapping'), 'Continuous environment: action mapping should not have been defined.'
             assert len(self._action_space.low) == len(self.variables['action']) and len(self._action_space.high) == len(
                 self.variables['action']), 'Continuous environment: low and high values action space definition should have the same number of values than action variables.'
+
+    def get_schedulers(
+            self, path: Optional[str] = None) -> Dict[str, Dict[str, Union[str, Dict[str, str]]]]:
+        """Extract all schedulers available in the building model to be controlled.
+
+        Args:
+            path (str, optional): If path is specified, then this method export a xlsx file version in addition to return the dictionary.
+
+        Returns:
+            Dict[str, Any]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).
+        """
+        if path is not None:
+            export_actuators_to_excel(
+                actuators=self.simulator.schedulers, path=path)
+        return self.simulator.schedulers
+
+    def get_zones(self) -> List[str]:
+        """Get the zone names available in the building model of that environment.
+
+        Returns:
+            List[str]: List of the zone names.
+        """
+        return self.simulator.zone_names
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #
