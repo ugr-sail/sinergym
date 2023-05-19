@@ -16,7 +16,7 @@ from sinergym.utils.common import (get_delta_seconds, record_to_dict, to_idf)
 from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR
 
 
-class Config(object):
+class ModelJSON(object):
     """Config object to manage extra configuration in Sinergym experiments.
 
         :param _json_path: JSON path origin for apply extra configuration.
