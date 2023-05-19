@@ -434,7 +434,8 @@ class ModelJSON(object):
             raise RuntimeError(
                 '[Simulator Config] Episode path should be set before saving building model.')
 
-    def get_schedulers(self) -> Dict[str, Dict[str, Any]]:
+    def get_schedulers(self) -> Dict[str,
+                                     Dict[str, Union[str, Dict[str, str]]]]:
         """Extract all schedulers available in the building model to be controlled.
 
         Returns:
