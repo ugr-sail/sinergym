@@ -17,7 +17,7 @@ from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR
 
 
 class ModelJSON(object):
-    """Config object to manage extra configuration in Sinergym experiments.
+    """Class to manage backend models (building, weathers...) and folders in Sinergym.
 
         :param _json_path: JSON path origin for apply extra configuration.
         :param weather_files: weather available files for each episode
@@ -110,7 +110,7 @@ class ModelJSON(object):
         self.config = extra_config
         self.action_definition = action_definition
         # Extract building zones
-        self.json_zone_names = list(self.building['Zone'].keys())
+        self.zone_names = list(self.building['Zone'].keys())
         # Extract schedulers available in building model
         self.schedulers = self.get_schedulers()
 
@@ -126,7 +126,7 @@ class ModelJSON(object):
     # ---------------------------------------------------------------------------- #
 
     def update_weather_path(self) -> None:
-        """When this method is called, weather file is changed randomly and JSON is adapted to new one.
+        """When this method is called, weather file is changed randomly and building model is adapted to new one.
         """
         self._weather_path = os.path.join(
             self.pkg_data_path, 'weather', random.choice(self.weather_files))
@@ -137,10 +137,11 @@ class ModelJSON(object):
             check_length=False)
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
-    def adapt_json_to_epw(self,
-                          summerday: str = 'Ann Clg .4% Condns DB=>MWB',
-                          winterday: str = 'Ann Htg 99.6% Condns DB') -> None:
-        """Given a summer day name and winter day name from DDY file, this method modify JSON Location and DesingDay's in order to adapt JSON to EPW.
+    def adapt_building_to_epw(
+            self,
+            summerday: str = 'Ann Clg .4% Condns DB=>MWB',
+            winterday: str = 'Ann Htg 99.6% Condns DB') -> None:
+        """Given a summer day name and winter day name from DDY file, this method modify Location and DesingDay's in order to adapt building model to EPW.
 
         Args:
             summerday (str): Design day for summer day specifically (DDY has several of them).
@@ -166,9 +167,9 @@ class ModelJSON(object):
         self.building['Site:Location'] = new_location
         self.building['SizingPeriod:DesignDay'] = new_designdays
 
-    def adapt_variables_to_cfg_and_json(self) -> None:
+    def adapt_variables_to_cfg_and_building(self) -> None:
         """This method adds to XML variable tree all observation and action variables information.
-        In addition, it modifies JSON Output:Variable in order to adapt to new observation variables set.
+        In addition, it modifies building Output:Variable in order to adapt to new observation variables set.
         """
 
         # OBSERVATION VARIABLES
@@ -190,7 +191,7 @@ class ModelJSON(object):
                 name=var_zone,
                 type=var_name)
 
-            # Add JSON element Output:Variable
+            # Add element Output:Variable to the building model
             if var_zone.lower() == 'environment' or var_zone.lower() == 'whole building':
                 var_zone = '*'
             output_variables['Output:Variable ' + str(i)] = {'key_value': var_zone,
@@ -248,8 +249,8 @@ class ModelJSON(object):
                 runperiod['end_month'] = int(self.config['runperiod'][4])
                 runperiod['end_year'] = int(self.config['runperiod'][5])
 
-    def adapt_json_to_action_definition(self) -> None:
-        """Interpret action definition and apply changes in JSON in order to control schedulers specified.
+    def adapt_building_to_action_definition(self) -> None:
+        """Interpret action definition and apply changes in building model, in order to control schedulers specified.
         """
         if self.action_definition is not None:
             # Create ExternalInterface:Schedule table if it doesn't exist
@@ -259,7 +260,7 @@ class ModelJSON(object):
             for original_sch_name, new_sch in self.action_definition.items():
                 # Search original scheduler information in building model
                 original_sch = self.schedulers[original_sch_name]
-                # Add external interface to JSON
+                # Add external interface to building model
                 self.building['ExternalInterface:Schedule'][new_sch['name']] = {
                     'schedule_type_limits_name': original_sch['Type'],
                     'initial_value': new_sch['initial_value']
@@ -336,8 +337,8 @@ class ModelJSON(object):
             result[sch_name] = {
                 'Type': sch_info['schedule_type_limits_name'],
             }
-            # We are going to search in whole JSON building where that
-            # scheduler appears
+            # We are going to search where that scheduler appears in whole
+            # building model
             for table, elements in self.building.items():
                 # Don't include themselves
                 if table != 'Schedule:Compact' and table != 'Schedule:Year':
@@ -683,7 +684,7 @@ class ModelJSON(object):
                     # zones names with people 1 or lights 1, etc. The second name
                     # is ignored, only check that zone is a substr from obs
                     # zone
-                    assert any(list(map(lambda zone: zone.lower() in obs_element_name.lower(), self.idf_zone_names))
+                    assert any(list(map(lambda zone: zone.lower() in obs_element_name.lower(), self.zone_names))
                                ), 'Observation variables: Zone called {} in observation variables does not exist in IDF building model.'.format(obs_element_name)
             # Check observation variables about HVAC
             elif self.rdd_variables[obs_name] == 'HVAC':
