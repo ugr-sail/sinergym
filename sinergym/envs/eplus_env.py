@@ -24,7 +24,7 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     def __init__(
         self,
-        idf_file: str,
+        building_file: str,
         weather_file: Union[str, List[str]],
         observation_space: gym.spaces.Box = gym.spaces.Box(
             low=-5e6, high=5e6, shape=(4,), dtype=np.float32),
@@ -45,7 +45,7 @@ class EplusEnv(gym.Env):
         """Environment with EnergyPlus simulator.
 
         Args:
-            idf_file (str): Name of the IDF file with the building definition.
+            building_file (str): Name of the JSON file with the building definition.
             weather_file (Union[str,List[str]]): Name of the EPW file for weather conditions. It can be specified a list of weathers files in order to sample a weather in each episode randomly.
             observation_space (gym.spaces.Box, optional): Gym Observation Space definition. Defaults to an empty observation_space (no control).
             observation_variables (List[str], optional): List with variables names in IDF. Defaults to an empty observation variables (no control).
@@ -68,8 +68,8 @@ class EplusEnv(gym.Env):
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
 
-        # IDF file
-        self.idf_file = idf_file
+        # building file
+        self.building_file = building_file
         # EPW file(s) (str or List of EPW's)
         if isinstance(weather_file, str):
             self.weather_files = [weather_file]
@@ -96,7 +96,7 @@ class EplusEnv(gym.Env):
             env_name=env_name,
             eplus_path=eplus_path,
             bcvtb_path=bcvtb_path,
-            idf_file=self.idf_file,
+            building_file=self.building_file,
             weather_files=self.weather_files,
             variables=self.variables,
             act_repeat=act_repeat,
@@ -283,7 +283,7 @@ class EplusEnv(gym.Env):
         Returns:
             List[str]: List of the zone names.
         """
-        return self.simulator._config.idf_zone_names
+        return self.simulator._config.zone_names
 
     def _get_action(self, action: Any) -> Union[int,
                                                 float,
