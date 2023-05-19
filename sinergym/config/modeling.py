@@ -774,7 +774,7 @@ class ModelJSON(object):
                     new_sch['name'], str), 'Action definition: Name field in new scheduler must be a str element.'
                 # Check action definition component is in schedulers available
                 # in building model
-                assert original_sch_name.lower() in self.schedulers.keys(
+                assert original_sch_name in self.schedulers.keys(
                 ), 'Action definition: Object called {} is not an existing component in building model.'.format(original_sch_name)
                 # Check new variable is present in action variables
                 assert new_sch['name'] in self.variables['action'], 'Action definition: {} external variable should be in action variables.'.format(
