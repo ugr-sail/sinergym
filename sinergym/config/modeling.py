@@ -10,10 +10,12 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas
+from eppy import modeleditor
+from eppy.modeleditor import IDF
 from opyplus import Epm, Idd, WeatherData
 from opyplus.epm.record import Record
 
-from sinergym.utils.common import (get_delta_seconds,
+from sinergym.utils.common import (eppy_element_to_dict, get_delta_seconds,
                                    prepare_batch_from_records, record_to_dict,
                                    to_idf)
 from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR
@@ -171,6 +173,9 @@ class ModelJSON(object):
         # EPW
         self.weather_files = weather_files
 
+        # IDD
+        self._idd = os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd')
+
         # Select one weather randomly (if there are more than one)
         self._weather_path = os.path.join(
             self.pkg_data_path, 'weather', random.choice(self.weather_files))
@@ -196,12 +201,11 @@ class ModelJSON(object):
         with open(self._json_path) as json_f:
             self.building = json.load(json_f)
 
-        # Weather and DDY Object (opyplus object)
-        self._idd = Idd(os.path.join(os.environ['EPLUS_PATH'], 'Energy+.idd'))
-        self.ddy_model = Epm.from_idf(
-            self._ddy_path,
-            idd_or_version=self._idd,
-            check_length=False)
+        # DDY model (eppy object)
+        IDF.setiddname(self._idd)
+        self.ddy_model = IDF(self._ddy_path)
+
+        # Weather data (opyplus object)
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
         # Extract rdd observation variables names
@@ -247,10 +251,7 @@ class ModelJSON(object):
         self._weather_path = os.path.join(
             self.pkg_data_path, 'weather', random.choice(self.weather_files))
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
-        self.ddy_model = Epm.from_idf(
-            self._ddy_path,
-            idd_or_version=self._idd,
-            check_length=False)
+        self.ddy_model = IDF(self._ddy_path)
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
     def adapt_building_to_epw(
@@ -268,16 +269,22 @@ class ModelJSON(object):
         # must be converted to dictionary)
 
         # LOCATION
-        new_location = record_to_dict(self.ddy_model.site_location[0])
+        new_location = self.ddy_model.idfobjects['Site:Location'][0]
+        new_location = eppy_element_to_dict(new_location)
 
         # DESIGNDAYS
-        winter_designday_record = self.ddy_model.SizingPeriod_DesignDay.one(
-            lambda designday: winterday.lower() in designday.name.lower())
-        summer_designday_record = self.ddy_model.SizingPeriod_DesignDay.one(
-            lambda designday: summerday.lower() in designday.name.lower())
-        new_designdays = {
-            **record_to_dict(winter_designday_record),
-            **record_to_dict(summer_designday_record)}
+        ddy_designdays = self.ddy_model.idfobjects['SizingPeriod:DesignDay']
+        summer_designdays = list(
+            filter(
+                lambda designday: summerday in designday.Name,
+                ddy_designdays))[0]
+        winter_designdays = list(
+            filter(
+                lambda designday: winterday in designday.Name,
+                ddy_designdays))[0]
+        new_designdays = {}
+        new_designdays.update(eppy_element_to_dict(winter_designdays))
+        new_designdays.update(eppy_element_to_dict(summer_designdays))
 
         # Addeding new location and DesignDays to Building model
         self.building['Site:Location'] = new_location
