@@ -11,6 +11,7 @@ import gymnasium as gym
 import numpy as np
 import pandas as pd
 import xlsxwriter
+from eppy.modeleditor import IDF
 from opyplus import Epm, WeatherData
 from opyplus.epm.record import Record
 
@@ -257,6 +258,29 @@ def record_to_dict(record: Record) -> Dict[str, Dict[str, Any]]:
     result[record.name] = aux_dict
 
     return result
+
+
+def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
+    """Given a eppy element, this function will create a dictionary using the name as key and the rest of fields as value. Following de EnergyPlus epJSON standard.
+
+    Args:
+        element (IDF): eppy element to be converted.
+
+    Returns:
+        Dict[str,Dict[str,str]]: Python dictionary with epJSON format of eppy element.
+    """
+    fields = {}
+    for fieldname in element.fieldnames:
+        fieldname_fixed = fieldname.lower().replace(
+            'drybulb', 'dry_bulb')
+        print(fieldname_fixed)
+        if fieldname != 'Name' and fieldname != 'key':
+            if element[fieldname] != '':
+                if element[fieldname] == 'Wetbulb':
+                    fields[fieldname_fixed] = 'WetBulb'
+                else:
+                    fields[fieldname_fixed] = element[fieldname]
+    return {element.Name.lower(): fields}
 
 
 def to_idf(building: Epm, file_path: str) -> None:
