@@ -319,7 +319,7 @@ class ModelJSON(object):
                 var_zone = '*'
             output_variables['Output:Variable ' + str(i)] = {'key_value': var_zone,
                                                              'variable_name': var_name,
-                                                             'reporting_frequency': 'timestep'}
+                                                             'reporting_frequency': 'Timestep'}
 
         # Delete default Output:Variables and added observation_variables
         # specified
