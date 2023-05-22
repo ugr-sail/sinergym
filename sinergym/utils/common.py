@@ -47,34 +47,6 @@ def get_delta_seconds(
     return delta_sec
 
 
-def get_current_time_info(
-        epm: Epm, sec_elapsed: float) -> List[int]:
-    """Returns the current day, month and hour given the seconds elapsed since the simulation started.
-
-    Args:
-        epm (opyplus.Epm): EnergyPlus model object.
-        sec_elapsed (float): Seconds elapsed since the start of the simulation
-
-    Returns:
-        List[int]: A List composed by the current year, day, month and hour in the simulation.
-
-    """
-    start_date = datetime(
-        year=int(YEAR if epm.RunPeriod[0]['begin_year'] is None else epm.RunPeriod[0]['begin_year']),
-        month=int(1 if epm.RunPeriod[0]['begin_month'] is None else epm.RunPeriod[0]['begin_month']),
-        day=int(1 if epm.RunPeriod[0]['begin_day_of_month'] is None else epm.RunPeriod[0]['begin_day_of_month'])
-    )
-
-    current_date = start_date + timedelta(seconds=sec_elapsed)
-
-    return [
-        int(current_date.year),
-        int(current_date.month),
-        int(current_date.day),
-        int(current_date.hour),
-    ]
-
-
 def is_wrapped(env: Type[gym.Env], wrapper_class: Type[gym.Wrapper]) -> bool:
     """
     Check if a given environment has been wrapped with a given wrapper.

@@ -5,6 +5,7 @@ import random
 import xml.etree.cElementTree as ElementTree
 from abc import ABC, abstractmethod
 from copy import deepcopy
+from datetime import datetime, timedelta
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -589,6 +590,32 @@ class ModelJSON(object):
             end_year,
             start_weekday,
             n_steps_per_hour)
+
+    def get_current_time_info(self, sec_elapsed: float) -> List[int]:
+        """Returns the current day, month and hour given the seconds elapsed since the simulation started.
+
+        Args:
+            sec_elapsed (float): Seconds elapsed since the start of the simulation
+
+        Returns:
+            List[int]: A List composed by the current year, day, month and hour in the simulation.
+
+        """
+        runperiod = list(self.building['RunPeriod'].values())[0]
+        start_date = datetime(
+            year=int(
+                YEAR if runperiod['begin_year'] is None else runperiod['begin_year']), month=int(
+                1 if runperiod['begin_month'] is None else runperiod['begin_month']), day=int(
+                1 if runperiod['begin_day_of_month'] is None else runperiod['begin_day_of_month']))
+
+        current_date = start_date + timedelta(seconds=sec_elapsed)
+
+        return [
+            int(current_date.year),
+            int(current_date.month),
+            int(current_date.day),
+            int(current_date.hour),
+        ]
 
     def _get_one_epi_len(self) -> float:
         """Gets the length of one episode (an EnergyPlus process run to the end) depending on the config of simulation.

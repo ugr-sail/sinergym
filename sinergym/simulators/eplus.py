@@ -236,8 +236,8 @@ class EnergyPlus(object):
         version, flag, nDb, nIn, nBl, curSimTim, Dblist \
             = self._disassembleMsg(rcv_1st)
         # get time info in simulation
-        time_info = get_current_time_info(self._config.building, curSimTim)
-        # Add time_info date in the end of the Energyplus observation
+        time_info = self._config.get_current_time_info(curSimTim)
+        # Add time_info date in the beginning of the Energyplus observation
         Dblist = time_info + Dblist
         # Remember the message header, useful when send data back to EnergyPlus
         self._eplus_msg_header = [version, flag]
