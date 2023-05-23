@@ -421,7 +421,7 @@ class ModelJSON(object):
 
         else:
             raise RuntimeError(
-                '[Simulator Config] Episode path should be set before saving variables.cfg.')
+                '[Simulator Modeling] Episode path should be set before saving variables.cfg.')
 
     def save_building_model(self) -> str:
         """Take current building model and save as IDF in current env_working_dir episode folder.
@@ -440,7 +440,7 @@ class ModelJSON(object):
             return episode_json_path
         else:
             raise RuntimeError(
-                '[Simulator Config] Episode path should be set before saving building model.')
+                '[Simulator Modeling] Episode path should be set before saving building model.')
 
     def get_schedulers(self) -> Dict[str,
                                      Dict[str, Union[str, Dict[str, str]]]]:
@@ -1125,7 +1125,7 @@ class ModelIDF(object):
 
         else:
             raise RuntimeError(
-                '[Simulator Config] Episode path should be set before saving variables.cfg.')
+                '[Simulator Modeling] Episode path should be set before saving variables.cfg.')
 
     def save_building_model(self) -> str:
         """Take current building model and save as IDF in current env_working_dir episode folder.
@@ -1142,7 +1142,7 @@ class ModelIDF(object):
             return episode_idf_path
         else:
             raise RuntimeError(
-                '[Simulator Config] Episode path should be set before saving building model.')
+                '[Simulator Modeling] Episode path should be set before saving building model.')
 
     def get_schedulers(self) -> Dict[str, Any]:
         """Extract all schedulers available in the building model to be controlled.
