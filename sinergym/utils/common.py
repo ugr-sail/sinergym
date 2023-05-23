@@ -191,47 +191,6 @@ def get_record_keys(record: Record) -> List[str]:
     return [field.ref for field in record._table._dev_descriptor._field_descriptors]
 
 
-def prepare_batch_from_records(records: List[Record]) -> List[Dict[str, Any]]:
-    """Prepare a list of dictionaries in order to use Epm.add_batch directly
-
-    Args:
-        records List[opyplus.Epm.Record]: List of records which will be converted to dictionary batch.
-
-    Returns:
-        List[Dict[str, Any]]: List of dicts where each dictionary is a record element.
-    """
-
-    batch = []
-    for record in records:
-        aux_dict = {}
-        for key in get_record_keys(record):
-            aux_dict[key] = record[key]
-        batch.append(aux_dict)
-
-    return batch
-
-
-def record_to_dict(record: Record) -> Dict[str, Dict[str, Any]]:
-    """Given a individual opyplus Record object, this function will create a Python dict with the
-    Record name as key and the other features as embedding dictionary as value. This is the format
-    required for Energyplus epJSON standard.
-
-    Args:
-        record (Record): Opyplus record object to convert
-
-    Returns:
-        Dict[str, Dict[str, Any]]: Result: {Record name: {record features}}.
-    """
-    result = {}
-    aux_dict = {}
-    for key in get_record_keys(record):
-        if key != 'name':
-            aux_dict[key] = record[key]
-    result[record.name] = aux_dict
-
-    return result
-
-
 def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
     """Given a eppy element, this function will create a dictionary using the name as key and the rest of fields as value. Following de EnergyPlus epJSON standard.
 
@@ -253,35 +212,6 @@ def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
                 else:
                     fields[fieldname_fixed] = element[fieldname]
     return {element.Name.lower(): fields}
-
-
-def to_idf(building: Epm, file_path: str) -> None:
-    """Given a building model (opyplus Epm object), this function export an IDF file with all content specified.
-
-    Args:
-        building (Epm): Building model from the opyplus object Epm.
-        file_path (str): Path where IDF file will be exported.
-    """
-
-    if building._comment != "":
-        comment = textwrap.indent(building._comment, "! ", lambda line: True)
-    comment += "\n\n"
-
-    dir_path, file_name = os.path.split(file_path)
-    model_name, _ = os.path.splitext(file_name)
-
-    # prepare body
-    formatted_records = []
-    for table_ref, table in building._tables.items(
-    ):  # self._tables is already sorted
-        formatted_records.extend(
-            [r.to_idf(model_name=model_name) for r in table])
-    body = "\n\n".join(formatted_records)
-
-    # write content
-    content = comment + body
-    with open(file_path, "w") as f:
-        f.write(content)
 
 
 def get_season_comfort_range(
