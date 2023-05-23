@@ -204,7 +204,6 @@ def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
     for fieldname in element.fieldnames:
         fieldname_fixed = fieldname.lower().replace(
             'drybulb', 'dry_bulb')
-        print(fieldname_fixed)
         if fieldname != 'Name' and fieldname != 'key':
             if element[fieldname] != '':
                 if element[fieldname] == 'Wetbulb':
