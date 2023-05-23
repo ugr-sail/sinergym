@@ -319,7 +319,7 @@ class EnergyPlus(object):
         # Construct the return, which is the state observation of the last step
         # plus the integral item
         # get time info in simulation
-        time_info = get_current_time_info(self._config.building, curSimTim)
+        time_info = self._config.get_current_time_info(curSimTim)
         # Add time_info to the observation (year,month,day and hour) at the
         # beggining
         Dblist = time_info + Dblist
