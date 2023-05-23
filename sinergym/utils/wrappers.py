@@ -493,8 +493,9 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         self.min_values = min_values
 
         # calculate initial values for setpoints
-        for external_schedule in self.env.simulator._config.building.ExternalInterface_Schedule:
-            self.current_setpoints.append(external_schedule.initial_value)
+        for external_schedule in list(
+                self.env.simulator._config.building['ExternalInterface:Schedule'].values()):
+            self.current_setpoints.append(external_schedule['initial_value'])
 
         # Check environment is valid
         assert len(
