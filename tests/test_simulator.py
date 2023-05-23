@@ -94,9 +94,9 @@ def test_episode_transition_with_steps(simulator):
         simulator.step(action=[23.0, 25.0])
 
 
-def test_get_file_name(simulator, idf_path):
-    expected = '5ZoneAutoDXVAV.idf'
-    assert simulator._get_file_name(idf_path) == expected
+def test_get_file_name(simulator, json_path):
+    expected = '5ZoneAutoDXVAV.epJSON'
+    assert simulator._get_file_name(json_path) == expected
 
 
 # def test_rm_past_history_dir(cur_eplus_working_dir, dir_sig):
@@ -123,11 +123,11 @@ def test_create_socket_cfg(simulator, sinergym_path):
     os.remove(tests_path + '/socket.cfg')
 
 
-def test_create_eplus(simulator, eplus_path, weather_path, idf_path):
+def test_create_eplus(simulator, eplus_path, weather_path, json_path):
     eplus_working_dir = simulator._env_working_dir_parent
     out_path = eplus_working_dir + '/output'
     eplus_process = simulator._create_eplus(
-        eplus_path, weather_path, idf_path, out_path, eplus_working_dir)
+        eplus_path, weather_path, json_path, out_path, eplus_working_dir)
     assert 'ERROR' not in str(eplus_process.stdout.read())
 
 
