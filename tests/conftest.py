@@ -1,3 +1,4 @@
+import json
 import os
 import shutil
 from glob import glob  # to find directories with patterns
@@ -6,9 +7,9 @@ import pkg_resources
 import pytest
 from opyplus import Epm, Idd, WeatherData
 
+from sinergym.config.modeling import ModelJSON
 from sinergym.envs.eplus_env import EplusEnv
 from sinergym.simulators.eplus import EnergyPlus
-from sinergym.utils.config import Config
 from sinergym.utils.constants import *
 from sinergym.utils.controllers import *
 from sinergym.utils.rewards import *
@@ -49,8 +50,8 @@ def pkg_data_path():
 
 
 @pytest.fixture(scope='session')
-def idf_path(pkg_data_path):
-    return os.path.join(pkg_data_path, 'buildings', '5ZoneAutoDXVAV.idf')
+def json_path(pkg_data_path):
+    return os.path.join(pkg_data_path, 'buildings', '5ZoneAutoDXVAV.epJSON')
 
 
 @pytest.fixture(scope='session')
@@ -62,8 +63,8 @@ def weather_path(pkg_data_path):
 
 
 @pytest.fixture(scope='session')
-def idf_file():
-    return '5ZoneAutoDXVAV.idf'
+def json_file():
+    return '5ZoneAutoDXVAV.epJSON'
 
 
 @pytest.fixture(scope='session')
@@ -72,8 +73,8 @@ def weather_file():
 
 
 @pytest.fixture(scope='session')
-def idf_file2():
-    return '2ZoneDataCenterHVAC_wEconomizer.idf'
+def json_file2():
+    return '2ZoneDataCenterHVAC_wEconomizer.epJSON'
 
 
 @pytest.fixture(scope='session')
@@ -107,11 +108,11 @@ def variables_datacenter():
 
 
 @pytest.fixture(scope='function')
-def env_demo(idf_file, weather_file):
+def env_demo(json_file, weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',
-        idf_file=idf_file,
+        building_file=json_file,
         weather_file=weather_file,
         observation_space=DEFAULT_5ZONE_OBSERVATION_SPACE,
         observation_variables=DEFAULT_5ZONE_OBSERVATION_VARIABLES,
@@ -133,11 +134,11 @@ def env_demo(idf_file, weather_file):
 
 
 @pytest.fixture(scope='function')
-def env_demo_continuous(idf_file, weather_file):
+def env_demo_continuous(json_file, weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',
-        idf_file=idf_file,
+        building_file=json_file,
         weather_file=weather_file,
         observation_space=DEFAULT_5ZONE_OBSERVATION_SPACE,
         observation_variables=DEFAULT_5ZONE_OBSERVATION_VARIABLES,
@@ -159,11 +160,11 @@ def env_demo_continuous(idf_file, weather_file):
 
 
 @pytest.fixture(scope='function')
-def env_demo_continuous_stochastic(idf_file, weather_file):
+def env_demo_continuous_stochastic(json_file, weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',
-        idf_file=idf_file,
+        building_file=json_file,
         weather_file=weather_file,
         observation_space=DEFAULT_5ZONE_OBSERVATION_SPACE,
         observation_variables=DEFAULT_5ZONE_OBSERVATION_VARIABLES,
@@ -185,11 +186,11 @@ def env_demo_continuous_stochastic(idf_file, weather_file):
 
 
 @pytest.fixture(scope='function')
-def env_datacenter(idf_file2, weather_file):
+def env_datacenter(json_file2, weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',
-        idf_file=idf_file2,
+        building_file=json_file2,
         weather_file=weather_file,
         observation_space=DEFAULT_DATACENTER_OBSERVATION_SPACE,
         observation_variables=DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
@@ -214,12 +215,12 @@ def env_datacenter(idf_file2, weather_file):
 
 @pytest.fixture(scope='function')
 def env_datacenter_continuous(
-        idf_file2,
+        json_file2,
         weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',
-        idf_file=idf_file2,
+        building_file=json_file2,
         weather_file=weather_file,
         observation_space=DEFAULT_DATACENTER_OBSERVATION_SPACE,
         observation_variables=DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
@@ -250,7 +251,7 @@ def env_datacenter_continuous(
 def simulator(
         eplus_path,
         bcvtb_path,
-        idf_file,
+        json_file,
         weather_file,
         variables_5zone):
     env_name = 'TEST'
@@ -258,7 +259,7 @@ def simulator(
         eplus_path=eplus_path,
         bcvtb_path=bcvtb_path,
         weather_files=[weather_file],
-        idf_file=idf_file,
+        building_file=json_file,
         env_name=env_name,
         variables=variables_5zone,
         act_repeat=1,
@@ -266,16 +267,16 @@ def simulator(
         action_definition=DEFAULT_5ZONE_ACTION_DEFINITION)
 
 # ---------------------------------------------------------------------------- #
-#                            Simulator Config class                            #
+#                            Simulator modeling class                          #
 # ---------------------------------------------------------------------------- #
 
 
 @pytest.fixture(scope='function')
-def config(idf_file, weather_file2, variables_5zone):
+def config(json_file, weather_file2, variables_5zone):
     env_name = 'TESTCONFIG'
     max_ep_store = 10
-    return Config(
-        idf_file=idf_file,
+    return ModelJSON(
+        json_file=json_file,
         weather_files=[weather_file2],
         env_name=env_name,
         variables=variables_5zone,
@@ -289,14 +290,14 @@ def config(idf_file, weather_file2, variables_5zone):
 
 @pytest.fixture(scope='function')
 def config_several_weathers(
-        idf_file,
+        json_file,
         weather_file,
         weather_file2,
         variables_5zone):
     env_name = 'TESTCONFIG'
     max_ep_store = 10
-    return Config(
-        idf_file=idf_file,
+    return ModelJSON(
+        json_file=json_file,
         weather_files=[weather_file, weather_file2],
         env_name=env_name,
         variables=variables_5zone,
@@ -416,9 +417,10 @@ def datacenter_controller(env_datacenter):
 
 
 @ pytest.fixture(scope='function')
-def epm(idf_path, eplus_path):
-    idd = Idd(os.path.join(eplus_path, 'Energy+.idd'))
-    return Epm.from_idf(idf_path, idd_or_version=idd)
+def building(json_path):
+    with open(json_path) as json_f:
+        building_model = json.load(json_f)
+    return building_model
 
 
 @ pytest.fixture(scope='function')
@@ -490,13 +492,13 @@ def hourly_linear_reward():
 
 @ pytest.fixture(scope='function')
 def env_custom_reward(
-        idf_file,
+        json_file,
         weather_file,
         custom_reward):
 
     return EplusEnv(
         env_name='TESTGYM',
-        idf_file=idf_file,
+        building_file=json_file,
         weather_file=weather_file,
         observation_space=DEFAULT_5ZONE_OBSERVATION_SPACE,
         observation_variables=DEFAULT_5ZONE_OBSERVATION_VARIABLES,
@@ -510,11 +512,11 @@ def env_custom_reward(
 
 
 @ pytest.fixture(scope='function')
-def env_linear_reward(idf_file, weather_file):
+def env_linear_reward(json_file, weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',
-        idf_file=idf_file,
+        building_file=json_file,
         weather_file=weather_file,
         observation_space=DEFAULT_5ZONE_OBSERVATION_SPACE,
         observation_variables=DEFAULT_5ZONE_OBSERVATION_VARIABLES,
@@ -536,11 +538,11 @@ def env_linear_reward(idf_file, weather_file):
 
 
 @ pytest.fixture(scope='function')
-def env_linear_reward_args(idf_file, weather_file):
+def env_linear_reward_args(json_file, weather_file):
 
     return EplusEnv(
         env_name='TESTGYM',
-        idf_file=idf_file,
+        building_file=json_file,
         weather_file=weather_file,
         observation_space=DEFAULT_5ZONE_OBSERVATION_SPACE,
         observation_variables=DEFAULT_5ZONE_OBSERVATION_VARIABLES,
@@ -574,8 +576,8 @@ def pytest_sessionfinish(session, exitstatus):
     for file in files:
         os.remove(file)
 
-    # Deleting new IDF files generated during tests
-    files = glob('sinergym/data/buildings/TEST*.idf')
+    # Deleting new JSON files generated during tests
+    files = glob('sinergym/data/buildings/TEST*.epJSON')
     for file in files:
         os.remove(file)
 
