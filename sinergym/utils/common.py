@@ -281,25 +281,24 @@ def export_actuators_to_excel(
         current_col += 1
         worksheet.write(current_row, current_col, info['Type'], cells_format)
         current_col += 1
-        for object in info.values():
-            if isinstance(object, dict):
+        for object_name, values in info.items():
+            if isinstance(values, dict):
                 worksheet.write(
                     current_row,
                     current_col,
-                    'Name: ' +
-                    object['object_name'])
+                    'Name: ' + object_name)
                 current_col += 1
                 worksheet.write(
                     current_row,
                     current_col,
                     'Field: ' +
-                    object['object_field_name'])
+                    values['field_name'])
                 current_col += 1
                 worksheet.write(
                     current_row,
                     current_col,
                     'Table type: ' +
-                    object['object_type'])
+                    values['table_name'])
                 current_col += 1
         # Update max column if it is necessary
         if current_col > max_col:
