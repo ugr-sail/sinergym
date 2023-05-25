@@ -181,14 +181,15 @@ class EnergyPlus(object):
                 self._config.update_weather_path()
                 self.logger_main.info(
                     'Adapting building to new weather file...')
-                self._config.adapt_idf_to_epw()
+                self._config.adapt_building_to_epw()
 
         # Create EnergyPlus simulation process
         self.logger_main.info('Creating new EnergyPlus simulation episode...')
         # Creating episode working dir
         eplus_working_dir = self._config.set_episode_working_dir()
-        # Getting IDF, WEATHER, VARIABLES and OUTPUT path for current episode
-        eplus_working_idf_path = self._config.save_building_model()
+        # Getting BUILDING, WEATHER, VARIABLES and OUTPUT path for current
+        # episode
+        eplus_working_building_path = self._config.save_building_model()
         eplus_working_var_path = self._config.save_variables_cfg()
         eplus_working_out_path = (eplus_working_dir + '/' + 'output')
         eplus_working_weather_path = self._config.apply_weather_variability(
@@ -207,7 +208,7 @@ class EnergyPlus(object):
         eplus_process = self._create_eplus(
             self._eplus_path,
             eplus_working_weather_path,
-            eplus_working_idf_path,
+            eplus_working_building_path,
             eplus_working_out_path,
             eplus_working_dir)
         self.logger_main.debug(
@@ -346,7 +347,7 @@ class EnergyPlus(object):
             self,
             eplus_path: str,
             weather_path: str,
-            idf_path: str,
+            building_path: str,
             out_path: str,
             eplus_working_dir: str) -> subprocess.Popen:
         """Creates the EnergyPlus process.
@@ -354,7 +355,7 @@ class EnergyPlus(object):
         Args:
             eplus_path (str): EnergyPlus path.
             weather_path (str): Weather file path (.epw).
-            idf_path (str): Building model path (.idf).
+            building_path (str): Building model path (.epJSON).
             out_path (str): Output path.
             eplus_working_dir (str): EnergyPlus working directory.
 
@@ -368,7 +369,7 @@ class EnergyPlus(object):
              '/energyplus',
              weather_path,
              out_path,
-             idf_path),
+             building_path),
             shell=True,
             cwd=eplus_working_dir,
             stdout=subprocess.PIPE,
@@ -531,7 +532,7 @@ class EnergyPlus(object):
             nIn (str):
             nBl (str):
             curSimTim (str): Current simulation time.
-            Dblist (str): State of enviroment (depending on variables:output fixed in IDF file).
+            Dblist (str): State of enviroment (depending on variables:output fixed in epJSON file).
 
         Returns:
             str: All values concatenated in correct format to send to EnergyPlus subprocess.
