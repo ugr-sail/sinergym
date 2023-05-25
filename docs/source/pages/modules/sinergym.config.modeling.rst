@@ -1,7 +1,7 @@
-sinergym.utils.config
-=====================
+sinergym.config.modeling
+========================
 
-.. automodule:: sinergym.utils.config
+.. automodule:: sinergym.config.modeling
   
    
    
@@ -19,7 +19,8 @@ sinergym.utils.config
       :toctree:                                          
       :template: custom-class-template.rst               
    
-      Config
+      Model
+      ModelJSON
    
    
 
