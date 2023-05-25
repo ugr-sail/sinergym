@@ -554,12 +554,12 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 class OfficeGridStorageSmoothingActionConstraintsWrapper(
         gym.ActionWrapper):  # pragma: no cover
     def __init__(self, env):
-        assert env.idf_path.split(
-            '/')[-1] == 'OfficeGridStorageSmoothing.idf', 'OfficeGridStorageSmoothingActionConstraintsWrapper: This wrapper is not valid for this environment.'
+        assert env.building_path.split(
+            '/')[-1] == 'OfficeGridStorageSmoothing.epJSON', 'OfficeGridStorageSmoothingActionConstraintsWrapper: This wrapper is not valid for this environment.'
         super().__init__(env)
 
     def action(self, act: np.ndarray) -> np.ndarray:
-        """Due to Charge rate and Discharge rate can't be more than 0.0 simultaneously (in OfficeGridStorageSmoothing.idf),
+        """Due to Charge rate and Discharge rate can't be more than 0.0 simultaneously (in OfficeGridStorageSmoothing.epJSON),
            this wrapper clips one of the to 0.0 when both have a value upper than 0.0 (randomly).
 
         Args:

@@ -422,13 +422,13 @@ class ModelJSON(object):
                 '[Simulator Modeling] Episode path should be set before saving variables.cfg.')
 
     def save_building_model(self) -> str:
-        """Take current building model and save as IDF in current env_working_dir episode folder.
+        """Take current building model and save as epJSON in current env_working_dir episode folder.
 
         Returns:
-            str: Path of IDF file stored (episode folder).
+            str: Path of epJSON file stored (episode folder).
         """
 
-        # If no path specified, then use idf_path to save it.
+        # If no path specified, then use json_path to save it.
         if self.episode_path is not None:
             episode_json_path = os.path.join(self.episode_path,
                                              os.path.basename(self._json_path))
@@ -556,7 +556,7 @@ class ModelJSON(object):
         Returns:
             Tuple[int, int, int, int, int, int, int, int]: A tuple with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.
         """
-        # Get runperiod object inner IDF
+        # Get runperiod object inner building model
         runperiod = list(self.building['RunPeriod'].values())[0]
 
         # Extract information about runperiod
@@ -621,7 +621,7 @@ class ModelJSON(object):
         Returns:
             float: The simulation time in which the simulation ends (seconds).
         """
-        # Get runperiod object inner IDF
+        # Get runperiod object inner building model
         runperiod = list(self.building['RunPeriod'].values())[0]
         start_year = int(
             YEAR if runperiod['begin_year'] is None else runperiod['begin_year'])
@@ -823,7 +823,7 @@ class ModelJSON(object):
 
             # Check observarion variables names
             assert obs_name in list(self.rdd_variables.keys(
-            )), 'Observation variables: Variable called {} in observation variables is not valid for IDF building model'.format(obs_name)
+            )), 'Observation variables: Variable called {} in observation variables is not valid for the building model'.format(obs_name)
             # Check observation variables about zones (if variable type is
             # Zone)
             if self.rdd_variables[obs_name] == 'Zone':
@@ -834,7 +834,7 @@ class ModelJSON(object):
                     # is ignored, only check that zone is a substr from obs
                     # zone
                     assert any(list(map(lambda zone: zone.lower() in obs_element_name.lower(), self.zone_names))
-                               ), 'Observation variables: Zone called {} in observation variables does not exist in IDF building model.'.format(obs_element_name)
+                               ), 'Observation variables: Zone called {} in observation variables does not exist in the building model.'.format(obs_element_name)
             # Check observation variables about HVAC
             elif self.rdd_variables[obs_name] == 'HVAC':
                 pass
