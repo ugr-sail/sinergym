@@ -16,7 +16,7 @@ To use this functionality easily, you can provide this extra parameters in **env
                   'runperiod' : (1,1,1997,12,3,1998)}
     env = gym.make('Eplus-5Zone-hot-continuous-v1', config_params=extra_params)
 
-*Sinergym* will modify this simulation model from Python code and save *IDF* in each 
+*Sinergym* will modify this simulation model from Python code and save *epJSON* in each 
 episode directory generated in output. For more information, see :ref:`Output format`.
 The format for apply extra configuration is a **Python dictionary** with extra parameter key name and value.
 
@@ -43,7 +43,7 @@ The format value for **runperiod** key is a **tuple** with
 
 .. warning:: If we include a manual runperiod with this functionality, we should not include any 
              February 29th of a leap year in that range. Otherwise, the simulator will fail, 
-             since *Energyplus* does not take into account leap days and the weather files 
+             since *EnergyPlus* does not take into account leap days and the weather files 
              do not include these days.
 
 .. note:: More components could be managed in the future. Stay tuned for upcoming releases! 
