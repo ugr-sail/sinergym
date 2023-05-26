@@ -192,25 +192,22 @@ The **list of available environments** is the following:
 +-------------------------------------------------+---------------------------------------+-----------------------------------------------------------------+---------------------+--------------+-------------------+
 | Eplus-officegrid-hot-continuous-stochastic-v1   | OfficeGridStorageSmoothing.idf        | USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw                        | Yes                 | Box(4)       | 01/01 - 31/12     |
 +-------------------------------------------------+---------------------------------------+-----------------------------------------------------------------+---------------------+--------------+-------------------+
-|                                                 | ShopWithVandBattery.idf               | USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw | No                  | Box(2)       | 01/01 - 31/12     |
-| Eplus-shop-cool-continuous-v1                   |                                       |                                                                 |                     |              |                   |
+| Eplus-shop-cool-continuous-v1                   | ShopWithVandBattery.idf               | USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw | No                  | Box(2)       | 01/01 - 31/12     |
 +-------------------------------------------------+---------------------------------------+-----------------------------------------------------------------+---------------------+--------------+-------------------+
 | Eplus-shop-mixed-continuous-v1                  | ShopWithVandBattery.idf               | USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw             | No                  | Box(2)       | 01/01 - 31/12     |
 +-------------------------------------------------+---------------------------------------+-----------------------------------------------------------------+---------------------+--------------+-------------------+
-|                                                 | ShopWithVandBattery.idf               | USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw                        | No                  | Box(2)       | 01/01 - 31/12     |
-| Eplus-shop-hot-continuous-v1                    |                                       |                                                                 |                     |              |                   |
+| Eplus-shop-hot-continuous-v1                    | ShopWithVandBattery.idf               | USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw                        | No                  | Box(2)       | 01/01 - 31/12     |
 +-------------------------------------------------+---------------------------------------+-----------------------------------------------------------------+---------------------+--------------+-------------------+
-|                                                 | ShopWithVandBattery.idf               | USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw | Yes                 | Box(2)       | 01/01 - 31/12     |
-| Eplus-shop-cool-continuous-stochastic-v1        |                                       |                                                                 |                     |              |                   |
+| Eplus-shop-cool-continuous-stochastic-v1        | ShopWithVandBattery.idf               | USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw | Yes                 | Box(2)       | 01/01 - 31/12     |
 +-------------------------------------------------+---------------------------------------+-----------------------------------------------------------------+---------------------+--------------+-------------------+
-|                                                 | ShopWithVandBattery.idf               | USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw             | Yes                 | Box(2)       | 01/01 - 31/12     |
-| Eplus-shop-mixed-continuous-stochastic-v1       |                                       |                                                                 |                     |              |                   |
+| Eplus-shop-mixed-continuous-stochastic-v1       | ShopWithVandBattery.idf               | USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw             | Yes                 | Box(2)       | 01/01 - 31/12     |
 +-------------------------------------------------+---------------------------------------+-----------------------------------------------------------------+---------------------+--------------+-------------------+
-|                                                 | ShopWithVandBattery.idf               | USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw                        | Yes                 | Box(2)       | 01/01 - 31/12     |
-| Eplus-shop-hot-continuous-stochastic-v1         |                                       |                                                                 |                     |              |                   |
+| Eplus-shop-hot-continuous-stochastic-v1         | ShopWithVandBattery.idf               | USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw                        | Yes                 | Box(2)       | 01/01 - 31/12     |
 +-------------------------------------------------+---------------------------------------+-----------------------------------------------------------------+---------------------+--------------+-------------------+
 
-.. note:: For more information about buildings (IDF column) and weathers (EPW column),
+
+
+.. note:: For more information about buildings (epJSON column) and weathers (EPW column),
           please, visit sections :ref:`Buildings` and :ref:`Weathers` respectively.
 
 *********************
@@ -227,13 +224,13 @@ table above or creating a new one.
 
 We will show which **parameters** are available and what their function is.
 
-IDF file 
-=========
+building file 
+==============
 
-The parameter *idf_file* is the *IDF* (Intermediate Data Format) file name  
-where *Energyplus* building model is defined.
+The parameter *building_file* is the *epJSON* file, a new `adaptation <https://energyplus.readthedocs.io/en/latest/schema.html>`__ 
+of *IDF* (Intermediate Data Format) where *EnergyPlus* building model is defined.
 
-*Sinergym* initially provides **"free" buildings**. This means that the *IDF* does not have the external 
+*Sinergym* initially provides **"free" buildings**. This means that the *epJSON* does not have the external 
 interface defined and default components, such as the ``timesteps``, the ``runperiod``, the 
 ``location`` or ``DesignDays``. 
 
@@ -255,8 +252,8 @@ in such a way that it is **compatible** with that weather. Therefore, *Sinergym*
 fields automatically using the weather data, without the need for user intervention. 
 
 This parameter can be a weather file name (str) as mentioned, or a list of different weather files (List[str]).
-When a list of several files is defined, Sinergym will select an *EPW* file in each episode and re-adapt *IDF*
-randomly. This is done in order to increase the complexity in the environment whether is desired. 
+When a list of several files is defined, Sinergym will select an *EPW* file in each episode and re-adapt building 
+model randomly. This is done in order to increase the complexity in the environment whether is desired. 
 
 The weather file used in each episode is stored in Sinergym episode output folder, if **variability** 
 (section :ref:`Weather Variability` is defined), the *EPW* stored will have that noise included.
@@ -288,7 +285,7 @@ Reward Kwargs
 Depending on the reward class that is specified to the environment, it may have **different parameters** 
 depending on its type. In addition, if a user creates a new custom reward, it can have new parameters as well.
 
-Moreover, depending on the building being used (*IDF* file) for the environment, the values of these reward parameters may 
+Moreover, depending on the building being used (*epJSON* file) for the environment, the values of these reward parameters may 
 need to be different, such as the comfort range or the energy and temperature variables of the simulation that 
 will be used to calculate the reward.
 
@@ -320,7 +317,7 @@ This allows for a **dynamic definition** of these spaces. Let's see the fields r
 - **observation_variables**: List of observation variables that simulator is going to process like an observation. 
   These variables names must follow the structure ``<variable_name>(<zone_name>)`` in order to register 
   them correctly. *Sinergym* will check for you that the variable names are correct with respect to 
-  the building you are trying to simulate (*IDF* file). 
+  the building you are trying to simulate (*epJSON* file). 
   To do this, it will look at the list found in the 
   `variables <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/variables>`__ 
   folder of the project (*RDD* file). 
@@ -339,8 +336,8 @@ This allows for a **dynamic definition** of these spaces. Let's see the fields r
 
 - **action_variables**: List of the action variables that simulator is going to process 
   like schedule control actuator in the building model. These variables
-  must be defined in the building model (*IDF* file) correctly before simulation like an 
-  ``external interface``. You can modify **manually** in the *IDF* file or using our 
+  must be defined in the building model (*epJSON* file) correctly before simulation like an 
+  ``external interface``. You can modify **manually** in the building file or using our 
   **action definition** field in which you set what you want to control and *Sinergym* 
   takes care of modifying this file for you automatically. For more information about 
   this automatic adaptation in section :ref:`Action definition`.
@@ -366,7 +363,7 @@ set up in `constants.py <https://github.com/ugr-sail/sinergym/tree/main/sinergym
 
 As can be seen in environments observations, the **year, month, day and hour** are included in, 
 but is not configured in default observation variables definition. 
-This is because they are not variables recognizable by the simulator (*Energyplus*) as such 
+This is because they are not variables recognizable by the simulator (*EnergyPlus*) as such 
 and *Sinergym* does the calculations and adds them in the states returned as 
 output by the environment. This feature is **common to all environments** available in 
 *Sinergym* and all supported building designs. In other words, you don't need to 
@@ -385,7 +382,7 @@ specifications made to the default ones. In case the specification offered is wr
 
 Sinergym offers the possibility to create **empty action interfaces**, so that you can take advantage 
 of all its benefits instead of using the EnergyPlus simulator directly, meanwhile the control is 
-managed by **default IDF schedulers** (actuators). For more information, see the example of use 
+managed by **default building model schedulers** (actuators). For more information, see the example of use 
 :ref:`Default building control setting up an empty action interface`.
 
 .. note:: ``variables.cfg`` is a requirement in order to establish a connection between Gymnasium environment and Simulator 
@@ -405,15 +402,15 @@ Action definition
 ==================
 
 Creating a **new external interface** to control different parts of a building is not a trivial task, 
-it requires certain changes in the building model (*IDF*), configuration files for the external 
+it requires certain changes in the building model (*epJSON*), configuration files for the external 
 interface (``variables.cfg``), etc in order to control it.
 
 The **changes in the building model** are **complex** due to depending on the building model we will have
 available different zones and actuators. 
 
-Thus, there is the possibility to add an **action definition** in environment instead of modify *IDF* 
-directly about components or actuators changes required to control by external variables specified 
-in :ref:`Observation/action spaces`.
+Thus, there is the possibility to add an **action definition** in environment instead of modify the
+building model directly about components or actuators changes required to control by external variables 
+specified in :ref:`Observation/action spaces`.
 
 For this purpose,  we have available *action_definition* parameter in environments. Its value is a 
 dictionary with the next structure:
@@ -421,7 +418,7 @@ dictionary with the next structure:
 .. code:: python
 
     action_definition_example={  
-      <Original_IDF_scheduler_name>:'name':{<external_variable_name>,'initial_value':<value>},
+      <Original_building_scheduler_name>:'name':{<external_variable_name>,'initial_value':<value>},
       ...
     }
 
@@ -480,13 +477,13 @@ characteristics.
 However, you may need or want to include a **new weather** for an experiment. Therefore, this section 
 is dedicated to give an explanation of how to do it:
 
-1. Download **EPW** file and **DDY** file in `Energyplus page <https://energyplus.net/weather>`__. *DDY* file
-   contains information about different design days available for that weather.
+1. Download **EPW** file and **DDY** file in `EnergyPlus page <https://energyplus.net/weather>`__. *DDY* file
+   contains information about the location and different design days available for that weather.
 2. Both files (*EPW* and *DDY*) must have exactly the same name, the only difference being the extension. 
    They should be placed in the `weathers <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/weather>`__ folder.
 
-That is all! Sinergym should be able to adapt ``DesignDays`` and ``Location`` in *IDF* file using *DDY* 
-automatically for that weather.
+That is all! Sinergym should be able to adapt ``SizingPeriod:DesignDays`` and ``Site:Location`` fields in building 
+model file using *DDY* automatically for that weather.
 
 **************************************
 Adding new buildings for environments
@@ -494,29 +491,30 @@ Adding new buildings for environments
 
 As we have already mentioned, a user can change the already available environments or even create new environment 
 definitions including new climates, action and observation spaces, etc. However, perhaps **the most complex thing 
-to incorporate** into the project are **new building models** (*IDF* files) than the ones we support.
+to incorporate** into the project are **new building models** (*epJSON* files) than the ones we support.
 
 This section is intended to provide information if someone decides to add new buildings for use with *Sinergym*. 
 The main steps you have to follow are the next:
 
-1. Add your building (*IDF* file) to `buildings <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings>`__. 
+1. Add your building file (*epJSON*) to `buildings <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings>`__.
+   EnergyPlus pretends to work with *JSON* format instead of *IDF* format in their building definitions and simulations. Then,
+   Sinergym pretends to work with this format from version 2.4.0 or higher directly. You can download a *IDF* file and convert
+   to *epJSON* using their **ConvertInputFormat tool** from EnergyPlus.
    That building model must be "free" as far as external interface is concerned if you plan to use Sinergym's **action 
    definition** which will modify the model for you before starting the 
    simulation automatically (see section :ref:`Action definition`).
-   If you are going to control a component which is not supported by *Sinergym* currently, 
-   you will have to update *IDF* manually before starting
-   simulation. **Be sure that new IDF model version is compatible with EnergyPlus version**.
+   **Be sure that new epJSON model version is compatible with EnergyPlus version**.
 
 2. Add your own *EPW* file for weather conditions (section :ref:`Adding new weathers for environments`) 
    or use ours in environment constructor. 
 
 3. *Sinergym* will check that observation variables specified in environments constructor are 
    available in the simulation before starting. In order to be able to do these checks, 
-   you need to copy **RDD file** with the same name than *IDF* file (except extension) 
+   you need to copy **RDD file** with the same name than building model file (except extension) 
    to `variables <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/variables>`__. 
-   To obtain this **RDD file**, you have to run a simulation with *Energyplus* directly 
+   To obtain this **RDD file**, you have to run a simulation with *EnergyPlus* directly 
    and extract from output folder. 
-   Make sure that **Output:VariableDictionary** object in *IDF* has the value *Regular* 
+   Make sure that **Output:VariableDictionary** object in building model has the value *Regular* 
    in order to *RDD* file has the correct format for *Sinergym*.
 
 4. Register your own environment ID `here <https://github.com/ugr-sail/sinergym/blob/main/sinergym/__init__.py>`__ 

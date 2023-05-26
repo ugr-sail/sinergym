@@ -13,7 +13,8 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
@@ -105,7 +106,7 @@
              
   <section id="welcome-to-sinergym">
 <h1>Welcome to <strong>sinergym</strong>!<a class="headerlink" href="#welcome-to-sinergym" title="Permalink to this heading"></a></h1>
-<p>The goal of <em>sinergym</em> is to create an environment following <em>Gymnasium</em> interface for wrapping simulation engines (<em>Energyplus</em>) for building control using
+<p>The goal of <em>sinergym</em> is to create an environment following <em>Gymnasium</em> interface for wrapping simulation engines (<em>EnergyPlus</em>) for building control using
 <strong>deep reinforcement learning</strong>.</p>
 <a class="reference internal image-reference" href="_images/general_blueprint.png"><img alt="Sinergym diagram" class="align-center" src="_images/general_blueprint.png" style="width: 800px;" /></a>
 <div class="line-block">
@@ -183,11 +184,11 @@ as well, such as people occupant, time-steps per simulation hour, run-period, et
 Following the structure of the implemented classes, new custom components
 can be created for new environments such as function rewards, wrappers,
 controllers, etc.</p></li>
-<li><p><strong>Automatic Building Model adaptation to user changes</strong>: Building models (<em>IDF</em>) will be
-adapted to specification of each simulation by the user. For example, <code class="docutils literal notranslate"><span class="pre">Designdays</span></code> and
-<code class="docutils literal notranslate"><span class="pre">Location</span></code> components from <em>IDF</em> files will be adapted to weather file (<em>EPW</em>) specified in
+<li><p><strong>Automatic Building Model adaptation to user changes</strong>: Building models (<em>epJSON</em>) will be
+adapted to specification of each simulation by the user. For example, <code class="docutils literal notranslate"><span class="pre">SizingPeriod:Designdays</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Site:Location</span></code> components from building model files will be adapted to weather file (<em>EPW</em>) specified in
 <em>Sinergym</em> simulator backend without any intervention by the user (only the environment definition).
-<em>BCVTB middleware</em> external interface in <em>IDF</em> model and <em>variables.cfg</em> file is generated when
+<em>BCVTB middleware</em> <code class="docutils literal notranslate"><span class="pre">ExternalInterface</span></code> in building model and <em>variables.cfg</em> file is generated when
 simulation starts by <em>Sinergym</em>, this definition depends on action and observation space and variables defined.
 In short, <em>Sinergym</em> automates the whole process of model adaptation so that the user
 only has to define what he wants for his environment.</p></li>

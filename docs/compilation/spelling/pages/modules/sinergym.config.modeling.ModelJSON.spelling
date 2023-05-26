@@ -1,0 +1,5 @@
+source/pages/modules/sinergym.config.modeling.ModelJSON.rst:2: (ModelJSON)  sinergym.config.modeling.ModelJSON
+source/pages/modules/sinergym.config.modeling.ModelJSON.rst:36:<autosummary>:1: (json)  (json_file, weather_files, ...)
+source/pages/modules/sinergym.config.modeling.ModelJSON.rst:36:<autosummary>:1: (epJSON)  Take current building model and save as epJSON in current env_working_dir episode folder.
+../sinergym/config/modeling.py:docstring of sinergym.config.modeling.ModelJSON.save_building_model:1: (epJSON)  Take current building model and save as epJSON in current env_working_dir episode folder.
+../sinergym/config/modeling.py:docstring of sinergym.config.modeling.ModelJSON.save_building_model:1: (epJSON)  Path of epJSON file stored (episode folder).

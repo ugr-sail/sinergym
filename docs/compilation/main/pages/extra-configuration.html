@@ -13,7 +13,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
@@ -122,7 +123,7 @@ To use this functionality easily, you can provide this extra parameters in <stro
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5Zone-hot-continuous-v1&#39;</span><span class="p">,</span> <span class="n">config_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><em>Sinergym</em> will modify this simulation model from Python code and save <em>IDF</em> in each
+<p><em>Sinergym</em> will modify this simulation model from Python code and save <em>epJSON</em> in each
 episode directory generated in output. For more information, see <a class="reference internal" href="output.html#output-format"><span class="std std-ref">Output format</span></a>.
 The format for apply extra configuration is a <strong>Python dictionary</strong> with extra parameter key name and value.</p>
 <div class="admonition note">
@@ -146,7 +147,7 @@ The format value for <strong>runperiod</strong> key is a <strong>tuple</strong> 
 <p class="admonition-title">Warning</p>
 <p>If we include a manual runperiod with this functionality, we should not include any
 February 29th of a leap year in that range. Otherwise, the simulator will fail,
-since <em>Energyplus</em> does not take into account leap days and the weather files
+since <em>EnergyPlus</em> does not take into account leap days and the weather files
 do not include these days.</p>
 </div>
 <div class="admonition note">

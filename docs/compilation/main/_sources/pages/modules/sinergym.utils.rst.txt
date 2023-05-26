@@ -30,7 +30,6 @@
 
    sinergym.utils.callbacks
    sinergym.utils.common
-   sinergym.utils.config
    sinergym.utils.constants
    sinergym.utils.controllers
    sinergym.utils.env_checker

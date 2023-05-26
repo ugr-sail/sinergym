@@ -13,7 +13,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
@@ -122,7 +123,7 @@ this directory is the result of the simulation and we have:</p>
 │   ├── variables.cfg
 │   ├── socket.cfg
 │   ├── utilSocket.cfg
-│   ├── environment.idf
+│   ├── environment.epJSON
 |   ├── weather.epw
 │   ├── monitor.csv
 |   └── monitor_normalized.csv (optional)
@@ -137,8 +138,8 @@ and <em>maximum episode data value</em>
 <li><p>Within these directories, you have always the same structure:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>A copy of <strong>variables.cfg</strong> and <strong>environment.idf</strong> which are being used during
-simulation. <strong>Environment.idf</strong> does not have to be the same as the original
+<li><p>A copy of <strong>variables.cfg</strong> and <strong>environment.epJSON</strong> which are being used during
+simulation. <strong>Environment.epJSON</strong> does not have to be the same as the original
 hosted in the repository. Since the simulation can be modified to suit the
 specific weather or apply extra user-defined settings when building the
 gymnasium environment.</p></li>
@@ -146,7 +147,7 @@ gymnasium environment.</p></li>
 episode to another (using variability, for example). If weather does not
 change, original repository <em>.epw</em> will be used in each episode.</p></li>
 <li><p>A copy of <strong>socket.cfg</strong> and <strong>utilSocket.log</strong> which are being used in
-order to establish communication interface with <em>Energyplus</em> during simulation.</p></li>
+order to establish communication interface with <em>EnergyPlus</em> during simulation.</p></li>
 <li><p><strong>monitor.csv</strong>: This records all interactions Agent-Environment during
 the episode timestep by timestep. This file only exists
 when environment has been wrapped with <strong>Logger</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a> for
@@ -156,7 +157,7 @@ wrapped with <strong>logger and normalization</strong> (see <a class="reference 
 is the same than <strong>monitor.csv</strong> but <code class="docutils literal notranslate"><span class="pre">observation_values</span></code> are normalized.</p></li>
 <li><p><strong>output/</strong>: This directory has <strong>EnergyPlus simulation output</strong>.
 If you want to know more about this files, visit
-<a class="reference external" href="https://energyplus.net/documentation">Energyplus documentation</a>.</p></li>
+<a class="reference external" href="https://energyplus.net/documentation">EnergyPlus documentation</a>.</p></li>
 </ul>
 </div></blockquote>
 </li>

@@ -12,7 +12,8 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
@@ -120,17 +121,21 @@
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
- | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
  | <a href="#W"><strong>W</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
  
 </div>
 <h2 id="_">_</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.__init__">__init__() (sinergym.envs.eplus_env.EplusEnv method)</a>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model.__init__">__init__() (sinergym.config.modeling.Model method)</a>
 
       <ul>
+        <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.__init__">(sinergym.config.modeling.ModelJSON method)</a>
+</li>
+        <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.__init__">(sinergym.envs.eplus_env.EplusEnv method)</a>
+</li>
         <li><a href="pages/modules/sinergym.simulators.base.BaseSimulator.html#sinergym.simulators.base.BaseSimulator.__init__">(sinergym.simulators.base.BaseSimulator method)</a>
 </li>
         <li><a href="pages/modules/sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus.__init__">(sinergym.simulators.eplus.EnergyPlus method)</a>
@@ -140,8 +145,6 @@
         <li><a href="pages/modules/sinergym.utils.callbacks.LoggerCallback.html#sinergym.utils.callbacks.LoggerCallback.__init__">(sinergym.utils.callbacks.LoggerCallback method)</a>
 </li>
         <li><a href="pages/modules/sinergym.utils.callbacks.LoggerEvalCallback.html#sinergym.utils.callbacks.LoggerEvalCallback.__init__">(sinergym.utils.callbacks.LoggerEvalCallback method)</a>
-</li>
-        <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.__init__">(sinergym.utils.config.Config method)</a>
 </li>
         <li><a href="pages/modules/sinergym.utils.controllers.RandomController.html#sinergym.utils.controllers.RandomController.__init__">(sinergym.utils.controllers.RandomController method)</a>
 </li>
@@ -202,22 +205,42 @@
       </ul></li>
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.action_space">action_space (sinergym.envs.eplus_env.EplusEnv property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.utils.logger.CSVLogger.html#sinergym.utils.logger.CSVLogger.activate_flag">activate_flag() (sinergym.utils.logger.CSVLogger method)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.wrappers.LoggerWrapper.html#sinergym.utils.wrappers.LoggerWrapper.activate_logger">activate_logger() (sinergym.utils.wrappers.LoggerWrapper method)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.adapt_idf_to_action_definition">adapt_idf_to_action_definition() (sinergym.utils.config.Config method)</a>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model.adapt_building_to_action_definition">adapt_building_to_action_definition() (sinergym.config.modeling.Model method)</a>
+
+      <ul>
+        <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.adapt_building_to_action_definition">(sinergym.config.modeling.ModelJSON method)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.adapt_idf_to_epw">adapt_idf_to_epw() (sinergym.utils.config.Config method)</a>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model.adapt_building_to_epw">adapt_building_to_epw() (sinergym.config.modeling.Model method)</a>
+
+      <ul>
+        <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.adapt_building_to_epw">(sinergym.config.modeling.ModelJSON method)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.adapt_variables_to_cfg_and_idf">adapt_variables_to_cfg_and_idf() (sinergym.utils.config.Config method)</a>
+      </ul></li>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model.adapt_variables_to_cfg_and_building">adapt_variables_to_cfg_and_building() (sinergym.config.modeling.Model method)</a>
+
+      <ul>
+        <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.adapt_variables_to_cfg_and_building">(sinergym.config.modeling.ModelJSON method)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.apply_extra_conf">apply_extra_conf() (sinergym.utils.config.Config method)</a>
+      </ul></li>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model.apply_extra_conf">apply_extra_conf() (sinergym.config.modeling.Model method)</a>
+
+      <ul>
+        <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.apply_extra_conf">(sinergym.config.modeling.ModelJSON method)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.apply_weather_variability">apply_weather_variability() (sinergym.utils.config.Config method)</a>
+      </ul></li>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model.apply_weather_variability">apply_weather_variability() (sinergym.config.modeling.Model method)</a>
+
+      <ul>
+        <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.apply_weather_variability">(sinergym.config.modeling.ModelJSON method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -246,8 +269,6 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config">Config (class in sinergym.utils.config)</a>
-</li>
       <li><a href="pages/modules/sinergym.utils.common.create_variable_weather.html#sinergym.utils.common.create_variable_weather">create_variable_weather() (in module sinergym.utils.common)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.logger.CSVLogger.html#sinergym.utils.logger.CSVLogger">CSVLogger (class in sinergym.utils.logger)</a>
@@ -294,6 +315,8 @@
 </li>
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv">EplusEnv (class in sinergym.envs.eplus_env)</a>
 </li>
+      <li><a href="pages/modules/sinergym.utils.common.eppy_element_to_dict.html#sinergym.utils.common.eppy_element_to_dict">eppy_element_to_dict() (in module sinergym.utils.common)</a>
+</li>
       <li><a href="pages/modules/sinergym.utils.evaluation.evaluate_policy.html#sinergym.utils.evaluation.evaluate_policy">evaluate_policy() (in module sinergym.utils.evaluation)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.common.export_actuators_to_excel.html#sinergym.utils.common.export_actuators_to_excel">export_actuators_to_excel() (in module sinergym.utils.common)</a>
@@ -306,7 +329,7 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pages/modules/sinergym.utils.common.get_current_time_info.html#sinergym.utils.common.get_current_time_info">get_current_time_info() (in module sinergym.utils.common)</a>
+      <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.get_current_time_info">get_current_time_info() (sinergym.config.modeling.ModelJSON method)</a>
 </li>
       <li><a href="pages/modules/sinergym.utils.common.get_delta_seconds.html#sinergym.utils.common.get_delta_seconds">get_delta_seconds() (in module sinergym.utils.common)</a>
 </li>
@@ -314,10 +337,12 @@
 </li>
       <li><a href="pages/modules/sinergym.utils.common.get_record_keys.html#sinergym.utils.common.get_record_keys">get_record_keys() (in module sinergym.utils.common)</a>
 </li>
-      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.get_schedulers">get_schedulers() (sinergym.envs.eplus_env.EplusEnv method)</a>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model.get_schedulers">get_schedulers() (sinergym.config.modeling.Model method)</a>
 
       <ul>
-        <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.get_schedulers">(sinergym.utils.config.Config method)</a>
+        <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.get_schedulers">(sinergym.config.modeling.ModelJSON method)</a>
+</li>
+        <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.get_schedulers">(sinergym.envs.eplus_env.EplusEnv method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -384,10 +409,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.metadata">metadata (sinergym.envs.eplus_env.EplusEnv attribute)</a>
 </li>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model">Model (class in sinergym.config.modeling)</a>
+</li>
+      <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON">ModelJSON (class in sinergym.config.modeling)</a>
+</li>
       <li>
     module
 
       <ul>
+        <li><a href="pages/modules/sinergym.config.html#module-sinergym.config">sinergym.config</a>
+</li>
+        <li><a href="pages/modules/sinergym.config.modeling.html#module-sinergym.config.modeling">sinergym.config.modeling</a>
+</li>
         <li><a href="pages/modules/sinergym.envs.html#module-sinergym.envs">sinergym.envs</a>
 </li>
         <li><a href="pages/modules/sinergym.envs.eplus_env.html#module-sinergym.envs.eplus_env">sinergym.envs.eplus_env</a>
@@ -405,8 +438,6 @@
         <li><a href="pages/modules/sinergym.utils.callbacks.html#module-sinergym.utils.callbacks">sinergym.utils.callbacks</a>
 </li>
         <li><a href="pages/modules/sinergym.utils.common.html#module-sinergym.utils.common">sinergym.utils.common</a>
-</li>
-        <li><a href="pages/modules/sinergym.utils.config.html#module-sinergym.utils.config">sinergym.utils.config</a>
 </li>
         <li><a href="pages/modules/sinergym.utils.constants.html#module-sinergym.utils.constants">sinergym.utils.constants</a>
 </li>
@@ -467,10 +498,6 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pages/modules/sinergym.utils.common.prepare_batch_from_records.html#sinergym.utils.common.prepare_batch_from_records">prepare_batch_from_records() (in module sinergym.utils.common)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.utils.wrappers.PreviousObservationWrapper.html#sinergym.utils.wrappers.PreviousObservationWrapper">PreviousObservationWrapper (class in sinergym.utils.wrappers)</a>
 </li>
   </ul></td>
@@ -515,9 +542,19 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.save_building_model">save_building_model() (sinergym.utils.config.Config method)</a>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model.save_building_model">save_building_model() (sinergym.config.modeling.Model method)</a>
+
+      <ul>
+        <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.save_building_model">(sinergym.config.modeling.ModelJSON method)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.save_variables_cfg">save_variables_cfg() (sinergym.utils.config.Config method)</a>
+      </ul></li>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model.save_variables_cfg">save_variables_cfg() (sinergym.config.modeling.Model method)</a>
+
+      <ul>
+        <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.save_variables_cfg">(sinergym.config.modeling.ModelJSON method)</a>
+</li>
+      </ul></li>
+      <li><a href="pages/modules/sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus.schedulers">schedulers (sinergym.simulators.eplus.EnergyPlus property)</a>
 </li>
       <li><a href="pages/modules/sinergym.simulators.base.BaseSimulator.html#sinergym.simulators.base.BaseSimulator.send_action">send_action() (sinergym.simulators.base.BaseSimulator method)</a>
 
@@ -525,14 +562,40 @@
         <li><a href="pages/modules/sinergym.simulators.eplus_alpha.EnergyPlus.html#sinergym.simulators.eplus_alpha.EnergyPlus.send_action">(sinergym.simulators.eplus_alpha.EnergyPlus method)</a>
 </li>
       </ul></li>
-      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.set_episode_working_dir">set_episode_working_dir() (sinergym.utils.config.Config method)</a>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model.set_episode_working_dir">set_episode_working_dir() (sinergym.config.modeling.Model method)</a>
+
+      <ul>
+        <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.set_episode_working_dir">(sinergym.config.modeling.ModelJSON method)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.set_experiment_working_dir">set_experiment_working_dir() (sinergym.utils.config.Config method)</a>
+      </ul></li>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model.set_experiment_working_dir">set_experiment_working_dir() (sinergym.config.modeling.Model method)</a>
+
+      <ul>
+        <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.set_experiment_working_dir">(sinergym.config.modeling.ModelJSON method)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.set_external_interface">set_external_interface() (sinergym.utils.config.Config method)</a>
+      </ul></li>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model.set_external_interface">set_external_interface() (sinergym.config.modeling.Model method)</a>
+
+      <ul>
+        <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.set_external_interface">(sinergym.config.modeling.ModelJSON method)</a>
 </li>
+      </ul></li>
       <li><a href="pages/modules/sinergym.utils.logger.CSVLogger.html#sinergym.utils.logger.CSVLogger.set_log_file">set_log_file() (sinergym.utils.logger.CSVLogger method)</a>
 </li>
+      <li>
+    sinergym.config
+
+      <ul>
+        <li><a href="pages/modules/sinergym.config.html#module-sinergym.config">module</a>
+</li>
+      </ul></li>
+      <li>
+    sinergym.config.modeling
+
+      <ul>
+        <li><a href="pages/modules/sinergym.config.modeling.html#module-sinergym.config.modeling">module</a>
+</li>
+      </ul></li>
       <li>
     sinergym.envs
 
@@ -582,6 +645,8 @@
         <li><a href="pages/modules/sinergym.utils.html#module-sinergym.utils">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     sinergym.utils.callbacks
 
@@ -596,15 +661,6 @@
         <li><a href="pages/modules/sinergym.utils.common.html#module-sinergym.utils.common">module</a>
 </li>
       </ul></li>
-      <li>
-    sinergym.utils.config
-
-      <ul>
-        <li><a href="pages/modules/sinergym.utils.config.html#module-sinergym.utils.config">module</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     sinergym.utils.constants
 
@@ -673,10 +729,10 @@
       </ul></li>
       <li><a href="pages/modules/sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus.start_weekday">start_weekday (sinergym.simulators.eplus.EnergyPlus property)</a>
 </li>
-      <li><a href="pages/modules/sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus.start_year">start_year (sinergym.simulators.eplus.EnergyPlus property)</a>
+      <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.start_year">start_year (sinergym.config.modeling.ModelJSON property)</a>
 
       <ul>
-        <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.start_year">(sinergym.utils.config.Config property)</a>
+        <li><a href="pages/modules/sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus.start_year">(sinergym.simulators.eplus.EnergyPlus property)</a>
 </li>
       </ul></li>
       <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.step">step() (sinergym.envs.eplus_env.EplusEnv method)</a>
@@ -696,23 +752,19 @@
   </ul></td>
 </tr></table>
 
-<h2 id="T">T</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pages/modules/sinergym.utils.common.to_idf.html#sinergym.utils.common.to_idf">to_idf() (in module sinergym.utils.common)</a>
-</li>
-  </ul></td>
-</tr></table>
-
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.utils.common.unwrap_wrapper.html#sinergym.utils.common.unwrap_wrapper">unwrap_wrapper() (in module sinergym.utils.common)</a>
 </li>
+      <li><a href="pages/modules/sinergym.config.modeling.Model.html#sinergym.config.modeling.Model.update_weather_path">update_weather_path() (sinergym.config.modeling.Model method)</a>
+
+      <ul>
+        <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.update_weather_path">(sinergym.config.modeling.ModelJSON method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pages/modules/sinergym.utils.config.Config.html#sinergym.utils.config.Config.update_weather_path">update_weather_path() (sinergym.utils.config.Config method)</a>
-</li>
       <li><a href="pages/modules/sinergym.utils.gcloud.upload_to_bucket.html#sinergym.utils.gcloud.upload_to_bucket">upload_to_bucket() (in module sinergym.utils.gcloud)</a>
 </li>
   </ul></td>
@@ -726,6 +778,14 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.utils.logger.WandBOutputFormat.html#sinergym.utils.logger.WandBOutputFormat.write">write() (sinergym.utils.logger.WandBOutputFormat method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pages/modules/sinergym.simulators.eplus.EnergyPlus.html#sinergym.simulators.eplus.EnergyPlus.zone_names">zone_names (sinergym.simulators.eplus.EnergyPlus property)</a>
 </li>
   </ul></td>
 </tr></table>

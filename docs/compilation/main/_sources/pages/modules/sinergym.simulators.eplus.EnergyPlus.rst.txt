@@ -1,4 +1,4 @@
-sinergym.simulators.eplus.EnergyPlus
+﻿sinergym.simulators.eplus.EnergyPlus
 ====================================
 
 .. currentmodule:: sinergym.simulators.eplus
@@ -31,9 +31,11 @@ sinergym.simulators.eplus.EnergyPlus
    .. autosummary::
    
       ~EnergyPlus.env_name
+      ~EnergyPlus.schedulers
       ~EnergyPlus.start_day
       ~EnergyPlus.start_mon
       ~EnergyPlus.start_weekday
       ~EnergyPlus.start_year
+      ~EnergyPlus.zone_names
    
    

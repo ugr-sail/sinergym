@@ -12,4 +12,5 @@ API reference
    sinergym.utils
    sinergym.envs
    sinergym.simulators
+   sinergym.config
 

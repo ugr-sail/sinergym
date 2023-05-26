@@ -1,0 +1,2 @@
+../sinergym/simulators/eplus.py:docstring of sinergym.simulators.eplus.EnergyPlus.__init__:1: (json)  EnergyPlus input description file (.json).
+../sinergym/simulators/eplus.py:docstring of sinergym.simulators.eplus.EnergyPlus.reset:4: (json)  2. Copies building.json and variables.cfg file to the working directory.

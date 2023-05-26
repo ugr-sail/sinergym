@@ -1,0 +1,3 @@
+source/pages/modules/sinergym.utils.common.eppy_element_to_dict.rst:2: (eppy)  sinergym.utils.common.eppy_element_to_dict
+../sinergym/utils/common.py:docstring of sinergym.utils.common.eppy_element_to_dict:1: (epJSON)  Given a eppy element, this function will create a dictionary using the name as key and the rest of fields as value. Following de EnergyPlus epJSON standard.
+../sinergym/utils/common.py:docstring of sinergym.utils.common.eppy_element_to_dict:1: (epJSON)  Python dictionary with epJSON format of eppy element.

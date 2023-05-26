@@ -16,7 +16,7 @@ Datacenter
   :alt: Datacenter building
   :align: center
 
-**2ZoneDataCenterHVAC_wEconomizer.idf:**
+**2ZoneDataCenterHVAC_wEconomizer.epJSON:**
 It is a 491.3 m2 building divided into two asymmetrical zones. Each
 zone has an HVAC system consisting of air economizers, evaporative
 coolers, DX cooling coil, chilled water coil, and VAV. The
@@ -31,7 +31,7 @@ main source of heat comes from the hosted servers.
   :alt: 5Zone building
   :align: center
 
-**5ZoneAutoDXVAV.idf:**
+**5ZoneAutoDXVAV.epJSON:**
 A single-story building divided
 into zones (1 indoor and 4 outdoor). Its surface area is 463.6
 m2, and it is equipped with a VAV package (DX cooling coil
@@ -47,7 +47,7 @@ Warehouse
   :alt: Warehouse building
   :align: center
 
-**ASHRAE9012016_Warehouse.idf:**
+**ASHRAE9012016_Warehouse.epJSON:**
 It is a non-residential 4598 m2 floor building, 
 divided into three zones: bulk storage, fine storage and an office. 
 The Office zone is enclosed on two sides and at the top by the 
@@ -64,7 +64,7 @@ OfficeMedium
   :alt: OfficeMedium building
   :align: center
 
-**ASHRAE9012016_OfficeMedium.idf:**
+**ASHRAE9012016_OfficeMedium.epJSON:**
 It is a 4979.6 m2 building with three floors. Each floor has 
 four perimeter zones and one core zone. Available fuel types 
 are gas and electricity, and it is equipped with HVAC system.
@@ -78,7 +78,7 @@ ShopWithVanBattery
   :alt: Shop building
   :align: center
 
-**ShopWithVanBattery.idf:**
+**ShopWithVanBattery.epJSON:**
 It is a 390.2 m2 building, with only one floor. It has five
 zones; four of them are perimeter zones and one in the center.
 This is a low-energy building with photovoltaic panel and 
@@ -97,7 +97,7 @@ OfficeGridStorageSmoothing
   :alt: Shop building
   :align: center
 
-**OfficeGridStorageSmoothing.idf:**
+**OfficeGridStorageSmoothing.epJSON:**
 It is a large office building with 12 floors and a basement, with a rectangular aspect and 46,320 m2. 
 The building is organized in 19 zones: the basement, bot, mid and top level. Each level has a
 core zone and 4 perimeter zones. Floor zone is described for bot, mid and top level too.
