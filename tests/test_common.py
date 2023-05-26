@@ -39,11 +39,6 @@ def test_is_wrapped(
     assert common.is_wrapped(env_all_wrappers, NormalizeObservation)
 
 
-def test_to_idf(epm):
-    common.to_idf(epm, 'sinergym/data/buildings/TESTepm.idf')
-    assert os.path.exists('sinergym/data/buildings/TESTepm.idf')
-
-
 @pytest.mark.parametrize(
     'year,month,day,expected',
     [(1991, 2, 13, (20.0, 23.5)),
@@ -76,31 +71,6 @@ def test_get_delta_seconds(
         st_year, st_mon, st_day, end_year, end_mon, end_day)
     assert isinstance(delta_sec, float)
     assert delta_sec == expected
-
-
-@pytest.mark.parametrize('sec_elapsed,expected_list',
-                         [(2764800,
-                           [1991,
-                            2,
-                            2,
-                            0]),
-                             (0,
-                              [1991,
-                               1,
-                               1,
-                               0]),
-                             ((2764800 * 4) + (3600 * 10),
-                              [1991,
-                                 5,
-                                 9,
-                                 10]),
-                          ])
-def test_get_current_time_info(epm, sec_elapsed, expected_list):
-    output = common.get_current_time_info(epm, sec_elapsed)
-    print(output)
-    assert isinstance(output, list)
-    assert len(output) == 4
-    assert output == expected_list
 
 
 @ pytest.mark.parametrize(

@@ -24,7 +24,7 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     def __init__(
         self,
-        idf_file: str,
+        building_file: str,
         weather_file: Union[str, List[str]],
         observation_space: gym.spaces.Box = gym.spaces.Box(
             low=-5e6, high=5e6, shape=(4,), dtype=np.float32),
@@ -45,12 +45,12 @@ class EplusEnv(gym.Env):
         """Environment with EnergyPlus simulator.
 
         Args:
-            idf_file (str): Name of the IDF file with the building definition.
+            building_file (str): Name of the JSON file with the building definition.
             weather_file (Union[str,List[str]]): Name of the EPW file for weather conditions. It can be specified a list of weathers files in order to sample a weather in each episode randomly.
             observation_space (gym.spaces.Box, optional): Gym Observation Space definition. Defaults to an empty observation_space (no control).
-            observation_variables (List[str], optional): List with variables names in IDF. Defaults to an empty observation variables (no control).
+            observation_variables (List[str], optional): List with variables names in building. Defaults to an empty observation variables (no control).
             action_space (Union[gym.spaces.Box, gym.spaces.Discrete], optional): Gym Action Space definition. Defaults to an empty action_space (no control).
-            action_variables (List[str],optional): Action variables to be controlled in IDF, if that actions names have not been configured manually in IDF, you should configure or use extra_config. Default to empty List.
+            action_variables (List[str],optional): Action variables to be controlled in building, if that actions names have not been configured manually in building, you should configure or use action_definition. Default to empty List.
             action_mapping (Dict[int, Tuple[float, ...]], optional): Action mapping list for discrete actions spaces only. Defaults to empty list.
             weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
@@ -68,8 +68,8 @@ class EplusEnv(gym.Env):
         eplus_path = os.environ['EPLUS_PATH']
         bcvtb_path = os.environ['BCVTB_PATH']
 
-        # IDF file
-        self.idf_file = idf_file
+        # building file
+        self.building_file = building_file
         # EPW file(s) (str or List of EPW's)
         if isinstance(weather_file, str):
             self.weather_files = [weather_file]
@@ -96,7 +96,7 @@ class EplusEnv(gym.Env):
             env_name=env_name,
             eplus_path=eplus_path,
             bcvtb_path=bcvtb_path,
-            idf_file=self.idf_file,
+            building_file=self.building_file,
             weather_files=self.weather_files,
             variables=self.variables,
             act_repeat=act_repeat,
@@ -263,27 +263,6 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #
     # ---------------------------------------------------------------------------- #
-    def get_schedulers(self, path: Optional[str] = None) -> Dict[str, Any]:
-        """Extract all schedulers available in the building model to be controlled.
-
-        Args:
-            path (str, optional): If path is specified, then this method export a xlsx file version in addition to return the dictionary.
-
-        Returns:
-            Dict[str, Any]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).
-        """
-        schedulers = self.simulator._config.schedulers
-        if path is not None:
-            export_actuators_to_excel(actuators=schedulers, path=path)
-        return schedulers
-
-    def get_zones(self) -> List[str]:
-        """Get the zone names available in the building model of that environment.
-
-        Returns:
-            List[str]: List of the zone names.
-        """
-        return self.simulator._config.idf_zone_names
 
     def _get_action(self, action: Any) -> Union[int,
                                                 float,
@@ -390,6 +369,29 @@ class EplusEnv(gym.Env):
                 self, 'action_mapping'), 'Continuous environment: action mapping should not have been defined.'
             assert len(self._action_space.low) == len(self.variables['action']) and len(self._action_space.high) == len(
                 self.variables['action']), 'Continuous environment: low and high values action space definition should have the same number of values than action variables.'
+
+    def get_schedulers(
+            self, path: Optional[str] = None) -> Dict[str, Dict[str, Union[str, Dict[str, str]]]]:
+        """Extract all schedulers available in the building model to be controlled.
+
+        Args:
+            path (str, optional): If path is specified, then this method export a xlsx file version in addition to return the dictionary.
+
+        Returns:
+            Dict[str, Any]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).
+        """
+        if path is not None:
+            export_actuators_to_excel(
+                actuators=self.simulator.schedulers, path=path)
+        return self.simulator.schedulers
+
+    def get_zones(self) -> List[str]:
+        """Get the zone names available in the building model of that environment.
+
+        Returns:
+            List[str]: List of the zone names.
+        """
+        return self.simulator.zone_names
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #

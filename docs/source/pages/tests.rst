@@ -88,9 +88,9 @@ directory, they are organized by different modules:
   `sinergym/sinergym/utils/controllers.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/controllers.py>`__. 
   Here will be all tests that check agent controller like Rule-Based-Controller for example.
 
-- **test_config.py**: Tests for 
-  `sinergym/sinergym/utils/config.py <https://github.com/ugr-sail/sinergym/blob/main/tests/test_config.py>`__. 
-  Here will be all tests that check simulator configuration (IDF and EPW Python models and 
+- **test_modeling.py**: Tests for 
+  `sinergym/sinergym/config/modeling.py <https://github.com/ugr-sail/sinergym/blob/main/tests/test_modeling.py>`__. 
+  Here will be all tests that check simulator configuration (epJSON and EPW Python models and 
   extra configuration functionality).
 
 - **test_stable_baselines.py**: Tests for 

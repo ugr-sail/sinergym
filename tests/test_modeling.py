@@ -1,97 +1,107 @@
+import json
 import os
 import xml.etree.cElementTree as ElementTree
 
 import pytest
 from opyplus import Epm, Idd
 
-import sinergym.utils.config as config
+import sinergym.config.modeling as modeling
+
+
+def test_update_weather_path(config_several_weathers):
+    assert len(config_several_weathers.weather_files) > 1
+    assert config_several_weathers._weather_path is not None
+    config_several_weathers.update_weather_path()
+    assert config_several_weathers._weather_path is not None
 
 
 def test_adapt_idf_to_epw(config):
+    # Read the current Location and DesignDays
+    locations = config.building['Site:Location']
+    designdays = config.building['SizingPeriod:DesignDay']
+    assert len(locations) == 1
+    assert len(designdays) == 2
+
+    # Check old location is correct
+    assert locations.get(
+        'Pittsburgh Allegheny Co Ap_PA_USA Design_Conditions',
+        False)
+    location = locations['Pittsburgh Allegheny Co Ap_PA_USA Design_Conditions']
+    assert location['latitude'] == 40.35
+    assert location['longitude'] == -79.92
+    assert location['time_zone'] == -5.00
+    assert location['elevation'] == 380.00
+
+    # Check old Designday is correct
+    assert designdays.get(
+        'Pittsburgh Allegheny Co Ap Ann Htg 99.6% Condns DB', False)
+    winter_day = designdays['Pittsburgh Allegheny Co Ap Ann Htg 99.6% Condns DB']
+    assert winter_day['day_type'] == 'WinterDesignDay'
+    assert winter_day['month'] == 1
+    assert winter_day['day_of_month'] == 21
+    assert winter_day['maximum_dry_bulb_temperature'] == -15.4
+    assert winter_day['barometric_pressure'] == 96842.0
+    assert winter_day['wind_speed'] == 4.7
+
+    assert designdays.get(
+        'Pittsburgh Allegheny Co Ap Ann Clg .4% Condns DB=>MWB', False)
+    summer_day = designdays['Pittsburgh Allegheny Co Ap Ann Clg .4% Condns DB=>MWB']
+    assert summer_day['day_type'] == 'SummerDesignDay'
+    assert summer_day['month'] == 7
+    assert summer_day['day_of_month'] == 21
+    assert summer_day['maximum_dry_bulb_temperature'] == 32.2
+    assert summer_day['barometric_pressure'] == 96842.0
+    assert summer_day['wind_speed'] == 4.4
+
     # Existing designday names
     winterday = 'Ann Htg 99.6% Condns DB'
     summerday = 'Ann Clg .4% Condns DB=>MWB'
-    # Read the current Location and DesignDays
-    location = config.building.site_location[0]
-    winter_day = config.building.sizingperiod_designday.select(
-        lambda designday: winterday.lower() in designday.name.lower())[0]
-    summer_day = config.building.sizingperiod_designday.select(
-        lambda designday: summerday.lower() in designday.name.lower())[0]
-
-    # Check old location is correct
-    assert location.name.lower(
-    ) == 'Pittsburgh Allegheny Co Ap_PA_USA Design_Conditions'.lower()
-    assert float(location.latitude) == 40.35
-    assert float(location.longitude) == -79.92
-    assert float(location.time_zone) == -5.00
-    assert float(location.elevation) == 380.00
-
-    # Check old Designday is correct
-    assert winter_day.name.lower(
-    ) == 'Pittsburgh Allegheny Co Ap Ann Htg 99.6% Condns DB'.lower()
-    assert winter_day.day_type.lower() == 'WinterDesignDay'.lower()
-    assert int(winter_day.month) == 1
-    assert int(winter_day.day_of_month) == 21
-    assert float(winter_day.maximum_dry_bulb_temperature) == -15.4
-    assert float(winter_day.barometric_pressure) == 96842.0
-    assert float(winter_day.wind_speed) == 4.7
-
-    assert summer_day.name.lower(
-    ) == 'Pittsburgh Allegheny Co Ap Ann Clg .4% Condns DB=>MWB'.lower()
-    assert summer_day.day_type.lower() == 'SummerDesignDay'.lower()
-    assert int(summer_day.month) == 7
-    assert int(summer_day.day_of_month) == 21
-    assert float(summer_day.maximum_dry_bulb_temperature) == 32.2
-    assert float(summer_day.barometric_pressure) == 96842.0
-    assert float(summer_day.wind_speed) == 4.4
-
-    # Adapt idf to epw
-    config.adapt_idf_to_epw(summerday=summerday, winterday=winterday)
+    # Adapt building to epw
+    config.adapt_building_to_epw(summerday=summerday, winterday=winterday)
 
     # we do the same and check new values for Location and Designdays
-    location = config.building.site_location[0]
-    winter_day = config.building.sizingperiod_designday.select(
-        lambda designday: winterday.lower() in designday.name.lower())[0]
-    summer_day = config.building.sizingperiod_designday.select(
-        lambda designday: summerday.lower() in designday.name.lower())[0]
+    locations = config.building['Site:Location']
+    designdays = config.building['SizingPeriod:DesignDay']
+    assert len(locations) == 1
+    assert len(designdays) == 2
     # Check new location is correct
-    assert location.name.lower(
-    ) == 'davis monthan afb_az_usa design_conditions'.lower()
-    assert float(location.latitude) == 32.17
-    assert float(location.longitude) == -110.88
-    assert float(location.time_zone) == -7.0
-    assert float(location.elevation) == 809.0
+    assert locations.get('davis monthan afb_az_usa design_conditions', False)
+    location = locations['davis monthan afb_az_usa design_conditions']
+    assert location['latitude'] == 32.17
+    assert location['longitude'] == -110.88
+    assert location['time_zone'] == -7.0
+    assert location['elevation'] == 809.0
 
     # Check new Designday is correct
-    assert winter_day.name.lower(
-    ) == 'davis monthan afb ann htg 99.6% condns db'.lower()
-    assert winter_day.day_type.lower() == 'winterdesignday'.lower()
-    assert int(winter_day.month) == 12
-    assert int(winter_day.day_of_month) == 21
-    assert float(winter_day.maximum_dry_bulb_temperature) == 0.5
-    assert float(winter_day.barometric_pressure) == 91976.0
-    assert float(winter_day.wind_speed) == 2.1
+    assert designdays.get('davis monthan afb ann htg 99.6% condns db', False)
+    winter_day = designdays['davis monthan afb ann htg 99.6% condns db']
+    assert winter_day['day_type'] == 'WinterDesignDay'
+    assert winter_day['month'] == 12
+    assert winter_day['day_of_month'] == 21
+    assert winter_day['maximum_dry_bulb_temperature'] == 0.5
+    assert winter_day['barometric_pressure'] == 91976.0
+    assert winter_day['wind_speed'] == 2.1
 
-    assert summer_day.name.lower(
-    ) == 'davis monthan afb ann clg .4% condns db=>mwb'.lower()
-    assert summer_day.day_type.lower() == 'summerdesignday'.lower()
-    assert int(summer_day.month) == 7
-    assert int(summer_day.day_of_month) == 21
-    assert float(summer_day.maximum_dry_bulb_temperature) == 40.8
-    assert float(summer_day.barometric_pressure) == 91976.0
-    assert float(summer_day.wind_speed) == 4.8
+    assert designdays.get(
+        'davis monthan afb ann clg .4% condns db=>mwb', False)
+    summer_day = designdays['davis monthan afb ann clg .4% condns db=>mwb']
+    assert summer_day['day_type'] == 'SummerDesignDay'
+    assert summer_day['month'] == 7
+    assert summer_day['day_of_month'] == 21
+    assert summer_day['maximum_dry_bulb_temperature'] == 40.8
+    assert summer_day['barometric_pressure'] == 91976.0
+    assert summer_day['wind_speed'] == 4.8
 
 
-def test_adapt_variables_to_cfg_and_idf(config):
+def test_adapt_variables_to_cfg_and_building(config):
     # Check initial state in Config variables_tree attribute and IDF
     # OutputVariables
     assert len(config.variables_tree) == 0
     assert config.variables_tree.find('variable') is None
 
     # Execute method
-    config.adapt_variables_to_cfg_and_idf()
+    config.adapt_variables_to_cfg_and_building()
 
-    print(config.variables_tree)
     assert len(config.variables_tree.findall('variable')) == len(
         config.variables['observation']) + len(config.variables['action'])
     for i, variable in enumerate(config.variables_tree.findall('variable')):
@@ -110,53 +120,52 @@ def test_adapt_variables_to_cfg_and_idf(config):
             assert list(variable.find('EnergyPlus').attrib.keys()) == [
                 'schedule']
 
+    # Check building Output:Variable has been done correctly
+    assert len(config.building['Output:Variable']
+               ) == len(config.variables['observation'])
+
 
 def test_set_external_interface(config):
     # Check External interface is not created yet
-    assert len(config.building.ExternalInterface) == 0
+    assert not config.building.get('ExternalInterface', False)
     # Set external interface
     config.set_external_interface()
     # Check external interface exists with ptolemy server
-    assert len(config.building.ExternalInterface) == 1
-    assert config.building.ExternalInterface[0].name_of_external_interface.lower(
-    ) == 'PtolemyServer'.lower()
-
-
-def test_update_weather_path(config_several_weathers):
-    assert len(config_several_weathers.weather_files) > 1
-    assert config_several_weathers._weather_path is not None
-    config_several_weathers.update_weather_path()
-    assert config_several_weathers._weather_path is not None
+    assert len(config.building['ExternalInterface']) == 1
+    assert config.building['ExternalInterface']['ExternalInterface 1']['name_of_external_interface'] == 'PtolemyServer'
 
 
 def test_apply_extra_conf(config):
     # Check default config
-    assert int(config.building.timestep[0].number_of_timesteps_per_hour) == 4
+    assert list(config.building['Timestep'].values())[
+        0]['number_of_timesteps_per_hour'] == 4
 
     # Set new extra configuration
     config.apply_extra_conf()
 
     # Check new config
-    assert int(config.building.timestep[0].number_of_timesteps_per_hour) == 2
+    assert list(config.building['Timestep'].values())[
+        0]['number_of_timesteps_per_hour'] == 2
     # Check Runperiod
-    assert config.building.runperiod[0].begin_day_of_month == int(
-        config.config['runperiod'][0]) and config.building.runperiod[0].begin_month == int(
-        config.config['runperiod'][1]) and config.building.runperiod[0].begin_year == int(
-            config.config['runperiod'][2]) and config.building.runperiod[0].end_day_of_month == int(
-                config.config['runperiod'][3]) and config.building.runperiod[0].end_month == int(
-                    config.config['runperiod'][4]) and config.building.runperiod[0].end_year == int(
+    runperiod = list(config.building['RunPeriod'].values())[0]
+    assert runperiod['begin_day_of_month'] == int(
+        config.config['runperiod'][0]) and runperiod['begin_month'] == int(
+        config.config['runperiod'][1]) and runperiod['begin_year'] == int(
+            config.config['runperiod'][2]) and runperiod['end_day_of_month'] == int(
+                config.config['runperiod'][3]) and runperiod['end_month'] == int(
+                    config.config['runperiod'][4]) and runperiod['end_year'] == int(
                         config.config['runperiod'][5])
 
 
 def test_adapt_idf_to_action_definition(config):
     # Check External interface variables are not created yet
-    assert len(config.building.ExternalInterface_Schedule) == 0
+    assert 'ExternalInterface:Schedule' not in config.building
 
     # Apply action definition
-    config.adapt_idf_to_action_definition()
+    config.adapt_building_to_action_definition()
 
     # Check variables for external interface have been created
-    assert len(config.building.ExternalInterface_Schedule) == 2
+    assert len(config.building['ExternalInterface:Schedule']) == 2
 
 
 def test_save_variables_cfg(config):
@@ -165,7 +174,7 @@ def test_save_variables_cfg(config):
     config.set_episode_working_dir()
     assert config.episode_path is not None
     # Generate xml_tree and save it
-    config.adapt_variables_to_cfg_and_idf()
+    config.adapt_variables_to_cfg_and_building()
     path_save = config.save_variables_cfg()
     # Read the first two lines and check is correct
     with open(path_save, "r") as f:
@@ -213,7 +222,7 @@ def test_set_experiment_working_dir(config):
     assert os.path.isdir(new_experiment_path)
 
 
-def test_save_building_model(config, eplus_path, idf_path):
+def test_save_building_model(config):
     assert config.episode_path is None
     # Create episode path before save (else a exception will happen)
     config.set_episode_working_dir()
@@ -221,13 +230,35 @@ def test_save_building_model(config, eplus_path, idf_path):
     # save current model
     path_save = config.save_building_model()
     # Read the path save idf and check IDF saved
-    idd = Idd(os.path.join(eplus_path, 'Energy+.idd'))
-    building = Epm.from_idf(idf_path, idd_or_version=idd)
-    assert (building.get_info() is not None) or (building.get_info() != '')
+    building = {}
+    with open(path_save) as json_f:
+        building = json.load(json_f)
+    assert len(building) > 0
     # Check save runtime error if path is not specified
     config.episode_path = None
     with pytest.raises(RuntimeError):
         config.save_building_model()
+
+
+def test_get_schedulers(config):
+    # Testing scheduler attribute structure is correct
+    assert len(config.schedulers) == len(config.building['Schedule:Compact'])
+    for scheduler_name, definition in config.schedulers.items():
+        assert isinstance(scheduler_name, str)
+        assert isinstance(definition, dict)
+        assert isinstance(definition['Type'], str)
+        for key, value in definition.items():
+            if key != 'Type':
+                assert isinstance(value, dict)
+                assert set(['field_name', 'table_name']
+                           ) == set(value.keys())
+                assert isinstance(
+                    value['field_name'],
+                    str) and isinstance(
+                    value['table_name'],
+                    str)
+                assert key in list(
+                    config.building[value['table_name']].keys())
 
 
 def test_apply_weather_variability(config):
@@ -254,7 +285,31 @@ def test_apply_weather_variability(config):
 
 def test_get_eplus_run_info(config):
     info = config._get_eplus_run_info()
-    assert info == (1, 1, 1991, 12, 31, 1991, 0, 4)
+    assert info == (1, 1, 1991, 12, 31, 1991, 1, 4)
+
+
+@pytest.mark.parametrize('sec_elapsed,expected_list',
+                         [(2764800,
+                           [1991,
+                            2,
+                            2,
+                            0]),
+                             (0,
+                              [1991,
+                               1,
+                               1,
+                               0]),
+                             ((2764800 * 4) + (3600 * 10),
+                              [1991,
+                                 5,
+                                 9,
+                                 10]),
+                          ])
+def test_get_current_time_info(config, sec_elapsed, expected_list):
+    output = config.get_current_time_info(sec_elapsed)
+    assert isinstance(output, list)
+    assert len(output) == 4
+    assert output == expected_list
 
 
 def test_get_one_epi_len(config):
@@ -295,25 +350,3 @@ def test_rm_past_history_dir(config):
     n_dir = len([i for i in os.listdir(config.experiment_path)
                  if os.path.isdir(os.path.join(config.experiment_path, i))])
     assert n_dir == 10
-
-
-def test_get_schedulers(config):
-    # Testing scheduler attribute structure is correct
-    assert len(config.schedulers) == len(config.building.Schedule_Compact)
-    for scheduler_name, definition in config.schedulers.items():
-        assert isinstance(scheduler_name, str)
-        assert isinstance(definition, dict)
-        assert isinstance(definition['Type'], str)
-        for key, value in definition.items():
-            if key != 'Type':
-                assert 'Object' in key
-                assert isinstance(value, dict)
-                assert set(['object_name', 'object_field_name',
-                            'object_type']) == set(value.keys())
-                assert isinstance(
-                    value['object_name'],
-                    str) and isinstance(
-                    value['object_field_name'],
-                    str) and isinstance(
-                    value['object_type'],
-                    str)

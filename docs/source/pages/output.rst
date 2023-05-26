@@ -18,7 +18,7 @@ this directory is the result of the simulation and we have:
     │   ├── variables.cfg
     │   ├── socket.cfg
     │   ├── utilSocket.cfg
-    │   ├── environment.idf
+    │   ├── environment.epJSON
     |   ├── weather.epw
     │   ├── monitor.csv
     |   └── monitor_normalized.csv (optional)
@@ -31,8 +31,8 @@ this directory is the result of the simulation and we have:
 
 * Within these directories, you have always the same structure:
 
-    * A copy of **variables.cfg** and **environment.idf** which are being used during 
-      simulation. **Environment.idf** does not have to be the same as the original 
+    * A copy of **variables.cfg** and **environment.epJSON** which are being used during 
+      simulation. **Environment.epJSON** does not have to be the same as the original 
       hosted in the repository. Since the simulation can be modified to suit the 
       specific weather or apply extra user-defined settings when building the 
       gymnasium environment.
@@ -42,7 +42,7 @@ this directory is the result of the simulation and we have:
       change, original repository *.epw* will be used in each episode.
 
     * A copy of **socket.cfg** and **utilSocket.log** which are being used in
-      order to establish communication interface with *Energyplus* during simulation.
+      order to establish communication interface with *EnergyPlus* during simulation.
 
     * **monitor.csv**: This records all interactions Agent-Environment during 
       the episode timestep by timestep. This file only exists 
@@ -55,7 +55,7 @@ this directory is the result of the simulation and we have:
 
     * **output/**: This directory has **EnergyPlus simulation output**.
       If you want to know more about this files, visit 
-      `Energyplus documentation <https://energyplus.net/documentation>`__.
+      `EnergyPlus documentation <https://energyplus.net/documentation>`__.
                    
 * **progress.csv**: This file has information about general simulation results. 
   There is a **row per episode** and it records most important data such as mean 

@@ -11,6 +11,7 @@ import gymnasium as gym
 import numpy as np
 import pandas as pd
 import xlsxwriter
+from eppy.modeleditor import IDF
 from opyplus import Epm, WeatherData
 from opyplus.epm.record import Record
 
@@ -44,34 +45,6 @@ def get_delta_seconds(
                        23, 0, 0) + timedelta(0, 3600)
     delta_sec = (endTime - startTime).total_seconds()
     return delta_sec
-
-
-def get_current_time_info(
-        epm: Epm, sec_elapsed: float) -> List[int]:
-    """Returns the current day, month and hour given the seconds elapsed since the simulation started.
-
-    Args:
-        epm (opyplus.Epm): EnergyPlus model object.
-        sec_elapsed (float): Seconds elapsed since the start of the simulation
-
-    Returns:
-        List[int]: A List composed by the current year, day, month and hour in the simulation.
-
-    """
-    start_date = datetime(
-        year=int(YEAR if epm.RunPeriod[0]['begin_year'] is None else epm.RunPeriod[0]['begin_year']),
-        month=int(1 if epm.RunPeriod[0]['begin_month'] is None else epm.RunPeriod[0]['begin_month']),
-        day=int(1 if epm.RunPeriod[0]['begin_day_of_month'] is None else epm.RunPeriod[0]['begin_day_of_month'])
-    )
-
-    current_date = start_date + timedelta(seconds=sec_elapsed)
-
-    return [
-        int(current_date.year),
-        int(current_date.month),
-        int(current_date.day),
-        int(current_date.hour),
-    ]
 
 
 def is_wrapped(env: Type[gym.Env], wrapper_class: Type[gym.Wrapper]) -> bool:
@@ -218,53 +191,26 @@ def get_record_keys(record: Record) -> List[str]:
     return [field.ref for field in record._table._dev_descriptor._field_descriptors]
 
 
-def prepare_batch_from_records(records: List[Record]) -> List[Dict[str, Any]]:
-    """Prepare a list of dictionaries in order to use Epm.add_batch directly
+def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
+    """Given a eppy element, this function will create a dictionary using the name as key and the rest of fields as value. Following de EnergyPlus epJSON standard.
 
     Args:
-        records List[opyplus.Epm.Record]: List of records which will be converted to dictionary batch.
+        element (IDF): eppy element to be converted.
 
     Returns:
-        List[Dict[str, Any]]: List of dicts where each dictionary is a record element.
+        Dict[str,Dict[str,str]]: Python dictionary with epJSON format of eppy element.
     """
-
-    batch = []
-    for record in records:
-        aux_dict = {}
-        for key in get_record_keys(record):
-            aux_dict[key] = record[key]
-        batch.append(aux_dict)
-
-    return batch
-
-
-def to_idf(building: Epm, file_path: str) -> None:
-    """Given a building model (opyplus Epm object), this function export an IDF file with all content specified.
-
-    Args:
-        building (Epm): Building model from the opyplus object Epm.
-        file_path (str): Path where IDF file will be exported.
-    """
-
-    if building._comment != "":
-        comment = textwrap.indent(building._comment, "! ", lambda line: True)
-    comment += "\n\n"
-
-    dir_path, file_name = os.path.split(file_path)
-    model_name, _ = os.path.splitext(file_name)
-
-    # prepare body
-    formatted_records = []
-    for table_ref, table in building._tables.items(
-    ):  # self._tables is already sorted
-        formatted_records.extend(
-            [r.to_idf(model_name=model_name) for r in table])
-    body = "\n\n".join(formatted_records)
-
-    # write content
-    content = comment + body
-    with open(file_path, "w") as f:
-        f.write(content)
+    fields = {}
+    for fieldname in element.fieldnames:
+        fieldname_fixed = fieldname.lower().replace(
+            'drybulb', 'dry_bulb')
+        if fieldname != 'Name' and fieldname != 'key':
+            if element[fieldname] != '':
+                if element[fieldname] == 'Wetbulb':
+                    fields[fieldname_fixed] = 'WetBulb'
+                else:
+                    fields[fieldname_fixed] = element[fieldname]
+    return {element.Name.lower(): fields}
 
 
 def get_season_comfort_range(
@@ -334,25 +280,24 @@ def export_actuators_to_excel(
         current_col += 1
         worksheet.write(current_row, current_col, info['Type'], cells_format)
         current_col += 1
-        for object in info.values():
-            if isinstance(object, dict):
+        for object_name, values in info.items():
+            if isinstance(values, dict):
                 worksheet.write(
                     current_row,
                     current_col,
-                    'Name: ' +
-                    object['object_name'])
+                    'Name: ' + object_name)
                 current_col += 1
                 worksheet.write(
                     current_row,
                     current_col,
                     'Field: ' +
-                    object['object_field_name'])
+                    values['field_name'])
                 current_col += 1
                 worksheet.write(
                     current_row,
                     current_col,
                     'Table type: ' +
-                    object['object_type'])
+                    values['table_name'])
                 current_col += 1
         # Update max column if it is necessary
         if current_col > max_col:

@@ -1,4 +1,4 @@
-The goal of *sinergym* is to create an environment following *Gymnasium* interface for wrapping simulation engines (*Energyplus*) for building control using
+The goal of *sinergym* is to create an environment following *Gymnasium* interface for wrapping simulation engines (*EnergyPlus*) for building control using
 **deep reinforcement learning**.
 
 .. image:: /_static/general_blueprint.png
@@ -48,11 +48,11 @@ The main functionalities of *Sinergym* are the following:
    can be created for new environments such as function rewards, wrappers,
    controllers, etc.
 
--  **Automatic Building Model adaptation to user changes**: Building models (*IDF*) will be
-   adapted to specification of each simulation by the user. For example, ``Designdays`` and 
-   ``Location`` components from *IDF* files will be adapted to weather file (*EPW*) specified in
+-  **Automatic Building Model adaptation to user changes**: Building models (*epJSON*) will be
+   adapted to specification of each simulation by the user. For example, ``SizingPeriod:Designdays`` and 
+   ``Site:Location`` components from building model files will be adapted to weather file (*EPW*) specified in
    *Sinergym* simulator backend without any intervention by the user (only the environment definition).
-   *BCVTB middleware* external interface in *IDF* model and *variables.cfg* file is generated when 
+   *BCVTB middleware* ``ExternalInterface`` in building model and *variables.cfg* file is generated when 
    simulation starts by *Sinergym*, this definition depends on action and observation space and variables defined.
    In short, *Sinergym* automates the whole process of model adaptation so that the user 
    only has to define what he wants for his environment.

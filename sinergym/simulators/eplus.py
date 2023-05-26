@@ -20,7 +20,7 @@ from xml.etree.ElementTree import Element, SubElement, tostring
 import numpy as np
 
 from sinergym.utils.common import *
-from sinergym.utils.config import Config
+from sinergym.config.modeling import ModelJSON
 from sinergym.utils.logger import Logger
 
 LOG_LEVEL_MAIN = 'INFO'
@@ -35,7 +35,7 @@ class EnergyPlus(object):
             eplus_path: str,
             bcvtb_path: str,
             weather_files: List[str],
-            idf_file: str,
+            building_file: str,
             env_name: str,
             variables: Dict[str, List[str]],
             act_repeat: int = 1,
@@ -48,7 +48,7 @@ class EnergyPlus(object):
             eplus_path (str):  EnergyPlus installation path.
             bcvtb_path (str): BCVTB installation path.
             weather_files (List[str]): EnergyPlus weather file list (sampling one in each episode).
-            idf_file (str): EnergyPlus input description file (.idf) file.
+            building_file (str): EnergyPlus input description file (.json).
             env_name (str): The environment name.
             variables (Dict[str,List[str]]): Variables list with observation and action keys in a dictionary.
             act_repeat (int, optional): The number of times to repeat the control action. Defaults to 1.
@@ -82,7 +82,7 @@ class EnergyPlus(object):
         # Path attributes
         self._eplus_path = eplus_path
         self._weather_files = weather_files
-        self._idf_file = idf_file
+        self._building_file = building_file
         # Episode existed
         self._episode_existed = False
 
@@ -92,8 +92,8 @@ class EnergyPlus(object):
         self._last_action = [21.0, 25.0]
 
         # Creating models config (with extra params if exits)
-        self._config = Config(
-            idf_file=self._idf_file,
+        self._config = ModelJSON(
+            json_file=self._building_file,
             weather_files=self._weather_files,
             variables=variables,
             env_name=self._env_name,
@@ -103,19 +103,19 @@ class EnergyPlus(object):
 
         # Annotate experiment path in simulator
         self._env_working_dir_parent = self._config.experiment_path
-        # Setting an external interface if IDF building has not got.
+        # Setting an external interface if building has no one.
         self.logger_main.info(
-            'Updating idf ExternalInterface object if it is not present...')
+            'Updating Building model ExternalInterface object if it is not present...')
         self._config.set_external_interface()
-        # Updating IDF file (Location and DesignDays) with EPW file
+        # Updating JSON file (Location and DesignDays) with EPW file
         self.logger_main.info(
-            'Updating idf Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...')
-        self._config.adapt_idf_to_epw()
-        # Updating IDF file Output:Variables with observation variables
+            'Updating Building model Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...')
+        self._config.adapt_building_to_epw()
+        # Updating building model Output:Variables with observation variables
         # specified in environment and variables.cfg construction
         self.logger_main.info(
-            'Updating idf OutPut:Variable and variables XML tree model for BVCTB connection.')
-        self._config. adapt_variables_to_cfg_and_idf()
+            'Updating building model OutPut:Variable and variables XML tree model for BVCTB connection.')
+        self._config. adapt_variables_to_cfg_and_building()
         # Setting up extra configuration if exists
         self.logger_main.info(
             'Setting up extra configuration in building model if exists...')
@@ -123,9 +123,10 @@ class EnergyPlus(object):
         # Setting up action definition automatic manipulation if exists
         self.logger_main.info(
             'Setting up action definition in building model if exists...')
-        self._config.adapt_idf_to_action_definition()
+        self._config.adapt_building_to_action_definition()
 
-        # In this lines Epm model is modified but no IDF is stored anywhere yet
+        # Note: In this lines building model is modified but no building file is stored
+        # anywhere yet
 
         # Eplus run info
         (self._eplus_run_st_mon,
@@ -150,7 +151,7 @@ class EnergyPlus(object):
         """Resets the environment.
         This method does the following:
         1. Makes a new EnergyPlus working directory.
-        2. Copies .idf and variables.cfg file to the working directory.
+        2. Copies building.json and variables.cfg file to the working directory.
         3. Creates the socket.cfg file in the working directory.
         4. Creates the EnergyPlus subprocess.
         5. Establishes the socket connection with EnergyPlus.
@@ -178,15 +179,17 @@ class EnergyPlus(object):
                 self.logger_main.info(
                     'Updating weather file for new episode (sampling)...')
                 self._config.update_weather_path()
-                self.logger_main.info('Adapting idf to new weather file...')
-                self._config.adapt_idf_to_epw()
+                self.logger_main.info(
+                    'Adapting building to new weather file...')
+                self._config.adapt_building_to_epw()
 
         # Create EnergyPlus simulation process
         self.logger_main.info('Creating new EnergyPlus simulation episode...')
         # Creating episode working dir
         eplus_working_dir = self._config.set_episode_working_dir()
-        # Getting IDF, WEATHER, VARIABLES and OUTPUT path for current episode
-        eplus_working_idf_path = self._config.save_building_model()
+        # Getting BUILDING, WEATHER, VARIABLES and OUTPUT path for current
+        # episode
+        eplus_working_building_path = self._config.save_building_model()
         eplus_working_var_path = self._config.save_variables_cfg()
         eplus_working_out_path = (eplus_working_dir + '/' + 'output')
         eplus_working_weather_path = self._config.apply_weather_variability(
@@ -205,7 +208,7 @@ class EnergyPlus(object):
         eplus_process = self._create_eplus(
             self._eplus_path,
             eplus_working_weather_path,
-            eplus_working_idf_path,
+            eplus_working_building_path,
             eplus_working_out_path,
             eplus_working_dir)
         self.logger_main.debug(
@@ -234,8 +237,8 @@ class EnergyPlus(object):
         version, flag, nDb, nIn, nBl, curSimTim, Dblist \
             = self._disassembleMsg(rcv_1st)
         # get time info in simulation
-        time_info = get_current_time_info(self._config.building, curSimTim)
-        # Add time_info date in the end of the Energyplus observation
+        time_info = self._config.get_current_time_info(curSimTim)
+        # Add time_info date in the beginning of the Energyplus observation
         Dblist = time_info + Dblist
         # Remember the message header, useful when send data back to EnergyPlus
         self._eplus_msg_header = [version, flag]
@@ -317,7 +320,7 @@ class EnergyPlus(object):
         # Construct the return, which is the state observation of the last step
         # plus the integral item
         # get time info in simulation
-        time_info = get_current_time_info(self._config.building, curSimTim)
+        time_info = self._config.get_current_time_info(curSimTim)
         # Add time_info to the observation (year,month,day and hour) at the
         # beggining
         Dblist = time_info + Dblist
@@ -344,7 +347,7 @@ class EnergyPlus(object):
             self,
             eplus_path: str,
             weather_path: str,
-            idf_path: str,
+            building_path: str,
             out_path: str,
             eplus_working_dir: str) -> subprocess.Popen:
         """Creates the EnergyPlus process.
@@ -352,7 +355,7 @@ class EnergyPlus(object):
         Args:
             eplus_path (str): EnergyPlus path.
             weather_path (str): Weather file path (.epw).
-            idf_path (str): Building model path (.idf).
+            building_path (str): Building model path (.epJSON).
             out_path (str): Output path.
             eplus_working_dir (str): EnergyPlus working directory.
 
@@ -366,7 +369,7 @@ class EnergyPlus(object):
              '/energyplus',
              weather_path,
              out_path,
-             idf_path),
+             building_path),
             shell=True,
             cwd=eplus_working_dir,
             stdout=subprocess.PIPE,
@@ -529,7 +532,7 @@ class EnergyPlus(object):
             nIn (str):
             nBl (str):
             curSimTim (str): Current simulation time.
-            Dblist (str): State of enviroment (depending on variables:output fixed in IDF file).
+            Dblist (str): State of enviroment (depending on variables:output fixed in epJSON file).
 
         Returns:
             str: All values concatenated in correct format to send to EnergyPlus subprocess.
@@ -630,3 +633,21 @@ class EnergyPlus(object):
             str: Environment name
         """
         return self._env_name
+
+    @property
+    def zone_names(self) -> List[str]:  # pragma: no cover
+        """Returns the zone names available in the building.
+
+        Returns:
+            List[str]: Building zones
+        """
+        return self._config.zone_names
+
+    @property
+    def schedulers(self) -> Dict[str, Dict[str, Union[str, Dict[str, str]]]]:  # pragma: no cover
+        """Returns the schedulers information available in the building.
+
+        Returns:
+            Dict[str,Dict[str,Union[str,Dict[str,str]]]]: Dictionary structure with all the information.
+        """
+        return self._config.schedulers
