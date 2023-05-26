@@ -32,7 +32,7 @@ setup(name='sinergym',
               'sphinx',  # documentation
               'sphinx-rtd-theme',  # documentation theme
               'sphinxcontrib-spelling',  # documentation spelling
-              'sphinxcontrib-jquery==2.0.0',
+              'sphinxcontrib-jquery',
               # documentation versioning
               'sphinx-multiversion @ git+https://github.com/Holzhaus/sphinx-multiversion#egg=sphinx-multiversion',
               'sphinx-multitoc-numbering',  # Section numbering
