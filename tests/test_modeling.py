@@ -285,7 +285,7 @@ def test_apply_weather_variability(config):
 
 def test_get_eplus_run_info(config):
     info = config._get_eplus_run_info()
-    assert info == (1, 1, 1991, 12, 31, 1991, 0, 4)
+    assert info == (1, 1, 1991, 12, 31, 1991, 1, 4)
 
 
 @pytest.mark.parametrize('sec_elapsed,expected_list',
