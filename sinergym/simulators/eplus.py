@@ -19,8 +19,8 @@ from xml.etree.ElementTree import Element, SubElement, tostring
 
 import numpy as np
 
-from sinergym.utils.common import *
 from sinergym.config.modeling import ModelJSON
+from sinergym.utils.common import *
 from sinergym.utils.logger import Logger
 
 LOG_LEVEL_MAIN = 'INFO'

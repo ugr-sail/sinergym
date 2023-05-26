@@ -16,7 +16,7 @@ from eppy.modeleditor import IDF
 from opyplus import Epm, Idd, WeatherData
 from opyplus.epm.record import Record
 
-from sinergym.utils.common import (eppy_element_to_dict, get_delta_seconds)
+from sinergym.utils.common import eppy_element_to_dict, get_delta_seconds
 from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR
 
 
