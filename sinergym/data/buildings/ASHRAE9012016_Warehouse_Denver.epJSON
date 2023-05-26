@@ -2145,6 +2145,9 @@
         "PSZ_Fine_Fan_Control": {
             "lines": [
                 {
+                    "program_line": "SET PSZ_FINE_Number_of_Stages = 1"
+                },
+                {
                     "program_line": "IF PSZ_Fine_Number_of_Stages == 1"
                 },
                 {
@@ -2317,6 +2320,9 @@
         "PSZ_Fine_Set_Fan_Par": {
             "lines": [
                 {
+                    "program_line": "SET PSZ_FINE_Number_of_Stages = 1"
+                },
+                {
                     "program_line": "IF PSZ_Fine_Number_of_Stages == 1"
                 },
                 {
@@ -2363,7 +2369,7 @@
         "PSZ_Fine_Set_Number_of_Stages": {
             "lines": [
                 {
-                    "program_line": "SET PSZ_FINE_Number_of_Stages =  1"
+                    "program_line": "SET PSZ_FINE_Number_of_Stages = 1"
                 }
             ]
         },
@@ -2511,6 +2517,9 @@
         },
         "PSZ_Office_Fan_Control": {
             "lines": [
+                {
+                    "program_line": "SET PSZ_OFFICE_Number_of_Stages =  1"
+                },
                 {
                     "program_line": "IF PSZ_Office_Number_of_Stages == 1"
                 },
@@ -2687,6 +2696,9 @@
         "PSZ_Office_Set_Fan_Par": {
             "lines": [
                 {
+                    "program_line": "SET PSZ_OFFICE_Number_of_Stages =  1"
+                },
+                {
                     "program_line": "IF PSZ_Office_Number_of_Stages == 1"
                 },
                 {
@@ -2805,35 +2817,11 @@
         }
     },
     "EnergyManagementSystem:ProgramCallingManager": {
-        "PSZ_Fine_ECO_Manager": {
-            "energyplus_model_calling_point": "InsideHVACSystemIterationLoop",
-            "programs": [
-                {
-                    "program_name": "PSZ_Fine_Economizer_CTRL_Prog"
-                }
-            ]
-        },
-        "PSZ_Fine_Fan_Main_Manager": {
-            "energyplus_model_calling_point": "BeginTimestepBeforePredictor",
-            "programs": [
-                {
-                    "program_name": "PSZ_Fine_Fan_Control"
-                }
-            ]
-        },
-        "PSZ_Fine_Fan_Parameter_manager": {
+        "PSZ_Office_Set_Number_of_Stages_CallingManager": {
             "energyplus_model_calling_point": "BeginNewEnvironment",
             "programs": [
                 {
-                    "program_name": "PSZ_Fine_Set_Fan_Par"
-                }
-            ]
-        },
-        "PSZ_Fine_Set_Number_of_Stages_CallingManager": {
-            "energyplus_model_calling_point": "BeginNewEnvironment",
-            "programs": [
-                {
-                    "program_name": "PSZ_Fine_Set_Number_of_Stages"
+                    "program_name": "PSZ_Office_Set_Number_of_Stages"
                 }
             ]
         },
@@ -2845,14 +2833,6 @@
                 }
             ]
         },
-        "PSZ_Office_Fan_Main_Manager": {
-            "energyplus_model_calling_point": "BeginTimestepBeforePredictor",
-            "programs": [
-                {
-                    "program_name": "PSZ_Office_Fan_Control"
-                }
-            ]
-        },
         "PSZ_Office_Fan_Parameter_manager": {
             "energyplus_model_calling_point": "BeginNewEnvironment",
             "programs": [
@@ -2861,11 +2841,43 @@
                 }
             ]
         },
-        "PSZ_Office_Set_Number_of_Stages_CallingManager": {
+        "PSZ_Office_Fan_Main_Manager": {
+            "energyplus_model_calling_point": "BeginTimestepBeforePredictor",
+            "programs": [
+                {
+                    "program_name": "PSZ_Office_Fan_Control"
+                }
+            ]
+        },
+        "PSZ_Fine_Set_Number_of_Stages_CallingManager": {
             "energyplus_model_calling_point": "BeginNewEnvironment",
             "programs": [
                 {
-                    "program_name": "PSZ_Office_Set_Number_of_Stages"
+                    "program_name": "PSZ_Fine_Set_Number_of_Stages"
+                }
+            ]
+        },
+        "PSZ_Fine_ECO_Manager": {
+            "energyplus_model_calling_point": "InsideHVACSystemIterationLoop",
+            "programs": [
+                {
+                    "program_name": "PSZ_Fine_Economizer_CTRL_Prog"
+                }
+            ]
+        },
+        "PSZ_Fine_Fan_Parameter_manager": {
+            "energyplus_model_calling_point": "BeginNewEnvironment",
+            "programs": [
+                {
+                    "program_name": "PSZ_Fine_Set_Fan_Par"
+                }
+            ]
+        },
+        "PSZ_Fine_Fan_Main_Manager": {
+            "energyplus_model_calling_point": "BeginTimestepBeforePredictor",
+            "programs": [
+                {
+                    "program_name": "PSZ_Fine_Fan_Control"
                 }
             ]
         },
