@@ -4,6 +4,7 @@ on:
 
 jobs:
   upload-release-container:
+    if: "!github.event.release.prerelease"
     env:
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -77,5 +78,5 @@ jobs:
         with:
           user: ${{ env.PYPI_USER }}
           password: ${{ env.PYPI_API_TOKEN }}
-          skip_existing: true
+          skip-existing: true
           verbose: true
