@@ -5,9 +5,11 @@ import logging
 import os
 import sys
 from typing import Any, Dict, List, Optional, Tuple, Union
-import pkg_resources
+
 import numpy as np
-required = {'stable-baselines3','wandb'}
+import pkg_resources
+
+required = {'stable-baselines3', 'wandb'}
 installed = {pkg.key for pkg in pkg_resources.working_set}
 missing = required - installed
 if not missing:
@@ -306,6 +308,7 @@ class CSVLogger(object):
         """Deactivate Sinergym CSV logger
         """
         self.flag = False
+
 
 if not missing:
     class WandBOutputFormat(KVWriter):
