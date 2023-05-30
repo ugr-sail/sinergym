@@ -1,6 +1,3 @@
-import argparse
-import pprint
-
 import gymnasium as gym
 import numpy as np
 import pkg_resources
@@ -11,8 +8,7 @@ installed = {pkg.key for pkg in pkg_resources.working_set}
 missing = required - installed
 if not missing:
     import stable_baselines3
-    from stable_baselines3.common.noise import (NormalActionNoise,
-                                                OrnsteinUhlenbeckActionNoise)
+    from stable_baselines3.common.noise import NormalActionNoise
 
     import sinergym
 

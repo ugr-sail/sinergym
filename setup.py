@@ -48,8 +48,6 @@ setup(name='sinergym',
               'pytest',
               'pytest-cov',
               'pytest-xdist',
-              'stable-baselines3==2.0.0a5',
-              'wandb'
           ],
           'DRL': [
               'stable-baselines3==2.0.0a5',
