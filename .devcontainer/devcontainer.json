@@ -2,9 +2,9 @@
 	"name": "sinergym",
 	"build": {
 		"args": {
-			"ENERGYPLUS_VERSION": "9.5.0",
-			"ENERGYPLUS_INSTALL_VERSION": "9-5-0",
-			"ENERGYPLUS_SHA": "de239b2e5f"
+			"ENERGYPLUS_VERSION": "23.1.0",
+			"ENERGYPLUS_INSTALL_VERSION": "23-1-0",
+			"ENERGYPLUS_SHA": "87ed9199d4"
 		}
 	},
 	"dockerFile": "../Dockerfile",
