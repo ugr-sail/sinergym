@@ -655,7 +655,7 @@ register(
     id='Eplus-warehouse-hot-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_Warehouse_Denver.epJSON',
+        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
         'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
         'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
@@ -681,7 +681,7 @@ register(
     id='Eplus-warehouse-hot-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_Warehouse_Denver.epJSON',
+        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
         'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
         'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
@@ -707,7 +707,7 @@ register(
     id='Eplus-warehouse-hot-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_Warehouse_Denver.epJSON',
+        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
         'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
         'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
@@ -734,7 +734,7 @@ register(
     id='Eplus-warehouse-hot-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_Warehouse_Denver.epJSON',
+        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
         'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
         'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
@@ -761,7 +761,7 @@ register(
     id='Eplus-warehouse-mixed-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_Warehouse_Denver.epJSON',
+        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
         'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
@@ -787,7 +787,7 @@ register(
     id='Eplus-warehouse-mixed-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_Warehouse_Denver.epJSON',
+        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
         'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
@@ -813,7 +813,7 @@ register(
     id='Eplus-warehouse-mixed-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_Warehouse_Denver.epJSON',
+        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
         'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
@@ -840,7 +840,7 @@ register(
     id='Eplus-warehouse-mixed-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_Warehouse_Denver.epJSON',
+        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
         'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
@@ -867,7 +867,7 @@ register(
     id='Eplus-warehouse-cool-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_Warehouse_Denver.epJSON',
+        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
         'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
@@ -893,7 +893,7 @@ register(
     id='Eplus-warehouse-cool-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_Warehouse_Denver.epJSON',
+        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
         'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
@@ -919,7 +919,7 @@ register(
     id='Eplus-warehouse-cool-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_Warehouse_Denver.epJSON',
+        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
         'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
@@ -946,7 +946,7 @@ register(
     id='Eplus-warehouse-cool-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_Warehouse_Denver.epJSON',
+        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
         'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
@@ -978,7 +978,7 @@ register(
     id='Eplus-office-hot-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_OfficeMedium_Denver.epJSON',
+        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
         'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
         'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
@@ -1019,7 +1019,7 @@ register(
     id='Eplus-office-hot-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_OfficeMedium_Denver.epJSON',
+        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
         'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
         'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
@@ -1060,7 +1060,7 @@ register(
     id='Eplus-office-hot-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_OfficeMedium_Denver.epJSON',
+        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
         'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
         'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
@@ -1102,7 +1102,7 @@ register(
     id='Eplus-office-hot-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_OfficeMedium_Denver.epJSON',
+        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
         'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
         'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
@@ -1144,7 +1144,7 @@ register(
     id='Eplus-office-mixed-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_OfficeMedium_Denver.epJSON',
+        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
         'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
@@ -1185,7 +1185,7 @@ register(
     id='Eplus-office-mixed-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_OfficeMedium_Denver.epJSON',
+        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
         'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
@@ -1226,7 +1226,7 @@ register(
     id='Eplus-office-mixed-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_OfficeMedium_Denver.epJSON',
+        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
         'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
@@ -1268,7 +1268,7 @@ register(
     id='Eplus-office-mixed-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_OfficeMedium_Denver.epJSON',
+        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
         'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
@@ -1310,7 +1310,7 @@ register(
     id='Eplus-office-cool-discrete-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_OfficeMedium_Denver.epJSON',
+        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
         'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
@@ -1351,7 +1351,7 @@ register(
     id='Eplus-office-cool-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_OfficeMedium_Denver.epJSON',
+        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
         'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
@@ -1392,7 +1392,7 @@ register(
     id='Eplus-office-cool-discrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_OfficeMedium_Denver.epJSON',
+        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
         'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
@@ -1434,7 +1434,7 @@ register(
     id='Eplus-office-cool-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ASHRAE9012016_OfficeMedium_Denver.epJSON',
+        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
         'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
@@ -1479,7 +1479,7 @@ register(
     id='Eplus-officegrid-cool-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'OfficeGridStorageSmoothing.epJSON',
+        'building_file': 'LrgOff_GridStorageScheduled.epJSON',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
         'observation_space': DEFAULT_OFFICEGRID_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES,
@@ -1521,7 +1521,7 @@ register(
     id='Eplus-officegrid-mixed-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'OfficeGridStorageSmoothing.epJSON',
+        'building_file': 'LrgOff_GridStorageScheduled.epJSON',
         'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'observation_space': DEFAULT_OFFICEGRID_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES,
@@ -1563,7 +1563,7 @@ register(
     id='Eplus-officegrid-hot-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'OfficeGridStorageSmoothing.epJSON',
+        'building_file': 'LrgOff_GridStorageScheduled.epJSON',
         'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
         'observation_space': DEFAULT_OFFICEGRID_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES,
@@ -1605,7 +1605,7 @@ register(
     id='Eplus-officegrid-cool-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'OfficeGridStorageSmoothing.epJSON',
+        'building_file': 'LrgOff_GridStorageScheduled.epJSON',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
         'observation_space': DEFAULT_OFFICEGRID_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES,
@@ -1648,7 +1648,7 @@ register(
     id='Eplus-officegrid-mixed-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'OfficeGridStorageSmoothing.epJSON',
+        'building_file': 'LrgOff_GridStorageScheduled.epJSON',
         'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'observation_space': DEFAULT_OFFICEGRID_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES,
@@ -1691,7 +1691,7 @@ register(
     id='Eplus-officegrid-hot-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'OfficeGridStorageSmoothing.epJSON',
+        'building_file': 'LrgOff_GridStorageScheduled.epJSON',
         'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
         'observation_space': DEFAULT_OFFICEGRID_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES,
@@ -1738,7 +1738,7 @@ register(
     id='Eplus-shop-cool-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ShopWithVandBattery.epJSON',
+        'building_file': 'ShopWithPVandBattery.epJSON',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
         'observation_space': DEFAULT_SHOP_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_SHOP_OBSERVATION_VARIABLES,
@@ -1766,7 +1766,7 @@ register(
     id='Eplus-shop-mixed-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ShopWithVandBattery.epJSON',
+        'building_file': 'ShopWithPVandBattery.epJSON',
         'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'observation_space': DEFAULT_SHOP_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_SHOP_OBSERVATION_VARIABLES,
@@ -1794,7 +1794,7 @@ register(
     id='Eplus-shop-hot-continuous-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ShopWithVandBattery.epJSON',
+        'building_file': 'ShopWithPVandBattery.epJSON',
         'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
         'observation_space': DEFAULT_SHOP_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_SHOP_OBSERVATION_VARIABLES,
@@ -1822,7 +1822,7 @@ register(
     id='Eplus-shop-cool-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ShopWithVandBattery.epJSON',
+        'building_file': 'ShopWithPVandBattery.epJSON',
         'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
         'observation_space': DEFAULT_SHOP_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_SHOP_OBSERVATION_VARIABLES,
@@ -1851,7 +1851,7 @@ register(
     id='Eplus-shop-mixed-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ShopWithVandBattery.epJSON',
+        'building_file': 'ShopWithPVandBattery.epJSON',
         'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
         'observation_space': DEFAULT_SHOP_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_SHOP_OBSERVATION_VARIABLES,
@@ -1880,7 +1880,7 @@ register(
     id='Eplus-shop-hot-continuous-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
-        'building_file': 'ShopWithVandBattery.epJSON',
+        'building_file': 'ShopWithPVandBattery.epJSON',
         'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
         'observation_space': DEFAULT_SHOP_OBSERVATION_SPACE,
         'observation_variables': DEFAULT_SHOP_OBSERVATION_VARIABLES,
