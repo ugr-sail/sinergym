@@ -59,12 +59,15 @@ To install *Sinergym* manually instead of through the container (not recommended
 
 Sinergym has been updating the compatibility with different components, here it is a summary about important versions support:
 
-| **Sinergym version** | **Ubuntu version** | **Python version** | **EnergyPlus version** |
-| -------------------- | ------------------ | ------------------ | ---------------------- |
-| **0.0**              | 18.04 LTS          | 3.6                | 8.3.0                  |
-| **1.1.0**            | 18.04 LTS          | 3.6                | **9.5.0**              |
-| **1.7.0**            | 18.04 LTS          | **3.9**            | 9.5.0                  |
-| **1.9.5**            | **22.04 LTS**      | **3.10**           | 9.5.0                  |
+| **Sinergym version** | **Ubuntu version** | **Python version** | **EnergyPlus version** | **Building model file** |
+| -------------------- | ------------------ | ------------------ | ---------------------- | ----------------------- |
+| **0.0**              | 18.04 LTS          | 3.6                | 8.3.0                  | IDF                     |
+| **1.1.0**            | 18.04 LTS          | 3.6                | **9.5.0**              | IDF                     |
+| **1.7.0**            | 18.04 LTS          | **3.9**            | 9.5.0                  | IDF                     |
+| **1.9.5**            | **22.04 LTS**      | **3.10**           | 9.5.0                  | IDF                     |
+| **2.4.0**            | 22.04 LTS          | 3.10.6             | 9.5.0                  | **epJSON**              |
+| **2.5.0**            | 22.04 LTS          | 3.10.6             | **23.1.0**             | epJSON                  |
+
 
 - Now, we have a correct python version with required modules to run *Sinergym*. Let's continue with the rest of the programs that are needed outside of Python to run the simulations:
 
