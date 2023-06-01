@@ -55,14 +55,16 @@ In order to execute tests, it's necessary to define project instances to check s
 ```python
 # sinergym/tests/conftest.py
 
-@pytest.fixture(scope="session")
-def idf_path(pkg_data_path):
-     return os.path.join(pkg_data_path, 'buildings', "5ZoneAutoDXVAV.idf")
+@pytest.fixture(scope='session')
+def json_path(pkg_data_path):
+    return os.path.join(pkg_data_path, 'buildings', '5ZoneAutoDXVAV.epJSON')
 
 # ...
-@pytest.fixture(scope="session")
-def epm(idf_path):
-    return Epm.from_idf(idf_path)
+@ pytest.fixture(scope='function')
+def building(json_path):
+    with open(json_path) as json_f:
+        building_model = json.load(json_f)
+    return building_model
 # ...
 ```
 
@@ -83,8 +85,8 @@ At the same time, we can use a fixture within definition of other fixture, like 
 In order to make a new test, the format is really simple:
 
 ```python
-def test_get_eplus_run_info(simulator, idf_path):
-    info = simulator._get_eplus_run_info(idf_path)
+def test_get_eplus_run_info(simulator, json_path):
+    info = simulator._get_eplus_run_info(building_path)
     assert info == (1, 1, 3, 31, 0, 4)
 ```
 
