@@ -52,7 +52,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#docker-container">1.1. Docker container</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#manual-installation">1.2. Manual installation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#configure-python-environment">1.2.1. Configure Python environment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#install-energyplus-9-5-0">1.2.2. Install EnergyPlus 9.5.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-energyplus-23-1-0">1.2.2. Install EnergyPlus 23.1.0</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#install-bcvtb-software">1.2.3. Install BCVTB software</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#set-environment-variables">1.2.4. Set environment variables</a></li>
 </ul>
@@ -129,26 +129,43 @@ the versions supported by Sinergym throughout its releases:</p>
 <td><p><strong>Ubuntu version</strong></p></td>
 <td><p><strong>Python version</strong></p></td>
 <td><p><strong>EnergyPlus version</strong></p></td>
+<td><p><strong>Building model file</strong></p></td>
 </tr>
 <tr class="row-even"><td><p><strong>0.0</strong></p></td>
 <td><p>18.04 LTS</p></td>
 <td><p>3.6</p></td>
 <td><p>8.3.0</p></td>
+<td><p>IDF</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>1.1.0</strong></p></td>
 <td><p>18.04 LTS</p></td>
 <td><p>3.6</p></td>
 <td><p><strong>9.5.0</strong></p></td>
+<td><p>IDF</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>1.7.0</strong></p></td>
 <td><p>18.04 LTS</p></td>
 <td><p><strong>3.9</strong></p></td>
 <td><p>9.5.0</p></td>
+<td><p>IDF</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>1.9.5</strong></p></td>
 <td><p><strong>22.04 LTS</strong></p></td>
-<td><p><strong>3.10</strong></p></td>
+<td><p><strong>3.10.6</strong></p></td>
 <td><p>9.5.0</p></td>
+<td><p>IDF</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>2.4.0</strong></p></td>
+<td><p>22.04 LTS</p></td>
+<td><p>3.10.6</p></td>
+<td><p>9.5.0</p></td>
+<td><p><strong>epJSON</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>2.5.0</strong></p></td>
+<td><p>22.04 LTS</p></td>
+<td><p>3.10.6</p></td>
+<td><p><strong>23.1.0</strong></p></td>
+<td><p>epJSON</p></td>
 </tr>
 </tbody>
 </table>
@@ -224,14 +241,14 @@ $<span class="w"> </span>conda<span class="w"> </span>activate<span class="w"> <
 Let’s continue with the rest of the programs that are needed outside of Python
 to run the simulations:</p>
 </section>
-<section id="install-energyplus-9-5-0">
-<h3><span class="section-number">1.2.2. </span>Install EnergyPlus 9.5.0<a class="headerlink" href="#install-energyplus-9-5-0" title="Permalink to this heading"></a></h3>
-<p>Install <em>EnergyPlus</em>. Currently it has been update compatibility to <code class="docutils literal notranslate"><span class="pre">9.5.0</span></code> and it has
+<section id="install-energyplus-23-1-0">
+<h3><span class="section-number">1.2.2. </span>Install EnergyPlus 23.1.0<a class="headerlink" href="#install-energyplus-23-1-0" title="Permalink to this heading"></a></h3>
+<p>Install <em>EnergyPlus</em>. Currently it has been update compatibility to <code class="docutils literal notranslate"><span class="pre">23.1.0</span></code> and it has
 been tested, but code may also work with other versions, but they don’t have been tested.</p>
 <p>Follow the instructions <a class="reference external" href="https://energyplus.net/downloads">here</a> and
 install it for Linux (only <strong>Ubuntu</strong> is supported by us). Choose any location
 to install the software. Once installed, a folder called
-<code class="docutils literal notranslate"><span class="pre">Energyplus-9-5-0</span></code> should appear in the selected location.</p>
+<code class="docutils literal notranslate"><span class="pre">Energyplus-23-1-0</span></code> should appear in the selected location.</p>
 </section>
 <section id="install-bcvtb-software">
 <h3><span class="section-number">1.2.3. </span>Install BCVTB software<a class="headerlink" href="#install-bcvtb-software" title="Permalink to this heading"></a></h3>
@@ -355,6 +372,7 @@ visit our section <a class="reference internal" href="gcloudAPI.html#preparing-g
             <dd><a href="../../v2.3.2/pages/installation.html">v2.3.2</a></dd>
             <dd><a href="../../v2.3.3/pages/installation.html">v2.3.3</a></dd>
             <dd><a href="../../v2.3.4/pages/installation.html">v2.3.4</a></dd>
+            <dd><a href="../../v2.4.1/pages/installation.html">v2.4.1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
