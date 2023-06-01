@@ -15,7 +15,7 @@ def test_update_weather_path(config_several_weathers):
     assert config_several_weathers._weather_path is not None
 
 
-def test_adapt_idf_to_epw(config):
+def test_adapt_building_to_epw(config):
     # Read the current Location and DesignDays
     locations = config.building['Site:Location']
     designdays = config.building['SizingPeriod:DesignDay']
@@ -94,7 +94,7 @@ def test_adapt_idf_to_epw(config):
 
 
 def test_adapt_variables_to_cfg_and_building(config):
-    # Check initial state in Config variables_tree attribute and IDF
+    # Check initial state in Config variables_tree attribute and building model
     # OutputVariables
     assert len(config.variables_tree) == 0
     assert config.variables_tree.find('variable') is None
@@ -157,7 +157,7 @@ def test_apply_extra_conf(config):
                         config.config['runperiod'][5])
 
 
-def test_adapt_idf_to_action_definition(config):
+def test_adapt_building_to_action_definition(config):
     # Check External interface variables are not created yet
     assert 'ExternalInterface:Schedule' not in config.building
 
@@ -229,7 +229,7 @@ def test_save_building_model(config):
     assert config.episode_path is not None
     # save current model
     path_save = config.save_building_model()
-    # Read the path save idf and check IDF saved
+    # Read the path save and check building model is saved
     building = {}
     with open(path_save) as json_f:
         building = json.load(json_f)
