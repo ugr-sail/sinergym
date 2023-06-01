@@ -76,5 +76,3 @@ RUN pip install -e .${SINERGYM_EXTRAS}
 #RUN pip install idna && pip install six
 CMD ["/bin/bash"]
 
-# Build: docker build -t sinergym:1.1.0 --build-arg ENERGYPLUS_VERSION=9.5.0 --build-arg ENERGYPLUS_INSTALL_VERSION=9-5-0 --build-arg ENERGYPLUS_SHA=de239b2e5f .
-# Run: docker run -it --rm -p 5005:5005 sinergym:1.1.0
