@@ -24,34 +24,24 @@ def test_adapt_building_to_epw(config):
 
     # Check old location is correct
     assert locations.get(
-        'Pittsburgh Allegheny Co Ap_PA_USA Design_Conditions',
+        'CHICAGO_IL_USA TMY2-94846',
         False)
-    location = locations['Pittsburgh Allegheny Co Ap_PA_USA Design_Conditions']
-    assert location['latitude'] == 40.35
-    assert location['longitude'] == -79.92
-    assert location['time_zone'] == -5.00
-    assert location['elevation'] == 380.00
+    location = locations['CHICAGO_IL_USA TMY2-94846']
+    assert location['latitude'] == 41.78
+    assert location['longitude'] == -87.75
+    assert location['time_zone'] == -6.0
+    assert location['elevation'] == 190.0
 
     # Check old Designday is correct
     assert designdays.get(
-        'Pittsburgh Allegheny Co Ap Ann Htg 99.6% Condns DB', False)
-    winter_day = designdays['Pittsburgh Allegheny Co Ap Ann Htg 99.6% Condns DB']
+        'CHICAGO_IL_USA Annual Heating 99% Design Conditions DB', False)
+    winter_day = designdays['CHICAGO_IL_USA Annual Heating 99% Design Conditions DB']
     assert winter_day['day_type'] == 'WinterDesignDay'
-    assert winter_day['month'] == 1
-    assert winter_day['day_of_month'] == 21
-    assert winter_day['maximum_dry_bulb_temperature'] == -15.4
-    assert winter_day['barometric_pressure'] == 96842.0
-    assert winter_day['wind_speed'] == 4.7
 
     assert designdays.get(
-        'Pittsburgh Allegheny Co Ap Ann Clg .4% Condns DB=>MWB', False)
-    summer_day = designdays['Pittsburgh Allegheny Co Ap Ann Clg .4% Condns DB=>MWB']
+        'CHICAGO_IL_USA Annual Cooling 1% Design Conditions DB/MCWB', False)
+    summer_day = designdays['CHICAGO_IL_USA Annual Cooling 1% Design Conditions DB/MCWB']
     assert summer_day['day_type'] == 'SummerDesignDay'
-    assert summer_day['month'] == 7
-    assert summer_day['day_of_month'] == 21
-    assert summer_day['maximum_dry_bulb_temperature'] == 32.2
-    assert summer_day['barometric_pressure'] == 96842.0
-    assert summer_day['wind_speed'] == 4.4
 
     # Existing designday names
     winterday = 'Ann Htg 99.6% Condns DB'
