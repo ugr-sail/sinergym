@@ -70,27 +70,22 @@
     },
     "AirLoopHVAC:OutdoorAirSystem": {
         "ZN_1_FLR_1_SEC_1:Sys_OA": {
-            "availability_manager_list_name": "ZN_1_FLR_1_SEC_1:Sys Availability Manager List",
             "controller_list_name": "ZN_1_FLR_1_SEC_1:Sys_OAControllers",
             "outdoor_air_equipment_list_name": "ZN_1_FLR_1_SEC_1:Sys_OAEquipment"
         },
         "ZN_1_FLR_1_SEC_2:Sys_OA": {
-            "availability_manager_list_name": "ZN_1_FLR_1_SEC_2:Sys Availability Manager List",
             "controller_list_name": "ZN_1_FLR_1_SEC_2:Sys_OAControllers",
             "outdoor_air_equipment_list_name": "ZN_1_FLR_1_SEC_2:Sys_OAEquipment"
         },
         "ZN_1_FLR_1_SEC_3:Sys_OA": {
-            "availability_manager_list_name": "ZN_1_FLR_1_SEC_3:Sys Availability Manager List",
             "controller_list_name": "ZN_1_FLR_1_SEC_3:Sys_OAControllers",
             "outdoor_air_equipment_list_name": "ZN_1_FLR_1_SEC_3:Sys_OAEquipment"
         },
         "ZN_1_FLR_1_SEC_4:Sys_OA": {
-            "availability_manager_list_name": "ZN_1_FLR_1_SEC_4:Sys Availability Manager List",
             "controller_list_name": "ZN_1_FLR_1_SEC_4:Sys_OAControllers",
             "outdoor_air_equipment_list_name": "ZN_1_FLR_1_SEC_4:Sys_OAEquipment"
         },
         "ZN_1_FLR_1_SEC_5:Sys_OA": {
-            "availability_manager_list_name": "ZN_1_FLR_1_SEC_5:Sys Availability Manager List",
             "controller_list_name": "ZN_1_FLR_1_SEC_5:Sys_OAControllers",
             "outdoor_air_equipment_list_name": "ZN_1_FLR_1_SEC_5:Sys_OAEquipment"
         }
@@ -1745,6 +1740,7 @@
     },
     "Coil:Cooling:DX:SingleSpeed": {
         "ZN_1_FLR_1_SEC_1:SysCoolC DXCoil": {
+            "2023_rated_evaporator_fan_power_per_volume_flow_rate": 934.4,
             "air_inlet_node_name": "ZN_1_FLR_1_SEC_1:Sys_OA-ZN_1_FLR_1_SEC_1:SysCoolCNode",
             "air_outlet_node_name": "ZN_1_FLR_1_SEC_1:SysCoolC-ZN_1_FLR_1_SEC_1:SysHeatCNode",
             "availability_schedule_name": "ALWAYS_ON",
@@ -1759,6 +1755,7 @@
             "total_cooling_capacity_function_of_temperature_curve_name": "ZN_1_FLR_1_SEC_1:SysCoolCCarrier48TM014_12tons_CapFT"
         },
         "ZN_1_FLR_1_SEC_2:SysCoolC DXCoil": {
+            "2023_rated_evaporator_fan_power_per_volume_flow_rate": 934.4,
             "air_inlet_node_name": "ZN_1_FLR_1_SEC_2:Sys_OA-ZN_1_FLR_1_SEC_2:SysCoolCNode",
             "air_outlet_node_name": "ZN_1_FLR_1_SEC_2:SysCoolC-ZN_1_FLR_1_SEC_2:SysHeatCNode",
             "availability_schedule_name": "ALWAYS_ON",
@@ -1773,6 +1770,7 @@
             "total_cooling_capacity_function_of_temperature_curve_name": "ZN_1_FLR_1_SEC_2:SysCoolCCarrier48TM014_12tons_CapFT"
         },
         "ZN_1_FLR_1_SEC_3:SysCoolC DXCoil": {
+            "2023_rated_evaporator_fan_power_per_volume_flow_rate": 934.4,
             "air_inlet_node_name": "ZN_1_FLR_1_SEC_3:Sys_OA-ZN_1_FLR_1_SEC_3:SysCoolCNode",
             "air_outlet_node_name": "ZN_1_FLR_1_SEC_3:SysCoolC-ZN_1_FLR_1_SEC_3:SysHeatCNode",
             "availability_schedule_name": "ALWAYS_ON",
@@ -1787,6 +1785,7 @@
             "total_cooling_capacity_function_of_temperature_curve_name": "ZN_1_FLR_1_SEC_3:SysCoolCCarrier48TM014_12tons_CapFT"
         },
         "ZN_1_FLR_1_SEC_4:SysCoolC DXCoil": {
+            "2023_rated_evaporator_fan_power_per_volume_flow_rate": 934.4,
             "air_inlet_node_name": "ZN_1_FLR_1_SEC_4:Sys_OA-ZN_1_FLR_1_SEC_4:SysCoolCNode",
             "air_outlet_node_name": "ZN_1_FLR_1_SEC_4:SysCoolC-ZN_1_FLR_1_SEC_4:SysHeatCNode",
             "availability_schedule_name": "ALWAYS_ON",
@@ -1801,6 +1800,7 @@
             "total_cooling_capacity_function_of_temperature_curve_name": "ZN_1_FLR_1_SEC_4:SysCoolCCarrier48TM014_12tons_CapFT"
         },
         "ZN_1_FLR_1_SEC_5:SysCoolC DXCoil": {
+            "2023_rated_evaporator_fan_power_per_volume_flow_rate": 934.4,
             "air_inlet_node_name": "ZN_1_FLR_1_SEC_5:Sys_OA-ZN_1_FLR_1_SEC_5:SysCoolCNode",
             "air_outlet_node_name": "ZN_1_FLR_1_SEC_5:SysCoolC-ZN_1_FLR_1_SEC_5:SysHeatCNode",
             "availability_schedule_name": "ALWAYS_ON",
@@ -2540,7 +2540,7 @@
             "fraction_lost": 0.0,
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_1"
         },
         "ZN_1_FLR_1_SEC_2_MiscPlug_Equip": {
             "design_level": 362.3476,
@@ -2550,7 +2550,7 @@
             "fraction_lost": 0.0,
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_2"
         },
         "ZN_1_FLR_1_SEC_3_MiscPlug_Equip": {
             "design_level": 465.9534,
@@ -2560,7 +2560,7 @@
             "fraction_lost": 0.0,
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_3"
         },
         "ZN_1_FLR_1_SEC_4_MiscPlug_Equip": {
             "design_level": 362.3476,
@@ -2570,7 +2570,7 @@
             "fraction_lost": 0.0,
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_4"
         },
         "ZN_1_FLR_1_SEC_5_MiscPlug_Equip": {
             "design_level": 658.2385,
@@ -2580,7 +2580,7 @@
             "fraction_lost": 0.0,
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_5"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_5"
         }
     },
     "ElectricLoadCenter:Distribution": {
@@ -2834,7 +2834,6 @@
             "pm_emission_factor": 0.0173147,
             "so2_emission_factor": 0.490888,
             "source_energy_factor": 3.712,
-            "units_of_measure": "kg",
             "water_emission_factor": 0.45499
         }
     },
@@ -2848,7 +2847,7 @@
             "fraction_lost": 0.0,
             "fraction_radiant": 0.2,
             "schedule_name": "BLDG_EQUIP_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_1"
         },
         "ZN_1_FLR_1_SEC_2_MiscGas_Equip": {
             "carbon_dioxide_generation_rate": 0,
@@ -2859,7 +2858,7 @@
             "fraction_lost": 0.0,
             "fraction_radiant": 0.2,
             "schedule_name": "BLDG_EQUIP_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_2"
         },
         "ZN_1_FLR_1_SEC_3_MiscGas_Equip": {
             "carbon_dioxide_generation_rate": 0,
@@ -2870,7 +2869,7 @@
             "fraction_lost": 0.0,
             "fraction_radiant": 0.2,
             "schedule_name": "BLDG_EQUIP_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_3"
         },
         "ZN_1_FLR_1_SEC_4_MiscGas_Equip": {
             "carbon_dioxide_generation_rate": 0,
@@ -2881,7 +2880,7 @@
             "fraction_lost": 0.0,
             "fraction_radiant": 0.2,
             "schedule_name": "BLDG_EQUIP_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_4"
         },
         "ZN_1_FLR_1_SEC_5_MiscGas_Equip": {
             "carbon_dioxide_generation_rate": 0,
@@ -2892,7 +2891,7 @@
             "fraction_lost": 0.0,
             "fraction_radiant": 0.2,
             "schedule_name": "BLDG_EQUIP_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_5"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_5"
         }
     },
     "Generator:Photovoltaic": {
@@ -2986,7 +2985,7 @@
             "lighting_level": 1178.0879,
             "return_air_fraction": 0.0,
             "schedule_name": "BLDG_LIGHT_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_1"
         },
         "ZN_1_FLR_1_SEC_2_Lights": {
             "design_level_calculation_method": "LightingLevel",
@@ -2997,7 +2996,7 @@
             "lighting_level": 916.1373,
             "return_air_fraction": 0.0,
             "schedule_name": "BLDG_LIGHT_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_2"
         },
         "ZN_1_FLR_1_SEC_3_Lights": {
             "design_level_calculation_method": "LightingLevel",
@@ -3008,7 +3007,7 @@
             "lighting_level": 1178.0879,
             "return_air_fraction": 0.0,
             "schedule_name": "BLDG_LIGHT_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_3"
         },
         "ZN_1_FLR_1_SEC_4_Lights": {
             "design_level_calculation_method": "LightingLevel",
@@ -3019,7 +3018,7 @@
             "lighting_level": 916.1373,
             "return_air_fraction": 0.0,
             "schedule_name": "BLDG_LIGHT_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_4"
         },
         "ZN_1_FLR_1_SEC_5_Lights": {
             "design_level_calculation_method": "LightingLevel",
@@ -3030,7 +3029,7 @@
             "lighting_level": 1664.2496,
             "return_air_fraction": 0.0,
             "schedule_name": "BLDG_LIGHT_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_5"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_5"
         }
     },
     "Material": {
@@ -3748,7 +3747,7 @@
             "number_of_people_schedule_name": "BLDG_OCC_SCH",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_1"
         },
         "ZN_1_FLR_1_SEC_2": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -3763,7 +3762,7 @@
             "number_of_people_schedule_name": "BLDG_OCC_SCH",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_2"
         },
         "ZN_1_FLR_1_SEC_3": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -3778,7 +3777,7 @@
             "number_of_people_schedule_name": "BLDG_OCC_SCH",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_3"
         },
         "ZN_1_FLR_1_SEC_4": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -3793,7 +3792,7 @@
             "number_of_people_schedule_name": "BLDG_OCC_SCH",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_4"
         },
         "ZN_1_FLR_1_SEC_5": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -3808,7 +3807,7 @@
             "number_of_people_schedule_name": "BLDG_OCC_SCH",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_5"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_5"
         }
     },
     "PhotovoltaicPerformance:Simple": {
@@ -3853,7 +3852,7 @@
     "PlantEquipmentOperation:HeatingLoad": {
         "SHWSys1 Operation Scheme": {
             "load_range_1_lower_limit": 0.0,
-            "load_range_1_upper_limit": 1000000000000000,
+            "load_range_1_upper_limit": 1e+15,
             "range_1_equipment_list_name": "SHWSys1 Equipment List"
         }
     },
@@ -5604,7 +5603,7 @@
     },
     "Version": {
         "Version 1": {
-            "version_identifier": "9.5"
+            "version_identifier": "23.1"
         }
     },
     "WaterHeater:Mixed": {
@@ -5814,7 +5813,7 @@
             "ceiling_height": 5.0088,
             "direction_of_relative_north": 0.0,
             "floor_area": "Autocalculate",
-            "multiplier": 1.0,
+            "multiplier": 1,
             "part_of_total_floor_area": "Yes",
             "type": 1,
             "volume": 393.3855,
@@ -5826,7 +5825,7 @@
             "ceiling_height": 5.0088,
             "direction_of_relative_north": 0.0,
             "floor_area": "Autocalculate",
-            "multiplier": 1.0,
+            "multiplier": 1,
             "part_of_total_floor_area": "Yes",
             "type": 1,
             "volume": 305.9154,
@@ -5838,7 +5837,7 @@
             "ceiling_height": 5.0088,
             "direction_of_relative_north": 0.0,
             "floor_area": "Autocalculate",
-            "multiplier": 1.0,
+            "multiplier": 1,
             "part_of_total_floor_area": "Yes",
             "type": 1,
             "volume": 393.3855,
@@ -5850,7 +5849,7 @@
             "ceiling_height": 5.0088,
             "direction_of_relative_north": 0.0,
             "floor_area": "Autocalculate",
-            "multiplier": 1.0,
+            "multiplier": 1,
             "part_of_total_floor_area": "Yes",
             "type": 1,
             "volume": 305.9154,
@@ -5862,7 +5861,7 @@
             "ceiling_height": 5.0088,
             "direction_of_relative_north": 0.0,
             "floor_area": "Autocalculate",
-            "multiplier": 1.0,
+            "multiplier": 1,
             "part_of_total_floor_area": "Yes",
             "type": 1,
             "volume": 555.724,
@@ -6033,7 +6032,7 @@
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_1"
         },
         "ZN_1_FLR_1_SEC_2_Infiltration": {
             "constant_term_coefficient": 1.0,
@@ -6043,7 +6042,7 @@
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_2"
         },
         "ZN_1_FLR_1_SEC_3_Infiltration": {
             "constant_term_coefficient": 1.0,
@@ -6053,7 +6052,7 @@
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_3"
         },
         "ZN_1_FLR_1_SEC_4_Infiltration": {
             "constant_term_coefficient": 1.0,
@@ -6063,7 +6062,7 @@
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_4"
         },
         "ZN_1_FLR_1_SEC_5_Infiltration": {
             "constant_term_coefficient": 1.0,
@@ -6073,7 +6072,7 @@
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "ZN_1_FLR_1_SEC_5"
+            "zone_or_zonelist_or_space_or_spacelist_name": "ZN_1_FLR_1_SEC_5"
         }
     }
 }

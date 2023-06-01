@@ -31,12 +31,10 @@
     },
     "AirLoopHVAC:OutdoorAirSystem": {
         "PSZ-Fine Storage OA System": {
-            "availability_manager_list_name": "PSZ-Fine Storage Availability Managers",
             "controller_list_name": "PSZ-Fine Storage OA System Controllers",
             "outdoor_air_equipment_list_name": "PSZ-Fine Storage OA System Equipment"
         },
         "PSZ-Office OA System": {
-            "availability_manager_list_name": "PSZ-Office Availability Managers",
             "controller_list_name": "PSZ-Office OA System Controllers",
             "outdoor_air_equipment_list_name": "PSZ-Office OA System Equipment"
         }
@@ -89,6 +87,66 @@
                 }
             ],
             "supply_air_path_inlet_node_name": "PSZ-Office Supply Path Inlet"
+        }
+    },
+    "AirLoopHVAC:UnitarySystem": {
+        "PSZ-Fine_Unitary_Package_DX": {
+            "air_inlet_node_name": "PSZ-Fine Storage Mixed Air Outlet",
+            "air_outlet_node_name": "PSZ-Fine Storage Air Loop Outlet",
+            "availability_schedule_name": "COMPACT HVAC-ALWAYS 1",
+            "control_type": "Load",
+            "controlling_zone_or_thermostat_location": "Zone2 Fine Storage",
+            "cooling_coil_name": "PSZ-Fine Storage Cooling Coil",
+            "cooling_coil_object_type": "Coil:Cooling:DX:MultiSpeed",
+            "cooling_supply_air_flow_rate": "Autosize",
+            "cooling_supply_air_flow_rate_method": "SupplyAirFlowRate",
+            "dehumidification_control_type": "None",
+            "design_specification_multispeed_object_name": "PSZ-Fine_Unitary_Package_DX_Perf",
+            "design_specification_multispeed_object_type": "UnitarySystemPerformance:Multispeed",
+            "dx_heating_coil_sizing_ratio": 1,
+            "fan_placement": "BlowThrough",
+            "heating_coil_name": "PSZ-Fine Storage Heating Coil",
+            "heating_coil_object_type": "Coil:Heating:Fuel",
+            "heating_supply_air_flow_rate": "Autosize",
+            "heating_supply_air_flow_rate_method": "SupplyAirFlowRate",
+            "latent_load_control": "SensibleOnlyLoadControl",
+            "maximum_supply_air_temperature": "Autosize",
+            "minimum_supply_air_temperature": 2,
+            "no_load_supply_air_flow_rate": "Autosize",
+            "no_load_supply_air_flow_rate_method": "SupplyAirFlowRate",
+            "supply_air_fan_operating_mode_schedule_name": "FanSched",
+            "supply_fan_name": "PSZ-Fine Storage_addAQ Supply Fan",
+            "supply_fan_object_type": "Fan:SystemModel",
+            "use_doas_dx_cooling_coil": "No"
+        },
+        "PSZ-Office_Unitary_Package_DX": {
+            "air_inlet_node_name": "PSZ-Office Mixed Air Outlet",
+            "air_outlet_node_name": "PSZ-Office Air Loop Outlet",
+            "availability_schedule_name": "COMPACT HVAC-ALWAYS 1",
+            "control_type": "Load",
+            "controlling_zone_or_thermostat_location": "Zone1 Office",
+            "cooling_coil_name": "PSZ-Office Cooling Coil",
+            "cooling_coil_object_type": "Coil:Cooling:DX:MultiSpeed",
+            "cooling_supply_air_flow_rate": "Autosize",
+            "cooling_supply_air_flow_rate_method": "SupplyAirFlowRate",
+            "dehumidification_control_type": "None",
+            "design_specification_multispeed_object_name": "PSZ-Office_Unitary_Package_DX_Perf",
+            "design_specification_multispeed_object_type": "UnitarySystemPerformance:Multispeed",
+            "dx_heating_coil_sizing_ratio": 1,
+            "fan_placement": "BlowThrough",
+            "heating_coil_name": "PSZ-Office Heating Coil",
+            "heating_coil_object_type": "Coil:Heating:Fuel",
+            "heating_supply_air_flow_rate": "Autosize",
+            "heating_supply_air_flow_rate_method": "SupplyAirFlowRate",
+            "latent_load_control": "SensibleOnlyLoadControl",
+            "maximum_supply_air_temperature": "Autosize",
+            "minimum_supply_air_temperature": 2,
+            "no_load_supply_air_flow_rate": "Autosize",
+            "no_load_supply_air_flow_rate_method": "SupplyAirFlowRate",
+            "supply_air_fan_operating_mode_schedule_name": "FanSched",
+            "supply_fan_name": "PSZ-Office_addAQ Supply Fan",
+            "supply_fan_object_type": "Fan:SystemModel",
+            "use_doas_dx_cooling_coil": "No"
         }
     },
     "AirLoopHVAC:ZoneMixer": {
@@ -188,20 +246,8 @@
                 },
                 {
                     "component_inlet_node_name": "PSZ-Fine Storage Mixed Air Outlet",
-                    "component_name": "PSZ-Fine Storage Supply Fan",
-                    "component_object_type": "Fan:ConstantVolume",
-                    "component_outlet_node_name": "PSZ-Fine Storage Supply Fan Outlet"
-                },
-                {
-                    "component_inlet_node_name": "PSZ-Fine Storage Supply Fan Outlet",
-                    "component_name": "PSZ-Fine Storage Heating Coil",
-                    "component_object_type": "Coil:Heating:Fuel",
-                    "component_outlet_node_name": "PSZ-Fine Storage Heating Coil Outlet"
-                },
-                {
-                    "component_inlet_node_name": "PSZ-Fine Storage Heating Coil Outlet",
-                    "component_name": "PSZ-Fine Storage_Unitary_Package_DX",
-                    "component_object_type": "CoilSystem:Cooling:DX",
+                    "component_name": "PSZ-Fine_Unitary_Package_DX",
+                    "component_object_type": "AirLoopHVAC:UnitarySystem",
                     "component_outlet_node_name": "PSZ-Fine Storage Air Loop Outlet"
                 }
             ]
@@ -216,20 +262,8 @@
                 },
                 {
                     "component_inlet_node_name": "PSZ-Office Mixed Air Outlet",
-                    "component_name": "PSZ-Office Supply Fan",
-                    "component_object_type": "Fan:ConstantVolume",
-                    "component_outlet_node_name": "PSZ-Office Supply Fan Outlet"
-                },
-                {
-                    "component_inlet_node_name": "PSZ-Office Supply Fan Outlet",
-                    "component_name": "PSZ-Office Heating Coil",
-                    "component_object_type": "Coil:Heating:Fuel",
-                    "component_outlet_node_name": "PSZ-Office Heating Coil Outlet"
-                },
-                {
-                    "component_inlet_node_name": "PSZ-Office Heating Coil Outlet",
                     "component_name": "PSZ-Office_Unitary_Package_DX",
-                    "component_object_type": "CoilSystem:Cooling:DX",
+                    "component_object_type": "AirLoopHVAC:UnitarySystem",
                     "component_outlet_node_name": "PSZ-Office Air Loop Outlet"
                 }
             ]
@@ -254,7 +288,7 @@
     "Building": {
         "Warehouse": {
             "loads_convergence_tolerance_value": 0.04,
-            "maximum_number_of_warmup_days": 25,
+            "maximum_number_of_warmup_days": 15,
             "minimum_number_of_warmup_days": 6,
             "north_axis": 90,
             "solar_distribution": "FullExterior",
@@ -264,9 +298,9 @@
     },
     "BuildingSurface:Detailed": {
         "Bulk Storage Floor": {
-            "construction_name": "ext_slab_6in",
+            "construction_name": "BulkStorageFloor_Ffactor",
             "number_of_vertices": "Autocalculate",
-            "outside_boundary_condition": "Ground",
+            "outside_boundary_condition": "GroundFCfactorMethod",
             "sun_exposure": "NoSun",
             "surface_type": "Floor",
             "vertices": [
@@ -457,9 +491,9 @@
             "zone_name": "Zone3 Bulk Storage"
         },
         "Fine Storage Floor": {
-            "construction_name": "ext_slab_6in",
+            "construction_name": "FineStorageFloor_Ffactor",
             "number_of_vertices": "Autocalculate",
-            "outside_boundary_condition": "Ground",
+            "outside_boundary_condition": "GroundFCfactorMethod",
             "sun_exposure": "NoSun",
             "surface_type": "Floor",
             "vertices": [
@@ -691,9 +725,9 @@
             "zone_name": "Zone2 Fine Storage"
         },
         "Office Floor": {
-            "construction_name": "ext_slab_6in",
+            "construction_name": "OfficeFloor_Ffactor",
             "number_of_vertices": "Autocalculate",
-            "outside_boundary_condition": "Ground",
+            "outside_boundary_condition": "GroundFCfactorMethod",
             "sun_exposure": "NoSun",
             "surface_type": "Floor",
             "vertices": [
@@ -886,46 +920,82 @@
             "zone_name": "Zone1 Office"
         }
     },
-    "Coil:Cooling:DX:TwoSpeed": {
+    "Coil:Cooling:DX:MultiSpeed": {
         "PSZ-Fine Storage Cooling Coil": {
+            "2017_speed_1_rated_evaporator_fan_power_per_volume_flow_rate": 0,
+            "2017_speed_2_rated_evaporator_fan_power_per_volume_flow_rate": 0,
+            "2023_speed_1_rated_evaporator_fan_power_per_volume_flow_rate": 934.4,
+            "2023_speed_2_rated_evaporator_fan_power_per_volume_flow_rate": 934.4,
             "air_inlet_node_name": "PSZ-Fine Storage Heating Coil Outlet",
             "air_outlet_node_name": "PSZ-Fine Storage Air Loop Outlet",
+            "apply_latent_degradation_to_speeds_greater_than_1": "No",
+            "apply_part_load_fraction_to_speeds_greater_than_1": "No",
             "availability_schedule_name": "COMPACT HVAC-ALWAYS 1",
-            "energy_input_ratio_function_of_flow_fraction_curve_name": "PSZ-Fine Storage DX Coil EIR-FF",
-            "energy_input_ratio_function_of_temperature_curve_name": "PSZ-Fine Storage DX Coil EIR-FT",
-            "high_speed_gross_rated_cooling_cop": 4.11713235489972,
-            "high_speed_gross_rated_total_cooling_capacity": 17790.44,
-            "high_speed_rated_air_flow_rate": 1.05822,
-            "high_speed_rated_sensible_heat_ratio": 0.79301,
-            "low_speed_energy_input_ratio_function_of_temperature_curve_name": "PSZ-Fine Storage DX Coil EIR-FT",
-            "low_speed_gross_rated_cooling_cop": 4.11713235489972,
-            "low_speed_gross_rated_sensible_heat_ratio": 0.79301,
-            "low_speed_gross_rated_total_cooling_capacity": 8895.22,
-            "low_speed_rated_air_flow_rate": 0.70548,
-            "low_speed_total_cooling_capacity_function_of_temperature_curve_name": "PSZ-Fine Storage DX Coil Cap-FT",
-            "part_load_fraction_correlation_curve_name": "PSZ-Fine Storage DX Coil PLF",
-            "total_cooling_capacity_function_of_flow_fraction_curve_name": "PSZ-Fine Storage DX Coil Cap-FF",
-            "total_cooling_capacity_function_of_temperature_curve_name": "PSZ-Fine Storage DX Coil Cap-FT"
+            "basin_heater_setpoint_temperature": 2,
+            "condenser_type": "AirCooled",
+            "fuel_type": "Electricity",
+            "maximum_outdoor_dry_bulb_temperature_for_crankcase_heater_operation": 10,
+            "number_of_speeds": 2,
+            "speed_1_energy_input_ratio_function_of_flow_fraction_curve_name": "PSZ-AC_Unitary_PackagecoolEIRFFF",
+            "speed_1_energy_input_ratio_function_of_temperature_curve_name": "PSZ-AC_Unitary_PackagecoolEIRFT",
+            "speed_1_evaporative_condenser_effectiveness": 0.9,
+            "speed_1_gross_rated_cooling_cop": 3.7988306741603,
+            "speed_1_gross_rated_sensible_heat_ratio": 0.7457,
+            "speed_1_gross_rated_total_cooling_capacity": 19319.855,
+            "speed_1_part_load_fraction_correlation_curve_name": "PSZ-AC_Unitary_PackagecoolPLR",
+            "speed_1_rated_air_flow_rate": 1.33200666666667,
+            "speed_1_rated_waste_heat_fraction_of_power_input": 0.2,
+            "speed_1_total_cooling_capacity_function_of_flow_fraction_curve_name": "PSZ-AC_Unitary_PackagecoolFFF",
+            "speed_1_total_cooling_capacity_function_of_temperature_curve_name": "PSZ-AC_Unitary_PackagecoolCapFT",
+            "speed_2_energy_input_ratio_function_of_flow_fraction_curve_name": "PSZ-AC_Unitary_PackagecoolEIRFFF",
+            "speed_2_energy_input_ratio_function_of_temperature_curve_name": "PSZ-AC_Unitary_PackagecoolEIRFT",
+            "speed_2_evaporative_condenser_effectiveness": 0.9,
+            "speed_2_gross_rated_cooling_cop": 3.7988306741603,
+            "speed_2_gross_rated_sensible_heat_ratio": 0.7457,
+            "speed_2_gross_rated_total_cooling_capacity": 38639.71,
+            "speed_2_part_load_fraction_correlation_curve_name": "PSZ-AC_Unitary_PackagecoolPLR",
+            "speed_2_rated_air_flow_rate": 1.99801,
+            "speed_2_rated_waste_heat_fraction_of_power_input": 0.2,
+            "speed_2_total_cooling_capacity_function_of_flow_fraction_curve_name": "PSZ-AC_Unitary_PackagecoolFFF",
+            "speed_2_total_cooling_capacity_function_of_temperature_curve_name": "PSZ-AC_Unitary_PackagecoolCapFT"
         },
         "PSZ-Office Cooling Coil": {
+            "2017_speed_1_rated_evaporator_fan_power_per_volume_flow_rate": 0,
+            "2017_speed_2_rated_evaporator_fan_power_per_volume_flow_rate": 0,
+            "2023_speed_1_rated_evaporator_fan_power_per_volume_flow_rate": 934.4,
+            "2023_speed_2_rated_evaporator_fan_power_per_volume_flow_rate": 934.4,
             "air_inlet_node_name": "PSZ-Office Heating Coil Outlet",
             "air_outlet_node_name": "PSZ-Office Air Loop Outlet",
+            "apply_latent_degradation_to_speeds_greater_than_1": "No",
+            "apply_part_load_fraction_to_speeds_greater_than_1": "No",
             "availability_schedule_name": "COMPACT HVAC-ALWAYS 1",
-            "energy_input_ratio_function_of_flow_fraction_curve_name": "PSZ-Office DX Coil EIR-FF",
-            "energy_input_ratio_function_of_temperature_curve_name": "PSZ-Office DX Coil EIR-FT",
-            "high_speed_gross_rated_cooling_cop": 4.11713235489972,
-            "high_speed_gross_rated_total_cooling_capacity": 9041.45,
-            "high_speed_rated_air_flow_rate": 0.54619,
-            "high_speed_rated_sensible_heat_ratio": 0.79866,
-            "low_speed_energy_input_ratio_function_of_temperature_curve_name": "PSZ-Office DX Coil EIR-FT",
-            "low_speed_gross_rated_cooling_cop": 4.11713235489972,
-            "low_speed_gross_rated_sensible_heat_ratio": 0.79866,
-            "low_speed_gross_rated_total_cooling_capacity": 4520.725,
-            "low_speed_rated_air_flow_rate": 0.364126666666667,
-            "low_speed_total_cooling_capacity_function_of_temperature_curve_name": "PSZ-Office DX Coil Cap-FT",
-            "part_load_fraction_correlation_curve_name": "PSZ-Office DX Coil PLF",
-            "total_cooling_capacity_function_of_flow_fraction_curve_name": "PSZ-Office DX Coil Cap-FF",
-            "total_cooling_capacity_function_of_temperature_curve_name": "PSZ-Office DX Coil Cap-FT"
+            "basin_heater_setpoint_temperature": 2,
+            "condenser_type": "AirCooled",
+            "fuel_type": "Electricity",
+            "maximum_outdoor_dry_bulb_temperature_for_crankcase_heater_operation": 10,
+            "number_of_speeds": 2,
+            "speed_1_energy_input_ratio_function_of_flow_fraction_curve_name": "PSZ-AC_Unitary_PackagecoolEIRFFF",
+            "speed_1_energy_input_ratio_function_of_temperature_curve_name": "PSZ-AC_Unitary_PackagecoolEIRFT",
+            "speed_1_evaporative_condenser_effectiveness": 0.9,
+            "speed_1_gross_rated_cooling_cop": 4.11713235489972,
+            "speed_1_gross_rated_sensible_heat_ratio": 0.79866,
+            "speed_1_gross_rated_total_cooling_capacity": 8107.42,
+            "speed_1_part_load_fraction_correlation_curve_name": "PSZ-AC_Unitary_PackagecoolPLR",
+            "speed_1_rated_air_flow_rate": 0.653026666666667,
+            "speed_1_rated_waste_heat_fraction_of_power_input": 0.2,
+            "speed_1_total_cooling_capacity_function_of_flow_fraction_curve_name": "PSZ-AC_Unitary_PackagecoolFFF",
+            "speed_1_total_cooling_capacity_function_of_temperature_curve_name": "PSZ-AC_Unitary_PackagecoolCapFT",
+            "speed_2_energy_input_ratio_function_of_flow_fraction_curve_name": "PSZ-AC_Unitary_PackagecoolEIRFFF",
+            "speed_2_energy_input_ratio_function_of_temperature_curve_name": "PSZ-AC_Unitary_PackagecoolEIRFT",
+            "speed_2_evaporative_condenser_effectiveness": 0.9,
+            "speed_2_gross_rated_cooling_cop": 4.11713235489972,
+            "speed_2_gross_rated_sensible_heat_ratio": 0.79866,
+            "speed_2_gross_rated_total_cooling_capacity": 16214.84,
+            "speed_2_part_load_fraction_correlation_curve_name": "PSZ-AC_Unitary_PackagecoolPLR",
+            "speed_2_rated_air_flow_rate": 0.97954,
+            "speed_2_rated_waste_heat_fraction_of_power_input": 0.2,
+            "speed_2_total_cooling_capacity_function_of_flow_fraction_curve_name": "PSZ-AC_Unitary_PackagecoolFFF",
+            "speed_2_total_cooling_capacity_function_of_temperature_curve_name": "PSZ-AC_Unitary_PackagecoolCapFT"
         }
     },
     "Coil:Heating:Fuel": {
@@ -933,25 +1003,23 @@
             "air_inlet_node_name": "PSZ-Fine Storage Supply Fan Outlet",
             "air_outlet_node_name": "PSZ-Fine Storage Heating Coil Outlet",
             "availability_schedule_name": "COMPACT HVAC-ALWAYS 1",
-            "burner_efficiency": 0.8,
+            "burner_efficiency": 0.81,
             "fuel_type": "NaturalGas",
             "nominal_capacity": "Autosize",
             "parasitic_electric_load": 0.0,
             "parasitic_fuel_load": 0.0,
-            "part_load_fraction_correlation_curve_name": "PSZ-Fine Storage Heating Coil PLF-FPLR",
-            "temperature_setpoint_node_name": "PSZ-Fine Storage Heating Coil Outlet"
+            "part_load_fraction_correlation_curve_name": "PSZ-Fine Storage Heating Coil PLF-FPLR"
         },
         "PSZ-Office Heating Coil": {
             "air_inlet_node_name": "PSZ-Office Supply Fan Outlet",
             "air_outlet_node_name": "PSZ-Office Heating Coil Outlet",
             "availability_schedule_name": "COMPACT HVAC-ALWAYS 1",
-            "burner_efficiency": 0.8,
+            "burner_efficiency": 0.81,
             "fuel_type": "NaturalGas",
             "nominal_capacity": "Autosize",
             "parasitic_electric_load": 0.0,
             "parasitic_fuel_load": 0.0,
-            "part_load_fraction_correlation_curve_name": "PSZ-Office Heating Coil PLF-FPLR",
-            "temperature_setpoint_node_name": "PSZ-Office Heating Coil Outlet"
+            "part_load_fraction_correlation_curve_name": "PSZ-Office Heating Coil PLF-FPLR"
         },
         "Zone3UnitHeaterHeatingCoil": {
             "air_inlet_node_name": "Zone3UnitHeaterFanOutletNode",
@@ -962,24 +1030,6 @@
             "nominal_capacity": "Autosize",
             "parasitic_electric_load": 0.0,
             "parasitic_fuel_load": 0
-        }
-    },
-    "CoilSystem:Cooling:DX": {
-        "PSZ-Fine Storage_Unitary_Package_DX": {
-            "availability_schedule_name": "COMPACT HVAC-ALWAYS 1",
-            "cooling_coil_name": "PSZ-Fine Storage Cooling Coil",
-            "cooling_coil_object_type": "Coil:Cooling:DX:TwoSpeed",
-            "dx_cooling_coil_system_inlet_node_name": "PSZ-Fine Storage Heating Coil Outlet",
-            "dx_cooling_coil_system_outlet_node_name": "PSZ-Fine Storage Air Loop Outlet",
-            "dx_cooling_coil_system_sensor_node_name": "PSZ-Fine Storage Air Loop Outlet"
-        },
-        "PSZ-Office_Unitary_Package_DX": {
-            "availability_schedule_name": "COMPACT HVAC-ALWAYS 1",
-            "cooling_coil_name": "PSZ-Office Cooling Coil",
-            "cooling_coil_object_type": "Coil:Cooling:DX:TwoSpeed",
-            "dx_cooling_coil_system_inlet_node_name": "PSZ-Office Heating Coil Outlet",
-            "dx_cooling_coil_system_outlet_node_name": "PSZ-Office Air Loop Outlet",
-            "dx_cooling_coil_system_sensor_node_name": "PSZ-Office Air Loop Outlet"
         }
     },
     "Construction": {
@@ -1015,6 +1065,9 @@
         "InteriorFurnishings": {
             "outside_layer": "Std Wood 6inch"
         },
+        "NonresWindow_U_0.36_SHGC_0.38": {
+            "outside_layer": "Nonres Window Glazing Layer"
+        },
         "OpaqueDoor": {
             "outside_layer": "Std Opaque Door Panel"
         },
@@ -1024,474 +1077,22 @@
         "Overhead Door_semi": {
             "outside_layer": "Overhead Door_semi Panel"
         },
+        "SemiHtdSkylight_U_0.75_SHGC_0.55": {
+            "outside_layer": "Semiheated Skylight Glazing Layer"
+        },
         "Skylight Double Clear": {
             "layer_2": "AIR 3MM",
             "layer_3": "CLEAR 2.5MM",
             "outside_layer": "CLEAR 2.5MM"
+        },
+        "Skylight_U_0.5_SHGC_0.4": {
+            "outside_layer": "Nonres Skylight Glazing Layer"
         },
         "Swinging Door_con": {
             "outside_layer": "Opaque Door panel_con"
         },
         "Swinging Door_semi": {
             "outside_layer": "Opaque Door panel_semi"
-        },
-        "Window_U_0.9_SHGC_0.6": {
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_0.19_SHGC_0.20": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "COATED POLY-55",
-            "layer_4": "AIR 13MM",
-            "layer_5": "CLEAR 6MM",
-            "outside_layer": "BRONZE 6MM"
-        },
-        "Window_U_0.24_SHGC_0.11": {
-            "layer_2": "ARGON 13MM",
-            "layer_3": "LoE SPEC SEL CLEAR 6MM Rev",
-            "outside_layer": "ECABS-2 COLORED 6MM"
-        },
-        "Window_U_0.24_SHGC_0.16": {
-            "layer_2": "ARGON 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "ECABS-2 COLORED 6MM"
-        },
-        "Window_U_0.24_SHGC_0.23": {
-            "layer_2": "ARGON 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "LoE SPEC SEL TINT 6MM"
-        },
-        "Window_U_0.25_SHGC_0.40": {
-            "layer_2": "ARGON 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "LoE TINT 6MM"
-        },
-        "Window_U_0.29_SHGC_0.11": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "LoE SPEC SEL CLEAR 6MM Rev",
-            "outside_layer": "ECREF-2 COLORED 6MM"
-        },
-        "Window_U_0.29_SHGC_0.17": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "ECABS-2 COLORED 6MM"
-        },
-        "Window_U_0.29_SHGC_0.22": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "COATED POLY-55",
-            "layer_4": "AIR 6MM",
-            "layer_5": "CLEAR 6MM",
-            "outside_layer": "BRONZE 6MM"
-        },
-        "Window_U_0.29_SHGC_0.45": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "LoE SPEC SEL CLEAR 6MM Rev",
-            "outside_layer": "ECREF-2 BLEACHED 6MM"
-        },
-        "Window_U_0.30_SHGC_0.40": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "LoE TINT 6MM"
-        },
-        "Window_U_0.33_SHGC_0.11": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "LoE SPEC SEL CLEAR 6MM Rev",
-            "outside_layer": "ECREF-2 COLORED 6MM"
-        },
-        "Window_U_0.33_SHGC_0.40": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "LoE TINT 6MM"
-        },
-        "Window_U_0.33_SHGC_0.45": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "COATED POLY-77",
-            "layer_4": "AIR 6MM",
-            "layer_5": "CLEAR 3MM",
-            "outside_layer": "CLEAR 3MM"
-        },
-        "Window_U_0.34_SHGC_0.40": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "LoE TINT 6MM"
-        },
-        "Window_U_0.34_SHGC_0.45": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "PYR B CLEAR 6MM"
-        },
-        "Window_U_0.35_SHGC_0.26": {
-            "layer_2": "ARGON 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF C CLEAR MID 6MM"
-        },
-        "Window_U_0.35_SHGC_0.35": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "LoE TINT 6MM"
-        },
-        "Window_U_0.36_SHGC_0.35": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "LoE SPEC SEL TINT 6MM"
-        },
-        "Window_U_0.37_SHGC_0.45": {
-            "layer_2": "Gap_1_W_0_0127",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_4321_LayerAvg"
-        },
-        "Window_U_0.38_SHGC_0.26": {
-            "layer_2": "ARGON 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF B TINT HI 6MM"
-        },
-        "Window_U_0.38_SHGC_0.30": {
-            "layer_2": "ARGON 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_0.38_SHGC_0.36": {
-            "layer_2": "Gap_9_W_0_0127",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_2531_LayerAvg"
-        },
-        "Window_U_0.38_SHGC_0.41": {
-            "layer_2": "Gap_1_W_0_0127",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_4313_LayerAvg"
-        },
-        "Window_U_0.39_SHGC_0.32": {
-            "outside_layer": "Theoretical Glass 347"
-        },
-        "Window_U_0.39_SHGC_0.36": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "LoE TINT 6MM"
-        },
-        "Window_U_0.39_SHGC_0.38": {
-            "outside_layer": "Theoretical Glass 297"
-        },
-        "Window_U_0.39_SHGC_0.40": {
-            "layer_2": "Gap_1_W_0_0127",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_282_LayerAvg"
-        },
-        "Window_U_0.40_SHGC_0.4": {
-            "layer_2": "Gap_1_W_0_0127",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_8652_LayerAvg"
-        },
-        "Window_U_0.40_SHGC_0.38": {
-            "layer_2": "Gap_1_W_0_0127",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_8652_LayerAvg"
-        },
-        "Window_U_0.40_SHGC_0.43": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "LoE SPEC SEL CLEAR 3MM"
-        },
-        "Window_U_0.40_SHGC_0.45": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "LoE SPEC SEL CLEAR 6MM Rev",
-            "outside_layer": "ECABS-2 BLEACHED 6MM"
-        },
-        "Window_U_0.41_SHGC_0.38": {
-            "layer_2": "Gap_1_W_0_0127",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_8652_LayerAvg"
-        },
-        "Window_U_0.42_SHGC_0.35": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "LoE TINT 6MM"
-        },
-        "Window_U_0.42_SHGC_0.40": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "LoE TINT 6MM"
-        },
-        "Window_U_0.42_SHGC_0.45": {
-            "layer_2": "ARGON 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF D CLEAR 6MM"
-        },
-        "Window_U_0.43_SHGC_0.26": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_0.43_SHGC_0.29": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "LoE SPEC SEL TINT 6MM"
-        },
-        "Window_U_0.44_SHGC_0.20": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF B TINT HI 6MM"
-        },
-        "Window_U_0.44_SHGC_0.26": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_0.44_SHGC_0.40": {
-            "layer_2": "Gap_9_W_0_0127",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_9731_LayerAvg"
-        },
-        "Window_U_0.45_SHGC_0.27": {
-            "layer_2": "Air 13MM",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_12116_LayerAvg"
-        },
-        "Window_U_0.45_SHGC_0.31": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_0.45_SHGC_0.38": {
-            "layer_2": "Gap_1_W_0_0127",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_2532_LayerAvg"
-        },
-        "Window_U_0.46_SHGC_0.45": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "GREY 6MM"
-        },
-        "Window_U_0.47_SHGC_0.40": {
-            "layer_2": "Gap_1_W_0_0043",
-            "layer_3": "Glass_2010F_LayerAvg",
-            "outside_layer": "Glass_2052_LayerAvg"
-        },
-        "Window_U_0.48_SHGC_0.40": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF D CLEAR 6MM"
-        },
-        "Window_U_0.50_SHGC_0.25": {
-            "layer_2": "Gap_1_W_0_0042",
-            "layer_3": "Glass_2022F_LayerAvg",
-            "outside_layer": "Glass_2175_LayerAvg"
-        },
-        "Window_U_0.50_SHGC_0.40": {
-            "layer_2": "Gap_1_W_0_0038",
-            "layer_3": "Glass_2027F_LayerAvg",
-            "outside_layer": "Glass_2052_LayerAvg"
-        },
-        "Window_U_0.51_SHGC_0.25": {
-            "layer_2": "Gap_1_W_0_0090",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_1576_LayerAvg"
-        },
-        "Window_U_0.52_SHGC_0.22": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF B CLEAR LO 6MM"
-        },
-        "Window_U_0.52_SHGC_0.40": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF D CLEAR 6MM"
-        },
-        "Window_U_0.54_SHGC_0.13": {
-            "layer_2": "AIR 13MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF A CLEAR LO 6MM"
-        },
-        "Window_U_0.54_SHGC_0.18": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF A TINT MID 6MM"
-        },
-        "Window_U_0.54_SHGC_0.25": {
-            "layer_2": "Gap_1_W_0_0070",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_1576_LayerAvg"
-        },
-        "Window_U_0.54_SHGC_0.27": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF C CLEAR HI 6MM"
-        },
-        "Window_U_0.55_SHGC_0.25": {
-            "layer_2": "Gap_1_W_0_0032",
-            "layer_3": "Glass_2022F_LayerAvg",
-            "outside_layer": "Glass_2175_LayerAvg"
-        },
-        "Window_U_0.55_SHGC_0.31": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF D TINT 6MM"
-        },
-        "Window_U_0.55_SHGC_0.35": {
-            "layer_2": "Gap_1_W_0_0038",
-            "layer_3": "Glass_2027F_LayerAvg",
-            "outside_layer": "Glass_2052_LayerAvg"
-        },
-        "Window_U_0.56_SHGC_0.25": {
-            "layer_2": "Gap_1_W_0_0060",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_1576_LayerAvg"
-        },
-        "Window_U_0.56_SHGC_0.35": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF D TINT 6MM"
-        },
-        "Window_U_0.56_SHGC_0.76": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 3MM",
-            "outside_layer": "CLEAR 3MM"
-        },
-        "Window_U_0.57_SHGC_0.25": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF C CLEAR HI 6MM"
-        },
-        "Window_U_0.57_SHGC_0.39": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF D CLEAR 6MM"
-        },
-        "Window_U_0.57_SHGC_0.49": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "BLUE 6MM"
-        },
-        "Window_U_0.58_SHGC_0.25": {
-            "layer_2": "Gap_1_W_0_0052",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_1576_LayerAvg"
-        },
-        "Window_U_0.59_SHGC_0.25": {
-            "layer_2": "Gap_1_W_0_0048",
-            "layer_3": "Glass_102_LayerAvg",
-            "outside_layer": "Glass_1576_LayerAvg"
-        },
-        "Window_U_0.60_SHGC_0.25": {
-            "layer_2": "Gap_1_W_0_0025",
-            "layer_3": "Glass_2022F_LayerAvg",
-            "outside_layer": "Glass_2175_LayerAvg"
-        },
-        "Window_U_0.62_SHGC_0.25": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF C CLEAR HI 6MM"
-        },
-        "Window_U_0.62_SHGC_0.39": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF D CLEAR 6MM"
-        },
-        "Window_U_0.62_SHGC_0.49": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "BLUE 6MM"
-        },
-        "Window_U_0.65_SHGC_0.25": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF C CLEAR HI 6MM"
-        },
-        "Window_U_0.65_SHGC_0.35": {
-            "layer_2": "Gap_1_W_0_0024",
-            "layer_3": "Glass_2027F_LayerAvg",
-            "outside_layer": "Glass_2052_LayerAvg"
-        },
-        "Window_U_0.67_SHGC_0.77": {
-            "outside_layer": "PYR B CLEAR 3MM"
-        },
-        "Window_U_0.71_SHGC_0.25": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "REF C CLEAR HI 6MM"
-        },
-        "Window_U_0.72_SHGC_0.25": {
-            "outside_layer": "REF B TINT MID 6MM"
-        },
-        "Window_U_0.75_SHGC_0.6": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 3MM",
-            "outside_layer": "GREY 3MM"
-        },
-        "Window_U_0.75_SHGC_0.35": {
-            "layer_2": "Gap_1_W_0_0018",
-            "layer_3": "Glass_2027F_LayerAvg",
-            "outside_layer": "Glass_2052_LayerAvg"
-        },
-        "Window_U_0.75_SHGC_0.72": {
-            "outside_layer": "PYR B CLEAR 6MM"
-        },
-        "Window_U_0.85_SHGC_0.78": {
-            "outside_layer": "PYR A CLEAR 3MM"
-        },
-        "Window_U_0.88_SHGC_0.16": {
-            "outside_layer": "REF A CLEAR LO 6MM"
-        },
-        "Window_U_0.88_SHGC_0.27": {
-            "outside_layer": "ECREF-1 COLORED 6MM"
-        },
-        "Window_U_0.90_SHGC_0.40": {
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_0.98_SHGC_0.45": {
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_0.98_SHGC_0.68": {
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_1.05_SHGC_0.40": {
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_1.08_SHGC_0.25": {
-            "outside_layer": "ECREF-1 COLORED 6MM"
-        },
-        "Window_U_1.15_SHGC_0.68": {
-            "outside_layer": "GREEN 3MM"
-        },
-        "Window_U_1.16_SHGC_0.25": {
-            "outside_layer": "ECREF-1 COLORED 6MM"
-        },
-        "Window_U_1.17_SHGC_0.39": {
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_1.17_SHGC_0.49": {
-            "outside_layer": "REF D CLEAR 6MM"
-        },
-        "Window_U_1.17_SHGC_0.68": {
-            "outside_layer": "GREEN 3MM"
-        },
-        "Window_U_1.22_SHGC_0.25": {
-            "outside_layer": "ECREF-1 COLORED 6MM"
-        },
-        "Window_U_1.22_SHGC_0.34": {
-            "outside_layer": "REF C CLEAR HI 6MM"
-        },
-        "Window_U_1.22_SHGC_0.39": {
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_1.22_SHGC_0.61": {
-            "outside_layer": "GREEN 6MM"
-        },
-        "Window_U_1.30_SHGC_0.68": {
-            "outside_layer": "GREEN 3MM"
-        },
-        "Window_U_1.60_SHGC_0.40": {
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_1.70_SHGC_0.36": {
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_1.80_SHGC_0.36": {
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_1.98_SHGC_0.36": {
-            "outside_layer": "REF B CLEAR HI 6MM"
-        },
-        "Window_U_1.98_SHGC_0.61": {
-            "outside_layer": "GREEN 6MM"
         },
         "basement_wall": {
             "outside_layer": "M10 200mm concrete block basement wall"
@@ -1588,13 +1189,30 @@
             "outside_layer": "F08 Metal roof surface"
         }
     },
+    "Construction:FfactorGroundFloor": {
+        "BulkStorageFloor_Ffactor": {
+            "area": 3204.8422772668932,
+            "f_factor": 1.26363,
+            "perimeterexposed": 185.91893288462248
+        },
+        "FineStorageFloor_Ffactor": {
+            "area": 1156.5300391876226,
+            "f_factor": 1.26363,
+            "perimeterexposed": 71.62450693096137
+        },
+        "OfficeFloor_Ffactor": {
+            "area": 236.87964658059664,
+            "f_factor": 1.26363,
+            "perimeterexposed": 35.05029062578953
+        }
+    },
     "Controller:OutdoorAir": {
         "PSZ-Fine Storage OA Controller": {
             "actuator_node_name": "PSZ-Fine Storage Outside Air Inlet",
             "economizer_control_action_type": "ModulateFlow",
             "economizer_control_type": "DifferentialDryBulb",
-            "lockout_type": "NoLockout",
-            "maximum_fraction_of_outdoor_air_schedule_name": "PSZ_Fine_Timestep_Econ_Eff_SCH",
+            "lockout_type": "LockoutWithHeating",
+            "maximum_fraction_of_outdoor_air_schedule_name": "SZ_system_OA_Max_Frac_SCH",
             "maximum_outdoor_air_flow_rate": "Autosize",
             "minimum_limit_type": "FixedMinimum",
             "minimum_outdoor_air_flow_rate": "Autosize",
@@ -1606,9 +1224,9 @@
         "PSZ-Office OA Controller": {
             "actuator_node_name": "PSZ-Office Outside Air Inlet",
             "economizer_control_action_type": "ModulateFlow",
-            "economizer_control_type": "NoEconomizer",
-            "lockout_type": "NoLockout",
-            "maximum_fraction_of_outdoor_air_schedule_name": "PSZ_Office_Timestep_Econ_Eff_SCH",
+            "economizer_control_type": "DifferentialDryBulb",
+            "lockout_type": "LockoutWithHeating",
+            "maximum_fraction_of_outdoor_air_schedule_name": "SZ_system_OA_Max_Frac_SCH",
             "maximum_outdoor_air_flow_rate": "Autosize",
             "minimum_limit_type": "FixedMinimum",
             "minimum_outdoor_air_flow_rate": "Autosize",
@@ -1618,8 +1236,14 @@
             "return_air_node_name": "PSZ-Office Air Loop Inlet"
         }
     },
+    "ConvergenceLimits": {
+        "ConvergenceLimits 1": {
+            "maximum_hvac_iterations": 5,
+            "minimum_system_timestep": 15
+        }
+    },
     "Curve:Biquadratic": {
-        "PSZ-Fine Storage DX Coil Cap-FT": {
+        "PSZ-AC_Unitary_PackagecoolCapFT": {
             "coefficient1_constant": 0.942587793,
             "coefficient2_x": 0.009543347,
             "coefficient3_x_2": 0.00068377,
@@ -1631,31 +1255,7 @@
             "minimum_value_of_x": 12.77778,
             "minimum_value_of_y": 23.88889
         },
-        "PSZ-Fine Storage DX Coil EIR-FT": {
-            "coefficient1_constant": 0.342414409,
-            "coefficient2_x": 0.034885008,
-            "coefficient3_x_2": -0.0006237,
-            "coefficient4_y": 0.004977216,
-            "coefficient5_y_2": 0.000437951,
-            "coefficient6_x_y": -0.000728028,
-            "maximum_value_of_x": 23.88889,
-            "maximum_value_of_y": 46.11111,
-            "minimum_value_of_x": 12.77778,
-            "minimum_value_of_y": 23.88889
-        },
-        "PSZ-Office DX Coil Cap-FT": {
-            "coefficient1_constant": 0.942587793,
-            "coefficient2_x": 0.009543347,
-            "coefficient3_x_2": 0.00068377,
-            "coefficient4_y": -0.011042676,
-            "coefficient5_y_2": 5.249e-06,
-            "coefficient6_x_y": -9.72e-06,
-            "maximum_value_of_x": 23.88889,
-            "maximum_value_of_y": 46.11111,
-            "minimum_value_of_x": 12.77778,
-            "minimum_value_of_y": 23.88889
-        },
-        "PSZ-Office DX Coil EIR-FT": {
+        "PSZ-AC_Unitary_PackagecoolEIRFT": {
             "coefficient1_constant": 0.342414409,
             "coefficient2_x": 0.034885008,
             "coefficient3_x_2": -0.0006237,
@@ -1687,42 +1287,21 @@
         }
     },
     "Curve:Quadratic": {
-        "PSZ-Fine Storage DX Coil Cap-FF": {
-            "coefficient1_constant": 0.8,
-            "coefficient2_x": 0.2,
-            "coefficient3_x_2": 0,
-            "maximum_value_of_x": 1.5,
-            "minimum_value_of_x": 0.5
-        },
-        "PSZ-Fine Storage DX Coil EIR-FF": {
+        "PSZ-AC_Unitary_PackagecoolEIRFFF": {
             "coefficient1_constant": 1.1552,
             "coefficient2_x": -0.1808,
             "coefficient3_x_2": 0.0256,
             "maximum_value_of_x": 1.5,
             "minimum_value_of_x": 0.5
         },
-        "PSZ-Fine Storage DX Coil PLF": {
-            "coefficient1_constant": 0.85,
-            "coefficient2_x": 0.15,
-            "coefficient3_x_2": 0,
-            "maximum_value_of_x": 1,
-            "minimum_value_of_x": 0
-        },
-        "PSZ-Office DX Coil Cap-FF": {
+        "PSZ-AC_Unitary_PackagecoolFFF": {
             "coefficient1_constant": 0.8,
             "coefficient2_x": 0.2,
             "coefficient3_x_2": 0,
             "maximum_value_of_x": 1.5,
             "minimum_value_of_x": 0.5
         },
-        "PSZ-Office DX Coil EIR-FF": {
-            "coefficient1_constant": 1.1552,
-            "coefficient2_x": -0.1808,
-            "coefficient3_x_2": 0.0256,
-            "maximum_value_of_x": 1.5,
-            "minimum_value_of_x": 0.5
-        },
-        "PSZ-Office DX Coil PLF": {
+        "PSZ-AC_Unitary_PackagecoolPLR": {
             "coefficient1_constant": 0.85,
             "coefficient2_x": 0.15,
             "coefficient3_x_2": 0,
@@ -1735,73 +1314,73 @@
             "control_data": [
                 {
                     "daylighting_reference_point_name": "Zone1 Office_DaylRefPt1",
-                    "fraction_of_zone_controlled_by_reference_point": 0.29,
-                    "illuminance_setpoint_at_reference_point": 375.0
+                    "fraction_of_lights_controlled_by_reference_point": 0.29,
+                    "illuminance_setpoint_at_reference_point": 377.0
                 },
                 {
                     "daylighting_reference_point_name": "Zone1 Office_DaylRefPt2",
-                    "fraction_of_zone_controlled_by_reference_point": 0.1,
-                    "illuminance_setpoint_at_reference_point": 375.0
+                    "fraction_of_lights_controlled_by_reference_point": 0.1,
+                    "illuminance_setpoint_at_reference_point": 377.0
                 }
             ],
             "daylighting_method": "SplitFlux",
             "glare_calculation_azimuth_angle_of_view_direction_clockwise_from_zone_y_axis": 180.0,
             "glare_calculation_daylighting_reference_point_name": "Zone1 Office_DaylRefPt1",
-            "lighting_control_type": "Stepped",
+            "lighting_control_type": "ContinuousOff",
             "maximum_allowable_discomfort_glare_index": 22.0,
-            "minimum_input_power_fraction_for_continuous_or_continuousoff_dimming_control": 0.3,
+            "minimum_input_power_fraction_for_continuous_or_continuousoff_dimming_control": 0.2,
             "minimum_light_output_fraction_for_continuous_or_continuousoff_dimming_control": 0.2,
             "number_of_stepped_control_steps": 3,
             "probability_lighting_will_be_reset_when_needed_in_manual_stepped_control": 1.0,
-            "zone_name": "Zone1 Office"
+            "zone_or_space_name": "Zone1 Office"
         },
         "Zone2 Fine Storage_DaylCtrl": {
             "control_data": [
                 {
                     "daylighting_reference_point_name": "Zone2 Fine Storage_DaylRefPt1",
-                    "fraction_of_zone_controlled_by_reference_point": 0.25,
-                    "illuminance_setpoint_at_reference_point": 300.0
+                    "fraction_of_lights_controlled_by_reference_point": 0.25,
+                    "illuminance_setpoint_at_reference_point": 323.0
                 },
                 {
                     "daylighting_reference_point_name": "Zone2 Fine Storage_DaylRefPt2",
-                    "fraction_of_zone_controlled_by_reference_point": 0.25,
-                    "illuminance_setpoint_at_reference_point": 300.0
+                    "fraction_of_lights_controlled_by_reference_point": 0.25,
+                    "illuminance_setpoint_at_reference_point": 323.0
                 }
             ],
             "daylighting_method": "SplitFlux",
             "glare_calculation_azimuth_angle_of_view_direction_clockwise_from_zone_y_axis": 0.0,
             "glare_calculation_daylighting_reference_point_name": "Zone2 Fine Storage_DaylRefPt1",
-            "lighting_control_type": "Stepped",
+            "lighting_control_type": "ContinuousOff",
             "maximum_allowable_discomfort_glare_index": 22.0,
-            "minimum_input_power_fraction_for_continuous_or_continuousoff_dimming_control": 0.3,
+            "minimum_input_power_fraction_for_continuous_or_continuousoff_dimming_control": 0.2,
             "minimum_light_output_fraction_for_continuous_or_continuousoff_dimming_control": 0.2,
             "number_of_stepped_control_steps": 3,
             "probability_lighting_will_be_reset_when_needed_in_manual_stepped_control": 1.0,
-            "zone_name": "Zone2 Fine Storage"
+            "zone_or_space_name": "Zone2 Fine Storage"
         },
         "Zone3 Bulk Storage_DaylCtrl": {
             "control_data": [
                 {
                     "daylighting_reference_point_name": "Zone3 Bulk Storage_DaylRefPt1",
-                    "fraction_of_zone_controlled_by_reference_point": 0.25,
-                    "illuminance_setpoint_at_reference_point": 200
+                    "fraction_of_lights_controlled_by_reference_point": 0.25,
+                    "illuminance_setpoint_at_reference_point": 215
                 },
                 {
                     "daylighting_reference_point_name": "Zone3 Bulk Storage_DaylRefPt2",
-                    "fraction_of_zone_controlled_by_reference_point": 0.25,
-                    "illuminance_setpoint_at_reference_point": 200
+                    "fraction_of_lights_controlled_by_reference_point": 0.25,
+                    "illuminance_setpoint_at_reference_point": 215
                 }
             ],
             "daylighting_method": "SplitFlux",
             "glare_calculation_azimuth_angle_of_view_direction_clockwise_from_zone_y_axis": 0,
             "glare_calculation_daylighting_reference_point_name": "Zone3 Bulk Storage_DaylRefPt1",
-            "lighting_control_type": "Stepped",
+            "lighting_control_type": "ContinuousOff",
             "maximum_allowable_discomfort_glare_index": 22,
-            "minimum_input_power_fraction_for_continuous_or_continuousoff_dimming_control": 0.3,
+            "minimum_input_power_fraction_for_continuous_or_continuousoff_dimming_control": 0.2,
             "minimum_light_output_fraction_for_continuous_or_continuousoff_dimming_control": 0.2,
             "number_of_stepped_control_steps": 3,
             "probability_lighting_will_be_reset_when_needed_in_manual_stepped_control": 1,
-            "zone_name": "Zone3 Bulk Storage"
+            "zone_or_space_name": "Zone3 Bulk Storage"
         }
     },
     "Daylighting:ReferencePoint": {
@@ -1809,37 +1388,37 @@
             "x_coordinate_of_reference_point": 3.2675,
             "y_coordinate_of_reference_point": 4.5718,
             "z_coordinate_of_reference_point": 0.762,
-            "zone_name": "Zone1 Office"
+            "zone_or_space_name": "Zone1 Office"
         },
         "Zone1 Office_DaylRefPt2": {
             "x_coordinate_of_reference_point": 20.4216,
             "y_coordinate_of_reference_point": 4.5718,
             "z_coordinate_of_reference_point": 0.762,
-            "zone_name": "Zone1 Office"
+            "zone_or_space_name": "Zone1 Office"
         },
         "Zone2 Fine Storage_DaylRefPt1": {
             "x_coordinate_of_reference_point": 27.8892,
             "y_coordinate_of_reference_point": 24.9936,
             "z_coordinate_of_reference_point": 0.762,
-            "zone_name": "Zone2 Fine Storage"
+            "zone_or_space_name": "Zone2 Fine Storage"
         },
         "Zone2 Fine Storage_DaylRefPt2": {
             "x_coordinate_of_reference_point": 3.81,
             "y_coordinate_of_reference_point": 24.9936,
             "z_coordinate_of_reference_point": 0.762,
-            "zone_name": "Zone2 Fine Storage"
+            "zone_or_space_name": "Zone2 Fine Storage"
         },
         "Zone3 Bulk Storage_DaylRefPt1": {
             "x_coordinate_of_reference_point": 22.9,
             "y_coordinate_of_reference_point": 48,
             "z_coordinate_of_reference_point": 0,
-            "zone_name": "Zone3 Bulk Storage"
+            "zone_or_space_name": "Zone3 Bulk Storage"
         },
         "Zone3 Bulk Storage_DaylRefPt2": {
             "x_coordinate_of_reference_point": 22.9,
             "y_coordinate_of_reference_point": 34.7,
             "z_coordinate_of_reference_point": 0,
-            "zone_name": "Zone3 Bulk Storage"
+            "zone_or_space_name": "Zone3 Bulk Storage"
         }
     },
     "DesignSpecification:OutdoorAir": {
@@ -1866,39 +1445,19 @@
         "Bulk Storage  Plug Load": {
             "design_level": 8200.12,
             "design_level_calculation_method": "EquipmentLevel",
-            "end_use_subcategory": "General",
+            "end_use_subcategory": "MiscPlug",
             "schedule_name": "Bulk Storage Plug Schedule",
-            "zone_or_zonelist_name": "Zone3 Bulk Storage"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Zone3 Bulk Storage"
         },
         "Office Plug Load": {
             "design_level": 1912.5,
             "design_level_calculation_method": "EquipmentLevel",
-            "end_use_subcategory": "General",
+            "end_use_subcategory": "MiscPlug",
             "schedule_name": "Office_Plug_SCH",
-            "zone_or_zonelist_name": "Zone1 Office"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Zone1 Office"
         }
     },
     "EnergyManagementSystem:Actuator": {
-        "PSZ_Fine_Fan_Pressure": {
-            "actuated_component_control_type": "Fan Pressure Rise",
-            "actuated_component_type": "Fan",
-            "actuated_component_unique_name": "PSZ-Fine Storage Supply Fan"
-        },
-        "PSZ_Fine_Timestep_Econ_Eff": {
-            "actuated_component_control_type": "Schedule Value",
-            "actuated_component_type": "Schedule:Constant",
-            "actuated_component_unique_name": "PSZ_Fine_Timestep_Econ_Eff_SCH"
-        },
-        "PSZ_Office_Fan_Pressure": {
-            "actuated_component_control_type": "Fan Pressure Rise",
-            "actuated_component_type": "Fan",
-            "actuated_component_unique_name": "PSZ-Office Supply Fan"
-        },
-        "PSZ_Office_Timestep_Econ_Eff": {
-            "actuated_component_control_type": "Schedule Value",
-            "actuated_component_type": "Schedule:Constant",
-            "actuated_component_unique_name": "PSZ_Office_Timestep_Econ_Eff_SCH"
-        },
         "Zone1_Office_Light_Actuator": {
             "actuated_component_control_type": "Electricity Rate",
             "actuated_component_type": "Lights",
@@ -1915,77 +1474,7 @@
             "actuated_component_unique_name": "Bulk Storage Area Lights"
         }
     },
-    "EnergyManagementSystem:GlobalVariable": {
-        "EnergyManagementSystem:GlobalVariable 1": {
-            "variables": [
-                {
-                    "erl_variable_name": "PSZ_Office_FanPwrExponent"
-                },
-                {
-                    "erl_variable_name": "PSZ_Office_Stage1Speed"
-                },
-                {
-                    "erl_variable_name": "PSZ_Office_Stage2Speed"
-                },
-                {
-                    "erl_variable_name": "PSZ_Office_HeatSpeed"
-                },
-                {
-                    "erl_variable_name": "PSZ_Office_VenSpeed"
-                },
-                {
-                    "erl_variable_name": "PSZ_Office_Number_of_Stages"
-                }
-            ]
-        },
-        "EnergyManagementSystem:GlobalVariable 2": {
-            "variables": [
-                {
-                    "erl_variable_name": "PSZ_Fine_FanPwrExponent"
-                },
-                {
-                    "erl_variable_name": "PSZ_Fine_Stage1Speed"
-                },
-                {
-                    "erl_variable_name": "PSZ_Fine_Stage2Speed"
-                },
-                {
-                    "erl_variable_name": "PSZ_Fine_HeatSpeed"
-                },
-                {
-                    "erl_variable_name": "PSZ_Fine_VenSpeed"
-                },
-                {
-                    "erl_variable_name": "PSZ_Fine_Number_of_Stages"
-                }
-            ]
-        }
-    },
     "EnergyManagementSystem:InternalVariable": {
-        "PSZ_Fine_DesignFlowMass": {
-            "internal_data_index_key_name": "PSZ-Fine Storage OA Controller",
-            "internal_data_type": "Outdoor Air Controller Maximum Mass Flow Rate"
-        },
-        "PSZ_Fine_Fan_DesignPressure": {
-            "internal_data_index_key_name": "PSZ-Fine Storage Supply Fan",
-            "internal_data_type": "Fan Nominal Pressure Rise"
-        },
-        "PSZ_Fine_OADesignMass": {
-            "internal_data_index_key_name": "PSZ-Fine Storage OA Controller",
-            "internal_data_type": "Outdoor Air Controller Minimum Mass Flow Rate"
-        },
-        "PSZ_Office_DesignFlowMass": {
-            "internal_data_index_key_name": "PSZ-Office OA Controller",
-            "internal_data_type": "Outdoor Air Controller Maximum Mass Flow Rate"
-        },
-        "PSZ_Office_Fan_DesignPressure": {
-            "internal_data_index_key_name": "PSZ-Office Supply Fan",
-            "internal_data_type": "Fan Nominal Pressure Rise"
-        },
-        "PSZ_Office_OADesignMass": {
-            "internal_data_index_key_name": "PSZ-Office OA Controller",
-            "internal_data_type": "Outdoor Air Controller Minimum Mass Flow Rate"
-        },
         "Zone1_Office_Area": {
             "internal_data_index_key_name": "Zone1 Office",
             "internal_data_type": "Zone Floor Area"
@@ -2000,755 +1489,6 @@
         }
     },
     "EnergyManagementSystem:Program": {
-        "PSZ_Fine_Economizer_CTRL_Prog": {
-            "lines": [
-                {
-                    "program_line": "SET PSZ_Fine_Timestep_Econ_Eff = 0.7"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_MaxE = 0.7"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_DAT_Rqd = (PSZ_Fine_DAT_Rqd*1.8) +32"
-                },
-                {
-                    "program_line": "SET OAT_F = (OAT_F*1.8) +32"
-                },
-                {
-                    "program_line": "SET OAwb_F = (OAwb_F*1.8) +32"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_OAFlowMass > (PSZ_Fine_OADesignMass * PSZ_Fine_OASch)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Econo_Active = 1"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Econo_Active = 0"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_dT_Needed = 75 - PSZ_Fine_DAT_Rqd"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Cool_Des_dT = ((98*0.15) + (75*(1-0.15))) - 55"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Cool_Load = PSZ_Fine_dT_Needed/ PSZ_Fine_Cool_Des_dT"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_Cool_Load > 1"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Cool_Load = 1"
-                },
-                {
-                    "program_line": "ELSEIF PSZ_Fine_Cool_Load < 0"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Cool_Load = 0"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_Econo_Active == 1"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage = PSZ_Fine_Number_of_Stages"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_Stage == 2"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_Cool_Load < 0.6"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Timestep_Econ_Eff = PSZ_Fine_MaxE"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_ECO_Eff = 0-2.18919863612305"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_ECO_Eff = PSZ_Fine_ECO_Eff + (0-0.674461284910428 * PSZ_Fine_Cool_Load)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_ECO_Eff = PSZ_Fine_ECO_Eff + (0.000459106275872404 * (OAT_F^2))"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_ECO_Eff = PSZ_Fine_ECO_Eff + (0-0.00000484778537945252 * (OAT_F^3))"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_ECO_Eff = PSZ_Fine_ECO_Eff + (0.182915713033586 * OAwb_F)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_ECO_Eff = PSZ_Fine_ECO_Eff + (0-0.00382838660261133 * (OAwb_F^2))"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_ECO_Eff = PSZ_Fine_ECO_Eff + (0.0000255567460240583 * (OAwb_F^3))"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Timestep_Econ_Eff = PSZ_Fine_ECO_Eff"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_ECO_Eff = 2.36337942464462"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_ECO_Eff = PSZ_Fine_ECO_Eff + (0-0.409939515512619 * PSZ_Fine_Cool_Load)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_ECO_Eff = PSZ_Fine_ECO_Eff + (0-0.0565205596792225 * OAwb_F)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_ECO_Eff = PSZ_Fine_ECO_Eff + (0-0.0000632612294169389 * (OAT_F^2))"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Timestep_Econ_Eff = PSZ_Fine_ECO_Eff + (0.000571724868775081 * (OAwb_F^2))"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_Timestep_Econ_Eff > PSZ_Fine_MaxE"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Timestep_Econ_Eff = PSZ_Fine_MaxE"
-                },
-                {
-                    "program_line": "ELSEIF PSZ_Fine_Timestep_Econ_Eff < (PSZ_Fine_OADesignMass * PSZ_Fine_OASch)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Timestep_Econ_Eff = (PSZ_Fine_OADesignMass * PSZ_Fine_OASch)"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ENDIF"
-                }
-            ]
-        },
-        "PSZ_Fine_Fan_Control": {
-            "lines": [
-                {
-                    "program_line": "SET PSZ_FINE_Number_of_Stages = 1"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_Number_of_Stages == 1"
-                },
-                {
-                    "program_line": "Return"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_HeatingRTF > 0"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Heating = PSZ_Fine_HeatingRTF"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Ven = 1 - PSZ_Fine_HeatingRTF"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Eco = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage1 = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage2 = 0"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Heating = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_EcoSpeed = PSZ_Fine_VenSpeed"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_SpeedRatio == 0"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_RTF > 0"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage1 = PSZ_Fine_RTF"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage2 = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Ven = 1-PSZ_Fine_RTF"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Eco = 0"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_OAFlowMass > (PSZ_Fine_OADesignMass * PSZ_Fine_OASch)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage1Speed = 1.0"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage1 = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage2 = 0"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_OAFlowMass > (PSZ_Fine_OADesignMass * PSZ_Fine_OASch)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Eco = 1.0"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Ven = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Exp_DAT = PSZ_Fine_DAT_Rqd - (1-PSZ_Fine_VenSpeed) * ZONE2 FINE STORAGE_Temp"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Exp_DAT = PSZ_Fine_Exp_DAT/PSZ_Fine_VenSpeed"
-                },
-                {
-                    "program_line": "IF OAT_F > PSZ_Fine_Exp_DAT"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_EcoSpeed = PSZ_Fine_Stage2Speed"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Eco = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Ven = 1.0"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage1 = 1- PSZ_Fine_SpeedRatio"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage2 = PSZ_Fine_SpeedRatio"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Ven = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Eco = 0"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_OAFlowMass > (PSZ_Fine_OADesignMass * PSZ_Fine_OASch)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage1Speed = 1.0"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_FPR = PSZ_Fine_Ven * (PSZ_Fine_VenSpeed ^ PSZ_Fine_FanPwrExponent)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_FPR = PSZ_Fine_FPR + PSZ_Fine_Eco * (PSZ_Fine_EcoSpeed ^ PSZ_Fine_FanPwrExponent)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_FPR_1 = PSZ_Fine_Stage1 * (PSZ_Fine_Stage1Speed ^ PSZ_Fine_FanPwrExponent)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_FPR = PSZ_Fine_FPR + PSZ_Fine_FPR_1"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_FPR_2 = PSZ_Fine_Stage2 * (PSZ_Fine_Stage2Speed ^ PSZ_Fine_FanPwrExponent)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_FPR = PSZ_Fine_FPR + PSZ_Fine_FPR_2"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_FPR_3 = PSZ_Fine_Heating * (PSZ_Fine_HeatSpeed ^ PSZ_Fine_FanPwrExponent)"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_FanPwrRatio = PSZ_Fine_FPR +  PSZ_Fine_FPR_3"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Fan_Pressure = PSZ_Fine_Fan_DesignPressure * PSZ_Fine_FanPwrRatio"
-                }
-            ]
-        },
-        "PSZ_Fine_Set_Fan_Par": {
-            "lines": [
-                {
-                    "program_line": "SET PSZ_FINE_Number_of_Stages = 1"
-                },
-                {
-                    "program_line": "IF PSZ_Fine_Number_of_Stages == 1"
-                },
-                {
-                    "program_line": "Return"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_FanPwrExponent = 2.2"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_OAFrac = PSZ_Fine_OAFlowMass/PSZ_Fine_DesignFlowMass"
-                },
-                {
-                    "program_line": "IF  PSZ_Fine_OAFrac < 0.66"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_VenSpeed = 0.66"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage1Speed = 0.66"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_VenSpeed = PSZ_Fine_OAFrac"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage1Speed = PSZ_Fine_OAFrac"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_Stage2Speed = 1.0"
-                },
-                {
-                    "program_line": "SET PSZ_Fine_HeatSpeed = 1.0"
-                }
-            ]
-        },
-        "PSZ_Fine_Set_Number_of_Stages": {
-            "lines": [
-                {
-                    "program_line": "SET PSZ_FINE_Number_of_Stages = 1"
-                }
-            ]
-        },
-        "PSZ_Office_Economizer_CTRL_Prog": {
-            "lines": [
-                {
-                    "program_line": "SET PSZ_Office_Timestep_Econ_Eff = 0.7"
-                },
-                {
-                    "program_line": "SET PSZ_Office_MaxE = 0.7"
-                },
-                {
-                    "program_line": "SET PSZ_Office_DAT_Rqd = (PSZ_Office_DAT_Rqd*1.8) +32"
-                },
-                {
-                    "program_line": "SET OAT_F = (OAT_F*1.8) +32"
-                },
-                {
-                    "program_line": "SET OAwb_F = (OAwb_F*1.8) +32"
-                },
-                {
-                    "program_line": "IF PSZ_Office_OAFlowMass > (PSZ_Office_OADesignMass * PSZ_Office_OASch)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Econo_Active = 1"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Econo_Active = 0"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "SET PSZ_Office_dT_Needed = 75 - PSZ_Office_DAT_Rqd"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Cool_Des_dT = ((98*0.15) + (75*(1-0.15))) - 55"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Cool_Load = PSZ_Office_dT_Needed/ PSZ_Office_Cool_Des_dT"
-                },
-                {
-                    "program_line": "IF PSZ_Office_Cool_Load > 1"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Cool_Load = 1"
-                },
-                {
-                    "program_line": "ELSEIF PSZ_Office_Cool_Load < 0"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Cool_Load = 0"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "IF PSZ_Office_Econo_Active == 1"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage = PSZ_Office_Number_of_Stages"
-                },
-                {
-                    "program_line": "IF PSZ_Office_Stage == 2"
-                },
-                {
-                    "program_line": "IF PSZ_Office_Cool_Load < 0.6"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Timestep_Econ_Eff = PSZ_Office_MaxE"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Office_ECO_Eff = 0-2.18919863612305"
-                },
-                {
-                    "program_line": "SET PSZ_Office_ECO_Eff = PSZ_Office_ECO_Eff + (0-0.674461284910428 * PSZ_Office_Cool_Load)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_ECO_Eff = PSZ_Office_ECO_Eff + (0.000459106275872404 * (OAT_F^2))"
-                },
-                {
-                    "program_line": "SET PSZ_Office_ECO_Eff = PSZ_Office_ECO_Eff + (0-0.00000484778537945252 * (OAT_F^3))"
-                },
-                {
-                    "program_line": "SET PSZ_Office_ECO_Eff = PSZ_Office_ECO_Eff + (0.182915713033586 * OAwb_F)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_ECO_Eff = PSZ_Office_ECO_Eff + (0-0.00382838660261133 * (OAwb_F^2))"
-                },
-                {
-                    "program_line": "SET PSZ_Office_ECO_Eff = PSZ_Office_ECO_Eff + (0.0000255567460240583 * (OAwb_F^3))"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Timestep_Econ_Eff = PSZ_Office_ECO_Eff"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Office_ECO_Eff = 2.36337942464462"
-                },
-                {
-                    "program_line": "SET PSZ_Office_ECO_Eff = PSZ_Office_ECO_Eff + (0-0.409939515512619 * PSZ_Office_Cool_Load)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_ECO_Eff = PSZ_Office_ECO_Eff + (0-0.0565205596792225 * OAwb_F)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_ECO_Eff = PSZ_Office_ECO_Eff + (0-0.0000632612294169389 * (OAT_F^2))"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Timestep_Econ_Eff = PSZ_Office_ECO_Eff + (0.000571724868775081 * (OAwb_F^2))"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "IF PSZ_Office_Timestep_Econ_Eff > PSZ_Office_MaxE"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Timestep_Econ_Eff = PSZ_Office_MaxE"
-                },
-                {
-                    "program_line": "ELSEIF PSZ_Office_Timestep_Econ_Eff < (PSZ_Office_OADesignMass * PSZ_Office_OASch)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Timestep_Econ_Eff = (PSZ_Office_OADesignMass * PSZ_Office_OASch)"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ENDIF"
-                }
-            ]
-        },
-        "PSZ_Office_Fan_Control": {
-            "lines": [
-                {
-                    "program_line": "SET PSZ_OFFICE_Number_of_Stages =  1"
-                },
-                {
-                    "program_line": "IF PSZ_Office_Number_of_Stages == 1"
-                },
-                {
-                    "program_line": "Return"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "IF PSZ_Office_HeatingRTF > 0"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Heating = PSZ_Office_HeatingRTF"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Ven = 1 - PSZ_Office_HeatingRTF"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Eco = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage1 = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage2 = 0"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Heating = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Office_EcoSpeed = PSZ_Office_VenSpeed"
-                },
-                {
-                    "program_line": "IF PSZ_Office_SpeedRatio == 0"
-                },
-                {
-                    "program_line": "IF PSZ_Office_RTF > 0"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage1 = PSZ_Office_RTF"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage2 = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Ven = 1-PSZ_Office_RTF"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Eco = 0"
-                },
-                {
-                    "program_line": "IF PSZ_Office_OAFlowMass > (PSZ_Office_OADesignMass * PSZ_Office_OASch)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage1Speed = 1.0"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage1 = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage2 = 0"
-                },
-                {
-                    "program_line": "IF PSZ_Office_OAFlowMass > (PSZ_Office_OADesignMass * PSZ_Office_OASch)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Eco = 1.0"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Ven = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Exp_DAT = PSZ_Office_DAT_Rqd - (1-PSZ_Office_VenSpeed) * ZONE1 OFFICE_Temp"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Exp_DAT = PSZ_Office_Exp_DAT/PSZ_Office_VenSpeed"
-                },
-                {
-                    "program_line": "IF OAT_F > PSZ_Office_Exp_DAT"
-                },
-                {
-                    "program_line": "SET PSZ_Office_EcoSpeed = PSZ_Office_Stage2Speed"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Eco = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Ven = 1.0"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage1 = 1- PSZ_Office_SpeedRatio"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage2 = PSZ_Office_SpeedRatio"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Ven = 0"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Eco = 0"
-                },
-                {
-                    "program_line": "IF PSZ_Office_OAFlowMass > (PSZ_Office_OADesignMass * PSZ_Office_OASch)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage1Speed = 1.0"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "SET PSZ_Office_FPR = PSZ_Office_Ven * (PSZ_Office_VenSpeed ^ PSZ_Office_FanPwrExponent)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_FPR_0 = PSZ_Office_Eco * (PSZ_Office_EcoSpeed ^ PSZ_Office_FanPwrExponent)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_FPR = PSZ_Office_FPR_0 + PSZ_Office_FPR"
-                },
-                {
-                    "program_line": "SET PSZ_Office_FPR_1 = PSZ_Office_Stage1 * (PSZ_Office_Stage1Speed ^ PSZ_Office_FanPwrExponent)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_FPR = PSZ_Office_FPR + PSZ_Office_FPR_1"
-                },
-                {
-                    "program_line": "SET PSZ_Office_FPR_2 = PSZ_Office_Stage2 * (PSZ_Office_Stage2Speed ^ PSZ_Office_FanPwrExponent)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_FPR = PSZ_Office_FPR + PSZ_Office_FPR_2"
-                },
-                {
-                    "program_line": "SET PSZ_Office_FPR_3 = PSZ_Office_Heating * (PSZ_Office_HeatSpeed ^ PSZ_Office_FanPwrExponent)"
-                },
-                {
-                    "program_line": "SET PSZ_Office_FanPwrRatio = PSZ_Office_FPR +  PSZ_Office_FPR_3"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Fan_Pressure = PSZ_Office_Fan_DesignPressure * PSZ_Office_FanPwrRatio"
-                }
-            ]
-        },
-        "PSZ_Office_Set_Fan_Par": {
-            "lines": [
-                {
-                    "program_line": "SET PSZ_OFFICE_Number_of_Stages =  1"
-                },
-                {
-                    "program_line": "IF PSZ_Office_Number_of_Stages == 1"
-                },
-                {
-                    "program_line": "Return"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "SET PSZ_Office_FanPwrExponent = 2.2"
-                },
-                {
-                    "program_line": "SET PSZ_Office_OAFrac = PSZ_Office_OAFlowMass/PSZ_Office_DesignFlowMass"
-                },
-                {
-                    "program_line": "IF  PSZ_Office_OAFrac < 0.66"
-                },
-                {
-                    "program_line": "SET PSZ_Office_VenSpeed = 0.66"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage1Speed = 0.66"
-                },
-                {
-                    "program_line": "ELSE"
-                },
-                {
-                    "program_line": "SET PSZ_Office_VenSpeed = PSZ_Office_OAFrac"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage1Speed = PSZ_Office_OAFrac"
-                },
-                {
-                    "program_line": "ENDIF"
-                },
-                {
-                    "program_line": "SET PSZ_Office_Stage2Speed = 1.0"
-                },
-                {
-                    "program_line": "SET PSZ_Office_HeatSpeed = 1.0"
-                }
-            ]
-        },
-        "PSZ_Office_Set_Number_of_Stages": {
-            "lines": [
-                {
-                    "program_line": "SET PSZ_OFFICE_Number_of_Stages =  1"
-                }
-            ]
-        },
         "SET_Zone1_Office_Light_EMS_Program": {
             "lines": [
                 {
@@ -2817,70 +1557,6 @@
         }
     },
     "EnergyManagementSystem:ProgramCallingManager": {
-        "PSZ_Office_Set_Number_of_Stages_CallingManager": {
-            "energyplus_model_calling_point": "BeginNewEnvironment",
-            "programs": [
-                {
-                    "program_name": "PSZ_Office_Set_Number_of_Stages"
-                }
-            ]
-        },
-        "PSZ_Office_ECO_Manager": {
-            "energyplus_model_calling_point": "InsideHVACSystemIterationLoop",
-            "programs": [
-                {
-                    "program_name": "PSZ_Office_Economizer_CTRL_Prog"
-                }
-            ]
-        },
-        "PSZ_Office_Fan_Parameter_manager": {
-            "energyplus_model_calling_point": "BeginNewEnvironment",
-            "programs": [
-                {
-                    "program_name": "PSZ_Office_Set_Fan_Par"
-                }
-            ]
-        },
-        "PSZ_Office_Fan_Main_Manager": {
-            "energyplus_model_calling_point": "BeginTimestepBeforePredictor",
-            "programs": [
-                {
-                    "program_name": "PSZ_Office_Fan_Control"
-                }
-            ]
-        },
-        "PSZ_Fine_Set_Number_of_Stages_CallingManager": {
-            "energyplus_model_calling_point": "BeginNewEnvironment",
-            "programs": [
-                {
-                    "program_name": "PSZ_Fine_Set_Number_of_Stages"
-                }
-            ]
-        },
-        "PSZ_Fine_ECO_Manager": {
-            "energyplus_model_calling_point": "InsideHVACSystemIterationLoop",
-            "programs": [
-                {
-                    "program_name": "PSZ_Fine_Economizer_CTRL_Prog"
-                }
-            ]
-        },
-        "PSZ_Fine_Fan_Parameter_manager": {
-            "energyplus_model_calling_point": "BeginNewEnvironment",
-            "programs": [
-                {
-                    "program_name": "PSZ_Fine_Set_Fan_Par"
-                }
-            ]
-        },
-        "PSZ_Fine_Fan_Main_Manager": {
-            "energyplus_model_calling_point": "BeginTimestepBeforePredictor",
-            "programs": [
-                {
-                    "program_name": "PSZ_Fine_Fan_Control"
-                }
-            ]
-        },
         "SET_Zone1_Office_Light_EMS_Program_Prog_Manager": {
             "energyplus_model_calling_point": "BeginTimestepBeforePredictor",
             "programs": [
@@ -2909,74 +1585,6 @@
     "EnergyManagementSystem:Sensor": {
         "OAT_F": {
             "output_variable_or_output_meter_name": "Site Outdoor Air Drybulb Temperature"
-        },
-        "OAwb_F": {
-            "output_variable_or_output_meter_index_key_name": "*",
-            "output_variable_or_output_meter_name": "Site Outdoor Air Wetbulb Temperature"
-        },
-        "PSZ_Fine_DAT_Rqd": {
-            "output_variable_or_output_meter_index_key_name": "PSZ-Fine Storage Air Loop Outlet",
-            "output_variable_or_output_meter_name": "System Node Setpoint Temperature"
-        },
-        "PSZ_Fine_Econo_Status": {
-            "output_variable_or_output_meter_index_key_name": "PSZ-Fine Storage",
-            "output_variable_or_output_meter_name": "Air System Outdoor Air Economizer Status"
-        },
-        "PSZ_Fine_HeatingRTF": {
-            "output_variable_or_output_meter_index_key_name": "PSZ-Fine Storage Heating Coil",
-            "output_variable_or_output_meter_name": "Heating Coil Runtime Fraction"
-        },
-        "PSZ_Fine_OAFlowMass": {
-            "output_variable_or_output_meter_index_key_name": "PSZ-Fine Storage Outside Air Inlet",
-            "output_variable_or_output_meter_name": "System Node Mass Flow Rate"
-        },
-        "PSZ_Fine_OASch": {
-            "output_variable_or_output_meter_index_key_name": "MinOA_MotorizedDamper_Sched",
-            "output_variable_or_output_meter_name": "Schedule Value"
-        },
-        "PSZ_Fine_RTF": {
-            "output_variable_or_output_meter_index_key_name": "PSZ-Fine Storage Cooling Coil",
-            "output_variable_or_output_meter_name": "Cooling Coil Runtime Fraction"
-        },
-        "PSZ_Fine_SpeedRatio": {
-            "output_variable_or_output_meter_index_key_name": "PSZ-Fine Storage_Unitary_Package_DX",
-            "output_variable_or_output_meter_name": "Coil System Compressor Speed Ratio"
-        },
-        "PSZ_Office_DAT_Rqd": {
-            "output_variable_or_output_meter_index_key_name": "PSZ-Office Air Loop Outlet",
-            "output_variable_or_output_meter_name": "System Node Setpoint Temperature"
-        },
-        "PSZ_Office_Econo_Status": {
-            "output_variable_or_output_meter_index_key_name": "PSZ-Office",
-            "output_variable_or_output_meter_name": "Air System Outdoor Air Economizer Status"
-        },
-        "PSZ_Office_HeatingRTF": {
-            "output_variable_or_output_meter_index_key_name": "PSZ-Office Heating Coil",
-            "output_variable_or_output_meter_name": "Heating Coil Runtime Fraction"
-        },
-        "PSZ_Office_OAFlowMass": {
-            "output_variable_or_output_meter_index_key_name": "PSZ-Office Outside Air Inlet",
-            "output_variable_or_output_meter_name": "System Node Mass Flow Rate"
-        },
-        "PSZ_Office_OASch": {
-            "output_variable_or_output_meter_index_key_name": "MinOA_MotorizedDamper_Sched",
-            "output_variable_or_output_meter_name": "Schedule Value"
-        },
-        "PSZ_Office_RTF": {
-            "output_variable_or_output_meter_index_key_name": "PSZ-Office Cooling Coil",
-            "output_variable_or_output_meter_name": "Cooling Coil Runtime Fraction"
-        },
-        "PSZ_Office_SpeedRatio": {
-            "output_variable_or_output_meter_index_key_name": "PSZ-Office_Unitary_Package_DX",
-            "output_variable_or_output_meter_name": "Coil System Compressor Speed Ratio"
-        },
-        "ZONE1_OFFICE_Temp": {
-            "output_variable_or_output_meter_index_key_name": "Zone1 Office Zone Air Node",
-            "output_variable_or_output_meter_name": "System Node Temperature"
-        },
-        "ZONE2_FINE_STORAGE_Temp": {
-            "output_variable_or_output_meter_index_key_name": "ZONE2 FINE STORAGE Zone Air Node",
-            "output_variable_or_output_meter_name": "System Node Temperature"
         },
         "Zone1_Office_LSr": {
             "output_variable_or_output_meter_index_key_name": "Zone1 Office",
@@ -3016,38 +1624,64 @@
         }
     },
     "Fan:ConstantVolume": {
-        "PSZ-Fine Storage Supply Fan": {
-            "air_inlet_node_name": "PSZ-Fine Storage Mixed Air Outlet",
-            "air_outlet_node_name": "PSZ-Fine Storage Supply Fan Outlet",
-            "availability_schedule_name": "FanSched",
-            "end_use_subcategory": "General",
-            "fan_total_efficiency": 0.56225,
-            "maximum_flow_rate": "Autosize",
-            "motor_efficiency": 0.865,
-            "motor_in_airstream_fraction": 1,
-            "pressure_rise": 622.5
-        },
-        "PSZ-Office Supply Fan": {
-            "air_inlet_node_name": "PSZ-Office Mixed Air Outlet",
-            "air_outlet_node_name": "PSZ-Office Supply Fan Outlet",
-            "availability_schedule_name": "FanSched",
-            "end_use_subcategory": "General",
-            "fan_total_efficiency": 0.55575,
-            "maximum_flow_rate": "Autosize",
-            "motor_efficiency": 0.855,
-            "motor_in_airstream_fraction": 1,
-            "pressure_rise": 622.5
-        },
         "Zone3UnitHeaterFan": {
             "air_inlet_node_name": "Zone3UnitHeaterAirInletNode",
             "air_outlet_node_name": "Zone3UnitHeaterFanOutletNode",
             "availability_schedule_name": "COMPACT HVAC-ALWAYS 1",
-            "end_use_subcategory": "Bulk Storage Fan",
+            "end_use_subcategory": "General",
             "fan_total_efficiency": 0.536,
             "maximum_flow_rate": "Autosize",
             "motor_efficiency": 0.825,
             "motor_in_airstream_fraction": 1.0,
             "pressure_rise": 49.8
+        }
+    },
+    "Fan:SystemModel": {
+        "PSZ-Fine Storage_addAQ Supply Fan": {
+            "air_inlet_node_name": "PSZ-Fine Storage Mixed Air Outlet",
+            "air_outlet_node_name": "PSZ-Fine Storage Supply Fan Outlet",
+            "availability_schedule_name": "FanSched",
+            "design_electric_power_consumption": "Autosize",
+            "design_maximum_air_flow_rate": "Autosize",
+            "design_power_sizing_method": "TotalEfficiencyAndPressure",
+            "design_pressure_rise": 622.5,
+            "electric_power_minimum_flow_rate_fraction": 1,
+            "end_use_subcategory": "General",
+            "fan_total_efficiency": 0.58175,
+            "motor_efficiency": 0.895,
+            "motor_in_air_stream_fraction": 1.0,
+            "night_ventilation_mode_pressure_rise": 622.5,
+            "number_of_speeds": 1,
+            "speed_control_method": "Discrete",
+            "speed_fractions": [
+                {
+                    "speed_electric_power_fraction": 1,
+                    "speed_flow_fraction": 1
+                }
+            ]
+        },
+        "PSZ-Office_addAQ Supply Fan": {
+            "air_inlet_node_name": "PSZ-Office Mixed Air Outlet",
+            "air_outlet_node_name": "PSZ-Office Supply Fan Outlet",
+            "availability_schedule_name": "FanSched",
+            "design_electric_power_consumption": "Autosize",
+            "design_maximum_air_flow_rate": "Autosize",
+            "design_power_sizing_method": "TotalEfficiencyAndPressure",
+            "design_pressure_rise": 622.5,
+            "electric_power_minimum_flow_rate_fraction": 1,
+            "end_use_subcategory": "General",
+            "fan_total_efficiency": 0.56225,
+            "motor_efficiency": 0.865,
+            "motor_in_air_stream_fraction": 1.0,
+            "night_ventilation_mode_pressure_rise": 622.5,
+            "number_of_speeds": 1,
+            "speed_control_method": "Discrete",
+            "speed_fractions": [
+                {
+                    "speed_electric_power_fraction": 1,
+                    "speed_flow_fraction": 1
+                }
+            ]
         }
     },
     "FenestrationSurface:Detailed": {
@@ -3549,7 +2183,7 @@
         },
         "FineStorage_skylight_1": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3568,7 +2202,7 @@
         },
         "FineStorage_skylight_2": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3587,7 +2221,7 @@
         },
         "FineStorage_skylight_3": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3606,7 +2240,7 @@
         },
         "FineStorage_skylight_4": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3625,7 +2259,7 @@
         },
         "FineStorage_skylight_5": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3644,7 +2278,7 @@
         },
         "FineStorage_skylight_6": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3663,7 +2297,7 @@
         },
         "FineStorage_skylight_7": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3682,7 +2316,7 @@
         },
         "FineStorage_skylight_8": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3701,7 +2335,7 @@
         },
         "FineStorage_skylight_9": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3720,7 +2354,7 @@
         },
         "FineStorage_skylight_10": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3739,7 +2373,7 @@
         },
         "FineStorage_skylight_11": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3758,7 +2392,7 @@
         },
         "FineStorage_skylight_12": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3777,7 +2411,7 @@
         },
         "FineStorage_skylight_13": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3796,7 +2430,7 @@
         },
         "FineStorage_skylight_14": {
             "building_surface_name": "Fine Storage Roof",
-            "construction_name": "Window_U_0.50_SHGC_0.40",
+            "construction_name": "Skylight_U_0.5_SHGC_0.4",
             "frame_and_divider_name": "Skylight_Frame_Nonres",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3835,7 +2469,7 @@
         },
         "Office Front Wall Window2": {
             "building_surface_name": "Office Front Wall",
-            "construction_name": "Window_U_0.45_SHGC_0.38",
+            "construction_name": "NonresWindow_U_0.36_SHGC_0.38",
             "multiplier": 1,
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3855,7 +2489,7 @@
         },
         "Office Front Wall Window 1": {
             "building_surface_name": "Office Front Wall",
-            "construction_name": "Window_U_0.45_SHGC_0.38",
+            "construction_name": "NonresWindow_U_0.36_SHGC_0.38",
             "multiplier": 1,
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3895,7 +2529,7 @@
         },
         "Office Left Wall Window1": {
             "building_surface_name": "Office Left Wall",
-            "construction_name": "Window_U_0.45_SHGC_0.38",
+            "construction_name": "NonresWindow_U_0.36_SHGC_0.38",
             "multiplier": 1,
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3915,7 +2549,7 @@
         },
         "Office Left Wall Window2": {
             "building_surface_name": "Office Left Wall",
-            "construction_name": "Window_U_0.45_SHGC_0.38",
+            "construction_name": "NonresWindow_U_0.36_SHGC_0.38",
             "multiplier": 1,
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3935,7 +2569,7 @@
         },
         "Skylight_r1c1": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3954,7 +2588,7 @@
         },
         "Skylight_r1c2": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3973,7 +2607,7 @@
         },
         "Skylight_r1c3": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -3992,7 +2626,7 @@
         },
         "Skylight_r1c4": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4011,7 +2645,7 @@
         },
         "Skylight_r2c1": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4030,7 +2664,7 @@
         },
         "Skylight_r2c2": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4049,7 +2683,7 @@
         },
         "Skylight_r2c3": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4068,7 +2702,7 @@
         },
         "Skylight_r2c4": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4087,7 +2721,7 @@
         },
         "Skylight_r3c1": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4106,7 +2740,7 @@
         },
         "Skylight_r3c2": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4125,7 +2759,7 @@
         },
         "Skylight_r3c3": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4144,7 +2778,7 @@
         },
         "Skylight_r3c4": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4163,7 +2797,7 @@
         },
         "Skylight_r4c1": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4182,7 +2816,7 @@
         },
         "Skylight_r4c2": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4201,7 +2835,7 @@
         },
         "Skylight_r4c3": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4220,7 +2854,7 @@
         },
         "Skylight_r4c4": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4239,7 +2873,7 @@
         },
         "Skylight_r5c1": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4258,7 +2892,7 @@
         },
         "Skylight_r5c2": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4277,7 +2911,7 @@
         },
         "Skylight_r5c3": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4296,7 +2930,7 @@
         },
         "Skylight_r5c4": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4315,7 +2949,7 @@
         },
         "Skylight_r6c1": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4334,7 +2968,7 @@
         },
         "Skylight_r6c2": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4353,7 +2987,7 @@
         },
         "Skylight_r6c3": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4372,7 +3006,7 @@
         },
         "Skylight_r6c4": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4391,7 +3025,7 @@
         },
         "Skylight_r7c1": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4410,7 +3044,7 @@
         },
         "Skylight_r7c2": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4429,7 +3063,7 @@
         },
         "Skylight_r7c3": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4448,7 +3082,7 @@
         },
         "Skylight_r7c4": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4467,7 +3101,7 @@
         },
         "Skylight_r8c1": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4486,7 +3120,7 @@
         },
         "Skylight_r8c2": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4505,7 +3139,7 @@
         },
         "Skylight_r8c3": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4524,7 +3158,7 @@
         },
         "Skylight_r8c4": {
             "building_surface_name": "Bulk Storage Roof",
-            "construction_name": "Window_U_0.98_SHGC_0.68",
+            "construction_name": "SemiHtdSkylight_U_0.75_SHGC_0.55",
             "frame_and_divider_name": "Skylight_Frame_Semiheated",
             "number_of_vertices": 4,
             "surface_type": "Window",
@@ -4564,19 +3198,19 @@
     "Lights": {
         "Bulk Storage Area Lights": {
             "design_level_calculation_method": "Watts/Area",
-            "end_use_subcategory": "GeneralLights",
+            "end_use_subcategory": "LightsWired",
             "fraction_radiant": 0.42,
             "fraction_replaceable": 1,
             "fraction_visible": 0.18,
             "return_air_fraction": 0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_STORAGE_SCH",
-            "watts_per_zone_floor_area": 3.767368646,
-            "zone_or_zonelist_name": "Zone3 Bulk Storage"
+            "watts_per_zone_floor_area": 3.552090438,
+            "zone_or_zonelist_or_space_or_spacelist_name": "Zone3 Bulk Storage"
         },
         "Fine Storage Area Lights": {
             "design_level_calculation_method": "Watts/Area",
-            "end_use_subcategory": "GeneralLights",
+            "end_use_subcategory": "LightsWired",
             "fraction_radiant": 0.42,
             "fraction_replaceable": 1,
             "fraction_visible": 0.18,
@@ -4584,19 +3218,19 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_STORAGE_SCH",
             "watts_per_zone_floor_area": 7.427098188,
-            "zone_or_zonelist_name": "Zone2 Fine Storage"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Zone2 Fine Storage"
         },
         "Office Lights": {
             "design_level_calculation_method": "Watts/Area",
-            "end_use_subcategory": "GeneralLights",
+            "end_use_subcategory": "LightsWired",
             "fraction_radiant": 0.37,
             "fraction_replaceable": 1,
             "fraction_visible": 0.18,
             "return_air_fraction": 0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_OFFICE_SCH",
-            "watts_per_zone_floor_area": 8.503489229,
-            "zone_or_zonelist_name": "Zone1 Office"
+            "watts_per_zone_floor_area": 6.888902667,
+            "zone_or_zonelist_or_space_or_spacelist_name": "Zone1 Office"
         }
     },
     "Material": {
@@ -4880,7 +3514,7 @@
             "roughness": "MediumSmooth",
             "solar_absorptance": 0.7,
             "thermal_absorptance": 0.9,
-            "thermal_resistance": 1.32942862923026,
+            "thermal_resistance": 1.64444403979094,
             "visible_absorptance": 0.7
         },
         "Semiheated_Floor_Insulation": {
@@ -4894,7 +3528,7 @@
             "roughness": "MediumSmooth",
             "solar_absorptance": 0.7,
             "thermal_absorptance": 0.9,
-            "thermal_resistance": 1.98442595005136,
+            "thermal_resistance": 2.0103016765077,
             "visible_absorptance": 0.7
         },
         "Std Opaque Door Panel": {
@@ -4969,11 +3603,27 @@
     },
     "Output:Meter:MeterFileOnly": {
         "Output:Meter:MeterFileOnly 1": {
-            "key_name": "InteriorLights:Electricity",
+            "key_name": "Electricity:Facility",
             "reporting_frequency": "Hourly"
         },
         "Output:Meter:MeterFileOnly 2": {
-            "key_name": "InteriorEquipment:Electricity",
+            "key_name": "ElectricityNet:Facility",
+            "reporting_frequency": "Hourly"
+        },
+        "Output:Meter:MeterFileOnly 3": {
+            "key_name": "NaturalGas:Facility",
+            "reporting_frequency": "Hourly"
+        },
+        "Output:Meter:MeterFileOnly 4": {
+            "key_name": "Electricity:Facility",
+            "reporting_frequency": "Hourly"
+        },
+        "Output:Meter:MeterFileOnly 5": {
+            "key_name": "ElectricityNet:Facility",
+            "reporting_frequency": "Hourly"
+        },
+        "Output:Meter:MeterFileOnly 6": {
+            "key_name": "NaturalGas:Facility",
             "reporting_frequency": "Hourly"
         }
     },
@@ -4984,129 +3634,119 @@
         }
     },
     "Output:Table:Monthly": {
-        "Monthly Indoor Temp": {
-            "digits_after_decimal": 2,
-            "variable_details": [
-                {
-                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
-                    "variable_or_meter_name": "Zone Mean Air Temperature"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
-                    "variable_or_meter_name": "Site Outdoor Air Drybulb Temperature"
-                }
-            ]
-        },
-        "Peak Electrical Demand": {
+        "NameHolderMonthlySummary ClimateZone 5B": {
             "digits_after_decimal": 3,
             "variable_details": [
                 {
                     "aggregation_type_for_variable_or_meter": "SumOrAverage",
-                    "variable_or_meter_name": "Electricity:Facility"
+                    "variable_or_meter_name": "Site Outdoor Air Drybulb"
                 },
                 {
-                    "aggregation_type_for_variable_or_meter": "Maximum",
-                    "variable_or_meter_name": "Electricity:Facility"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "InteriorLights:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "InteriorEquipment:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "Fans:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "Heating:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "Cooling:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "ExteriorLights:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "Pumps:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "HeatRejection:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "ExteriorEquipment:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "Humidification:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "HeatRecovery:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "WaterSystems:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "Refrigeration:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "Generators:Electricity"
-                },
-                {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "ElectricityProduced:Facility"
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Heating:NaturalGas"
                 }
             ]
         },
-        "Peak Gas Demand": {
+        "NameHolderMonthlySummary CodeAmendment NoneAmend": {
             "digits_after_decimal": 3,
             "variable_details": [
                 {
                     "aggregation_type_for_variable_or_meter": "SumOrAverage",
-                    "variable_or_meter_name": "NaturalGas:Facility"
+                    "variable_or_meter_name": "Site Outdoor Air Drybulb"
                 },
                 {
-                    "aggregation_type_for_variable_or_meter": "Maximum",
-                    "variable_or_meter_name": "NaturalGas:Facility"
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Heating:NaturalGas"
+                }
+            ]
+        },
+        "NameHolderMonthlySummary CodeName ASHRAE901": {
+            "digits_after_decimal": 3,
+            "variable_details": [
+                {
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Site Outdoor Air Drybulb"
                 },
                 {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "NaturalGas:HVAC"
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Heating:NaturalGas"
+                }
+            ]
+        },
+        "NameHolderMonthlySummary CodeYear 2019": {
+            "digits_after_decimal": 3,
+            "variable_details": [
+                {
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Site Outdoor Air Drybulb"
                 },
                 {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "InteriorEquipment:NaturalGas"
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Heating:NaturalGas"
+                }
+            ]
+        },
+        "NameHolderMonthlySummary PrototypeName Warehouse": {
+            "digits_after_decimal": 3,
+            "variable_details": [
+                {
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Site Outdoor Air Drybulb"
                 },
                 {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "MiscPlugGas:InteriorEquipment:NaturalGas"
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Heating:NaturalGas"
+                }
+            ]
+        },
+        "NameHolderMonthlySummary RepresentCity USA_CO_Denver": {
+            "digits_after_decimal": 3,
+            "variable_details": [
+                {
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Site Outdoor Air Drybulb"
                 },
                 {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "NaturalGas:Plant"
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Heating:NaturalGas"
+                }
+            ]
+        },
+        "NameHolderMonthlySummary State National": {
+            "digits_after_decimal": 3,
+            "variable_details": [
+                {
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Site Outdoor Air Drybulb"
                 },
                 {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "WaterSystems:NaturalGas"
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Heating:NaturalGas"
+                }
+            ]
+        },
+        "NameHolderMonthlySummary TaskPurpose ProgressIndicator": {
+            "digits_after_decimal": 3,
+            "variable_details": [
+                {
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Site Outdoor Air Drybulb"
                 },
                 {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
-                    "variable_or_meter_name": "Water Heater:WaterSystems:NaturalGas"
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Heating:NaturalGas"
+                }
+            ]
+        },
+        "NameHolderMonthlySummary TaskScope National": {
+            "digits_after_decimal": 3,
+            "variable_details": [
+                {
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
+                    "variable_or_meter_name": "Site Outdoor Air Drybulb"
                 },
                 {
-                    "aggregation_type_for_variable_or_meter": "ValueWhenMaximumOrMinimum",
+                    "aggregation_type_for_variable_or_meter": "SumOrAverage",
                     "variable_or_meter_name": "Heating:NaturalGas"
                 }
             ]
@@ -5116,25 +3756,7 @@
         "Output:Table:SummaryReports 1": {
             "reports": [
                 {
-                    "report_name": "EnvelopeSummary"
-                },
-                {
-                    "report_name": "InputVerificationandResultsSummary"
-                },
-                {
-                    "report_name": "AnnualBuildingUtilityPerformanceSummary"
-                },
-                {
-                    "report_name": "EquipmentSummary"
-                },
-                {
-                    "report_name": "AnnualBuildingUtilityPerformanceSummary"
-                },
-                {
-                    "report_name": "InputVerificationandResultsSummary"
-                },
-                {
-                    "report_name": "AllMonthly"
+                    "report_name": "AllSummaryAndMonthly"
                 }
             ]
         }
@@ -5144,15 +3766,15 @@
             "key_field": "regular"
         }
     },
-    "OutputControl:Sizing:Style": {
-        "OutputControl:Sizing:Style 1": {
-            "column_separator": "Comma"
+    "OutputControl:ReportingTolerances": {
+        "OutputControl:ReportingTolerances 1": {
+            "tolerance_for_time_cooling_setpoint_not_met": 0.556,
+            "tolerance_for_time_heating_setpoint_not_met": 0.556
         }
     },
     "OutputControl:Table:Style": {
         "OutputControl:Table:Style 1": {
-            "column_separator": "CommaAndHTML",
-            "unit_conversion": "JtoMJ"
+            "column_separator": "CommaAndHTML"
         }
     },
     "People": {
@@ -5164,7 +3786,7 @@
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "BLDG_OCC_SCH",
             "sensible_heat_fraction": "Autocalculate",
-            "zone_or_zonelist_name": "Zone1 Office"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Zone1 Office"
         }
     },
     "RunPeriod": {
@@ -5173,7 +3795,7 @@
             "begin_day_of_month": 1,
             "begin_month": 1,
             "begin_year": 1991,
-            "day_of_week_for_start_day": "Tuesday",
+            "day_of_week_for_start_day": "Monday",
             "end_day_of_month": 31,
             "end_month": 12,
             "end_year": 1991,
@@ -5257,7 +3879,7 @@
                     "field": 0
                 }
             ],
-            "schedule_type_limits_name": "Any Number"
+            "schedule_type_limits_name": "On/Off"
         },
         "ALWAYS_ON": {
             "data": [
@@ -5274,7 +3896,7 @@
                     "field": 1
                 }
             ],
-            "schedule_type_limits_name": "Any Number"
+            "schedule_type_limits_name": "On/Off"
         },
         "Always Off Schedule": {
             "data": [
@@ -6333,12 +4955,8 @@
         }
     },
     "Schedule:Constant": {
-        "PSZ_Fine_Timestep_Econ_Eff_SCH": {
-            "hourly_value": 0.7,
-            "schedule_type_limits_name": "Fraction"
-        },
-        "PSZ_Office_Timestep_Econ_Eff_SCH": {
-            "hourly_value": 0.7,
+        "SZ_system_OA_Max_Frac_SCH": {
+            "hourly_value": 0.75,
             "schedule_type_limits_name": "Fraction"
         }
     },
@@ -7700,6 +6318,11 @@
             "numeric_type": "Discrete",
             "upper_limit_value": 1
         },
+        "On/Off": {
+            "lower_limit_value": 0,
+            "numeric_type": "Discrete",
+            "upper_limit_value": 1
+        },
         "Temperature": {
             "lower_limit_value": -60.0,
             "numeric_type": "Continuous",
@@ -7707,26 +6330,12 @@
         }
     },
     "SetpointManager:MixedAir": {
-        "PSZ-Fine Storage HeatC Temp Manager": {
-            "control_variable": "Temperature",
-            "fan_inlet_node_name": "PSZ-Fine Storage Mixed Air Outlet",
-            "fan_outlet_node_name": "PSZ-Fine Storage Mixed Air Outlet",
-            "reference_setpoint_node_name": "PSZ-Fine Storage Air Loop Outlet",
-            "setpoint_node_or_nodelist_name": "PSZ-Fine Storage Heating Coil Outlet"
-        },
         "PSZ-Fine Storage OAMixed Air Temp Manager": {
             "control_variable": "Temperature",
             "fan_inlet_node_name": "PSZ-Fine Storage Mixed Air Outlet",
             "fan_outlet_node_name": "PSZ-Fine Storage Supply Fan Outlet",
             "reference_setpoint_node_name": "PSZ-Fine Storage Air Loop Outlet",
             "setpoint_node_or_nodelist_name": "PSZ-Fine Storage Mixed Air Outlet"
-        },
-        "PSZ-Office HeatC Temp Manager": {
-            "control_variable": "Temperature",
-            "fan_inlet_node_name": "PSZ-Office Mixed Air Outlet",
-            "fan_outlet_node_name": "PSZ-Office Mixed Air Outlet",
-            "reference_setpoint_node_name": "PSZ-Office Air Loop Outlet",
-            "setpoint_node_or_nodelist_name": "PSZ-Office Heating Coil Outlet"
         },
         "PSZ-Office OAMixed Air Temp Manager": {
             "control_variable": "Temperature",
@@ -7736,8 +6345,8 @@
             "setpoint_node_or_nodelist_name": "PSZ-Office Mixed Air Outlet"
         }
     },
-    "SetpointManager:SingleZone:Reheat": {
-        "PSZ-Fine Storage Supply Air Temp Manager": {
+    "SetpointManager:SingleZone:Cooling": {
+        "PSZ-Fine Storage Supply Air Temp Manager - Clg": {
             "control_variable": "Temperature",
             "control_zone_name": "Zone2 Fine Storage",
             "maximum_supply_air_temperature": 43.3333344812747,
@@ -7746,12 +6355,32 @@
             "zone_inlet_node_name": "Zone2 Fine Storage Zone Equip Inlet",
             "zone_node_name": "Zone2 Fine Storage Zone Air Node"
         },
-        "PSZ-Office Supply Air Temp Manager": {
+        "PSZ-Office Supply Air Temp Manager - Clg": {
             "control_variable": "Temperature",
             "control_zone_name": "Zone1 Office",
             "maximum_supply_air_temperature": 43.3333344812747,
             "minimum_supply_air_temperature": 12.7777781162733,
             "setpoint_node_or_nodelist_name": "PSZ-Office Air Loop Outlet",
+            "zone_inlet_node_name": "Zone1 Office Zone Equip Inlet",
+            "zone_node_name": "Zone1 Office Zone Air Node"
+        }
+    },
+    "SetpointManager:SingleZone:Heating": {
+        "PSZ-Fine Storage Supply Air Temp Manager - Htg": {
+            "control_variable": "Temperature",
+            "control_zone_name": "Zone2 Fine Storage",
+            "maximum_supply_air_temperature": 43.3333344812747,
+            "minimum_supply_air_temperature": 12.7777781162733,
+            "setpoint_node_or_nodelist_name": "PSZ-Fine Storage Heating Coil Outlet",
+            "zone_inlet_node_name": "Zone2 Fine Storage Zone Equip Inlet",
+            "zone_node_name": "Zone2 Fine Storage Zone Air Node"
+        },
+        "PSZ-Office Supply Air Temp Manager - Htg": {
+            "control_variable": "Temperature",
+            "control_zone_name": "Zone1 Office",
+            "maximum_supply_air_temperature": 43.3333344812747,
+            "minimum_supply_air_temperature": 12.7777781162733,
+            "setpoint_node_or_nodelist_name": "PSZ-Office Heating Coil Outlet",
             "zone_inlet_node_name": "Zone1 Office Zone Equip Inlet",
             "zone_node_name": "Zone1 Office Zone Air Node"
         }
@@ -7767,20 +6396,20 @@
             "run_simulation_for_weather_file_run_periods": "Yes"
         }
     },
-    "Site:GroundTemperature:BuildingSurface": {
-        "Site:GroundTemperature:BuildingSurface 1": {
-            "april_ground_temperature": 12.65,
-            "august_ground_temperature": 21.22,
-            "december_ground_temperature": 12.75,
-            "february_ground_temperature": 12.62,
-            "january_ground_temperature": 12.68,
-            "july_ground_temperature": 21.76,
-            "june_ground_temperature": 20.37,
-            "march_ground_temperature": 12.65,
-            "may_ground_temperature": 13.46,
-            "november_ground_temperature": 12.94,
-            "october_ground_temperature": 13.56,
-            "september_ground_temperature": 18.64
+    "Site:GroundTemperature:FCfactorMethod": {
+        "Site:GroundTemperature:FCfactorMethod 1": {
+            "april_ground_temperature": 0.8,
+            "august_ground_temperature": 13.7,
+            "december_ground_temperature": 18.5,
+            "february_ground_temperature": 3.0,
+            "january_ground_temperature": 7.1,
+            "july_ground_temperature": 6.1,
+            "june_ground_temperature": 4.8,
+            "march_ground_temperature": -1.0,
+            "may_ground_temperature": -0.2,
+            "november_ground_temperature": 21.7,
+            "october_ground_temperature": 22.7,
+            "september_ground_temperature": 22.2
         }
     },
     "Site:Location": {
@@ -7802,7 +6431,7 @@
         "Sizing:Parameters 1": {
             "cooling_sizing_factor": 1.2,
             "heating_sizing_factor": 1.2,
-            "timesteps_in_averaging_window": 4
+            "timesteps_in_averaging_window": 6
         }
     },
     "Sizing:System": {
@@ -7814,7 +6443,7 @@
             "central_cooling_design_supply_air_humidity_ratio": 0.008,
             "central_cooling_design_supply_air_temperature": 12,
             "central_heating_design_supply_air_humidity_ratio": 0.008,
-            "central_heating_design_supply_air_temperature": 50,
+            "central_heating_design_supply_air_temperature": 40,
             "central_heating_maximum_system_air_flow_ratio": 1,
             "cooling_design_capacity": "Autosize",
             "cooling_design_capacity_method": "CoolingDesignCapacity",
@@ -7831,7 +6460,7 @@
             "preheat_design_temperature": 7,
             "system_outdoor_air_method": "ZoneSum",
             "type_of_load_to_size_on": "Sensible",
-            "type_of_zone_sum_to_use": "NonCoincident",
+            "type_of_zone_sum_to_use": "Coincident",
             "zone_maximum_outdoor_air_fraction": 1.0
         },
         "Sizing:System 2": {
@@ -7842,7 +6471,7 @@
             "central_cooling_design_supply_air_humidity_ratio": 0.008,
             "central_cooling_design_supply_air_temperature": 12,
             "central_heating_design_supply_air_humidity_ratio": 0.008,
-            "central_heating_design_supply_air_temperature": 50,
+            "central_heating_design_supply_air_temperature": 40,
             "central_heating_maximum_system_air_flow_ratio": 1,
             "cooling_design_capacity": "Autosize",
             "cooling_design_capacity_method": "CoolingDesignCapacity",
@@ -7859,7 +6488,7 @@
             "preheat_design_temperature": 7,
             "system_outdoor_air_method": "ZoneSum",
             "type_of_load_to_size_on": "Sensible",
-            "type_of_zone_sum_to_use": "NonCoincident",
+            "type_of_zone_sum_to_use": "Coincident",
             "zone_maximum_outdoor_air_fraction": 1.0
         }
     },
@@ -7879,11 +6508,9 @@
             "zone_cooling_design_supply_air_humidity_ratio": 0.008,
             "zone_cooling_design_supply_air_temperature": 14,
             "zone_cooling_design_supply_air_temperature_input_method": "SupplyAirTemperature",
-            "zone_cooling_sizing_factor": 0,
             "zone_heating_design_supply_air_humidity_ratio": 0.008,
             "zone_heating_design_supply_air_temperature": 50,
             "zone_heating_design_supply_air_temperature_input_method": "SupplyAirTemperature",
-            "zone_heating_sizing_factor": 0,
             "zone_or_zonelist_name": "Zone1 Office"
         },
         "Sizing:Zone 2": {
@@ -7901,11 +6528,9 @@
             "zone_cooling_design_supply_air_humidity_ratio": 0.008,
             "zone_cooling_design_supply_air_temperature": 14,
             "zone_cooling_design_supply_air_temperature_input_method": "SupplyAirTemperature",
-            "zone_cooling_sizing_factor": 0,
             "zone_heating_design_supply_air_humidity_ratio": 0.008,
             "zone_heating_design_supply_air_temperature": 50,
             "zone_heating_design_supply_air_temperature_input_method": "SupplyAirTemperature",
-            "zone_heating_sizing_factor": 0,
             "zone_or_zonelist_name": "Zone2 Fine Storage"
         },
         "Sizing:Zone 3": {
@@ -7997,9 +6622,43 @@
             "number_of_timesteps_per_hour": 4
         }
     },
+    "UnitarySystemPerformance:Multispeed": {
+        "PSZ-Fine_Unitary_Package_DX_Perf": {
+            "flow_ratios": [
+                {
+                    "cooling_speed_supply_air_flow_ratio": 1.0,
+                    "heating_speed_supply_air_flow_ratio": 1
+                },
+                {
+                    "cooling_speed_supply_air_flow_ratio": 1,
+                    "heating_speed_supply_air_flow_ratio": 1
+                }
+            ],
+            "no_load_supply_air_flow_rate_ratio": 1.0,
+            "number_of_speeds_for_cooling": 2,
+            "number_of_speeds_for_heating": 2,
+            "single_mode_operation": "No"
+        },
+        "PSZ-Office_Unitary_Package_DX_Perf": {
+            "flow_ratios": [
+                {
+                    "cooling_speed_supply_air_flow_ratio": 1.0,
+                    "heating_speed_supply_air_flow_ratio": 1
+                },
+                {
+                    "cooling_speed_supply_air_flow_ratio": 1,
+                    "heating_speed_supply_air_flow_ratio": 1
+                }
+            ],
+            "no_load_supply_air_flow_rate_ratio": 1.0,
+            "number_of_speeds_for_cooling": 2,
+            "number_of_speeds_for_heating": 2,
+            "single_mode_operation": "No"
+        }
+    },
     "Version": {
         "Version 1": {
-            "version_identifier": "9.5"
+            "version_identifier": "23.1"
         }
     },
     "WaterHeater:Mixed": {
@@ -8029,115 +6688,9 @@
         "AIR 3MM": {
             "gas_type": "Air",
             "thickness": 0.0032
-        },
-        "AIR 6MM": {
-            "gas_type": "Air",
-            "thickness": 0.0063
-        },
-        "AIR 13MM": {
-            "gas_type": "Air",
-            "thickness": 0.0127
-        },
-        "ARGON 13MM": {
-            "gas_type": "Argon",
-            "thickness": 0.0127
-        },
-        "Gap_1_W_0_0018": {
-            "gas_type": "Air",
-            "thickness": 0.0018
-        },
-        "Gap_1_W_0_0024": {
-            "gas_type": "Air",
-            "thickness": 0.0024
-        },
-        "Gap_1_W_0_0025": {
-            "gas_type": "Air",
-            "thickness": 0.0025
-        },
-        "Gap_1_W_0_0032": {
-            "gas_type": "Air",
-            "thickness": 0.0032
-        },
-        "Gap_1_W_0_0038": {
-            "gas_type": "Air",
-            "thickness": 0.0038
-        },
-        "Gap_1_W_0_0042": {
-            "gas_type": "Air",
-            "thickness": 0.0042
-        },
-        "Gap_1_W_0_0043": {
-            "gas_type": "Air",
-            "thickness": 0.0043
-        },
-        "Gap_1_W_0_0046": {
-            "gas_type": "Air",
-            "thickness": 0.0046
-        },
-        "Gap_1_W_0_0048": {
-            "gas_type": "Air",
-            "thickness": 0.0048
-        },
-        "Gap_1_W_0_0052": {
-            "gas_type": "Air",
-            "thickness": 0.0052
-        },
-        "Gap_1_W_0_0060": {
-            "gas_type": "Air",
-            "thickness": 0.006
-        },
-        "Gap_1_W_0_0070": {
-            "gas_type": "Air",
-            "thickness": 0.007
-        },
-        "Gap_1_W_0_0090": {
-            "gas_type": "Air",
-            "thickness": 0.009
-        },
-        "Gap_1_W_0_0127": {
-            "gas_type": "Air",
-            "thickness": 0.0127
-        }
-    },
-    "WindowMaterial:GasMixture": {
-        "Gap_9_W_0_0127": {
-            "gas_1_fraction": 0.1,
-            "gas_1_type": "Air",
-            "gas_2_fraction": 0.9,
-            "gas_2_type": "Argon",
-            "number_of_gases_in_mixture": 2,
-            "thickness": 0.0127
         }
     },
     "WindowMaterial:Glazing": {
-        "BLUE 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.05,
-            "back_side_visible_reflectance_at_normal_incidence": 0.06,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.05,
-            "front_side_visible_reflectance_at_normal_incidence": 0.06,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.48,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.57
-        },
-        "BRONZE 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.054,
-            "back_side_visible_reflectance_at_normal_incidence": 0.057,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.054,
-            "front_side_visible_reflectance_at_normal_incidence": 0.057,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.482,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.534
-        },
         "CLEAR 2.5MM": {
             "back_side_infrared_hemispherical_emissivity": 0.84,
             "back_side_solar_reflectance_at_normal_incidence": 0.075,
@@ -8152,524 +6705,6 @@
             "thickness": 0.0025,
             "visible_transmittance_at_normal_incidence": 0.901
         },
-        "CLEAR 3MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.075,
-            "back_side_visible_reflectance_at_normal_incidence": 0.081,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.075,
-            "front_side_visible_reflectance_at_normal_incidence": 0.081,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.837,
-            "thickness": 0.003,
-            "visible_transmittance_at_normal_incidence": 0.898
-        },
-        "CLEAR 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.071,
-            "back_side_visible_reflectance_at_normal_incidence": 0.08,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.071,
-            "front_side_visible_reflectance_at_normal_incidence": 0.08,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.775,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.881
-        },
-        "COATED POLY-55": {
-            "back_side_infrared_hemispherical_emissivity": 0.72,
-            "back_side_solar_reflectance_at_normal_incidence": 0.593,
-            "back_side_visible_reflectance_at_normal_incidence": 0.375,
-            "conductivity": 0.14,
-            "front_side_infrared_hemispherical_emissivity": 0.046,
-            "front_side_solar_reflectance_at_normal_incidence": 0.582,
-            "front_side_visible_reflectance_at_normal_incidence": 0.336,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.32,
-            "thickness": 0.00051,
-            "visible_transmittance_at_normal_incidence": 0.551
-        },
-        "COATED POLY-77": {
-            "back_side_infrared_hemispherical_emissivity": 0.72,
-            "back_side_solar_reflectance_at_normal_incidence": 0.398,
-            "back_side_visible_reflectance_at_normal_incidence": 0.167,
-            "conductivity": 0.14,
-            "front_side_infrared_hemispherical_emissivity": 0.075,
-            "front_side_solar_reflectance_at_normal_incidence": 0.402,
-            "front_side_visible_reflectance_at_normal_incidence": 0.147,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.504,
-            "thickness": 0.00051,
-            "visible_transmittance_at_normal_incidence": 0.766
-        },
-        "ECABS-2 BLEACHED 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.1,
-            "back_side_solar_reflectance_at_normal_incidence": 0.086,
-            "back_side_visible_reflectance_at_normal_incidence": 0.099,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.086,
-            "front_side_visible_reflectance_at_normal_incidence": 0.099,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.814,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.847
-        },
-        "ECABS-2 COLORED 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.1,
-            "back_side_solar_reflectance_at_normal_incidence": 0.179,
-            "back_side_visible_reflectance_at_normal_incidence": 0.081,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.179,
-            "front_side_visible_reflectance_at_normal_incidence": 0.081,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.111,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.128
-        },
-        "ECREF-1 COLORED 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.219,
-            "back_side_visible_reflectance_at_normal_incidence": 0.073,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.219,
-            "front_side_visible_reflectance_at_normal_incidence": 0.073,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.099,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.155
-        },
-        "ECREF-2 BLEACHED 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.1,
-            "back_side_solar_reflectance_at_normal_incidence": 0.168,
-            "back_side_visible_reflectance_at_normal_incidence": 0.11,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.168,
-            "front_side_visible_reflectance_at_normal_incidence": 0.11,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.694,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.818
-        },
-        "ECREF-2 COLORED 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.1,
-            "back_side_solar_reflectance_at_normal_incidence": 0.219,
-            "back_side_visible_reflectance_at_normal_incidence": 0.073,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.219,
-            "front_side_visible_reflectance_at_normal_incidence": 0.073,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.099,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.155
-        },
-        "GREEN 3MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.063,
-            "back_side_visible_reflectance_at_normal_incidence": 0.075,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.063,
-            "front_side_visible_reflectance_at_normal_incidence": 0.075,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.635,
-            "thickness": 0.003,
-            "visible_transmittance_at_normal_incidence": 0.822
-        },
-        "GREEN 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.056,
-            "back_side_visible_reflectance_at_normal_incidence": 0.07,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.056,
-            "front_side_visible_reflectance_at_normal_incidence": 0.07,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.487,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.749
-        },
-        "GREY 3MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.061,
-            "back_side_visible_reflectance_at_normal_incidence": 0.061,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.061,
-            "front_side_visible_reflectance_at_normal_incidence": 0.061,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.626,
-            "thickness": 0.003,
-            "visible_transmittance_at_normal_incidence": 0.611
-        },
-        "GREY 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.053,
-            "back_side_visible_reflectance_at_normal_incidence": 0.052,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.053,
-            "front_side_visible_reflectance_at_normal_incidence": 0.052,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.455,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.431
-        },
-        "Glass_102_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.07485449,
-            "back_side_visible_reflectance_at_normal_incidence": 0.082564,
-            "conductivity": 1.0,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.07476376,
-            "front_side_visible_reflectance_at_normal_incidence": 0.082563,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.833848,
-            "thickness": 0.003048,
-            "visible_transmittance_at_normal_incidence": 0.89926
-        },
-        "Glass_282_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.37,
-            "back_side_solar_reflectance_at_normal_incidence": 0.4058073,
-            "back_side_visible_reflectance_at_normal_incidence": 0.270435,
-            "conductivity": 0.94,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.2956174,
-            "front_side_visible_reflectance_at_normal_incidence": 0.237458,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.352565,
-            "thickness": 0.003251,
-            "visible_transmittance_at_normal_incidence": 0.510046
-        },
-        "Glass_1576_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.868,
-            "back_side_solar_reflectance_at_normal_incidence": 0.1825558,
-            "back_side_visible_reflectance_at_normal_incidence": 0.128077,
-            "conductivity": 0.846,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.3034693,
-            "front_side_visible_reflectance_at_normal_incidence": 0.128888,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.167637,
-            "thickness": 0.003058,
-            "visible_transmittance_at_normal_incidence": 0.341994
-        },
-        "Glass_2010F_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.3410654,
-            "back_side_visible_reflectance_at_normal_incidence": 0.056031,
-            "conductivity": 1,
-            "front_side_infrared_hemispherical_emissivity": 0.042274,
-            "front_side_solar_reflectance_at_normal_incidence": 0.4183747,
-            "front_side_visible_reflectance_at_normal_incidence": 0.043577,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.434294,
-            "thickness": 0.00221,
-            "visible_transmittance_at_normal_incidence": 0.797579
-        },
-        "Glass_2022F_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.2656452,
-            "back_side_visible_reflectance_at_normal_incidence": 0.05547,
-            "conductivity": 1,
-            "front_side_infrared_hemispherical_emissivity": 0.046,
-            "front_side_solar_reflectance_at_normal_incidence": 0.3940945,
-            "front_side_visible_reflectance_at_normal_incidence": 0.042734,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.355897,
-            "thickness": 0.0039,
-            "visible_transmittance_at_normal_incidence": 0.677694
-        },
-        "Glass_2027F_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.340935,
-            "back_side_visible_reflectance_at_normal_incidence": 0.073741,
-            "conductivity": 1,
-            "front_side_infrared_hemispherical_emissivity": 0.03675,
-            "front_side_solar_reflectance_at_normal_incidence": 0.4700695,
-            "front_side_visible_reflectance_at_normal_incidence": 0.0546,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.369744,
-            "thickness": 0.004,
-            "visible_transmittance_at_normal_incidence": 0.765222
-        },
-        "Glass_2052_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.05449309,
-            "back_side_visible_reflectance_at_normal_incidence": 0.058397,
-            "conductivity": 1,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.05422805,
-            "front_side_visible_reflectance_at_normal_incidence": 0.05805,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.507767,
-            "thickness": 0.00837,
-            "visible_transmittance_at_normal_incidence": 0.586833
-        },
-        "Glass_2175_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.4379779,
-            "back_side_visible_reflectance_at_normal_incidence": 0.10654,
-            "conductivity": 1,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.2176064,
-            "front_side_visible_reflectance_at_normal_incidence": 0.078729,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.167758,
-            "thickness": 0.0086,
-            "visible_transmittance_at_normal_incidence": 0.416044
-        },
-        "Glass_2531_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.454,
-            "back_side_solar_reflectance_at_normal_incidence": 0.3617666,
-            "back_side_visible_reflectance_at_normal_incidence": 0.232929,
-            "conductivity": 0.934,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.3198325,
-            "front_side_visible_reflectance_at_normal_incidence": 0.25084,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.350556,
-            "thickness": 0.00306,
-            "visible_transmittance_at_normal_incidence": 0.490923
-        },
-        "Glass_2532_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.676,
-            "back_side_solar_reflectance_at_normal_incidence": 0.2732317,
-            "back_side_visible_reflectance_at_normal_incidence": 0.079448,
-            "conductivity": 0.933,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.2268281,
-            "front_side_visible_reflectance_at_normal_incidence": 0.0766,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.340824,
-            "thickness": 0.00306,
-            "visible_transmittance_at_normal_incidence": 0.543814
-        },
-        "Glass_4313_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.298,
-            "back_side_solar_reflectance_at_normal_incidence": 0.09944001,
-            "back_side_visible_reflectance_at_normal_incidence": 0.096992,
-            "conductivity": 1.0,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.07114256,
-            "front_side_visible_reflectance_at_normal_incidence": 0.077225,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.373486,
-            "thickness": 0.00385,
-            "visible_transmittance_at_normal_incidence": 0.6013
-        },
-        "Glass_4321_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.279,
-            "back_side_solar_reflectance_at_normal_incidence": 0.09994167,
-            "back_side_visible_reflectance_at_normal_incidence": 0.094819,
-            "conductivity": 0.814,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.0742419,
-            "front_side_visible_reflectance_at_normal_incidence": 0.072726,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.425947,
-            "thickness": 0.00618,
-            "visible_transmittance_at_normal_incidence": 0.559652
-        },
-        "Glass_8652_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.39,
-            "back_side_solar_reflectance_at_normal_incidence": 0.4621051,
-            "back_side_visible_reflectance_at_normal_incidence": 0.306829,
-            "conductivity": 0.962,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.2989869,
-            "front_side_visible_reflectance_at_normal_incidence": 0.209449,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.343691,
-            "thickness": 0.003059,
-            "visible_transmittance_at_normal_incidence": 0.487937
-        },
-        "Glass_9731_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.203399,
-            "back_side_visible_reflectance_at_normal_incidence": 0.070696,
-            "conductivity": 0.815,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.2079376,
-            "front_side_visible_reflectance_at_normal_incidence": 0.071115,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.369424,
-            "thickness": 0.01248,
-            "visible_transmittance_at_normal_incidence": 0.710088
-        },
-        "Glass_12116_LayerAvg": {
-            "back_side_infrared_hemispherical_emissivity": 0.538265,
-            "back_side_solar_reflectance_at_normal_incidence": 0.2199938,
-            "back_side_visible_reflectance_at_normal_incidence": 0.081654,
-            "conductivity": 1.000345,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.1094601,
-            "front_side_visible_reflectance_at_normal_incidence": 0.182598,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.171874,
-            "thickness": 0.00475,
-            "visible_transmittance_at_normal_incidence": 0.322771
-        },
-        "LoE CLEAR 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.1,
-            "back_side_solar_reflectance_at_normal_incidence": 0.22,
-            "back_side_visible_reflectance_at_normal_incidence": 0.078,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.17,
-            "front_side_visible_reflectance_at_normal_incidence": 0.055,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.6,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.84
-        },
-        "LoE SPEC SEL CLEAR 3MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.03,
-            "back_side_solar_reflectance_at_normal_incidence": 0.37,
-            "back_side_visible_reflectance_at_normal_incidence": 0.06,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.34,
-            "front_side_visible_reflectance_at_normal_incidence": 0.07,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.45,
-            "thickness": 0.003,
-            "visible_transmittance_at_normal_incidence": 0.78
-        },
-        "LoE SPEC SEL CLEAR 6MM Rev": {
-            "back_side_infrared_hemispherical_emissivity": 0.84,
-            "back_side_solar_reflectance_at_normal_incidence": 0.3,
-            "back_side_visible_reflectance_at_normal_incidence": 0.07,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.03,
-            "front_side_solar_reflectance_at_normal_incidence": 0.42,
-            "front_side_visible_reflectance_at_normal_incidence": 0.06,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.43,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.77
-        },
-        "LoE SPEC SEL TINT 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.03,
-            "back_side_solar_reflectance_at_normal_incidence": 0.41,
-            "back_side_visible_reflectance_at_normal_incidence": 0.04,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.14,
-            "front_side_visible_reflectance_at_normal_incidence": 0.06,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.26,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.46
-        },
-        "LoE TINT 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.1,
-            "back_side_solar_reflectance_at_normal_incidence": 0.2,
-            "back_side_visible_reflectance_at_normal_incidence": 0.054,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.093,
-            "front_side_visible_reflectance_at_normal_incidence": 0.035,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.36,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.5
-        },
-        "PYR A CLEAR 3MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.4,
-            "back_side_solar_reflectance_at_normal_incidence": 0.1,
-            "back_side_visible_reflectance_at_normal_incidence": 0.12,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.1,
-            "front_side_visible_reflectance_at_normal_incidence": 0.12,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.75,
-            "thickness": 0.003,
-            "visible_transmittance_at_normal_incidence": 0.85
-        },
-        "PYR B CLEAR 3MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.2,
-            "back_side_solar_reflectance_at_normal_incidence": 0.1,
-            "back_side_visible_reflectance_at_normal_incidence": 0.12,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.09,
-            "front_side_visible_reflectance_at_normal_incidence": 0.11,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.74,
-            "thickness": 0.003,
-            "visible_transmittance_at_normal_incidence": 0.82
-        },
-        "PYR B CLEAR 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.2,
-            "back_side_solar_reflectance_at_normal_incidence": 0.1,
-            "back_side_visible_reflectance_at_normal_incidence": 0.12,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.09,
-            "front_side_visible_reflectance_at_normal_incidence": 0.11,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.68,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.81
-        },
-        "REF A CLEAR LO 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.4,
-            "back_side_solar_reflectance_at_normal_incidence": 0.493,
-            "back_side_visible_reflectance_at_normal_incidence": 0.37,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.341,
-            "front_side_visible_reflectance_at_normal_incidence": 0.41,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.066,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.08
-        },
         "REF A CLEAR MID 6MM": {
             "back_side_infrared_hemispherical_emissivity": 0.47,
             "back_side_solar_reflectance_at_normal_incidence": 0.43,
@@ -8683,160 +6718,23 @@
             "solar_transmittance_at_normal_incidence": 0.11,
             "thickness": 0.006,
             "visible_transmittance_at_normal_incidence": 0.14
+        }
+    },
+    "WindowMaterial:SimpleGlazingSystem": {
+        "Nonres Skylight Glazing Layer": {
+            "solar_heat_gain_coefficient": 0.4,
+            "u_factor": 2.83913,
+            "visible_transmittance": 0.4
         },
-        "REF A TINT MID 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.47,
-            "back_side_solar_reflectance_at_normal_incidence": 0.42,
-            "back_side_visible_reflectance_at_normal_incidence": 0.35,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.13,
-            "front_side_visible_reflectance_at_normal_incidence": 0.14,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.06,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.09
+        "Nonres Window Glazing Layer": {
+            "solar_heat_gain_coefficient": 0.38,
+            "u_factor": 2.0441736,
+            "visible_transmittance": 0.38
         },
-        "REF B CLEAR HI 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.6,
-            "back_side_solar_reflectance_at_normal_incidence": 0.32,
-            "back_side_visible_reflectance_at_normal_incidence": 0.29,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.16,
-            "front_side_visible_reflectance_at_normal_incidence": 0.16,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.24,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.3
-        },
-        "REF B CLEAR LO 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.58,
-            "back_side_solar_reflectance_at_normal_incidence": 0.38,
-            "back_side_visible_reflectance_at_normal_incidence": 0.33,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.22,
-            "front_side_visible_reflectance_at_normal_incidence": 0.23,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.15,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.2
-        },
-        "REF B TINT HI 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.6,
-            "back_side_solar_reflectance_at_normal_incidence": 0.33,
-            "back_side_visible_reflectance_at_normal_incidence": 0.28,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.09,
-            "front_side_visible_reflectance_at_normal_incidence": 0.08,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.15,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.18
-        },
-        "REF B TINT MID 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.45,
-            "back_side_solar_reflectance_at_normal_incidence": 0.41,
-            "back_side_visible_reflectance_at_normal_incidence": 0.32,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.11,
-            "front_side_visible_reflectance_at_normal_incidence": 0.1,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.1,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.13
-        },
-        "REF C CLEAR HI 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.55,
-            "back_side_solar_reflectance_at_normal_incidence": 0.39,
-            "back_side_visible_reflectance_at_normal_incidence": 0.35,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.16,
-            "front_side_visible_reflectance_at_normal_incidence": 0.17,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.2,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.22
-        },
-        "REF C CLEAR MID 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.51,
-            "back_side_solar_reflectance_at_normal_incidence": 0.42,
-            "back_side_visible_reflectance_at_normal_incidence": 0.38,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.2,
-            "front_side_visible_reflectance_at_normal_incidence": 0.21,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.17,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.19
-        },
-        "REF D CLEAR 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.82,
-            "back_side_solar_reflectance_at_normal_incidence": 0.379,
-            "back_side_visible_reflectance_at_normal_incidence": 0.505,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.308,
-            "front_side_visible_reflectance_at_normal_incidence": 0.453,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.429,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.334
-        },
-        "REF D TINT 6MM": {
-            "back_side_infrared_hemispherical_emissivity": 0.82,
-            "back_side_solar_reflectance_at_normal_incidence": 0.36,
-            "back_side_visible_reflectance_at_normal_incidence": 0.45,
-            "conductivity": 0.9,
-            "front_side_infrared_hemispherical_emissivity": 0.84,
-            "front_side_solar_reflectance_at_normal_incidence": 0.14,
-            "front_side_visible_reflectance_at_normal_incidence": 0.18,
-            "infrared_transmittance_at_normal_incidence": 0.0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.3,
-            "thickness": 0.006,
-            "visible_transmittance_at_normal_incidence": 0.25
-        },
-        "Theoretical Glass 297": {
-            "back_side_infrared_hemispherical_emissivity": 0.9,
-            "back_side_solar_reflectance_at_normal_incidence": 0.574961,
-            "back_side_visible_reflectance_at_normal_incidence": 0.420302,
-            "conductivity": 0.0103561,
-            "front_side_infrared_hemispherical_emissivity": 0.9,
-            "front_side_solar_reflectance_at_normal_incidence": 0.574961,
-            "front_side_visible_reflectance_at_normal_incidence": 0.420302,
-            "infrared_transmittance_at_normal_incidence": 0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.375039,
-            "thickness": 0.003,
-            "visible_transmittance_at_normal_incidence": 0.529698
-        },
-        "Theoretical Glass 347": {
-            "back_side_infrared_hemispherical_emissivity": 0.9,
-            "back_side_solar_reflectance_at_normal_incidence": 0.634139,
-            "back_side_visible_reflectance_at_normal_incidence": 0.470089,
-            "conductivity": 0.010358,
-            "front_side_infrared_hemispherical_emissivity": 0.9,
-            "front_side_solar_reflectance_at_normal_incidence": 0.634139,
-            "front_side_visible_reflectance_at_normal_incidence": 0.470089,
-            "infrared_transmittance_at_normal_incidence": 0,
-            "optical_data_type": "SpectralAverage",
-            "solar_transmittance_at_normal_incidence": 0.315861,
-            "thickness": 0.003,
-            "visible_transmittance_at_normal_incidence": 0.479911
+        "Semiheated Skylight Glazing Layer": {
+            "solar_heat_gain_coefficient": 0.55,
+            "u_factor": 4.258695,
+            "visible_transmittance": 0.55
         }
     },
     "WindowProperty:FrameAndDivider": {
@@ -9054,17 +6952,17 @@
             "temperature_term_coefficient": 0,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0.224,
-            "zone_or_zonelist_name": "Zone3 Bulk Storage"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Zone3 Bulk Storage"
         },
         "Fine Storage Infiltration": {
             "constant_term_coefficient": 0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000225765,
+            "flow_rate_per_exterior_surface_area": 0.000225765,
             "schedule_name": "Fine Sorage Infil Schedule",
             "temperature_term_coefficient": 0,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0.224,
-            "zone_or_zonelist_name": "Zone2 Fine Storage"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Zone2 Fine Storage"
         },
         "Office Door Infiltration": {
             "constant_term_coefficient": 1,
@@ -9074,17 +6972,17 @@
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "Zone1 Office"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Zone1 Office"
         },
         "Office Infiltration": {
             "constant_term_coefficient": 0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000220198,
+            "flow_rate_per_exterior_surface_area": 0.000220198,
             "schedule_name": "Office Infil Schedule",
             "temperature_term_coefficient": 0,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0.224,
-            "zone_or_zonelist_name": "Zone1 Office"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Zone1 Office"
         }
     },
     "ZoneVentilation:DesignFlowRate": {
@@ -9105,7 +7003,7 @@
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0,
             "ventilation_type": "Exhaust",
-            "zone_or_zonelist_name": "Zone3 Bulk Storage"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Zone3 Bulk Storage"
         },
         "Bulk Storage Ventilation-2": {
             "constant_term_coefficient": 0,
@@ -9123,7 +7021,7 @@
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0.224,
             "ventilation_type": "Natural",
-            "zone_or_zonelist_name": "Zone3 Bulk Storage"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Zone3 Bulk Storage"
         }
     }
 }

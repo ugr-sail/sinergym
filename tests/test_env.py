@@ -63,7 +63,8 @@ def test_step(env_name, request):
     action = env.action_space.sample()
     obs, reward, terminated, truncated, info = env.step(action)
 
-    assert len(obs) == 20
+    assert len(obs) == len(DEFAULT_5ZONE_OBSERVATION_VARIABLES) + \
+        4  # year, month, day and hour
     assert not isinstance(reward, type(None))
     assert not terminated
     assert not truncated

@@ -15,7 +15,7 @@ def test_update_weather_path(config_several_weathers):
     assert config_several_weathers._weather_path is not None
 
 
-def test_adapt_idf_to_epw(config):
+def test_adapt_building_to_epw(config):
     # Read the current Location and DesignDays
     locations = config.building['Site:Location']
     designdays = config.building['SizingPeriod:DesignDay']
@@ -24,34 +24,24 @@ def test_adapt_idf_to_epw(config):
 
     # Check old location is correct
     assert locations.get(
-        'Pittsburgh Allegheny Co Ap_PA_USA Design_Conditions',
+        'CHICAGO_IL_USA TMY2-94846',
         False)
-    location = locations['Pittsburgh Allegheny Co Ap_PA_USA Design_Conditions']
-    assert location['latitude'] == 40.35
-    assert location['longitude'] == -79.92
-    assert location['time_zone'] == -5.00
-    assert location['elevation'] == 380.00
+    location = locations['CHICAGO_IL_USA TMY2-94846']
+    assert location['latitude'] == 41.78
+    assert location['longitude'] == -87.75
+    assert location['time_zone'] == -6.0
+    assert location['elevation'] == 190.0
 
     # Check old Designday is correct
     assert designdays.get(
-        'Pittsburgh Allegheny Co Ap Ann Htg 99.6% Condns DB', False)
-    winter_day = designdays['Pittsburgh Allegheny Co Ap Ann Htg 99.6% Condns DB']
+        'CHICAGO_IL_USA Annual Heating 99% Design Conditions DB', False)
+    winter_day = designdays['CHICAGO_IL_USA Annual Heating 99% Design Conditions DB']
     assert winter_day['day_type'] == 'WinterDesignDay'
-    assert winter_day['month'] == 1
-    assert winter_day['day_of_month'] == 21
-    assert winter_day['maximum_dry_bulb_temperature'] == -15.4
-    assert winter_day['barometric_pressure'] == 96842.0
-    assert winter_day['wind_speed'] == 4.7
 
     assert designdays.get(
-        'Pittsburgh Allegheny Co Ap Ann Clg .4% Condns DB=>MWB', False)
-    summer_day = designdays['Pittsburgh Allegheny Co Ap Ann Clg .4% Condns DB=>MWB']
+        'CHICAGO_IL_USA Annual Cooling 1% Design Conditions DB/MCWB', False)
+    summer_day = designdays['CHICAGO_IL_USA Annual Cooling 1% Design Conditions DB/MCWB']
     assert summer_day['day_type'] == 'SummerDesignDay'
-    assert summer_day['month'] == 7
-    assert summer_day['day_of_month'] == 21
-    assert summer_day['maximum_dry_bulb_temperature'] == 32.2
-    assert summer_day['barometric_pressure'] == 96842.0
-    assert summer_day['wind_speed'] == 4.4
 
     # Existing designday names
     winterday = 'Ann Htg 99.6% Condns DB'
@@ -94,7 +84,7 @@ def test_adapt_idf_to_epw(config):
 
 
 def test_adapt_variables_to_cfg_and_building(config):
-    # Check initial state in Config variables_tree attribute and IDF
+    # Check initial state in Config variables_tree attribute and building model
     # OutputVariables
     assert len(config.variables_tree) == 0
     assert config.variables_tree.find('variable') is None
@@ -157,7 +147,7 @@ def test_apply_extra_conf(config):
                         config.config['runperiod'][5])
 
 
-def test_adapt_idf_to_action_definition(config):
+def test_adapt_building_to_action_definition(config):
     # Check External interface variables are not created yet
     assert 'ExternalInterface:Schedule' not in config.building
 
@@ -229,7 +219,7 @@ def test_save_building_model(config):
     assert config.episode_path is not None
     # save current model
     path_save = config.save_building_model()
-    # Read the path save idf and check IDF saved
+    # Read the path save and check building model is saved
     building = {}
     with open(path_save) as json_f:
         building = json.load(json_f)

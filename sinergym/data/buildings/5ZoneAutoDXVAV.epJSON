@@ -18,7 +18,6 @@
     },
     "AirLoopHVAC:OutdoorAirSystem": {
         "OA Sys 1": {
-            "availability_manager_list_name": "VAV Sys 1 Avail List",
             "controller_list_name": "OA Sys 1 Controllers",
             "outdoor_air_equipment_list_name": "OA Sys 1 Equipment"
         }
@@ -105,14 +104,15 @@
             "constant_minimum_air_flow_fraction": 0.1,
             "convergence_tolerance": 0.001,
             "damper_air_outlet_node_name": "SPACE1-1 Zone Coil Air In Node",
-            "damper_heating_action": "Reverse",
+            "damper_heating_action": "ReverseWithLimits",
             "design_specification_outdoor_air_object_name": "ZoneMinOARequirements",
             "maximum_air_flow_rate": "Autosize",
             "maximum_flow_fraction_during_reheat": "Autosize",
+            "maximum_flow_per_zone_floor_area_during_reheat": 0.002032,
             "maximum_hot_water_or_steam_flow_rate": 0.0,
             "minimum_hot_water_or_steam_flow_rate": 0.0,
             "reheat_coil_name": "SPACE1-1 Zone Coil",
-            "reheat_coil_object_type": "Coil:Heating:Electric",
+            "reheat_coil_object_type": "Coil:Heating:Fuel",
             "zone_minimum_air_flow_input_method": "Constant"
         },
         "SPACE2-1 VAV Reheat": {
@@ -122,13 +122,14 @@
             "constant_minimum_air_flow_fraction": 0.1,
             "convergence_tolerance": 0.001,
             "damper_air_outlet_node_name": "SPACE2-1 Zone Coil Air In Node",
-            "damper_heating_action": "Reverse",
+            "damper_heating_action": "ReverseWithLimits",
             "design_specification_outdoor_air_object_name": "ZoneMinOARequirements",
             "maximum_air_flow_rate": "Autosize",
+            "maximum_flow_per_zone_floor_area_during_reheat": 0.002032,
             "maximum_hot_water_or_steam_flow_rate": 0.0,
             "minimum_hot_water_or_steam_flow_rate": 0.0,
             "reheat_coil_name": "SPACE2-1 Zone Coil",
-            "reheat_coil_object_type": "Coil:Heating:Electric",
+            "reheat_coil_object_type": "Coil:Heating:Fuel",
             "zone_minimum_air_flow_input_method": "Constant"
         },
         "SPACE3-1 VAV Reheat": {
@@ -138,13 +139,14 @@
             "constant_minimum_air_flow_fraction": 0.1,
             "convergence_tolerance": 0.001,
             "damper_air_outlet_node_name": "SPACE3-1 Zone Coil Air In Node",
-            "damper_heating_action": "Reverse",
+            "damper_heating_action": "ReverseWithLimits",
             "design_specification_outdoor_air_object_name": "ZoneMinOARequirements",
             "maximum_air_flow_rate": "Autosize",
+            "maximum_flow_per_zone_floor_area_during_reheat": 0.002032,
             "maximum_hot_water_or_steam_flow_rate": 0.0,
             "minimum_hot_water_or_steam_flow_rate": 0.0,
             "reheat_coil_name": "SPACE3-1 Zone Coil",
-            "reheat_coil_object_type": "Coil:Heating:Electric",
+            "reheat_coil_object_type": "Coil:Heating:Fuel",
             "zone_minimum_air_flow_input_method": "Constant"
         },
         "SPACE4-1 VAV Reheat": {
@@ -154,13 +156,14 @@
             "constant_minimum_air_flow_fraction": 0.1,
             "convergence_tolerance": 0.001,
             "damper_air_outlet_node_name": "SPACE4-1 Zone Coil Air In Node",
-            "damper_heating_action": "Reverse",
+            "damper_heating_action": "ReverseWithLimits",
             "design_specification_outdoor_air_object_name": "ZoneMinOARequirements",
             "maximum_air_flow_rate": "Autosize",
+            "maximum_flow_per_zone_floor_area_during_reheat": 0.002032,
             "maximum_hot_water_or_steam_flow_rate": 0.0,
             "minimum_hot_water_or_steam_flow_rate": 0.0,
             "reheat_coil_name": "SPACE4-1 Zone Coil",
-            "reheat_coil_object_type": "Coil:Heating:Electric",
+            "reheat_coil_object_type": "Coil:Heating:Fuel",
             "zone_minimum_air_flow_input_method": "Constant"
         },
         "SPACE5-1 VAV Reheat": {
@@ -170,13 +173,14 @@
             "constant_minimum_air_flow_fraction": 0.1,
             "convergence_tolerance": 0.001,
             "damper_air_outlet_node_name": "SPACE5-1 Zone Coil Air In Node",
-            "damper_heating_action": "Reverse",
+            "damper_heating_action": "ReverseWithLimits",
             "design_specification_outdoor_air_object_name": "ZoneMinOARequirements",
             "maximum_air_flow_rate": "Autosize",
+            "maximum_flow_per_zone_floor_area_during_reheat": 0.002032,
             "maximum_hot_water_or_steam_flow_rate": 0.0,
             "minimum_hot_water_or_steam_flow_rate": 0.0,
             "reheat_coil_name": "SPACE5-1 Zone Coil",
-            "reheat_coil_object_type": "Coil:Heating:Electric",
+            "reheat_coil_object_type": "Coil:Heating:Fuel",
             "zone_minimum_air_flow_input_method": "Constant"
         }
     },
@@ -213,7 +217,7 @@
                 {
                     "component_inlet_node_name": "Main Cooling Coil 1 Outlet Node",
                     "component_name": "Main Heating Coil 1",
-                    "component_object_type": "Coil:Heating:Electric",
+                    "component_object_type": "Coil:Heating:Fuel",
                     "component_outlet_node_name": "Main Heating Coil 1 Outlet Node"
                 },
                 {
@@ -1568,10 +1572,10 @@
             "high_speed_gross_rated_cooling_cop": 3.0,
             "high_speed_gross_rated_total_cooling_capacity": "Autosize",
             "high_speed_rated_air_flow_rate": "Autosize",
-            "high_speed_rated_sensible_heat_ratio": "Autosize",
+            "high_speed_rated_sensible_heat_ratio": 0.8,
             "low_speed_energy_input_ratio_function_of_temperature_curve_name": "VarSpeedCoolEIRLSFT",
             "low_speed_gross_rated_cooling_cop": 4.2,
-            "low_speed_gross_rated_sensible_heat_ratio": "Autosize",
+            "low_speed_gross_rated_sensible_heat_ratio": 0.8,
             "low_speed_gross_rated_total_cooling_capacity": "Autosize",
             "low_speed_rated_air_flow_rate": "Autosize",
             "low_speed_total_cooling_capacity_function_of_temperature_curve_name": "VarSpeedCoolCapLSFT",
@@ -1581,12 +1585,13 @@
             "unit_internal_static_air_pressure": 450
         }
     },
-    "Coil:Heating:Electric": {
+    "Coil:Heating:Fuel": {
         "Main heating Coil 1": {
             "air_inlet_node_name": "Main Cooling Coil 1 Outlet Node",
             "air_outlet_node_name": "Main Heating Coil 1 Outlet Node",
             "availability_schedule_name": "ReheatCoilAvailSched",
-            "efficiency": 0.98,
+            "burner_efficiency": 0.8,
+            "fuel_type": "NaturalGas",
             "nominal_capacity": "Autosize",
             "temperature_setpoint_node_name": "Main Heating Coil 1 Outlet Node"
         },
@@ -1594,35 +1599,40 @@
             "air_inlet_node_name": "SPACE1-1 Zone Coil Air In Node",
             "air_outlet_node_name": "SPACE1-1 In Node",
             "availability_schedule_name": "ReheatCoilAvailSched",
-            "efficiency": 0.98,
+            "burner_efficiency": 0.8,
+            "fuel_type": "NaturalGas",
             "nominal_capacity": "Autosize"
         },
         "SPACE2-1 Zone Coil": {
             "air_inlet_node_name": "SPACE2-1 Zone Coil Air In Node",
             "air_outlet_node_name": "SPACE2-1 In Node",
             "availability_schedule_name": "ReheatCoilAvailSched",
-            "efficiency": 0.98,
+            "burner_efficiency": 0.8,
+            "fuel_type": "NaturalGas",
             "nominal_capacity": "Autosize"
         },
         "SPACE3-1 Zone Coil": {
             "air_inlet_node_name": "SPACE3-1 Zone Coil Air In Node",
             "air_outlet_node_name": "SPACE3-1 In Node",
             "availability_schedule_name": "ReheatCoilAvailSched",
-            "efficiency": 0.98,
+            "burner_efficiency": 0.8,
+            "fuel_type": "NaturalGas",
             "nominal_capacity": "Autosize"
         },
         "SPACE4-1 Zone Coil": {
             "air_inlet_node_name": "SPACE4-1 Zone Coil Air In Node",
             "air_outlet_node_name": "SPACE4-1 In Node",
             "availability_schedule_name": "ReheatCoilAvailSched",
-            "efficiency": 0.98,
+            "burner_efficiency": 0.8,
+            "fuel_type": "NaturalGas",
             "nominal_capacity": "Autosize"
         },
         "SPACE5-1 Zone Coil": {
             "air_inlet_node_name": "SPACE5-1 Zone Coil Air In Node",
             "air_outlet_node_name": "SPACE5-1 In Node",
             "availability_schedule_name": "ReheatCoilAvailSched",
-            "efficiency": 0.98,
+            "burner_efficiency": 0.8,
+            "fuel_type": "NaturalGas",
             "nominal_capacity": "Autosize"
         }
     },
@@ -1645,24 +1655,6 @@
             "layer_3": "CLEAR 3MM",
             "outside_layer": "CLEAR 3MM"
         },
-        "Dbl Clr 3mm/13mm Arg": {
-            "layer_2": "ARGON 13MM",
-            "layer_3": "CLEAR 3MM",
-            "outside_layer": "CLEAR 3MM"
-        },
-        "Dbl Clr 6mm/6mm Air": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "CLEAR 6MM"
-        },
-        "Dbl LoE (e2=.1) Clr 6mm/6mm Air": {
-            "layer_2": "AIR 6MM",
-            "layer_3": "CLEAR 6MM",
-            "outside_layer": "LoE CLEAR 6MM"
-        },
-        "FLOOR-1": {
-            "outside_layer": "MAT-FLOOR-1"
-        },
         "FLOOR-SLAB-1": {
             "layer_2": "CP01",
             "outside_layer": "CC03"
@@ -1677,9 +1669,6 @@
             "layer_3": "IN46",
             "layer_4": "WD01",
             "outside_layer": "RG01"
-        },
-        "SB-U": {
-            "outside_layer": "MAT-SB-U"
         },
         "Sgl Grey 3mm": {
             "outside_layer": "GREY 3MM"
@@ -1847,7 +1836,7 @@
             "fraction_lost": 0,
             "fraction_radiant": 0.3,
             "schedule_name": "EQUIP-1",
-            "zone_or_zonelist_name": "SPACE1-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE1-1"
         },
         "SPACE2-1 ElecEq 1": {
             "design_level": 456,
@@ -1856,7 +1845,7 @@
             "fraction_lost": 0,
             "fraction_radiant": 0.3,
             "schedule_name": "EQUIP-1",
-            "zone_or_zonelist_name": "SPACE2-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE2-1"
         },
         "SPACE3-1 ElecEq 1": {
             "design_level": 1056,
@@ -1865,7 +1854,7 @@
             "fraction_lost": 0,
             "fraction_radiant": 0.3,
             "schedule_name": "EQUIP-1",
-            "zone_or_zonelist_name": "SPACE3-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE3-1"
         },
         "SPACE4-1 ElecEq 1": {
             "design_level": 456,
@@ -1874,7 +1863,7 @@
             "fraction_lost": 0,
             "fraction_radiant": 0.3,
             "schedule_name": "EQUIP-1",
-            "zone_or_zonelist_name": "SPACE4-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE4-1"
         },
         "SPACE5-1 ElecEq 1": {
             "design_level": 1976,
@@ -1883,7 +1872,7 @@
             "fraction_lost": 0,
             "fraction_radiant": 0.3,
             "schedule_name": "EQUIP-1",
-            "zone_or_zonelist_name": "SPACE5-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE5-1"
         }
     },
     "Fan:VariableVolume": {
@@ -2049,7 +2038,7 @@
             "lighting_level": 1584,
             "return_air_fraction": 0.2,
             "schedule_name": "LIGHTS-1",
-            "zone_or_zonelist_name": "SPACE1-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE1-1"
         },
         "SPACE2-1 Lights 1": {
             "design_level_calculation_method": "LightingLevel",
@@ -2060,7 +2049,7 @@
             "lighting_level": 684,
             "return_air_fraction": 0.2,
             "schedule_name": "LIGHTS-1",
-            "zone_or_zonelist_name": "SPACE2-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE2-1"
         },
         "SPACE3-1 Lights 1": {
             "design_level_calculation_method": "LightingLevel",
@@ -2071,7 +2060,7 @@
             "lighting_level": 1584,
             "return_air_fraction": 0.2,
             "schedule_name": "LIGHTS-1",
-            "zone_or_zonelist_name": "SPACE3-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE3-1"
         },
         "SPACE4-1 Lights 1": {
             "design_level_calculation_method": "LightingLevel",
@@ -2082,7 +2071,7 @@
             "lighting_level": 684,
             "return_air_fraction": 0.2,
             "schedule_name": "LIGHTS-1",
-            "zone_or_zonelist_name": "SPACE4-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE4-1"
         },
         "SPACE5-1 Lights 1": {
             "design_level_calculation_method": "LightingLevel",
@@ -2093,7 +2082,7 @@
             "lighting_level": 2964,
             "return_air_fraction": 0.2,
             "schedule_name": "LIGHTS-1",
-            "zone_or_zonelist_name": "SPACE5-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE5-1"
         }
     },
     "Material": {
@@ -2322,6 +2311,106 @@
             ]
         }
     },
+    "Output:Meter": {
+        "Output:Meter 1": {
+            "key_name": "Cooling:Electricity",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter 2": {
+            "key_name": "Heating:NaturalGas",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter 3": {
+            "key_name": "Fans:Electricity",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter 4": {
+            "key_name": "HeatingCoils:EnergyTransfer",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter 5": {
+            "key_name": "CoolingCoils:EnergyTransfer",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter 6": {
+            "key_name": "InteriorLights:Electricity",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter 7": {
+            "key_name": "InteriorEquipment:Electricity",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter 8": {
+            "key_name": "Cooling:Electricity",
+            "reporting_frequency": "RunPeriod"
+        },
+        "Output:Meter 9": {
+            "key_name": "Heating:NaturalGas",
+            "reporting_frequency": "RunPeriod"
+        },
+        "Output:Meter 10": {
+            "key_name": "Fans:Electricity",
+            "reporting_frequency": "RunPeriod"
+        },
+        "Output:Meter 11": {
+            "key_name": "HeatingCoils:EnergyTransfer",
+            "reporting_frequency": "RunPeriod"
+        },
+        "Output:Meter 12": {
+            "key_name": "CoolingCoils:EnergyTransfer",
+            "reporting_frequency": "RunPeriod"
+        },
+        "Output:Meter 13": {
+            "key_name": "InteriorLights:Electricity",
+            "reporting_frequency": "RunPeriod"
+        },
+        "Output:Meter 14": {
+            "key_name": "InteriorEquipment:Electricity",
+            "reporting_frequency": "RunPeriod"
+        }
+    },
+    "Output:Meter:MeterFileOnly": {
+        "Output:Meter:MeterFileOnly 1": {
+            "key_name": "Electricity:Facility",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter:MeterFileOnly 2": {
+            "key_name": "Electricity:Building",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter:MeterFileOnly 3": {
+            "key_name": "Electricity:HVAC",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter:MeterFileOnly 4": {
+            "key_name": "NaturalGas:Facility",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter:MeterFileOnly 5": {
+            "key_name": "NaturalGas:HVAC",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter:MeterFileOnly 6": {
+            "key_name": "Electricity:Facility",
+            "reporting_frequency": "RunPeriod"
+        },
+        "Output:Meter:MeterFileOnly 7": {
+            "key_name": "Electricity:Building",
+            "reporting_frequency": "RunPeriod"
+        },
+        "Output:Meter:MeterFileOnly 8": {
+            "key_name": "Electricity:HVAC",
+            "reporting_frequency": "RunPeriod"
+        },
+        "Output:Meter:MeterFileOnly 9": {
+            "key_name": "NaturalGas:Facility",
+            "reporting_frequency": "RunPeriod"
+        },
+        "Output:Meter:MeterFileOnly 10": {
+            "key_name": "NaturalGas:HVAC",
+            "reporting_frequency": "RunPeriod"
+        }
+    },
     "Output:Surfaces:Drawing": {
         "Output:Surfaces:Drawing 1": {
             "report_type": "DXF"
@@ -2339,108 +2428,168 @@
     "Output:Variable": {
         "Output:Variable 1": {
             "key_value": "*",
-            "reporting_frequency": "Timestep",
+            "reporting_frequency": "Hourly",
             "variable_name": "Site Outdoor Air Drybulb Temperature"
         },
         "Output:Variable 2": {
             "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Site Outdoor Air Relative Humidity"
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air Temperature"
         },
         "Output:Variable 3": {
             "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Site Wind Speed"
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air System Sensible Cooling Rate"
         },
         "Output:Variable 4": {
             "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Site Wind Direction"
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air System Sensible Heating Rate"
         },
         "Output:Variable 5": {
             "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Site Diffuse Solar Radiation Rate per Area"
+            "reporting_frequency": "Hourly",
+            "variable_name": "Coil System Compressor Speed Ratio"
         },
         "Output:Variable 6": {
             "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Site Direct Solar Radiation Rate per Area"
+            "reporting_frequency": "Hourly",
+            "variable_name": "Cooling Coil Electricity Rate"
         },
         "Output:Variable 7": {
-            "key_value": "SPACE1-1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Air Temperature"
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Cooling Coil Runtime Fraction"
         },
         "Output:Variable 8": {
-            "key_value": "SPACE1-1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Air Relative Humidity"
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Cooling Coil Basin Heater Electricity Rate"
         },
         "Output:Variable 9": {
-            "key_value": "SPACE1-1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermostat Heating Setpoint Temperature"
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Cooling Coil Basin Heater Electricity Energy"
         },
         "Output:Variable 10": {
-            "key_value": "SPACE1-1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermostat Cooling Setpoint Temperature"
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Fan Electricity Rate"
         },
         "Output:Variable 11": {
-            "key_value": "SPACE1-1 PEOPLE 1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Fanger Model PMV"
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Heating Coil NaturalGas Rate"
         },
         "Output:Variable 12": {
-            "key_value": "SPACE1-1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone People Occupant Count"
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "People Occupant Count"
         },
         "Output:Variable 13": {
-            "key_value": "SPACE1-1 PEOPLE 1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Fanger Model PPD"
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air Terminal VAV Damper Position"
         },
         "Output:Variable 14": {
-            "key_value": "SPACE1-1 PEOPLE 1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Clothing Value"
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air Terminal Minimum Air Flow Fraction"
         },
         "Output:Variable 15": {
-            "key_value": "SPACE1-1 PEOPLE 1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Mean Radiant Temperature"
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air Terminal Outdoor Air Volume Flow Rate"
         },
         "Output:Variable 16": {
-            "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "People Air Temperature"
+            "key_value": "SPACE1-1 In Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Temperature"
         },
         "Output:Variable 17": {
-            "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Facility Total HVAC Electricity Demand Rate"
+            "key_value": "SPACE2-1 In Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Temperature"
         },
         "Output:Variable 18": {
-            "key_value": "SPACE1-1 IN NODE",
-            "reporting_frequency": "Timestep",
+            "key_value": "SPACE3-1 In Node",
+            "reporting_frequency": "Hourly",
             "variable_name": "System Node Temperature"
         },
         "Output:Variable 19": {
-            "key_value": "VAV SYS 1 OUTLET NODE",
-            "reporting_frequency": "Timestep",
+            "key_value": "SPACE4-1 In Node",
+            "reporting_frequency": "Hourly",
             "variable_name": "System Node Temperature"
         },
         "Output:Variable 20": {
-            "key_value": "SPACE1-1 IN NODE",
-            "reporting_frequency": "Timestep",
-            "variable_name": "System Node Mass Flow Rate"
+            "key_value": "SPACE5-1 In Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Temperature"
         },
         "Output:Variable 21": {
-            "key_value": "VAV SYS 1 OUTLET NODE",
-            "reporting_frequency": "Timestep",
-            "variable_name": "System Node Mass Flow Rate"
+            "key_value": "SPACE1-1 In Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Standard Density Volume Flow Rate"
+        },
+        "Output:Variable 22": {
+            "key_value": "SPACE2-1 In Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Standard Density Volume Flow Rate"
+        },
+        "Output:Variable 23": {
+            "key_value": "SPACE3-1 In Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Standard Density Volume Flow Rate"
+        },
+        "Output:Variable 24": {
+            "key_value": "SPACE4-1 In Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Standard Density Volume Flow Rate"
+        },
+        "Output:Variable 25": {
+            "key_value": "SPACE5-1 In Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Standard Density Volume Flow Rate"
+        },
+        "Output:Variable 26": {
+            "key_value": "SPACE1-1 In Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Current Density Volume Flow Rate"
+        },
+        "Output:Variable 27": {
+            "key_value": "SPACE2-1 In Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Current Density Volume Flow Rate"
+        },
+        "Output:Variable 28": {
+            "key_value": "SPACE3-1 In Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Current Density Volume Flow Rate"
+        },
+        "Output:Variable 29": {
+            "key_value": "SPACE4-1 In Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Current Density Volume Flow Rate"
+        },
+        "Output:Variable 30": {
+            "key_value": "SPACE5-1 In Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Current Density Volume Flow Rate"
+        },
+        "Output:Variable 31": {
+            "key_value": "Outside Air Inlet Node 1",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Standard Density Volume Flow Rate"
+        },
+        "Output:Variable 32": {
+            "key_value": "Outside Air Inlet Node 1",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Current Density Volume Flow Rate"
+        },
+        "Output:Variable 33": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Air System Outdoor Air Flow Fraction"
         }
     },
     "Output:VariableDictionary": {
@@ -2450,89 +2599,55 @@
     },
     "OutputControl:Table:Style": {
         "OutputControl:Table:Style 1": {
-            "column_separator": "HTML"
+            "column_separator": "HTML",
+            "unit_conversion": "InchPound"
         }
     },
     "People": {
         "SPACE1-1 People 1": {
             "activity_level_schedule_name": "ActSchd",
-            "air_velocity_schedule_name": "AirVelocitySch",
-            "carbon_dioxide_generation_rate": 3.82e-08,
-            "clothing_insulation_calculation_method": "DynamicClothingModelASHRAE55",
-            "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people": 11,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OCCUPY-1",
             "sensible_heat_fraction": "Autocalculate",
-            "thermal_comfort_model_1_type": "Fanger",
-            "work_efficiency_schedule_name": "WorkEffSch",
-            "zone_or_zonelist_name": "SPACE1-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE1-1"
         },
         "SPACE2-1 People 1": {
             "activity_level_schedule_name": "ActSchd",
-            "air_velocity_schedule_name": "AirVelocitySch",
-            "carbon_dioxide_generation_rate": 3.82e-08,
-            "clothing_insulation_calculation_method": "DynamicClothingModelASHRAE55",
-            "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people": 5,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OCCUPY-1",
             "sensible_heat_fraction": "Autocalculate",
-            "thermal_comfort_model_1_type": "Fanger",
-            "work_efficiency_schedule_name": "WorkEffSch",
-            "zone_or_zonelist_name": "SPACE2-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE2-1"
         },
         "SPACE3-1 People 1": {
             "activity_level_schedule_name": "ActSchd",
-            "air_velocity_schedule_name": "AirVelocitySch",
-            "carbon_dioxide_generation_rate": 3.82e-08,
-            "clothing_insulation_calculation_method": "DynamicClothingModelASHRAE55",
-            "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people": 11,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OCCUPY-1",
             "sensible_heat_fraction": "Autocalculate",
-            "thermal_comfort_model_1_type": "Fanger",
-            "work_efficiency_schedule_name": "WorkEffSch",
-            "zone_or_zonelist_name": "SPACE3-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE3-1"
         },
         "SPACE4-1 People 1": {
             "activity_level_schedule_name": "ActSchd",
-            "air_velocity_schedule_name": "AirVelocitySch",
-            "carbon_dioxide_generation_rate": 3.82e-08,
-            "clothing_insulation_calculation_method": "DynamicClothingModelASHRAE55",
-            "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people": 5,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OCCUPY-1",
             "sensible_heat_fraction": "Autocalculate",
-            "thermal_comfort_model_1_type": "Fanger",
-            "work_efficiency_schedule_name": "WorkEffSch",
-            "zone_or_zonelist_name": "SPACE4-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE4-1"
         },
         "SPACE5-1 People 1": {
             "activity_level_schedule_name": "ActSchd",
-            "air_velocity_schedule_name": "AirVelocitySch",
-            "carbon_dioxide_generation_rate": 3.82e-08,
-            "clothing_insulation_calculation_method": "DynamicClothingModelASHRAE55",
-            "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people": 20,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OCCUPY-1",
             "sensible_heat_fraction": "Autocalculate",
-            "thermal_comfort_model_1_type": "Fanger",
-            "work_efficiency_schedule_name": "WorkEffSch",
-            "zone_or_zonelist_name": "SPACE5-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE5-1"
         }
     },
     "RunPeriod": {
@@ -2569,42 +2684,32 @@
             ],
             "schedule_type_limits_name": "Any Number"
         },
-        "ActivitySch": {
-            "data": [
-                {
-                    "field": "Through: 12/31"
-                },
-                {
-                    "field": "For: AllDays"
-                },
-                {
-                    "field": "Until: 24:00"
-                },
-                {
-                    "field": 117
-                }
-            ],
-            "schedule_type_limits_name": "Any Number"
-        },
-        "AirVelocitySch": {
-            "data": [
-                {
-                    "field": "Through: 12/31"
-                },
-                {
-                    "field": "For: AllDays"
-                },
-                {
-                    "field": "Until: 24:00"
-                },
-                {
-                    "field": 0.137
-                }
-            ],
-            "schedule_type_limits_name": "Any Number"
-        },
         "BasinHeaterSched": {
             "data": [
+                {
+                    "field": "Through: 1/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 1.0
+                },
+                {
+                    "field": "Through: 2/2"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.0
+                },
                 {
                     "field": "Through: 12/31"
                 },
@@ -2709,10 +2814,10 @@
             ],
             "schedule_type_limits_name": "Temperature"
         },
-        "ClothingSch": {
+        "CoolingCoilAvailSched": {
             "data": [
                 {
-                    "field": "Through: 4/1"
+                    "field": "Through: 3/31"
                 },
                 {
                     "field": "For: AllDays"
@@ -2721,48 +2826,61 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 0.0
                 },
                 {
                     "field": "Through: 9/30"
                 },
                 {
-                    "field": "For: AllDays"
+                    "field": "For: WeekDays"
+                },
+                {
+                    "field": "Until: 7:00"
+                },
+                {
+                    "field": 0.0
+                },
+                {
+                    "field": "Until: 17:00"
+                },
+                {
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0.5
+                    "field": 0.0
                 },
                 {
-                    "field": "Through: 12/31"
-                },
-                {
-                    "field": "For: AllDays"
-                },
-                {
-                    "field": "Until: 24:00"
-                },
-                {
-                    "field": 1
-                }
-            ],
-            "schedule_type_limits_name": "Any Number"
-        },
-        "CoolingCoilAvailSched": {
-            "data": [
-                {
-                    "field": "Through: 12/31"
-                },
-                {
-                    "field": "For: AllDays"
+                    "field": "For: SummerDesignDay WinterDesignDay"
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
                     "field": 1.0
+                },
+                {
+                    "field": "For: AllOtherDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.0
+                },
+                {
+                    "field": "Through: 12/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -2837,6 +2955,60 @@
         },
         "FanAvailSched": {
             "data": [
+                {
+                    "field": "Through: 3/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 1.0
+                },
+                {
+                    "field": "Through: 9/30"
+                },
+                {
+                    "field": "For: WeekDays"
+                },
+                {
+                    "field": "Until: 7:00"
+                },
+                {
+                    "field": 0.0
+                },
+                {
+                    "field": "Until: 17:00"
+                },
+                {
+                    "field": 1.0
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.0
+                },
+                {
+                    "field": "For: SummerDesignDay WinterDesignDay"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 1.0
+                },
+                {
+                    "field": "For: AllOtherDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.0
+                },
                 {
                     "field": "Through: 12/31"
                 },
@@ -3243,6 +3415,60 @@
         "ReheatCoilAvailSched": {
             "data": [
                 {
+                    "field": "Through: 3/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 1.0
+                },
+                {
+                    "field": "Through: 9/30"
+                },
+                {
+                    "field": "For: WeekDays"
+                },
+                {
+                    "field": "Until: 7:00"
+                },
+                {
+                    "field": 0.0
+                },
+                {
+                    "field": "Until: 17:00"
+                },
+                {
+                    "field": 1.0
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.0
+                },
+                {
+                    "field": "For: SummerDesignDay WinterDesignDay"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 1.0
+                },
+                {
+                    "field": "For: AllOtherDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.0
+                },
+                {
                     "field": "Through: 12/31"
                 },
                 {
@@ -3299,23 +3525,6 @@
             "schedule_type_limits_name": "Temperature"
         },
         "ShadeTransSch": {
-            "data": [
-                {
-                    "field": "Through: 12/31"
-                },
-                {
-                    "field": "For: AllDays"
-                },
-                {
-                    "field": "Until: 24:00"
-                },
-                {
-                    "field": 0.0
-                }
-            ],
-            "schedule_type_limits_name": "Fraction"
-        },
-        "WorkEffSch": {
             "data": [
                 {
                     "field": "Through: 12/31"
@@ -3406,14 +3615,11 @@
             "setpoint_node_or_nodelist_name": "Supply Fan Upstream Nodes"
         }
     },
-    "SetpointManager:Warmest": {
+    "SetpointManager:Scheduled": {
         "Supply Air Temp Manager 1": {
             "control_variable": "Temperature",
-            "hvac_air_loop_name": "VAV Sys 1",
-            "maximum_setpoint_temperature": 18,
-            "minimum_setpoint_temperature": 12,
-            "setpoint_node_or_nodelist_name": "Supply Air Temp Nodes 1",
-            "strategy": "MaximumTemperature"
+            "schedule_name": "Seasonal Reset Supply Air Temp Sch",
+            "setpoint_node_or_nodelist_name": "Supply Air Temp Nodes 1"
         }
     },
     "Shading:Zone:Detailed": {
@@ -3500,17 +3706,17 @@
         }
     },
     "Site:Location": {
-        "Pittsburgh Allegheny Co Ap_PA_USA Design_Conditions": {
-            "elevation": 380.0,
-            "latitude": 40.35,
-            "longitude": -79.92,
-            "time_zone": -5.0
+        "CHICAGO_IL_USA TMY2-94846": {
+            "elevation": 190.0,
+            "latitude": 41.78,
+            "longitude": -87.75,
+            "time_zone": -6.0
         }
     },
     "Sizing:Parameters": {
         "Sizing:Parameters 1": {
-            "cooling_sizing_factor": 1.3,
-            "heating_sizing_factor": 1.3
+            "cooling_sizing_factor": 1.0,
+            "heating_sizing_factor": 1.0
         }
     },
     "Sizing:System": {
@@ -3520,10 +3726,10 @@
             "airloop_name": "VAV Sys 1",
             "central_cooling_capacity_control_method": "VAV",
             "central_cooling_design_supply_air_humidity_ratio": 0.009,
-            "central_cooling_design_supply_air_temperature": 12.0,
+            "central_cooling_design_supply_air_temperature": 16.0,
             "central_heating_design_supply_air_humidity_ratio": 0.009,
             "central_heating_design_supply_air_temperature": 18.0,
-            "central_heating_maximum_system_air_flow_ratio": 1.0,
+            "central_heating_maximum_system_air_flow_ratio": 0.3,
             "cooling_design_capacity": "Autosize",
             "cooling_design_capacity_method": "CoolingDesignCapacity",
             "cooling_supply_air_flow_rate": 0,
@@ -3534,9 +3740,9 @@
             "heating_supply_air_flow_rate": 0,
             "heating_supply_air_flow_rate_method": "DesignDay",
             "precool_design_humidity_ratio": 0.008,
-            "precool_design_temperature": 30.0,
+            "precool_design_temperature": 11.0,
             "preheat_design_humidity_ratio": 0.008,
-            "preheat_design_temperature": -15.0,
+            "preheat_design_temperature": 7.0,
             "type_of_load_to_size_on": "Sensible",
             "type_of_zone_sum_to_use": "NonCoincident",
             "zone_maximum_outdoor_air_fraction": 1.0
@@ -3558,7 +3764,7 @@
             "zone_cooling_design_supply_air_temperature_input_method": "SupplyAirTemperature",
             "zone_cooling_sizing_factor": 0.0,
             "zone_heating_design_supply_air_humidity_ratio": 0.004,
-            "zone_heating_design_supply_air_temperature": 35.0,
+            "zone_heating_design_supply_air_temperature": 50.0,
             "zone_heating_design_supply_air_temperature_input_method": "SupplyAirTemperature",
             "zone_heating_sizing_factor": 0.0,
             "zone_or_zonelist_name": "SPACE1-1"
@@ -3578,7 +3784,7 @@
             "zone_cooling_design_supply_air_temperature_input_method": "SupplyAirTemperature",
             "zone_cooling_sizing_factor": 0.0,
             "zone_heating_design_supply_air_humidity_ratio": 0.004,
-            "zone_heating_design_supply_air_temperature": 35.0,
+            "zone_heating_design_supply_air_temperature": 50.0,
             "zone_heating_design_supply_air_temperature_input_method": "SupplyAirTemperature",
             "zone_heating_sizing_factor": 0.0,
             "zone_or_zonelist_name": "SPACE2-1"
@@ -3598,7 +3804,7 @@
             "zone_cooling_design_supply_air_temperature_input_method": "SupplyAirTemperature",
             "zone_cooling_sizing_factor": 0.0,
             "zone_heating_design_supply_air_humidity_ratio": 0.004,
-            "zone_heating_design_supply_air_temperature": 35.0,
+            "zone_heating_design_supply_air_temperature": 50.0,
             "zone_heating_design_supply_air_temperature_input_method": "SupplyAirTemperature",
             "zone_heating_sizing_factor": 0.0,
             "zone_or_zonelist_name": "SPACE3-1"
@@ -3618,7 +3824,7 @@
             "zone_cooling_design_supply_air_temperature_input_method": "SupplyAirTemperature",
             "zone_cooling_sizing_factor": 0.0,
             "zone_heating_design_supply_air_humidity_ratio": 0.004,
-            "zone_heating_design_supply_air_temperature": 35.0,
+            "zone_heating_design_supply_air_temperature": 50.0,
             "zone_heating_design_supply_air_temperature_input_method": "SupplyAirTemperature",
             "zone_heating_sizing_factor": 0.0,
             "zone_or_zonelist_name": "SPACE4-1"
@@ -3638,49 +3844,46 @@
             "zone_cooling_design_supply_air_temperature_input_method": "SupplyAirTemperature",
             "zone_cooling_sizing_factor": 0.0,
             "zone_heating_design_supply_air_humidity_ratio": 0.004,
-            "zone_heating_design_supply_air_temperature": 35.0,
+            "zone_heating_design_supply_air_temperature": 50.0,
             "zone_heating_design_supply_air_temperature_input_method": "SupplyAirTemperature",
             "zone_heating_sizing_factor": 0.0,
             "zone_or_zonelist_name": "SPACE5-1"
         }
     },
     "SizingPeriod:DesignDay": {
-        "Pittsburgh Allegheny Co Ap Ann Clg .4% Condns DB=>MWB": {
-            "ashrae_clear_sky_optical_depth_for_beam_irradiance_taub_": 0.484,
-            "ashrae_clear_sky_optical_depth_for_diffuse_irradiance_taud_": 1.916,
-            "barometric_pressure": 96842.0,
-            "daily_dry_bulb_temperature_range": 9.9,
-            "day_of_month": 21,
+        "CHICAGO_IL_USA Annual Cooling 1% Design Conditions DB/MCWB": {
+            "barometric_pressure": 99063.0,
+            "daily_dry_bulb_temperature_range": 10.7,
+            "day_of_month": 3,
             "day_type": "SummerDesignDay",
             "daylight_saving_time_indicator": "No",
-            "dry_bulb_temperature_range_modifier_type": "DefaultMultipliers",
             "humidity_condition_type": "WetBulb",
-            "maximum_dry_bulb_temperature": 32.2,
+            "maximum_dry_bulb_temperature": 31.5,
             "month": 7,
             "rain_indicator": "No",
+            "sky_clearness": 1.0,
             "snow_indicator": "No",
-            "solar_model_indicator": "ASHRAETau",
-            "wetbulb_or_dewpoint_at_maximum_dry_bulb": 22.5,
-            "wind_direction": 240,
-            "wind_speed": 4.4
+            "solar_model_indicator": "ASHRAEClearSky",
+            "wetbulb_or_dewpoint_at_maximum_dry_bulb": 23.0,
+            "wind_direction": 230,
+            "wind_speed": 5.3
         },
-        "Pittsburgh Allegheny Co Ap Ann Htg 99.6% Condns DB": {
-            "barometric_pressure": 96842.0,
+        "CHICAGO_IL_USA Annual Heating 99% Design Conditions DB": {
+            "barometric_pressure": 99063.0,
             "daily_dry_bulb_temperature_range": 0.0,
-            "day_of_month": 21,
+            "day_of_month": 8,
             "day_type": "WinterDesignDay",
             "daylight_saving_time_indicator": "No",
-            "dry_bulb_temperature_range_modifier_type": "DefaultMultipliers",
             "humidity_condition_type": "WetBulb",
-            "maximum_dry_bulb_temperature": -15.4,
+            "maximum_dry_bulb_temperature": -17.3,
             "month": 1,
             "rain_indicator": "No",
             "sky_clearness": 0.0,
             "snow_indicator": "No",
             "solar_model_indicator": "ASHRAEClearSky",
-            "wetbulb_or_dewpoint_at_maximum_dry_bulb": -15.4,
-            "wind_direction": 240,
-            "wind_speed": 4.7
+            "wetbulb_or_dewpoint_at_maximum_dry_bulb": -17.3,
+            "wind_direction": 270,
+            "wind_speed": 4.9
         }
     },
     "SurfaceConvectionAlgorithm:Inside": {
@@ -3722,7 +3925,7 @@
     },
     "Version": {
         "Version 1": {
-            "version_identifier": "9.5"
+            "version_identifier": "23.1"
         }
     },
     "WindowMaterial:Gas": {
@@ -4041,7 +4244,7 @@
             "temperature_term_coefficient": 0,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0.2237,
-            "zone_or_zonelist_name": "SPACE1-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE1-1"
         },
         "SPACE2-1 Infil 1": {
             "constant_term_coefficient": 0,
@@ -4051,7 +4254,7 @@
             "temperature_term_coefficient": 0,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0.2237,
-            "zone_or_zonelist_name": "SPACE2-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE2-1"
         },
         "SPACE3-1 Infil 1": {
             "constant_term_coefficient": 0,
@@ -4061,7 +4264,7 @@
             "temperature_term_coefficient": 0,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0.2237,
-            "zone_or_zonelist_name": "SPACE3-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE3-1"
         },
         "SPACE4-1 Infil 1": {
             "constant_term_coefficient": 0,
@@ -4071,7 +4274,7 @@
             "temperature_term_coefficient": 0,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0.2237,
-            "zone_or_zonelist_name": "SPACE4-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE4-1"
         },
         "SPACE5-1 Infil 1": {
             "constant_term_coefficient": 0,
@@ -4081,7 +4284,7 @@
             "temperature_term_coefficient": 0,
             "velocity_squared_term_coefficient": 0,
             "velocity_term_coefficient": 0.2237,
-            "zone_or_zonelist_name": "SPACE5-1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "SPACE5-1"
         }
     }
 }

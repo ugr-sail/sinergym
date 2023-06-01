@@ -59,24 +59,27 @@ To install *Sinergym* manually instead of through the container (not recommended
 
 Sinergym has been updating the compatibility with different components, here it is a summary about important versions support:
 
-| **Sinergym version** | **Ubuntu version** | **Python version** | **EnergyPlus version** |
-| -------------------- | ------------------ | ------------------ | ---------------------- |
-| **0.0**              | 18.04 LTS          | 3.6                | 8.3.0                  |
-| **1.1.0**            | 18.04 LTS          | 3.6                | **9.5.0**              |
-| **1.7.0**            | 18.04 LTS          | **3.9**            | 9.5.0                  |
-| **1.9.5**            | **22.04 LTS**      | **3.10**           | 9.5.0                  |
+| **Sinergym version** | **Ubuntu version** | **Python version** | **EnergyPlus version** | **Building model file** |
+| -------------------- | ------------------ | ------------------ | ---------------------- | ----------------------- |
+| **0.0**              | 18.04 LTS          | 3.6                | 8.3.0                  | IDF                     |
+| **1.1.0**            | 18.04 LTS          | 3.6                | **9.5.0**              | IDF                     |
+| **1.7.0**            | 18.04 LTS          | **3.9**            | 9.5.0                  | IDF                     |
+| **1.9.5**            | **22.04 LTS**      | **3.10**           | 9.5.0                  | IDF                     |
+| **2.4.0**            | 22.04 LTS          | 3.10.6             | 9.5.0                  | **epJSON**              |
+| **2.5.0**            | 22.04 LTS          | 3.10.6             | **23.1.0**             | epJSON                  |
+
 
 - Now, we have a correct python version with required modules to run *Sinergym*. Let's continue with the rest of the programs that are needed outside of Python to run the simulations:
 
-#### 2. Install EnergyPlus 9.5.0
+#### 2. Install EnergyPlus 23.1.0
 
-Install EnergyPlus. Currently it has been update compatibility to 9.5.0 and it has
+Install EnergyPlus. Currently it has been update compatibility to 23.1.0 and it has
 been tested, but code may also work with other versions. Other combination may works, but they don't have been tested.
 
 Follow the instructions [here](https://energyplus.net/downloads) and
 install it for Linux (only Ubuntu is supported). Choose any location
 to install the software. Once installed, a folder called
-`Energyplus-9-5-0` should appear in the selected location.
+`Energyplus-23-1-0` should appear in the selected location.
 
 #### 3. Install BCVTB software
 

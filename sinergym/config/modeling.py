@@ -143,7 +143,7 @@ class ModelJSON(object):
         :param experiment_path: Path for Sinergym experiment output
         :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None)
         :param max_ep_store: Number of episodes directories will be stored in experiment_path
-        :param config: Dict config with extra configuration which is required to modify IDF model (may be None)
+        :param config: Dict config with extra configuration which is required to modify building model (may be None)
         :param _idd: IDD opyplus object to set up Epm
         :param building: Building model (Dictionary extracted from JSON)
         :param ddy_model: opyplus Epm object with DDY model

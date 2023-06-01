@@ -85,22 +85,18 @@
     },
     "AirLoopHVAC:OutdoorAirSystem": {
         "VAV_1_OA": {
-            "availability_manager_list_name": "VAV_1 Availability Manager List",
             "controller_list_name": "VAV_1_OA_Controllers",
             "outdoor_air_equipment_list_name": "VAV_1_OA_Equipment"
         },
         "VAV_2_OA": {
-            "availability_manager_list_name": "VAV_2 Availability Manager List",
             "controller_list_name": "VAV_2_OA_Controllers",
             "outdoor_air_equipment_list_name": "VAV_2_OA_Equipment"
         },
         "VAV_3_OA": {
-            "availability_manager_list_name": "VAV_3 Availability Manager List",
             "controller_list_name": "VAV_3_OA_Controllers",
             "outdoor_air_equipment_list_name": "VAV_3_OA_Equipment"
         },
         "VAV_5_OA": {
-            "availability_manager_list_name": "VAV_5 Availability Manager List",
             "controller_list_name": "VAV_5_OA_Controllers",
             "outdoor_air_equipment_list_name": "VAV_5_OA_Equipment"
         }
@@ -7120,7 +7116,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Basement"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Basement"
         },
         "Core_bottom_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7130,7 +7126,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Core_bottom"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Core_bottom"
         },
         "Core_mid_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7140,7 +7136,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Core_mid"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Core_mid"
         },
         "Core_top_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7150,7 +7146,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Core_top"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Core_top"
         },
         "Perimeter_bot_ZN_1_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7160,7 +7156,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_1"
         },
         "Perimeter_bot_ZN_2_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7170,7 +7166,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_2"
         },
         "Perimeter_bot_ZN_3_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7180,7 +7176,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_3"
         },
         "Perimeter_bot_ZN_4_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7190,7 +7186,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_4"
         },
         "Perimeter_mid_ZN_1_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7200,7 +7196,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_1"
         },
         "Perimeter_mid_ZN_2_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7210,7 +7206,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_2"
         },
         "Perimeter_mid_ZN_3_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7220,7 +7216,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_3"
         },
         "Perimeter_mid_ZN_4_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7230,7 +7226,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_4"
         },
         "Perimeter_top_ZN_1_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7240,7 +7236,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_1"
         },
         "Perimeter_top_ZN_2_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7250,7 +7246,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_2"
         },
         "Perimeter_top_ZN_3_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7260,7 +7256,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_3"
         },
         "Perimeter_top_ZN_4_PlugMisc_Equip": {
             "design_level_calculation_method": "Watts/Area",
@@ -7270,7 +7266,7 @@
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_4"
         }
     },
     "ElectricLoadCenter:Distribution": {
@@ -7764,7 +7760,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Basement"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Basement"
         },
         "Core_bottom_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7776,7 +7772,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Core_bottom"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Core_bottom"
         },
         "Core_mid_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7788,7 +7784,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Core_mid"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Core_mid"
         },
         "Core_top_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7800,7 +7796,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Core_top"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Core_top"
         },
         "Perimeter_bot_ZN_1_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7812,7 +7808,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_1"
         },
         "Perimeter_bot_ZN_2_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7824,7 +7820,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_2"
         },
         "Perimeter_bot_ZN_3_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7836,7 +7832,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_3"
         },
         "Perimeter_bot_ZN_4_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7848,7 +7844,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_4"
         },
         "Perimeter_mid_ZN_1_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7860,7 +7856,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_1"
         },
         "Perimeter_mid_ZN_2_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7872,7 +7868,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_2"
         },
         "Perimeter_mid_ZN_3_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7884,7 +7880,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_3"
         },
         "Perimeter_mid_ZN_4_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7896,7 +7892,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_4"
         },
         "Perimeter_top_ZN_1_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7908,7 +7904,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_1"
         },
         "Perimeter_top_ZN_2_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7920,7 +7916,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_2"
         },
         "Perimeter_top_ZN_3_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7932,7 +7928,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_3"
         },
         "Perimeter_top_ZN_4_Lights": {
             "design_level_calculation_method": "Watts/Area",
@@ -7944,7 +7940,7 @@
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
             "watts_per_zone_floor_area": 10.76,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_4"
         }
     },
     "Material": {
@@ -8831,6 +8827,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 37.16,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -8838,8 +8835,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 37.16,
-            "zone_or_zonelist_name": "Basement"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Basement"
         },
         "Core_bottom People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -8847,6 +8843,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -8854,8 +8851,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Core_bottom"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Core_bottom"
         },
         "Core_mid People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -8863,6 +8859,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -8870,8 +8867,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Core_mid"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Core_mid"
         },
         "Core_top People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -8879,6 +8875,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -8886,8 +8883,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Core_top"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Core_top"
         },
         "Perimeter_bot_ZN_1 People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -8895,6 +8891,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -8902,8 +8899,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_1"
         },
         "Perimeter_bot_ZN_2 People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -8911,6 +8907,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -8918,8 +8915,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_2"
         },
         "Perimeter_bot_ZN_3 People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -8927,6 +8923,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -8934,8 +8931,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_3"
         },
         "Perimeter_bot_ZN_4 People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -8943,6 +8939,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -8950,8 +8947,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_4"
         },
         "Perimeter_mid_ZN_1 People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -8959,6 +8955,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -8966,8 +8963,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_1"
         },
         "Perimeter_mid_ZN_2 People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -8975,6 +8971,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -8982,8 +8979,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_2"
         },
         "Perimeter_mid_ZN_3 People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -8991,6 +8987,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -8998,8 +8995,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_3"
         },
         "Perimeter_mid_ZN_4 People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -9007,6 +9003,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -9014,8 +9011,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_4"
         },
         "Perimeter_top_ZN_1 People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -9023,6 +9019,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -9030,8 +9027,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_1"
         },
         "Perimeter_top_ZN_2 People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -9039,6 +9035,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -9046,8 +9043,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_2"
         },
         "Perimeter_top_ZN_3 People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -9055,6 +9051,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -9062,8 +9059,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_3"
         },
         "Perimeter_top_ZN_4 People": {
             "activity_level_schedule_name": "ACTIVITY_SCH",
@@ -9071,6 +9067,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "enable_ashrae_55_comfort_warnings": "No",
+            "floor_area_per_person": 18.58,
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
             "number_of_people_calculation_method": "Area/Person",
@@ -9078,8 +9075,7 @@
             "sensible_heat_fraction": "Autocalculate",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "WORK_EFF_SCH",
-            "zone_floor_area_per_person": 18.58,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_4"
         }
     },
     "Pipe:Adiabatic": {
@@ -9197,24 +9193,24 @@
     "PlantEquipmentOperation:CoolingLoad": {
         "CoolSys1 Operation Scheme": {
             "load_range_1_lower_limit": 0.0,
-            "load_range_1_upper_limit": 100000000000000,
+            "load_range_1_upper_limit": 100000000000000.0,
             "range_1_equipment_list_name": "CoolSys1 Equipment List"
         },
         "TowerWaterSys Operation Scheme": {
             "load_range_1_lower_limit": 0.0,
-            "load_range_1_upper_limit": 1000000000000,
+            "load_range_1_upper_limit": 1000000000000.0,
             "range_1_equipment_list_name": "TowerWaterSys Equipment List"
         }
     },
     "PlantEquipmentOperation:HeatingLoad": {
         "HeatSys1 Operation Scheme": {
             "load_range_1_lower_limit": 0.0,
-            "load_range_1_upper_limit": 1000000000000000,
+            "load_range_1_upper_limit": 1e+15,
             "range_1_equipment_list_name": "HeatSys1 Equipment List"
         },
         "SWHSys1 Operation Scheme": {
             "load_range_1_lower_limit": 0.0,
-            "load_range_1_upper_limit": 1000000000000000,
+            "load_range_1_upper_limit": 1e+15,
             "range_1_equipment_list_name": "SWHSys1 Equipment List"
         }
     },
@@ -11917,7 +11913,7 @@
     },
     "Version": {
         "Version 1": {
-            "version_identifier": "9.5"
+            "version_identifier": "23.1"
         }
     },
     "WaterHeater:Mixed": {
@@ -12684,152 +12680,152 @@
         "GroundFloor_Plenum_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "GroundFloor_Plenum"
+            "zone_or_zonelist_or_space_or_spacelist_name": "GroundFloor_Plenum"
         },
         "MidFloor_Plenum_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "MidFloor_Plenum"
+            "zone_or_zonelist_or_space_or_spacelist_name": "MidFloor_Plenum"
         },
         "Perimeter_bot_ZN_1_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_1"
         },
         "Perimeter_bot_ZN_2_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_2"
         },
         "Perimeter_bot_ZN_3_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_3"
         },
         "Perimeter_bot_ZN_4_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "Perimeter_bot_ZN_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_4"
         },
         "Perimeter_mid_ZN_1_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_1"
         },
         "Perimeter_mid_ZN_2_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_2"
         },
         "Perimeter_mid_ZN_3_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_3"
         },
         "Perimeter_mid_ZN_4_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "Perimeter_mid_ZN_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_4"
         },
         "Perimeter_top_ZN_1_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_1"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_1"
         },
         "Perimeter_top_ZN_2_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_2"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_2"
         },
         "Perimeter_top_ZN_3_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_3"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_3"
         },
         "Perimeter_top_ZN_4_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "Perimeter_top_ZN_4"
+            "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_4"
         },
         "TopFloor_Plenum_Infiltration": {
             "constant_term_coefficient": 1.0,
             "design_flow_rate_calculation_method": "Flow/ExteriorArea",
-            "flow_per_exterior_surface_area": 0.000302,
+            "flow_rate_per_exterior_surface_area": 0.000302,
             "schedule_name": "INFIL_QUARTER_ON_SCH",
             "temperature_term_coefficient": 0.0,
             "velocity_squared_term_coefficient": 0.0,
             "velocity_term_coefficient": 0.0,
-            "zone_or_zonelist_name": "TopFloor_Plenum"
+            "zone_or_zonelist_or_space_or_spacelist_name": "TopFloor_Plenum"
         }
     }
 }

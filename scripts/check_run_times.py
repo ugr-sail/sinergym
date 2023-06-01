@@ -22,8 +22,8 @@ for env_id in args.environments:
     # BEGIN EXECUTION TIME
     begin_time = datetime.now()
     terminated = False
-    env.reset()
     for _ in range(args.episodes):
+        env.reset()
         while not terminated:
             a = env.action_space.sample()
             obs, reward, terminated, truncated, info = env.step(a)

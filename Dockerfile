@@ -4,9 +4,9 @@ ARG UBUNTU_VERSION=22.04
 FROM ubuntu:${UBUNTU_VERSION}
 
 # Arguments for EnergyPlus version (default values of version 8.6.0 if is not specified)
-ARG ENERGYPLUS_VERSION=9.5.0
-ARG ENERGYPLUS_INSTALL_VERSION=9-5-0
-ARG ENERGYPLUS_SHA=de239b2e5f
+ARG ENERGYPLUS_VERSION=23.1.0
+ARG ENERGYPLUS_INSTALL_VERSION=23-1-0
+ARG ENERGYPLUS_SHA=87ed9199d4
 
 # Argument for Sinergym extras libraries
 ARG SINERGYM_EXTRAS=[extras]
@@ -26,9 +26,9 @@ ENV ENERGYPLUS_INSTALL_VERSION=$ENERGYPLUS_INSTALL_VERSION
 ENV EPLUS_PATH=/usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION
 
 # Downloading from Github
-# e.g. https://github.com/NREL/EnergyPlus/releases/download/v9.5.0/EnergyPlus-9.5.0-de239b2e5f-Linux-Ubuntu18.04-x86_64.sh
+# e.g. https://github.com/NREL/EnergyPlus/releases/download/v23.1.0/EnergyPlus-23.1.0-87ed9199d4-Linux-Ubuntu22.04-x86_64.sh
 ENV ENERGYPLUS_DOWNLOAD_BASE_URL https://github.com/NREL/EnergyPlus/releases/download/$ENERGYPLUS_TAG
-ENV ENERGYPLUS_DOWNLOAD_FILENAME EnergyPlus-$ENERGYPLUS_VERSION-$ENERGYPLUS_SHA-Linux-Ubuntu18.04-x86_64.sh
+ENV ENERGYPLUS_DOWNLOAD_FILENAME EnergyPlus-$ENERGYPLUS_VERSION-$ENERGYPLUS_SHA-Linux-Ubuntu22.04-x86_64.sh 
 ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_FILENAME
 
 # Collapse the update of packages, download and installation into one command
@@ -76,5 +76,3 @@ RUN pip install -e .${SINERGYM_EXTRAS}
 #RUN pip install idna && pip install six
 CMD ["/bin/bash"]
 
-# Build: docker build -t sinergym:1.1.0 --build-arg ENERGYPLUS_VERSION=9.5.0 --build-arg ENERGYPLUS_INSTALL_VERSION=9-5-0 --build-arg ENERGYPLUS_SHA=de239b2e5f .
-# Run: docker run -it --rm -p 5005:5005 sinergym:1.1.0

@@ -41,12 +41,10 @@
     },
     "AirLoopHVAC:OutdoorAirSystem": {
         "East Zone OA System": {
-            "availability_manager_list_name": "East Data Center Avail List",
             "controller_list_name": "East Data Center OA Controllers",
             "outdoor_air_equipment_list_name": "East Data Center OA Equipment"
         },
         "West Zone OA System": {
-            "availability_manager_list_name": "West Data Center Avail List",
             "controller_list_name": "West Data Center OA Controllers",
             "outdoor_air_equipment_list_name": "West Data Center OA Equipment"
         }
@@ -1367,6 +1365,7 @@
     },
     "Coil:Cooling:DX:SingleSpeed": {
         "East DX Cooling Coil": {
+            "2023_rated_evaporator_fan_power_per_volume_flow_rate": 934.4,
             "air_inlet_node_name": "East Zone IEC Outlet Node",
             "air_outlet_node_name": "East Zone CCoil Air Outlet Node",
             "availability_schedule_name": "EastDXCCoilAvailSched",
@@ -1382,6 +1381,7 @@
             "total_cooling_capacity_function_of_temperature_curve_name": "DXSysACCoolCapFT"
         },
         "West DX Cooling Coil": {
+            "2023_rated_evaporator_fan_power_per_volume_flow_rate": 934.4,
             "air_inlet_node_name": "West Zone IEC Outlet Node",
             "air_outlet_node_name": "West Zone CCoil Air Outlet Node",
             "availability_schedule_name": "WestDXCCoilAvailSched",
@@ -1868,7 +1868,7 @@
             "fraction_lost": 0.0,
             "fraction_radiant": 0.5,
             "schedule_name": "BLDG_EQUIP_SCH",
-            "zone_or_zonelist_name": "East Zone"
+            "zone_or_zonelist_or_space_or_spacelist_name": "East Zone"
         },
         "West Zone_MiscPlug_Equip": {
             "design_level": 0.0,
@@ -1878,12 +1878,12 @@
             "fraction_lost": 0.0,
             "fraction_radiant": 0.25,
             "schedule_name": "BLDG_EQUIP_SCH",
-            "zone_or_zonelist_name": "West Zone"
+            "zone_or_zonelist_or_space_or_spacelist_name": "West Zone"
         }
     },
     "ElectricEquipment:ITE:AirCooled": {
         "EastDataCenter_Equip": {
-            "air_flow_calculation_method": "FlowFromSystem",
+            "air_flow_calculation_method": "FlowControlWithApproachTemperatures",
             "air_flow_function_of_loading_and_air_temperature_curve_name": "Data Center Servers Airflow fLoadTemp",
             "air_inlet_connection_type": "AdjustedSupply",
             "cpu_end_use_subcategory": "ITE-CPU",
@@ -1903,9 +1903,11 @@
             "fan_power_input_function_of_flow_curve_name": "ECM FanPower fFlow",
             "fraction_of_electric_power_supply_losses_to_zone": 1,
             "recirculation_function_of_loading_and_supply_temperature_curve_name": "Data Center Recirculation fLoadTemp",
+            "return_temperature_difference": 0,
             "supply_air_node_name": "East Zone Inlet Node",
+            "supply_temperature_difference": 2,
             "watts_per_zone_floor_area": 200,
-            "zone_name": "East Zone"
+            "zone_or_space_name": "East Zone"
         },
         "WestDataCenter_Equip": {
             "air_flow_calculation_method": "FlowFromSystem",
@@ -1930,7 +1932,7 @@
             "recirculation_function_of_loading_and_supply_temperature_curve_name": "Data Center Recirculation fLoadTemp",
             "supply_air_node_name": "West Zone Inlet Node",
             "watts_per_zone_floor_area": 200,
-            "zone_name": "West Zone"
+            "zone_or_space_name": "West Zone"
         }
     },
     "EnergyManagementSystem:GlobalVariable": {
@@ -1953,7 +1955,19 @@
         "CalculatePUE": {
             "lines": [
                 {
-                    "program_line": "set PUE_Value = Whole_Building_Power / IT_Equip_Power"
+                    "program_line": "IF IT_Equip_power > 0.0"
+                },
+                {
+                    "program_line": "set PUE_Value = whole_building_power / IT_Equip_power"
+                },
+                {
+                    "program_line": "ELSE"
+                },
+                {
+                    "program_line": "set PUE_Value = 0.0"
+                },
+                {
+                    "program_line": "ENDIF"
                 }
             ]
         }
@@ -2124,7 +2138,7 @@
             "lighting_level": 284,
             "return_air_fraction": 0.0,
             "schedule_name": "LIGHTS-1",
-            "zone_or_zonelist_name": "East Zone"
+            "zone_or_zonelist_or_space_or_spacelist_name": "East Zone"
         },
         "West Zone Lights": {
             "design_level_calculation_method": "LightingLevel",
@@ -2135,7 +2149,7 @@
             "lighting_level": 284,
             "return_air_fraction": 0.0,
             "schedule_name": "LIGHTS-1",
-            "zone_or_zonelist_name": "West Zone"
+            "zone_or_zonelist_or_space_or_spacelist_name": "West Zone"
         }
     },
     "Material": {
@@ -2364,9 +2378,6 @@
     "Output:Surfaces:Drawing": {
         "Output:Surfaces:Drawing 1": {
             "report_type": "DXF"
-        },
-        "Output:Surfaces:Drawing 2": {
-            "report_type": "DXF"
         }
     },
     "Output:Table:SummaryReports": {
@@ -2382,132 +2393,407 @@
         "Output:Variable 1": {
             "key_value": "*",
             "reporting_frequency": "Timestep",
-            "variable_name": "Site Outdoor Air Drybulb Temperature"
+            "variable_name": "Power Utilization Effectiveness"
         },
         "Output:Variable 2": {
             "key_value": "*",
             "reporting_frequency": "Timestep",
-            "variable_name": "Site Outdoor Air Relative Humidity"
+            "variable_name": "Site Outdoor Air Drybulb Temperature"
         },
         "Output:Variable 3": {
-            "key_value": "*",
+            "key_value": "West Zone",
             "reporting_frequency": "Timestep",
-            "variable_name": "Site Wind Speed"
+            "variable_name": "Zone Air Temperature"
         },
         "Output:Variable 4": {
-            "key_value": "*",
+            "key_value": "East Zone",
             "reporting_frequency": "Timestep",
-            "variable_name": "Site Wind Direction"
+            "variable_name": "Zone Air Temperature"
         },
         "Output:Variable 5": {
-            "key_value": "*",
+            "key_value": "West Zone",
             "reporting_frequency": "Timestep",
-            "variable_name": "Site Diffuse Solar Radiation Rate per Area"
+            "variable_name": "Zone Air Relative Humidity"
         },
         "Output:Variable 6": {
-            "key_value": "*",
+            "key_value": "East Zone",
             "reporting_frequency": "Timestep",
-            "variable_name": "Site Direct Solar Radiation Rate per Area"
+            "variable_name": "Zone Air Relative Humidity"
         },
         "Output:Variable 7": {
-            "key_value": "West Zone",
+            "key_value": "*",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Air Temperature"
+            "variable_name": "Cooling Coil Total Cooling Rate"
         },
         "Output:Variable 8": {
-            "key_value": "West Zone",
+            "key_value": "*",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Air Relative Humidity"
+            "variable_name": "Cooling Coil Sensible Cooling Rate"
         },
         "Output:Variable 9": {
-            "key_value": "West Zone",
+            "key_value": "West Outside Air Inlet Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermostat Heating Setpoint Temperature"
+            "variable_name": "System Node Mass Flow Rate"
         },
         "Output:Variable 10": {
-            "key_value": "West Zone",
+            "key_value": "East Outside Air Inlet Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermostat Cooling Setpoint Temperature"
+            "variable_name": "System Node Mass Flow Rate"
         },
         "Output:Variable 11": {
-            "key_value": "West Zone PEOPLE",
+            "key_value": "West Outside Air Inlet Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Fanger Model PMV"
+            "variable_name": "System Node Temperature"
         },
         "Output:Variable 12": {
-            "key_value": "West Zone",
+            "key_value": "East Outside Air Inlet Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone People Occupant Count"
+            "variable_name": "System Node Temperature"
         },
         "Output:Variable 13": {
-            "key_value": "West Zone PEOPLE",
+            "key_value": "West IEC Secondary Air Inlet Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Fanger Model PPD"
+            "variable_name": "System Node Mass Flow Rate"
         },
         "Output:Variable 14": {
-            "key_value": "West Zone PEOPLE",
+            "key_value": "West IEC Secondary Air Inlet Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Clothing Value"
+            "variable_name": "System Node Temperature"
         },
         "Output:Variable 15": {
-            "key_value": "West Zone PEOPLE",
+            "key_value": "East IEC Secondary Air Inlet Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Mean Radiant Temperature"
+            "variable_name": "System Node Mass Flow Rate"
         },
         "Output:Variable 16": {
-            "key_value": "East Zone",
+            "key_value": "East IEC Secondary Air Inlet Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Air Temperature"
+            "variable_name": "System Node Temperature"
         },
         "Output:Variable 17": {
-            "key_value": "East Zone",
+            "key_value": "West IEC Secondary Air Outlet Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Air Relative Humidity"
+            "variable_name": "System Node Temperature"
         },
         "Output:Variable 18": {
-            "key_value": "East Zone",
+            "key_value": "West IEC Secondary Air Outlet Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermostat Heating Setpoint Temperature"
+            "variable_name": "System Node Mass Flow Rate"
         },
         "Output:Variable 19": {
-            "key_value": "East Zone",
+            "key_value": "West Zone Return Air Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermostat Cooling Setpoint Temperature"
+            "variable_name": "System Node Mass Flow Rate"
         },
         "Output:Variable 20": {
-            "key_value": "East Zone PEOPLE",
+            "key_value": "West Zone Return Air Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Fanger Model PMV"
+            "variable_name": "System Node Temperature"
         },
         "Output:Variable 21": {
-            "key_value": "East Zone",
+            "key_value": "West Zone Mixed Air Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone People Occupant Count"
+            "variable_name": "System Node Mass Flow Rate"
         },
         "Output:Variable 22": {
-            "key_value": "East Zone PEOPLE",
+            "key_value": "West Zone Mixed Air Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Fanger Model PPD"
+            "variable_name": "System Node Temperature"
         },
         "Output:Variable 23": {
-            "key_value": "East Zone PEOPLE",
+            "key_value": "West Zone Supply Fan Outlet Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Clothing Value"
+            "variable_name": "System Node Temperature"
         },
         "Output:Variable 24": {
-            "key_value": "East Zone PEOPLE",
+            "key_value": "East Zone Supply Fan Outlet Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Mean Radiant Temperature"
+            "variable_name": "System Node Temperature"
         },
         "Output:Variable 25": {
-            "key_value": "*",
+            "key_value": "West Zone DEC Outlet Node",
             "reporting_frequency": "Timestep",
-            "variable_name": "People Air Temperature"
+            "variable_name": "System Node Temperature"
         },
         "Output:Variable 26": {
+            "key_value": "West Zone IEC Outlet Node",
+            "reporting_frequency": "Timestep",
+            "variable_name": "System Node Temperature"
+        },
+        "Output:Variable 27": {
+            "key_value": "West Zone IEC Outlet Node",
+            "reporting_frequency": "Timestep",
+            "variable_name": "System Node Setpoint Temperature"
+        },
+        "Output:Variable 28": {
+            "key_value": "East Zone DEC Outlet Node",
+            "reporting_frequency": "Timestep",
+            "variable_name": "System Node Temperature"
+        },
+        "Output:Variable 29": {
+            "key_value": "East Zone IEC Outlet Node",
+            "reporting_frequency": "Timestep",
+            "variable_name": "System Node Temperature"
+        },
+        "Output:Variable 30": {
+            "key_value": "West Zone CCoil Air Outlet Node",
+            "reporting_frequency": "Timestep",
+            "variable_name": "System Node Temperature"
+        },
+        "Output:Variable 31": {
+            "key_value": "East Zone CCoil Air Outlet Node",
+            "reporting_frequency": "Timestep",
+            "variable_name": "System Node Temperature"
+        },
+        "Output:Variable 32": {
+            "key_value": "West Air Loop Outlet Node",
+            "reporting_frequency": "Timestep",
+            "variable_name": "System Node Temperature"
+        },
+        "Output:Variable 33": {
+            "key_value": "East Air Loop Outlet Node",
+            "reporting_frequency": "Timestep",
+            "variable_name": "System Node Temperature"
+        },
+        "Output:Variable 34": {
+            "key_value": "West Zone Inlet Node",
+            "reporting_frequency": "Timestep",
+            "variable_name": "System Node Mass Flow Rate"
+        },
+        "Output:Variable 35": {
+            "key_value": "West Zone Inlet Node",
+            "reporting_frequency": "Timestep",
+            "variable_name": "System Node Temperature"
+        },
+        "Output:Variable 36": {
+            "key_value": "East Zone Inlet Node",
+            "reporting_frequency": "Timestep",
+            "variable_name": "System Node Mass Flow Rate"
+        },
+        "Output:Variable 37": {
+            "key_value": "East Zone Inlet Node",
+            "reporting_frequency": "Timestep",
+            "variable_name": "System Node Temperature"
+        },
+        "Output:Variable 38": {
             "key_value": "*",
             "reporting_frequency": "Timestep",
-            "variable_name": "Facility Total HVAC Electricity Demand Rate"
+            "variable_name": "Evaporative Cooler Stage Effectiveness"
+        },
+        "Output:Variable 39": {
+            "key_value": "*",
+            "reporting_frequency": "Timestep",
+            "variable_name": "Evaporative Cooler Total Stage Effectiveness"
+        },
+        "Output:Variable 40": {
+            "key_value": "*",
+            "reporting_frequency": "Timestep",
+            "variable_name": "Evaporative Cooler Operating Mode Status"
+        },
+        "Output:Variable 41": {
+            "key_value": "*",
+            "reporting_frequency": "Timestep",
+            "variable_name": "Evaporative Cooler Electricity Rate"
+        },
+        "Output:Variable 42": {
+            "key_value": "*",
+            "reporting_frequency": "Timestep",
+            "variable_name": "Evaporative Cooler Water Volume"
+        },
+        "Output:Variable 43": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE CPU Electricity Rate"
+        },
+        "Output:Variable 44": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Fan Electricity Rate"
+        },
+        "Output:Variable 45": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE UPS Electricity Rate"
+        },
+        "Output:Variable 46": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE CPU Electricity Rate at Design Inlet Conditions"
+        },
+        "Output:Variable 47": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Fan Electricity Rate at Design Inlet Conditions"
+        },
+        "Output:Variable 48": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE UPS Heat Gain to Zone Rate"
+        },
+        "Output:Variable 49": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Total Heat Gain to Zone Rate"
+        },
+        "Output:Variable 50": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Standard Density Air Volume Flow Rate"
+        },
+        "Output:Variable 51": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dry-Bulb Temperature"
+        },
+        "Output:Variable 52": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dewpoint Temperature"
+        },
+        "Output:Variable 53": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Relative Humidity"
+        },
+        "Output:Variable 54": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Outlet Dry-Bulb Temperature"
+        },
+        "Output:Variable 55": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Supply Heat Index"
+        },
+        "Output:Variable 56": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Operating Range Exceeded Time"
+        },
+        "Output:Variable 57": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dry-Bulb Temperature Above Operating Range Time"
+        },
+        "Output:Variable 58": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dry-Bulb Temperature Below Operating Range Time"
+        },
+        "Output:Variable 59": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dewpoint Temperature Above Operating Range Time"
+        },
+        "Output:Variable 60": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dewpoint Temperature Below Operating Range Time"
+        },
+        "Output:Variable 61": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Relative Humidity Above Operating Range Time"
+        },
+        "Output:Variable 62": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Relative Humidity Below Operating Range Time"
+        },
+        "Output:Variable 63": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dry-Bulb Temperature Difference Above Operating Range"
+        },
+        "Output:Variable 64": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dry-Bulb Temperature Difference Below Operating Range"
+        },
+        "Output:Variable 65": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dewpoint Temperature Difference Above Operating Range"
+        },
+        "Output:Variable 66": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dewpoint Temperature Difference Below Operating Range"
+        },
+        "Output:Variable 67": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Relative Humidity Difference Above Operating Range"
+        },
+        "Output:Variable 68": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Relative Humidity Difference Below Operating Range"
+        },
+        "Output:Variable 69": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone ITE CPU Electricity Rate"
+        },
+        "Output:Variable 70": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone ITE Fan Electricity Rate"
+        },
+        "Output:Variable 71": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone ITE UPS Electricity Rate"
+        },
+        "Output:Variable 72": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone ITE CPU Electricity Rate at Design Inlet Conditions"
+        },
+        "Output:Variable 73": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone ITE Fan Electricity Rate at Design Inlet Conditions"
+        },
+        "Output:Variable 74": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone ITE UPS Heat Gain to Zone Rate"
+        },
+        "Output:Variable 75": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone ITE Total Heat Gain to Zone Rate"
+        },
+        "Output:Variable 76": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Chiller Evaporator Cooling Rate"
+        },
+        "Output:Variable 77": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Chiller Evaporator Inlet Temperature"
+        },
+        "Output:Variable 78": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Chiller Evaporator Outlet Temperature"
+        },
+        "Output:Variable 79": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Chiller Condenser Heat Transfer Rate"
+        },
+        "Output:Variable 80": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Chiller Condenser Inlet Temperature"
+        },
+        "Output:Variable 81": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Chiller Condenser Outlet Temperature"
         }
     },
     "Output:VariableDictionary": {
@@ -2527,15 +2813,14 @@
             "carbon_dioxide_generation_rate": 3.82e-08,
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "Clothing Sch",
-            "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
-            "number_of_people": 7,
+            "number_of_people": 0,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OFFICE OCCUPANCY",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "Work Eff Sch",
-            "zone_or_zonelist_name": "East Zone"
+            "zone_or_zonelist_or_space_or_spacelist_name": "East Zone"
         },
         "West Zone PEOPLE": {
             "activity_level_schedule_name": "Activity Sch",
@@ -2543,15 +2828,14 @@
             "carbon_dioxide_generation_rate": 3.82e-08,
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "Clothing Sch",
-            "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
             "mean_radiant_temperature_calculation_type": "ZoneAveraged",
-            "number_of_people": 11,
+            "number_of_people": 0,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OFFICE OCCUPANCY",
             "thermal_comfort_model_1_type": "Fanger",
             "work_efficiency_schedule_name": "Work Eff Sch",
-            "zone_or_zonelist_name": "West Zone"
+            "zone_or_zonelist_or_space_or_spacelist_name": "West Zone"
         }
     },
     "Pipe:Adiabatic": {
@@ -4106,7 +4390,7 @@
     },
     "Version": {
         "Version 1": {
-            "version_identifier": "9.5"
+            "version_identifier": "23.1"
         }
     },
     "Zone": {
