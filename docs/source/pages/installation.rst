@@ -7,7 +7,7 @@ to be covered depending on the version. Below it is a summary table showing
 the versions supported by Sinergym throughout its releases:
 
 +----------------------+--------------------+--------------------+------------------------+---------------------------+
-| **Sinergym version** | **Ubuntu version** | **Python version** | **EnergyPlus version** | ** Building model file ** |
+| **Sinergym version** | **Ubuntu version** | **Python version** | **EnergyPlus version** | **Building model file**   |
 +----------------------+--------------------+--------------------+------------------------+---------------------------+
 | **0.0**              | 18.04 LTS          | 3.6                | 8.3.0                  | IDF                       |
 +----------------------+--------------------+--------------------+------------------------+---------------------------+
