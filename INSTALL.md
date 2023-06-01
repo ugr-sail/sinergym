@@ -71,15 +71,15 @@ Sinergym has been updating the compatibility with different components, here it 
 
 - Now, we have a correct python version with required modules to run *Sinergym*. Let's continue with the rest of the programs that are needed outside of Python to run the simulations:
 
-#### 2. Install EnergyPlus 9.5.0
+#### 2. Install EnergyPlus 23.1.0
 
-Install EnergyPlus. Currently it has been update compatibility to 9.5.0 and it has
+Install EnergyPlus. Currently it has been update compatibility to 23.1.0 and it has
 been tested, but code may also work with other versions. Other combination may works, but they don't have been tested.
 
 Follow the instructions [here](https://energyplus.net/downloads) and
 install it for Linux (only Ubuntu is supported). Choose any location
 to install the software. Once installed, a folder called
-`Energyplus-9-5-0` should appear in the selected location.
+`Energyplus-23-1-0` should appear in the selected location.
 
 #### 3. Install BCVTB software
 
