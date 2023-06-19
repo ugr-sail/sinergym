@@ -14,6 +14,10 @@ ARG SINERGYM_EXTRAS=[extras]
 # Argument for choosing Python version
 ARG PYTHON_VERSION=3.10
 
+# WANDB_API_KEY
+ARG WANDB_API_KEY
+ENV WANDB_API_KEY=${WANDB_API_KEY}
+
 # LC_ALL for python locale error (https://bobbyhadz.com/blog/locale-error-unsupported-locale-setting-in-python)
 ENV LC_ALL=C
 

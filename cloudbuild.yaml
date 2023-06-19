@@ -2,7 +2,8 @@ steps:
   # Write in cache for quick updates
   - name: "eu.gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: "bash"
-    args: ["-c", "docker pull eu.gcr.io/${PROJECT_ID}/sinergym:latest || exit 0"]
+    args:
+      ["-c", "docker pull eu.gcr.io/${PROJECT_ID}/sinergym:latest || exit 0"]
     # Build image (using cache if it's possible)
   - name: "eu.gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: "docker"
@@ -35,6 +36,5 @@ steps:
 #Other options for execute build (not container)
 options:
   diskSizeGb: "10"
-  machineType: "E2_HIGHCPU_8"
 timeout: 86400s
 images: ["eu.gcr.io/${PROJECT_ID}/sinergym:latest"]

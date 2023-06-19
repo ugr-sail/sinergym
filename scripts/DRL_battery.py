@@ -325,8 +325,7 @@ if conf.get('cloud'):
     # ---------------------------------------------------------------------------- #
     #                   Autodelete option if is a cloud resource                   #
     # ---------------------------------------------------------------------------- #
-    if conf['cloud'].get(
-            'remote_store') and conf['cloud'].get('auto_delete'):
+    if conf['cloud'].get('auto_delete'):
         token = gcloud.get_service_account_token()
         gcloud.delete_instance_MIG_from_container(
             conf['cloud']['group_name'], token)
