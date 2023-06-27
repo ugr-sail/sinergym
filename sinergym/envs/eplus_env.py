@@ -360,7 +360,7 @@ class EplusEnv(gym.Env):
             assert hasattr(
                 self, 'action_mapping'), 'Discrete environment: action mapping should have been defined.'
             assert not hasattr(
-                self, 'setpoints_space'), 'Discrete environment: setpoints space should not have been defined.'
+                self, 'real_space'), 'Discrete environment: real_space should not have been defined.'
             assert self._action_space.n == len(
                 self.action_mapping), 'Discrete environment: The length of the action_mapping must match the dimension of the discrete action space.'
             for values in self.action_mapping.values():
@@ -370,7 +370,11 @@ class EplusEnv(gym.Env):
             assert len(self.variables['action']) == self._action_space.shape[
                 0], 'Action space shape must match with number of action variables specified.'
             assert hasattr(
-                self, 'setpoints_space'), 'Continuous environment: setpoints_space attribute should have been defined.'
+                self, 'flag_normalized'), 'Continuous environment: flag_normalized attribute should have been defined.'
+            assert hasattr(
+                self, 'normalized_space'), 'Continuous environment: normalized_space attribute should have been defined.'
+            assert hasattr(
+                self, 'real_space'), 'Continuous environment: real_space attribute should have been defined.'
             assert not hasattr(
                 self, 'action_mapping'), 'Continuous environment: action mapping should not have been defined.'
             assert len(self._action_space.low) == len(self.variables['action']) and len(self._action_space.high) == len(
@@ -421,3 +425,4 @@ class EplusEnv(gym.Env):
     @observation_space.setter
     def observation_space(self, space: gym.spaces.Space[Any]):
         self._observation_space = space
+
