@@ -290,6 +290,9 @@ class EplusEnv(gym.Env):
         # Discrete
         if self.flag_discrete:
             # Index for action_mapping
+            # Some SB3 algorithms returns array(int) in their predictions
+            if isinstance(action,np.ndarray):
+                action = int(action.item())
             action_ = list(self.action_mapping[action])    
             
         # Continuous

@@ -71,6 +71,24 @@ def test_step(env_name, request):
     assert info['timestep'] == 2
     assert info['time_elapsed'] == env.simulator._eplus_run_stepsize * \
         info['timestep']
+    
+    # Not supported action
+    action = 'fbsufb'
+    with pytest.raises(AssertionError):
+        env.step(action)
+    
+    #Check action out of range discrete
+    if env.flag_discrete:
+        action=10
+        with pytest.raises(AssertionError):
+            env.step(action)
+    #Check action out of range continuous
+    else:
+        action=[1.1,-1.1]
+        with pytest.raises(AssertionError):
+            env.step(action)
+
+
 
 
 def test_close(env_demo):
@@ -98,33 +116,40 @@ def test_get_zones(env_demo):
     assert isinstance(zones, list)
     assert len(zones) > 0
 
+@pytest.mark.parametrize('env_name',
+                         [('env_demo'),
+                          ('env_demo_continuous')
+                          ])
+def test_get_action(env_name,request):
+    env = request.getfixturevalue(env_name)
 
-def test_get_action(env_demo):
     # Here is checked special cases
-    # int
-    action = randint(0, 9)
-    _action = env_demo._get_action(action)
-    assert isinstance(_action, list)
-    assert len(_action) == 2
-    # [int]
-    action = [randint(0, 9)]
-    _action = env_demo._get_action(action)
-    assert isinstance(_action, list)
-    assert len(_action) == 2
-    # custom discrete action (without mapping)
-    action = (22.0, 20.0)
-    _action = env_demo._get_action(action)
-    assert isinstance(_action, list)
-    assert _action == [22.0, 20.0]
-    # np.ndarray
-    action = np.array([randint(0, 9)])
-    _action = env_demo._get_action(action)
-    assert isinstance(_action, list)
-    assert len(_action) == 2
-    # Not supported action
-    action = 'fbsufb'
-    with pytest.raises(RuntimeError):
-        env_demo._get_action(action)
+    # Discrete
+    if env.flag_discrete:
+        action = randint(0, 9)
+        _action = env._get_action(action)
+        assert isinstance(_action, list)
+        assert len(_action) == 2
+
+    #Continuous
+    else:
+        action = [0.5,-0.9]
+        _action = env._get_action(action)
+        assert isinstance(_action,list)
+        assert len(_action)==2 
+
+
+def test_update_flag_normalized(env_demo_continuous):
+    assert env_demo_continuous.flag_normalized
+    assert env_demo_continuous.action_space==env_demo_continuous.normalized_space
+    
+    env_demo_continuous.update_flag_normalized(False)
+    assert not env_demo_continuous.flag_normalized
+    assert env_demo_continuous.action_space==env_demo_continuous.real_space
+
+    env_demo_continuous.update_flag_normalized(True)
+    assert env_demo_continuous.flag_normalized
+    assert env_demo_continuous.action_space==env_demo_continuous.normalized_space
 
 
 def test_all_environments():

@@ -398,18 +398,21 @@ def env_all_wrappers(env_demo):
 
 
 @ pytest.fixture(scope='function')
-def random_controller(env_demo):
-    return RandomController(env=env_demo)
+def random_controller(env_demo_continuous):
+    env_demo_continuous.update_flag_normalized(False)
+    return RandomController(env=env_demo_continuous)
 
 
 @ pytest.fixture(scope='function')
-def zone5_controller(env_demo):
-    return RBC5Zone(env=env_demo)
+def zone5_controller(env_demo_continuous):
+    env_demo_continuous.update_flag_normalized(False)
+    return RBC5Zone(env=env_demo_continuous)
 
 
 @ pytest.fixture(scope='function')
-def datacenter_controller(env_datacenter):
-    return RBCDatacenter(env=env_datacenter)
+def datacenter_controller(env_datacenter_continuous):
+    env_datacenter_continuous.update_flag_normalized(False)
+    return RBCDatacenter(env=env_datacenter_continuous)
 
 # ---------------------------------------------------------------------------- #
 #                      Building and weather python models                      #
