@@ -70,8 +70,8 @@ socket information, when episode start and timestep and time elapsed (which is 0
         }
 
 The additional information we can obtain in a step is the timestep number, simulation time elapsed, step datetime,
-action executed in simulator (which can be different to the step action parameter due to the transformations)
-and reward terms. The keys of reward terms depends on the reward class it has been used in the environment.    
+action executed in simulator (which can be different to the step action parameter due to the transformations if environment
+action space is normalized) and reward terms. The keys of reward terms depends on the reward class it has been used in the environment.    
 
 **************************
 Environments List
@@ -323,7 +323,7 @@ This allows for a **dynamic definition** of these spaces. Let's see the fields r
   folder of the project (*RDD* file). 
 
   .. note:: In case a new observation variable is added to the default ones for an environment, care must be 
-            taken in case normalization is to be done. This is because you have to update 
+            taken in case observation normalization is to be done. This is because you have to update 
             the dictionary of ranges of values available in `constants.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__ as discussed in 
             issue `#249 <https://github.com/ugr-sail/sinergym/issues/249>`__. You can use the range_getter function of `common.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py>`__ to get these 
             ranges automatically from a experiment output folder.
@@ -346,12 +346,23 @@ This allows for a **dynamic definition** of these spaces. Let's see the fields r
   This definition can be discrete or continuous and must be consistent with 
   the previously defined action variables (*Sinergym* will show inconsistency as usual).
 
-.. note:: In order to make environments more generic in DRL solutions. We have updated 
-          action space for **continuous problems**. Gymnasium action space is defined always 
-          between [-1,1] and Sinergym **parse** this values to action space defined in 
-          environment internally before to send it to EnergyPlus Simulator. 
-          The method in charge of parse this values from [-1,1] to real action space is 
-          called ``_setpoints_transform(action)`` in *sinergym/sinergym/envs/eplus_env.py*
+- **flag_normalized**: This flag indicates if action space specified will be normalized to
+  ``[-1,1]`` or not (only take effect in continuous environments). Then, Sinergym will use
+  the real space specified in **action_space** argument or this normalized space depending on
+  this flag value. This is done in order to make environments more generic in DRL solutions.
+  Sinergym **parse** these values to real action space defined in environment internally before to 
+  send it to EnergyPlus Simulator.
+
+.. note:: The method in charge of parse this values from [-1,1] to real action space if it is required is 
+          called ``_action_transform(action)`` in *sinergym/sinergym/envs/eplus_env.py*.
+          We always recommend to use the normalization in action space for DRL solutions. However,
+          if you are implementing your own rule-based controller and working with real action
+          values for example, you can deactivate normalization.
+
+.. note:: By default, all Sinergym environments will have normalization in action space by default.
+          It is possible to specify the **flag_normalized** to false in the constructor argument or
+          to change it during the execution using ``env.update_flag_normalized(False)``.
+
 
 - **action_mapping**: It is only necessary to specify it in **discrete** action spaces. 
   It is a dictionary that links an **index** to a specific configuration of values for 
