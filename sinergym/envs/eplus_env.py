@@ -299,7 +299,7 @@ class EplusEnv(gym.Env):
 
         return action_
 
-    def _setpoints_transform(self,
+    def _action_transform(self,
                              action: Union[int,
                                            float,
                                            np.integer,
@@ -322,23 +322,18 @@ class EplusEnv(gym.Env):
         action_ = []
 
         for i, value in enumerate(action):
-            if self._action_space.low[i] <= value <= self._action_space.high[i]:
-                a_max_min = self._action_space.high[i] - \
-                    self._action_space.low[i]
-                sp_max_min = self.setpoints_space.high[i] - \
-                    self.setpoints_space.low[i]
+            a_max_min = self._action_space.high[i] - \
+                self._action_space.low[i]
+            sp_max_min = self.real_space.high[i] - \
+                self.real_space.low[i]
 
-                action_.append(
-                    self.setpoints_space.low[i] +
-                    (
-                        value -
-                        self._action_space.low[i]) *
-                    sp_max_min /
-                    a_max_min)
-            else:
-                # If action is outer action_space already, it don't need
-                # transformation
-                action_.append(value)
+            action_.append(
+                self.real_space.low[i] +
+                (
+                    value -
+                    self._action_space.low[i]) *
+                sp_max_min /
+                a_max_min)
 
         return action_
 
