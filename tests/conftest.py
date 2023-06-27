@@ -351,15 +351,15 @@ def env_wrapper_previousobs(env_demo_continuous):
             'Zone Air Temperature(SPACE1-1)'])
 
 
-@pytest.fixture(scope='function')
-def env_wrapper_incremental(env_demo):
-    return DiscreteIncrementalWrapper(
-        env=env_demo,
-        max_values=[22.0, 34.0],
-        min_values=[10.0, 22.0],
-        delta_temp=2,
-        step_temp=0.5
-    )
+# @pytest.fixture(scope='function')
+# def env_wrapper_incremental(env_demo):
+#     return DiscreteIncrementalWrapper(
+#         env=env_demo,
+#         max_values=[22.0, 34.0],
+#         min_values=[10.0, 22.0],
+#         delta_temp=2,
+#         step_temp=0.5
+#     )
 
 
 @pytest.fixture(scope='function')
@@ -374,10 +374,10 @@ def env_all_wrappers(env_demo):
         'Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)',
         'Zone Air Temperature(SPACE1-1)'])
     env = DatetimeWrapper(env)
-    env = DiscreteIncrementalWrapper(
-        env, max_values=[
-            22.5, 30.0], min_values=[
-            15.0, 22.5], delta_temp=2, step_temp=0.5)
+    # env = DiscreteIncrementalWrapper(
+    #     env, max_values=[
+    #         22.5, 30.0], min_values=[
+    #         15.0, 22.5], delta_temp=2, step_temp=0.5)
     env = NormalizeObservation(
         env=env,
         ranges=RANGES_5ZONE,
