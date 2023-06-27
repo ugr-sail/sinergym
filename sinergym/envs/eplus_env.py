@@ -150,10 +150,8 @@ class EplusEnv(gym.Env):
             self._action_space = action_space
         # Continuous
         else:
-            # Defining action values setpoints (one per value)
-            self.setpoints_space = action_space
-
-            self._action_space = gym.spaces.Box(
+            # Defining the normalized space (always [-1,1])
+            self.normalized_space = gym.spaces.Box(
                 # continuous_action_def[2] --> shape
                 low=np.array(
                     np.repeat(-1, action_space.shape[0]), dtype=np.float32),
@@ -161,6 +159,18 @@ class EplusEnv(gym.Env):
                     np.repeat(1, action_space.shape[0]), dtype=np.float32),
                 dtype=action_space.dtype
             )
+            # Defining the real space (defined by the user in environment constructor)
+            self.real_space = action_space
+
+            # Determine if action is normalized or not using flag
+            self.flag_normalized=flag_action_normalized
+
+            # Depending on the normalized flag, action space will be the normalized space
+            # or the real space.
+            if self.flag_normalized:
+                self._action_space=self.normalized_space
+            else:
+                self._action_space=self.real_space
 
         # ---------------------------------------------------------------------------- #
         #                                    Reward                                    #
