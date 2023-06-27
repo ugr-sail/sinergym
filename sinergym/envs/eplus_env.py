@@ -336,6 +336,17 @@ class EplusEnv(gym.Env):
                 a_max_min)
 
         return action_
+    
+    def update_flag_normalized(self, value: bool)->None:
+        """Update the normalized flag in continuous environments and update the action space
+
+        Args:
+            value (bool): New flag_normalized attribute value
+        """
+
+        self.flag_normalized=value
+        self._action_space = self.normalized_space if value else self.real_space
+
 
     def _check_eplus_env(self) -> None:
         """This method checks that environment definition is correct and it has not inconsistencies.
