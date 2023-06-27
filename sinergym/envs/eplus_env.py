@@ -234,8 +234,11 @@ class EplusEnv(gym.Env):
         Returns:
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
         """
+        
+        # Check if action is correct for the current action space
+        assert self._action_space.contains(action), 'Step: The action {} is not correct for the Action Space {}'.format(action,self._action_space)
 
-        # Get action
+        # Get real action (action --> action_)
         action_ = self._get_action(action)
         # Send action to the simulator
         self.simulator.logger_main.debug(action_)
