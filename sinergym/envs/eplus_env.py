@@ -287,30 +287,15 @@ class EplusEnv(gym.Env):
                                                 Tuple[Any]]:
         """Transform the action for sending it to the simulator."""
 
-        # Get action depending on flag_discrete
+        # Discrete
         if self.flag_discrete:
             # Index for action_mapping
-            if np.issubdtype(type(action), np.integer):
-                if isinstance(action, int):
-                    setpoints = self.action_mapping[action]
-                else:
-                    setpoints = self.action_mapping[action.item()]
-            # Manual action
-            elif isinstance(action, tuple) or isinstance(action, list):
-                # stable-baselines DQN bug prevention
-                if len(action) == 1:
-                    setpoints = self.action_mapping[action[0]]
-                else:
-                    setpoints = action
-            elif isinstance(action, np.ndarray):
-                setpoints = self.action_mapping[action.item()]
-            else:
-                raise RuntimeError(
-                    'action type not supported by Sinergym environment')
-            action_ = list(setpoints)
+            action_ = list(self.action_mapping[action])    
+            
+        # Continuous
         else:
-            # transform action to setpoints simulation
-            action_ = self._setpoints_transform(action)
+            # Transform action to real space simulation if normalized flag is true
+            action_ = self._action_transform(action) if self.flag_normalized else action
 
         return action_
 
