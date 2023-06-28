@@ -159,18 +159,19 @@ class EplusEnv(gym.Env):
                     np.repeat(1, action_space.shape[0]), dtype=np.float32),
                 dtype=action_space.dtype
             )
-            # Defining the real space (defined by the user in environment constructor)
+            # Defining the real space (defined by the user in environment
+            # constructor)
             self.real_space = action_space
 
             # Determine if action is normalized or not using flag
-            self.flag_normalization=flag_normalization
+            self.flag_normalization = flag_normalization
 
             # Depending on the normalized flag, action space will be the normalized space
             # or the real space.
             if self.flag_normalization:
-                self._action_space=self.normalized_space
+                self._action_space = self.normalized_space
             else:
-                self._action_space=self.real_space
+                self._action_space = self.real_space
 
         # ---------------------------------------------------------------------------- #
         #                                    Reward                                    #
@@ -234,9 +235,10 @@ class EplusEnv(gym.Env):
         Returns:
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
         """
-        
+
         # Check if action is correct for the current action space
-        assert self._action_space.contains(action), 'Step: The action {} is not correct for the Action Space {}'.format(action,self._action_space)
+        assert self._action_space.contains(
+            action), 'Step: The action {} is not correct for the Action Space {}'.format(action, self._action_space)
 
         # Get real action (action --> action_)
         action_ = self._get_action(action)
@@ -291,29 +293,31 @@ class EplusEnv(gym.Env):
         if self.flag_discrete:
             # Index for action_mapping
             # Some SB3 algorithms returns array(int) in their predictions
-            if isinstance(action,np.ndarray):
+            if isinstance(action, np.ndarray):
                 action = int(action.item())
-            action_ = list(self.action_mapping[action])    
-            
+            action_ = list(self.action_mapping[action])
+
         # Continuous
         else:
-            # Transform action to real space simulation if normalized flag is true
-            action_ = self._action_transform(action) if self.flag_normalization else action
+            # Transform action to real space simulation if normalized flag is
+            # true
+            action_ = self._action_transform(
+                action) if self.flag_normalization else action
 
         return action_
 
     def _action_transform(self,
-                             action: Union[int,
-                                           float,
-                                           np.integer,
-                                           np.ndarray,
-                                           List[Any],
-                                           Tuple[Any]]) -> Union[int,
-                                                                 float,
-                                                                 np.integer,
-                                                                 np.ndarray,
-                                                                 List[Any],
-                                                                 Tuple[Any]]:
+                          action: Union[int,
+                                        float,
+                                        np.integer,
+                                        np.ndarray,
+                                        List[Any],
+                                        Tuple[Any]]) -> Union[int,
+                                                              float,
+                                                              np.integer,
+                                                              np.ndarray,
+                                                              List[Any],
+                                                              Tuple[Any]]:
         """ This method transforms an action defined in gym (-1,1 in all continuous environment) action space to simulation real action space.
 
         Args:
@@ -339,17 +343,16 @@ class EplusEnv(gym.Env):
                 a_max_min)
 
         return action_
-    
-    def update_flag_normalization(self, value: bool)->None:
+
+    def update_flag_normalization(self, value: bool) -> None:
         """Update the normalized flag in continuous environments and update the action space
 
         Args:
             value (bool): New flag_normalization attribute value
         """
 
-        self.flag_normalization=value
+        self.flag_normalization = value
         self._action_space = self.normalized_space if value else self.real_space
-
 
     def _check_eplus_env(self) -> None:
         """This method checks that environment definition is correct and it has not inconsistencies.
@@ -432,4 +435,3 @@ class EplusEnv(gym.Env):
     @observation_space.setter
     def observation_space(self, space: gym.spaces.Space[Any]):
         self._observation_space = space
-

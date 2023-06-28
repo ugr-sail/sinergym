@@ -71,24 +71,22 @@ def test_step(env_name, request):
     assert info['timestep'] == 2
     assert info['time_elapsed'] == env.simulator._eplus_run_stepsize * \
         info['timestep']
-    
+
     # Not supported action
     action = 'fbsufb'
     with pytest.raises(AssertionError):
         env.step(action)
-    
-    #Check action out of range discrete
+
+    # Check action out of range discrete
     if env.flag_discrete:
-        action=10
+        action = 10
         with pytest.raises(AssertionError):
             env.step(action)
-    #Check action out of range continuous
+    # Check action out of range continuous
     else:
-        action=[1.1,-1.1]
+        action = [1.1, -1.1]
         with pytest.raises(AssertionError):
             env.step(action)
-
-
 
 
 def test_close(env_demo):
@@ -116,11 +114,12 @@ def test_get_zones(env_demo):
     assert isinstance(zones, list)
     assert len(zones) > 0
 
+
 @pytest.mark.parametrize('env_name',
                          [('env_demo'),
                           ('env_demo_continuous')
                           ])
-def test_get_action(env_name,request):
+def test_get_action(env_name, request):
     env = request.getfixturevalue(env_name)
 
     # Here is checked special cases
@@ -131,25 +130,25 @@ def test_get_action(env_name,request):
         assert isinstance(_action, list)
         assert len(_action) == 2
 
-    #Continuous
+    # Continuous
     else:
-        action = [0.5,-0.9]
+        action = [0.5, -0.9]
         _action = env._get_action(action)
-        assert isinstance(_action,list)
-        assert len(_action)==2 
+        assert isinstance(_action, list)
+        assert len(_action) == 2
 
 
 def test_update_flag_normalization(env_demo_continuous):
     assert env_demo_continuous.flag_normalization
-    assert env_demo_continuous.action_space==env_demo_continuous.normalized_space
-    
+    assert env_demo_continuous.action_space == env_demo_continuous.normalized_space
+
     env_demo_continuous.update_flag_normalization(False)
     assert not env_demo_continuous.flag_normalization
-    assert env_demo_continuous.action_space==env_demo_continuous.real_space
+    assert env_demo_continuous.action_space == env_demo_continuous.real_space
 
     env_demo_continuous.update_flag_normalization(True)
     assert env_demo_continuous.flag_normalization
-    assert env_demo_continuous.action_space==env_demo_continuous.normalized_space
+    assert env_demo_continuous.action_space == env_demo_continuous.normalized_space
 
 
 def test_all_environments():
