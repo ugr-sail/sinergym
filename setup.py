@@ -24,7 +24,7 @@ setup(name='sinergym',
           'extras': [
               'matplotlib',  # visualization
               # DRL with pytorch
-              'stable-baselines3==2.0.0a5',
+              'stable-baselines3',
               'wandb',
               'pytest',
               'pytest-cov',
@@ -50,7 +50,7 @@ setup(name='sinergym',
               'pytest-xdist',
           ],
           'DRL': [
-              'stable-baselines3==2.0.0a5',
+              'stable-baselines3',
               'wandb'
           ],
           'doc': [

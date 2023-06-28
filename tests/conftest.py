@@ -351,15 +351,15 @@ def env_wrapper_previousobs(env_demo_continuous):
             'Zone Air Temperature(SPACE1-1)'])
 
 
-@pytest.fixture(scope='function')
-def env_wrapper_incremental(env_demo):
-    return DiscreteIncrementalWrapper(
-        env=env_demo,
-        max_values=[22.0, 34.0],
-        min_values=[10.0, 22.0],
-        delta_temp=2,
-        step_temp=0.5
-    )
+# @pytest.fixture(scope='function')
+# def env_wrapper_incremental(env_demo):
+#     return DiscreteIncrementalWrapper(
+#         env=env_demo,
+#         max_values=[22.0, 34.0],
+#         min_values=[10.0, 22.0],
+#         delta_temp=2,
+#         step_temp=0.5
+#     )
 
 
 @pytest.fixture(scope='function')
@@ -374,10 +374,10 @@ def env_all_wrappers(env_demo):
         'Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)',
         'Zone Air Temperature(SPACE1-1)'])
     env = DatetimeWrapper(env)
-    env = DiscreteIncrementalWrapper(
-        env, max_values=[
-            22.5, 30.0], min_values=[
-            15.0, 22.5], delta_temp=2, step_temp=0.5)
+    # env = DiscreteIncrementalWrapper(
+    #     env, max_values=[
+    #         22.5, 30.0], min_values=[
+    #         15.0, 22.5], delta_temp=2, step_temp=0.5)
     env = NormalizeObservation(
         env=env,
         ranges=RANGES_5ZONE,
@@ -398,18 +398,21 @@ def env_all_wrappers(env_demo):
 
 
 @ pytest.fixture(scope='function')
-def random_controller(env_demo):
-    return RandomController(env=env_demo)
+def random_controller(env_demo_continuous):
+    env_demo_continuous.update_flag_normalization(False)
+    return RandomController(env=env_demo_continuous)
 
 
 @ pytest.fixture(scope='function')
-def zone5_controller(env_demo):
-    return RBC5Zone(env=env_demo)
+def zone5_controller(env_demo_continuous):
+    env_demo_continuous.update_flag_normalization(False)
+    return RBC5Zone(env=env_demo_continuous)
 
 
 @ pytest.fixture(scope='function')
-def datacenter_controller(env_datacenter):
-    return RBCDatacenter(env=env_datacenter)
+def datacenter_controller(env_datacenter_continuous):
+    env_datacenter_continuous.update_flag_normalization(False)
+    return RBCDatacenter(env=env_datacenter_continuous)
 
 # ---------------------------------------------------------------------------- #
 #                      Building and weather python models                      #

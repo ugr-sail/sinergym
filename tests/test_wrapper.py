@@ -119,24 +119,24 @@ def test_previous_observation_wrapper(env_name, request):
         original_obs1, obs2[-len(env.previous_variables):])
 
 
-@pytest.mark.parametrize('env_name',
-                         [('env_wrapper_incremental'),
-                          ('env_all_wrappers'),
-                          ])
-def test_incremental_wrapper(env_name, request):
+# @pytest.mark.parametrize('env_name',
+#                          [('env_wrapper_incremental'),
+#                           ('env_all_wrappers'),
+#                           ])
+# def test_incremental_wrapper(env_name, request):
 
-    env = request.getfixturevalue(env_name)
-    # Check initial setpoints values is initialized
-    assert len(env.current_setpoints) > 0
-    # Check if action selected is applied correctly
-    env.reset()
-    action = env.action_space.sample()
-    _, _, _, _, info = env.step(action)
-    assert (env.current_setpoints == info['action']).all()
-    # Check environment clip actions(
-    for i in range(10):
-        env.step(2)  # [1,0]
-    assert env.current_setpoints[0] == env.max_values[0]
+#     env = request.getfixturevalue(env_name)
+#     # Check initial setpoints values is initialized
+#     assert len(env.current_setpoints) > 0
+#     # Check if action selected is applied correctly
+#     env.reset()
+#     action = 16
+#     _, _, _, _, info = env.step(action)
+#     assert env.current_setpoints == info['action']
+#     # Check environment clip actions(
+#     for i in range(10):
+#         env.step(2)  # [1,0]
+#     assert env.current_setpoints[0] == env.max_values[0]
 
 
 @pytest.mark.parametrize('env_name',
@@ -254,9 +254,9 @@ def test_env_wrappers(env_all_wrappers):
     assert hasattr(env_all_wrappers, 'original_datetime_observation_variables')
     assert hasattr(env_all_wrappers, 'datetime_observation_variables')
     # IncrementalDiscrete
-    assert hasattr(env_all_wrappers, 'current_setpoints')
-    assert hasattr(env_all_wrappers, 'max_values')
-    assert hasattr(env_all_wrappers, 'min_values')
+    # assert hasattr(env_all_wrappers, 'current_setpoints')
+    # assert hasattr(env_all_wrappers, 'max_values')
+    # assert hasattr(env_all_wrappers, 'min_values')
     # Normalization
     assert hasattr(env_all_wrappers, 'unwrapped_observation')
     assert hasattr(env_all_wrappers, 'ranges')

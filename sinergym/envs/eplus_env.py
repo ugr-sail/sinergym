@@ -33,6 +33,7 @@ class EplusEnv(gym.Env):
             low=0, high=0, shape=(0,), dtype=np.float32),
         action_variables: List[str] = [],
         action_mapping: Dict[int, Tuple[float, ...]] = {},
+        flag_normalization: bool = True,
         weather_variability: Optional[Tuple[float]] = None,
         reward: Any = LinearReward,
         reward_kwargs: Optional[Dict[str, Any]] = {},
@@ -52,6 +53,7 @@ class EplusEnv(gym.Env):
             action_space (Union[gym.spaces.Box, gym.spaces.Discrete], optional): Gym Action Space definition. Defaults to an empty action_space (no control).
             action_variables (List[str],optional): Action variables to be controlled in building, if that actions names have not been configured manually in building, you should configure or use action_definition. Default to empty List.
             action_mapping (Dict[int, Tuple[float, ...]], optional): Action mapping list for discrete actions spaces only. Defaults to empty list.
+            flag_normalization (bool): Flag indicating if action space must be normalized to [-1,1]. This flag only take effect in continuous environments. Default to true.
             weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
             reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
@@ -148,10 +150,8 @@ class EplusEnv(gym.Env):
             self._action_space = action_space
         # Continuous
         else:
-            # Defining action values setpoints (one per value)
-            self.setpoints_space = action_space
-
-            self._action_space = gym.spaces.Box(
+            # Defining the normalized space (always [-1,1])
+            self.normalized_space = gym.spaces.Box(
                 # continuous_action_def[2] --> shape
                 low=np.array(
                     np.repeat(-1, action_space.shape[0]), dtype=np.float32),
@@ -159,6 +159,18 @@ class EplusEnv(gym.Env):
                     np.repeat(1, action_space.shape[0]), dtype=np.float32),
                 dtype=action_space.dtype
             )
+            # Defining the real space (defined by the user in environment constructor)
+            self.real_space = action_space
+
+            # Determine if action is normalized or not using flag
+            self.flag_normalization=flag_normalization
+
+            # Depending on the normalized flag, action space will be the normalized space
+            # or the real space.
+            if self.flag_normalization:
+                self._action_space=self.normalized_space
+            else:
+                self._action_space=self.real_space
 
         # ---------------------------------------------------------------------------- #
         #                                    Reward                                    #
@@ -222,8 +234,11 @@ class EplusEnv(gym.Env):
         Returns:
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
         """
+        
+        # Check if action is correct for the current action space
+        assert self._action_space.contains(action), 'Step: The action {} is not correct for the Action Space {}'.format(action,self._action_space)
 
-        # Get action
+        # Get real action (action --> action_)
         action_ = self._get_action(action)
         # Send action to the simulator
         self.simulator.logger_main.debug(action_)
@@ -272,34 +287,22 @@ class EplusEnv(gym.Env):
                                                 Tuple[Any]]:
         """Transform the action for sending it to the simulator."""
 
-        # Get action depending on flag_discrete
+        # Discrete
         if self.flag_discrete:
             # Index for action_mapping
-            if np.issubdtype(type(action), np.integer):
-                if isinstance(action, int):
-                    setpoints = self.action_mapping[action]
-                else:
-                    setpoints = self.action_mapping[action.item()]
-            # Manual action
-            elif isinstance(action, tuple) or isinstance(action, list):
-                # stable-baselines DQN bug prevention
-                if len(action) == 1:
-                    setpoints = self.action_mapping[action[0]]
-                else:
-                    setpoints = action
-            elif isinstance(action, np.ndarray):
-                setpoints = self.action_mapping[action.item()]
-            else:
-                raise RuntimeError(
-                    'action type not supported by Sinergym environment')
-            action_ = list(setpoints)
+            # Some SB3 algorithms returns array(int) in their predictions
+            if isinstance(action,np.ndarray):
+                action = int(action.item())
+            action_ = list(self.action_mapping[action])    
+            
+        # Continuous
         else:
-            # transform action to setpoints simulation
-            action_ = self._setpoints_transform(action)
+            # Transform action to real space simulation if normalized flag is true
+            action_ = self._action_transform(action) if self.flag_normalization else action
 
         return action_
 
-    def _setpoints_transform(self,
+    def _action_transform(self,
                              action: Union[int,
                                            float,
                                            np.integer,
@@ -322,25 +325,31 @@ class EplusEnv(gym.Env):
         action_ = []
 
         for i, value in enumerate(action):
-            if self._action_space.low[i] <= value <= self._action_space.high[i]:
-                a_max_min = self._action_space.high[i] - \
-                    self._action_space.low[i]
-                sp_max_min = self.setpoints_space.high[i] - \
-                    self.setpoints_space.low[i]
+            a_max_min = self._action_space.high[i] - \
+                self._action_space.low[i]
+            sp_max_min = self.real_space.high[i] - \
+                self.real_space.low[i]
 
-                action_.append(
-                    self.setpoints_space.low[i] +
-                    (
-                        value -
-                        self._action_space.low[i]) *
-                    sp_max_min /
-                    a_max_min)
-            else:
-                # If action is outer action_space already, it don't need
-                # transformation
-                action_.append(value)
+            action_.append(
+                self.real_space.low[i] +
+                (
+                    value -
+                    self._action_space.low[i]) *
+                sp_max_min /
+                a_max_min)
 
         return action_
+    
+    def update_flag_normalization(self, value: bool)->None:
+        """Update the normalized flag in continuous environments and update the action space
+
+        Args:
+            value (bool): New flag_normalization attribute value
+        """
+
+        self.flag_normalization=value
+        self._action_space = self.normalized_space if value else self.real_space
+
 
     def _check_eplus_env(self) -> None:
         """This method checks that environment definition is correct and it has not inconsistencies.
@@ -354,7 +363,11 @@ class EplusEnv(gym.Env):
             assert hasattr(
                 self, 'action_mapping'), 'Discrete environment: action mapping should have been defined.'
             assert not hasattr(
-                self, 'setpoints_space'), 'Discrete environment: setpoints space should not have been defined.'
+                self, 'real_space'), 'Discrete environment: real_space should not have been defined.'
+            assert not hasattr(
+                self, 'normalized_space'), 'Discrete environment: normalized_space should not have been defined.'
+            assert not hasattr(
+                self, 'flag_normalization'), 'Discrete environment: flag_normalization should not have been defined.'
             assert self._action_space.n == len(
                 self.action_mapping), 'Discrete environment: The length of the action_mapping must match the dimension of the discrete action space.'
             for values in self.action_mapping.values():
@@ -364,7 +377,11 @@ class EplusEnv(gym.Env):
             assert len(self.variables['action']) == self._action_space.shape[
                 0], 'Action space shape must match with number of action variables specified.'
             assert hasattr(
-                self, 'setpoints_space'), 'Continuous environment: setpoints_space attribute should have been defined.'
+                self, 'flag_normalization'), 'Continuous environment: flag_normalization attribute should have been defined.'
+            assert hasattr(
+                self, 'normalized_space'), 'Continuous environment: normalized_space attribute should have been defined.'
+            assert hasattr(
+                self, 'real_space'), 'Continuous environment: real_space attribute should have been defined.'
             assert not hasattr(
                 self, 'action_mapping'), 'Continuous environment: action mapping should not have been defined.'
             assert len(self._action_space.low) == len(self.variables['action']) and len(self._action_space.high) == len(
@@ -415,3 +432,4 @@ class EplusEnv(gym.Env):
     @observation_space.setter
     def observation_space(self, space: gym.spaces.Space[Any]):
         self._observation_space = space
+
