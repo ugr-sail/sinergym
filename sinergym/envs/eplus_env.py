@@ -33,7 +33,7 @@ class EplusEnv(gym.Env):
             low=0, high=0, shape=(0,), dtype=np.float32),
         action_variables: List[str] = [],
         action_mapping: Dict[int, Tuple[float, ...]] = {},
-        flag_action_normalized: bool = True,
+        flag_normalization: bool = True,
         weather_variability: Optional[Tuple[float]] = None,
         reward: Any = LinearReward,
         reward_kwargs: Optional[Dict[str, Any]] = {},
@@ -53,7 +53,7 @@ class EplusEnv(gym.Env):
             action_space (Union[gym.spaces.Box, gym.spaces.Discrete], optional): Gym Action Space definition. Defaults to an empty action_space (no control).
             action_variables (List[str],optional): Action variables to be controlled in building, if that actions names have not been configured manually in building, you should configure or use action_definition. Default to empty List.
             action_mapping (Dict[int, Tuple[float, ...]], optional): Action mapping list for discrete actions spaces only. Defaults to empty list.
-            flag_action_normalized (bool): Flag indicating if action space must be normalized to [-1,1]. This flag only take effect in continuous environments. Default to true.
+            flag_normalization (bool): Flag indicating if action space must be normalized to [-1,1]. This flag only take effect in continuous environments. Default to true.
             weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
             reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
@@ -163,11 +163,11 @@ class EplusEnv(gym.Env):
             self.real_space = action_space
 
             # Determine if action is normalized or not using flag
-            self.flag_normalized=flag_action_normalized
+            self.flag_normalization=flag_normalization
 
             # Depending on the normalized flag, action space will be the normalized space
             # or the real space.
-            if self.flag_normalized:
+            if self.flag_normalization:
                 self._action_space=self.normalized_space
             else:
                 self._action_space=self.real_space
@@ -298,7 +298,7 @@ class EplusEnv(gym.Env):
         # Continuous
         else:
             # Transform action to real space simulation if normalized flag is true
-            action_ = self._action_transform(action) if self.flag_normalized else action
+            action_ = self._action_transform(action) if self.flag_normalization else action
 
         return action_
 
@@ -340,14 +340,14 @@ class EplusEnv(gym.Env):
 
         return action_
     
-    def update_flag_normalized(self, value: bool)->None:
+    def update_flag_normalization(self, value: bool)->None:
         """Update the normalized flag in continuous environments and update the action space
 
         Args:
-            value (bool): New flag_normalized attribute value
+            value (bool): New flag_normalization attribute value
         """
 
-        self.flag_normalized=value
+        self.flag_normalization=value
         self._action_space = self.normalized_space if value else self.real_space
 
 
@@ -373,7 +373,7 @@ class EplusEnv(gym.Env):
             assert len(self.variables['action']) == self._action_space.shape[
                 0], 'Action space shape must match with number of action variables specified.'
             assert hasattr(
-                self, 'flag_normalized'), 'Continuous environment: flag_normalized attribute should have been defined.'
+                self, 'flag_normalization'), 'Continuous environment: flag_normalization attribute should have been defined.'
             assert hasattr(
                 self, 'normalized_space'), 'Continuous environment: normalized_space attribute should have been defined.'
             assert hasattr(

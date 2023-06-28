@@ -139,16 +139,16 @@ def test_get_action(env_name,request):
         assert len(_action)==2 
 
 
-def test_update_flag_normalized(env_demo_continuous):
-    assert env_demo_continuous.flag_normalized
+def test_update_flag_normalization(env_demo_continuous):
+    assert env_demo_continuous.flag_normalization
     assert env_demo_continuous.action_space==env_demo_continuous.normalized_space
     
-    env_demo_continuous.update_flag_normalized(False)
-    assert not env_demo_continuous.flag_normalized
+    env_demo_continuous.update_flag_normalization(False)
+    assert not env_demo_continuous.flag_normalization
     assert env_demo_continuous.action_space==env_demo_continuous.real_space
 
-    env_demo_continuous.update_flag_normalized(True)
-    assert env_demo_continuous.flag_normalized
+    env_demo_continuous.update_flag_normalization(True)
+    assert env_demo_continuous.flag_normalization
     assert env_demo_continuous.action_space==env_demo_continuous.normalized_space
 
 

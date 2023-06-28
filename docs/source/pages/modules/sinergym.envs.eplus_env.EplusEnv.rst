@@ -22,7 +22,7 @@
       ~EplusEnv.render
       ~EplusEnv.reset
       ~EplusEnv.step
-      ~EplusEnv.update_flag_normalized
+      ~EplusEnv.update_flag_normalization
    
    
 
