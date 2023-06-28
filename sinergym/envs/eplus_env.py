@@ -364,6 +364,10 @@ class EplusEnv(gym.Env):
                 self, 'action_mapping'), 'Discrete environment: action mapping should have been defined.'
             assert not hasattr(
                 self, 'real_space'), 'Discrete environment: real_space should not have been defined.'
+            assert not hasattr(
+                self, 'normalized_space'), 'Discrete environment: normalized_space should not have been defined.'
+            assert not hasattr(
+                self, 'flag_normalization'), 'Discrete environment: flag_normalization should not have been defined.'
             assert self._action_space.n == len(
                 self.action_mapping), 'Discrete environment: The length of the action_mapping must match the dimension of the discrete action space.'
             for values in self.action_mapping.values():
