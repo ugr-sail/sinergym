@@ -346,8 +346,8 @@ This allows for a **dynamic definition** of these spaces. Let's see the fields r
   This definition can be discrete or continuous and must be consistent with 
   the previously defined action variables (*Sinergym* will show inconsistency as usual).
 
-- **flag_normalized**: This flag indicates if action space specified will be normalized to
-  ``[-1,1]`` or not (only take effect in continuous environments). Then, Sinergym will use
+- **flag_normalization**: This flag indicates if action space specified will be normalized to
+  ``[-1,1]`` or not (only take effect in **continuous** environments). Then, Sinergym will use
   the real space specified in **action_space** argument or this normalized space depending on
   this flag value. This is done in order to make environments more generic in DRL solutions.
   Sinergym **parse** these values to real action space defined in environment internally before to 
@@ -355,18 +355,29 @@ This allows for a **dynamic definition** of these spaces. Let's see the fields r
 
 .. note:: The method in charge of parse this values from [-1,1] to real action space if it is required is 
           called ``_action_transform(action)`` in *sinergym/sinergym/envs/eplus_env.py*.
-          We always recommend to use the normalization in action space for DRL solutions. However,
-          if you are implementing your own rule-based controller and working with real action
-          values for example, you can deactivate normalization.
+          We always recommend to use the normalization in action space for DRL solutions, since this space is 
+          compatible with all algorithms. However, if you are implementing your own rule-based controller 
+          and working with real action values, for example, you can deactivate normalization.
 
 .. note:: By default, all Sinergym environments will have normalization in action space by default.
-          It is possible to specify the **flag_normalized** to false in the constructor argument or
-          to change it during the execution using ``env.update_flag_normalized(False)``.
+          It is possible to specify the **flag_normalization** to false in the constructor argument or
+          to change it during the execution using ``env.update_flag_normalization(False)``.
 
 
 - **action_mapping**: It is only necessary to specify it in **discrete** action spaces. 
   It is a dictionary that links an **index** to a specific configuration of values for 
   each action variable. 
+
+As you can see, some attributes are required depending on the environment is **continuous or discrete**. If
+the environment is discrete, ``action_mapping`` is required, if it is specified in a continuous environment will
+not take effect. On the other hand, in a continuous environment, it will be created a real and normalized space and 
+only one would be the action space depending on ``flag_normalization`` value. If normalization flag is activated
+in a discrete environment, will not take effect.
+
+.. image:: /_static/environment_types.png
+  :scale: 80 %
+  :alt: attributed depending on environment type.
+  :align: center
 
 As we have told, observation and action spaces are defined **dynamically** in *Sinergym* 
 Environment constructor. Environment ID's registered in *Sinergym* use a **default** definition
