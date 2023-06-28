@@ -468,8 +468,6 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
     def __init__(
         self,
         env: gym.Env,
-        max_values: List[float],
-        min_values: List[float],
         delta_temp: float = 2.0,
         step_temp: float = 0.5,
     ):
@@ -489,8 +487,6 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         # Params
         self.env = env
         self.current_setpoints = []
-        self.max_values = max_values
-        self.min_values = min_values
 
         # calculate initial values for setpoints
         for external_schedule in list(
@@ -498,22 +494,18 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
             self.current_setpoints.append(external_schedule['initial_value'])
 
         # Check environment is valid
+        assert not self.env.flag_discrete, 'DiscreteIncrementalWrapper: env wrapped by this wrapper must be continuous.'
         assert len(
             self.current_setpoints) == len(
-            self.env.variables['action']), 'IncrementalWrapper: Number of variables is different from environment'
-        assert len(
-            self.current_setpoints) == len(
-            self.max_values), 'IncrementalWrapper: max_values specified is incorrect for the number of action variables'
-        assert len(
-            self.current_setpoints) == len(
-            self.min_values), 'IncrementalWrapper: min_values specified is incorrect for the number of action variables'
-        assert self.env.flag_discrete, 'IncrementalWrapper: Environment wrapped must be discrete'
+            self.env.variables['action']), 'DiscreteIncrementalWrapper: Number of variables is different from environment'
 
         # Define all posible setpoint variations
         values = np.arange(step_temp, delta_temp + step_temp / 10, step_temp)
         values = [v for v in [*values, *-values]]
 
-        # Reset default environment action_mapping
+        # Reset default environment action_mapping and enable discrete
+        # environment flag
+        self.flag_discrete = True
         self.action_mapping = {}
         do_nothing = [0.0 for _ in range(
             len(self.env.variables['action']))]  # do nothing
@@ -543,9 +535,18 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         # clip setpoints returned
         self.current_setpoints = np.clip(
             np.array(self.current_setpoints),
-            self.min_values,
-            self.max_values
+            self.env.real_space.low,
+            self.env.real_space.high
         )
+
+        # if normalization flag is active, this wrapper should normalize
+        # before.
+        if self.env.flag_normalization:
+            norm_values = self.env.normalized_space.high - self.env.normalized_space.low
+            setpoints_normalized = norm_values * ((self.current_setpoints - self.env.real_space.low) / (
+                self.env.real_space.high - self.env.real_space.low)) + self.env.normalized_space.low
+            return list(setpoints_normalized)
+
         return list(self.current_setpoints)
 
     # ---------------------- Specific environment wrappers ---------------------#
