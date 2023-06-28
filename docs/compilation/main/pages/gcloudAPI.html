@@ -248,7 +248,8 @@ with our <strong>Dockerfile</strong> for this purpose:</p>
 <span class="w">  </span><span class="c1"># Write in cache for quick updates</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;eu.gcr.io/google.com/cloudsdktool/cloud-sdk&quot;</span>
 <span class="w">    </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bash&quot;</span>
-<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;docker</span><span class="nv"> </span><span class="s">pull</span><span class="nv"> </span><span class="s">eu.gcr.io/${PROJECT_ID}/sinergym:latest</span><span class="nv"> </span><span class="s">||</span><span class="nv"> </span><span class="s">exit</span><span class="nv"> </span><span class="s">0&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">[</span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;docker</span><span class="nv"> </span><span class="s">pull</span><span class="nv"> </span><span class="s">eu.gcr.io/${PROJECT_ID}/sinergym:latest</span><span class="nv"> </span><span class="s">||</span><span class="nv"> </span><span class="s">exit</span><span class="nv"> </span><span class="s">0&quot;</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="c1"># Build image (using cache if it&#39;s possible)</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;eu.gcr.io/google.com/cloudsdktool/cloud-sdk&quot;</span>
 <span class="w">    </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;docker&quot;</span>
@@ -281,7 +282,6 @@ with our <strong>Dockerfile</strong> for this purpose:</p>
 <span class="c1">#Other options for execute build (not container)</span>
 <span class="nt">options</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">diskSizeGb</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10&quot;</span>
-<span class="w">  </span><span class="nt">machineType</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;E2_HIGHCPU_8&quot;</span>
 <span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400s</span>
 <span class="nt">images</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;eu.gcr.io/${PROJECT_ID}/sinergym:latest&quot;</span><span class="p p-Indicator">]</span>
 </pre></div>
@@ -541,6 +541,7 @@ If you want to do the same, please, check Google Cloud Alerts documentation
             <dd><a href="../../v2.3.3/pages/gcloudAPI.html">v2.3.3</a></dd>
             <dd><a href="../../v2.3.4/pages/gcloudAPI.html">v2.3.4</a></dd>
             <dd><a href="../../v2.4.1/pages/gcloudAPI.html">v2.4.1</a></dd>
+            <dd><a href="../../v2.5.0/pages/gcloudAPI.html">v2.5.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

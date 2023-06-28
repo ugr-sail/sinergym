@@ -116,6 +116,9 @@ it is very useful in order to perform benchmarks as a reference point to study D
 an action to interact with the environment. You can develop your own
 controllers or modify current rules, for example. You can see an example of usage in
 section <a class="reference internal" href="notebooks/rule_controller_example.html#Rule-Controller-example"><span class="std std-ref">Rule Controller example</span></a>.</p>
+<p>Make sure that <code class="docutils literal notranslate"><span class="pre">flag_normalization</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code> in the continuous environments. Otherwise, Sinergym will show an error
+due to the action space don’t let you to work with the real values of building actuators (see <a class="reference internal" href="environments.html#observation-action-spaces"><span class="std std-ref">Observation/action spaces</span></a>
+and <a class="reference internal" href="notebooks/rule_controller_example.html#Rule-Controller-example"><span class="std std-ref">Rule Controller example</span></a>).</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>You have to make sure that the variables used particularly for your controller
@@ -184,6 +187,7 @@ are part of the observation space of the configured environment.</p>
             <dd><a href="../../v2.3.3/pages/controllers.html">v2.3.3</a></dd>
             <dd><a href="../../v2.3.4/pages/controllers.html">v2.3.4</a></dd>
             <dd><a href="../../v2.4.1/pages/controllers.html">v2.4.1</a></dd>
+            <dd><a href="../../v2.5.0/pages/controllers.html">v2.5.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

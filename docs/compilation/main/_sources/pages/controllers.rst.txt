@@ -13,6 +13,9 @@ an action to interact with the environment. You can develop your own
 controllers or modify current rules, for example. You can see an example of usage in 
 section :ref:`Rule Controller example`.
 
+Make sure that ``flag_normalization`` is ``False`` in the continuous environments. Otherwise, Sinergym will show an error
+due to the action space don't let you to work with the real values of building actuators (see :ref:`Observation/action spaces` 
+and :ref:`Rule Controller example`).
+
 .. warning:: You have to make sure that the variables used particularly for your controller 
              are part of the observation space of the configured environment.
-
