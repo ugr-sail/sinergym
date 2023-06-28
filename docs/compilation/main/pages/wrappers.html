@@ -118,10 +118,14 @@ one for each objective) instead of a traditional scalar value. See <a class="ref
 It is possible to select the variables you want to track its previous observation values.</p></li>
 <li><p><strong>DatetimeWrapper</strong>: Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
 Observation space is updated automatically.</p></li>
-<li><p><strong>DiscreteIncrementalWrapper</strong>: A wrapper for an incremental discrete setpoint action space environment. This wrapper
-will update environment action mapping and action space depending on the step and delta specified. The action will be sum
-with current setpoint values instead of overwrite the latest action.
-A discrete environment with only temperature setpoints control must be used with this wrapper.</p></li>
+<li><p><strong>DiscreteIncrementalWrapper</strong>: A wrapper for an incremental setpoint action space environment. This wrapper
+will update a <em>continuous</em> environment, converting it in a <em>discrete</em> environment with an action mapping and action space
+depending on the step and delta specified. The action will be sum with current setpoint values instead of overwrite the latest action.
+Then, the action is the current setpoints values with the increase instead of the index of the action_mapping for the continuous
+environment in the next layer.</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/incremental_wrapper.png"><img alt="Incremental wrapper graph." class="align-center" src="../_images/incremental_wrapper.png" style="width: 497.0px; height: 281.0px;" /></a>
+<ul class="simple">
 <li><p><strong>NormalizeObservation</strong>: It is used to transform observation received from simulator in values between 0 and 1.
 It is possible to define a list of variables you want to normalize, if you don’t define this list, all environment
 variables will be included. In order to normalize values, it is necessary a dictionary in order to store max and min values.
@@ -210,6 +214,7 @@ so that normalization can be applied correctly. Otherwise, the variable normaliz
             <dd><a href="../../v2.3.4/pages/wrappers.html">v2.3.4</a></dd>
             <dd><a href="../../v2.4.1/pages/wrappers.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/wrappers.html">v2.5.0</a></dd>
+            <dd><a href="../../v2.5.1/pages/wrappers.html">v2.5.1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

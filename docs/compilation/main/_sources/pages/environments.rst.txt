@@ -375,8 +375,8 @@ only one would be the action space depending on ``flag_normalization`` value. If
 in a discrete environment, will not take effect.
 
 .. image:: /_static/environment_types.png
-  :scale: 80 %
-  :alt: attributed depending on environment type.
+  :scale: 60 %
+  :alt: Attributes depending on environment type.
   :align: center
 
 As we have told, observation and action spaces are defined **dynamically** in *Sinergym* 

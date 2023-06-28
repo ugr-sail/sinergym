@@ -776,18 +776,19 @@ table above or creating a new one.</p>
                     <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
                 <span class="n">dtype</span><span class="o">=</span><span class="n">action_space</span><span class="o">.</span><span class="n">dtype</span>
             <span class="p">)</span>
-            <span class="c1"># Defining the real space (defined by the user in environment constructor)</span>
+            <span class="c1"># Defining the real space (defined by the user in environment</span>
+            <span class="c1"># constructor)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">real_space</span> <span class="o">=</span> <span class="n">action_space</span>
 
             <span class="c1"># Determine if action is normalized or not using flag</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">flag_normalization</span><span class="o">=</span><span class="n">flag_normalization</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flag_normalization</span> <span class="o">=</span> <span class="n">flag_normalization</span>
 
             <span class="c1"># Depending on the normalized flag, action space will be the normalized space</span>
             <span class="c1"># or the real space.</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag_normalization</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_action_space</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">normalized_space</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_action_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalized_space</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_action_space</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">real_space</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_action_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_space</span>
 
         <span class="c1"># ---------------------------------------------------------------------------- #</span>
         <span class="c1">#                                    Reward                                    #</span>
@@ -931,7 +932,7 @@ the environment is discrete, <code class="docutils literal notranslate"><span cl
 not take effect. On the other hand, in a continuous environment, it will be created a real and normalized space and
 only one would be the action space depending on <code class="docutils literal notranslate"><span class="pre">flag_normalization</span></code> value. If normalization flag is activated
 in a discrete environment, will not take effect.</p>
-<a class="reference internal image-reference" href="../_images/environment_types.png"><img alt="attributed depending on environment type." class="align-center" src="../_images/environment_types.png" style="width: 982.4000000000001px; height: 835.2px;" /></a>
+<a class="reference internal image-reference" href="../_images/environment_types.png"><img alt="Attributes depending on environment type." class="align-center" src="../_images/environment_types.png" style="width: 736.8px; height: 626.4px;" /></a>
 <p>As we have told, observation and action spaces are defined <strong>dynamically</strong> in <em>Sinergym</em>
 Environment constructor. Environment ID’s registered in <em>Sinergym</em> use a <strong>default</strong> definition
 set up in <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/constants.py">constants.py</a>.</p>
@@ -1140,6 +1141,7 @@ action/observation space, etc. We have examples about how to do it (<a class="re
             <dd><a href="../../v2.3.4/pages/environments.html">v2.3.4</a></dd>
             <dd><a href="../../v2.4.1/pages/environments.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/environments.html">v2.5.0</a></dd>
+            <dd><a href="../../v2.5.1/pages/environments.html">v2.5.1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

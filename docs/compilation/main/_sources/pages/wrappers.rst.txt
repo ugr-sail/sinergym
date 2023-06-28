@@ -16,10 +16,16 @@ You can implement your own wrappers inheriting from *gym.Wrapper* or some of its
 - **DatetimeWrapper**: Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values. 
   Observation space is updated automatically.
 
-- **DiscreteIncrementalWrapper**: A wrapper for an incremental discrete setpoint action space environment. This wrapper
-  will update environment action mapping and action space depending on the step and delta specified. The action will be sum
-  with current setpoint values instead of overwrite the latest action.
-  A discrete environment with only temperature setpoints control must be used with this wrapper.
+- **DiscreteIncrementalWrapper**: A wrapper for an incremental setpoint action space environment. This wrapper
+  will update a *continuous* environment, converting it in a *discrete* environment with an action mapping and action space 
+  depending on the step and delta specified. The action will be sum with current setpoint values instead of overwrite the latest action. 
+  Then, the action is the current setpoints values with the increase instead of the index of the action_mapping for the continuous 
+  environment in the next layer. 
+
+.. image:: /_static/incremental_wrapper.png
+  :scale: 50 %
+  :alt: Incremental wrapper graph.
+  :align: center
 
 - **NormalizeObservation**: It is used to transform observation received from simulator in values between 0 and 1.
   It is possible to define a list of variables you want to normalize, if you don't define this list, all environment
