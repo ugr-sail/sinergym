@@ -221,19 +221,80 @@ class EplusEnv(gym.Env):
         Returns:
             Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
         """
+
         # We need the following line to seed self.np_random
         super().reset(seed=seed)
 
-        # Change to next episode
-        # if no options specified and environment has default reset options
-        if not options and len(self.default_options) > 0:
-            obs, info = self.simulator.reset(
-                self.default_options)
-        else:
-            obs, info = self.simulator.reset(
-                options)
+        # Apply options if exists, else default options
+        options = options if options is not None else self.default_options
 
-        return np.array(obs, dtype=np.float32), info
+        self.episode += 1
+        self.timestep = 0
+
+        if self.energyplus_simulation is not None:
+            self.energyplus_simulation.stop()
+
+        self.obs_queue = Queue(maxsize=1)
+        self.info_queue = Queue(maxsize=1)
+        self.act_queue = Queue(maxsize=1)
+        self.last_obs = self.observation_space.sample()
+        self.last_info = {'timestep': self.timestep}
+
+        # ------------------------ Preparation for new episode ----------------------- #
+
+        # Get new episode working dir
+        self.episode_dir = self.model.set_episode_working_dir()
+        # get weather path and readapt building
+        self.model.update_weather_path()
+        self.model.adapt_building_to_epw()
+        # Getting building, weather and Energyplus output directory
+        eplus_working_building_path = self.model.save_building_model()
+        eplus_working_out_path = (self.episode_dir + '/' + 'output')
+        eplus_working_weather_path = self.model.apply_weather_variability(
+            variation=options.get('weather_variability'))
+
+        self.energyplus_simulation = EnergyPlus(
+            building_path=eplus_working_building_path,
+            weather_path=eplus_working_weather_path,
+            output_path=eplus_working_out_path,
+            obs_queue=self.obs_queue,
+            info_queue=self.info_queue,
+            act_queue=self.act_queue,
+            time_variables=self.time_variables,
+            variables=self.variables,
+            meters=self.meters,
+            actuators=self.actuators
+        )
+
+        self.energyplus_simulation.start()
+
+        # wait for E+ warmup to complete
+        if not self.energyplus_simulation.warmup_complete:
+            self.energyplus_simulation.warmup_queue.get()
+
+        # Wait to receive simulation first observation and info
+        # try:
+            # obs = self.obs_queue.get()
+        # except Empty:
+        #     obs = self.last_obs
+
+        # Wait to receive simulation first observation and info
+        try:
+            obs = self.obs_queue.get()
+        except Empty:
+            obs = self.last_obs
+
+        try:
+            info = self.info_queue.get()
+        except Empty:
+            info = self.last_info
+
+        info = self.info_queue.get()
+        info.update({'timestep': self.timestep})
+        self.last_obs = obs
+        self.last_info = info
+
+        return np.array(list(obs.values()), dtype=np.float32), info
 
     # ---------------------------------------------------------------------------- #
     #                                     STEP                                     #
