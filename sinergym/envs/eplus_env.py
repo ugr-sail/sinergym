@@ -468,7 +468,7 @@ class EplusEnv(gym.Env):
         """This method checks that environment definition is correct and it has not inconsistencies.
         """
         # OBSERVATION
-        assert len(self.variables['observation']) == self._observation_space.shape[
+        assert len(self.observation_variables) == self._observation_space.shape[
             0], 'Observation space has not the same length than variable names specified.'
 
         # ACTION
@@ -485,9 +485,9 @@ class EplusEnv(gym.Env):
                 self.action_mapping), 'Discrete environment: The length of the action_mapping must match the dimension of the discrete action space.'
             for values in self.action_mapping.values():
                 assert len(values) == len(
-                    self.variables['action']), 'Discrete environment: Action mapping tuples values must have the same length than action variables specified.'
+                    self.action_variables), 'Discrete environment: Action mapping tuples values must have the same length than action variables specified.'
         else:
-            assert len(self.variables['action']) == self._action_space.shape[
+            assert len(self.action_variables) == self._action_space.shape[
                 0], 'Action space shape must match with number of action variables specified.'
             assert hasattr(
                 self, 'flag_normalization'), 'Continuous environment: flag_normalization attribute should have been defined.'
@@ -497,31 +497,6 @@ class EplusEnv(gym.Env):
                 self, 'real_space'), 'Continuous environment: real_space attribute should have been defined.'
             assert not hasattr(
                 self, 'action_mapping'), 'Continuous environment: action mapping should not have been defined.'
-            assert len(self._action_space.low) == len(self.variables['action']) and len(self._action_space.high) == len(
-                self.variables['action']), 'Continuous environment: low and high values action space definition should have the same number of values than action variables.'
-
-    def get_schedulers(
-            self, path: Optional[str] = None) -> Dict[str, Dict[str, Union[str, Dict[str, str]]]]:
-        """Extract all schedulers available in the building model to be controlled.
-
-        Args:
-            path (str, optional): If path is specified, then this method export a xlsx file version in addition to return the dictionary.
-
-        Returns:
-            Dict[str, Any]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (Object name, Object field and Object type).
-        """
-        if path is not None:
-            export_actuators_to_excel(
-                actuators=self.simulator.schedulers, path=path)
-        return self.simulator.schedulers
-
-    def get_zones(self) -> List[str]:
-        """Get the zone names available in the building model of that environment.
-
-        Returns:
-            List[str]: List of the zone names.
-        """
-        return self.simulator.zone_names
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #
