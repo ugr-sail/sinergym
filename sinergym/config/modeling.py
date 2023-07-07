@@ -244,65 +244,6 @@ class ModelJSON(object):
         self.building['Site:Location'] = new_location
         self.building['SizingPeriod:DesignDay'] = new_designdays
 
-    def adapt_variables_to_cfg_and_building(self) -> None:
-        """This method adds to XML variable tree all observation and action variables information.
-        In addition, it modifies building Output:Variable in order to adapt to new observation variables set.
-        """
-
-        # OBSERVATION VARIABLES
-        output_variables = {}
-        self.variables_tree.append(ElementTree.Comment(
-            'Observation variables: Received from EnergyPlus'))
-        for i, obs_var in enumerate(self.variables['observation'], start=1):
-            # obs_var = "<variable_name>(<variable_zone>)"
-            var_elements = obs_var.split('(')
-            var_name = var_elements[0]
-            var_zone = var_elements[1][:-1]
-
-            # Add obs name and zone to XML variables tree
-            new_xml_obs = ElementTree.SubElement(
-                self.variables_tree, 'variable', source='EnergyPlus')
-            ElementTree.SubElement(
-                new_xml_obs,
-                'EnergyPlus',
-                name=var_zone,
-                type=var_name)
-
-            # Add element Output:Variable to the building model
-            if var_zone.lower() == 'environment' or var_zone.lower() == 'whole building':
-                var_zone = '*'
-            output_variables['Output:Variable ' + str(i)] = {'key_value': var_zone,
-                                                             'variable_name': var_name,
-                                                             'reporting_frequency': 'Timestep'}
-
-        # Delete default Output:Variables and added observation_variables
-        # specified
-        self.building['Output:Variable'] = output_variables
-
-        # ACTION VARIABLES
-        self.variables_tree.append(
-            ElementTree.Comment('Action variables: Sent to EnergyPlus'))
-        for act_var in self.variables['action']:
-
-            new_xml_variable = ElementTree.SubElement(
-                self.variables_tree, 'variable', source='Ptolemy')
-            ElementTree.SubElement(
-                new_xml_variable,
-                'EnergyPlus',
-                schedule=act_var)
-
-    def set_external_interface(self) -> None:
-        """Set an empty external interface with Ptolemy server if is not in the current building
-        """
-
-        # If no ExternalInterface object found
-        if 'ExternalInterface' not in self.building:
-            # Create PtolemyServer interface in building
-            self.building['ExternalInterface'] = {
-                'ExternalInterface 1': {
-                    'name_of_external_interface': 'PtolemyServer'}
-            }
-
     def apply_extra_conf(self) -> None:
         """Set extra configuration in building model
         """
@@ -325,56 +266,6 @@ class ModelJSON(object):
                     self.config['runperiod'][3])
                 runperiod['end_month'] = int(self.config['runperiod'][4])
                 runperiod['end_year'] = int(self.config['runperiod'][5])
-
-    def adapt_building_to_action_definition(self) -> None:
-        """Interpret action definition and apply changes in building model, in order to control schedulers specified.
-        """
-        if self.action_definition is not None:
-            # Create ExternalInterface:Schedule table if it doesn't exist
-            if 'ExternalInterface:Schedule' not in self.building:
-                self.building['ExternalInterface:Schedule'] = {}
-            # Iterate in schedulers to control in action definition
-            for original_sch_name, new_sch in self.action_definition.items():
-                # Search original scheduler information in building model
-                original_sch = self.schedulers[original_sch_name]
-                # Add external interface to building model
-                self.building['ExternalInterface:Schedule'][new_sch['name']] = {
-                    'schedule_type_limits_name': original_sch['Type'],
-                    'initial_value': new_sch['initial_value']
-                }
-                # Look for scheduler elements where appear and substitute for new
-                # one name
-                for sch_name, sch_info in original_sch.items():
-                    if isinstance(sch_info, dict):  # this skip Type key
-                        self.building[sch_info['table_name']][sch_name
-                                                              ][sch_info['field_name']] = new_sch['name']
-
-    def save_variables_cfg(self) -> str:
-        """This method saves current XML variables tree model into a variables.cfg file.
-
-        Raises:
-            RuntimeError: If this method is used without an episode_path generated (see reset method in simulator), this exception is raised.
-
-        Returns:
-            str: Path to the new saved variables.cfg used by BCVTB for Energyplus communication.
-        """
-        if self.episode_path is not None:
-
-            episode_cfg_path = self.episode_path + \
-                '/variables.cfg'
-
-            ElementTree.indent(self.variables_tree)
-
-            with open(episode_cfg_path, "wb") as f:
-                f.write(
-                    '<?xml version="1.0" encoding="ISO-8859-1"?>\n<!DOCTYPE BCVTB-variables SYSTEM "variables.dtd">\n'.encode('utf8'))
-                ElementTree.ElementTree(self.variables_tree).write(f, 'utf-8')
-
-            return episode_cfg_path
-
-        else:
-            raise RuntimeError(
-                '[Simulator Modeling] Episode path should be set before saving variables.cfg.')
 
     def save_building_model(self) -> str:
         """Take current building model and save as epJSON in current env_working_dir episode folder.
