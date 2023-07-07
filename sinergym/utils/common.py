@@ -75,62 +75,6 @@ def unwrap_wrapper(env: gym.Env,
     return None
 
 
-def create_variable_weather(
-        weather_data: WeatherData,
-        original_epw_file: str,
-        columns: List[str] = ['drybulb'],
-        variation: Optional[Tuple[float, float, float]] = None) -> Optional[str]:
-    """Create a new weather file using Ornstein-Uhlenbeck process.
-
-    Args:
-        weather_data (opyplus.WeatherData): Opyplus object with the weather for the simulation.
-        original_epw_file (str): Path to the original EPW file.
-        columns (List[str], optional): List of columns to be affected. Defaults to ['drybulb'].
-        variation (Optional[Tuple[float, float, float]], optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
-
-    Returns:
-        Optional[str]: Name of the file created in the same location as the original one.
-    """
-
-    if variation is None:
-        return None
-    else:
-        # Get dataframe with weather series
-        df = weather_data.get_weather_series()
-
-        sigma = variation[0]  # Standard deviation.
-        mu = variation[1]  # Mean.
-        tau = variation[2]  # Time constant.
-
-        T = 1.  # Total time.
-        # All the columns are going to have the same num of rows since they are
-        # in the same dataframe
-        n = len(df[columns[0]])
-        dt = T / n
-        # t = np.linspace(0., T, n)  # Vector of times.
-
-        sigma_bis = sigma * np.sqrt(2. / tau)
-        sqrtdt = np.sqrt(dt)
-
-        x = np.zeros(n)
-
-        # Create noise
-        for i in range(n - 1):
-            x[i + 1] = x[i] + dt * (-(x[i] - mu) / tau) + \
-                sigma_bis * sqrtdt * np.random.randn()
-
-        for column in columns:
-            # Add noise
-            df[column] += x
-
-        # Save new weather data
-        weather_data.set_weather_series(df)
-        filename = original_epw_file.split('.epw')[0]
-        filename += '_Random_%s_%s_%s.epw' % (str(sigma), str(mu), str(tau))
-        weather_data.to_epw(filename)
-        return filename
-
-
 def ranges_getter(output_path: str,
                   last_result: Optional[Dict[str, List[float]]] = None
                   ) -> Dict[str, List[float]]:  # pragma: no cover
