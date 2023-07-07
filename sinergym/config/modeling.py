@@ -555,18 +555,8 @@ class ModelJSON(object):
             rm_dir_full_name = cur_dir_name + base_name + str(rm_dir_id)
             rmtree(rm_dir_full_name)
 
-    @ property
-    def start_year(self) -> int:  # pragma: no cover
-        """Returns the EnergyPlus simulation year.
-
-        Returns:
-            int: Simulation year.
-        """
-
-        return YEAR
-
     # ---------------------------------------------------------------------------- #
-    #                             Config class checker                             #
+    #                             Model class checker                              #
     # ---------------------------------------------------------------------------- #
 
     def _check_eplus_config(self) -> None:
@@ -596,50 +586,23 @@ class ModelJSON(object):
                 else:  # pragma: no cover
                     raise KeyError(
                         F'Extra Config: Key name specified in config called [{config_key}] has no support in Sinergym.')
-        # ACTION DEFINITION
-        if self.action_definition is not None:
-            for original_sch_name, new_sch in self.action_definition.items():
-                # Check action definition format
-                assert isinstance(
-                    original_sch_name, str), 'Action definition: Keys must be str.'
-                assert isinstance(
-                    new_sch, dict), 'Action definition: New scheduler definition must be a dict.'
-                assert set(
-                    new_sch.keys()) == set(
-                    ['name', 'initial_value']), 'Action definition: keys in new scheduler definition must be name and initial_value.'
-                assert isinstance(
-                    new_sch['name'], str), 'Action definition: Name field in new scheduler must be a str element.'
-                # Check action definition component is in schedulers available
-                # in building model
-                assert original_sch_name in self.schedulers.keys(
-                ), 'Action definition: Object called {} is not an existing component in building model.'.format(original_sch_name)
-                # Check new variable is present in action variables
-                assert new_sch['name'] in self.variables['action'], 'Action definition: {} external variable should be in action variables.'.format(
-                    new_sch['name'])
 
-    def _check_observation_variables(self) -> None:
-        """This method checks whether observation variables are available in building model definition (Checking variable type definition too).
-        """
-        for obs_var in self.variables['observation']:
-            # Name of the observation variable and element (Zone or HVAC
-            # element name)
-            obs_name = obs_var.split('(')[0]
-            obs_element_name = obs_var.split('(')[1][:-1]
+    # ---------------------------------------------------------------------------- #
+    #                                  Properties                                  #
+    # ---------------------------------------------------------------------------- #
 
-            # Check observarion variables names
-            assert obs_name in list(self.rdd_variables.keys(
-            )), 'Observation variables: Variable called {} in observation variables is not valid for the building model'.format(obs_name)
-            # Check observation variables about zones (if variable type is
-            # Zone)
-            if self.rdd_variables[obs_name] == 'Zone':
-                # Check that obs zone is not Environment or Whole building tag
-                if obs_element_name.lower() != 'Environment'.lower(
-                ) and obs_element_name.lower() != 'Whole Building'.lower():
-                    # zones names with people 1 or lights 1, etc. The second name
-                    # is ignored, only check that zone is a substr from obs
-                    # zone
-                    assert any(list(map(lambda zone: zone.lower() in obs_element_name.lower(), self.zone_names))
-                               ), 'Observation variables: Zone called {} in observation variables does not exist in the building model.'.format(obs_element_name)
-            # Check observation variables about HVAC
-            elif self.rdd_variables[obs_name] == 'HVAC':
-                pass
+    @property
+    def building_path(self) -> str:
+        return self._json_path
+
+    @property
+    def weather_path(self) -> str:
+        return self._weather_path
+
+    @property
+    def ddy_path(self) -> Optional[int]:
+        return self._ddy_path
+
+    @property
+    def idd_path(self) -> Optional[int]:
+        return self._idd
