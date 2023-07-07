@@ -501,9 +501,11 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #
     # ---------------------------------------------------------------------------- #
+
+    # ---------------------------------- Spaces ---------------------------------- #
     @property
     def action_space(
-        self,
+        self
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
         return self._action_space
 
@@ -513,10 +515,49 @@ class EplusEnv(gym.Env):
 
     @property
     def observation_space(
-        self,
+        self
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
         return self._observation_space
 
     @observation_space.setter
     def observation_space(self, space: gym.spaces.Space[Any]):
         self._observation_space = space
+
+    # ------------------------------ Building model ------------------------------ #
+    @property
+    def runperiod(self) -> Dict[str, int]:
+        return self.model.runperiod
+
+    @property
+    def episode_length(self) -> float:
+        return self.model.episode_length
+
+    @property
+    def step_size(self) -> float:
+        return self.model.step_size
+
+    @property
+    def zone_names(self) -> str:
+        return self.model.zone_names
+
+    @property
+    def schedulers(self) -> str:
+        return self.model.schedulers
+
+    # ----------------------------------- Paths ---------------------------------- #
+
+    @property
+    def building_path(self) -> str:
+        return self.model.building_path
+
+    @property
+    def weather_path(self) -> str:
+        return self.model.weather_path
+
+    @property
+    def ddy_path(self) -> str:
+        return self.model.ddy_path
+
+    @property
+    def idd_path(self) -> str:
+        return self.model.idd_path
