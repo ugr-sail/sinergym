@@ -394,13 +394,12 @@ class ModelJSON(object):
     #                        Model and Config Functionality                        #
     # ---------------------------------------------------------------------------- #
 
-    def _get_eplus_run_info(
-            self) -> Tuple[int, int, int, int, int, int, int, int]:
-        """This method read the building model from config and finds the running start month, start day, start year, end month, end day, end year, start weekday and the number of steps in a hour simulation.
-        If any value is Unknown, then value will be 0. If step per hour is < 1, then default value will be 4.
+    def _get_eplus_runperiod(
+            self) -> Dict[str, int]:
+        """This method reads building runperiod information and returns it.
 
         Returns:
-            Tuple[int, int, int, int, int, int, int, int]: A tuple with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.
+            Dict[str,int]: A Dict with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.
         """
         # Get runperiod object inner building model
         runperiod = list(self.building['RunPeriod'].values())[0]
@@ -422,73 +421,33 @@ class ModelJSON(object):
         )]
         n_steps_per_hour = list(self.building['Timestep'].values())[
             0]['number_of_timesteps_per_hour']
-        if n_steps_per_hour < 1 or n_steps_per_hour is None:  # pragma: no cover
-            n_steps_per_hour = 4  # default value
 
-        return (
-            start_month,
-            start_day,
-            start_year,
-            end_month,
-            end_day,
-            end_year,
-            start_weekday,
-            n_steps_per_hour)
+        return {
+            'start_day': start_day,
+            'start_month': start_month,
+            'start_year': start_year,
+            'end_day': end_day,
+            'end_month': end_month,
+            'end_year': end_year,
+            'start_weekday': start_weekday,
+            'n_steps_per_hour': n_steps_per_hour}
 
-    def get_current_time_info(self, sec_elapsed: float) -> List[int]:
-        """Returns the current day, month and hour given the seconds elapsed since the simulation started.
-
-        Args:
-            sec_elapsed (float): Seconds elapsed since the start of the simulation
-
-        Returns:
-            List[int]: A List composed by the current year, day, month and hour in the simulation.
-
-        """
-        runperiod = list(self.building['RunPeriod'].values())[0]
-        start_date = datetime(
-            year=int(
-                YEAR if runperiod['begin_year'] is None else runperiod['begin_year']), month=int(
-                1 if runperiod['begin_month'] is None else runperiod['begin_month']), day=int(
-                1 if runperiod['begin_day_of_month'] is None else runperiod['begin_day_of_month']))
-
-        current_date = start_date + timedelta(seconds=sec_elapsed)
-
-        return [
-            int(current_date.year),
-            int(current_date.month),
-            int(current_date.day),
-            int(current_date.hour),
-        ]
-
-    def _get_one_epi_len(self) -> float:
-        """Gets the length of one episode (an EnergyPlus process run to the end) depending on the config of simulation.
+    def _get_runperiod_len(self) -> float:
+        """Gets the length of runperiod (an EnergyPlus process run to the end) depending on the config of simulation.
 
         Returns:
             float: The simulation time in which the simulation ends (seconds).
         """
         # Get runperiod object inner building model
-        runperiod = list(self.building['RunPeriod'].values())[0]
-        start_year = int(
-            YEAR if runperiod['begin_year'] is None else runperiod['begin_year'])
-        start_month = int(
-            0 if runperiod['begin_month'] is None else runperiod['begin_month'])
-        start_day = int(
-            0 if runperiod['begin_day_of_month'] is None else runperiod['begin_day_of_month'])
-        end_year = int(
-            YEAR if runperiod['end_year'] is None else runperiod['end_year'])
-        end_month = int(
-            0 if runperiod['end_month'] is None else runperiod['end_month'])
-        end_day = int(0 if runperiod['end_day_of_month']
-                      is None else runperiod['end_day_of_month'])
+        runperiod_info = self._get_eplus_runperiod()
 
         return get_delta_seconds(
-            start_year,
-            start_month,
-            start_day,
-            end_year,
-            end_month,
-            end_day)
+            runperiod_info['start_year'],
+            runperiod_info['start_month'],
+            runperiod_info['start_day'],
+            runperiod_info['end_year'],
+            runperiod_info['end_month'],
+            runperiod_info['end_day'])
 
     # ---------------------------------------------------------------------------- #
     #                  Working Folder for Simulation Management                    #
