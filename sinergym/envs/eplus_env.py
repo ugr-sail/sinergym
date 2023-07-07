@@ -4,15 +4,15 @@ Gym environment for simulation with EnergyPlus.
 
 import os
 import random
-from sqlite3 import DatabaseError
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
 
 from sinergym.simulators import EnergyPlus
-from sinergym.utils.common import export_actuators_to_excel
-from sinergym.utils.rewards import ExpReward, LinearReward
+from queue import Queue, Empty, Full
+from sinergym.config import ModelJSON
+from sinergym.utils.rewards import *
 
 
 class EplusEnv(gym.Env):
