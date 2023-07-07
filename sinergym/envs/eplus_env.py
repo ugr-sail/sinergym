@@ -25,21 +25,19 @@ class EplusEnv(gym.Env):
     def __init__(
         self,
         building_file: str,
-        weather_file: Union[str, List[str]],
-        observation_space: gym.spaces.Box = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(4,), dtype=np.float32),
-        observation_variables: List[str] = [],
+        weather_files: Union[str, List[str]],
         action_space: Union[gym.spaces.Box, gym.spaces.Discrete] = gym.spaces.Box(
             low=0, high=0, shape=(0,), dtype=np.float32),
-        action_variables: List[str] = [],
+        time_variables: List[str] = [],
+        variables: Dict[str, Tuple[str, str]] = {},
+        meters: Dict[str, Tuple[str, str]] = {},
+        actuators: Dict[str, Tuple[str, str, str]] = {},
         action_mapping: Dict[int, Tuple[float, ...]] = {},
         flag_normalization: bool = True,
-        weather_variability: Optional[Tuple[float]] = None,
+        weather_variability: Optional[Tuple[float, float, float]] = None,
         reward: Any = LinearReward,
         reward_kwargs: Optional[Dict[str, Any]] = {},
-        act_repeat: int = 1,
         max_ep_data_store_num: int = 10,
-        action_definition: Optional[Dict[str, Any]] = None,
         env_name: str = 'eplus-env-v1',
         config_params: Optional[Dict[str, Any]] = None
     ):
@@ -57,7 +55,6 @@ class EplusEnv(gym.Env):
             weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
             reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
-            act_repeat (int, optional): Number of timesteps that an action is repeated in the simulator, regardless of the actions it receives during that repetition interval.
             max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
             action_definition (Optional[Dict[str, Any]): Dict with building components to being controlled by Sinergym automatically if it is supported. Default value to None.
             env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
@@ -65,61 +62,79 @@ class EplusEnv(gym.Env):
         """
 
         # ---------------------------------------------------------------------------- #
-        #                          Energyplus, BCVTB and paths                         #
+        #                                     Paths                                    #
         # ---------------------------------------------------------------------------- #
-        eplus_path = os.environ['EPLUS_PATH']
-        bcvtb_path = os.environ['BCVTB_PATH']
 
         # building file
         self.building_file = building_file
         # EPW file(s) (str or List of EPW's)
-        if isinstance(weather_file, str):
-            self.weather_files = [weather_file]
+        if isinstance(weather_files, str):
+            self.weather_files = [weather_files]
         else:
-            self.weather_files = weather_file
+            self.weather_files = weather_files
 
         # ---------------------------------------------------------------------------- #
-        #                             Variables definition                             #
+        #                  Variables, meters and actuators definition                  #
         # ---------------------------------------------------------------------------- #
-        self.variables = {}
-        self.variables['observation'] = observation_variables
-        self.variables['action'] = action_variables
+
+        self.time_variables = time_variables
+        self.variables = variables
+        self.meters = meters
+        self.actuators = actuators
 
         # Copy to use original variables in step.obs_dict for reward
-        self.original_obs = observation_variables
-        self.original_act = action_variables
+        self.original_time_variables = time_variables
+        self.original_variables = variables
+        self.original_meters = meters
+        self.original_actuators = actuators
 
-        self.name = env_name
+        # ---------------------------------------------------------------------------- #
+        #                    Define observation and action variables                   #
+        # ---------------------------------------------------------------------------- #
+
+        self.observation_variables = self.time_variables + \
+            list(self.variables.keys()) + list(self.meters.keys())
+        self.action_variables = list(self.actuators.keys())
+
+        self.original_observation_variables = self.original_time_variables + \
+            list(self.original_variables.keys()) + \
+            list(self.original_meters.keys())
+        self.original_action_variables = list(self.original_actuators.keys())
+
+        # ---------------------------------------------------------------------------- #
+        #                               Building modeling                              #
+        # ---------------------------------------------------------------------------- #
+
+        self.model = ModelJSON(
+            env_name=env_name,
+            json_file=self.building_file,
+            weather_files=self.weather_files,
+            max_ep_store=max_ep_data_store_num,
+            extra_config=config_params
+        )
 
         # ---------------------------------------------------------------------------- #
         #                                   Simulator                                  #
         # ---------------------------------------------------------------------------- #
-        self.simulator = EnergyPlus(
-            env_name=env_name,
-            eplus_path=eplus_path,
-            bcvtb_path=bcvtb_path,
-            building_file=self.building_file,
-            weather_files=self.weather_files,
-            variables=self.variables,
-            act_repeat=act_repeat,
-            max_ep_data_store_num=max_ep_data_store_num,
-            action_definition=action_definition,
-            config_params=config_params
-        )
+        # Initialized in reset method
+        self.energyplus_simulation: Optional[EnergyPlus] = None
 
         # ---------------------------------------------------------------------------- #
-        #                       Detection of controllable planners                     #
+        #                             Environment variables                            #
         # ---------------------------------------------------------------------------- #
-        self.schedulers = self.get_schedulers()
-
-        # ---------------------------------------------------------------------------- #
-        #        Adding simulation date to observation (not needed in simulator)       #
-        # ---------------------------------------------------------------------------- #
-
-        self.variables['observation'] = ['year', 'month',
-                                         'day', 'hour'] + self.variables['observation']
-        self.original_obs = ['year', 'month',
-                             'day', 'hour'] + self.original_obs
+        self.name = env_name
+        self.episode = 0
+        self.timestep = 0
+        # Get environment working dir
+        self.workspace_dir = self.model.experiment_path
+        # Queues for E+ Python API communication
+        self.obs_queue: Optional[Queue] = None
+        self.info_queue: Optional[Queue] = None
+        self.act_queue: Optional[Queue] = None
+        # last obs, action and info
+        self.last_obs: Optional[Dict[str, float]] = None
+        self.last_info: Optional[Dict[str, float]] = None
+        self.last_action: Optional[List[float]] = None
 
         # ---------------------------------------------------------------------------- #
         #                          reset default options                               #
@@ -133,7 +148,11 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         #                               Observation Space                              #
         # ---------------------------------------------------------------------------- #
-        self._observation_space = observation_space
+        self._observation_space = gym.spaces.Box(
+            low=-5e6,
+            high=5e6,
+            shape=(len(time_variables) + len(variables) + len(meters),),
+            dtype=np.float32)
 
         # ---------------------------------------------------------------------------- #
         #                                 Action Space                                 #
