@@ -453,26 +453,6 @@ class ModelJSON(object):
     #                  Working Folder for Simulation Management                    #
     # ---------------------------------------------------------------------------- #
 
-    def set_experiment_working_dir(self, env_name: str) -> str:
-        """Set experiment working dir path like config attribute for current simulation.
-
-        Args:
-            env_name (str): simulation env name to define a name in directory
-
-        Returns:
-            str: Experiment path for directory created.
-        """
-        # Generate experiment dir path
-        experiment_path = self._get_working_folder(
-            directory_path=CWD,
-            base_name='-%s-res' %
-            (env_name))
-        # Create dir
-        os.makedirs(experiment_path)
-        # set path like config attribute
-        self.experiment_path = experiment_path
-        return experiment_path
-
     def set_episode_working_dir(self) -> str:
         """Set episode working dir path like config attribute for current simulation execution.
 
@@ -498,6 +478,26 @@ class ModelJSON(object):
             # Remove redundant past working directories
             self._rm_past_history_dir(episode_path, '-sub_run')
             return episode_path
+
+    def _set_experiment_working_dir(self, env_name: str) -> str:
+        """Set experiment working dir path like config attribute for current simulation.
+
+        Args:
+            env_name (str): simulation env name to define a name in directory
+
+        Returns:
+            str: Experiment path for directory created.
+        """
+        # Generate experiment dir path
+        experiment_path = self._get_working_folder(
+            directory_path=CWD,
+            base_name='-%s-res' %
+            (env_name))
+        # Create dir
+        os.makedirs(experiment_path)
+        # set path like config attribute
+        self.experiment_path = experiment_path
+        return experiment_path
 
     def _get_working_folder(
             self,
