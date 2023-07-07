@@ -5,16 +5,12 @@ import random
 import xml.etree.cElementTree as ElementTree
 from abc import ABC, abstractmethod
 from copy import deepcopy
-from datetime import datetime, timedelta
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
-import pandas
-from eppy import modeleditor
 from eppy.modeleditor import IDF
-from opyplus import Epm, Idd, WeatherData
-from opyplus.epm.record import Record
+from opyplus import WeatherData
 
 from sinergym.utils.common import eppy_element_to_dict, get_delta_seconds
 from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR
@@ -43,23 +39,7 @@ class Model(ABC):
         pass
 
     @abstractmethod
-    def adapt_variables_to_cfg_and_building(self) -> None:
-        pass
-
-    @abstractmethod
-    def set_external_interface(self) -> None:
-        pass
-
-    @abstractmethod
     def apply_extra_conf(self) -> None:
-        pass
-
-    @abstractmethod
-    def adapt_building_to_action_definition(self) -> None:
-        pass
-
-    @abstractmethod
-    def save_variables_cfg(self) -> str:
         pass
 
     @abstractmethod
@@ -86,8 +66,8 @@ class Model(ABC):
     # ---------------------------------------------------------------------------- #
 
     @abstractmethod
-    def _get_eplus_run_info(
-            self) -> Tuple[int, int, int, int, int, int, int, int]:
+    def _get_eplus_runperiod(
+            self) -> Dict[str, int]:
         pass
 
     @abstractmethod
@@ -126,10 +106,6 @@ class Model(ABC):
 
     @abstractmethod
     def _check_eplus_config(self) -> None:
-        pass
-
-    @abstractmethod
-    def _check_observation_variables(self) -> None:
         pass
 
 
