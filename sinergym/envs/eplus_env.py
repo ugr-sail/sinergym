@@ -385,7 +385,7 @@ class EplusEnv(gym.Env):
     def close(self) -> None:
         """End simulation."""
 
-        self.simulator.end_env()
+        self.energyplus_simulation.stop()
 
     # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #
