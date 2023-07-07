@@ -319,24 +319,54 @@ class EplusEnv(gym.Env):
         # Check if action is correct for the current action space
         assert self._action_space.contains(
             action), 'Step: The action {} is not correct for the Action Space {}'.format(action, self._action_space)
+        # Check if episode existed and is not terminated
+        assert self.energyplus_simulation, 'Step: Environment requires to be reset before.'
+
+        # check for simulation errors
+        if self.energyplus_simulation.failed():
+            print(
+                f"EnergyPlus failed with {self.energyplus_simulation.sim_results['exit_code']}")
+            exit(1)
+
+        self.timestep += 1
+
+        terminated = truncated = False
 
         # Get real action (action --> action_)
         action_ = self._get_action(action)
-        # Send action to the simulator
-        self.simulator.logger_main.debug(action_)
-        # Execute action in simulation
-        obs, terminated, truncated, info = self.simulator.step(action_)
-        obs_dict = dict(zip(self.original_obs, obs))
+
+        if self.energyplus_simulation.simulation_complete:
+            terminated = True
+            obs = self.last_obs
+            info = self.last_info
+        else:
+            # enqueue action (received by EnergyPlus through dedicated callback)
+            # then wait to get next observation.
+            # timeout is set to 2s to handle end of simulation cases, which happens async
+            # and materializes by worker thread waiting on this queue (EnergyPlus callback
+            # not consuming yet/anymore)
+            # timeout value can be increased if E+ timestep takes longer
+            timeout = 2
+            try:
+                self.act_queue.put(action_, timeout=timeout)
+                self.last_obs = obs = self.obs_queue.get(timeout=timeout)
+                self.last_info = info = self.info_queue.get(timeout=timeout)
+            except (Full, Empty):
+                truncated = True
+                obs = self.last_obs
+                info = self.last_info
 
         # Calculate reward
-        reward, terms = self.reward_fn(obs_dict)
+        reward, rw_terms = self.reward_fn(obs)
 
-        # info update with reward information
-        info.update({'reward': reward})
-        info.update(terms)
+        # Update info with
+        info.update({'timestep': self.timestep,
+                    'reward': reward})
+        info.update(rw_terms)
+        self.last_info = info
 
-        return np.array(
-            obs, dtype=np.float32), reward, terminated, truncated, info
+        return np.array(list(obs.values()), dtype=np.float32
+                        ), reward, terminated, truncated, info
 
     # ---------------------------------------------------------------------------- #
     #                                RENDER (empty)                                #
