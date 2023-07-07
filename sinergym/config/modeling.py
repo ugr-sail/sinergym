@@ -116,25 +116,27 @@ class ModelJSON(object):
         :param weather_files: weather available files for each episode
         :param _weather_path: EPW path origin for apply weather to simulation in current episode.
         :param _ddy_path: DDY path origin for get DesignDays and weather Location
+        :param _idd: IDD opyplus object to set up Epm
         :param experiment_path: Path for Sinergym experiment output
         :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None)
         :param max_ep_store: Number of episodes directories will be stored in experiment_path
         :param config: Dict config with extra configuration which is required to modify building model (may be None)
-        :param _idd: IDD opyplus object to set up Epm
         :param building: Building model (Dictionary extracted from JSON)
         :param ddy_model: opyplus Epm object with DDY model
         :param weather_data: opyplus WeatherData object with EPW data
-        :param action_definition: Dict with action definition to automatic building model preparation.
+        :param zone_names: List of the zone names available in the building
+        :param schedulers: Information in Dict format about all building schedulers.
+        :param runperiod: Information in Dict format about runperiod that determine an episode.
+        :param episode_length: Time in seconds that an episode has.
+        :param step_size: Time in seconds that an step has.
     """
 
     def __init__(
             self,
+            env_name: str,
             json_file: str,
             weather_files: List[str],
-            variables: Dict[str, List[str]],
-            env_name: str,
             max_ep_store: int,
-            action_definition: Optional[Dict[str, Any]],
             extra_config: Dict[str, Any]):
 
         self.pkg_data_path = PKG_DATA_PATH
@@ -155,22 +157,10 @@ class ModelJSON(object):
         self._weather_path = os.path.join(
             self.pkg_data_path, 'weather', random.choice(self.weather_files))
 
-        # RDD file name is deducible using json name (only change .epJSON by
-        # .rdd)
-        self._rdd_path = os.path.join(
-            self.pkg_data_path,
-            'variables',
-            self._json_path.split('/')[-1].split('.epJSON')[0] +
-            '.rdd')
-
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
 
         # -------------------------------- File Models ------------------------------- #
-
-        # BCVTB variable as XMLtree
-        self.variables = variables
-        self.variables_tree = ElementTree.Element('BCVTB-variables')
 
         # Building model object (Python dictionaty from epJSON file)
         with open(self._json_path) as json_f:
@@ -183,36 +173,25 @@ class ModelJSON(object):
         # Weather data (opyplus object)
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
-        # Extract rdd observation variables names
-        data = pandas.read_csv(self._rdd_path, skiprows=1)
-        rdd_variable_names = list(map(
-            lambda name: name.split(' [')[0],
-            data['Variable Name [Units]'].tolist()))
-        rdd_variable_types = data['Var Type (reported time step)'].tolist()
-        assert len(rdd_variable_names) == len(
-            rdd_variable_types), 'RDD file: Number of variable names and variables types column should be the same.'
-        # self.rdd_variables is a dict with keys as name of the variable and
-        # body as variable type (Zone or HVAC)
-        self.rdd_variables = dict()
-        for i, variable_name in enumerate(rdd_variable_names):
-            self.rdd_variables[variable_name] = rdd_variable_types[i]
-
         # ----------------------------- Other attributes ----------------------------- #
 
-        self.experiment_path = self.set_experiment_working_dir(env_name)
-        self.episode_path = None
+        self.experiment_path = self._set_experiment_working_dir(env_name)
+        self.episode_path: Optional[str] = None
         self.max_ep_store = max_ep_store
         self.config = extra_config
-        self.action_definition = action_definition
+
         # Extract building zones
         self.zone_names = list(self.building['Zone'].keys())
         # Extract schedulers available in building model
         self.schedulers = self.get_schedulers()
 
+        # Runperiod information
+        self.runperiod = self._get_eplus_runperiod()
+        self.episode_length = self._get_runperiod_len()
+        self.step_size = 3600 / self.runperiod['n_steps_per_hour']
+
         # ------------------------ Checking config definition ------------------------ #
 
-        # Check observation variables definition
-        self._check_observation_variables()
         # Check config definition
         self._check_eplus_config()
 
