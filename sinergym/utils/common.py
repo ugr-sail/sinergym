@@ -187,12 +187,12 @@ def get_season_comfort_range(
     return comfort
 
 
-def export_actuators_to_excel(
-        actuators: Dict[str, Dict[str, Union[str, Dict[str, str]]]], path: str) -> None:  # pragma: no cover
-    """Given a python dictionary with actuators with Config:_get_actuators() format, this method export that information in a excel file
+def export_schedulers_to_excel(
+        schedulers: Dict[str, Dict[str, Union[str, Dict[str, str]]]], path: str) -> None:  # pragma: no cover
+    """Given a python dictionary with schedulers from modeling format, this method export that information in a excel file
 
     Args:
-        actuators (Dict[str, Dict[str, Union[str, Dict[str, str]]]]): Python dictionary with the format correctly.
+        schedulers (Dict[str, Dict[str, Union[str, Dict[str, str]]]]): Python dictionary with the format correctly.
         path (str): Relative path where excel file will be created.
     """
 
@@ -219,7 +219,7 @@ def export_actuators_to_excel(
     worksheet.write(current_row, current_col + 1, 'Type', keys_format)
     current_row += 1
 
-    for key, info in actuators.items():
+    for key, info in schedulers.items():
         worksheet.write(current_row, current_col, key, actuator_format)
         current_col += 1
         worksheet.write(current_row, current_col, info['Type'], cells_format)
