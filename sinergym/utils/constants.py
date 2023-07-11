@@ -20,6 +20,13 @@ YEAR = 1991
 # cwd
 CWD = os.getcwd()
 
+# Logger values (environment layer, simulator layer and modeling layer)
+LOG_ENV_LEVEL = 'INFO'
+LOG_SIM_LEVEL = 'INFO'
+LOG_MODEL_LEVEL = 'DEBUG'
+# LOG_FORMAT = "[%(asctime)s] %(name)s %(levelname)s:%(message)s"
+LOG_FORMAT = "[%(name)s] (%(levelname)s) : %(message)s"
+
 # ---------------------------------------------------------------------------- #
 #                          Normalization dictionaries                          #
 # ---------------------------------------------------------------------------- #
