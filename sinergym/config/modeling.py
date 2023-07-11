@@ -12,8 +12,9 @@ import numpy as np
 from eppy.modeleditor import IDF
 from opyplus import WeatherData
 
+from sinergym.utils.logger import Logger
 from sinergym.utils.common import eppy_element_to_dict, get_delta_seconds
-from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR
+from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR, LOG_MODEL_LEVEL, LOG_FORMAT
 
 
 class Model(ABC):
@@ -141,6 +142,13 @@ class ModelJSON(object):
 
         self.pkg_data_path = PKG_DATA_PATH
 
+        # ------------------------- Terminal Modeling Logger ------------------------- #
+
+        self.logger = Logger().getLogger(
+            name='MODELING',
+            level=LOG_MODEL_LEVEL,
+            formatter=LOG_FORMAT)
+
         # ----------------------- Transform filenames in paths ----------------------- #
 
         # JSON
@@ -189,11 +197,22 @@ class ModelJSON(object):
         self.runperiod = self._get_eplus_runperiod()
         self.episode_length = self._get_runperiod_len()
         self.step_size = 3600 / self.runperiod['n_steps_per_hour']
+        self.timestep_per_episode = self.episode_length / self.step_size
+
+        self.logger.info('runperiod established: {}'.format(self.runperiod))
+        self.logger.info(
+            'Episode length (seconds): {}'.format(
+                self.episode_length))
+        self.logger.info('timestep size (seconds): {}'.format(self.step_size))
+        self.logger.info(
+            'timesteps per episode: {}'.format(
+                self.timestep_per_episode))
 
         # ------------------------ Checking config definition ------------------------ #
 
         # Check config definition
         self._check_eplus_config()
+        self.logger.info('Model Config is correct.')
 
     # ---------------------------------------------------------------------------- #
     #                 Variables and Building model adaptation                      #
@@ -207,6 +226,10 @@ class ModelJSON(object):
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
         self.ddy_model = IDF(self._ddy_path)
         self.weather_data = WeatherData.from_epw(self._weather_path)
+        self.logger.debug(
+            '{} selected from {}'.format(
+                self._weather_path,
+                self.weather_files))
 
     def adapt_building_to_epw(
             self,
@@ -244,6 +267,8 @@ class ModelJSON(object):
         self.building['Site:Location'] = new_location
         self.building['SizingPeriod:DesignDay'] = new_designdays
 
+        self.logger.debug('Adapting weather to building model.')
+
     def apply_extra_conf(self) -> None:
         """Set extra configuration in building model
         """
@@ -253,6 +278,10 @@ class ModelJSON(object):
             if self.config.get('timesteps_per_hour'):
                 list(self.building['Timestep'].values())[
                     0]['number_of_timesteps_per_hour'] = self.config['timesteps_per_hour']
+
+                self.logger.debug(
+                    'timesteps_per_hour set up to {}'.format(
+                        self.config['timesteps_per_hour']))
 
             # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
             # end_day, end_month, end_year)
@@ -266,6 +295,8 @@ class ModelJSON(object):
                     self.config['runperiod'][3])
                 runperiod['end_month'] = int(self.config['runperiod'][4])
                 runperiod['end_year'] = int(self.config['runperiod'][5])
+
+                self.logger.debug('runperiod set up to {}'.format(runperiod))
 
     def save_building_model(self) -> str:
         """Take current building model and save as epJSON in current env_working_dir episode folder.
@@ -281,10 +312,15 @@ class ModelJSON(object):
             with open(episode_json_path, "w") as outfile:
                 json.dump(self.building, outfile, indent=4)
 
+            self.logger.debug(
+                'Saving episode building model... [{}]'.format(
+                    episode_json_path))
+
             return episode_json_path
         else:
-            raise RuntimeError(
-                '[Simulator Modeling] Episode path should be set before saving building model.')
+            self.logger.error(
+                'Episode path should be set before saving building model.')
+            raise RuntimeError
 
     def get_schedulers(self) -> Dict[str,
                                      Dict[str, Union[str, Dict[str, str]]]]:
@@ -386,8 +422,17 @@ class ModelJSON(object):
             filename += '_Random_%s_%s_%s.epw' % (
                 str(sigma), str(mu), str(tau))
 
+            self.logger.debug(
+                'Variation {} applied to {}',
+                variation,
+                episode_weather_path)
+
         episode_weather_path = self.episode_path + '/' + filename
         weather_data_mod.to_epw(episode_weather_path)
+
+        self.logger.debug(
+            'Saving episode weather path... [{}]'.format(episode_weather_path))
+
         return episode_weather_path
 
     # ---------------------------------------------------------------------------- #
@@ -465,6 +510,7 @@ class ModelJSON(object):
         # Generate episode dir path if experiment dir path has been created
         # previously
         if self.experiment_path is None:
+            self.logger.error('Experiment path is not specified.')
             raise Exception
         else:
             episode_path = self._get_working_folder(
@@ -477,6 +523,11 @@ class ModelJSON(object):
 
             # Remove redundant past working directories
             self._rm_past_history_dir(episode_path, '-sub_run')
+
+            self.logger.info(
+                'Episode directory created [{}]'.format(
+                    episode_path))
+
             return episode_path
 
     def _set_experiment_working_dir(self, env_name: str) -> str:
@@ -497,6 +548,10 @@ class ModelJSON(object):
         os.makedirs(experiment_path)
         # set path like config attribute
         self.experiment_path = experiment_path
+
+        self.logger.info(
+            'Experiment working directory created [{}]'.format(experiment_path))
+
         return experiment_path
 
     def _get_working_folder(
@@ -568,8 +623,12 @@ class ModelJSON(object):
         for w_file in self.weather_files:
             w_path = os.path.join(
                 self.pkg_data_path, 'weather', w_file)
-            assert os.path.isfile(
-                w_path), 'Weather files: {} is not a weather file available in Sinergym.'.format(w_file)
+            try:
+                assert os.path.isfile(w_path)
+            except AssertionError as err:
+                self.logger.critical(
+                    'Weather files: {} is not a weather file available in Sinergym.'.format(w_file))
+                raise err
 
         # EXTRA CONFIG
         if self.config is not None:
@@ -577,15 +636,25 @@ class ModelJSON(object):
                 # Check config parameters values
                 # Timesteps
                 if config_key == 'timesteps_per_hour':
-                    assert self.config[config_key] > 0, 'Extra Config: timestep_per_hour must be a positive int value.'
+                    try:
+                        assert self.config[config_key] > 0
+                    except AssertionError as err:
+                        self.logger.critical(
+                            'Extra Config: timestep_per_hour must be a positive int value.')
+                        raise err
                 # Runperiod
                 elif config_key == 'runperiod':
-                    assert isinstance(
-                        self.config[config_key], tuple) and len(
-                        self.config[config_key]) == 6, 'Extra Config: Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).'
-                else:  # pragma: no cover
-                    raise KeyError(
-                        F'Extra Config: Key name specified in config called [{config_key}] has no support in Sinergym.')
+                    try:
+                        assert isinstance(
+                            self.config[config_key], tuple) and len(
+                            self.config[config_key]) == 6
+                    except AssertionError as err:
+                        self.logger.critical(
+                            'Extra Config: Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).')
+                        raise err
+                else:
+                    self.logger.error(
+                        'Extra Config: Key name specified in config called [{}] is not available in Sinergym.'.format(config_key))
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #
