@@ -8,16 +8,11 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from pyenergyplus.api import EnergyPlusAPI
 
 import numpy as np
-from queue import Queue, Empty, Full
+from queue import Queue
 from sinergym.utils.common import *
-from logging import Logger
-
-
-LOG_LEVEL_MAIN = 'INFO'
-LOG_LEVEL_EPLS = 'FATAL'
-LOG_FMT = "[%(asctime)s] %(name)s %(levelname)s:%(message)s"
-
-VALID_TIME_VARIABLES = []
+from sinergym.utils.logger import Logger
+from sinergym.utils.constants import LOG_FORMAT, LOG_SIM_LEVEL
+from pathlib import Path
 
 
 class EnergyPlus(object):
@@ -50,9 +45,17 @@ class EnergyPlus(object):
         """
 
         # ---------------------------------------------------------------------------- #
-        #                               Attributes set up                              #
+        #                           Simulator Terminal Logger                          #
         # ---------------------------------------------------------------------------- #
 
+        self.logger = Logger().getLogger(
+            name='SIMULATOR',
+            level=LOG_SIM_LEVEL,
+            formatter=LOG_FORMAT)
+
+        # ---------------------------------------------------------------------------- #
+        #                               Attributes set up                              #
+        # ---------------------------------------------------------------------------- #
         # Gym communication queues
         self.obs_queue = obs_queue
         self.info_queue = info_queue
@@ -73,6 +76,7 @@ class EnergyPlus(object):
         self.var_handles: Dict[str, int] = {}
         self.meter_handles: Dict[str, int] = {}
         self.actuator_handles: Dict[str, int] = {}
+        self.available_data: Optional[str] = None
 
         # Simulation elements to read/write
         self.time_variables = time_variables
@@ -88,22 +92,19 @@ class EnergyPlus(object):
         self.callbacks_ready = False
         self.simulation_complete = False
 
-        # Logger
-        # self.logger = Logger().getLogger(
-        #     'EPLUS_ENV_EPLUS_API', LOG_LEVEL_MAIN, LOG_FMT)
-
         # Path attributes
         self._building_path = building_path
         self._weather_path = weather_path
         self._output_path = output_path
 
+        self.logger.debug('Energyplus simulator initialized.')
+
     # ---------------------------------------------------------------------------- #
     #                                 Main methods                                 #
     # ---------------------------------------------------------------------------- #
-
     def start(self) -> None:
         """Initializes all callbacks and handles required in the simulation
-           and start running the thread generated.
+           and start running the process generated.
         """
 
         # Initiate Energyplus state
@@ -111,8 +112,8 @@ class EnergyPlus(object):
         runtime = self.api.runtime
 
         # Disable default Energyplus Output
-        # self.api.runtime.set_console_output_status(
-        #     self.energyplus_state, False)
+        self.api.runtime.set_console_output_status(
+            self.energyplus_state, False)
 
         # Register callback used to track simulation progress
         def _progress_update(percent: int) -> None:
@@ -126,7 +127,8 @@ class EnergyPlus(object):
         def _warmup_complete(state: Any) -> None:
             self.warmup_complete = True
             self.warmup_queue.put(True)
-            print('Warmup process has been completed successfully.')
+            self.logger.debug(
+                'Warmup process has been completed successfully.')
 
         runtime.callback_after_new_environment_warmup_complete(
             self.energyplus_state, _warmup_complete)
@@ -165,6 +167,9 @@ class EnergyPlus(object):
             daemon=True
         )
 
+        self.logger.debug('Energyplus thread started.')
+        self.energyplus_thread.start()
+
     def stop(self) -> None:
         """It is called when simulation ends, setting up the simulation complete flag to True, cleaning all queues,
            thread is deleted, callbacks are cleaned and Energyplus state removed.
@@ -177,6 +182,7 @@ class EnergyPlus(object):
             self.api.runtime.clear_callbacks()
             self.api.state_manager.delete_state(
                 self.energyplus_state)
+            self.logger.debug('Energyplus thread stopped.')
 
     def failed(self) -> bool:
         """Method to determine if simulation has failed.
@@ -216,7 +222,6 @@ class EnergyPlus(object):
         if self.simulation_complete:
             return
         if not self._init_callback(state_argument):
-            print('PIPOPIPOPIPOI')
             return
 
         # Obtain observation (time_variables, variables and meters) values in dict
@@ -244,6 +249,7 @@ class EnergyPlus(object):
         }
 
         # Put in the queue the observation
+        self.logger.debug('OBSERVATION put in QUEUE: {}'.format(self.next_obs))
         self.obs_queue.put(self.next_obs)
 
     def _collect_info(self, state_argument: int) -> None:
@@ -258,20 +264,19 @@ class EnergyPlus(object):
         if self.simulation_complete:
             return
         if not self._init_callback(state_argument):
-            print('PIPOPIPOPIPOI')
             return
 
         # Mount the info dict in queue
         self.next_info = {
             # 'timestep': self.exchange.system_time_step(state_argument),
-            'time_elapsed': self.exchange.current_sim_time(state_argument),
+            'time_elapsed(hours)': self.exchange.current_sim_time(state_argument),
             'year': self.exchange.year(state_argument),
             'month': self.exchange.month(state_argument),
             'day': self.exchange.day_of_month(state_argument),
             'hour': self.exchange.hour(state_argument),
             'is_raining': self.exchange.is_raining(state_argument)
         }
-
+        self.logger.debug('INFO put in QUEUE: {}'.format(self.next_obs))
         self.info_queue.put(self.next_info)
 
     def _process_action(self, state_argument: int) -> None:
@@ -291,14 +296,20 @@ class EnergyPlus(object):
             return
         # Get next action from queue and check type
         next_action = self.act_queue.get()
+        self.logger.debug('ACTION get from queue: {}'.format(next_action))
 
         # Set the action values obtained in actuator handles
-        for i, act_handle in enumerate(list(self.actuator_handles.values())):
+        for i, (act_name, act_handle) in enumerate(
+                self.actuator_handles.items()):
             self.exchange.set_actuator_value(
                 state=state_argument,
                 actuator_handle=act_handle,
                 actuator_value=next_action[i]
             )
+
+            self.logger.debug(
+                'Set in actuator {} value {}.'.format(
+                    act_name, next_action[i]))
 
     def _init_callback(self, state_argument: int) -> bool:
         """Indicate whether callbacks are ready to work.
@@ -315,7 +326,7 @@ class EnergyPlus(object):
             state_argument)
         return self.callbacks_ready
 
-    def _init_handles(self, state_argument: int) -> bool:
+    def _init_handles(self, state_argument: int) -> None:
         """initialize sensors/actuators handles to interact with during simulation.
 
         Args:
@@ -355,6 +366,30 @@ class EnergyPlus(object):
             with open(parent_dir + '/data_available.txt', "w") as txt_file:
                 txt_file.writelines([line + '\n' for line in data])
 
+            # Check handles specified exists
+            for variable_name, handle_value in self.var_handles.items():
+                try:
+                    assert handle_value > 0
+                except AssertionError as err:
+                    self.logger.error(
+                        'Variable Handles: {} is not an available variable, check your variable names and be sure that exists in data_available.txt'.format(variable_name))
+
+            for meter_name, handle_value in self.meter_handles.items():
+                try:
+                    assert handle_value > 0
+                except AssertionError as err:
+                    self.logger.error(
+                        'Meter Handles: {} is not an available meter, check your meter names and be sure that exists in data_available.txt'.format(meter_name))
+
+            for actuator_name, handle_value in self.meter_handles.items():
+                try:
+                    assert handle_value > 0
+                except AssertionError as err:
+                    self.logger.error(
+                        'Actuator Handles: {} is not an available actuator, check your meter names and be sure that exists in data_available.txt'.format(actuator_name))
+
+            self.logger.info('HANDLES initialized.')
+
             self.initialized_handles = True
 
     def _flush_queues(self) -> None:
@@ -363,19 +398,20 @@ class EnergyPlus(object):
         for q in [self.obs_queue, self.act_queue, self.warmup_queue]:
             while not q.empty():
                 q.get()
+        self.logger.debug('Simulator queues emptied.')
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #
     # ---------------------------------------------------------------------------- #
 
     # @property
-    # def var_handles(self) -> Optional[int]:
+    # def var_handles(self) -> Optional[Dict[str,int]]:
     #     return self.var_handles
 
     # @property
-    # def meter_handles(self) -> Optional[int]:
+    # def meter_handles(self) -> Optional[Dict[str,int]]:
     #     return self.meter_handles
 
     # @property
-    # def actuator_handles(self) -> Optional[int]:
+    # def actuator_handles(self) -> Optional[Dict[str,int]]:
     #     return self.actuator_handles
