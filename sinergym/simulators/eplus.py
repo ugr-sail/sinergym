@@ -344,22 +344,16 @@ class EnergyPlus(object):
                 for key, actuator in self.actuators.items()
             }
 
-            for handles in [
-                self.var_handles,
-                self.meter_handles,
-                self.actuator_handles
-            ]:
-                # If any handle have value -1, it notifies error name
-                if any([v == -1 for v in handles.values()]):
-                    available_data = self.exchange.list_available_api_data_csv(
-                        state_argument).decode('utf-8')
-                    print(
-                        f"got -1 handle, check your var/meter/actuator names:\n"
-                        f"> variables: {self.var_handles}\n"
-                        f"> meters: {self.meter_handles}\n"
-                        f"> actuators: {self.actuator_handles}\n"
-                        f"> available E+ API data: {available_data}")
-                    exit(1)
+            # Save available_data information
+            self.available_data = self.exchange.list_available_api_data_csv(
+                state_argument).decode('utf-8')
+
+            # write available_data.csv in parent output_path
+            parent_dir = Path(
+                self._output_path).parent.parent.absolute().__str__()
+            data = self.available_data.splitlines()
+            with open(parent_dir + '/data_available.txt', "w") as txt_file:
+                txt_file.writelines([line + '\n' for line in data])
 
             self.initialized_handles = True
 
