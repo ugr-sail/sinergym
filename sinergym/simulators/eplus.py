@@ -212,8 +212,9 @@ class EnergyPlus(object):
             state_argument (int): EnergyPlus API state
         """
 
-        # If simulation is complete --> Error
-        assert not self.simulation_complete, 'Energyplus: Trying to collect info when simulation is completed'
+        # if simulation is completed or not initialized --> do nothing
+        if self.simulation_complete:
+            return
         if not self._init_callback(state_argument):
             print('PIPOPIPOPIPOI')
             return
@@ -254,7 +255,8 @@ class EnergyPlus(object):
         """
 
         # If simulation is complete or not initialized --> do nothing
-        assert not self.simulation_complete, 'Energyplus: Trying to collect info when simulation is completed'
+        if self.simulation_complete:
+            return
         if not self._init_callback(state_argument):
             print('PIPOPIPOPIPOI')
             return
@@ -280,8 +282,8 @@ class EnergyPlus(object):
         """
 
         # If simulation is complete or not initialized --> do nothing
-        assert not self.simulation_complete, 'Energyplus: Trying to process an action when simulation is completed'
-
+        if self.simulation_complete:
+            return
         if not self._init_callback(state_argument):
             return
         # If not value in action queue --> do nothing
