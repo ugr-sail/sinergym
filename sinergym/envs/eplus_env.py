@@ -2,9 +2,9 @@
 Gym environment for simulation with EnergyPlus.
 """
 
-import os
 import random
 from typing import Any, Dict, List, Optional, Tuple, Union
+from sinergym.utils.logger import Logger
 
 import gymnasium as gym
 import numpy as np
@@ -13,6 +13,7 @@ from sinergym.simulators import EnergyPlus
 from queue import Queue, Empty, Full
 from sinergym.config import ModelJSON
 from sinergym.utils.rewards import *
+from sinergym.utils.constants import LOG_FORMAT, LOG_ENV_LEVEL
 
 
 class EplusEnv(gym.Env):
@@ -62,9 +63,20 @@ class EplusEnv(gym.Env):
         """
 
         # ---------------------------------------------------------------------------- #
-        #                                     Paths                                    #
+        #                          Environment Terminal Logger                         #
         # ---------------------------------------------------------------------------- #
 
+        self.logger = Logger().getLogger(
+            name='ENVIRONMENT',
+            level=LOG_ENV_LEVEL,
+            formatter=LOG_FORMAT)
+
+        self.logger.info(
+            'Creating Gymnasium environment... [{}]'.format(env_name))
+
+        # ---------------------------------------------------------------------------- #
+        #                                     Paths                                    #
+        # ---------------------------------------------------------------------------- #
         # building file
         self.building_file = building_file
         # EPW file(s) (str or List of EPW's)
@@ -165,10 +177,12 @@ class EplusEnv(gym.Env):
 
         # Discrete
         if self.flag_discrete:
+            self.logger.debug('Discrete environment detected.')
             self.action_mapping = action_mapping
             self._action_space = action_space
         # Continuous
         else:
+            self.logger.debug('Continuous environment detected.')
             # Defining the normalized space (always [-1,1])
             self.normalized_space = gym.spaces.Box(
                 # continuous_action_def[2] --> shape
@@ -200,8 +214,10 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         #                        Environment definition checker                        #
         # ---------------------------------------------------------------------------- #
-
+        self.logger.debug('Passing the environment checker...')
         self._check_eplus_env()
+
+        self.logger.info('{} created successfully.'.format(env_name))
 
     # ---------------------------------------------------------------------------- #
     #                                     RESET                                    #
@@ -241,7 +257,9 @@ class EplusEnv(gym.Env):
         self.last_info = {'timestep': self.timestep}
 
         # ------------------------ Preparation for new episode ----------------------- #
-
+        self.logger.info(
+            'Starting a new episode... [Episode {}]'.format(
+                self.episode))
         # Get new episode working dir
         self.episode_dir = self.model.set_episode_working_dir()
         # get weather path and readapt building
@@ -249,9 +267,12 @@ class EplusEnv(gym.Env):
         self.model.adapt_building_to_epw()
         # Getting building, weather and Energyplus output directory
         eplus_working_building_path = self.model.save_building_model()
-        eplus_working_out_path = (self.episode_dir + '/' + 'output')
         eplus_working_weather_path = self.model.apply_weather_variability(
             variation=options.get('weather_variability'))
+        eplus_working_out_path = (self.episode_dir + '/' + 'output')
+        self.logger.info(
+            'Saving episode output path... [{}]'.format(
+                eplus_working_out_path))
 
         self.energyplus_simulation = EnergyPlus(
             building_path=eplus_working_building_path,
@@ -267,32 +288,36 @@ class EplusEnv(gym.Env):
         )
 
         self.energyplus_simulation.start()
+        self.logger.info('Episode {} started.'.format(self.episode))
 
         # wait for E+ warmup to complete
         if not self.energyplus_simulation.warmup_complete:
+            self.logger.debug('Waiting for finishing WARMUP process.')
             self.energyplus_simulation.warmup_queue.get()
-
-        # Wait to receive simulation first observation and info
-        # try:
-            # obs = self.obs_queue.get()
-        # except Empty:
-        #     obs = self.last_obs
+            self.logger.debug('WARMUP process finished.')
 
         # Wait to receive simulation first observation and info
         try:
             obs = self.obs_queue.get()
         except Empty:
+            self.logger.warning(
+                'Reset: Observation queue empty, returning a random observation (not real).')
             obs = self.last_obs
 
         try:
             info = self.info_queue.get()
         except Empty:
             info = self.last_info
+            self.logger.warning(
+                'Reset: info queue empty, returning an empty info dictionary (not real).')
 
         info = self.info_queue.get()
         info.update({'timestep': self.timestep})
         self.last_obs = obs
         self.last_info = info
+
+        self.logger.debug('RESET observation received: {}'.format(obs))
+        self.logger.debug('RESET info received: {}'.format(info))
 
         return np.array(list(obs.values()), dtype=np.float32), info
 
@@ -316,26 +341,42 @@ class EplusEnv(gym.Env):
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
         """
 
+        # timestep +1 and flags initialization
+        self.timestep += 1
+        terminated = truncated = False
+
         # Check if action is correct for the current action space
-        assert self._action_space.contains(
-            action), 'Step: The action {} is not correct for the Action Space {}'.format(action, self._action_space)
+        try:
+            assert self._action_space.contains(
+                action)
+        except AssertionError as err:
+            self.logger.error(
+                'Step: The action {} is not correct for the Action Space {}'.format(
+                    action, self._action_space))
+
         # Check if episode existed and is not terminated
-        assert self.energyplus_simulation, 'Step: Environment requires to be reset before.'
+        try:
+            assert self.energyplus_simulation
+        except AssertionError as err:
+            self.logger.critical(
+                'Step: Environment requires to be reset before.')
+            raise err
 
         # check for simulation errors
-        if self.energyplus_simulation.failed():
-            print(
-                f"EnergyPlus failed with {self.energyplus_simulation.sim_results['exit_code']}")
-            exit(1)
-
-        self.timestep += 1
-
-        terminated = truncated = False
+        try:
+            assert not self.energyplus_simulation.failed()
+        except AssertionError as err:
+            self.logger.critical(
+                'EnergyPlus failed with exit code {}'.format(
+                    self.energyplus_simulation.sim_results['exit_code']))
+            raise err
 
         # Get real action (action --> action_)
         action_ = self._get_action(action)
 
         if self.energyplus_simulation.simulation_complete:
+            self.logger.debug(
+                'Trying STEP in a simulation completed, changing TERMINATED flag to TRUE.')
             terminated = True
             obs = self.last_obs
             info = self.last_info
@@ -352,6 +393,8 @@ class EplusEnv(gym.Env):
                 self.last_obs = obs = self.obs_queue.get(timeout=timeout)
                 self.last_info = info = self.info_queue.get(timeout=timeout)
             except (Full, Empty):
+                self.logger.warning(
+                    'STEP queues full or empty, set TRUNCATED flag and returning last obs and info.')
                 truncated = True
                 obs = self.last_obs
                 info = self.last_info
@@ -364,6 +407,12 @@ class EplusEnv(gym.Env):
                     'reward': reward})
         info.update(rw_terms)
         self.last_info = info
+
+        self.logger.debug('STEP observation: {}'.format(obs))
+        self.logger.debug('STEP reward: {}'.format(reward))
+        self.logger.debug('STEP terminated: {}'.format(terminated))
+        self.logger.debug('STEP truncated: {}'.format(truncated))
+        self.logger.debug('STEP info: {}'.format(info))
 
         return np.array(list(obs.values()), dtype=np.float32
                         ), reward, terminated, truncated, info
@@ -384,8 +433,8 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     def close(self) -> None:
         """End simulation."""
-
         self.energyplus_simulation.stop()
+        self.logger.info('Environment closed.')
 
     # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #
@@ -460,49 +509,115 @@ class EplusEnv(gym.Env):
         Args:
             value (bool): New flag_normalization attribute value
         """
-
-        self.flag_normalization = value
-        self._action_space = self.normalized_space if value else self.real_space
+        try:
+            assert not self.flag_discrete
+            self.flag_normalization = value
+            self._action_space = self.normalized_space if value else self.real_space
+            self.logger.debug(
+                'normalization flag set up to {}, now environment action space is {}'.format(
+                    self.flag_normalization, self.action_space))
+        except AssertionError as err:
+            self.logger.error(
+                'Only discrete environments can update the normalization flag.')
 
     def _check_eplus_env(self) -> None:
         """This method checks that environment definition is correct and it has not inconsistencies.
         """
         # OBSERVATION
-        assert len(self.observation_variables) == self._observation_space.shape[
-            0], 'Observation space has not the same length than variable names specified.'
+        try:
+            assert len(
+                self.observation_variables) == self._observation_space.shape[0]
+        except AssertionError as err:
+            self.logger.error(
+                'Observation space has not the same length than variable names specified.')
+            raise err
 
         # ACTION
+        # Discrete
         if self.flag_discrete:
-            assert hasattr(
-                self, 'action_mapping'), 'Discrete environment: action mapping should have been defined.'
-            assert not hasattr(
-                self, 'real_space'), 'Discrete environment: real_space should not have been defined.'
-            assert not hasattr(
-                self, 'normalized_space'), 'Discrete environment: normalized_space should not have been defined.'
-            assert not hasattr(
-                self, 'flag_normalization'), 'Discrete environment: flag_normalization should not have been defined.'
-            assert self._action_space.n == len(
-                self.action_mapping), 'Discrete environment: The length of the action_mapping must match the dimension of the discrete action space.'
+            try:
+                assert hasattr(self, 'action_mapping')
+            except AssertionError as err:
+                self.logger.error(
+                    'Discrete environment: action mapping should have been defined.')
+                raise err
+
+            try:
+                assert not hasattr(self, 'real_space')
+            except AssertionError as err:
+                self.logger.warning(
+                    'Discrete environment: real_space should not have been defined.')
+
+            try:
+                assert not hasattr(self, 'normalized_space')
+            except AssertionError as err:
+                self.logger.warning(
+                    'Discrete environment: normalized_space should not have been defined.')
+
+            try:
+                assert not hasattr(self, 'flag_normalization')
+            except AssertionError as err:
+                self.logger.warning(
+                    'Discrete environment: flag_normalization should not have been defined.')
+
+            try:
+                assert self._action_space.n == len(self.action_mapping)
+            except AssertionError as err:
+                self.logger.critical(
+                    'Discrete environment: The length of the action_mapping must match the dimension of the discrete action space.')
+                raise err
+
             for values in self.action_mapping.values():
-                assert len(values) == len(
-                    self.action_variables), 'Discrete environment: Action mapping tuples values must have the same length than action variables specified.'
+                try:
+                    assert len(values) == len(self.action_variables)
+                except AssertionError as err:
+                    self.logger.critical(
+                        'Discrete environment: Action mapping tuples values must have the same length than action variables specified.')
+                    raise err
+        # Continuous
         else:
-            assert len(self.action_variables) == self._action_space.shape[
-                0], 'Action space shape must match with number of action variables specified.'
-            assert hasattr(
-                self, 'flag_normalization'), 'Continuous environment: flag_normalization attribute should have been defined.'
-            assert hasattr(
-                self, 'normalized_space'), 'Continuous environment: normalized_space attribute should have been defined.'
-            assert hasattr(
-                self, 'real_space'), 'Continuous environment: real_space attribute should have been defined.'
-            assert not hasattr(
-                self, 'action_mapping'), 'Continuous environment: action mapping should not have been defined.'
+            try:
+                assert len(
+                    self.action_variables) == self._action_space.shape[0]
+            except AssertionError as err:
+                self.logger.critical(
+                    'Action space shape must match with number of action variables specified.')
+                raise err
+
+            try:
+                assert hasattr(self, 'flag_normalization')
+            except AssertionError as err:
+                self.logger.error(
+                    'Continuous environment: flag_normalization attribute should have been defined.')
+                raise err
+
+            try:
+                assert hasattr(self, 'normalized_space')
+            except AssertionError as err:
+                self.logger.error(
+                    'Continuous environment: normalized_space attribute should have been defined.')
+                raise err
+
+            try:
+                assert hasattr(self, 'real_space')
+            except AssertionError as err:
+                self.logger.error(
+                    'Continuous environment: real_space attribute should have been defined.')
+                raise err
+
+            try:
+                assert not hasattr(self, 'action_mapping')
+            except AssertionError as err:
+                self.logger.warning(
+                    'Continuous environment: action mapping should not have been defined.')
+                raise err
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #
     # ---------------------------------------------------------------------------- #
 
     # ---------------------------------- Spaces ---------------------------------- #
+
     @property
     def action_space(
         self
@@ -522,6 +637,24 @@ class EplusEnv(gym.Env):
     @observation_space.setter
     def observation_space(self, space: gym.spaces.Space[Any]):
         self._observation_space = space
+
+    # --------------------------------- Simulator -------------------------------- #
+
+    @property
+    def var_handles(self) -> Optional[Dict[str, int]]:
+        return self.energyplus_simulation.var_handles
+
+    @property
+    def meter_handles(self) -> Optional[Dict[str, int]]:
+        return self.energyplus_simulation.meter_handles
+
+    @property
+    def actuator_handles(self) -> Optional[Dict[str, int]]:
+        return self.energyplus_simulation.actuator_handles
+
+    @property
+    def available_handlers(self) -> Optional[str]:
+        return self.energyplus_simulation.available_data
 
     # ------------------------------ Building model ------------------------------ #
     @property
