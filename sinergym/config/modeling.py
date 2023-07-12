@@ -14,7 +14,7 @@ from opyplus import WeatherData
 
 from sinergym.utils.logger import Logger
 from sinergym.utils.common import eppy_element_to_dict, get_delta_seconds
-from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR, LOG_MODEL_LEVEL, LOG_FORMAT
+from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR, LOG_MODEL_LEVEL
 
 
 class Model(ABC):
@@ -146,8 +146,7 @@ class ModelJSON(object):
 
         self.logger = Logger().getLogger(
             name='MODELING',
-            level=LOG_MODEL_LEVEL,
-            formatter=LOG_FORMAT)
+            level=LOG_MODEL_LEVEL)
 
         # ----------------------- Transform filenames in paths ----------------------- #
 

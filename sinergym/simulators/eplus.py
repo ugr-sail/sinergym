@@ -11,7 +11,7 @@ import numpy as np
 from queue import Queue
 from sinergym.utils.common import *
 from sinergym.utils.logger import Logger
-from sinergym.utils.constants import LOG_FORMAT, LOG_SIM_LEVEL
+from sinergym.utils.constants import LOG_SIM_LEVEL
 from pathlib import Path
 
 
@@ -50,8 +50,7 @@ class EnergyPlus(object):
 
         self.logger = Logger().getLogger(
             name='SIMULATOR',
-            level=LOG_SIM_LEVEL,
-            formatter=LOG_FORMAT)
+            level=LOG_SIM_LEVEL)
 
         # ---------------------------------------------------------------------------- #
         #                               Attributes set up                              #

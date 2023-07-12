@@ -23,7 +23,7 @@ CWD = os.getcwd()
 # Logger values (environment layer, simulator layer and modeling layer)
 LOG_ENV_LEVEL = 'INFO'
 LOG_SIM_LEVEL = 'INFO'
-LOG_MODEL_LEVEL = 'DEBUG'
+LOG_MODEL_LEVEL = 'INFO'
 # LOG_FORMAT = "[%(asctime)s] %(name)s %(levelname)s:%(message)s"
 LOG_FORMAT = "[%(name)s] (%(levelname)s) : %(message)s"
 
@@ -332,34 +332,40 @@ RANGES_SHOP = {'Cooling_Setpoint_RL': [22.500051, 29.999975],
 #                       Default Eplus Environments values                      #
 # ---------------------------------------------------------------------------- #
 
+# ---------------------------------- GENERAL --------------------------------- #
+DEFAULT_TIME_VARIABLES = ['year', 'month', 'day_of_month', 'hour']
+
 # -------------------------------------5ZONE---------------------------------- #
 
-DEFAULT_5ZONE_OBSERVATION_VARIABLES = [
-    'Site Outdoor Air Drybulb Temperature(Environment)',
-    'Site Outdoor Air Relative Humidity(Environment)',
-    'Site Wind Speed(Environment)',
-    'Site Wind Direction(Environment)',
-    'Site Diffuse Solar Radiation Rate per Area(Environment)',
-    'Site Direct Solar Radiation Rate per Area(Environment)',
-    'Zone Thermostat Heating Setpoint Temperature(SPACE1-1)',
-    'Zone Thermostat Cooling Setpoint Temperature(SPACE1-1)',
-    'Zone Air Temperature(SPACE1-1)',
-    'Zone Air Relative Humidity(SPACE1-1)',
-    'Zone People Occupant Count(SPACE1-1)',
-    'People Air Temperature(SPACE1-1 PEOPLE 1)',
-    'Facility Total HVAC Electricity Demand Rate(Whole Building)'
-]
+DEFAULT_5ZONE_OBSERVATION_SPACE = None
 
-DEFAULT_5ZONE_ACTION_VARIABLES = [
-    'Heating_Setpoint_RL',
-    'Cooling_Setpoint_RL',
-]
+DEFAULT_5ZONE_ACTION_VARIABLES = []
 
-DEFAULT_5ZONE_OBSERVATION_SPACE = gym.spaces.Box(
-    low=-5e6,
-    high=5e6,
-    shape=(len(DEFAULT_5ZONE_OBSERVATION_VARIABLES) + 4,),
-    dtype=np.float32)
+DEFAULT_5ZONE_OBSERVATION_VARIABLES = []
+
+DEFAULT_5ZONE_ACTION_DEFINITION = {}
+
+DEFAULT_5ZONE_VARIABLES = {
+    "var1": (
+        "Site Outdoor Air DryBulb Temperature",
+        "Environment"),
+    "var2": (
+        "Zone Air Temperature",
+        "SPACE1-1"),
+    "var3": (
+        "Facility Total Purchased Electricity Energy",
+        "Whole Building"),
+    "var4": ('Site Outdoor Air Relative Humidity', 'Environment')
+}
+
+DEFAULT_5ZONE_METERS = {}
+
+DEFAULT_5ZONE_ACTUATORS = {
+    'setpoint': (
+        'System Node Setpoint',
+        'Temperature Setpoint',
+        'OUTSIDE AIR INLET NODE 1')
+}
 
 DEFAULT_5ZONE_ACTION_MAPPING = {
     0: (15, 30),
@@ -377,16 +383,11 @@ DEFAULT_5ZONE_ACTION_MAPPING = {
 DEFAULT_5ZONE_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 22.5], dtype=np.float32),
-    high=np.array([22.5, 30.0], dtype=np.float32),
-    shape=(2,),
+    low=np.array([15.0], dtype=np.float32),
+    high=np.array([22.5], dtype=np.float32),
+    shape=(1,),
     dtype=np.float32
 )
-
-DEFAULT_5ZONE_ACTION_DEFINITION = {
-    'Htg-SetP-Sch': {'name': 'Heating_Setpoint_RL', 'initial_value': 21},
-    'Clg-SetP-Sch': {'name': 'Cooling_Setpoint_RL', 'initial_value': 25},
-}
 
 # ----------------------------------DATACENTER--------------------------------- #
 DEFAULT_DATACENTER_OBSERVATION_VARIABLES = [

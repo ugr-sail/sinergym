@@ -13,7 +13,7 @@ from sinergym.simulators import EnergyPlus
 from queue import Queue, Empty, Full
 from sinergym.config import ModelJSON
 from sinergym.utils.rewards import *
-from sinergym.utils.constants import LOG_FORMAT, LOG_ENV_LEVEL
+from sinergym.utils.constants import LOG_ENV_LEVEL
 
 
 class EplusEnv(gym.Env):
@@ -68,8 +68,7 @@ class EplusEnv(gym.Env):
 
         self.logger = Logger().getLogger(
             name='ENVIRONMENT',
-            level=LOG_ENV_LEVEL,
-            formatter=LOG_FORMAT)
+            level=LOG_ENV_LEVEL)
 
         self.logger.info(
             'Creating Gymnasium environment... [{}]'.format(env_name))
