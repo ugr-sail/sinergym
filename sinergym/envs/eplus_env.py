@@ -350,7 +350,7 @@ class EplusEnv(gym.Env):
             assert self._action_space.contains(
                 action)
         except AssertionError as err:
-            self.logger.error(
+            self.logger.warning(
                 'Step: The action {} is not correct for the Action Space {}'.format(
                     action, self._action_space))
 
