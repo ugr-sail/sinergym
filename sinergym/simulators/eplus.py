@@ -27,9 +27,6 @@ class EnergyPlus(object):
 
     def __init__(
             self,
-            building_path: str,
-            weather_path: str,
-            output_path: str,
             obs_queue: Queue,
             info_queue: Queue,
             act_queue: Queue,
@@ -40,9 +37,6 @@ class EnergyPlus(object):
         """EnergyPlus simulation run class. This class run an episode
 
         Args:
-            building_path (str): EnergyPlus input description file path.
-            weather_path (str): EnergyPlus weather path.
-            output_path (str): Path where EnergyPlus process is going to allocate its output files.
             obs_queue (Queue): Observation queue for Gymnasium environment communication.
             info_queue (Queue): Extra information dict queue for Gymnasium environment communication.
             act_queue (Queue): Action queue for Gymnasium environment communication.
@@ -69,10 +63,10 @@ class EnergyPlus(object):
         self.exchange = self.api.exchange
 
         # Handles
-        self.var_handles: Dict[str, int] = {}
-        self.meter_handles: Dict[str, int] = {}
-        self.actuator_handles: Dict[str, int] = {}
-        self.available_data: Optional[str] = None
+        self.var_handles: Optional[Dict[str, int]] = None
+        self.meter_handles: Optional[Dict[str, int]] = None
+        self.actuator_handles: Optional[Dict[str, int]] = None
+        self.available_data: Optional[Dict[str, int]] = None
 
         # Simulation elements to read/write
         self.time_variables = time_variables
@@ -88,20 +82,28 @@ class EnergyPlus(object):
         self.system_ready = False
         self.simulation_complete = False
 
-        # Path attributes
-        self._building_path = building_path
-        self._weather_path = weather_path
-        self._output_path = output_path
-
         self.logger.debug('Energyplus simulator initialized.')
 
     # ---------------------------------------------------------------------------- #
     #                                 Main methods                                 #
     # ---------------------------------------------------------------------------- #
-    def start(self) -> None:
+    def start(self,
+              building_path: str,
+              weather_path: str,
+              output_path: str) -> None:
         """Initializes all callbacks and handles required in the simulation
            and start running the process generated.
+
+        Args:
+            building_path (str): EnergyPlus input description file path.
+            weather_path (str): EnergyPlus weather path.
+            output_path (str): Path where EnergyPlus process is going to allocate its output files.
         """
+
+        # Path attributes
+        self._building_path = building_path
+        self._weather_path = weather_path
+        self._output_path = output_path
 
         # Initiate Energyplus state
         self.energyplus_state = self.api.state_manager.new_state()
@@ -171,13 +173,24 @@ class EnergyPlus(object):
            thread is deleted, callbacks are cleaned and Energyplus state removed.
         """
         if self.energyplus_thread:
+            # Set simulation as complete and force thread to finish
             self.simulation_complete = True
             self._flush_queues()
             self.energyplus_thread.join()
+            # Delete thread
             self.energyplus_thread = None
+            # Clean runtime callbacks
             self.api.runtime.clear_callbacks()
+            # Clean Energyplus state
             self.api.state_manager.delete_state(
                 self.energyplus_state)
+            # Set flags to default value
+            self.sim_results: Dict[str, Any] = {}
+            self.warmup_complete = False
+            self.initialized_handles = False
+            self.system_ready = False
+            self.simulation_complete = False
+
             self.logger.debug('Energyplus thread stopped.')
 
     def failed(self) -> bool:
@@ -334,62 +347,65 @@ class EnergyPlus(object):
 
         """
         # api data must be fully ready, else nothing happens
-        if self.exchange.api_data_fully_ready(state_argument):
+        if self.exchange.api_data_fully_ready(
+                state_argument) and not self.initialized_handles:
 
-            # Get variable handles using variables info
-            self.var_handles = {
-                key: self.exchange.get_variable_handle(state_argument, *var)
-                for key, var in self.variables.items()
-            }
+            if self.var_handles is None or self.meter_handles is None or self.actuator_handles is None:
+                # Get variable handles using variables info
+                self.var_handles = {
+                    key: self.exchange.get_variable_handle(state_argument, *var)
+                    for key, var in self.variables.items()
+                }
 
-            # Get meter handles using meters info
-            self.meter_handles = {
-                key: self.exchange.get_meter_handle(state_argument, meter)
-                for key, meter in self.meters.items()
-            }
+                # Get meter handles using meters info
+                self.meter_handles = {
+                    key: self.exchange.get_meter_handle(state_argument, meter)
+                    for key, meter in self.meters.items()
+                }
 
-            # Get actuator handles using actuators info
-            self.actuator_handles = {
-                key: self.exchange.get_actuator_handle(
-                    state_argument, *actuator)
-                for key, actuator in self.actuators.items()
-            }
+                # Get actuator handles using actuators info
+                self.actuator_handles = {
+                    key: self.exchange.get_actuator_handle(
+                        state_argument, *actuator)
+                    for key, actuator in self.actuators.items()
+                }
 
-            # Save available_data information
-            self.available_data = self.exchange.list_available_api_data_csv(
-                state_argument).decode('utf-8')
+                # Save available_data information
+                self.available_data = self.exchange.list_available_api_data_csv(
+                    state_argument).decode('utf-8')
 
-            # write available_data.csv in parent output_path
-            parent_dir = Path(
-                self._output_path).parent.parent.absolute().__str__()
-            data = self.available_data.splitlines()
-            with open(parent_dir + '/data_available.txt', "w") as txt_file:
-                txt_file.writelines([line + '\n' for line in data])
+                # write available_data.csv in parent output_path
+                parent_dir = Path(
+                    self._output_path).parent.parent.absolute().__str__()
+                data = self.available_data.splitlines()
+                with open(parent_dir + '/data_available.txt', "w") as txt_file:
+                    txt_file.writelines([line + '\n' for line in data])
 
-            # Check handles specified exists
-            for variable_name, handle_value in self.var_handles.items():
-                try:
-                    assert handle_value > 0
-                except AssertionError as err:
-                    self.logger.error(
-                        'Variable Handles: {} is not an available variable, check your variable names and be sure that exists in data_available.txt'.format(variable_name))
+                # Check handles specified exists
+                for variable_name, handle_value in self.var_handles.items():
+                    try:
+                        assert handle_value > 0
+                    except AssertionError as err:
+                        self.logger.error(
+                            'Variable Handles: {} is not an available variable, check your variable names and be sure that exists in data_available.txt'.format(variable_name))
 
-            for meter_name, handle_value in self.meter_handles.items():
-                try:
-                    assert handle_value > 0
-                except AssertionError as err:
-                    self.logger.error(
-                        'Meter Handles: {} is not an available meter, check your meter names and be sure that exists in data_available.txt'.format(meter_name))
+                for meter_name, handle_value in self.meter_handles.items():
+                    try:
+                        assert handle_value > 0
+                    except AssertionError as err:
+                        self.logger.error(
+                            'Meter Handles: {} is not an available meter, check your meter names and be sure that exists in data_available.txt'.format(meter_name))
 
-            for actuator_name, handle_value in self.meter_handles.items():
-                try:
-                    assert handle_value > 0
-                except AssertionError as err:
-                    self.logger.error(
-                        'Actuator Handles: {} is not an available actuator, check your meter names and be sure that exists in data_available.txt'.format(actuator_name))
+                for actuator_name, handle_value in self.meter_handles.items():
+                    try:
+                        assert handle_value > 0
+                    except AssertionError as err:
+                        self.logger.error(
+                            'Actuator Handles: {} is not an available actuator, check your meter names and be sure that exists in data_available.txt'.format(actuator_name))
 
-            self.logger.info('HANDLES initialized.')
+                self.logger.info('Handles initialized.')
 
+            self.logger.info('Handles are ready.')
             self.initialized_handles = True
 
     def _flush_queues(self) -> None:
