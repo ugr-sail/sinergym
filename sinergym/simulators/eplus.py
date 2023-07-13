@@ -85,7 +85,7 @@ class EnergyPlus(object):
         self.energyplus_state: Optional[int] = None
         self.sim_results: Dict[str, Any] = {}
         self.initialized_handles = False
-        self.callbacks_ready = False
+        self.system_ready = False
         self.simulation_complete = False
 
         # Path attributes
@@ -217,7 +217,9 @@ class EnergyPlus(object):
         # if simulation is completed or not initialized --> do nothing
         if self.simulation_complete:
             return
-        if not self._init_callback(state_argument):
+        # Check system is ready (only is executed is not)
+        self._init_system(self.energyplus_state)
+        if not self.system_ready:
             return
 
         # Obtain observation (time_variables, variables and meters) values in dict
@@ -259,7 +261,9 @@ class EnergyPlus(object):
         # If simulation is complete or not initialized --> do nothing
         if self.simulation_complete:
             return
-        if not self._init_callback(state_argument):
+        # Check system is ready (only is executed is not)
+        self._init_system(self.energyplus_state)
+        if not self.system_ready:
             return
 
         # Mount the info dict in queue
@@ -285,7 +289,9 @@ class EnergyPlus(object):
         # If simulation is complete or not initialized --> do nothing
         if self.simulation_complete:
             return
-        if not self._init_callback(state_argument):
+        # Check system is ready (only is executed is not)
+        self._init_system(self.energyplus_state)
+        if not self.system_ready:
             return
         # If not value in action queue --> do nothing
         if self.act_queue.empty():
@@ -316,11 +322,12 @@ class EnergyPlus(object):
         Returns:
             bool: Flag to define whether handles and simulation is ready.
         """
-        if not self.initialized_handles:
+        if not self.system_ready:
             self._init_handles(state_argument)
-        self.callbacks_ready = self.initialized_handles and not self.exchange.warmup_flag(
-            state_argument)
-        return self.callbacks_ready
+            self.system_ready = self.initialized_handles and not self.exchange.warmup_flag(
+                state_argument)
+            if self.system_ready:
+                self.logger.info('System is ready.')
 
     def _init_handles(self, state_argument: int) -> None:
         """initialize sensors/actuators handles to interact with during simulation.
