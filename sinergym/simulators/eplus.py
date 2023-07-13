@@ -133,11 +133,7 @@ class EnergyPlus(object):
 
         # register callback used to collect observations
         runtime.callback_end_zone_timestep_after_zone_reporting(
-            self.energyplus_state, self._collect_obs)
-
-        # register callback used to collect info with extra information
-        runtime.callback_end_zone_timestep_after_zone_reporting(
-            self.energyplus_state, self._collect_info)
+            self.energyplus_state, self._collect_obs_and_info)
 
         # register callback used to send actions
         runtime.callback_after_predictor_after_hvac_managers(
@@ -219,7 +215,7 @@ class EnergyPlus(object):
     #                              Auxiliary methods                               #
     # ---------------------------------------------------------------------------- #
 
-    def _collect_obs(self, state_argument: int) -> None:
+    def _collect_obs_and_info(self, state_argument: int) -> None:
         """EnergyPlus callback that collects output variables/meters
         values and enqueue them
 
@@ -259,26 +255,6 @@ class EnergyPlus(object):
             }
         }
 
-        # Put in the queue the observation
-        # self.logger.debug('OBSERVATION put in QUEUE: {}'.format(self.next_obs))
-        self.obs_queue.put(self.next_obs)
-
-    def _collect_info(self, state_argument: int) -> None:
-        """EnergyPlus callback that collects output info
-        values and enqueue them
-
-        Args:
-            state_argument (int): EnergyPlus API state
-        """
-
-        # If simulation is complete or not initialized --> do nothing
-        if self.simulation_complete:
-            return
-        # Check system is ready (only is executed is not)
-        self._init_system(self.energyplus_state)
-        if not self.system_ready:
-            return
-
         # Mount the info dict in queue
         self.next_info = {
             # 'timestep': self.exchange.system_time_step(state_argument),
@@ -289,6 +265,10 @@ class EnergyPlus(object):
             'hour': self.exchange.hour(state_argument),
             'is_raining': self.exchange.is_raining(state_argument)
         }
+
+        # Put in the queues the observation and info
+        # self.logger.debug('OBSERVATION put in QUEUE: {}'.format(self.next_obs))
+        self.obs_queue.put(self.next_obs)
         # self.logger.debug('INFO put in QUEUE: {}'.format(self.next_obs))
         self.info_queue.put(self.next_info)
 
