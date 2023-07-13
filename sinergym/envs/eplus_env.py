@@ -251,7 +251,7 @@ class EplusEnv(gym.Env):
         options = options if options is not None else self.default_options
 
         self.episode += 1
-        self.timestep = 0
+        self.timestep = 1
 
         if self.energyplus_simulation is not None:
             self.energyplus_simulation.stop()
@@ -387,9 +387,9 @@ class EplusEnv(gym.Env):
                 self.last_obs = obs = self.obs_queue.get(timeout=timeout)
                 self.last_info = info = self.info_queue.get(timeout=timeout)
             except (Full, Empty):
-                self.logger.warning(
-                    'STEP queues full or empty, set TRUNCATED flag and returning last obs and info.')
-                truncated = True
+                self.logger.debug(
+                    'STEP queues not receive value, simulation must be completed.')
+                terminated = True
                 obs = self.last_obs
                 info = self.last_info
 
