@@ -68,9 +68,6 @@ class EnergyPlus(object):
         self.api = EnergyPlusAPI()
         self.exchange = self.api.exchange
 
-        # Progress Bar
-        self.progress_value: int = 0
-
         # Handles
         self.var_handles: Dict[str, int] = {}
         self.meter_handles: Dict[str, int] = {}
