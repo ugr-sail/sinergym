@@ -125,12 +125,6 @@ class EplusEnv(gym.Env):
         )
 
         # ---------------------------------------------------------------------------- #
-        #                                   Simulator                                  #
-        # ---------------------------------------------------------------------------- #
-        # Initialized in reset method
-        self.energyplus_simulation: Optional[EnergyPlus] = None
-
-        # ---------------------------------------------------------------------------- #
         #                             Environment variables                            #
         # ---------------------------------------------------------------------------- #
         self.name = env_name
@@ -139,13 +133,26 @@ class EplusEnv(gym.Env):
         # Get environment working dir
         self.workspace_dir = self.model.experiment_path
         # Queues for E+ Python API communication
-        self.obs_queue: Optional[Queue] = None
-        self.info_queue: Optional[Queue] = None
-        self.act_queue: Optional[Queue] = None
+        self.obs_queue = Queue(maxsize=1)
+        self.info_queue = Queue(maxsize=1)
+        self.act_queue = Queue(maxsize=1)
         # last obs, action and info
         self.last_obs: Optional[Dict[str, float]] = None
         self.last_info: Optional[Dict[str, float]] = None
         self.last_action: Optional[List[float]] = None
+
+        # ---------------------------------------------------------------------------- #
+        #                                   Simulator                                  #
+        # ---------------------------------------------------------------------------- #
+        self.energyplus_simulation = EnergyPlus(
+            obs_queue=self.obs_queue,
+            info_queue=self.info_queue,
+            act_queue=self.act_queue,
+            time_variables=self.time_variables,
+            variables=self.variables,
+            meters=self.meters,
+            actuators=self.actuators
+        )
 
         # ---------------------------------------------------------------------------- #
         #                          reset default options                               #
@@ -249,9 +256,6 @@ class EplusEnv(gym.Env):
         if self.energyplus_simulation is not None:
             self.energyplus_simulation.stop()
 
-        self.obs_queue = Queue(maxsize=1)
-        self.info_queue = Queue(maxsize=1)
-        self.act_queue = Queue(maxsize=1)
         self.last_obs = self.observation_space.sample()
         self.last_info = {'timestep': self.timestep}
 
@@ -273,20 +277,11 @@ class EplusEnv(gym.Env):
             'Saving episode output path... [{}]'.format(
                 eplus_working_out_path))
 
-        self.energyplus_simulation = EnergyPlus(
+        self.energyplus_simulation.start(
             building_path=eplus_working_building_path,
             weather_path=eplus_working_weather_path,
-            output_path=eplus_working_out_path,
-            obs_queue=self.obs_queue,
-            info_queue=self.info_queue,
-            act_queue=self.act_queue,
-            time_variables=self.time_variables,
-            variables=self.variables,
-            meters=self.meters,
-            actuators=self.actuators
-        )
+            output_path=eplus_working_out_path)
 
-        self.energyplus_simulation.start()
         self.logger.info('Episode {} started.'.format(self.episode))
 
         # wait for E+ warmup to complete
