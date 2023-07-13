@@ -21,6 +21,14 @@ class EplusEnv(gym.Env):
     metadata = {'render_modes': ['human']}
 
     # ---------------------------------------------------------------------------- #
+    #                          Environment Terminal Logger                         #
+    # ---------------------------------------------------------------------------- #
+
+    logger = Logger().getLogger(
+        name='ENVIRONMENT',
+        level=LOG_ENV_LEVEL)
+
+    # ---------------------------------------------------------------------------- #
     #                            ENVIRONMENT CONSTRUCTOR                           #
     # ---------------------------------------------------------------------------- #
     def __init__(
@@ -61,14 +69,6 @@ class EplusEnv(gym.Env):
             env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
         """
-
-        # ---------------------------------------------------------------------------- #
-        #                          Environment Terminal Logger                         #
-        # ---------------------------------------------------------------------------- #
-
-        self.logger = Logger().getLogger(
-            name='ENVIRONMENT',
-            level=LOG_ENV_LEVEL)
 
         self.logger.info(
             'Creating Gymnasium environment... [{}]'.format(env_name))

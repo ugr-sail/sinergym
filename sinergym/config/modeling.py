@@ -132,6 +132,10 @@ class ModelJSON(object):
         :param step_size: Time in seconds that an step has.
     """
 
+    logger = Logger().getLogger(
+        name='MODELING',
+        level=LOG_MODEL_LEVEL)
+
     def __init__(
             self,
             env_name: str,
@@ -141,13 +145,6 @@ class ModelJSON(object):
             extra_config: Dict[str, Any]):
 
         self.pkg_data_path = PKG_DATA_PATH
-
-        # ------------------------- Terminal Modeling Logger ------------------------- #
-
-        self.logger = Logger().getLogger(
-            name='MODELING',
-            level=LOG_MODEL_LEVEL)
-
         # ----------------------- Transform filenames in paths ----------------------- #
 
         # JSON

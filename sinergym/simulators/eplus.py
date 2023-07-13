@@ -17,6 +17,14 @@ from pathlib import Path
 
 class EnergyPlus(object):
 
+    # ---------------------------------------------------------------------------- #
+    #                           Simulator Terminal Logger                          #
+    # ---------------------------------------------------------------------------- #
+
+    logger = Logger().getLogger(
+        name='SIMULATOR',
+        level=LOG_SIM_LEVEL)
+
     def __init__(
             self,
             building_path: str,
@@ -43,14 +51,6 @@ class EnergyPlus(object):
             meters (Dict[str,Tuple[str,str]]): Observation meters info. Default empty dict.
             actuators (Dict[str,Tuple[str,str]]): Action actuators info. Default empty dict.
         """
-
-        # ---------------------------------------------------------------------------- #
-        #                           Simulator Terminal Logger                          #
-        # ---------------------------------------------------------------------------- #
-
-        self.logger = Logger().getLogger(
-            name='SIMULATOR',
-            level=LOG_SIM_LEVEL)
 
         # ---------------------------------------------------------------------------- #
         #                               Attributes set up                              #
