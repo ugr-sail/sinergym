@@ -247,7 +247,7 @@ class EnergyPlus(object):
         }
 
         # Put in the queue the observation
-        self.logger.debug('OBSERVATION put in QUEUE: {}'.format(self.next_obs))
+        # self.logger.debug('OBSERVATION put in QUEUE: {}'.format(self.next_obs))
         self.obs_queue.put(self.next_obs)
 
     def _collect_info(self, state_argument: int) -> None:
@@ -276,7 +276,7 @@ class EnergyPlus(object):
             'hour': self.exchange.hour(state_argument),
             'is_raining': self.exchange.is_raining(state_argument)
         }
-        self.logger.debug('INFO put in QUEUE: {}'.format(self.next_obs))
+        # self.logger.debug('INFO put in QUEUE: {}'.format(self.next_obs))
         self.info_queue.put(self.next_info)
 
     def _process_action(self, state_argument: int) -> None:
@@ -298,7 +298,7 @@ class EnergyPlus(object):
             return
         # Get next action from queue and check type
         next_action = self.act_queue.get()
-        self.logger.debug('ACTION get from queue: {}'.format(next_action))
+        # self.logger.debug('ACTION get from queue: {}'.format(next_action))
 
         # Set the action values obtained in actuator handles
         for i, (act_name, act_handle) in enumerate(
@@ -309,18 +309,15 @@ class EnergyPlus(object):
                 actuator_value=next_action[i]
             )
 
-            self.logger.debug(
-                'Set in actuator {} value {}.'.format(
-                    act_name, next_action[i]))
+            # self.logger.debug(
+            #     'Set in actuator {} value {}.'.format(
+            #         act_name, next_action[i]))
 
-    def _init_callback(self, state_argument: int) -> bool:
+    def _init_system(self, state_argument: int) -> None:
         """Indicate whether callbacks are ready to work.
 
         Args:
             state_argument (int): EnergyPlus API state
-
-        Returns:
-            bool: Flag to define whether handles and simulation is ready.
         """
         if not self.system_ready:
             self._init_handles(state_argument)
