@@ -367,21 +367,21 @@ class EnergyPlus(object):
                         assert handle_value > 0
                     except AssertionError as err:
                         self.logger.error(
-                            'Variable Handles: {} is not an available variable, check your variable names and be sure that exists in data_available.txt'.format(variable_name))
+                            'Variable Handles: {} is not an available variable, check your variable names and be sure that exists in <env-path>/data_available.txt'.format(variable_name))
 
                 for meter_name, handle_value in self.meter_handles.items():
                     try:
                         assert handle_value > 0
                     except AssertionError as err:
                         self.logger.error(
-                            'Meter Handles: {} is not an available meter, check your meter names and be sure that exists in data_available.txt'.format(meter_name))
+                            'Meter Handles: {} is not an available meter, check your meter names and be sure that exists in <env-path>/data_available.txt'.format(meter_name))
 
-                for actuator_name, handle_value in self.meter_handles.items():
+                for actuator_name, handle_value in self.actuator_handles.items():
                     try:
                         assert handle_value > 0
                     except AssertionError as err:
                         self.logger.error(
-                            'Actuator Handles: {} is not an available actuator, check your meter names and be sure that exists in data_available.txt'.format(actuator_name))
+                            'Actuator Handles: {} is not an available actuator, check your actuator names and be sure that exists in <env-path>/data_available.txt'.format(actuator_name))
 
                 self.logger.info('Handles initialized.')
 
