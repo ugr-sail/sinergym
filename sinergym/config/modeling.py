@@ -130,6 +130,7 @@ class ModelJSON(object):
         :param runperiod: Information in Dict format about runperiod that determine an episode.
         :param episode_length: Time in seconds that an episode has.
         :param step_size: Time in seconds that an step has.
+        :param timestep_per_episode: Timestep in a runperiod (simulation episode).
     """
 
     logger = Logger().getLogger(
@@ -295,7 +296,7 @@ class ModelJSON(object):
                 self.logger.debug('runperiod set up to {}'.format(runperiod))
 
     def save_building_model(self) -> str:
-        """Take current building model and save as epJSON in current env_working_dir episode folder.
+        """Take current building model and save as epJSON in current episode path folder.
 
         Returns:
             str: Path of epJSON file stored (episode folder).
