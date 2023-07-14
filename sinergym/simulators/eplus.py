@@ -32,18 +32,18 @@ class EnergyPlus(object):
             act_queue: Queue,
             time_variables: List[str] = [],
             variables: Dict[str, Tuple[str, str]] = {},
-            meters: Dict[str, Tuple[str, str]] = {},
-            actuators: Dict[str, Tuple[str, str]] = {}):
-        """EnergyPlus simulation run class. This class run an episode
+            meters: Dict[str, str] = {},
+            actuators: Dict[str, Tuple[str, str, str]] = {}):
+        """EnergyPlus runner class. This class run an episode in a thread when start() is called.
 
         Args:
             obs_queue (Queue): Observation queue for Gymnasium environment communication.
             info_queue (Queue): Extra information dict queue for Gymnasium environment communication.
             act_queue (Queue): Action queue for Gymnasium environment communication.
-            time_variables (List[str]): Time variables which composes part of the observation, such as year, month, day or hour. Default empty list.
-            variables (Dict[str,Tuple[str,str]]): Observation variables info. Default empty dict.
-            meters (Dict[str,Tuple[str,str]]): Observation meters info. Default empty dict.
-            actuators (Dict[str,Tuple[str,str]]): Action actuators info. Default empty dict.
+            time_variables (List[str]): EnergyPlus time variables we want to observe. The name of the variable must match with the name of the E+ Data Transfer API method name. Defaults to empty list
+            variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output Variables. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.
+            meters (Dict[str, str]): Specification for EnergyPlus Output Meters. The key name is custom, then value is the original EnergyPlus Meters name.
+            actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. Defaults to empty dict.
         """
 
         # ---------------------------------------------------------------------------- #
@@ -91,8 +91,8 @@ class EnergyPlus(object):
               building_path: str,
               weather_path: str,
               output_path: str) -> None:
-        """Initializes all callbacks and handles required in the simulation
-           and start running the process generated.
+        """Initializes all callbacks and handles using EnergyPlus API, prepare the simulation system
+           and start running the simulation in a Python thread.
 
         Args:
             building_path (str): EnergyPlus input description file path.
@@ -115,8 +115,9 @@ class EnergyPlus(object):
 
         # Register callback used to track simulation progress
         def _progress_update(percent: int) -> None:
-            filled_length = int(100 * (percent / 100.0))
-            bar = "*" * filled_length + '-' * (99 - filled_length)
+            bar_length = 100
+            filled_length = int(bar_length * (percent / 100.0))
+            bar = "*" * filled_length + '-' * (bar_length - filled_length - 1)
             if self.system_ready:
                 print(f'\rProgress: |{bar}| {percent+1}%', end="\r")
 
@@ -166,8 +167,8 @@ class EnergyPlus(object):
         self.energyplus_thread.start()
 
     def stop(self) -> None:
-        """It is called when simulation ends, setting up the simulation complete flag to True, cleaning all queues,
-           thread is deleted, callbacks are cleaned and Energyplus state removed.
+        """It forces the simulation ends, cleans all communication queues, thread is deleted and simulator attributes are
+           reset (except handles, to not initialize again if there is a next thread execution).
         """
         if self.energyplus_thread:
             # Set simulation as complete and force thread to finish
@@ -199,7 +200,7 @@ class EnergyPlus(object):
         return self.sim_results.get("exit_code", -1) > 0
 
     def make_eplus_args(self) -> List[str]:
-        """Transform attributes specified in simulator into energyplus bash command
+        """Transform attributes defined in class instance into energyplus bash command
 
         Returns:
             List[str]: List of the argument components for energyplus bash command
@@ -217,7 +218,7 @@ class EnergyPlus(object):
     # ---------------------------------------------------------------------------- #
 
     def _collect_obs_and_info(self, state_argument: int) -> None:
-        """EnergyPlus callback that collects output variables/meters
+        """EnergyPlus callback that collects output variables and info
         values and enqueue them
 
         Args:
@@ -274,7 +275,7 @@ class EnergyPlus(object):
         self.info_queue.put(self.next_info)
 
     def _process_action(self, state_argument: int) -> None:
-        """EnergyPlus callback that sets actuator value from last decided action
+        """EnergyPlus callback that sets output actuator value(s) from last received action
 
         Args:
             state_argument (int): EnergyPlus API state
@@ -308,7 +309,7 @@ class EnergyPlus(object):
             #         act_name, next_action[i]))
 
     def _init_system(self, state_argument: int) -> None:
-        """Indicate whether callbacks are ready to work.
+        """Indicate whether system are ready to work. After waiting to API data is available, handles are initialized, and warmup flag is correct.
 
         Args:
             state_argument (int): EnergyPlus API state
@@ -392,7 +393,11 @@ class EnergyPlus(object):
     def _flush_queues(self) -> None:
         """It empties all values allocated in observation, action and warmup queues
         """
-        for q in [self.obs_queue, self.act_queue, self.warmup_queue]:
+        for q in [
+                self.obs_queue,
+                self.act_queue,
+                self.info_queue,
+                self.warmup_queue]:
             while not q.empty():
                 q.get()
         self.logger.debug('Simulator queues emptied.')
