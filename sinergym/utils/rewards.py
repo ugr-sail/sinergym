@@ -203,7 +203,7 @@ class ExpReward(LinearReward):
         """
 
         month = obs_dict['month']
-        day = obs_dict['day']
+        day = obs_dict['day_of_month']
         year = obs_dict['year']
         current_dt = datetime(int(year), int(month), int(day))
 
