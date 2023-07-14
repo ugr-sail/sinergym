@@ -439,7 +439,7 @@ class DatetimeWrapper(gym.ObservationWrapper):
         dt = datetime(
             int(obs_dict['year']),
             int(obs_dict['month']),
-            int(obs_dict['day']),
+            int(obs_dict['day_of_month']),
             int(obs_dict['hour']))
         # Update obs
         new_obs['is_weekend'] = 1.0 if dt.isoweekday() in [6, 7] else 0.0

@@ -60,7 +60,7 @@ class LoggerCallback(BaseCallback):
         info = self.locals['infos'][-1]
 
         # OBSERVATION
-        variables = self.training_env.get_attr('variables')[0]['observation']
+        variables = self.training_env.get_attr('observation_variables')[0]
         # log normalized and original values
         if self.training_env.env_is_wrapped(
                 wrapper_class=NormalizeObservation)[0]:
@@ -79,7 +79,7 @@ class LoggerCallback(BaseCallback):
                     'observation/' + variable, obs[i])
 
         # ACTION
-        variables = self.training_env.get_attr('variables')[0]['action']
+        variables = self.training_env.get_attr('action_variables')[0]
         action = None
         # sinergym action received inner its own setpoints range
         action_ = info['action']
