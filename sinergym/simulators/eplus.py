@@ -115,9 +115,10 @@ class EnergyPlus(object):
 
         # Register callback used to track simulation progress
         def _progress_update(percent: int) -> None:
-            filled_length = int(80 * (percent / 100.0))
-            bar = "*" * filled_length + '-' * (80 - filled_length)
-            print(f'\rProgress: |{bar}| {percent}%', end="\r")
+            filled_length = int(100 * (percent / 100.0))
+            bar = "*" * filled_length + '-' * (99 - filled_length)
+            if self.system_ready:
+                print(f'\rProgress: |{bar}| {percent+1}%', end="\r")
 
         runtime.callback_progress(self.energyplus_state, _progress_update)
 
