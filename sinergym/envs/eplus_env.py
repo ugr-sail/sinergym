@@ -144,7 +144,7 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         #                                   Simulator                                  #
         # ---------------------------------------------------------------------------- #
-        self.energyplus_simulation = EnergyPlus(
+        self.energyplus_simulator = EnergyPlus(
             obs_queue=self.obs_queue,
             info_queue=self.info_queue,
             act_queue=self.act_queue,
@@ -254,8 +254,8 @@ class EplusEnv(gym.Env):
         self.episode += 1
         self.timestep = 1
 
-        if self.energyplus_simulation is not None:
-            self.energyplus_simulation.stop()
+        if self.energyplus_simulator is not None:
+            self.energyplus_simulator.stop()
 
         self.last_obs = self.observation_space.sample()
         self.last_info = {'timestep': self.timestep}
@@ -279,7 +279,7 @@ class EplusEnv(gym.Env):
             'Saving episode output path... [{}]'.format(
                 eplus_working_out_path))
 
-        self.energyplus_simulation.start(
+        self.energyplus_simulator.start(
             building_path=eplus_working_building_path,
             weather_path=eplus_working_weather_path,
             output_path=eplus_working_out_path)
@@ -287,9 +287,9 @@ class EplusEnv(gym.Env):
         self.logger.info('Episode {} started.'.format(self.episode))
 
         # wait for E+ warmup to complete
-        if not self.energyplus_simulation.warmup_complete:
+        if not self.energyplus_simulator.warmup_complete:
             self.logger.debug('Waiting for finishing WARMUP process.')
-            self.energyplus_simulation.warmup_queue.get()
+            self.energyplus_simulator.warmup_queue.get()
             self.logger.debug('WARMUP process finished.')
 
         # Wait to receive simulation first observation and info
@@ -352,7 +352,7 @@ class EplusEnv(gym.Env):
 
         # Check if episode existed and is not terminated
         try:
-            assert self.energyplus_simulation
+            assert self.energyplus_simulator
         except AssertionError as err:
             self.logger.critical(
                 'Step: Environment requires to be reset before.')
@@ -360,17 +360,17 @@ class EplusEnv(gym.Env):
 
         # check for simulation errors
         try:
-            assert not self.energyplus_simulation.failed()
+            assert not self.energyplus_simulator.failed()
         except AssertionError as err:
             self.logger.critical(
                 'EnergyPlus failed with exit code {}'.format(
-                    self.energyplus_simulation.sim_results['exit_code']))
+                    self.energyplus_simulator.sim_results['exit_code']))
             raise err
 
         # Get real action (action --> action_)
         action_ = self._get_action(action)
 
-        if self.energyplus_simulation.simulation_complete:
+        if self.energyplus_simulator.simulation_complete:
             self.logger.debug(
                 'Trying STEP in a simulation completed, changing TERMINATED flag to TRUE.')
             terminated = True
@@ -430,7 +430,7 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
     def close(self) -> None:
         """End simulation."""
-        self.energyplus_simulation.stop()
+        self.energyplus_simulator.stop()
         self.logger.info('Environment closed.')
 
     # ---------------------------------------------------------------------------- #
@@ -631,19 +631,19 @@ class EplusEnv(gym.Env):
 
     @property
     def var_handles(self) -> Optional[Dict[str, int]]:
-        return self.energyplus_simulation.var_handles
+        return self.energyplus_simulator.var_handles
 
     @property
     def meter_handles(self) -> Optional[Dict[str, int]]:
-        return self.energyplus_simulation.meter_handles
+        return self.energyplus_simulator.meter_handles
 
     @property
     def actuator_handles(self) -> Optional[Dict[str, int]]:
-        return self.energyplus_simulation.actuator_handles
+        return self.energyplus_simulator.actuator_handles
 
     @property
     def available_handlers(self) -> Optional[str]:
-        return self.energyplus_simulation.available_data
+        return self.energyplus_simulator.available_data
 
     # ------------------------------ Building model ------------------------------ #
     @property
