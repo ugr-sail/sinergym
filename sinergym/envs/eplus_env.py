@@ -254,8 +254,8 @@ class EplusEnv(gym.Env):
         self.episode += 1
         self.timestep = 1
 
-        if self.energyplus_simulator is not None:
-            self.energyplus_simulator.stop()
+        # Stop oold thread of old episode if exists
+        self.energyplus_simulator.stop()
 
         self.last_obs = self.observation_space.sample()
         self.last_info = {'timestep': self.timestep}
@@ -644,6 +644,10 @@ class EplusEnv(gym.Env):
     @property
     def available_handlers(self) -> Optional[str]:
         return self.energyplus_simulator.available_data
+
+    @property
+    def is_running(self) -> Optional[str]:
+        return self.energyplus_simulator.is_running
 
     # ------------------------------ Building model ------------------------------ #
     @property

@@ -170,7 +170,7 @@ class EnergyPlus(object):
         """It forces the simulation ends, cleans all communication queues, thread is deleted and simulator attributes are
            reset (except handles, to not initialize again if there is a next thread execution).
         """
-        if self.energyplus_thread:
+        if self.is_running:
             # Set simulation as complete and force thread to finish
             self.simulation_complete = True
             self._flush_queues()
@@ -406,14 +406,6 @@ class EnergyPlus(object):
     #                                  Properties                                  #
     # ---------------------------------------------------------------------------- #
 
-    # @property
-    # def var_handles(self) -> Optional[Dict[str,int]]:
-    #     return self.var_handles
-
-    # @property
-    # def meter_handles(self) -> Optional[Dict[str,int]]:
-    #     return self.meter_handles
-
-    # @property
-    # def actuator_handles(self) -> Optional[Dict[str,int]]:
-    #     return self.actuator_handles
+    @property
+    def is_running(self) -> bool:
+        return self.energyplus_thread is not None
