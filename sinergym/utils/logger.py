@@ -133,7 +133,7 @@ class CSVLogger(object):
         """
         return [
             info.get('timestep')] + list(obs) + list(action) + [
-            info.get('time_elapsed'),
+            info.get('time_elapsed(hours)'),
             info.get('reward'),
             info.get('reward_energy'),
             info.get('reward_comfort'),
