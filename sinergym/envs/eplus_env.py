@@ -1,5 +1,5 @@
 """
-Gym environment for simulation with EnergyPlus.
+Gymnasium environment for simulation with EnergyPlus.
 """
 
 import random
@@ -39,7 +39,7 @@ class EplusEnv(gym.Env):
             low=0, high=0, shape=(0,), dtype=np.float32),
         time_variables: List[str] = [],
         variables: Dict[str, Tuple[str, str]] = {},
-        meters: Dict[str, Tuple[str, str]] = {},
+        meters: Dict[str, str] = {},
         actuators: Dict[str, Tuple[str, str, str]] = {},
         action_mapping: Dict[int, Tuple[float, ...]] = {},
         flag_normalization: bool = True,
@@ -54,18 +54,18 @@ class EplusEnv(gym.Env):
 
         Args:
             building_file (str): Name of the JSON file with the building definition.
-            weather_file (Union[str,List[str]]): Name of the EPW file for weather conditions. It can be specified a list of weathers files in order to sample a weather in each episode randomly.
-            observation_space (gym.spaces.Box, optional): Gym Observation Space definition. Defaults to an empty observation_space (no control).
-            observation_variables (List[str], optional): List with variables names in building. Defaults to an empty observation variables (no control).
+            weather_files (Union[str,List[str]]): Name of the EPW file for weather conditions. It can be specified a list of weathers files in order to sample a weather in each episode randomly.
             action_space (Union[gym.spaces.Box, gym.spaces.Discrete], optional): Gym Action Space definition. Defaults to an empty action_space (no control).
-            action_variables (List[str],optional): Action variables to be controlled in building, if that actions names have not been configured manually in building, you should configure or use action_definition. Default to empty List.
+            time_variables (List[str]): EnergyPlus time variables we want to observe. The name of the variable must match with the name of the E+ Data Transfer API method name. Defaults to empty list
+            variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output Variables. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.
+            meters (Dict[str, str]): Specification for EnergyPlus Output Meters. The key name is custom, then value is the original EnergyPlus Meters name.
+            actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. Defaults to empty dict.
             action_mapping (Dict[int, Tuple[float, ...]], optional): Action mapping list for discrete actions spaces only. Defaults to empty list.
             flag_normalization (bool): Flag indicating if action space must be normalized to [-1,1]. This flag only take effect in continuous environments. Default to true.
             weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
             reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
             max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
-            action_definition (Optional[Dict[str, Any]): Dict with building components to being controlled by Sinergym automatically if it is supported. Default value to None.
             env_name (str, optional): Env name used for working directory generation. Defaults to eplus-env-v1.
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
         """
@@ -125,7 +125,7 @@ class EplusEnv(gym.Env):
         )
 
         # ---------------------------------------------------------------------------- #
-        #                             Environment variables                            #
+        #                             Gymnasium attributes                             #
         # ---------------------------------------------------------------------------- #
         self.name = env_name
         self.episode = 0
@@ -223,7 +223,8 @@ class EplusEnv(gym.Env):
         self.logger.debug('Passing the environment checker...')
         self._check_eplus_env()
 
-        self.logger.info('{} created successfully.'.format(env_name))
+        self.logger.info(
+            'Environment {} created successfully.'.format(env_name))
 
     # ---------------------------------------------------------------------------- #
     #                                     RESET                                    #
@@ -260,6 +261,7 @@ class EplusEnv(gym.Env):
         self.last_info = {'timestep': self.timestep}
 
         # ------------------------ Preparation for new episode ----------------------- #
+        print('#----------------------------------------------------------------------------------------------#')
         self.logger.info(
             'Starting a new episode... [Episode {}]'.format(
                 self.episode))
@@ -435,13 +437,15 @@ class EplusEnv(gym.Env):
     #                           Environment functionality                          #
     # ---------------------------------------------------------------------------- #
 
-    def _get_action(self, action: Any) -> Union[int,
-                                                float,
-                                                np.integer,
-                                                np.ndarray,
-                                                List[Any],
-                                                Tuple[Any]]:
-        """Transform the action for sending it to the simulator."""
+    def _get_action(self, action: Any) -> List[float]:
+        """Transform the action to a correct format to send it to the simulator.
+
+        Args:
+            action (Any): Action to be transformed
+
+        Returns:
+            List[float]: List of the action values in the correct format for the simulator
+        """
 
         # Discrete
         if self.flag_discrete:
@@ -461,24 +465,14 @@ class EplusEnv(gym.Env):
         return action_
 
     def _action_transform(self,
-                          action: Union[int,
-                                        float,
-                                        np.integer,
-                                        np.ndarray,
-                                        List[Any],
-                                        Tuple[Any]]) -> Union[int,
-                                                              float,
-                                                              np.integer,
-                                                              np.ndarray,
-                                                              List[Any],
-                                                              Tuple[Any]]:
+                          action: Any) -> List[float]:
         """ This method transforms an action defined in gym (-1,1 in all continuous environment) action space to simulation real action space.
 
         Args:
-            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action received in environment
+            action (Any): Action received in environment
 
         Returns:
-            Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]: Action transformed in simulator action space.
+            List[float]: Action transformed in simulator real action space.
         """
         action_ = []
 
