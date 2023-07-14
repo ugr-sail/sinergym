@@ -61,7 +61,7 @@ def evaluate_policy(model: "base_class.BaseAlgorithm",
             #     env.get_attr('obs_dict')))
             obs = env.reset()
             not_reseted = False
-        done, state = False, None
+        terminated, state = False, None
         episode_reward = 0.0
         episode_length = 0
         episode_steps_comfort_violation = 0
@@ -71,10 +71,10 @@ def evaluate_policy(model: "base_class.BaseAlgorithm",
         # ---------------------------------------------------------------------------- #
         #                     Running episode and accumulate values                    #
         # ---------------------------------------------------------------------------- #
-        while not done:
+        while not terminated:
             action, state = model.predict(
                 obs, state=state, deterministic=deterministic)
-            obs, reward, done, info = env.step(action)
+            obs, reward, terminated, truncated, info = env.step(action)
             episode_reward += reward
             episode_power += info[0]['total_energy']
             episode_power_penalty += info[0]['reward_energy']
