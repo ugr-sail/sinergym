@@ -120,6 +120,9 @@ class EplusEnv(gym.Env):
             env_name=env_name,
             json_file=self.building_file,
             weather_files=self.weather_files,
+            actuators=self.actuators,
+            variables=self.variables,
+            meters=self.meters,
             max_ep_store=max_ep_data_store_num,
             extra_config=config_params
         )
@@ -269,6 +272,8 @@ class EplusEnv(gym.Env):
         self.episode_dir = self.model.set_episode_working_dir()
         # get weather path and readapt building
         self.model.update_weather_path()
+        self.model.adapt_variables_to_building()
+        self.model.adapt_meters_to_building()
         self.model.adapt_building_to_epw()
         # Getting building, weather and Energyplus output directory
         eplus_working_building_path = self.model.save_building_model()
