@@ -380,7 +380,7 @@ class DatetimeWrapper(gym.ObservationWrapper):
     """Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
        Observation space is updated automatically."""
 
-    logger = Logger().getLogger(name='WRAPPER LoggerWrapper',
+    logger = Logger().getLogger(name='WRAPPER DatetimeWrapper',
                                 level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
