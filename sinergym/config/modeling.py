@@ -11,7 +11,6 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import numpy as np
 from eppy.modeleditor import IDF
 from opyplus import WeatherData
-import pandas
 
 from sinergym.utils.logger import Logger
 from sinergym.utils.common import eppy_element_to_dict, get_delta_seconds
