@@ -11,6 +11,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import numpy as np
 from eppy.modeleditor import IDF
 from opyplus import WeatherData
+import pandas
 
 from sinergym.utils.logger import Logger
 from sinergym.utils.common import eppy_element_to_dict, get_delta_seconds
@@ -118,6 +119,9 @@ class ModelJSON(object):
         :param _weather_path: EPW path origin for apply weather to simulation in current episode.
         :param _ddy_path: DDY path origin for get DesignDays and weather Location
         :param _idd: IDD opyplus object to set up Epm
+        :param _variables: Output:Variable(s) information about building model
+        :param _meters: Output:Meter(s) information about building model
+        :param _actuators: Actuators information about building model
         :param experiment_path: Path for Sinergym experiment output
         :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None)
         :param max_ep_store: Number of episodes directories will be stored in experiment_path
@@ -142,6 +146,9 @@ class ModelJSON(object):
             env_name: str,
             json_file: str,
             weather_files: List[str],
+            variables: Dict[str, Tuple[str, str]],
+            meters: Dict[str, str],
+            actuators: Dict[str, Tuple[str, str, str]],
             max_ep_store: int,
             extra_config: Dict[str, Any]):
 
@@ -180,10 +187,16 @@ class ModelJSON(object):
 
         # ----------------------------- Other attributes ----------------------------- #
 
+        # Output paths and config
         self.experiment_path = self._set_experiment_working_dir(env_name)
         self.episode_path: Optional[str] = None
         self.max_ep_store = max_ep_store
         self.config = extra_config
+
+        # Input/Output varibles
+        self._actuators = actuators
+        self._variables = variables
+        self._meters = meters
 
         # Extract building zones
         self.zone_names = list(self.building['Zone'].keys())
@@ -265,6 +278,43 @@ class ModelJSON(object):
         self.building['SizingPeriod:DesignDay'] = new_designdays
 
         self.logger.debug('Adapting weather to building model.')
+
+    def adapt_variables_to_building(self) -> None:
+        """This method reads all variables and write it in the building model as Output:Variable field.
+        """
+        output_variables = {}
+        for i, (variable_name, variable_key) in enumerate(
+                list(self._variables.values()), start=1):
+
+            # Add element Output:Variable to the building model
+            output_variables['Output:Variable ' + str(i)] = {'key_value': variable_key,
+                                                             'variable_name': variable_name,
+                                                             'reporting_frequency': 'Timestep'}
+
+        self.logger.debug(
+            'Updated building model with whole Output:Variable available names')
+
+        # Delete default Output:Variables and added whole building variables to
+        # Output:Variable field
+        self.building['Output:Variable'] = output_variables
+
+    def adapt_meters_to_building(self) -> None:
+        """This method reads all meters and write it in the building model as Output:Meter field.
+        """
+        output_meters = {}
+        for i, meter_name in enumerate(
+                list(self._meters.values()), start=1):
+
+            # Add element Output:Variable to the building model
+            output_meters['Output:Meter ' +
+                          str(i)] = {'key_name': meter_name, 'reporting_frequency': 'Timestep'}
+
+        self.logger.debug(
+            'Updated building model with whole Output:Variable available names')
+
+        # Delete default Output:Variables and added whole building variables to
+        # Output:Variable field
+        self.building['Output:Meter'] = output_meters
 
     def apply_extra_conf(self) -> None:
         """Set extra configuration in building model
