@@ -2311,8 +2311,6 @@
             ]
         }
     },
-    "Output:Meter": {},
-    "Output:Meter:MeterFileOnly": {},
     "Output:Surfaces:Drawing": {
         "Output:Surfaces:Drawing 1": {
             "report_type": "DXF"
@@ -2327,7 +2325,6 @@
             ]
         }
     },
-    "Output:Variable": {},
     "Output:VariableDictionary": {
         "Output:VariableDictionary 1": {
             "key_field": "regular"
