@@ -119,7 +119,7 @@ class EnergyPlus(object):
             filled_length = int(bar_length * (percent / 100.0))
             bar = "*" * filled_length + '-' * (bar_length - filled_length - 1)
             if self.system_ready:
-                print(f'\rProgress: |{bar}| {percent+1}%', end="\r")
+                print(f'\rProgress: |{bar}| {percent}%', end="\r")
 
         runtime.callback_progress(self.energyplus_state, _progress_update)
 
