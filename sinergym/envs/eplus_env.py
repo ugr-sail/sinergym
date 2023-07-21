@@ -555,10 +555,11 @@ class EplusEnv(gym.Env):
                     'Discrete environment: flag_normalization should not have been defined.')
 
             try:
-                assert self._action_space.n == len(self.action_mapping)
+                assert len(
+                    self.actuators) == len(self.action_mapping[0])
             except AssertionError as err:
                 self.logger.critical(
-                    'Discrete environment: The length of the action_mapping must match the dimension of the discrete action space.')
+                    'Discrete environment: The length of the action_mapping must match the dimension of the controlled actuators.')
                 raise err
 
             for values in self.action_mapping.values():
