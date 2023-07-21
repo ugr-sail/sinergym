@@ -70,8 +70,10 @@ class EplusEnv(gym.Env):
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
         """
 
+        print('#==============================================================================================#')
         self.logger.info(
             'Creating Gymnasium environment... [{}]'.format(env_name))
+        print('#==============================================================================================#')
 
         # ---------------------------------------------------------------------------- #
         #                                     Paths                                    #
@@ -268,6 +270,7 @@ class EplusEnv(gym.Env):
         self.logger.info(
             'Starting a new episode... [Episode {}]'.format(
                 self.episode))
+        print('#----------------------------------------------------------------------------------------------#')
         # Get new episode working dir
         self.episode_dir = self.model.set_episode_working_dir()
         # get weather path and readapt building
