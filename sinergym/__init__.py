@@ -82,12 +82,12 @@ for building in id_bases:
         reg_kwargs['actuators'] = DEFAULT_DATACENTER_ACTUATORS
         reg_kwargs['variables'] = DEFAULT_DATACENTER_VARIABLES
         reg_kwargs['meters'] = DEFAULT_DATACENTER_METERS
-        reg_kwargs['reward'] = LinearReward,
+        reg_kwargs['reward'] = LinearReward
         reg_kwargs['reward_kwargs'] = {
             'temperature_variable': [
-                'Zone Air Temperature(West Zone)',
-                'Zone Air Temperature(East Zone)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+                'west_zone_temperature',
+                'east_zone_temperature'],
+            'energy_variable': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 18,
                 27),
@@ -103,13 +103,13 @@ for building in id_bases:
         reg_kwargs['actuators'] = DEFAULT_WAREHOUSE_ACTUATORS
         reg_kwargs['variables'] = DEFAULT_WAREHOUSE_VARIABLES
         reg_kwargs['meters'] = DEFAULT_WAREHOUSE_METERS
-        reg_kwargs['reward'] = LinearReward,
+        reg_kwargs['reward'] = LinearReward
         reg_kwargs['reward_kwargs'] = {
             'temperature_variable': [
-                'Zone Air Temperature(Zone1 Office)',
-                'Zone Air Temperature(Zone2 Fine Storage)',
-                'Zone Air Temperature(Zone3 Bulk Storage)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+                'office_temperature',
+                'fstorage_temperature',
+                'bstorage_temperature'],
+            'energy_variable': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 18,
                 27),
@@ -125,29 +125,29 @@ for building in id_bases:
         reg_kwargs['actuators'] = DEFAULT_OFFICE_ACTUATORS
         reg_kwargs['variables'] = DEFAULT_OFFICE_VARIABLES
         reg_kwargs['meters'] = DEFAULT_OFFICE_METERS
-        reg_kwargs['reward'] = LinearReward,
+        reg_kwargs['reward'] = LinearReward
         reg_kwargs['reward_kwargs'] = {
             'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)',
-                'Zone Air Temperature(TopFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(FirstFloor_Plenum)',
-                'Zone Air Temperature(Core_mid)',
-                'Zone Air Temperature(Core_top)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)'
+                'zone1_temperature',
+                'zone2_temperature',
+                'zone3_temperature',
+                'zone4_temperature',
+                'zone5_temperature',
+                'zone6_temperature',
+                'zone7_temperature',
+                'zone8_temperature',
+                'zone9_temperature',
+                'zone10_temperature',
+                'zone11_temperature',
+                'zone12_temperature',
+                'zone13_temperature',
+                'zone14_temperature',
+                'zone15_temperature',
+                'zone16_temperature',
+                'zone17_temperature',
+                'zone18_temperature'
             ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'energy_variable': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         }
@@ -160,29 +160,29 @@ for building in id_bases:
         reg_kwargs['actuators'] = DEFAULT_OFFICEGRID_ACTUATORS
         reg_kwargs['variables'] = DEFAULT_OFFICEGRID_VARIABLES
         reg_kwargs['meters'] = DEFAULT_OFFICEGRID_METERS
-        reg_kwargs['reward'] = LinearReward,
+        reg_kwargs['reward'] = LinearReward
         reg_kwargs['reward_kwargs'] = {
             'temperature_variable': [
-                'Zone Air Temperature(Basement)',
-                'Zone Air Temperature(core_bottom)',
-                'Zone Air Temperature(core_mid)',
-                'Zone Air Temperature(core_top)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(GroundFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(TopFloor_Plenum)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+                'zone1_temperature',
+                'zone2_temperature',
+                'zone3_temperature',
+                'zone4_temperature',
+                'zone5_temperature',
+                'zone6_temperature',
+                'zone7_temperature',
+                'zone8_temperature',
+                'zone9_temperature',
+                'zone10_temperature',
+                'zone11_temperature',
+                'zone12_temperature',
+                'zone13_temperature',
+                'zone14_temperature',
+                'zone15_temperature',
+                'zone16_temperature',
+                'zone17_temperature',
+                'zone18_temperature',
+                'zone19_temperature'],
+            'energy_variable': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 20.0,
                 23.5),
@@ -198,15 +198,15 @@ for building in id_bases:
         reg_kwargs['actuators'] = DEFAULT_SHOP_ACTUATORS
         reg_kwargs['variables'] = DEFAULT_SHOP_VARIABLES
         reg_kwargs['meters'] = DEFAULT_SHOP_METERS
-        reg_kwargs['reward'] = LinearReward,
+        reg_kwargs['reward'] = LinearReward
         reg_kwargs['reward_kwargs'] = {
             'temperature_variable': [
-                'Zone Air Temperature(ZN_1_FLR_1_SEC_1)',
-                'Zone Air Temperature(ZN_1_FLR_1_SEC_2)',
-                'Zone Air Temperature(ZN_1_FLR_1_SEC_3)',
-                'Zone Air Temperature(ZN_1_FLR_1_SEC_4)',
-                'Zone Air Temperature(ZN_1_FLR_1_SEC_5)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+                'zone1_temperature',
+                'zone2_temperature',
+                'zone3_temperature',
+                'zone4_temperature',
+                'zone5_temperature'],
+            'energy_variable': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 20.0,
                 23.5),
@@ -230,7 +230,6 @@ for building in id_bases:
             reg_kwargs['action_space'] = action_space_discrete
         elif register_conf[1] == 'continuous':
             reg_kwargs['action_space'] = action_space_continuous
-            reg_kwargs['action_mapping'] = {}
 
         reg_kwargs['weather_variability'] = None
         if len(register_conf) == 3:
