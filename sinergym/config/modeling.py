@@ -469,9 +469,8 @@ class ModelJSON(object):
                 str(sigma), str(mu), str(tau))
 
             self.logger.debug(
-                'Variation {} applied to {}',
-                variation,
-                episode_weather_path)
+                'Variation {} applied.',
+                variation)
 
         episode_weather_path = self.episode_path + '/' + filename
         weather_data_mod.to_epw(episode_weather_path)
