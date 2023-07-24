@@ -220,11 +220,11 @@ for building in id_bases:
 
         register_conf = id_specific.split('-')
         if register_conf[0] == 'hot':
-            reg_kwargs['weather_files'] = 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw'
+            reg_kwargs['weather_files'] = 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw'
         elif register_conf[0] == 'mixed':
-            reg_kwargs['weather_files'] = 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw'
+            reg_kwargs['weather_files'] = 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw'
         elif register_conf[0] == 'cool':
-            reg_kwargs['weather_files'] = 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw'
+            reg_kwargs['weather_files'] = 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw'
 
         if register_conf[1] == 'discrete':
             reg_kwargs['action_space'] = action_space_discrete
