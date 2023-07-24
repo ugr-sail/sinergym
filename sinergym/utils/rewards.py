@@ -4,6 +4,7 @@
 from datetime import datetime
 from math import exp
 from typing import Any, Dict, List, Tuple, Union
+from sinergym.utils.constants import YEAR
 
 from gymnasium import Env
 
@@ -121,7 +122,7 @@ class LinearReward(BaseReward):
 
         month = obs_dict['month']
         day = obs_dict['day_of_month']
-        year = obs_dict['year']
+        year = YEAR
         current_dt = datetime(int(year), int(month), int(day))
 
         # Periods
@@ -204,7 +205,7 @@ class ExpReward(LinearReward):
 
         month = obs_dict['month']
         day = obs_dict['day_of_month']
-        year = obs_dict['year']
+        year = YEAR
         current_dt = datetime(int(year), int(month), int(day))
 
         # Periods
