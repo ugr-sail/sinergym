@@ -5,7 +5,7 @@ from glob import glob  # to find directories with patterns
 
 import pkg_resources
 import pytest
-from opyplus import Epm, Idd, WeatherData
+from opyplus import WeatherData
 
 from sinergym.config.modeling import ModelJSON
 from sinergym.envs.eplus_env import EplusEnv
@@ -32,16 +32,6 @@ def sinergym_path():
 # ---------------------------------------------------------------------------- #
 #                                     Paths                                    #
 # ---------------------------------------------------------------------------- #
-
-
-@pytest.fixture(scope='session')
-def eplus_path():
-    return os.environ['EPLUS_PATH']
-
-
-@pytest.fixture(scope='session')
-def bcvtb_path():
-    return os.environ['BCVTB_PATH']
 
 
 @pytest.fixture(scope='session')
