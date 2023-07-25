@@ -405,7 +405,7 @@ class DatetimeWrapper(gym.ObservationWrapper):
         self.observation_space = gym.spaces.Box(
             low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
         # Update observation variables
-        day_index = self.observation_variables.index('day')
+        day_index = self.observation_variables.index('day_of_month')
         self.observation_variables[day_index] = 'is_weekend'
         hour_index = self.observation_variables.index('hour')
         self.observation_variables[hour_index] = 'hour_cos'
@@ -516,6 +516,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
     def __init__(
         self,
         env: gym.Env,
+        initial_values: List[float],
         delta_temp: float = 2.0,
         step_temp: float = 0.5,
     ):
@@ -523,9 +524,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         Args:
             env: The original Sinergym env.
             action_names: Name of the action variables with the setpoint control you want to do incremental.
-            initial_values: Initial values of the setpoints. One list per zone: [[heating zone 1, cooling zone 1], [heating zone 2, cooling zone 2], ...]
-            heating_range: Acceptable values for the heating setpoint.
-            cooling_range: Acceptable values for the cooling setpoint.
+            initial_values: Initial values of the setpoints.
             delta_temp: Maximum temperature variation in the setpoints in one step.
             step_temp: Minimum temperature variation in the setpoints in one step.
         """
@@ -534,12 +533,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
         # Params
         self.env = env
-        self.current_setpoints = []
-
-        # calculate initial values for setpoints
-        for external_schedule in list(
-                self.env.simulator._config.building['ExternalInterface:Schedule'].values()):
-            self.current_setpoints.append(external_schedule['initial_value'])
+        self.current_setpoints = initial_values
 
         # Check environment is valid
         try:
