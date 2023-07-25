@@ -116,7 +116,7 @@ def env_5zone_continuous():
 
 
 @pytest.fixture(scope='function')
-def env_5zopne_continuous_stochastic():
+def env_5zone_continuous_stochastic():
     env = EplusEnv(
         building_file='5ZoneAutoDXVAV.epJSON',
         weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
