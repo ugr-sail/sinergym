@@ -171,11 +171,20 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         #                               Observation Space                              #
         # ---------------------------------------------------------------------------- #
-        self._observation_space = gym.spaces.Box(
-            low=-5e6,
-            high=5e6,
-            shape=(len(time_variables) + len(variables) + len(meters),),
-            dtype=np.float32)
+        # If block hardcoded for officegrid environment, will be fixed in
+        # future versions
+        if 'officegrid' in self.name:
+            self._observation_space = gym.spaces.Box(
+                low=-6e11,
+                high=6e11,
+                shape=(len(time_variables) + len(variables) + len(meters),),
+                dtype=np.float32)
+        else:
+            self._observation_space = gym.spaces.Box(
+                low=-5e7,
+                high=5e7,
+                shape=(len(time_variables) + len(variables) + len(meters),),
+                dtype=np.float32)
 
         # ---------------------------------------------------------------------------- #
         #                                 Action Space                                 #
@@ -359,6 +368,7 @@ class EplusEnv(gym.Env):
             self.logger.warning(
                 'Step: The action {} is not correct for the Action Space {}'.format(
                     action, self._action_space))
+            raise err
 
         # Check if episode existed and is not terminated
         try:
