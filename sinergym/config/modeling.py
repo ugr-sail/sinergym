@@ -134,19 +134,6 @@ class ModelJSON(object):
     #                 Variables and Building model adaptation                      #
     # ---------------------------------------------------------------------------- #
 
-    def update_weather_path(self) -> None:
-        """When this method is called, weather file is changed randomly and building model is adapted to new one.
-        """
-        self._weather_path = os.path.join(
-            self.pkg_data_path, 'weather', random.choice(self.weather_files))
-        self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
-        self.ddy_model = IDF(self._ddy_path)
-        self.weather_data = WeatherData.from_epw(self._weather_path)
-        self.logger.debug(
-            '{} selected from {}'.format(
-                self._weather_path,
-                self.weather_files))
-
     def adapt_building_to_epw(
             self,
             summerday: str = 'Ann Clg .4% Condns DB=>MWB',
@@ -185,7 +172,7 @@ class ModelJSON(object):
 
         self.logger.debug('Adapting weather to building model.')
 
-    def adapt_variables_to_building(self) -> None:
+    def adapt_building_to_variables(self) -> None:
         """This method reads all variables and write it in the building model as Output:Variable field.
         """
         output_variables = {}
@@ -204,7 +191,7 @@ class ModelJSON(object):
         # Output:Variable field
         self.building['Output:Variable'] = output_variables
 
-    def adapt_meters_to_building(self) -> None:
+    def adapt_building_to_meters(self) -> None:
         """This method reads all meters and write it in the building model as Output:Meter field.
         """
         output_meters = {}
@@ -215,14 +202,14 @@ class ModelJSON(object):
             output_meters['Output:Meter ' +
                           str(i)] = {'key_name': meter_name, 'reporting_frequency': 'Timestep'}
 
-        self.logger.debug(
+        self.logger.info(
             'Updated building model with whole Output:Variable available names')
 
         # Delete default Output:Variables and added whole building variables to
         # Output:Variable field
         self.building['Output:Meter'] = output_meters
 
-    def apply_extra_conf(self) -> None:
+    def adapt_building_to_config(self) -> None:
         """Set extra configuration in building model
         """
         if self.config is not None:
@@ -233,7 +220,7 @@ class ModelJSON(object):
                     0]['number_of_timesteps_per_hour'] = self.config['timesteps_per_hour']
 
                 self.logger.debug(
-                    'timesteps_per_hour set up to {}'.format(
+                    'Extra config: timesteps_per_hour set up to {}'.format(
                         self.config['timesteps_per_hour']))
 
             # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
@@ -249,7 +236,22 @@ class ModelJSON(object):
                 runperiod['end_month'] = int(self.config['runperiod'][4])
                 runperiod['end_year'] = int(self.config['runperiod'][5])
 
-                self.logger.debug('runperiod set up to {}'.format(runperiod))
+                # Update runperiod and episode related attributes
+                self.runperiod = self._get_eplus_runperiod()
+                self.episode_length = self._get_runperiod_len()
+                self.step_size = 3600 / self.runperiod['n_steps_per_hour']
+                self.timestep_per_episode = self.episode_length / self.step_size
+                self.logger.info(
+                    'Extra config: runperiod updated to {}'.format(runperiod))
+                self.logger.info(
+                    'Updated episode length (seconds): {}'.format(
+                        self.episode_length))
+                self.logger.info(
+                    'Updated timestep size (seconds): {}'.format(
+                        self.step_size))
+                self.logger.info(
+                    'Updated timesteps per episode: {}'.format(
+                        self.timestep_per_episode))
 
     def save_building_model(self) -> str:
         """Take current building model and save as epJSON in current episode path folder.
@@ -275,49 +277,22 @@ class ModelJSON(object):
                 'Episode path should be set before saving building model.')
             raise RuntimeError
 
-    def get_schedulers(self) -> Dict[str,
-                                     Dict[str, Union[str, Dict[str, str]]]]:
-        """Extract all schedulers available in the building model to be controlled.
-
-        Returns:
-            Dict[str, Dict[str, Any]]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (table, object and field).
-        """
-        result = {}
-        schedules = {}
-        # Mount a dict with only building schedulers
-        if 'Schedule:Compact' in self.building:
-            schedules.update(self.building['Schedule:Compact'])
-        if 'Schedule:Year' in self.building:
-            schedules.update(self.building['Schedule:Year'])
-
-        for sch_name, sch_info in schedules.items():
-            # Write sch_name and data type in output
-            result[sch_name] = {
-                'Type': sch_info['schedule_type_limits_name'],
-            }
-            # We are going to search where that scheduler appears in whole
-            # building model
-            for table, elements in self.building.items():
-                # Don't include themselves
-                if table != 'Schedule:Compact' and table != 'Schedule:Year':
-                    # For each object of a table type
-                    for element_name, element_fields in elements.items():
-                        # For each field in a object
-                        for field_key, field_value in element_fields.items():
-                            # If a field value is the schedule name
-                            if field_value == sch_name:
-                                # We annotate the object name as key and the
-                                # field name where sch name appears and the
-                                # table where belong to
-                                result[sch_name][element_name] = {
-                                    'field_name': field_key,
-                                    'table_name': table
-                                }
-        return result
-
     # ---------------------------------------------------------------------------- #
     #                        EPW and Weather Data management                       #
     # ---------------------------------------------------------------------------- #
+
+    def update_weather_path(self) -> None:
+        """When this method is called, weather file is changed randomly and building model is adapted to new one.
+        """
+        self._weather_path = os.path.join(
+            self.pkg_data_path, 'weather', random.choice(self.weather_files))
+        self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
+        self.ddy_model = IDF(self._ddy_path)
+        self.weather_data = WeatherData.from_epw(self._weather_path)
+        self.logger.debug(
+            '{} selected from {}'.format(
+                self._weather_path,
+                self.weather_files))
 
     def apply_weather_variability(
             self,
@@ -387,9 +362,53 @@ class ModelJSON(object):
 
         return episode_weather_path
 
-    # ---------------------------------------------------------------------------- #
-    #                        Model and Config Functionality                        #
-    # ---------------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
+#                          Schedulers info extraction                          #
+# ---------------------------------------------------------------------------- #
+
+    def get_schedulers(self) -> Dict[str,
+                                     Dict[str, Union[str, Dict[str, str]]]]:
+        """Extract all schedulers available in the building model to be controlled.
+
+        Returns:
+            Dict[str, Dict[str, Any]]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (table, object and field).
+        """
+        result = {}
+        schedules = {}
+        # Mount a dict with only building schedulers
+        if 'Schedule:Compact' in self.building:
+            schedules.update(self.building['Schedule:Compact'])
+        if 'Schedule:Year' in self.building:
+            schedules.update(self.building['Schedule:Year'])
+
+        for sch_name, sch_info in schedules.items():
+            # Write sch_name and data type in output
+            result[sch_name] = {
+                'Type': sch_info['schedule_type_limits_name'],
+            }
+            # We are going to search where that scheduler appears in whole
+            # building model
+            for table, elements in self.building.items():
+                # Don't include themselves
+                if table != 'Schedule:Compact' and table != 'Schedule:Year':
+                    # For each object of a table type
+                    for element_name, element_fields in elements.items():
+                        # For each field in a object
+                        for field_key, field_value in element_fields.items():
+                            # If a field value is the schedule name
+                            if field_value == sch_name:
+                                # We annotate the object name as key and the
+                                # field name where sch name appears and the
+                                # table where belong to
+                                result[sch_name][element_name] = {
+                                    'field_name': field_key,
+                                    'table_name': table
+                                }
+        return result
+
+# ---------------------------------------------------------------------------- #
+#                           Runperiod info extraction                          #
+# ---------------------------------------------------------------------------- #
 
     def _get_eplus_runperiod(
             self) -> Dict[str, int]:
@@ -436,15 +455,14 @@ class ModelJSON(object):
             float: The simulation time in which the simulation ends (seconds).
         """
         # Get runperiod object inner building model
-        runperiod_info = self._get_eplus_runperiod()
 
         return get_delta_seconds(
-            runperiod_info['start_year'],
-            runperiod_info['start_month'],
-            runperiod_info['start_day'],
-            runperiod_info['end_year'],
-            runperiod_info['end_month'],
-            runperiod_info['end_day'])
+            self.runperiod['start_year'],
+            self.runperiod['start_month'],
+            self.runperiod['start_day'],
+            self.runperiod['end_year'],
+            self.runperiod['end_month'],
+            self.runperiod['end_day'])
 
     # ---------------------------------------------------------------------------- #
     #                  Working Folder for Simulation Management                    #
