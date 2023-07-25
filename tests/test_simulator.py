@@ -1,191 +1,126 @@
 import os
-import signal
-import subprocess
-import threading
-import xml.etree.ElementTree as ET
-
-import pkg_resources
 import pytest
 
-from sinergym.simulators.eplus import EnergyPlus
+# ---------------------------------------------------------------------------- #
+#                                 Main methods                                 #
+# ---------------------------------------------------------------------------- #
 
 
-def test_reset(simulator):
-    assert not simulator._episode_existed
+def test_simulator(simulator_5zone, pkg_data_path):
+    # Checks status before simulator start
+    assert not simulator_5zone.warmup_complete
+    assert simulator_5zone.var_handles is None
+    assert simulator_5zone.meter_handles is None
+    assert simulator_5zone.actuator_handles is None
+    assert simulator_5zone.available_data is None
+    assert simulator_5zone.energyplus_thread is None
+    assert simulator_5zone.energyplus_state is None
+    assert not simulator_5zone.initialized_handles
+    assert not simulator_5zone.system_ready
+    assert not simulator_5zone.simulation_complete
+    assert not hasattr(simulator_5zone, '_building_path')
+    assert not hasattr(simulator_5zone, '_weather_path')
+    assert not hasattr(simulator_5zone, '_output_path')
 
-    obs, info = simulator.reset()
+    # simulation start
+    simulator_5zone.start(
+        building_path=os.path.join(
+            pkg_data_path,
+            'buildings',
+            '5ZoneAutoDXVAV.epJSON'),
+        weather_path=os.path.join(
+            pkg_data_path,
+            'weather',
+            'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw'),
+        output_path='./TESTSIMULATOR/')
 
-    # Checking output
-    assert isinstance(info, dict)
-    assert len(info) > 0
-    assert isinstance(obs, list)
-    assert len(obs) > 0
+    # Checks status after simulation start
+    assert simulator_5zone.energyplus_state is not None
+    assert simulator_5zone.energyplus_thread is not None
+    assert hasattr(simulator_5zone, '_building_path')
+    assert hasattr(simulator_5zone, '_weather_path')
+    assert hasattr(simulator_5zone, '_output_path')
 
-    # Checking simulator state
-    assert simulator._eplus_run_stepsize == 900
-    assert simulator._eplus_one_epi_len == 31536000
-    assert simulator._curSimTim == 0
-    assert simulator._env_working_dir_parent.split(
-        '/')[-1] == 'Eplus-env-' + simulator._env_name + '-res1'
-    assert simulator._epi_num == 0
-    assert simulator._epi_num == info['episode_num']
-    assert simulator._episode_existed
-    path_list = simulator._eplus_working_dir.split('/')
-    assert path_list[-2] + '/' + path_list[-1] == 'Eplus-env-' + \
-        simulator._env_name + '-res1/Eplus-env-sub_run' + str(simulator._epi_num + 1)
+    # Checks warmup process
+    if not simulator_5zone.warmup_complete:
+        value = None
+        value = simulator_5zone.warmup_queue.get()
+        assert value is not None
+    else:
+        raise AssertionError
+    assert simulator_5zone.warmup_complete
 
-    # Checking energyplus subprocess
-    assert isinstance(simulator._eplus_process, subprocess.Popen)
-    assert '/usr/local/EnergyPlus' in simulator._eplus_process.args
+    # Until first observation received, system is not initialized
+    assert simulator_5zone.var_handles is None
+    assert simulator_5zone.meter_handles is None
+    assert simulator_5zone.actuator_handles is None
+    assert simulator_5zone.available_data is None
+    assert not simulator_5zone.initialized_handles
+    assert not simulator_5zone.system_ready
+    assert not simulator_5zone.simulation_complete
 
-    # Checking next directory for the next simulation episode is created
-    # successfully
-    simulator.reset()
-    assert simulator._epi_num == 1
-    path_list = simulator._eplus_working_dir.split('/')
-    assert path_list[-2] + '/' + path_list[-1] == 'Eplus-env-' + \
-        simulator._env_name + '-res1/Eplus-env-sub_run' + str(simulator._epi_num + 1)
+    # first observation
+    obs = None
+    info = None
+    obs = simulator_5zone.obs_queue.get()
+    info = simulator_5zone.info_queue.get()
+    assert len(obs) > 0 and obs is not None
+    assert len(info) > 0 and info is not None
 
+    # Now system should be initialized, since first observation has been
+    # received
+    assert simulator_5zone.var_handles is not None
+    assert simulator_5zone.meter_handles is not None
+    assert simulator_5zone.actuator_handles is not None
+    assert simulator_5zone.available_data is not None
+    assert simulator_5zone.initialized_handles
+    assert simulator_5zone.system_ready
+    assert not simulator_5zone.simulation_complete
 
-def test_step(simulator):
-    simulator.reset()
-    obs, terminated, truncated, info = simulator.step(action=[20.0, 24.0])
+    # first action
+    setpoints = [15.0, 22.5]
+    assert simulator_5zone.act_queue.empty()
+    simulator_5zone.act_queue.put(setpoints, timeout=2)
+    assert not simulator_5zone.act_queue.empty()
+    setpoints = list(map(lambda x: x + 1, setpoints))
 
-    # Checking output
-    assert isinstance(obs, list)
-    assert len(obs) > 0
-    assert isinstance(terminated, bool)
-    assert not terminated
-    assert isinstance(truncated, bool)
-    assert not truncated
-    assert isinstance(info, dict)
-    assert len(info) == 7
-    assert info['time_elapsed'] > 0
-    assert info['time_elapsed'] == simulator._eplus_run_stepsize
-    assert info['timestep'] == 1
+    # Check 4 more interactions
+    for i in range(4):
+        # Observation and info
+        obs = None
+        info = None
+        obs = simulator_5zone.obs_queue.get()
+        info = simulator_5zone.info_queue.get()
+        assert len(obs) > 0 and obs is not None
+        assert len(info) > 0 and info is not None
+        # Actions
+        simulator_5zone.act_queue.put(setpoints, timeout=2)
+        assert not simulator_5zone.act_queue.empty()
+        setpoints = list(map(lambda x: x + 1, setpoints))
 
-    # Check if simulator return done flag correctly
-    assert (simulator._curSimTim >= simulator._eplus_one_epi_len) == terminated
-
-    assert simulator._last_action == [20.0, 24.0]
-
-    # Another step
-    _, _, _, info = simulator.step(action=[20.0, 24.0])
-
-    # Check simulation advance with step
-    assert info['timestep'] == 2
-    assert info['time_elapsed'] == simulator._eplus_run_stepsize * 2
-
-
-def test_episode_transition_with_steps(simulator):
-
-    is_terminal = False
-    simulator.reset()
-    while (not is_terminal):
-        _, is_terminal, _, info = simulator.step(action=[20.0, 24.0])
-
-    # When we raise a terminal state it is only because our Current Simulation
-    # Time is greater or equeal to episode length
-    assert info['time_elapsed'] >= simulator._eplus_one_epi_len
-    assert simulator._curSimTim >= info['time_elapsed']
-    # If we try to do one step more, it shouldn't change environment
-    # One step more...
-    with pytest.raises(RuntimeError):
-        simulator.step(action=[23.0, 25.0])
-
-
-def test_get_file_name(simulator, json_path):
-    expected = '5ZoneAutoDXVAV.epJSON'
-    assert simulator._get_file_name(json_path) == expected
-
-
-# def test_rm_past_history_dir(cur_eplus_working_dir, dir_sig):
-
-
-def test_create_socket_cfg(simulator, sinergym_path):
-
-    # creating a socket.cfg example in tests/socket.cfg
-    tests_path = sinergym_path + '/tests'
-    simulator._create_socket_cfg(simulator._host, simulator._port, tests_path)
-    # Check its content
-    with open(tests_path + '/' + 'socket.cfg', 'r+') as socket_file:
-        tree = ET.parse(socket_file)
-        root = tree.getroot()
-        assert root.tag == 'BCVTB-client'
-        assert root[0].tag == 'ipc'
-        socket_attrs = root[0][0].attrib
-        socket_tag = root[0][0].tag
-        assert socket_tag == 'socket'
-        assert socket_attrs['hostname'] == simulator._host
-        assert socket_attrs['port'] == str(simulator._port)
-
-    # delete socket.cfg created during simulator_tests
-    os.remove(tests_path + '/socket.cfg')
+    # Check early stop
+    assert not simulator_5zone.simulation_complete
+    simulator_5zone.stop()
+    assert simulator_5zone.obs_queue.empty()
+    assert simulator_5zone.info_queue.empty()
+    assert simulator_5zone.act_queue.empty()
+    assert simulator_5zone.warmup_queue.empty()
+    assert simulator_5zone.energyplus_thread is None
+    assert not simulator_5zone.warmup_complete
+    assert not simulator_5zone.initialized_handles
+    assert not simulator_5zone.system_ready
+    assert not simulator_5zone.simulation_complete
 
 
-def test_create_eplus(simulator, eplus_path, weather_path, json_path):
-    eplus_working_dir = simulator._env_working_dir_parent
-    out_path = eplus_working_dir + '/output'
-    eplus_process = simulator._create_eplus(
-        eplus_path, weather_path, json_path, out_path, eplus_working_dir)
-    assert 'ERROR' not in str(eplus_process.stdout.read())
+def test_make_eplus_args(simulator_5zone):
+    simulator_5zone._building_path = 'expected_building'
+    simulator_5zone._weather_path = 'expected_weather'
+    simulator_5zone._output_path = 'expected_output'
 
-
-def test_get_is_eplus_running(simulator):
-    # Like our simulator has an episode active, we should see True value
-    assert not simulator.get_is_eplus_running()
-    simulator.reset()
-    assert simulator.get_is_eplus_running()
-
-
-def test_end_episode(simulator):
-    # In this point, we have a simulation running second episode which is
-    # terminated
-    assert not simulator._episode_existed
-    simulator.reset()
-    assert simulator._conn is not None
-    assert simulator._episode_existed
-    assert simulator.get_is_eplus_running()
-    simulator.end_episode()
-    # Now, let's check simulator
-    assert not simulator._episode_existed
-    assert simulator._conn is None
-    assert not simulator.get_is_eplus_running()
-
-
-def test_end_env(simulator):
-    simulator.reset()
-    assert simulator._episode_existed
-    assert '[closed]' not in str(simulator._socket)
-    # This end episode and close simulator socket
-    simulator.end_env()
-    assert not simulator._episode_existed
-    assert '[closed]' in str(simulator._socket)
-
-
-# def test_run_eplus_outputProcessing(self):
-
-
-def test_assembleMsg(simulator):
-    simulator.reset()
-    header = 0
-    action = simulator._last_action
-    curSimTim = simulator._curSimTim
-    Dblist = [num for num in range(16)]
-    msg = simulator._assembleMsg(
-        header, 0, len(action), 0, 0, curSimTim, Dblist)
-    assert msg == '0 0 2 0 0 0.000000000000000e+00 0.000000000000000e+00 1.000000000000000e+00 2.000000000000000e+00 3.000000000000000e+00 4.000000000000000e+00 5.000000000000000e+00 6.000000000000000e+00 7.000000000000000e+00 8.000000000000000e+00 9.000000000000000e+00 1.000000000000000e+01 1.100000000000000e+01 1.200000000000000e+01 1.300000000000000e+01 1.400000000000000e+01 1.500000000000000e+01 \n'
-
-
-def test_disassembleMsg(simulator):
-    simulator.reset()
-    msg = '0 0 2 0 0 0.000000000000000e+00 0.000000000000000e+00 1.000000000000000e+00 2.000000000000000e+00 3.000000000000000e+00 4.000000000000000e+00 5.000000000000000e+00 6.000000000000000e+00 7.000000000000000e+00 8.000000000000000e+00 9.000000000000000e+00 1.000000000000000e+01 1.100000000000000e+01 1.200000000000000e+01 1.300000000000000e+01 1.400000000000000e+01 1.500000000000000e+01 \n'
-    (version, flag, nDb, nIn, nBl, curSimTim,
-     Dblist) = simulator._disassembleMsg(msg)
-    assert version == 0
-    assert flag == 0
-    assert nDb == 2
-    assert nIn == 0
-    assert nBl == 0
-    assert curSimTim == 0
-    assert [num for num in range(16)] == Dblist
+    eplus_args = simulator_5zone.make_eplus_args()
+    assert eplus_args == [
+        '-w',
+        'expected_weather',
+        '-d',
+        'expected_output',
+        'expected_building']
