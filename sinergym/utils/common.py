@@ -75,6 +75,36 @@ def unwrap_wrapper(env: gym.Env,
     return None
 
 
+def get_season_comfort_range(
+        year: int, month: int, day: int) -> Tuple[float, float]:
+    """Get comfort temperature range depending on season. The comfort ranges are those
+    defined by ASHRAE in Standard 55—Thermal Environmental Conditions for Human Occupancy (2004).
+
+    Args:
+        year (int): current year
+        month (int): current month
+        day (int): current day
+
+    Returns:
+        Tuple[float, float]: Comfort temperature from the correct season.
+    """
+
+    summer_start_date = datetime(year, 6, 1)
+    summer_final_date = datetime(year, 9, 30)
+
+    range_comfort_summer = (23.0, 26.0)
+    range_comfort_winter = (20.0, 23.5)
+
+    current_dt = datetime(year, month, day)
+
+    if current_dt >= summer_start_date and current_dt <= summer_final_date:
+        comfort = range_comfort_summer
+    else:
+        comfort = range_comfort_winter
+
+    return comfort
+
+
 def ranges_getter(output_path: str,
                   last_result: Optional[Dict[str, List[float]]] = None
                   ) -> Dict[str, List[float]]:  # pragma: no cover
@@ -155,36 +185,6 @@ def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
                 else:
                     fields[fieldname_fixed] = element[fieldname]
     return {element.Name.lower(): fields}
-
-
-def get_season_comfort_range(
-        year: int, month: int, day: int) -> Tuple[float, float]:
-    """Get comfort temperature range depending on season. The comfort ranges are those
-    defined by ASHRAE in Standard 55—Thermal Environmental Conditions for Human Occupancy (2004).
-
-    Args:
-        year (int): current year
-        month (int): current month
-        day (int): current day
-
-    Returns:
-        Tuple[float, float]: Comfort temperature from the correct season.
-    """
-
-    summer_start_date = datetime(year, 6, 1)
-    summer_final_date = datetime(year, 9, 30)
-
-    range_comfort_summer = (23.0, 26.0)
-    range_comfort_winter = (20.0, 23.5)
-
-    current_dt = datetime(year, month, day)
-
-    if current_dt >= summer_start_date and current_dt <= summer_final_date:
-        comfort = range_comfort_summer
-    else:
-        comfort = range_comfort_winter
-
-    return comfort
 
 
 def export_schedulers_to_excel(
