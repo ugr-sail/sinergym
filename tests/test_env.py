@@ -9,41 +9,51 @@ from sinergym.utils.env_checker import check_env
 
 
 @pytest.mark.parametrize('env_name',
-                         [('env_demo'),
-                          ('env_demo_continuous'),
-                          ('env_demo_continuous_stochastic')
+                         [('env_5zone_discrete'),
+                          ('env_5zone_continuous'),
+                          ('env_5zone_continuous_stochastic')
                           ])
 def test_reset(env_name, request):
     env = request.getfixturevalue(env_name)
+    # Check state before reset
+    assert env.episode == 0
+    assert env.energyplus_simulator.energyplus_state is None
     obs, info = env.reset()
-    # obs check
-    assert len(obs) == len(DEFAULT_5ZONE_OBSERVATION_VARIABLES) + \
-        4  # year, month, day and hour
-    assert env.simulator._episode_existed
-    # info check
+    # Check after reset
+    assert env.episode == 1
+    assert env.energyplus_simulator.energyplus_state is not None
+    assert len(obs) == len(env.time_variables) + len(env.variables) + \
+        len(env.meters)  # year, month, day and hour
     assert isinstance(info, dict)
     assert len(info) > 0
     # default_options check
     if 'stochastic' not in env_name:
-        assert not env.default_options.get('weather_variability')
+        assert not env.default_options.get('weather_variability', False)
     else:
         assert isinstance(env.default_options['weather_variability'], tuple)
 
 
-def test_reset_custom_options(env_demo_continuous_stochastic):
-    assert env_demo_continuous_stochastic.default_options['weather_variability'] == (
-        1.0, 0.0, 0.001)
+def test_reset_custom_options(env_5zone_continuous_stochastic):
+    assert isinstance(
+        env_5zone_continuous_stochastic.default_options['weather_variability'],
+        tuple)
+    assert len(
+        env_5zone_continuous_stochastic.default_options['weather_variability']) == 3
     custom_options = {'weather_variability': (1.1, 0.1, 0.002)}
-    obs, info = env_demo_continuous_stochastic.reset(options=custom_options)
+    env_5zone_continuous_stochastic.reset(options=custom_options)
     # Check if epw with new variation is overwriting default options
+    weather_path = env_5zone_continuous_stochastic.model._weather_path
+    weather_file = weather_path.split('/')[0].split('.')[0]
     assert os.path.isfile(
-        info['eplus_working_dir'] +
-        '/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3_Random_1.1_0.1_0.002.epw')
+        env_5zone_continuous_stochastic.episode_path +
+        '/' +
+        weather_file +
+        '_Random_1.1_0.1_0.002.epw')
 
 
 @pytest.mark.parametrize('env_name',
-                         [('env_demo'),
-                          ('env_demo_continuous'),
+                         [('env_5zone_discrete'),
+                          ('env_5zone_continuous'),
                           ])
 def test_step(env_name, request):
     env = request.getfixturevalue(env_name)
@@ -51,73 +61,55 @@ def test_step(env_name, request):
     action = env.action_space.sample()
     obs, reward, terminated, truncated, info = env.step(action)
 
-    assert len(obs) == len(DEFAULT_5ZONE_OBSERVATION_VARIABLES) + \
-        4  # year, month, day and hour
-    assert not isinstance(reward, type(None))
-    assert not terminated
-    assert not truncated
-    assert info['timestep'] == 1
-    assert info['time_elapsed'] == env.simulator._eplus_run_stepsize * \
-        info['timestep']
-
-    action = env.action_space.sample()
-    obs, reward, terminated, truncated, info = env.step(action)
-
-    assert len(obs) == len(DEFAULT_5ZONE_OBSERVATION_VARIABLES) + \
-        4  # year, month, day and hour
+    assert len(obs) == env.observation_space.shape[0]
     assert not isinstance(reward, type(None))
     assert not terminated
     assert not truncated
     assert info['timestep'] == 2
-    assert info['time_elapsed'] == env.simulator._eplus_run_stepsize * \
-        info['timestep']
+    old_time_elapsed = info['time_elapsed(hours)']
+    assert old_time_elapsed > 0
+
+    action = env.action_space.sample()
+    obs, reward, terminated, truncated, info = env.step(action)
+
+    assert len(obs) == env.observation_space.shape[0]
+    assert not isinstance(reward, type(None))
+    assert not terminated
+    assert not truncated
+    assert info['timestep'] == 3
+    assert info['time_elapsed(hours)'] > old_time_elapsed
 
     # Not supported action
     action = 'fbsufb'
-    with pytest.raises(AssertionError):
+    with pytest.raises(Exception):
         env.step(action)
 
     # Check action out of range discrete
     if env.flag_discrete:
         action = 10
-        with pytest.raises(AssertionError):
+        with pytest.raises(Exception):
             env.step(action)
     # Check action out of range continuous
     else:
         action = [1.1, -1.1]
-        with pytest.raises(AssertionError):
+        with pytest.raises(Exception):
             env.step(action)
 
 
-def test_close(env_demo):
-    env_demo.reset()
-    assert env_demo.simulator._episode_existed
-    env_demo.close()
-    assert not env_demo.simulator._episode_existed
-    assert env_demo.simulator._conn is None
+def test_close(env_5zone_discrete):
+    env_5zone_discrete.reset()
+    assert env_5zone_discrete.is_running
+    env_5zone_discrete.close()
+    assert not env_5zone_discrete.is_running
 
 
-def test_render(env_demo):
-    env_demo.render()
-
-
-def test_get_schedulers(env_demo):
-    # Check if generate a dictionary
-    assert isinstance(env_demo.get_schedulers(), dict)
-    # Check if specifying a path, generate an excel
-    env_demo.get_schedulers(path='./TESTschedulers.xlsx')
-    assert os.path.isfile('./TESTschedulers.xlsx')
-
-
-def test_get_zones(env_demo):
-    zones = env_demo.get_zones()
-    assert isinstance(zones, list)
-    assert len(zones) > 0
+def test_render(env_5zone_discrete):
+    env_5zone_discrete.render()
 
 
 @pytest.mark.parametrize('env_name',
-                         [('env_demo'),
-                          ('env_demo_continuous')
+                         [('env_5zone_discrete'),
+                          ('env_5zone_continuous')
                           ])
 def test_get_action(env_name, request):
     env = request.getfixturevalue(env_name)
@@ -138,17 +130,17 @@ def test_get_action(env_name, request):
         assert len(_action) == 2
 
 
-def test_update_flag_normalization(env_demo_continuous):
-    assert env_demo_continuous.flag_normalization
-    assert env_demo_continuous.action_space == env_demo_continuous.normalized_space
+def test_update_flag_normalization(env_5zone_continuous):
+    assert env_5zone_continuous.flag_normalization
+    assert env_5zone_continuous.action_space == env_5zone_continuous.normalized_space
 
-    env_demo_continuous.update_flag_normalization(False)
-    assert not env_demo_continuous.flag_normalization
-    assert env_demo_continuous.action_space == env_demo_continuous.real_space
+    env_5zone_continuous.update_flag_normalization(False)
+    assert not env_5zone_continuous.flag_normalization
+    assert env_5zone_continuous.action_space == env_5zone_continuous.real_space
 
-    env_demo_continuous.update_flag_normalization(True)
-    assert env_demo_continuous.flag_normalization
-    assert env_demo_continuous.action_space == env_demo_continuous.normalized_space
+    env_5zone_continuous.update_flag_normalization(True)
+    assert env_5zone_continuous.flag_normalization
+    assert env_5zone_continuous.action_space == env_5zone_continuous.normalized_space
 
 
 def test_all_environments():
@@ -164,7 +156,7 @@ def test_all_environments():
         check_env(env)
 
         # Rename directory with name TEST for future remove
-        os.rename(env.simulator._env_working_dir_parent, 'Eplus-env-TEST' +
-                  env.simulator._env_working_dir_parent.split('/')[-1])
+        os.rename(env.experiment_path, 'Eplus-env-TEST' +
+                  env.experiment_path.split('/')[-1])
 
         env.close()
