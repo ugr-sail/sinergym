@@ -33,21 +33,21 @@ def test_get_delta_seconds(
 
 
 def test_is_wrapped(
-        env_demo_continuous,
+        env_5zone_continuous,
         env_wrapper_normalization,
         env_all_wrappers):
     # Check returns
-    assert not common.is_wrapped(env_demo_continuous, NormalizeObservation)
+    assert not common.is_wrapped(env_5zone_continuous, NormalizeObservation)
     assert common.is_wrapped(env_wrapper_normalization, NormalizeObservation)
     assert common.is_wrapped(env_all_wrappers, NormalizeObservation)
 
 
 def test_unwrap_wrapper(
-        env_demo_continuous,
+        env_5zone_continuous,
         env_wrapper_normalization,
         env_all_wrappers):
-    # Check if env_wrapper_normalization unwrapped is env_demo_continuous
-    assert not hasattr(env_demo_continuous, 'unwrapped_observation')
+    # Check if env_wrapper_normalization unwrapped is env_5zone_continuous
+    assert not hasattr(env_5zone_continuous, 'unwrapped_observation')
     assert hasattr(env_all_wrappers, 'unwrapped_observation')
     assert hasattr(env_wrapper_normalization, 'unwrapped_observation')
     assert hasattr(env_wrapper_normalization, 'env')
@@ -57,7 +57,7 @@ def test_unwrap_wrapper(
     assert not hasattr(env, 'unwrapped_observation')
     # Check if trying unwrap a not wrapped environment the result is None
     env = common.unwrap_wrapper(
-        env_demo_continuous,
+        env_5zone_continuous,
         NormalizeObservation)
     assert env is None
     env = common.unwrap_wrapper(env_all_wrappers, NormalizeObservation)
