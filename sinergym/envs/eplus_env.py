@@ -667,7 +667,7 @@ class EplusEnv(gym.Env):
         return self.energyplus_simulator.available_data
 
     @property
-    def is_running(self) -> Optional[str]:
+    def is_running(self) -> bool:
         return self.energyplus_simulator.is_running
 
     # ------------------------------ Building model ------------------------------ #
@@ -684,11 +684,11 @@ class EplusEnv(gym.Env):
         return self.model.step_size
 
     @property
-    def zone_names(self) -> str:
+    def zone_names(self) -> list:
         return self.model.zone_names
 
     @property
-    def schedulers(self) -> str:
+    def schedulers(self) -> Dict[str, Dict[str, Union[str, Dict[str, str]]]]:
         return self.model.schedulers
 
     # ----------------------------------- Paths ---------------------------------- #

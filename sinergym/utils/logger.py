@@ -49,7 +49,7 @@ class Logger():
             self,
             name: str,
             level: str,
-            formatter: Callable = CustomFormatter()) -> logging.Logger:
+            formatter: Any = CustomFormatter()) -> logging.Logger:
         """Return Sinergym logger for the progress output in terminal.
 
         Args:

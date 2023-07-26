@@ -66,7 +66,7 @@ class EnergyPlus(object):
         self.var_handles: Optional[Dict[str, int]] = None
         self.meter_handles: Optional[Dict[str, int]] = None
         self.actuator_handles: Optional[Dict[str, int]] = None
-        self.available_data: Optional[Dict[str, int]] = None
+        self.available_data: Optional[str] = None
 
         # Simulation elements to read/write
         self.time_variables = time_variables
@@ -81,6 +81,11 @@ class EnergyPlus(object):
         self.initialized_handles = False
         self.system_ready = False
         self.simulation_complete = False
+
+        # Paths
+        self._building_path: Optional[str] = None
+        self._weather_path: Optional[str] = None
+        self._output_path: Optional[str] = None
 
         self.logger.debug('Energyplus simulator initialized.')
 

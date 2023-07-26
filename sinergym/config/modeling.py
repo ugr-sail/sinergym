@@ -639,9 +639,9 @@ class ModelJSON(object):
         return self._weather_path
 
     @property
-    def ddy_path(self) -> Optional[int]:
+    def ddy_path(self) -> Optional[str]:
         return self._ddy_path
 
     @property
-    def idd_path(self) -> Optional[int]:
+    def idd_path(self) -> Optional[str]:
         return self._idd
