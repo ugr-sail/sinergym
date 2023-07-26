@@ -2,6 +2,7 @@
 from datetime import datetime
 from typing import Any, List, Sequence
 from sinergym.envs.eplus_env import EplusEnv
+from sinergym.utils.constants import YEAR
 
 import numpy as np
 
@@ -54,7 +55,7 @@ class RBC5Zone(object):
             Sequence[Any]: Action chosen.
         """
         obs_dict = dict(zip(self.observation_variables, observation))
-        year = int(obs_dict['year'])
+        year = int(obs_dict['year']) if obs_dict.get('year', False) else YEAR
         month = int(obs_dict['month'])
         day = int(obs_dict['day_of_month'])
 
@@ -98,13 +99,13 @@ class RBCDatacenter(object):
         obs_dict = dict(zip(self.observation_variables, observation))
 
         # Mean temp in datacenter zones
-        mean_temp = np.mean([obs_dict['Zone Air Temperature(West Zone)'],
-                             obs_dict['Zone Air Temperature(East Zone)']])
+        mean_temp = np.mean([obs_dict['west_zone_temperature'],
+                             obs_dict['east_zone_temperature']])
 
         current_heat_setpoint = obs_dict[
-            'Zone Thermostat Heating Setpoint Temperature(West Zone)']
+            'west_htg_setpoint']
         current_cool_setpoint = obs_dict[
-            'Zone Thermostat Cooling Setpoint Temperature(West Zone)']
+            'west_clg_setpoint']
 
         new_heat_setpoint = current_heat_setpoint
         new_cool_setpoint = current_cool_setpoint
