@@ -18,10 +18,10 @@ if not missing:
         'env_name',
         [
             (
-                'env_demo'
+                'env_5zone_discrete'
             ),
             (
-                'env_demo_continuous'
+                'env_5zone_continuous'
             ),
         ]
     )
@@ -52,13 +52,14 @@ if not missing:
         # Check model works
 
         obs, info = env.reset()
+        assert info['timestep'] == 1
         a, _ = model.predict(obs)
         obs, reward, terminated, truncated, info = env.step(a)
 
         assert reward is not None and reward < 0
         assert a is not None
         assert isinstance(terminated, bool)
-        assert info['timestep'] == 1
+        assert info['timestep'] == 2
 
         env.close()
 
@@ -66,10 +67,10 @@ if not missing:
         'env_name',
         [
             (
-                'env_demo'
+                'env_5zone_discrete'
             ),
             (
-                'env_demo_continuous'
+                'env_5zone_continuous'
             ),
         ]
     )
@@ -98,13 +99,14 @@ if not missing:
         # Check model works
 
         obs, info = env.reset()
+        assert info['timestep'] == 1
         a, _ = model.predict(obs)
         obs, reward, terminated, truncated, info = env.step(a)
 
         assert reward is not None and reward < 0
         assert a is not None
         assert isinstance(terminated, bool)
-        assert info['timestep'] == 1
+        assert info['timestep'] == 2
 
         env.close()
 
@@ -112,17 +114,17 @@ if not missing:
         'env_name',
         [
             (
-                'env_demo'
+                'env_5zone_discrete'
             ),
             (
-                'env_demo_continuous'
+                'env_5zone_continuous'
             ),
         ]
     )
     def test_stable_DQN(env_name, request):
         env = request.getfixturevalue(env_name)
         # DQN must fail in continuous environments
-        if env_name == 'env_demo_continuous':
+        if env_name == 'env_5zone_continuous':
             with pytest.raises(AssertionError):
                 model = stable_baselines3.DQN('MlpPolicy', env, verbose=1,
                                               learning_rate=.0001,
@@ -168,13 +170,14 @@ if not missing:
             # Check model works
 
             obs, info = env.reset()
+            assert info['timestep'] == 1
             a, _ = model.predict(obs)
             obs, reward, terminated, truncated, info = env.step(a)
 
             assert reward is not None and reward < 0
             assert a is not None
             assert isinstance(terminated, bool)
-            assert info['timestep'] == 1
+            assert info['timestep'] == 2
 
             env.close()
 
@@ -182,10 +185,10 @@ if not missing:
         'env_name',
         [
             (
-                'env_demo'
+                'env_5zone_discrete'
             ),
             (
-                'env_demo_continuous'
+                'env_5zone_continuous'
             ),
         ]
     )
@@ -193,7 +196,7 @@ if not missing:
 
         env = request.getfixturevalue(env_name)
         # DDPG must fail in discrete environments
-        if env_name == 'env_demo':
+        if env_name == 'env_5zone_discrete':
             with pytest.raises(IndexError):
                 env.action_space.shape[-1]
             with pytest.raises(AssertionError):
@@ -221,13 +224,14 @@ if not missing:
             # Check model works
 
             obs, info = env.reset()
+            assert info['timestep'] == 1
             a, _ = model.predict(obs)
             obs, reward, terminated, truncated, info = env.step(a)
 
             assert reward is not None and reward < 0
             assert a is not None
             assert isinstance(terminated, bool)
-            assert info['timestep'] == 1
+            assert info['timestep'] == 2
 
             env.close()
 
@@ -235,17 +239,17 @@ if not missing:
         'env_name',
         [
             (
-                'env_demo'
+                'env_5zone_discrete'
             ),
             (
-                'env_demo_continuous'
+                'env_5zone_continuous'
             ),
         ]
     )
     def test_stable_SAC(env_name, request):
         env = request.getfixturevalue(env_name)
         # SAC must fail in discrete environments
-        if env_name == 'env_demo':
+        if env_name == 'env_5zone_discrete':
             with pytest.raises(AssertionError):
                 model = stable_baselines3.SAC(
                     "MlpPolicy", env, verbose=1)
@@ -268,12 +272,13 @@ if not missing:
             # Check model works
 
             obs, info = env.reset()
+            assert info['timestep'] == 1
             a, _ = model.predict(obs)
             obs, reward, terminated, truncated, info = env.step(a)
 
             assert reward is not None and reward < 0
             assert a is not None
             assert isinstance(terminated, bool)
-            assert info['timestep'] == 1
+            assert info['timestep'] == 2
 
             env.close()
