@@ -12,7 +12,7 @@ import numpy as np
 from sinergym.envs.eplus_env import EplusEnv
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.logger import CSVLogger, Logger
-from sinergym.utils.constants import LOG_WRAPPERS_LEVEL
+from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 
 
 class MultiObjectiveReward(gym.Wrapper):
@@ -261,7 +261,7 @@ class LoggerWrapper(gym.Wrapper):
         self.file_logger = logger_class(
             monitor_header=self.monitor_header,
             progress_header=self.progress_header,
-            log_progress_file=env.model.experiment_path +
+            log_progress_file=env.experiment_path +
             '/progress.csv',
             flag=flag)
 
@@ -394,7 +394,7 @@ class DatetimeWrapper(gym.ObservationWrapper):
                     'month', 'day_of_month', 'hour'])
         except AssertionError as err:
             self.logger.error(
-                'month, day_of_month and hour must be defined in observation space ion environment previously')
+                'month, day_of_month and hour must be defined in observation space in environment previously')
             raise err
 
         # Save observation variables before wrapper
@@ -437,7 +437,7 @@ class DatetimeWrapper(gym.ObservationWrapper):
             if key in new_obs.keys():
                 new_obs[key] = value
         dt = datetime(
-            int(obs_dict['year']),
+            int(obs_dict['year']) if obs_dict.get('year', False) else YEAR,
             int(obs_dict['month']),
             int(obs_dict['day_of_month']),
             int(obs_dict['hour']))

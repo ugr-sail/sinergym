@@ -31,7 +31,7 @@ def test_normalization_wrapper(env_name, request):
 
     # Check observation normalization
     for variable in env.normalized_variables:
-        index = env.variables['observation'].index(variable)
+        index = env.observation_variables.index(variable)
         assert obs[index] >= 0 and obs[index] <= 1
     # Check original observation recording
     assert env.unwrapped_observation is not None
@@ -41,7 +41,7 @@ def test_normalization_wrapper(env_name, request):
     obs, _, _, _, _ = env.step(a)
 
     for variable in env.normalized_variables:
-        index = env.variables['observation'].index(variable)
+        index = env.observation_variables.index(variable)
         assert obs[index] >= 0 and obs[index] <= 1
     assert env.unwrapped_observation is not None
 
@@ -67,7 +67,7 @@ def test_multiobjective_wrapper(env_name, request):
 def test_datetime_wrapper(env_name, request):
     env = request.getfixturevalue(env_name)
 
-    observation_variables = env.variables['observation']
+    observation_variables = env.observation_variables
     # Check observation varibles have been updated
     assert 'day' not in observation_variables
     assert 'month' not in observation_variables
@@ -96,7 +96,7 @@ def test_previous_observation_wrapper(env_name, request):
     # Check that the original variable names with previous name added is
     # present
     previous_variable_names = [
-        var for var in env.variables['observation'] if '_previous' in var]
+        var for var in env.observation_variables if '_previous' in var]
 
     # Check previous observation stored has the correct len and initial values
     assert len(env.previous_observation) == 3
@@ -108,7 +108,7 @@ def test_previous_observation_wrapper(env_name, request):
     original_obs1 = []
     for variable in env.previous_variables:
         original_obs1.append(
-            obs1[env.variables['observation'].index(variable)])
+            obs1[env.observation_variables.index(variable)])
 
     # Check step variables is added in obs previous variables
     action = env.action_space.sample()
@@ -190,12 +190,12 @@ def test_multiobs_wrapper(env_name, request):
 def test_logger_wrapper(env_name, request):
 
     env = request.getfixturevalue(env_name)
-    logger = env.logger
+    logger = env.file_logger
     env.reset()
 
     # Check CSV's have been created and linked in simulator correctly
-    assert logger.log_progress_file == env.simulator._env_working_dir_parent + '/progress.csv'
-    assert logger.log_file == env.simulator._eplus_working_dir + '/monitor.csv'
+    assert logger.log_progress_file == env.experiment_path + '/progress.csv'
+    assert logger.log_file == env.episode_path + '/monitor.csv'
 
     tmp_log_file = logger.log_file
 
@@ -235,11 +235,11 @@ def test_logger_wrapper(env_name, request):
 
 
 def test_logger_activation(env_wrapper_logger):
-    assert env_wrapper_logger.logger.flag
+    assert env_wrapper_logger.file_logger.flag
     env_wrapper_logger.deactivate_logger()
-    assert not env_wrapper_logger.logger.flag
+    assert not env_wrapper_logger.file_logger.flag
     env_wrapper_logger.activate_logger()
-    assert env_wrapper_logger.logger.flag
+    assert env_wrapper_logger.file_logger.flag
 
 
 def test_env_wrappers(env_all_wrappers):
@@ -279,11 +279,11 @@ def test_env_wrappers(env_all_wrappers):
 
     # variables selected should be normalized --> [0,1]
     for variable in env_all_wrappers.normalized_variables:
-        index = env_all_wrappers.variables['observation'].index(variable)
+        index = env_all_wrappers.observation_variables.index(variable)
         assert obs[index] >= 0 and obs[index] <= 1
 
     # Execute a short episode in order to check logger
-    logger = env_all_wrappers.logger
+    logger = env_all_wrappers.file_logger
     tmp_log_file = logger.log_file
     for _ in range(10):
         _, reward, _, _, info = env_all_wrappers.step(
@@ -297,8 +297,8 @@ def test_env_wrappers(env_all_wrappers):
     assert isinstance(env_all_wrappers.history[0], np.ndarray)
 
     # check logger
-    assert logger.log_progress_file == env_all_wrappers.simulator._env_working_dir_parent + '/progress.csv'
-    assert logger.log_file == env_all_wrappers.simulator._eplus_working_dir + '/monitor.csv'
+    assert logger.log_progress_file == env_all_wrappers.experiment_path + '/progress.csv'
+    assert logger.log_file == env_all_wrappers.episode_path + '/monitor.csv'
     assert os.path.isfile(logger.log_progress_file)
     assert os.path.isfile(tmp_log_file)
     assert os.path.isfile(tmp_log_file[:-4] + '_normalized.csv')
