@@ -32,7 +32,7 @@ def test_simulator(simulator_5zone, pkg_data_path):
             pkg_data_path,
             'weather',
             'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw'),
-        output_path='./TESTSIMULATOR/')
+        output_path='./Eplus-TESTSIMULATOR/')
 
     # Checks status after simulation start
     assert simulator_5zone.energyplus_state is not None

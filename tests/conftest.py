@@ -310,6 +310,7 @@ def env_wrapper_previousobs(env_5zone_continuous):
 def env_wrapper_incremental(env_5zone_continuous):
     return DiscreteIncrementalWrapper(
         env=env_5zone_continuous,
+        initial_values=[21.0, 25.0],
         delta_temp=2,
         step_temp=0.5
     )
@@ -451,13 +452,21 @@ def hourly_linear_reward():
 
 def pytest_sessionfinish(session, exitstatus):
     """ whole test run finishes. """
-    # Deleting all temporal directories generated during tests
+    # Deleting all temporal directories generated during tests (environments)
     directories = glob('Eplus-env-TEST*/')
+    for directory in directories:
+        shutil.rmtree(directory)
+
+    # Deleting all temporal directories generated during tests (simulators)
+    directories = glob('Eplus-TESTSIMULATOR*/')
     for directory in directories:
         shutil.rmtree(directory)
 
     # Deleting all temporal files generated during tests
     files = glob('./TEST*.xlsx')
+    for file in files:
+        os.remove(file)
+    files = glob('./data_available*')
     for file in files:
         os.remove(file)
 
