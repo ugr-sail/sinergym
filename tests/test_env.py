@@ -43,7 +43,7 @@ def test_reset_custom_options(env_5zone_continuous_stochastic):
     env_5zone_continuous_stochastic.reset(options=custom_options)
     # Check if epw with new variation is overwriting default options
     weather_path = env_5zone_continuous_stochastic.model._weather_path
-    weather_file = weather_path.split('/')[0].split('.')[0]
+    weather_file = weather_path.split('/')[-1][:-4]
     assert os.path.isfile(
         env_5zone_continuous_stochastic.episode_path +
         '/' +

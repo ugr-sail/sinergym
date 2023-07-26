@@ -263,7 +263,7 @@ class EplusEnv(gym.Env):
         super().reset(seed=seed)
 
         # Apply options if exists, else default options
-        options = options if options is not None else self.default_options
+        reset_options = options if options is not None else self.default_options
 
         self.episode += 1
         self.timestep = 1
@@ -292,7 +292,7 @@ class EplusEnv(gym.Env):
         # Getting building, weather and Energyplus output directory
         eplus_working_building_path = self.model.save_building_model()
         eplus_working_weather_path = self.model.apply_weather_variability(
-            variation=options.get('weather_variability'))
+            variation=reset_options.get('weather_variability'))
         eplus_working_out_path = (self.episode_dir + '/' + 'output')
         self.logger.info(
             'Saving episode output path... [{}]'.format(
