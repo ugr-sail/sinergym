@@ -1,6 +1,5 @@
 import json
 import os
-import xml.etree.cElementTree as ElementTree
 
 import pytest
 

@@ -4,10 +4,11 @@ import csv
 import logging
 import os
 import sys
-from typing import Any, Dict, List, Optional, Tuple, Union, Callable
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pkg_resources
+
 from sinergym.utils.constants import LOG_FORMAT
 
 required = {'stable-baselines3', 'wandb'}

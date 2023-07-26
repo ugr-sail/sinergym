@@ -11,8 +11,8 @@ import numpy as np
 
 from sinergym.envs.eplus_env import EplusEnv
 from sinergym.utils.common import is_wrapped
-from sinergym.utils.logger import CSVLogger, Logger
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
+from sinergym.utils.logger import CSVLogger, Logger
 
 
 class MultiObjectiveReward(gym.Wrapper):

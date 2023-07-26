@@ -8,10 +8,8 @@ import pytest
 from opyplus import WeatherData
 
 import sinergym
-import gymnasium as gym
 from sinergym.config.modeling import ModelJSON
 from sinergym.envs.eplus_env import EplusEnv
-from sinergym.simulators.eplus import EnergyPlus
 from sinergym.utils.constants import *
 from sinergym.utils.controllers import *
 from sinergym.utils.rewards import *

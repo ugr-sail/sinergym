@@ -4,9 +4,8 @@
 from datetime import datetime
 from math import exp
 from typing import Any, Dict, List, Tuple, Union
-from sinergym.utils.constants import YEAR
 
-from gymnasium import Env
+from sinergym.utils.constants import YEAR
 
 
 class BaseReward(object):

@@ -2,18 +2,17 @@
 Gymnasium environment for simulation with EnergyPlus.
 """
 
-import random
+from queue import Empty, Full, Queue
 from typing import Any, Dict, List, Optional, Tuple, Union
-from sinergym.utils.logger import Logger
 
 import gymnasium as gym
 import numpy as np
 
-from sinergym.simulators import EnergyPlus
-from queue import Queue, Empty, Full
 from sinergym.config import ModelJSON
-from sinergym.utils.rewards import *
+from sinergym.simulators import EnergyPlus
 from sinergym.utils.constants import LOG_ENV_LEVEL
+from sinergym.utils.logger import Logger
+from sinergym.utils.rewards import *
 
 
 class EplusEnv(gym.Env):

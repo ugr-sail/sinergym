@@ -1,8 +1,4 @@
-import os
-import shutil
-
 import pytest
-from opyplus import Epm, WeatherData
 
 import sinergym.utils.common as common
 from sinergym.utils.wrappers import NormalizeObservation

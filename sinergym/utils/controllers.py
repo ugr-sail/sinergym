@@ -1,10 +1,11 @@
 """Implementation of basic controllers."""
 from datetime import datetime
 from typing import Any, List, Sequence
-from sinergym.envs.eplus_env import EplusEnv
-from sinergym.utils.constants import YEAR
 
 import numpy as np
+
+from sinergym.envs.eplus_env import EplusEnv
+from sinergym.utils.constants import YEAR
 
 
 class RandomController(object):

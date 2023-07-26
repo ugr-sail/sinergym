@@ -1,4 +1,3 @@
-import gymnasium as gym
 import numpy as np
 import pkg_resources
 import pytest

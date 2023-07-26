@@ -2,8 +2,6 @@
 import json
 import os
 import random
-import xml.etree.cElementTree as ElementTree
-from abc import ABC, abstractmethod
 from copy import deepcopy
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -12,9 +10,10 @@ import numpy as np
 from eppy.modeleditor import IDF
 from opyplus import WeatherData
 
-from sinergym.utils.logger import Logger
 from sinergym.utils.common import eppy_element_to_dict, get_delta_seconds
-from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR, LOG_MODEL_LEVEL
+from sinergym.utils.constants import (CWD, LOG_MODEL_LEVEL, PKG_DATA_PATH,
+                                      WEEKDAY_ENCODING, YEAR)
+from sinergym.utils.logger import Logger
 
 
 class ModelJSON(object):
