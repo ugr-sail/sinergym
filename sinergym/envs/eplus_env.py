@@ -679,6 +679,10 @@ class EplusEnv(gym.Env):
         return self.model.episode_length
 
     @property
+    def timestep_per_episode(self) -> int:
+        return self.model.timestep_per_episode
+
+    @property
     def step_size(self) -> float:
         return self.model.step_size
 

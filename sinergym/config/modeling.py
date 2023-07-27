@@ -112,7 +112,7 @@ class ModelJSON(object):
         self.runperiod = self._get_eplus_runperiod()
         self.episode_length = self._get_runperiod_len()
         self.step_size = 3600 / self.runperiod['n_steps_per_hour']
-        self.timestep_per_episode = self.episode_length / self.step_size
+        self.timestep_per_episode = int(self.episode_length / self.step_size)
 
         self.logger.info('runperiod established: {}'.format(self.runperiod))
         self.logger.info(
@@ -239,7 +239,8 @@ class ModelJSON(object):
                 self.runperiod = self._get_eplus_runperiod()
                 self.episode_length = self._get_runperiod_len()
                 self.step_size = 3600 / self.runperiod['n_steps_per_hour']
-                self.timestep_per_episode = self.episode_length / self.step_size
+                self.timestep_per_episode = int(
+                    self.episode_length / self.step_size)
                 self.logger.info(
                     'Extra config: runperiod updated to {}'.format(runperiod))
                 self.logger.info(
