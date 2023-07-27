@@ -1,6 +1,5 @@
 import argparse
 import json
-import os
 import sys
 from datetime import datetime
 
@@ -16,7 +15,7 @@ import sinergym
 import sinergym.utils.gcloud as gcloud
 from sinergym.utils.callbacks import *
 from sinergym.utils.constants import *
-from sinergym.utils.logger import CSVLogger, WandBOutputFormat
+from sinergym.utils.logger import WandBOutputFormat
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import *
 
@@ -77,13 +76,11 @@ if conf.get('wandb'):
 
 # --------------------- Overwrite environment parameters --------------------- #
 env_params = {}
-# Transform required str's into Callables
+
 if conf.get('env_params'):
+    # Transform required str's into Callables
     if conf['env_params'].get('reward'):
         conf['env_params']['reward'] = eval(conf['env_params']['reward'])
-    if conf['env_params'].get('observation_space'):
-        conf['env_params']['observation_space'] = eval(
-            conf['env_params']['observation_space'])
     if conf['env_params'].get('action_space'):
         conf['env_params']['action_space'] = eval(
             conf['env_params']['action_space'])
@@ -226,9 +223,7 @@ else:
 # ---------------------------------------------------------------------------- #
 #       Calculating total training timesteps based on number of episodes       #
 # ---------------------------------------------------------------------------- #
-n_timesteps_episode = env.simulator._eplus_one_epi_len / \
-    env.simulator._eplus_run_stepsize
-timesteps = conf['episodes'] * n_timesteps_episode - 1
+timesteps = conf['episodes'] * env.timestep_per_episode - 1
 
 # ---------------------------------------------------------------------------- #
 #                                   CALLBACKS                                  #
@@ -239,11 +234,11 @@ callbacks = []
 if conf.get('evaluation'):
     eval_callback = LoggerEvalCallback(
         eval_env,
-        best_model_save_path=eval_env.simulator._env_working_dir_parent +
+        best_model_save_path=eval_env.experiment_path +
         '/best_model/',
-        log_path=eval_env.simulator._env_working_dir_parent +
+        log_path=eval_env.experiment_path +
         '/best_model/',
-        eval_freq=n_timesteps_episode *
+        eval_freq=(eval_env.timestep_per_episode - 1) *
         conf['evaluation']['eval_freq'],
         deterministic=True,
         render=False,
@@ -275,12 +270,12 @@ model.learn(
     total_timesteps=timesteps,
     callback=callback,
     log_interval=conf['algorithm']['log_interval'])
-model.save(env.simulator._env_working_dir_parent + '/model')
+model.save(env.experiment_path + '/model')
 
 # If the algorithm doesn't reset or close the environment, this script will do it in
 # order to correctly log all the simulation data (Energyplus + Sinergym
 # logs)
-if env.simulator._episode_existed:
+if env.is_running:
     env.close()
 
 # ---------------------------------------------------------------------------- #
@@ -292,16 +287,16 @@ if conf.get('wandb'):
         name=conf['wandb']['artifact_name'],
         type=conf['wandb']['artifact_type'])
     artifact.add_dir(
-        env.simulator._env_working_dir_parent,
+        env.experiment_path,
         name='training_output/')
     if conf.get('evaluation'):
         artifact.add_dir(
-            eval_env.simulator._env_working_dir_parent,
+            eval_env.simulator.experiment_path,
             name='evaluation_output/')
     run.log_artifact(artifact)
 
-# wandb has finished
-run.finish()
+    # wandb has finished
+    run.finish()
 
 # ---------------------------------------------------------------------------- #
 #                      Google Cloud Bucket Storage                             #
@@ -313,15 +308,15 @@ if conf.get('cloud'):
         # Code for send output to common Google Cloud resource here.
         gcloud.upload_to_bucket(
             client,
-            src_path=env.simulator._env_working_dir_parent,
+            src_path=env.experiment_path,
             dest_bucket_name=conf['cloud']['remote_store'],
-            dest_path=name)
+            dest_path=experiment_name)
         if conf.get('evaluation'):
             gcloud.upload_to_bucket(
                 client,
-                src_path='best_model/' + name + '/',
+                src_path='best_model/' + experiment_name + '/',
                 dest_bucket_name=conf['cloud']['remote_store'],
-                dest_path='best_model/' + name + '/')
+                dest_path='best_model/' + experiment_name + '/')
     # ---------------------------------------------------------------------------- #
     #                   Autodelete option if is a cloud resource                   #
     # ---------------------------------------------------------------------------- #

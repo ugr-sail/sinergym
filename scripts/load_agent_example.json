@@ -40,8 +40,10 @@
             "project": "sinergym_evaluations",
             "entity": "alex_ugr"
         },
-        "artifact_name": "evaluating",
-        "artifact_type": "evaluation1",
+        "evaluation_registry": {
+            "artifact_name": "evaluating",
+            "artifact_type": "evaluation1"
+        },
         "load_model": {
             "project": "sinergym",
             "entity": "alex_ugr",

@@ -73,11 +73,8 @@ env_params = {}
 if conf.get('env_params'):
     if conf['env_params'].get('reward'):
         conf['env_params']['reward'] = eval(conf['env_params']['reward'])
-    if conf['env_params'].get('observation_space'):
-        conf['env_params']['observation_space'] = eval(
-            conf['env_params']['observation_space'])
     if conf['env_params'].get('action_space'):
-        conf['env_params']['observation_space'] = eval(
+        conf['env_params']['action_space'] = eval(
             conf['env_params']['action_space'])
 
     env_params = conf['env_params']
@@ -183,23 +180,24 @@ env.close()
 # ---------------------------------------------------------------------------- #
 
 if conf.get('wandb'):
-    artifact = wandb.Artifact(
-        name=conf['wandb']['artifact_name'],
-        type=conf['wandb']['artifact_type'])
-    artifact.add_dir(
-        env.simulator._env_working_dir_parent,
-        name='evaluation_output/')
+    if conf['wandb'].get('evaluation_registry'):
+        artifact = wandb.Artifact(
+            name=conf['wandb']['evaluation_registry']['artifact_name'],
+            type=conf['wandb']['evaluation_registry']['artifact_type'])
+        artifact.add_dir(
+            env.simulator._env_working_dir_parent,
+            name='evaluation_output/')
 
-    run.log_artifact(artifact)
+        run.log_artifact(artifact)
 
-# wandb has finished
-run.finish()
+    # wandb has finished
+    run.finish()
 
 # ---------------------------------------------------------------------------- #
 #                                 Store results                                #
 # ---------------------------------------------------------------------------- #
 if conf.get('cloud'):
-    if conf.get('remote_store'):
+    if conf['cloud'].get('remote_store'):
         # Initiate Google Cloud client
         client = gcloud.init_storage_client()
         # Code for send output to common Google Cloud resource here.
@@ -207,7 +205,7 @@ if conf.get('cloud'):
             client,
             src_path=env.simulator._env_working_dir_parent,
             dest_bucket_name='experiments-storage',
-            dest_path=name)
+            dest_path=evaluation_name)
 
 # ---------------------------------------------------------------------------- #
 #                          Auto-delete remote container                        #
