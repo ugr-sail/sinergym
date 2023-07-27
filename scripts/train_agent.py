@@ -8,7 +8,8 @@ import numpy as np
 import wandb
 from stable_baselines3 import *
 from stable_baselines3.common.callbacks import CallbackList
-from stable_baselines3.common.logger import HumanOutputFormat, Logger
+from stable_baselines3.common.logger import HumanOutputFormat
+from stable_baselines3.common.logger import Logger as SB3Logger
 from stable_baselines3.common.monitor import Monitor
 
 import sinergym
@@ -224,7 +225,7 @@ try:
     # ---------------------------------------------------------------------------- #
     #       Calculating total training timesteps based on number of episodes       #
     # ---------------------------------------------------------------------------- #
-    timesteps = conf['episodes'] * env.timestep_per_episode - 1
+    timesteps = conf['episodes'] * (env.timestep_per_episode - 1)
 
     # ---------------------------------------------------------------------------- #
     #                                   CALLBACKS                                  #
@@ -249,7 +250,7 @@ try:
     # Set up wandb logger
     if conf.get('wandb'):
         # wandb logger and setting in SB3
-        logger = Logger(
+        logger = SB3Logger(
             folder=None,
             output_formats=[
                 HumanOutputFormat(
