@@ -291,7 +291,7 @@ try:
             name='training_output/')
         if conf.get('evaluation'):
             artifact.add_dir(
-                eval_env.simulator.experiment_path,
+                eval_env.experiment_path,
                 name='evaluation_output/')
         run.log_artifact(artifact)
 

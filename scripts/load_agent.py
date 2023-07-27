@@ -185,7 +185,7 @@ try:
                 name=conf['wandb']['evaluation_registry']['artifact_name'],
                 type=conf['wandb']['evaluation_registry']['artifact_type'])
             artifact.add_dir(
-                env.simulator._env_working_dir_parent,
+                env.experiment_path,
                 name='evaluation_output/')
 
             run.log_artifact(artifact)
