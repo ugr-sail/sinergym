@@ -276,8 +276,8 @@ class EplusEnv(gym.Env):
         # ------------------------ Preparation for new episode ----------------------- #
         print('#----------------------------------------------------------------------------------------------#')
         self.logger.info(
-            'Starting a new episode... [Episode {}]'.format(
-                self.episode))
+            'Starting a new episode... [{}] [Episode {}]'.format(
+                self.name, self.episode))
         print('#----------------------------------------------------------------------------------------------#')
         # Get new episode working dir
         self.episode_dir = self.model.set_episode_working_dir()
