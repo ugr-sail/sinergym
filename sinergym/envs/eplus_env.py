@@ -450,7 +450,7 @@ class EplusEnv(gym.Env):
     def close(self) -> None:
         """End simulation."""
         self.energyplus_simulator.stop()
-        self.logger.info('Environment closed.')
+        self.logger.info('Environment closed. [{}]'.format(self.name))
 
     # ---------------------------------------------------------------------------- #
     #                           Environment functionality                          #
