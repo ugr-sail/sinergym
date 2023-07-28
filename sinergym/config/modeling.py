@@ -169,7 +169,8 @@ class ModelJSON(object):
         self.building['Site:Location'] = new_location
         self.building['SizingPeriod:DesignDay'] = new_designdays
 
-        self.logger.debug('Adapting weather to building model.')
+        self.logger.info('Adapting weather to building model. [{}]'.format(
+            self._weather_path.split('/')[-1]))
 
     def adapt_building_to_variables(self) -> None:
         """This method reads all variables and write it in the building model as Output:Variable field.
@@ -183,7 +184,7 @@ class ModelJSON(object):
                                                              'variable_name': variable_name,
                                                              'reporting_frequency': 'Timestep'}
 
-        self.logger.debug(
+        self.logger.info(
             'Updated building model with whole Output:Variable available names')
 
         # Delete default Output:Variables and added whole building variables to
@@ -202,7 +203,7 @@ class ModelJSON(object):
                           str(i)] = {'key_name': meter_name, 'reporting_frequency': 'Timestep'}
 
         self.logger.info(
-            'Updated building model with whole Output:Variable available names')
+            'Updated building model with whole Output:Meter available names')
 
         # Delete default Output:Variables and added whole building variables to
         # Output:Variable field
@@ -289,10 +290,9 @@ class ModelJSON(object):
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
         self.ddy_model = IDF(self._ddy_path)
         self.weather_data = WeatherData.from_epw(self._weather_path)
-        self.logger.debug(
-            '{} selected from {}'.format(
-                self._weather_path,
-                self.weather_files))
+        self.logger.info(
+            'Weather file {} used.'.format(
+                self._weather_path.split('/')[-1]))
 
     def apply_weather_variability(
             self,
