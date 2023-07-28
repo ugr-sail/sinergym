@@ -265,7 +265,6 @@ class EnergyPlus(object):
         self.next_info = {
             # 'timestep': self.exchange.system_time_step(state_argument),
             'time_elapsed(hours)': self.exchange.current_sim_time(state_argument),
-            'year': self.exchange.year(state_argument),
             'month': self.exchange.month(state_argument),
             'day': self.exchange.day_of_month(state_argument),
             'hour': self.exchange.hour(state_argument),
