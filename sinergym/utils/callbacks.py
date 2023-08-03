@@ -1,13 +1,15 @@
 """Custom Callbacks for stable baselines 3 algorithms."""
 
 import os
-from typing import Optional, Union
+import warnings
+from typing import Any, Callable, Dict, List, Optional, Union
 
 import gymnasium as gym
 import numpy as np
-from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
+from stable_baselines3.common.callbacks import BaseCallback, EventCallback
 from stable_baselines3.common.env_util import is_wrapped
-from stable_baselines3.common.vec_env import VecEnv, sync_envs_normalization
+from stable_baselines3.common.vec_env import (DummyVecEnv, VecEnv,
+                                              sync_envs_normalization)
 
 from sinergym.utils.evaluation import evaluate_policy
 from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
@@ -174,7 +176,7 @@ class LoggerCallback(BaseCallback):
             self.training_env.env_method('activate_logger')
 
 
-class LoggerEvalCallback(EvalCallback):
+class LoggerEvalCallback(EventCallback):
     """Callback for evaluating an agent.
         :param eval_env: The environment used for initialization
         :param callback_on_new_best: Callback to trigger when there is a new best model according to the mean reward
@@ -192,6 +194,7 @@ class LoggerEvalCallback(EvalCallback):
         self,
         eval_env: Union[gym.Env, VecEnv],
         callback_on_new_best: Optional[BaseCallback] = None,
+        callback_after_eval: Optional[BaseCallback] = None,
         n_eval_episodes: int = 5,
         eval_freq: int = 10000,
         log_path: Optional[str] = None,
@@ -201,33 +204,110 @@ class LoggerEvalCallback(EvalCallback):
         verbose: int = 1,
         warn: bool = True,
     ):
-        super(
-            LoggerEvalCallback,
-            self).__init__(
-            eval_env=eval_env,
-            callback_on_new_best=callback_on_new_best,
-            n_eval_episodes=n_eval_episodes,
-            eval_freq=eval_freq,
-            log_path=log_path,
-            best_model_save_path=best_model_save_path,
-            deterministic=deterministic,
-            render=render,
-            verbose=verbose,
-            warn=warn)
+        super().__init__(callback_after_eval, verbose=verbose)
+
+        self.callback_on_new_best = callback_on_new_best
+        if self.callback_on_new_best is not None:
+            # Give access to the parent
+            self.callback_on_new_best.parent = self
+
+        self.n_eval_episodes = n_eval_episodes
+        self.eval_freq = eval_freq
+        self.best_mean_reward = -np.inf
+        self.last_mean_reward = -np.inf
+        self.deterministic = deterministic
+        self.render = render
+        self.warn = warn
+
+        # Convert to VecEnv for consistency
+        # if not isinstance(eval_env, VecEnv):
+        #     eval_env = DummyVecEnv([lambda: eval_env])
+
+        self.eval_env = eval_env
+        self.best_model_save_path = best_model_save_path
+        # Logs will be written in ``evaluations.npz``
+        if log_path is not None:
+            log_path = os.path.join(log_path, "evaluations")
+        self.log_path = log_path
+        self.log_metrics = {
+            'timesteps': [],
+            'mean_rewards': [],
+            'cumulative_rewards': [],
+            'ep_lengths': [],
+            'ep_powers': [],
+            'ep_comfort_violations': [],
+            'episodes_comfort_penalties': [],
+            'episodes_power_penalties': [],
+        }
+        self.evaluations_results = []
+        self.evaluations_timesteps = []
+        self.evaluations_length = []
+        # For computing success rate
+        self._is_success_buffer = []
+        self.evaluations_successes = []
+
+        # Custom metrics for Sinergym
         self.evaluations_power_consumption = []
         self.evaluations_comfort_violation = []
         self.evaluations_comfort_penalty = []
         self.evaluations_power_penalty = []
         self.evaluation_metrics = {}
 
+    def _init_callback(self) -> None:
+        # Does not work in some corner cases, where the wrapper is not the same
+        if not isinstance(self.training_env, type(self.eval_env)):
+            warnings.warn(
+                "Training and eval env are not of the same type"
+                f"{self.training_env} != {self.eval_env}")
+
+        # Create folders if needed
+        if self.best_model_save_path is not None:
+            os.makedirs(self.best_model_save_path, exist_ok=True)
+        if self.log_path is not None:
+            os.makedirs(os.path.dirname(self.log_path), exist_ok=True)
+
+        # Init callback called on new best model
+        if self.callback_on_new_best is not None:
+            self.callback_on_new_best.init_callback(self.model)
+
+    def _log_success_callback(
+            self, locals_: Dict[str, Any], globals_: Dict[str, Any]) -> None:
+        """
+        Callback passed to the  ``evaluate_policy`` function
+        in order to log the success rate (when applicable),
+        for instance when using HER.
+
+        :param locals_:
+        :param globals_:
+        """
+        info = locals_["info"]
+
+        if locals_["terminated"]:
+            maybe_is_success = info.get("is_success")
+            if maybe_is_success is not None:
+                self._is_success_buffer.append(maybe_is_success)
+
     def _on_step(self) -> bool:
+
+        continue_training = True
 
         if self.eval_freq > 0 and self.n_calls % self.eval_freq == 0:
             # Sync training and eval env if there is VecNormalize
-            sync_envs_normalization(self.training_env, self.eval_env)
+            if self.model.get_vec_normalize_env() is not None:
+                try:
+                    sync_envs_normalization(self.training_env, self.eval_env)
+                except AttributeError as e:
+                    raise AssertionError(
+                        "Training and eval env are not wrapped the same way, "
+                        "see https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html#evalcallback "
+                        "and warning above.") from e
 
             # Reset success rate buffer
             self._is_success_buffer = []
+
+            # We close training env before to start the evaluation
+            self.training_env.close()
+
             # episodes_rewards, episodes_lengths, episodes_powers, episodes_comfort_violations, episodes_comfort_penalties, episodes_power_penalties
             episodes_data = evaluate_policy(
                 self.model,
@@ -235,22 +315,30 @@ class LoggerEvalCallback(EvalCallback):
                 n_eval_episodes=self.n_eval_episodes,
                 render=self.render,
                 deterministic=self.deterministic,
-                callback=None,
+                return_episode_rewards=True,
+                warn=self.warn,
+                callback=self._log_success_callback,
             )
 
+            # We close evaluation env and starts training env again
+            self.eval_env.close()
+            self.training_env.reset()
+
             if self.log_path is not None:
-                self.evaluations_timesteps.append(self.num_timesteps)
-                self.evaluations_results.append(
-                    episodes_data['episodes_rewards'])
-                self.evaluations_length.append(
+                self.log_metrics['timesteps'].append(self.num_timesteps)
+                self.log_metrics['cumulative_rewards'].append(
+                    episodes_data['episodes_cumulative_rewards'])
+                self.log_metrics['mean_rewards'].append(
+                    episodes_data['episodes_mean_rewards'])
+                self.log_metrics['ep_lengths'].append(
                     episodes_data['episodes_lengths'])
-                self.evaluations_power_consumption.append(
+                self.log_metrics['ep_powers'].append(
                     episodes_data['episodes_powers'])
-                self.evaluations_comfort_violation.append(
+                self.log_metrics['ep_comfort_violations'].append(
                     episodes_data['episodes_comfort_violations'])
-                self.evaluations_comfort_penalty.append(
+                self.log_metrics['episodes_comfort_penalties'].append(
                     episodes_data['episodes_comfort_penalties'])
-                self.evaluations_power_penalty.append(
+                self.log_metrics['episodes_power_penalties'].append(
                     episodes_data['episodes_power_penalties'])
 
                 kwargs = {}
@@ -259,27 +347,28 @@ class LoggerEvalCallback(EvalCallback):
                     self.evaluations_successes.append(self._is_success_buffer)
                     kwargs = dict(successes=self.evaluations_successes)
 
+                kwargs.update(self.log_metrics)
+
                 np.savez(
                     self.log_path,
-                    timesteps=self.evaluations_timesteps,
-                    results=self.evaluations_results,
-                    ep_lengths=self.evaluations_length,
-                    ep_powers=self.evaluations_power_consumption,
-                    ep_comfort_violations=self.evaluations_comfort_violation,
-                    episodes_comfort_penalties=self.evaluations_comfort_penalty,
-                    episodes_power_penalties=self.evaluations_power_penalty,
                     **kwargs,
                 )
 
             mean_reward, std_reward = np.mean(
-                episodes_data['episodes_rewards']), np.std(
-                episodes_data['episodes_rewards'])
+                episodes_data['episodes_mean_rewards']), np.std(
+                episodes_data['episodes_mean_rewards'])
+            mean_cumulative_reward, std_cumulative_reward = np.mean(
+                episodes_data['episodes_cumulative_rewards']), np.std(
+                episodes_data['episodes_cumulative_rewards'])
             mean_ep_length, std_ep_length = np.mean(
                 episodes_data['episodes_lengths']), np.std(
                 episodes_data['episodes_lengths'])
+            self.last_reward = mean_cumulative_reward
 
-            self.evaluation_metrics['mean_rewards'] = mean_reward
-            self.evaluation_metrics['std_rewards'] = std_reward
+            self.evaluation_metrics['mean_reward'] = mean_reward
+            self.evaluation_metrics['std_reward'] = std_reward
+            self.evaluation_metrics['mean_cumulative_reward'] = mean_cumulative_reward
+            self.evaluation_metrics['std_cumulative_reward'] = std_cumulative_reward
             self.evaluation_metrics['mean_ep_length'] = mean_ep_length
             self.evaluation_metrics['mean_power_consumption'] = np.mean(
                 episodes_data['episodes_powers'])
@@ -290,33 +379,56 @@ class LoggerEvalCallback(EvalCallback):
             self.evaluation_metrics['power_penalty'] = np.mean(
                 episodes_data['episodes_power_penalties'])
 
-            if self.verbose > 0:
+            if self.verbose >= 1:
                 print(
                     f"Eval num_timesteps={self.num_timesteps}, "
-                    f"episode_reward={mean_reward:.2f} +/- {std_reward:.2f}")
+                    f"episode_reward={mean_cumulative_reward:.2f} +/- {std_cumulative_reward:.2f}")
                 print(
                     f"Episode length: {mean_ep_length:.2f} +/- {std_ep_length:.2f}")
-            # Add to current Logger
+            # Add to current Logger (our custom metrics)
             for key, metric in self.evaluation_metrics.items():
                 self.logger.record('eval/' + key, metric)
 
             if len(self._is_success_buffer) > 0:
                 success_rate = np.mean(self._is_success_buffer)
-                if self.verbose > 0:
+                if self.verbose >= 1:
                     print(f"Success rate: {100 * success_rate:.2f}%")
                 self.logger.record("eval/success_rate", success_rate)
 
-            if mean_reward > self.best_mean_reward:
-                if self.verbose > 0:
+            # Dump log so the evaluation results are printed with the correct
+            # timestep
+            self.logger.record(
+                "time/total_timesteps",
+                self.num_timesteps,
+                exclude="tensorboard")
+            self.logger.dump(self.num_timesteps)
+
+            # HERE IS THE CONDITION TO DETERMINE WHEN A MODEL IS BETTER THAN
+            # OTHER
+            if mean_cumulative_reward > self.best_mean_reward:
+                if self.verbose >= 1:
                     print("New best mean reward!")
                 if self.best_model_save_path is not None:
                     self.model.save(
                         os.path.join(
                             self.best_model_save_path,
-                            'model.zip'))
-                self.best_mean_reward = mean_reward
-                # Trigger callback if needed
-                if self.callback is not None:
-                    return self._on_event()
+                            "model.zip"))
+                self.best_mean_reward = mean_cumulative_reward
+                # Trigger callback on new best model, if needed
+                if self.callback_on_new_best is not None:
+                    continue_training = self.callback_on_new_best.on_step()
 
-        return True
+            # Trigger callback after every evaluation, if needed
+            if self.callback is not None:
+                continue_training = continue_training and self._on_event()
+
+        return continue_training
+
+    def update_child_locals(self, locals_: Dict[str, Any]) -> None:
+        """
+        Update the references to the local variables.
+
+        :param locals_: the local variables during rollout collection
+        """
+        if self.callback:
+            self.callback.update_locals(locals_)
