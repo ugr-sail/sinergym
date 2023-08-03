@@ -1,9 +1,10 @@
 """Custom policy evaluations for Evaluation Callbacks."""
 
-from typing import Any, Callable, Dict, Optional, Union, Tuple, List
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
+from stable_baselines3.common import type_aliases
 from stable_baselines3.common.vec_env import VecEnv
 
 
@@ -17,7 +18,7 @@ def evaluate_policy(
     reward_threshold: Optional[float] = None,
     return_episode_rewards: bool = False,
     warn: bool = True,
-) -> Union[Tuple[float, float], Tuple[List[float], List[int]]]:
+) -> Dict[str, list]:
     """
     Runs policy for ``n_eval_episodes`` episodes and returns average reward and other Sinergym metrics.
 
