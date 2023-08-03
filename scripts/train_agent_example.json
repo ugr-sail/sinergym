@@ -1,6 +1,6 @@
 {
     "id": "ExperimentExample",
-    "environment": "Eplus-5Zone-hot-continuous-stochastic-v1",
+    "environment": "Eplus-5zone-hot-continuous-stochastic-v1",
     "episodes": 5,
     "algorithm": {
         "name": "SB3-PPO",
@@ -52,7 +52,7 @@
     },
     "evaluation": {
         "eval_freq": 2,
-        "eval_length": 1
+        "eval_length": 2
     },
     "wandb": {
         "init_params": {

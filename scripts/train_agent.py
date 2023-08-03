@@ -101,7 +101,6 @@ try:
     env = gym.make(
         conf['environment'],
         ** env_params)
-    env = Monitor(env)
 
     # env for evaluation if is enabled
     eval_env = None
@@ -111,7 +110,6 @@ try:
         eval_env = gym.make(
             conf['environment'],
             ** env_params)
-        eval_env = Monitor(eval_env)
 
     # ---------------------------------------------------------------------------- #
     #                                   Wrappers                                   #
@@ -241,7 +239,7 @@ try:
             log_path=eval_env.experiment_path +
             '/best_model/',
             eval_freq=(eval_env.timestep_per_episode - 1) *
-            conf['evaluation']['eval_freq'],
+            conf['evaluation']['eval_freq'] - 1,
             deterministic=True,
             render=False,
             n_eval_episodes=conf['evaluation']['eval_length'])
