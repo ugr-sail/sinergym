@@ -1,10 +1,9 @@
 """Custom policy evaluations for Evaluation Callbacks."""
 
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, Optional, Union, Tuple, List
 
 import gymnasium as gym
 import numpy as np
-from stable_baselines3.common import base_class
 from stable_baselines3.common.vec_env import VecEnv
 
 

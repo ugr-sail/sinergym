@@ -315,7 +315,6 @@ class LoggerEvalCallback(EventCallback):
                 n_eval_episodes=self.n_eval_episodes,
                 render=self.render,
                 deterministic=self.deterministic,
-                return_episode_rewards=True,
                 warn=self.warn,
                 callback=self._log_success_callback,
             )
