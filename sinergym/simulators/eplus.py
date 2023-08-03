@@ -26,6 +26,7 @@ class EnergyPlus(object):
 
     def __init__(
             self,
+            name: str,
             obs_queue: Queue,
             info_queue: Queue,
             act_queue: Queue,
@@ -36,6 +37,7 @@ class EnergyPlus(object):
         """EnergyPlus runner class. This class run an episode in a thread when start() is called.
 
         Args:
+            name (str): Name of the environment which is using the simulator.
             obs_queue (Queue): Observation queue for Gymnasium environment communication.
             info_queue (Queue): Extra information dict queue for Gymnasium environment communication.
             act_queue (Queue): Action queue for Gymnasium environment communication.
@@ -48,6 +50,7 @@ class EnergyPlus(object):
         # ---------------------------------------------------------------------------- #
         #                               Attributes set up                              #
         # ---------------------------------------------------------------------------- #
+        self.name = name
         # Gym communication queues
         self.obs_queue = obs_queue
         self.info_queue = info_queue
@@ -111,7 +114,6 @@ class EnergyPlus(object):
 
         # Initiate Energyplus state
         self.energyplus_state = self.api.state_manager.new_state()
-        runtime = self.api.runtime
 
         # Disable default Energyplus Output
         self.api.runtime.set_console_output_status(
@@ -125,7 +127,8 @@ class EnergyPlus(object):
             if self.system_ready:
                 print(f'\rProgress: |{bar}| {percent}%', end="\r")
 
-        runtime.callback_progress(self.energyplus_state, _progress_update)
+        self.api.runtime.callback_progress(
+            self.energyplus_state, _progress_update)
 
         # register callback used to signal warmup complete
         def _warmup_complete(state: Any) -> None:
@@ -134,15 +137,15 @@ class EnergyPlus(object):
             self.logger.debug(
                 'Warmup process has been completed successfully.')
 
-        runtime.callback_after_new_environment_warmup_complete(
+        self.api.runtime.callback_after_new_environment_warmup_complete(
             self.energyplus_state, _warmup_complete)
 
         # register callback used to collect observations
-        runtime.callback_end_zone_timestep_after_zone_reporting(
+        self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
             self.energyplus_state, self._collect_obs_and_info)
 
         # register callback used to send actions
-        runtime.callback_after_predictor_after_hvac_managers(
+        self.api.runtime.callback_after_predictor_after_hvac_managers(
             self.energyplus_state, self._process_action)
 
         # run EnergyPlus in a non-blocking way
@@ -158,6 +161,7 @@ class EnergyPlus(object):
         # Creating the thread and start execution
         self.energyplus_thread = threading.Thread(
             target=_run_energyplus,
+            name=self.name,
             args=(
                 self.api.runtime,
                 self.make_eplus_args(),

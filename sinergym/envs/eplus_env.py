@@ -149,6 +149,7 @@ class EplusEnv(gym.Env):
         #                                   Simulator                                  #
         # ---------------------------------------------------------------------------- #
         self.energyplus_simulator = EnergyPlus(
+            name=env_name,
             obs_queue=self.obs_queue,
             info_queue=self.info_queue,
             act_queue=self.act_queue,
@@ -325,7 +326,6 @@ class EplusEnv(gym.Env):
             self.logger.warning(
                 'Reset: info queue empty, returning an empty info dictionary (not real).')
 
-        info = self.info_queue.get()
         info.update({'timestep': self.timestep})
         self.last_obs = obs
         self.last_info = info
