@@ -97,7 +97,9 @@ html_logo = '_static/logo-sidebar.png'
 html_favicon = '_static/logo-sidebar.png'
 
 # Change sidebar-logo background
-html_theme_options = {'style_nav_header_background': '#a9c1be'}
+html_theme_options = {'style_nav_header_background': '#a5beba',
+                      'display_version': True,
+                      }
 
 # Enable global sidebar
 html_sidebars = {'**': ['globaltoc.html',
