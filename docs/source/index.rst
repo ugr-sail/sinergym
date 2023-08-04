@@ -8,7 +8,7 @@ Contributing
 ############
 
 For all those interested in improving Sinergym, there are always improvements to be made. 
-You can check `issues <https://github.com/ugr-sail/sinergym/issues>`__ in the repo.
+You can check `issues <https://github.com/ugr-sail/sinergym/issues>`__ in the repository.
 
 If you want to contribute, please read `CONTRIBUTING.md <https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md>`__ first.
 
