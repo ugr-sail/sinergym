@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.MultiObjectiveReward
+﻿sinergym.utils.wrappers.MultiObjectiveReward
 ============================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -32,6 +32,7 @@ sinergym.utils.wrappers.MultiObjectiveReward
    .. autosummary::
    
       ~MultiObjectiveReward.action_space
+      ~MultiObjectiveReward.logger
       ~MultiObjectiveReward.metadata
       ~MultiObjectiveReward.np_random
       ~MultiObjectiveReward.observation_space

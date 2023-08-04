@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.DatetimeWrapper
+﻿sinergym.utils.wrappers.DatetimeWrapper
 =======================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -33,6 +33,7 @@ sinergym.utils.wrappers.DatetimeWrapper
    .. autosummary::
    
       ~DatetimeWrapper.action_space
+      ~DatetimeWrapper.logger
       ~DatetimeWrapper.metadata
       ~DatetimeWrapper.np_random
       ~DatetimeWrapper.observation_space

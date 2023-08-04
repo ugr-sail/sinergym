@@ -16,11 +16,10 @@
    .. autosummary::
    
       ~EnergyPlus.__init__
-      ~EnergyPlus.end_env
-      ~EnergyPlus.end_episode
-      ~EnergyPlus.get_is_eplus_running
-      ~EnergyPlus.reset
-      ~EnergyPlus.step
+      ~EnergyPlus.failed
+      ~EnergyPlus.make_eplus_args
+      ~EnergyPlus.start
+      ~EnergyPlus.stop
    
    
 
@@ -30,12 +29,7 @@
 
    .. autosummary::
    
-      ~EnergyPlus.env_name
-      ~EnergyPlus.schedulers
-      ~EnergyPlus.start_day
-      ~EnergyPlus.start_mon
-      ~EnergyPlus.start_weekday
-      ~EnergyPlus.start_year
-      ~EnergyPlus.zone_names
+      ~EnergyPlus.is_running
+      ~EnergyPlus.logger
    
    

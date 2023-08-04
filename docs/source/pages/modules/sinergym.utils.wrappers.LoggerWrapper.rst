@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.LoggerWrapper
+﻿sinergym.utils.wrappers.LoggerWrapper
 =====================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -34,6 +34,7 @@ sinergym.utils.wrappers.LoggerWrapper
    .. autosummary::
    
       ~LoggerWrapper.action_space
+      ~LoggerWrapper.logger
       ~LoggerWrapper.metadata
       ~LoggerWrapper.np_random
       ~LoggerWrapper.observation_space
