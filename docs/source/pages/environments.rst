@@ -360,12 +360,6 @@ Then, the argument called *action_space* defines this action space following the
 This definition can be discrete or continuous and must be consistent with the previously defined actuators 
 (*Sinergym* will show possible inconsistencies).
 
-.. note:: In case a new observation variable is added to the default ones for an environment, care must be 
-          taken in case observation normalization is to be done. This is because you have to update 
-          the dictionary of ranges of values available in `constants.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__ as discussed in 
-          issue `#249 <https://github.com/ugr-sail/sinergym/issues/249>`__. You can use the range_getter function of `common.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py>`__ to get these 
-          ranges automatically from a experiment output folder.
-
 .. important:: Sinergym's listed environments have a default observation and action variables defined, 
                it is available in `constants.py <https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/constants.py>`__.
                However, the users can experiment with this spaces, see :ref:`Changing observation and action spaces`.
