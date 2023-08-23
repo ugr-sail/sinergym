@@ -79,7 +79,7 @@ class ModelJSON(object):
 
         # -------------------------------- File Models ------------------------------- #
 
-        # Building model object (Python dictionaty from epJSON file)
+        # Building model object (Python dictionary from epJSON file)
         with open(self._json_path) as json_f:
             self.building = json.load(json_f)
 
