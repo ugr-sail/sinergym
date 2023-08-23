@@ -4,8 +4,10 @@ Buildings
 
 This section provides information specific to the buildings included in Sinergym, 
 independently of the rest of the components that make up the environment to be 
-used in each experiment. If you are interested in including new buildings to this 
-framework, please visit section :ref:`Adding new buildings for environments`.
+used in each experiment. 
+
+.. important:: If you are interested in including new buildings to this 
+               framework, please visit section :ref:`Adding new buildings for environments`.
 
 **************************
 Datacenter

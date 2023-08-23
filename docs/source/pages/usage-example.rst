@@ -13,8 +13,8 @@ Let's start with the simplest use case for the Sinergym tool. In the root reposi
 .. literalinclude:: ../../../scripts/try_env.py
     :language: python
 
-The **Sinergym import** is really important, because without it the ID's of our environments will not have been registered 
-in the gymnasium module and therefore we cannot use our buildings as gymnasium environments.
+At first glance, it may appear that Sinergym is only imported, but never used. Importing Sinergym, all its `Environments <https://ugr-sail.github.io/sinergym/compilation/html/pages/environments.html>`__
+are defined to be used. In this case, `Eplus-demo-v1` is available with all the features contained.
 
 We create our environment with **gym.make** and we run the simulation for one episode (`for i in range(1)`). 
 We collect the rewards returned by the environment and calculate their average each month of simulation.
@@ -22,4 +22,4 @@ We collect the rewards returned by the environment and calculate their average e
 The action taken at each step is randomly chosen from its action space defined under the Gymnasium standard. 
 When we have finished displaying the results on the screen and the episode is finished, we close the environment with `env.close()`.
 
-.. note:: This is the simplest usage example. More functionality examples are shown in **Examples** section.
+.. important:: This is the simplest usage example. More functionality examples are shown in **Examples** section.
