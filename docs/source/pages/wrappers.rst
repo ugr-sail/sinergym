@@ -13,7 +13,7 @@ You can implement your own wrappers inheriting from *gym.Wrapper* or some of its
 - **PreviousObservationWrapper**: Wrapper to add observation values from previous timestep to current environment observation.
   It is possible to select the variables you want to track its previous observation values.
 
-- **DatetimeWrapper**: Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values. 
+- **DatetimeWrapper**: Wrapper to substitute ``day_of_month`` value by ``is_weekend`` flag, and ``hour`` and ``month`` by sin and cos values. 
   Observation space is updated automatically.
 
 - **DiscreteIncrementalWrapper**: A wrapper for an incremental setpoint action space environment. This wrapper
@@ -33,7 +33,7 @@ You can implement your own wrappers inheriting from *gym.Wrapper* or some of its
   Then, if a environment variable is not included in the dictionary specified in wrapper constructor, then the normalization 
   for that variable will be skipped.
 
-  .. note:: In case a new observation variable is added to the default ones for an environment, care must be 
+  .. warning:: In case a new observation variable is added to the default ones for an environment, care must be 
           taken in case observation normalization is to be done. This is because you have to update 
           the dictionary of ranges of values available in `constants.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__ as discussed in 
           issue `#249 <https://github.com/ugr-sail/sinergym/issues/249>`__. You can use the ``range_getter`` function of `common.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py>`__ to get these 
@@ -46,9 +46,5 @@ You can implement your own wrappers inheriting from *gym.Wrapper* or some of its
 
 .. note:: For examples about how to use these wrappers, visit :ref:`Wrappers example`.
 
-.. warning:: The **order of wrappers** if you are going to use several at the same time is really important.
+.. important:: The **order of wrappers** if you are going to use several at the same time is really important.
              The correct order is the same than the list shown above or subsets of that order. 
-
-.. warning:: If you add new observation variables to the environment than the default ones, you have 
-             to update the **value range dictionary** in `sinergym/sinergym/utils/constants.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__ 
-             so that normalization can be applied correctly. Otherwise, the variable normalization will be skipped.

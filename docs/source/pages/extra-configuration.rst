@@ -2,8 +2,8 @@
 Extra Configuration in Sinergym simulations
 ############################################
 
-Using `Config class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/config.py>`__ 
-in simulator, we have the possibility to set up some **details of context** in our simulation. 
+Using `Modeling class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/config/modeling.py>`__, 
+we have the possibility to set up some **details of context** in our simulation. 
 This let us to amplify the context of each experiment and have more parameters to investigate.
 To use this functionality easily, you can provide this extra parameters in **environment constructor** in this way:
 
@@ -16,8 +16,6 @@ To use this functionality easily, you can provide this extra parameters in **env
                   'runperiod' : (1,1,1997,12,3,1998)}
     env = gym.make('Eplus-5Zone-hot-continuous-v1', config_params=extra_params)
 
-*Sinergym* will modify this simulation model from Python code and save *epJSON* in each 
-episode directory generated in output. For more information, see :ref:`Output format`.
 The format for apply extra configuration is a **Python dictionary** with extra parameter key name and value.
 
 .. note:: *Currently, only code skeleton and some parameters has been designed. Stay tuned for upcoming releases!*
@@ -28,9 +26,10 @@ Let's see each implemented parameter for extra configuration separately:
 timestep_per_hour
 ******************
 
-By default, a *Sinergym* simulation apply **4** timestep per simulation hour. However, 
-you have the possibility to modify this value using **timestep_per_hour** key 
-in `config_params` dictionary and set more/less timesteps in each simulation hour.
+By default, a *Sinergym* apply **4** timestep per simulation hour, 
+the default value in building files. However, you have the possibility to modify 
+this value using **timestep_per_hour** key  in `config_params` dictionary and set 
+more/less timesteps in each simulation hour.
 
 ******************
 runperiod
@@ -50,4 +49,4 @@ The format value for **runperiod** key is a **tuple** with
 
 .. note:: If you want to create your own extra configuration parameters, 
           please see the method ``apply_extra_conf`` from 
-          `Config class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/config.py>`__.
+          `Modeling class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/config/modeling.py>`__.

@@ -2,7 +2,7 @@
 Weathers
 ############
 
-Specific information on the climates included in Sinergym is provided below, 
+Specific information on the climates included in *Sinergym* is provided below, 
 independently of the rest of the components that make up the environment to 
 be used in each experiment.
 
@@ -45,6 +45,6 @@ be used in each experiment.
 .. note:: Weather types according to `DOE's
           classification <https://www.energycodes.gov/development/commercial/prototype_models#TMY3>`__.
 
-.. important:: It can be specified several weathers in the same experiment. Sinergym will sample one weather in each episode to use it. For more
-               information, visit section :ref:`EPW file`
+.. important:: It can be specified several weathers in the same experiment. *Sinergym* will sample one weather in each episode to use it. For more
+               information, visit section :ref:`Weather files`.
 

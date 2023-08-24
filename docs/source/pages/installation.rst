@@ -2,8 +2,8 @@
 Installation
 ############
 
-Sinergym has a number of dependencies, which have to be covered depending on the version.
-Below is a summary table with the versions supported by Sinergym throughout its releases:
+*Sinergym* has a number of dependencies, which have to be covered depending on the version.
+Below is a summary table with the versions supported by *Sinergym* throughout its releases:
 
 +----------------------+--------------------+--------------------+------------------------+---------------------------+
 | **Sinergym version** | **Ubuntu version** | **Python version** | **EnergyPlus version** | **Building model file**   |
@@ -21,7 +21,7 @@ Below is a summary table with the versions supported by Sinergym throughout its 
 | **2.5.0**            | 22.04 LTS          | 3.10.6             | **23.1.0**             | epJSON                    |
 +----------------------+--------------------+--------------------+------------------------+---------------------------+
 
-In any case, it is recommended to always use the latest version of Sinergym 
+In any case, it is recommended to always use the latest version of *Sinergym* 
 supported by the container to avoid having to go into the details of the installation. 
 In case you wish to perform a manual installation on your computer, documentation 
 is also provided in the following sections.
@@ -118,8 +118,8 @@ to install the software. Once installed, a folder called
 Include Energyplus Python API in python path
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sinergym will use the Energyplus Python API as backend. The modules of this 
-API are located in the Energyplus folder, installed in the previous step. 
+*Sinergym* will use the *Energyplus* Python API as backend. The modules of this 
+API are located in the *Energyplus* folder, installed in the previous step. 
 This installation path must be added to the ``PYTHONPATH`` environment variable, 
 so that the interpreter can access these modules.
 

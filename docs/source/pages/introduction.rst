@@ -3,7 +3,7 @@ The goal of *Sinergym* is to create an environment following *Gymnasium* interfa
 
 .. image:: /_static/general_blueprint.png
   :width: 800
-  :alt: Sinergym diagram
+  :alt: *Sinergym* diagram
   :align: center
 
 |
@@ -33,7 +33,7 @@ The main functionalities of *Sinergym* are the following:
 
 -  **Customizable environments**. We aim to provide a
    package which allows modifying experimental settings in an easy
-   manner. The user can create his own environments, defining his own
+   manner. The user can create his own environments, combining his own
    building model, weather, reward, observation/action space, variables, actuators, environment name, etc.
    The user can also use these pre-configured environments available in *Sinergym* 
    and change some aspect of it (for example, the weather) in such 
@@ -48,17 +48,18 @@ The main functionalities of *Sinergym* are the following:
    controllers, etc.
 
 -  **Automatic Building Model adaptation to user changes**. Many of the updates to the environment definition require changes 
-   to the building model (*epJSON* file) to adapt it to these new features before the simulation starts, which *Sinergym* will perform automatically. For example, 
-   the use of another weather file requires updating the building location and design days, the use of new observation variables 
-   requires updating the ``Output:Variable`` fields, the same goes for the extra configuration context directly related to the simulation. 
-   This new version of the building file is saved in the *Sinergym* output folder, leaving the original intact.
-   In short, *Sinergym* automates the whole process of model adaptation so that the user 
+   to the building model (*epJSON* file) to adapt it to these new features before the simulation starts, which *Sinergym* will 
+   perform automatically. For example, using another weather file requires building location and design days update, using new 
+   observation variables requires to update the ``Output:Variable`` and ``Output:Meter`` fields, the same occurs with extra 
+   configuration context concerned with simulation directly, if weather variability is set, then a weather with noise 
+   will be used. These new building and weather file versions, is saved in the *Sinergym* output folder, leaving the original 
+   intact. In short, *Sinergym* automates the whole process of model adaptation so that the user 
    only has to define what he wants for his environment.
 
 -  **Automatic actuators control**. Related to the above, it will only be necessary to specify the name of the actuators to be controlled 
    through the actions of the Gymnasium interface, and *Sinergym* will take care of everything.
 
--  **Extensive environment information**. It is important that users can get some information about Sinergym background components from environment interface easily.
+-  **Extensive environment information**. It is important that users can get some information about *Sinergym* background components from environment interface easily.
    From environment instance, it is possible to consult available schedulers, variables which compose an observation and action, whether simulator is running,
    the building run period, episode length, timesteps per episode, available building zones... And much more.
 
@@ -66,7 +67,7 @@ The main functionalities of *Sinergym* are the following:
    have been customized by our team in order to test easily these environments
    with deep reinforcement learning algorithms and logger specific information about 
    *Sinergym* environments. 
-   However, Sinergym is completely agnostic to any DRL algorithm and can be used with any DRL 
+   However, *Sinergym* is completely agnostic to any DRL algorithm and can be used with any DRL 
    library that works with gymnasium interface.
 
 -  **Google Cloud Integration**. Whether you have a Google Cloud account and you want to
@@ -88,6 +89,6 @@ The main functionalities of *Sinergym* are the following:
 
 -  Many more!
 
-.. important:: If you want to introduce your own buildings in Sinergym, please visit :ref:`Adding new buildings for environments` section.
+.. important:: If you want to introduce your own buildings in *Sinergym*, please visit :ref:`Adding new buildings for environments` section.
 
 .. note:: *This is a work in progress project. Stay tuned for upcoming releases!*

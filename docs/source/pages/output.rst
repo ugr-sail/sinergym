@@ -3,8 +3,10 @@ Output format
 ###############
 
 When a simulation is running, this generates a directory called 
-``Eplus-env-<env_name>-res<num_simulation>``. The content of 
-this directory is the result of the simulation and we have:
+``Eplus-env-<env_name>-res<num_simulation>``. The management of 
+the directories tree generated during a simulation is done by 
+the *Modeling* module too. The content of this root output directory 
+is the result of the simulation and we have:
 
 ::
 
@@ -15,13 +17,11 @@ this directory is the result of the simulation and we have:
     ├── ...
     ├── Eplus-env-sub_runN
     │   ├── output/
-    │   ├── variables.cfg
-    │   ├── socket.cfg
-    │   ├── utilSocket.cfg
     │   ├── environment.epJSON
     |   ├── weather.epw
     │   ├── monitor.csv
     |   └── monitor_normalized.csv (optional)
+    ├── data_available.txt
     └── progress.csv
 
 * **Eplus-env-sub_run<num_episode>** records the results of each episode in 
@@ -31,18 +31,14 @@ this directory is the result of the simulation and we have:
 
 * Within these directories, you have always the same structure:
 
-    * A copy of **variables.cfg** and **environment.epJSON** which are being used during 
-      simulation. **Environment.epJSON** does not have to be the same as the original 
+    * A copy of **environment.epJSON** which is being used during 
+      simulation episode. **Environment.epJSON** does not have to be the same as the original 
       hosted in the repository. Since the simulation can be modified to suit the 
-      specific weather or apply extra user-defined settings when building the 
-      gymnasium environment.
+      specific user-defined settings when building the gymnasium environment.
 
-    * A copy of **Weather.epw** appears only when the weather change for one 
-      episode to another (using variability, for example). If weather does not 
-      change, original repository *.epw* will be used in each episode.
-
-    * A copy of **socket.cfg** and **utilSocket.log** which are being used in
-      order to establish communication interface with *EnergyPlus* during simulation.
+    * A copy of **Weather.epw** which is being used during 
+      simulation episode. This file does not have to be the 
+      same than original (when using variability).
 
     * **monitor.csv**: This records all interactions Agent-Environment during 
       the episode timestep by timestep. This file only exists 
@@ -56,10 +52,21 @@ this directory is the result of the simulation and we have:
     * **output/**: This directory has **EnergyPlus simulation output**.
       If you want to know more about this files, visit 
       `EnergyPlus documentation <https://energyplus.net/documentation>`__.
+
+* **data_available.txt**: This file is generated when *EnergyPlus* API initialize all
+  callbacks and handlers for the simulation. In this file, we can find all the available
+  components of the building model such as actuators, schedulers, meters, variables, internal
+  variables, etc.
+
+  .. warning:: Some list of components such as ``Output:Variable``'s does not appear fully in
+               *data_available.txt*, because of it must be declared in the building model first.
+               If you want to see all the variables or meters specifically, you should look for them
+               in the correct *Energyplus* output file. If you specify a correct variable in environment,
+               *Sinergym* will add the ``Output:Variable`` element in the building model before simulation start.
                    
 * **progress.csv**: This file has information about general simulation results. 
   There is a **row per episode** and it records most important data such as mean 
-  power consumption or , mean comfort penalty, for example. This file only 
+  power consumption or mean comfort penalty, for example. This file only 
   exists when environment has been wrapped with 
   **Logger** (see :ref:`Wrappers` for more information).
 
@@ -76,7 +83,8 @@ external factor.
 
 Recording is managed by an instance of the class ``CSVLogger`` which is 
 present as a wrapper attribute and is called in each timestep and 
-in the end of a episode.
+in the end of a episode. This class can be substitute by a new one,
+see :ref:`Logger Wrapper personalization/configuration`.
 
 .. note:: Normalized observation methods are only used when environment is 
           wrapped with normalization previously.
