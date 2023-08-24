@@ -59,23 +59,15 @@ jobs:
           filters: |
             doc:
               - 'docs/source/**'
-      - name: Upgrade pip
+      - name: Build the latest Docker image
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: python -m pip install --upgrade pip
-      - name: Install pandoc dependencies
-        if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: sudo apt install -y pandoc
-      - name: Install dependencies [sinergym extras]
-        if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: |
-          pip install -e .[extras] &&
-          pip install --upgrade requests
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extras] --tag pullrequest/sinergym:latest
       - name: Compile documentation
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: cd docs && sphinx-build -M html source build
+        run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'sphinx-build -M html docs/source docs/build'
       - name: Check sphinx spelling
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: cd docs && sphinx-build -M spelling source build
+        run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'sphinx-build -M spelling docs/source docs/build'
 
   tests:
     name: build container and execute pytest
