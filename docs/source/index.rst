@@ -7,8 +7,8 @@ Welcome to **sinergym**!
 Contributing
 ############
 
-For all those interested in improving Sinergym, there are always improvements to be made. 
-You can check `issues <https://github.com/ugr-sail/sinergym/issues>`__ in the repo.
+For all those interested in improving *Sinergym*, there are always improvements to be made. 
+You can check `issues <https://github.com/ugr-sail/sinergym/issues>`__ in the repository.
 
 If you want to contribute, please read `CONTRIBUTING.md <https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md>`__ first.
 
@@ -16,7 +16,7 @@ If you want to contribute, please read `CONTRIBUTING.md <https://github.com/ugr-
 Projects using Sinergym
 ########################
 
-The following are some of the projects benefiting from the advantages of Sinergym:
+The following are some of the projects benefiting from the advantages of *Sinergym*:
 
 - `Demosthen/ActiveRL <https://github.com/Demosthen/ActiveRL>`__
 - `VectorInstitute/HV-Ai-C <https://github.com/VectorInstitute/HV-Ai-C>`__
@@ -31,13 +31,13 @@ If you want to appear in this list, do not hesitate to send us a PR and include 
 Examples
 ############
 
-The examples can be run if you have your computer or container properly configured (see :ref:`Installation` section) from our notebooks hosted in the `examples <https://github.com/ugr-sail/sinergym/tree/main/examples>`__ folder of the official Sinergym repository.
+The examples can be run if you have your computer or container properly configured (see :ref:`Installation` section) from our notebooks hosted in the `examples <https://github.com/ugr-sail/sinergym/tree/main/examples>`__ folder of the official *Sinergym* repository.
 
 ################
 Citing Sinergym
 ################
 
-If you use Sinergym in your work, please cite our `paper <https://dl.acm.org/doi/abs/10.1145/3486611.3488729>`__::
+If you use *Sinergym* in your work, please cite our `paper <https://dl.acm.org/doi/abs/10.1145/3486611.3488729>`__::
 
     @inproceedings{2021sinergym,
       title={Sinergym: A Building Simulation and Control Framework for Training Reinforcement Learning Agents}, 
@@ -87,6 +87,7 @@ If you use Sinergym in your work, please cite our `paper <https://dl.acm.org/doi
    :caption: Examples
 
    pages/notebooks/basic_example.nblink
+   pages/notebooks/getting_env_information.nblink
    pages/notebooks/change_environment.nblink
    pages/notebooks/default_building_control.nblink
    pages/notebooks/wrappers_examples.nblink

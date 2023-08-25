@@ -11,1896 +11,233 @@ version_file = os.path.join(os.path.dirname(__file__), "version.txt")
 with open(version_file, "r") as file_handler:
     __version__ = file_handler.read().strip()
 
-# ---------------------------------------------------------------------------- #
-#                          5ZoneAutoDXVAV Environments                         #
-# ---------------------------------------------------------------------------- #
+
 # 0) Demo environment
 register(
     id='Eplus-demo-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
         'building_file': '5ZoneAutoDXVAV.epJSON',
-        'weather_file': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
-        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
+        'weather_files': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        'action_space': DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS,
+        'time_variables': DEFAULT_TIME_VARIABLES,
+        'variables': DEFAULT_5ZONE_VARIABLES,
+        'meters': DEFAULT_5ZONE_METERS,
+        'actuators': DEFAULT_5ZONE_ACTUATORS,
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'temperature_variable': 'air_temperature',
+            'energy_variable': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 20.0,
                 23.5),
             'range_comfort_summer': (
                 23.0,
                 26.0)},
-        'env_name': 'demo-v1',
-        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
+        'env_name': 'demo-v1'})
 
-# 1) 5-zone, hot weather, discrete actions
-register(
-    id='Eplus-5Zone-hot-discrete-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '5ZoneAutoDXVAV.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (20.0, 23.5),
-            'range_comfort_summer': (23.0, 26.0)
-        },
-        'env_name': '5Zone-hot-discrete-v1',
-        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
 
-# 2) 5-zone, mixed weather, discrete actions
-register(
-    id='Eplus-5Zone-mixed-discrete-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '5ZoneAutoDXVAV.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (20.0, 23.5),
-            'range_comfort_summer': (23.0, 26.0)
-        },
-        'env_name': '5Zone-mixed-discrete-v1',
-        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
+id_bases = ['5zone', 'datacenter', 'warehouse', 'office', 'officegrid', 'shop']
+id_specifics = [
+    'hot-discrete',
+    'mixed-discrete',
+    'cool-discrete',
+    'hot-continuous',
+    'mixed-continuous',
+    'cool-continuous',
+    'hot-discrete-stochastic',
+    'mixed-discrete-stochastic',
+    'cool-discrete-stochastic',
+    'hot-continuous-stochastic',
+    'mixed-continuous-stochastic',
+    'cool-continuous-stochastic']
+variation = (1.0, 0.0, 0.001)
+for building in id_bases:
+    reg_kwargs = {'time_variables': DEFAULT_TIME_VARIABLES}
 
-# 3) 5-zone, cool weather, discrete actions
-register(
-    id='Eplus-5Zone-cool-discrete-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '5ZoneAutoDXVAV.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (20.0, 23.5),
-            'range_comfort_summer': (23.0, 26.0)
-        },
-        'env_name': '5Zone-cool-discrete-v1',
-        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
-
-# 4) 5-zone, hot weather, discrete actions and stochastic
-register(
-    id='Eplus-5Zone-hot-discrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '5ZoneAutoDXVAV.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
-        'weather_variability': (
-            1.0,
-            0.0,
-            0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (20.0, 23.5),
-            'range_comfort_summer': (23.0, 26.0)
-        },
-        'env_name': '5Zone-hot-discrete-stochastic-v1',
-        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
-
-# 5) 5-zone, mixed weather, discrete actions and stochastic
-register(
-    id='Eplus-5Zone-mixed-discrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '5ZoneAutoDXVAV.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (20.0, 23.5),
-            'range_comfort_summer': (23.0, 26.0)
-        },
-        'env_name': '5Zone-mixed-discrete-stochastic-v1',
-        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
-
-# 6) 5-zone, cool weather, discrete actions and stochastic
-register(
-    id='Eplus-5Zone-cool-discrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '5ZoneAutoDXVAV.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (20.0, 23.5),
-            'range_comfort_summer': (23.0, 26.0)
-        },
-        'env_name': '5Zone-cool-discrete-stochastic-v1',
-        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
-
-# 7) 5-zone, hot weather, continuous actions
-register(
-    id='Eplus-5Zone-hot-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '5ZoneAutoDXVAV.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+    if building == '5zone':
+        reg_kwargs['building_file'] = '5ZoneAutoDXVAV.epJSON'
+        action_space_continuous = DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS
+        action_space_discrete = DEFAULT_5ZONE_ACTION_SPACE_DISCRETE
+        reg_kwargs['action_mapping'] = DEFAULT_5ZONE_ACTION_MAPPING
+        reg_kwargs['actuators'] = DEFAULT_5ZONE_ACTUATORS
+        reg_kwargs['variables'] = DEFAULT_5ZONE_VARIABLES
+        reg_kwargs['meters'] = DEFAULT_5ZONE_METERS
+        reg_kwargs['reward'] = LinearReward
+        reg_kwargs['reward_kwargs'] = {
+            'temperature_variable': 'air_temperature',
+            'energy_variable': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 20.0,
                 23.5),
             'range_comfort_summer': (
                 23.0,
-                26.0)},
-        'env_name': '5Zone-hot-continuous-v1',
-        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
+                26.0)}
 
-# 8) 5-zone, mixed weather, continuous actions
-register(
-    id='Eplus-5Zone-mixed-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '5ZoneAutoDXVAV.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': '5Zone-mixed-continuous-v1',
-        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
-
-# 9) 5-zone, cool weather, continuous actions
-register(
-    id='Eplus-5Zone-cool-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '5ZoneAutoDXVAV.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': '5Zone-cool-continuous-v1',
-        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
-
-# 10) 5-zone, hot weather, continuous actions and stochastic
-register(
-    id='Eplus-5Zone-hot-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '5ZoneAutoDXVAV.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
-        'weather_variability': (
-            1.0,
-            0.0,
-            0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': '5Zone-hot-continuous-stochastic-v1',
-        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
-
-# 11) 5-zone, mixed weather, continuous actions and stochastic
-register(
-    id='Eplus-5Zone-mixed-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '5ZoneAutoDXVAV.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-                'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
-                'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-                'range_comfort_winter': (20.0, 23.5),
-                'range_comfort_summer': (23.0, 26.0)
-        },
-        'env_name': '5Zone-mixed-continuous-stochastic-v1',
-        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
-
-# 12) 5-zone, cool weather, continuous actions and stochastic
-register(
-    id='Eplus-5Zone-cool-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '5ZoneAutoDXVAV.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_5ZONE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_5ZONE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_5ZONE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_5ZONE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-                'temperature_variable': 'Zone Air Temperature(SPACE1-1)',
-                'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-                'range_comfort_winter': (20.0, 23.5),
-                'range_comfort_summer': (23.0, 26.0)
-        },
-        'env_name': '5Zone-cool-continuous-stochastic-v1',
-        'action_definition': DEFAULT_5ZONE_ACTION_DEFINITION})
-
-# ---------------------------------------------------------------------------- #
-#                            Datacenter Environments                           #
-# ---------------------------------------------------------------------------- #
-# 13) DC, hot weather, discrete actions
-register(
-    id='Eplus-datacenter-hot-discrete-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '2ZoneDataCenterHVAC_wEconomizer.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_DATACENTER_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_DATACENTER_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_DATACENTER_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_DATACENTER_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
+    elif building == 'datacenter':
+        reg_kwargs['building_file'] = '2ZoneDataCenterHVAC_wEconomizer.epJSON'
+        action_space_continuous = DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS
+        action_space_discrete = DEFAULT_DATACENTER_ACTION_SPACE_DISCRETE
+        reg_kwargs['action_mapping'] = DEFAULT_DATACENTER_ACTION_MAPPING
+        reg_kwargs['actuators'] = DEFAULT_DATACENTER_ACTUATORS
+        reg_kwargs['variables'] = DEFAULT_DATACENTER_VARIABLES
+        reg_kwargs['meters'] = DEFAULT_DATACENTER_METERS
+        reg_kwargs['reward'] = LinearReward
+        reg_kwargs['reward_kwargs'] = {
             'temperature_variable': [
-                'Zone Air Temperature(West Zone)',
-                'Zone Air Temperature(East Zone)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'datacenter-hot-discrete-v1',
-        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION
-    }
-)
-
-# 14) DC, hot weather, continuous actions
-register(
-    id='Eplus-datacenter-hot-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '2ZoneDataCenterHVAC_wEconomizer.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_DATACENTER_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_DATACENTER_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_DATACENTER_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(West Zone)',
-                'Zone Air Temperature(East Zone)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'datacenter-hot-continuous-v1',
-        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION
-    }
-)
-
-# 15) DC, hot weather, discrete actions and stochastic
-register(
-    id='Eplus-datacenter-hot-discrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '2ZoneDataCenterHVAC_wEconomizer.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_DATACENTER_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_DATACENTER_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_DATACENTER_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_DATACENTER_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(West Zone)',
-                'Zone Air Temperature(East Zone)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'datacenter-hot-discrete-stochastic-v1',
-        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION
-    }
-)
-
-# 16) DC, hot weather, continuous actions and stochastic
-register(
-    id='Eplus-datacenter-hot-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '2ZoneDataCenterHVAC_wEconomizer.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_DATACENTER_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_DATACENTER_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_DATACENTER_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(West Zone)',
-                'Zone Air Temperature(East Zone)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'datacenter-hot-continuous-stochastic-v1',
-        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION
-    }
-)
-
-# 17) DC, mixed weather, discrete actions
-register(
-    id='Eplus-datacenter-mixed-discrete-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '2ZoneDataCenterHVAC_wEconomizer.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_DATACENTER_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_DATACENTER_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_DATACENTER_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_DATACENTER_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(West Zone)',
-                'Zone Air Temperature(East Zone)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'datacenter-mixed-discrete-v1',
-        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
-
-# 18) DC, mixed weather, continuous actions
-register(
-    id='Eplus-datacenter-mixed-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '2ZoneDataCenterHVAC_wEconomizer.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_DATACENTER_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_DATACENTER_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_DATACENTER_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(West Zone)',
-                'Zone Air Temperature(East Zone)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'datacenter-mixed-continuous-v1',
-        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
-
-# 19) DC, mixed weather, discrete actions and stochastic
-register(
-    id='Eplus-datacenter-mixed-discrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '2ZoneDataCenterHVAC_wEconomizer.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_DATACENTER_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_DATACENTER_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_DATACENTER_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_DATACENTER_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(West Zone)',
-                'Zone Air Temperature(East Zone)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'datacenter-mixed-discrete-stochastic-v1',
-        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
-
-# 20) DC, mixed weather, continuous actions and stochastic
-register(
-    id='Eplus-datacenter-mixed-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '2ZoneDataCenterHVAC_wEconomizer.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_DATACENTER_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_DATACENTER_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_DATACENTER_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(West Zone)',
-                'Zone Air Temperature(East Zone)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'datacenter-mixed-continuous-stochastic-v1',
-        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
-
-# 21) DC, cool weather, discrete actions
-register(
-    id='Eplus-datacenter-cool-discrete-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '2ZoneDataCenterHVAC_wEconomizer.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_DATACENTER_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_DATACENTER_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_DATACENTER_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_DATACENTER_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(West Zone)',
-                'Zone Air Temperature(East Zone)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+                'west_zone_temperature',
+                'east_zone_temperature'],
+            'energy_variable': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 18,
                 27),
             'range_comfort_summer': (
                 18,
-                27)},
-        'env_name': 'datacenter-cool-discrete-v1',
-        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
+                27)}
 
-# 22) DC, cool weather, continuous actions
-register(
-    id='Eplus-datacenter-cool-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '2ZoneDataCenterHVAC_wEconomizer.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_DATACENTER_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_DATACENTER_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_DATACENTER_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
+    elif building == 'warehouse':
+        reg_kwargs['building_file'] = 'ASHRAE901_Warehouse_STD2019_Denver.epJSON'
+        action_space_continuous = DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS
+        action_space_discrete = DEFAULT_WAREHOUSE_ACTION_SPACE_DISCRETE
+        reg_kwargs['action_mapping'] = DEFAULT_WAREHOUSE_ACTION_MAPPING
+        reg_kwargs['actuators'] = DEFAULT_WAREHOUSE_ACTUATORS
+        reg_kwargs['variables'] = DEFAULT_WAREHOUSE_VARIABLES
+        reg_kwargs['meters'] = DEFAULT_WAREHOUSE_METERS
+        reg_kwargs['reward'] = LinearReward
+        reg_kwargs['reward_kwargs'] = {
             'temperature_variable': [
-                'Zone Air Temperature(West Zone)',
-                'Zone Air Temperature(East Zone)'
+                'office_temperature',
+                'fstorage_temperature',
+                'bstorage_temperature'],
+            'energy_variable': 'HVAC_electricity_demand_rate',
+            'range_comfort_winter': (
+                18,
+                27),
+            'range_comfort_summer': (
+                18,
+                27)}
+
+    elif building == 'office':
+        reg_kwargs['building_file'] = 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON'
+        action_space_continuous = DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS
+        action_space_discrete = DEFAULT_OFFICE_ACTION_SPACE_DISCRETE
+        reg_kwargs['action_mapping'] = DEFAULT_OFFICE_ACTION_MAPPING
+        reg_kwargs['actuators'] = DEFAULT_OFFICE_ACTUATORS
+        reg_kwargs['variables'] = DEFAULT_OFFICE_VARIABLES
+        reg_kwargs['meters'] = DEFAULT_OFFICE_METERS
+        reg_kwargs['reward'] = LinearReward
+        reg_kwargs['reward_kwargs'] = {
+            'temperature_variable': [
+                'zone1_temperature',
+                'zone2_temperature',
+                'zone3_temperature',
+                'zone4_temperature',
+                'zone5_temperature',
+                'zone6_temperature',
+                'zone7_temperature',
+                'zone8_temperature',
+                'zone9_temperature',
+                'zone10_temperature',
+                'zone11_temperature',
+                'zone12_temperature',
+                'zone13_temperature',
+                'zone14_temperature',
+                'zone15_temperature',
+                'zone16_temperature',
+                'zone17_temperature',
+                'zone18_temperature'
             ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+            'energy_variable': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'datacenter-cool-continuous-v1',
-        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
+        }
 
-# 23) DC, cool weather, discrete actions and stochastic
-register(
-    id='Eplus-datacenter-cool-discrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '2ZoneDataCenterHVAC_wEconomizer.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_DATACENTER_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_DATACENTER_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_DATACENTER_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_DATACENTER_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
+    elif building == 'officegrid':
+        reg_kwargs['building_file'] = 'LrgOff_GridStorageScheduled.epJSON'
+        action_space_continuous = DEFAULT_OFFICEGRID_ACTION_SPACE_CONTINUOUS
+        action_space_discrete = DEFAULT_OFFICEGRID_ACTION_SPACE_DISCRETE
+        reg_kwargs['action_mapping'] = DEFAULT_OFFICEGRID_ACTION_MAPPING
+        reg_kwargs['actuators'] = DEFAULT_OFFICEGRID_ACTUATORS
+        reg_kwargs['variables'] = DEFAULT_OFFICEGRID_VARIABLES
+        reg_kwargs['meters'] = DEFAULT_OFFICEGRID_METERS
+        reg_kwargs['reward'] = LinearReward
+        reg_kwargs['reward_kwargs'] = {
             'temperature_variable': [
-                'Zone Air Temperature(West Zone)',
-                'Zone Air Temperature(East Zone)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'datacenter-cool-discrete-stochastic-v1',
-        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
-
-# 24) DC, cool weather, continuous actions and stochastic
-register(
-    id='Eplus-datacenter-cool-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': '2ZoneDataCenterHVAC_wEconomizer.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_DATACENTER_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_DATACENTER_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_DATACENTER_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_DATACENTER_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(West Zone)',
-                'Zone Air Temperature(East Zone)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'datacenter-cool-continuous-stochastic-v1',
-        'action_definition': DEFAULT_DATACENTER_ACTION_DEFINITION})
-
-# ---------------------------------------------------------------------------- #
-#                          Warehouse Environments                              #
-# ---------------------------------------------------------------------------- #
-
-# 25) WH, hot weather, discrete actions
-register(
-    id='Eplus-warehouse-hot-discrete-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_WAREHOUSE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_WAREHOUSE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_WAREHOUSE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Zone1 Office)',
-                'Zone Air Temperature(Zone2 Fine Storage)',
-                'Zone Air Temperature(Zone3 Bulk Storage)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'warehouse-hot-discrete-v1',
-        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
-
-# 26) WH, hot weather, continuous actions
-register(
-    id='Eplus-warehouse-hot-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_WAREHOUSE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_WAREHOUSE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Zone1 Office)',
-                'Zone Air Temperature(Zone2 Fine Storage)',
-                'Zone Air Temperature(Zone3 Bulk Storage)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'warehouse-hot-continuous-v1',
-        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
-
-# 27) WH, hot weather, discrete actions and stochastic
-register(
-    id='Eplus-warehouse-hot-discrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_WAREHOUSE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_WAREHOUSE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_WAREHOUSE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Zone1 Office)',
-                'Zone Air Temperature(Zone2 Fine Storage)',
-                'Zone Air Temperature(Zone3 Bulk Storage)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'warehouse-hot-discrete-stochastic-v1',
-        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
-
-# 28) WH, hot weather, continuous actions and stochastic
-register(
-    id='Eplus-warehouse-hot-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_WAREHOUSE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_WAREHOUSE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Zone1 Office)',
-                'Zone Air Temperature(Zone2 Fine Storage)',
-                'Zone Air Temperature(Zone3 Bulk Storage)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'warehouse-hot-continuous-stochastic-v1',
-        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
-
-# 29) WH, mixed weather, discrete actions
-register(
-    id='Eplus-warehouse-mixed-discrete-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_WAREHOUSE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_WAREHOUSE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_WAREHOUSE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Zone1 Office)',
-                'Zone Air Temperature(Zone2 Fine Storage)',
-                'Zone Air Temperature(Zone3 Bulk Storage)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'warehouse-mixed-discrete-v1',
-        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
-
-# 30) WH, mixed weather, continuous actions
-register(
-    id='Eplus-warehouse-mixed-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_WAREHOUSE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_WAREHOUSE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Zone1 Office)',
-                'Zone Air Temperature(Zone2 Fine Storage)',
-                'Zone Air Temperature(Zone3 Bulk Storage)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'warehouse-mixed-continuous-v1',
-        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
-
-# 31) WH, mixed weather, discrete actions and stochastic
-register(
-    id='Eplus-warehouse-mixed-discrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_WAREHOUSE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_WAREHOUSE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_WAREHOUSE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Zone1 Office)',
-                'Zone Air Temperature(Zone2 Fine Storage)',
-                'Zone Air Temperature(Zone3 Bulk Storage)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'warehouse-mixed-discrete-stochastic-v1',
-        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
-
-# 32) WH, mixed weather, continuous actions and stochastic
-register(
-    id='Eplus-warehouse-mixed-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_WAREHOUSE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_WAREHOUSE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Zone1 Office)',
-                'Zone Air Temperature(Zone2 Fine Storage)',
-                'Zone Air Temperature(Zone3 Bulk Storage)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'warehouse-mixed-continuous-stochastic-v1',
-        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
-
-# 33) WH, cool weather, discrete actions
-register(
-    id='Eplus-warehouse-cool-discrete-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_WAREHOUSE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_WAREHOUSE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_WAREHOUSE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Zone1 Office)',
-                'Zone Air Temperature(Zone2 Fine Storage)',
-                'Zone Air Temperature(Zone3 Bulk Storage)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'warehouse-cool-discrete-v1',
-        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
-
-# 34) WH, cool weather, continuous actions
-register(
-    id='Eplus-warehouse-cool-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_WAREHOUSE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_WAREHOUSE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Zone1 Office)',
-                'Zone Air Temperature(Zone2 Fine Storage)',
-                'Zone Air Temperature(Zone3 Bulk Storage)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'warehouse-cool-continuous-v1',
-        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
-
-# 35) WH, cool weather, discrete actions and stochastic
-register(
-    id='Eplus-warehouse-cool-discrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_WAREHOUSE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_WAREHOUSE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_WAREHOUSE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Zone1 Office)',
-                'Zone Air Temperature(Zone2 Fine Storage)',
-                'Zone Air Temperature(Zone3 Bulk Storage)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'warehouse-cool-discrete-stochastic-v1',
-        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
-
-# 36) WH, cool weather, continuous actions and stochastic
-register(
-    id='Eplus-warehouse-cool-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_Warehouse_STD2019_Denver.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_WAREHOUSE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_WAREHOUSE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_WAREHOUSE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_WAREHOUSE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Zone1 Office)',
-                'Zone Air Temperature(Zone2 Fine Storage)',
-                'Zone Air Temperature(Zone3 Bulk Storage)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'warehouse-cool-continuous-stochastic-v1',
-        'action_definition': DEFAULT_WAREHOUSE_ACTION_DEFINITION})
-
-
-# ---------------------------------------------------------------------------- #
-#                              Medium Office                                   #
-# ---------------------------------------------------------------------------- #
-
-# 37) MO, hot weather, discrete actions
-register(
-    id='Eplus-office-hot-discrete-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)',
-                'Zone Air Temperature(TopFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(FirstFloor_Plenum)',
-                'Zone Air Temperature(Core_mid)',
-                'Zone Air Temperature(Core_top)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'office-hot-discrete-v1',
-        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
-
-# 38) MO, hot weather, continuous actions
-register(
-    id='Eplus-office-hot-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)',
-                'Zone Air Temperature(TopFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(FirstFloor_Plenum)',
-                'Zone Air Temperature(Core_mid)',
-                'Zone Air Temperature(Core_top)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'office-hot-continuous-v1',
-        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
-
-# 39) MO, hot weather, discrete actions and stochastic
-register(
-    id='Eplus-office-hot-discrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)',
-                'Zone Air Temperature(TopFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(FirstFloor_Plenum)',
-                'Zone Air Temperature(Core_mid)',
-                'Zone Air Temperature(Core_top)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'office-hot-discrete-stochastic-v1',
-        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
-
-# 40) MO, hot weather, continuous actions and stochastic
-register(
-    id='Eplus-office-hot-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)',
-                'Zone Air Temperature(TopFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(FirstFloor_Plenum)',
-                'Zone Air Temperature(Core_mid)',
-                'Zone Air Temperature(Core_top)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'office-hot-continuous-stochastic-v1',
-        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
-
-# 41) MO, mixed weather, discrete actions
-register(
-    id='Eplus-office-mixed-discrete-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)',
-                'Zone Air Temperature(TopFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(FirstFloor_Plenum)',
-                'Zone Air Temperature(Core_mid)',
-                'Zone Air Temperature(Core_top)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'office-mixed-discrete-v1',
-        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
-
-# 42) MO, mixed weather, continuous actions
-register(
-    id='Eplus-office-mixed-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)',
-                'Zone Air Temperature(TopFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(FirstFloor_Plenum)',
-                'Zone Air Temperature(Core_mid)',
-                'Zone Air Temperature(Core_top)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'office-mixed-continuous-v1',
-        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
-
-# 43) MO, mixed weather, discrete actions and stochastic
-register(
-    id='Eplus-office-mixed-discrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)',
-                'Zone Air Temperature(TopFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(FirstFloor_Plenum)',
-                'Zone Air Temperature(Core_mid)',
-                'Zone Air Temperature(Core_top)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'office-mixed-discrete-stochastic-v1',
-        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
-
-# 44) MO, mixed weather, continuous actions and stochastic
-register(
-    id='Eplus-office-mixed-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)',
-                'Zone Air Temperature(TopFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(FirstFloor_Plenum)',
-                'Zone Air Temperature(Core_mid)',
-                'Zone Air Temperature(Core_top)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'office-mixed-continuous-stochastic-v1',
-        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
-
-# 45) MO, cool weather, discrete actions
-register(
-    id='Eplus-office-cool-discrete-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)',
-                'Zone Air Temperature(TopFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(FirstFloor_Plenum)',
-                'Zone Air Temperature(Core_mid)',
-                'Zone Air Temperature(Core_top)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'office-cool-discrete-v1',
-        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
-
-# 46) MO, cool weather, continuous actions
-register(
-    id='Eplus-office-cool-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)',
-                'Zone Air Temperature(TopFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(FirstFloor_Plenum)',
-                'Zone Air Temperature(Core_mid)',
-                'Zone Air Temperature(Core_top)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'office-cool-continuous-v1',
-        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
-
-# 47) MO, cool weather, discrete actions and stochastic
-register(
-    id='Eplus-office-cool-discrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICE_ACTION_SPACE_DISCRETE,
-        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)',
-                'Zone Air Temperature(TopFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(FirstFloor_Plenum)',
-                'Zone Air Temperature(Core_mid)',
-                'Zone Air Temperature(Core_top)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'office-cool-discrete-stochastic-v1',
-        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
-
-# 48) MO, cool weather, continuous actions and stochastic
-register(
-    id='Eplus-office-cool-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_OFFICE_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICE_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_OFFICE_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICE_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': [
-                'Zone Air Temperature(Core_bottom)',
-                'Zone Air Temperature(TopFloor_Plenum)',
-                'Zone Air Temperature(MidFloor_Plenum)',
-                'Zone Air Temperature(FirstFloor_Plenum)',
-                'Zone Air Temperature(Core_mid)',
-                'Zone Air Temperature(Core_top)',
-                'Zone Air Temperature(Perimeter_top_ZN_3)',
-                'Zone Air Temperature(Perimeter_top_ZN_2)',
-                'Zone Air Temperature(Perimeter_top_ZN_1)',
-                'Zone Air Temperature(Perimeter_top_ZN_4)',
-                'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                'Zone Air Temperature(Perimeter_mid_ZN_4)'
-            ],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        },
-        'env_name': 'office-cool-continuous-stochastic-v1',
-        'action_definition': DEFAULT_OFFICE_ACTION_DEFINITION})
-
-# ---------------------------------------------------------------------------- #
-#                                  Office Grid                                 #
-# ---------------------------------------------------------------------------- #
-
-register(
-    id='Eplus-officegrid-cool-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'LrgOff_GridStorageScheduled.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_OFFICEGRID_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICEGRID_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_OFFICEGRID_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICEGRID_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': ['Zone Air Temperature(Basement)',
-                                     'Zone Air Temperature(core_bottom)',
-                                     'Zone Air Temperature(core_mid)',
-                                     'Zone Air Temperature(core_top)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_4)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_4)',
-                                     'Zone Air Temperature(GroundFloor_Plenum)',
-                                     'Zone Air Temperature(MidFloor_Plenum)',
-                                     'Zone Air Temperature(TopFloor_Plenum)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+                'zone1_temperature',
+                'zone2_temperature',
+                'zone3_temperature',
+                'zone4_temperature',
+                'zone5_temperature',
+                'zone6_temperature',
+                'zone7_temperature',
+                'zone8_temperature',
+                'zone9_temperature',
+                'zone10_temperature',
+                'zone11_temperature',
+                'zone12_temperature',
+                'zone13_temperature',
+                'zone14_temperature',
+                'zone15_temperature',
+                'zone16_temperature',
+                'zone17_temperature',
+                'zone18_temperature',
+                'zone19_temperature'],
+            'energy_variable': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 20.0,
                 23.5),
             'range_comfort_summer': (
                 23.0,
-                26.0)},
-        'env_name': 'officegrid-cool-continuous-v1',
-        'action_definition': DEFAULT_OFFICEGRID_ACTION_DEFINITION})
+                26.0)}
 
-register(
-    id='Eplus-officegrid-mixed-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'LrgOff_GridStorageScheduled.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_OFFICEGRID_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICEGRID_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_OFFICEGRID_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICEGRID_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': ['Zone Air Temperature(Basement)',
-                                     'Zone Air Temperature(core_bottom)',
-                                     'Zone Air Temperature(core_mid)',
-                                     'Zone Air Temperature(core_top)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_4)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_4)',
-                                     'Zone Air Temperature(GroundFloor_Plenum)',
-                                     'Zone Air Temperature(MidFloor_Plenum)',
-                                     'Zone Air Temperature(TopFloor_Plenum)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
+    elif building == 'shop':
+        reg_kwargs['building_file'] = 'ShopWithPVandBattery.epJSON'
+        action_space_continuous = DEFAULT_SHOP_ACTION_SPACE_CONTINUOUS
+        action_space_discrete = DEFAULT_SHOP_ACTION_SPACE_DISCRETE
+        reg_kwargs['action_mapping'] = DEFAULT_SHOP_ACTION_MAPPING
+        reg_kwargs['actuators'] = DEFAULT_SHOP_ACTUATORS
+        reg_kwargs['variables'] = DEFAULT_SHOP_VARIABLES
+        reg_kwargs['meters'] = DEFAULT_SHOP_METERS
+        reg_kwargs['reward'] = LinearReward
+        reg_kwargs['reward_kwargs'] = {
+            'temperature_variable': [
+                'zone1_temperature',
+                'zone2_temperature',
+                'zone3_temperature',
+                'zone4_temperature',
+                'zone5_temperature'],
+            'energy_variable': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 20.0,
                 23.5),
             'range_comfort_summer': (
                 23.0,
-                26.0)},
-        'env_name': 'officegrid-mixed-continuous-v1',
-        'action_definition': DEFAULT_OFFICEGRID_ACTION_DEFINITION})
+                26.0)}
 
-register(
-    id='Eplus-officegrid-hot-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'LrgOff_GridStorageScheduled.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_OFFICEGRID_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICEGRID_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_OFFICEGRID_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICEGRID_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': ['Zone Air Temperature(Basement)',
-                                     'Zone Air Temperature(core_bottom)',
-                                     'Zone Air Temperature(core_mid)',
-                                     'Zone Air Temperature(core_top)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_4)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_4)',
-                                     'Zone Air Temperature(GroundFloor_Plenum)',
-                                     'Zone Air Temperature(MidFloor_Plenum)',
-                                     'Zone Air Temperature(TopFloor_Plenum)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': 'officegrid-hot-continuous-v1',
-        'action_definition': DEFAULT_OFFICEGRID_ACTION_DEFINITION})
+    for id_specific in id_specifics:
+        id = 'Eplus-' + building + '-' + id_specific + '-v1'
+        reg_kwargs['env_name'] = building + '-' + id_specific + '-v1'
 
-register(
-    id='Eplus-officegrid-cool-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'LrgOff_GridStorageScheduled.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_OFFICEGRID_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICEGRID_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_OFFICEGRID_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICEGRID_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': ['Zone Air Temperature(Basement)',
-                                     'Zone Air Temperature(core_bottom)',
-                                     'Zone Air Temperature(core_mid)',
-                                     'Zone Air Temperature(core_top)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_4)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_4)',
-                                     'Zone Air Temperature(GroundFloor_Plenum)',
-                                     'Zone Air Temperature(MidFloor_Plenum)',
-                                     'Zone Air Temperature(TopFloor_Plenum)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': 'officegrid-cool-continuous-stochastic-v1',
-        'action_definition': DEFAULT_OFFICEGRID_ACTION_DEFINITION})
+        register_conf = id_specific.split('-')
+        if register_conf[0] == 'hot':
+            reg_kwargs['weather_files'] = 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw'
+        elif register_conf[0] == 'mixed':
+            reg_kwargs['weather_files'] = 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw'
+        elif register_conf[0] == 'cool':
+            reg_kwargs['weather_files'] = 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw'
 
-register(
-    id='Eplus-officegrid-mixed-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'LrgOff_GridStorageScheduled.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_OFFICEGRID_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICEGRID_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_OFFICEGRID_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICEGRID_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': ['Zone Air Temperature(Basement)',
-                                     'Zone Air Temperature(core_bottom)',
-                                     'Zone Air Temperature(core_mid)',
-                                     'Zone Air Temperature(core_top)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_4)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_4)',
-                                     'Zone Air Temperature(GroundFloor_Plenum)',
-                                     'Zone Air Temperature(MidFloor_Plenum)',
-                                     'Zone Air Temperature(TopFloor_Plenum)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': 'officegrid-mixed-continuous-stochastic-v1',
-        'action_definition': DEFAULT_OFFICEGRID_ACTION_DEFINITION})
+        if register_conf[1] == 'discrete':
+            reg_kwargs['action_space'] = action_space_discrete
+        elif register_conf[1] == 'continuous':
+            reg_kwargs['action_space'] = action_space_continuous
 
-register(
-    id='Eplus-officegrid-hot-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'LrgOff_GridStorageScheduled.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_OFFICEGRID_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_OFFICEGRID_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_OFFICEGRID_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_OFFICEGRID_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_OFFICEGRID_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': ['Zone Air Temperature(Basement)',
-                                     'Zone Air Temperature(core_bottom)',
-                                     'Zone Air Temperature(core_mid)',
-                                     'Zone Air Temperature(core_top)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_bot_ZN_4)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_mid_ZN_4)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_1)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_2)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_3)',
-                                     'Zone Air Temperature(Perimeter_top_ZN_4)',
-                                     'Zone Air Temperature(GroundFloor_Plenum)',
-                                     'Zone Air Temperature(MidFloor_Plenum)',
-                                     'Zone Air Temperature(TopFloor_Plenum)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': 'officegrid-hot-continuous-stochastic-v1',
-        'action_definition': DEFAULT_OFFICEGRID_ACTION_DEFINITION})
+        reg_kwargs['weather_variability'] = None
+        if len(register_conf) == 3:
+            if register_conf[2] == 'stochastic':
+                reg_kwargs['weather_variability'] = variation
 
-# ---------------------------------------------------------------------------- #
-#                                 Shop Battery                                 #
-# ---------------------------------------------------------------------------- #
-
-register(
-    id='Eplus-shop-cool-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ShopWithPVandBattery.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_SHOP_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_SHOP_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_SHOP_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_SHOP_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_SHOP_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': ['Zone Air Temperature(ZN_1_FLR_1_SEC_1)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_2)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_3)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_4)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_5)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': 'shop-cool-continuous-v1',
-        'action_definition': DEFAULT_SHOP_ACTION_DEFINITION})
-
-register(
-    id='Eplus-shop-mixed-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ShopWithPVandBattery.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_SHOP_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_SHOP_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_SHOP_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_SHOP_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_SHOP_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': ['Zone Air Temperature(ZN_1_FLR_1_SEC_1)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_2)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_3)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_4)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_5)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': 'shop-mixed-continuous-v1',
-        'action_definition': DEFAULT_SHOP_ACTION_DEFINITION})
-
-register(
-    id='Eplus-shop-hot-continuous-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ShopWithPVandBattery.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_SHOP_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_SHOP_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_SHOP_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_SHOP_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_SHOP_ACTION_MAPPING,
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': ['Zone Air Temperature(ZN_1_FLR_1_SEC_1)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_2)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_3)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_4)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_5)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': 'shop-hot-continuous-v1',
-        'action_definition': DEFAULT_SHOP_ACTION_DEFINITION})
-
-register(
-    id='Eplus-shop-cool-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ShopWithPVandBattery.epJSON',
-        'weather_file': 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw',
-        'observation_space': DEFAULT_SHOP_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_SHOP_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_SHOP_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_SHOP_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_SHOP_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': ['Zone Air Temperature(ZN_1_FLR_1_SEC_1)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_2)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_3)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_4)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_5)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': 'shop-cool-continuous-stochastic-v1',
-        'action_definition': DEFAULT_SHOP_ACTION_DEFINITION})
-
-register(
-    id='Eplus-shop-mixed-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ShopWithPVandBattery.epJSON',
-        'weather_file': 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw',
-        'observation_space': DEFAULT_SHOP_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_SHOP_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_SHOP_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_SHOP_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_SHOP_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': ['Zone Air Temperature(ZN_1_FLR_1_SEC_1)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_2)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_3)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_4)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_5)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': 'shop-mixed-continuous-stochastic-v1',
-        'action_definition': DEFAULT_SHOP_ACTION_DEFINITION})
-
-register(
-    id='Eplus-shop-hot-continuous-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'ShopWithPVandBattery.epJSON',
-        'weather_file': 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw',
-        'observation_space': DEFAULT_SHOP_OBSERVATION_SPACE,
-        'observation_variables': DEFAULT_SHOP_OBSERVATION_VARIABLES,
-        'action_space': DEFAULT_SHOP_ACTION_SPACE_CONTINUOUS,
-        'action_variables': DEFAULT_SHOP_ACTION_VARIABLES,
-        'action_mapping': DEFAULT_SHOP_ACTION_MAPPING,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variable': ['Zone Air Temperature(ZN_1_FLR_1_SEC_1)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_2)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_3)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_4)',
-                                     'Zone Air Temperature(ZN_1_FLR_1_SEC_5)'],
-            'energy_variable': 'Facility Total HVAC Electricity Demand Rate(Whole Building)',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': 'shop-hot-continuous-stochastic-v1',
-        'action_definition': DEFAULT_SHOP_ACTION_DEFINITION})
+        register(
+            id=id,
+            entry_point='sinergym.envs:EplusEnv',
+            kwargs=reg_kwargs.copy()
+        )

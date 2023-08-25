@@ -7319,20 +7319,6 @@
             "details_type_1": "Constructions"
         }
     },
-    "Output:Meter:MeterFileOnly": {
-        "Output:Meter:MeterFileOnly 1": {
-            "key_name": "Electricity:Facility",
-            "reporting_frequency": "Hourly"
-        },
-        "Output:Meter:MeterFileOnly 2": {
-            "key_name": "ElectricityNet:Facility",
-            "reporting_frequency": "Hourly"
-        },
-        "Output:Meter:MeterFileOnly 3": {
-            "key_name": "NaturalGas:Facility",
-            "reporting_frequency": "Hourly"
-        }
-    },
     "Output:Surfaces:Drawing": {
         "Output:Surfaces:Drawing 1": {
             "report_type": "DXF"

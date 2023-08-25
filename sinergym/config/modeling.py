@@ -2,167 +2,73 @@
 import json
 import os
 import random
-import xml.etree.cElementTree as ElementTree
-from abc import ABC, abstractmethod
 from copy import deepcopy
-from datetime import datetime, timedelta
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
-import pandas
-from eppy import modeleditor
 from eppy.modeleditor import IDF
-from opyplus import Epm, Idd, WeatherData
-from opyplus.epm.record import Record
+from opyplus import WeatherData
 
 from sinergym.utils.common import eppy_element_to_dict, get_delta_seconds
-from sinergym.utils.constants import CWD, PKG_DATA_PATH, WEEKDAY_ENCODING, YEAR
-
-
-class Model(ABC):
-    """Class to determine the Sinergym models' structure.
-    """
-
-    def __init__(self):
-        pass
-
-    # ---------------------------------------------------------------------------- #
-    #                  Variables and Building model adaptation                     #
-    # ---------------------------------------------------------------------------- #
-
-    @abstractmethod
-    def update_weather_path(self) -> None:
-        pass
-
-    @abstractmethod
-    def adapt_building_to_epw(
-            self,
-            summerday: str = 'Ann Clg .4% Condns DB=>MWB',
-            winterday: str = 'Ann Htg 99.6% Condns DB') -> None:
-        pass
-
-    @abstractmethod
-    def adapt_variables_to_cfg_and_building(self) -> None:
-        pass
-
-    @abstractmethod
-    def set_external_interface(self) -> None:
-        pass
-
-    @abstractmethod
-    def apply_extra_conf(self) -> None:
-        pass
-
-    @abstractmethod
-    def adapt_building_to_action_definition(self) -> None:
-        pass
-
-    @abstractmethod
-    def save_variables_cfg(self) -> str:
-        pass
-
-    @abstractmethod
-    def save_building_model(self) -> str:
-        pass
-
-    @abstractmethod
-    def get_schedulers(self) -> Dict[str, Dict[str, Any]]:
-        pass
-
-    # ---------------------------------------------------------------------------- #
-    #                        EPW and Weather Data management                       #
-    # ---------------------------------------------------------------------------- #
-
-    @abstractmethod
-    def apply_weather_variability(
-            self,
-            columns: List[str],
-            variation: Optional[Tuple[float, float, float]]) -> str:
-        pass
-
-    # ---------------------------------------------------------------------------- #
-    #                        Model and Config Functionality                        #
-    # ---------------------------------------------------------------------------- #
-
-    @abstractmethod
-    def _get_eplus_run_info(
-            self) -> Tuple[int, int, int, int, int, int, int, int]:
-        pass
-
-    @abstractmethod
-    def _get_one_epi_len(self) -> float:
-        pass
-
-    # ---------------------------------------------------------------------------- #
-    #                  Working Folder for Simulation Management                    #
-    # ---------------------------------------------------------------------------- #
-
-    @abstractmethod
-    def set_experiment_working_dir(self, env_name: str) -> str:
-        pass
-
-    @abstractmethod
-    def set_episode_working_dir(self) -> str:
-        pass
-
-    @abstractmethod
-    def _get_working_folder(
-            self,
-            directory_path: str,
-            base_name: str) -> str:
-        pass
-
-    @abstractmethod
-    def _rm_past_history_dir(
-            self,
-            episode_path: str,
-            base_name: str) -> None:
-        pass
-
-    # ---------------------------------------------------------------------------- #
-    #                             Config class checker                             #
-    # ---------------------------------------------------------------------------- #
-
-    @abstractmethod
-    def _check_eplus_config(self) -> None:
-        pass
-
-    @abstractmethod
-    def _check_observation_variables(self) -> None:
-        pass
+from sinergym.utils.constants import (CWD, LOG_MODEL_LEVEL, PKG_DATA_PATH,
+                                      WEEKDAY_ENCODING, YEAR)
+from sinergym.utils.logger import Logger
 
 
 class ModelJSON(object):
     """Class to manage backend models (building, weathers...) and folders in Sinergym (JSON version).
 
-        :param _json_path: JSON path origin for apply extra configuration.
-        :param weather_files: weather available files for each episode
+        :param _json_path: JSON path origin to create the building model.
+        :param weather_files: Available weather files for each episode.
         :param _weather_path: EPW path origin for apply weather to simulation in current episode.
-        :param _ddy_path: DDY path origin for get DesignDays and weather Location
-        :param experiment_path: Path for Sinergym experiment output
-        :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None)
-        :param max_ep_store: Number of episodes directories will be stored in experiment_path
-        :param config: Dict config with extra configuration which is required to modify building model (may be None)
-        :param _idd: IDD opyplus object to set up Epm
-        :param building: Building model (Dictionary extracted from JSON)
-        :param ddy_model: opyplus Epm object with DDY model
-        :param weather_data: opyplus WeatherData object with EPW data
-        :param action_definition: Dict with action definition to automatic building model preparation.
+        :param _ddy_path: DDY path origin for get DesignDays and weather Location.
+        :param _idd: IDD opyplus object to set up Epm.
+        :param _variables: Output:Variable(s) information about building model.
+        :param _meters: Output:Meter(s) information about building model.
+        :param _actuators: Actuators information about building model.
+        :param experiment_path: Path for Sinergym experiment output.
+        :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None).
+        :param max_ep_store: Number of episodes directories will be stored in experiment_path.
+        :param config: Dict config with extra configuration which is required to modify building model (may be None).
+        :param building: Building model (Dictionary extracted from JSON).
+        :param ddy_model: opyplus Epm object with DDY model.
+        :param weather_data: opyplus WeatherData object with EPW data.
+        :param zone_names: List of the zone names available in the building.
+        :param schedulers: Information in Dict format about all building schedulers.
+        :param runperiod: Information in Dict format about runperiod that determine an episode.
+        :param episode_length: Time in seconds that an episode has.
+        :param step_size: Time in seconds that an step has.
+        :param timestep_per_episode: Timestep in a runperiod (simulation episode).
     """
+
+    logger = Logger().getLogger(
+        name='MODELING',
+        level=LOG_MODEL_LEVEL)
 
     def __init__(
             self,
+            env_name: str,
             json_file: str,
             weather_files: List[str],
-            variables: Dict[str, List[str]],
-            env_name: str,
+            variables: Dict[str, Tuple[str, str]],
+            meters: Dict[str, str],
+            actuators: Dict[str, Tuple[str, str, str]],
             max_ep_store: int,
-            action_definition: Optional[Dict[str, Any]],
             extra_config: Dict[str, Any]):
+        """Constructor. Variables, meters and actuators are required to update building model scheme.
 
+        Args:
+            env_name (str): Name of the environment, required for Sinergym output management.
+            json_file (str): Json file name, path is calculated by the constructor.
+            weather_files (List[str]): List of the weather file names, one of them will be select randomly, path will be calculated by the constructor.
+            variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key.
+            meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
+            actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name.
+            max_ep_store (int): Number of episodes directories will be stored in experiment_path.
+            extra_config (Dict[str, Any]): Dict config with extra configuration which is required to modify building model (may be None).
+        """
         self.pkg_data_path = PKG_DATA_PATH
-
         # ----------------------- Transform filenames in paths ----------------------- #
 
         # JSON
@@ -179,24 +85,12 @@ class ModelJSON(object):
         self._weather_path = os.path.join(
             self.pkg_data_path, 'weather', random.choice(self.weather_files))
 
-        # RDD file name is deducible using json name (only change .epJSON by
-        # .rdd)
-        self._rdd_path = os.path.join(
-            self.pkg_data_path,
-            'variables',
-            self._json_path.split('/')[-1].split('.epJSON')[0] +
-            '.rdd')
-
         # DDY path is deducible using weather_path (only change .epw by .ddy)
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
 
         # -------------------------------- File Models ------------------------------- #
 
-        # BCVTB variable as XMLtree
-        self.variables = variables
-        self.variables_tree = ElementTree.Element('BCVTB-variables')
-
-        # Building model object (Python dictionaty from epJSON file)
+        # Building model object (Python dictionary from epJSON file)
         with open(self._json_path) as json_f:
             self.building = json.load(json_f)
 
@@ -207,51 +101,48 @@ class ModelJSON(object):
         # Weather data (opyplus object)
         self.weather_data = WeatherData.from_epw(self._weather_path)
 
-        # Extract rdd observation variables names
-        data = pandas.read_csv(self._rdd_path, skiprows=1)
-        rdd_variable_names = list(map(
-            lambda name: name.split(' [')[0],
-            data['Variable Name [Units]'].tolist()))
-        rdd_variable_types = data['Var Type (reported time step)'].tolist()
-        assert len(rdd_variable_names) == len(
-            rdd_variable_types), 'RDD file: Number of variable names and variables types column should be the same.'
-        # self.rdd_variables is a dict with keys as name of the variable and
-        # body as variable type (Zone or HVAC)
-        self.rdd_variables = dict()
-        for i, variable_name in enumerate(rdd_variable_names):
-            self.rdd_variables[variable_name] = rdd_variable_types[i]
-
         # ----------------------------- Other attributes ----------------------------- #
 
-        self.experiment_path = self.set_experiment_working_dir(env_name)
-        self.episode_path = None
+        # Output paths and config
+        self.experiment_path = self._set_experiment_working_dir(env_name)
+        self.episode_path: Optional[str] = None
         self.max_ep_store = max_ep_store
         self.config = extra_config
-        self.action_definition = action_definition
+
+        # Input/Output varibles
+        self._actuators = actuators
+        self._variables = variables
+        self._meters = meters
+
         # Extract building zones
         self.zone_names = list(self.building['Zone'].keys())
         # Extract schedulers available in building model
         self.schedulers = self.get_schedulers()
 
+        # Runperiod information
+        self.runperiod = self._get_eplus_runperiod()
+        self.episode_length = self._get_runperiod_len()
+        self.step_size = 3600 / self.runperiod['n_steps_per_hour']
+        self.timestep_per_episode = int(self.episode_length / self.step_size)
+
+        self.logger.info('runperiod established: {}'.format(self.runperiod))
+        self.logger.info(
+            'Episode length (seconds): {}'.format(
+                self.episode_length))
+        self.logger.info('timestep size (seconds): {}'.format(self.step_size))
+        self.logger.info(
+            'timesteps per episode: {}'.format(
+                self.timestep_per_episode))
+
         # ------------------------ Checking config definition ------------------------ #
 
-        # Check observation variables definition
-        self._check_observation_variables()
         # Check config definition
         self._check_eplus_config()
+        self.logger.info('Model Config is correct.')
 
     # ---------------------------------------------------------------------------- #
     #                 Variables and Building model adaptation                      #
     # ---------------------------------------------------------------------------- #
-
-    def update_weather_path(self) -> None:
-        """When this method is called, weather file is changed randomly and building model is adapted to new one.
-        """
-        self._weather_path = os.path.join(
-            self.pkg_data_path, 'weather', random.choice(self.weather_files))
-        self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
-        self.ddy_model = IDF(self._ddy_path)
-        self.weather_data = WeatherData.from_epw(self._weather_path)
 
     def adapt_building_to_epw(
             self,
@@ -289,66 +180,47 @@ class ModelJSON(object):
         self.building['Site:Location'] = new_location
         self.building['SizingPeriod:DesignDay'] = new_designdays
 
-    def adapt_variables_to_cfg_and_building(self) -> None:
-        """This method adds to XML variable tree all observation and action variables information.
-        In addition, it modifies building Output:Variable in order to adapt to new observation variables set.
+        self.logger.info('Adapting weather to building model. [{}]'.format(
+            self._weather_path.split('/')[-1]))
+
+    def adapt_building_to_variables(self) -> None:
+        """This method reads all variables and write it in the building model as Output:Variable field.
         """
-
-        # OBSERVATION VARIABLES
         output_variables = {}
-        self.variables_tree.append(ElementTree.Comment(
-            'Observation variables: Received from EnergyPlus'))
-        for i, obs_var in enumerate(self.variables['observation'], start=1):
-            # obs_var = "<variable_name>(<variable_zone>)"
-            var_elements = obs_var.split('(')
-            var_name = var_elements[0]
-            var_zone = var_elements[1][:-1]
-
-            # Add obs name and zone to XML variables tree
-            new_xml_obs = ElementTree.SubElement(
-                self.variables_tree, 'variable', source='EnergyPlus')
-            ElementTree.SubElement(
-                new_xml_obs,
-                'EnergyPlus',
-                name=var_zone,
-                type=var_name)
+        for i, (variable_name, variable_key) in enumerate(
+                list(self._variables.values()), start=1):
 
             # Add element Output:Variable to the building model
-            if var_zone.lower() == 'environment' or var_zone.lower() == 'whole building':
-                var_zone = '*'
-            output_variables['Output:Variable ' + str(i)] = {'key_value': var_zone,
-                                                             'variable_name': var_name,
+            output_variables['Output:Variable ' + str(i)] = {'key_value': variable_key,
+                                                             'variable_name': variable_name,
                                                              'reporting_frequency': 'Timestep'}
 
-        # Delete default Output:Variables and added observation_variables
-        # specified
+        self.logger.info(
+            'Updated building model with whole Output:Variable available names')
+
+        # Delete default Output:Variables and added whole building variables to
+        # Output:Variable field
         self.building['Output:Variable'] = output_variables
 
-        # ACTION VARIABLES
-        self.variables_tree.append(
-            ElementTree.Comment('Action variables: Sent to EnergyPlus'))
-        for act_var in self.variables['action']:
-
-            new_xml_variable = ElementTree.SubElement(
-                self.variables_tree, 'variable', source='Ptolemy')
-            ElementTree.SubElement(
-                new_xml_variable,
-                'EnergyPlus',
-                schedule=act_var)
-
-    def set_external_interface(self) -> None:
-        """Set an empty external interface with Ptolemy server if is not in the current building
+    def adapt_building_to_meters(self) -> None:
+        """This method reads all meters and write it in the building model as Output:Meter field.
         """
+        output_meters = {}
+        for i, meter_name in enumerate(
+                list(self._meters.values()), start=1):
 
-        # If no ExternalInterface object found
-        if 'ExternalInterface' not in self.building:
-            # Create PtolemyServer interface in building
-            self.building['ExternalInterface'] = {
-                'ExternalInterface 1': {
-                    'name_of_external_interface': 'PtolemyServer'}
-            }
+            # Add element Output:Variable to the building model
+            output_meters['Output:Meter ' +
+                          str(i)] = {'key_name': meter_name, 'reporting_frequency': 'Timestep'}
 
-    def apply_extra_conf(self) -> None:
+        self.logger.info(
+            'Updated building model with whole Output:Meter available names')
+
+        # Delete default Output:Variables and added whole building variables to
+        # Output:Variable field
+        self.building['Output:Meter'] = output_meters
+
+    def adapt_building_to_config(self) -> None:
         """Set extra configuration in building model
         """
         if self.config is not None:
@@ -357,6 +229,10 @@ class ModelJSON(object):
             if self.config.get('timesteps_per_hour'):
                 list(self.building['Timestep'].values())[
                     0]['number_of_timesteps_per_hour'] = self.config['timesteps_per_hour']
+
+                self.logger.debug(
+                    'Extra config: timesteps_per_hour set up to {}'.format(
+                        self.config['timesteps_per_hour']))
 
             # Runperiod datetimes --> Tuple(start_day, start_month, start_year,
             # end_day, end_month, end_year)
@@ -371,58 +247,26 @@ class ModelJSON(object):
                 runperiod['end_month'] = int(self.config['runperiod'][4])
                 runperiod['end_year'] = int(self.config['runperiod'][5])
 
-    def adapt_building_to_action_definition(self) -> None:
-        """Interpret action definition and apply changes in building model, in order to control schedulers specified.
-        """
-        if self.action_definition is not None:
-            # Create ExternalInterface:Schedule table if it doesn't exist
-            if 'ExternalInterface:Schedule' not in self.building:
-                self.building['ExternalInterface:Schedule'] = {}
-            # Iterate in schedulers to control in action definition
-            for original_sch_name, new_sch in self.action_definition.items():
-                # Search original scheduler information in building model
-                original_sch = self.schedulers[original_sch_name]
-                # Add external interface to building model
-                self.building['ExternalInterface:Schedule'][new_sch['name']] = {
-                    'schedule_type_limits_name': original_sch['Type'],
-                    'initial_value': new_sch['initial_value']
-                }
-                # Look for scheduler elements where appear and substitute for new
-                # one name
-                for sch_name, sch_info in original_sch.items():
-                    if isinstance(sch_info, dict):  # this skip Type key
-                        self.building[sch_info['table_name']][sch_name
-                                                              ][sch_info['field_name']] = new_sch['name']
-
-    def save_variables_cfg(self) -> str:
-        """This method saves current XML variables tree model into a variables.cfg file.
-
-        Raises:
-            RuntimeError: If this method is used without an episode_path generated (see reset method in simulator), this exception is raised.
-
-        Returns:
-            str: Path to the new saved variables.cfg used by BCVTB for Energyplus communication.
-        """
-        if self.episode_path is not None:
-
-            episode_cfg_path = self.episode_path + \
-                '/variables.cfg'
-
-            ElementTree.indent(self.variables_tree)
-
-            with open(episode_cfg_path, "wb") as f:
-                f.write(
-                    '<?xml version="1.0" encoding="ISO-8859-1"?>\n<!DOCTYPE BCVTB-variables SYSTEM "variables.dtd">\n'.encode('utf8'))
-                ElementTree.ElementTree(self.variables_tree).write(f, 'utf-8')
-
-            return episode_cfg_path
-
-        else:
-            raise RuntimeError(
-                '[Simulator Modeling] Episode path should be set before saving variables.cfg.')
+                # Update runperiod and episode related attributes
+                self.runperiod = self._get_eplus_runperiod()
+                self.episode_length = self._get_runperiod_len()
+                self.step_size = 3600 / self.runperiod['n_steps_per_hour']
+                self.timestep_per_episode = int(
+                    self.episode_length / self.step_size)
+                self.logger.info(
+                    'Extra config: runperiod updated to {}'.format(runperiod))
+                self.logger.info(
+                    'Updated episode length (seconds): {}'.format(
+                        self.episode_length))
+                self.logger.info(
+                    'Updated timestep size (seconds): {}'.format(
+                        self.step_size))
+                self.logger.info(
+                    'Updated timesteps per episode: {}'.format(
+                        self.timestep_per_episode))
 
     def save_building_model(self) -> str:
-        """Take current building model and save as epJSON in current env_working_dir episode folder.
+        """Take current building model and save as epJSON in current episode path folder.
 
         Returns:
             str: Path of epJSON file stored (episode folder).
@@ -435,54 +279,31 @@ class ModelJSON(object):
             with open(episode_json_path, "w") as outfile:
                 json.dump(self.building, outfile, indent=4)
 
+            self.logger.debug(
+                'Saving episode building model... [{}]'.format(
+                    episode_json_path))
+
             return episode_json_path
         else:
-            raise RuntimeError(
-                '[Simulator Modeling] Episode path should be set before saving building model.')
-
-    def get_schedulers(self) -> Dict[str,
-                                     Dict[str, Union[str, Dict[str, str]]]]:
-        """Extract all schedulers available in the building model to be controlled.
-
-        Returns:
-            Dict[str, Dict[str, Any]]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (table, object and field).
-        """
-        result = {}
-        schedules = {}
-        # Mount a dict with only building schedulers
-        if 'Schedule:Compact' in self.building:
-            schedules.update(self.building['Schedule:Compact'])
-        if 'Schedule:Year' in self.building:
-            schedules.update(self.building['Schedule:Year'])
-
-        for sch_name, sch_info in schedules.items():
-            # Write sch_name and data type in output
-            result[sch_name] = {
-                'Type': sch_info['schedule_type_limits_name'],
-            }
-            # We are going to search where that scheduler appears in whole
-            # building model
-            for table, elements in self.building.items():
-                # Don't include themselves
-                if table != 'Schedule:Compact' and table != 'Schedule:Year':
-                    # For each object of a table type
-                    for element_name, element_fields in elements.items():
-                        # For each field in a object
-                        for field_key, field_value in element_fields.items():
-                            # If a field value is the schedule name
-                            if field_value == sch_name:
-                                # We annotate the object name as key and the
-                                # field name where sch name appears and the
-                                # table where belong to
-                                result[sch_name][element_name] = {
-                                    'field_name': field_key,
-                                    'table_name': table
-                                }
-        return result
+            self.logger.error(
+                'Episode path should be set before saving building model.')
+            raise RuntimeError
 
     # ---------------------------------------------------------------------------- #
     #                        EPW and Weather Data management                       #
     # ---------------------------------------------------------------------------- #
+
+    def update_weather_path(self) -> None:
+        """When this method is called, weather file is changed randomly and building model is adapted to new one.
+        """
+        self._weather_path = os.path.join(
+            self.pkg_data_path, 'weather', random.choice(self.weather_files))
+        self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
+        self.ddy_model = IDF(self._ddy_path)
+        self.weather_data = WeatherData.from_epw(self._weather_path)
+        self.logger.info(
+            'Weather file {} used.'.format(
+                self._weather_path.split('/')[-1]))
 
     def apply_weather_variability(
             self,
@@ -540,21 +361,72 @@ class ModelJSON(object):
             filename += '_Random_%s_%s_%s.epw' % (
                 str(sigma), str(mu), str(tau))
 
+            self.logger.debug(
+                'Variation {} applied.',
+                variation)
+
         episode_weather_path = self.episode_path + '/' + filename
         weather_data_mod.to_epw(episode_weather_path)
+
+        self.logger.debug(
+            'Saving episode weather path... [{}]'.format(episode_weather_path))
+
         return episode_weather_path
 
-    # ---------------------------------------------------------------------------- #
-    #                        Model and Config Functionality                        #
-    # ---------------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
+#                          Schedulers info extraction                          #
+# ---------------------------------------------------------------------------- #
 
-    def _get_eplus_run_info(
-            self) -> Tuple[int, int, int, int, int, int, int, int]:
-        """This method read the building model from config and finds the running start month, start day, start year, end month, end day, end year, start weekday and the number of steps in a hour simulation.
-        If any value is Unknown, then value will be 0. If step per hour is < 1, then default value will be 4.
+    def get_schedulers(self) -> Dict[str,
+                                     Dict[str, Union[str, Dict[str, str]]]]:
+        """Extract all schedulers available in the building model to be controlled.
 
         Returns:
-            Tuple[int, int, int, int, int, int, int, int]: A tuple with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.
+            Dict[str, Dict[str, Any]]: Python Dictionary: For each scheduler found, it shows type value and where this scheduler is present (table, object and field).
+        """
+        result = {}
+        schedules = {}
+        # Mount a dict with only building schedulers
+        if 'Schedule:Compact' in self.building:
+            schedules.update(self.building['Schedule:Compact'])
+        if 'Schedule:Year' in self.building:
+            schedules.update(self.building['Schedule:Year'])
+
+        for sch_name, sch_info in schedules.items():
+            # Write sch_name and data type in output
+            result[sch_name] = {
+                'Type': sch_info['schedule_type_limits_name'],
+            }
+            # We are going to search where that scheduler appears in whole
+            # building model
+            for table, elements in self.building.items():
+                # Don't include themselves
+                if table != 'Schedule:Compact' and table != 'Schedule:Year':
+                    # For each object of a table type
+                    for element_name, element_fields in elements.items():
+                        # For each field in a object
+                        for field_key, field_value in element_fields.items():
+                            # If a field value is the schedule name
+                            if field_value == sch_name:
+                                # We annotate the object name as key and the
+                                # field name where sch name appears and the
+                                # table where belong to
+                                result[sch_name][element_name] = {
+                                    'field_name': field_key,
+                                    'table_name': table
+                                }
+        return result
+
+# ---------------------------------------------------------------------------- #
+#                           Runperiod info extraction                          #
+# ---------------------------------------------------------------------------- #
+
+    def _get_eplus_runperiod(
+            self) -> Dict[str, int]:
+        """This method reads building runperiod information and returns it.
+
+        Returns:
+            Dict[str,int]: A Dict with: the start month, start day, start year, end month, end day, end year, start weekday and number of steps in a hour simulation.
         """
         # Get runperiod object inner building model
         runperiod = list(self.building['RunPeriod'].values())[0]
@@ -576,79 +448,70 @@ class ModelJSON(object):
         )]
         n_steps_per_hour = list(self.building['Timestep'].values())[
             0]['number_of_timesteps_per_hour']
-        if n_steps_per_hour < 1 or n_steps_per_hour is None:  # pragma: no cover
-            n_steps_per_hour = 4  # default value
 
-        return (
-            start_month,
-            start_day,
-            start_year,
-            end_month,
-            end_day,
-            end_year,
-            start_weekday,
-            n_steps_per_hour)
+        return {
+            'start_day': start_day,
+            'start_month': start_month,
+            'start_year': start_year,
+            'end_day': end_day,
+            'end_month': end_month,
+            'end_year': end_year,
+            'start_weekday': start_weekday,
+            'n_steps_per_hour': n_steps_per_hour}
 
-    def get_current_time_info(self, sec_elapsed: float) -> List[int]:
-        """Returns the current day, month and hour given the seconds elapsed since the simulation started.
-
-        Args:
-            sec_elapsed (float): Seconds elapsed since the start of the simulation
-
-        Returns:
-            List[int]: A List composed by the current year, day, month and hour in the simulation.
-
-        """
-        runperiod = list(self.building['RunPeriod'].values())[0]
-        start_date = datetime(
-            year=int(
-                YEAR if runperiod['begin_year'] is None else runperiod['begin_year']), month=int(
-                1 if runperiod['begin_month'] is None else runperiod['begin_month']), day=int(
-                1 if runperiod['begin_day_of_month'] is None else runperiod['begin_day_of_month']))
-
-        current_date = start_date + timedelta(seconds=sec_elapsed)
-
-        return [
-            int(current_date.year),
-            int(current_date.month),
-            int(current_date.day),
-            int(current_date.hour),
-        ]
-
-    def _get_one_epi_len(self) -> float:
-        """Gets the length of one episode (an EnergyPlus process run to the end) depending on the config of simulation.
+    def _get_runperiod_len(self) -> float:
+        """Gets the length of runperiod (an EnergyPlus process run to the end) depending on the config of simulation.
 
         Returns:
             float: The simulation time in which the simulation ends (seconds).
         """
         # Get runperiod object inner building model
-        runperiod = list(self.building['RunPeriod'].values())[0]
-        start_year = int(
-            YEAR if runperiod['begin_year'] is None else runperiod['begin_year'])
-        start_month = int(
-            0 if runperiod['begin_month'] is None else runperiod['begin_month'])
-        start_day = int(
-            0 if runperiod['begin_day_of_month'] is None else runperiod['begin_day_of_month'])
-        end_year = int(
-            YEAR if runperiod['end_year'] is None else runperiod['end_year'])
-        end_month = int(
-            0 if runperiod['end_month'] is None else runperiod['end_month'])
-        end_day = int(0 if runperiod['end_day_of_month']
-                      is None else runperiod['end_day_of_month'])
 
         return get_delta_seconds(
-            start_year,
-            start_month,
-            start_day,
-            end_year,
-            end_month,
-            end_day)
+            self.runperiod['start_year'],
+            self.runperiod['start_month'],
+            self.runperiod['start_day'],
+            self.runperiod['end_year'],
+            self.runperiod['end_month'],
+            self.runperiod['end_day'])
 
     # ---------------------------------------------------------------------------- #
     #                  Working Folder for Simulation Management                    #
     # ---------------------------------------------------------------------------- #
 
-    def set_experiment_working_dir(self, env_name: str) -> str:
+    def set_episode_working_dir(self) -> str:
+        """Set episode working dir path like config attribute for current simulation execution.
+
+        Raises:
+            Exception: If experiment path (parent folder) has not be created previously.
+
+        Returns:
+            str: Episode path for directory created.
+        """
+        # Generate episode dir path if experiment dir path has been created
+        # previously
+        if self.experiment_path is None:
+            self.logger.error('Experiment path is not specified.')
+            raise Exception
+        else:
+            episode_path = self._get_working_folder(
+                directory_path=self.experiment_path,
+                base_name='-sub_run')
+            # Create directoy
+            os.makedirs(episode_path)
+            # set path like config attribute
+            self.episode_path = episode_path
+
+            # Remove redundant past working directories
+            self._rm_past_history_dir(episode_path, '-sub_run')
+
+            self.logger.info(
+                'Episode directory created [{}]'.format(
+                    episode_path))
+
+            return episode_path
+
+    def _set_experiment_working_dir(self, env_name: str) -> str:
         """Set experiment working dir path like config attribute for current simulation.
 
         Args:
@@ -666,33 +529,11 @@ class ModelJSON(object):
         os.makedirs(experiment_path)
         # set path like config attribute
         self.experiment_path = experiment_path
+
+        self.logger.info(
+            'Experiment working directory created [{}]'.format(experiment_path))
+
         return experiment_path
-
-    def set_episode_working_dir(self) -> str:
-        """Set episode working dir path like config attribute for current simulation execution.
-
-        Raises:
-            Exception: If experiment path (parent folder) has not be created previously.
-
-        Returns:
-            str: Episode path for directory created.
-        """
-        # Generate episode dir path if experiment dir path has been created
-        # previously
-        if self.experiment_path is None:
-            raise Exception
-        else:
-            episode_path = self._get_working_folder(
-                directory_path=self.experiment_path,
-                base_name='-sub_run')
-            # Create directoy
-            os.makedirs(episode_path)
-            # set path like config attribute
-            self.episode_path = episode_path
-
-            # Remove redundant past working directories
-            self._rm_past_history_dir(episode_path, '-sub_run')
-            return episode_path
 
     def _get_working_folder(
             self,
@@ -750,18 +591,8 @@ class ModelJSON(object):
             rm_dir_full_name = cur_dir_name + base_name + str(rm_dir_id)
             rmtree(rm_dir_full_name)
 
-    @ property
-    def start_year(self) -> int:  # pragma: no cover
-        """Returns the EnergyPlus simulation year.
-
-        Returns:
-            int: Simulation year.
-        """
-
-        return YEAR
-
     # ---------------------------------------------------------------------------- #
-    #                             Config class checker                             #
+    #                             Model class checker                              #
     # ---------------------------------------------------------------------------- #
 
     def _check_eplus_config(self) -> None:
@@ -773,8 +604,12 @@ class ModelJSON(object):
         for w_file in self.weather_files:
             w_path = os.path.join(
                 self.pkg_data_path, 'weather', w_file)
-            assert os.path.isfile(
-                w_path), 'Weather files: {} is not a weather file available in Sinergym.'.format(w_file)
+            try:
+                assert os.path.isfile(w_path)
+            except AssertionError as err:
+                self.logger.critical(
+                    'Weather files: {} is not a weather file available in Sinergym.'.format(w_file))
+                raise err
 
         # EXTRA CONFIG
         if self.config is not None:
@@ -782,59 +617,42 @@ class ModelJSON(object):
                 # Check config parameters values
                 # Timesteps
                 if config_key == 'timesteps_per_hour':
-                    assert self.config[config_key] > 0, 'Extra Config: timestep_per_hour must be a positive int value.'
+                    try:
+                        assert self.config[config_key] > 0
+                    except AssertionError as err:
+                        self.logger.critical(
+                            'Extra Config: timestep_per_hour must be a positive int value.')
+                        raise err
                 # Runperiod
                 elif config_key == 'runperiod':
-                    assert isinstance(
-                        self.config[config_key], tuple) and len(
-                        self.config[config_key]) == 6, 'Extra Config: Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).'
-                else:  # pragma: no cover
-                    raise KeyError(
-                        F'Extra Config: Key name specified in config called [{config_key}] has no support in Sinergym.')
-        # ACTION DEFINITION
-        if self.action_definition is not None:
-            for original_sch_name, new_sch in self.action_definition.items():
-                # Check action definition format
-                assert isinstance(
-                    original_sch_name, str), 'Action definition: Keys must be str.'
-                assert isinstance(
-                    new_sch, dict), 'Action definition: New scheduler definition must be a dict.'
-                assert set(
-                    new_sch.keys()) == set(
-                    ['name', 'initial_value']), 'Action definition: keys in new scheduler definition must be name and initial_value.'
-                assert isinstance(
-                    new_sch['name'], str), 'Action definition: Name field in new scheduler must be a str element.'
-                # Check action definition component is in schedulers available
-                # in building model
-                assert original_sch_name in self.schedulers.keys(
-                ), 'Action definition: Object called {} is not an existing component in building model.'.format(original_sch_name)
-                # Check new variable is present in action variables
-                assert new_sch['name'] in self.variables['action'], 'Action definition: {} external variable should be in action variables.'.format(
-                    new_sch['name'])
+                    try:
+                        assert isinstance(
+                            self.config[config_key], tuple) and len(
+                            self.config[config_key]) == 6
+                    except AssertionError as err:
+                        self.logger.critical(
+                            'Extra Config: Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).')
+                        raise err
+                else:
+                    self.logger.error(
+                        'Extra Config: Key name specified in config called [{}] is not available in Sinergym.'.format(config_key))
 
-    def _check_observation_variables(self) -> None:
-        """This method checks whether observation variables are available in building model definition (Checking variable type definition too).
-        """
-        for obs_var in self.variables['observation']:
-            # Name of the observation variable and element (Zone or HVAC
-            # element name)
-            obs_name = obs_var.split('(')[0]
-            obs_element_name = obs_var.split('(')[1][:-1]
+    # ---------------------------------------------------------------------------- #
+    #                                  Properties                                  #
+    # ---------------------------------------------------------------------------- #
 
-            # Check observarion variables names
-            assert obs_name in list(self.rdd_variables.keys(
-            )), 'Observation variables: Variable called {} in observation variables is not valid for the building model'.format(obs_name)
-            # Check observation variables about zones (if variable type is
-            # Zone)
-            if self.rdd_variables[obs_name] == 'Zone':
-                # Check that obs zone is not Environment or Whole building tag
-                if obs_element_name.lower() != 'Environment'.lower(
-                ) and obs_element_name.lower() != 'Whole Building'.lower():
-                    # zones names with people 1 or lights 1, etc. The second name
-                    # is ignored, only check that zone is a substr from obs
-                    # zone
-                    assert any(list(map(lambda zone: zone.lower() in obs_element_name.lower(), self.zone_names))
-                               ), 'Observation variables: Zone called {} in observation variables does not exist in the building model.'.format(obs_element_name)
-            # Check observation variables about HVAC
-            elif self.rdd_variables[obs_name] == 'HVAC':
-                pass
+    @property
+    def building_path(self) -> str:
+        return self._json_path
+
+    @property
+    def weather_path(self) -> str:
+        return self._weather_path
+
+    @property
+    def ddy_path(self) -> Optional[str]:
+        return self._ddy_path
+
+    @property
+    def idd_path(self) -> Optional[str]:
+        return self._idd

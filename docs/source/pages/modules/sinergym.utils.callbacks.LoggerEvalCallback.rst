@@ -16,6 +16,7 @@
    .. autosummary::
    
       ~LoggerEvalCallback.__init__
+      ~LoggerEvalCallback.update_child_locals
    
    
 

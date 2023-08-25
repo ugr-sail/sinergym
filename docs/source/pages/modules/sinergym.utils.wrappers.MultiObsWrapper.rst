@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.MultiObsWrapper
+﻿sinergym.utils.wrappers.MultiObsWrapper
 =======================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -32,6 +32,7 @@ sinergym.utils.wrappers.MultiObsWrapper
    .. autosummary::
    
       ~MultiObsWrapper.action_space
+      ~MultiObsWrapper.logger
       ~MultiObsWrapper.metadata
       ~MultiObsWrapper.np_random
       ~MultiObsWrapper.observation_space

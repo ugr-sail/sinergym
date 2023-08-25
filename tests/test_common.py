@@ -1,52 +1,7 @@
-import os
-import shutil
-
 import pytest
-from opyplus import Epm, WeatherData
 
 import sinergym.utils.common as common
 from sinergym.utils.wrappers import NormalizeObservation
-
-
-def test_unwrap_wrapper(
-        env_demo_continuous,
-        env_wrapper_normalization,
-        env_all_wrappers):
-    # Check if env_wrapper_normalization unwrapped is env_demo_continuous
-    assert not hasattr(env_demo_continuous, 'unwrapped_observation')
-    assert hasattr(env_all_wrappers, 'unwrapped_observation')
-    assert hasattr(env_wrapper_normalization, 'unwrapped_observation')
-    assert hasattr(env_wrapper_normalization, 'env')
-    env = common.unwrap_wrapper(
-        env_wrapper_normalization,
-        NormalizeObservation)
-    assert not hasattr(env, 'unwrapped_observation')
-    # Check if trying unwrap a not wrapped environment the result is None
-    env = common.unwrap_wrapper(
-        env_demo_continuous,
-        NormalizeObservation)
-    assert env is None
-    env = common.unwrap_wrapper(env_all_wrappers, NormalizeObservation)
-    assert not hasattr(env, 'unwrapped_observation')
-
-
-def test_is_wrapped(
-        env_demo_continuous,
-        env_wrapper_normalization,
-        env_all_wrappers):
-    assert not common.is_wrapped(env_demo_continuous, NormalizeObservation)
-    assert common.is_wrapped(env_wrapper_normalization, NormalizeObservation)
-    assert common.is_wrapped(env_all_wrappers, NormalizeObservation)
-
-
-@pytest.mark.parametrize(
-    'year,month,day,expected',
-    [(1991, 2, 13, (20.0, 23.5)),
-     (1991, 9, 9, (23.0, 26.0))]
-)
-def test_get_season_comfort_range(year, month, day, expected):
-    output_range = common.get_season_comfort_range(year, month, day)
-    assert output_range == expected
 
 
 @pytest.mark.parametrize(
@@ -73,21 +28,43 @@ def test_get_delta_seconds(
     assert delta_sec == expected
 
 
-@ pytest.mark.parametrize(
-    'variation',
-    [
-        (None),
-        ((1, 0.0, 0.001)),
-        ((5, 0.0, 0.01)),
-        ((10, 0.0, 0.1)),
-    ]
+def test_is_wrapped(
+        env_5zone_continuous,
+        env_wrapper_normalization,
+        env_all_wrappers):
+    # Check returns
+    assert not common.is_wrapped(env_5zone_continuous, NormalizeObservation)
+    assert common.is_wrapped(env_wrapper_normalization, NormalizeObservation)
+    assert common.is_wrapped(env_all_wrappers, NormalizeObservation)
+
+
+def test_unwrap_wrapper(
+        env_5zone_continuous,
+        env_wrapper_normalization,
+        env_all_wrappers):
+    # Check if env_wrapper_normalization unwrapped is env_5zone_continuous
+    assert not hasattr(env_5zone_continuous, 'unwrapped_observation')
+    assert hasattr(env_all_wrappers, 'unwrapped_observation')
+    assert hasattr(env_wrapper_normalization, 'unwrapped_observation')
+    assert hasattr(env_wrapper_normalization, 'env')
+    env = common.unwrap_wrapper(
+        env_wrapper_normalization,
+        NormalizeObservation)
+    assert not hasattr(env, 'unwrapped_observation')
+    # Check if trying unwrap a not wrapped environment the result is None
+    env = common.unwrap_wrapper(
+        env_5zone_continuous,
+        NormalizeObservation)
+    assert env is None
+    env = common.unwrap_wrapper(env_all_wrappers, NormalizeObservation)
+    assert not hasattr(env, 'unwrapped_observation')
+
+
+@pytest.mark.parametrize(
+    'year,month,day,expected',
+    [(1991, 2, 13, (20.0, 23.5)),
+     (1991, 9, 9, (23.0, 26.0))]
 )
-def test_create_variable_weather(variation, weather_data, weather_path):
-    output = common.create_variable_weather(
-        weather_data, weather_path, ['drybulb'], variation)
-    if variation is None:
-        assert output is None
-    else:
-        expected = weather_path.split('.epw')[0] + '_Random_' + str(
-            variation[0]) + '_' + str(variation[1]) + '_' + str(variation[2]) + '.epw'
-        assert output == expected
+def test_get_season_comfort_range(year, month, day, expected):
+    output_range = common.get_season_comfort_range(year, month, day)
+    assert output_range == expected

@@ -9,12 +9,37 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import numpy as np
 import pkg_resources
 
+from sinergym.utils.constants import LOG_FORMAT
+
 required = {'stable-baselines3', 'wandb'}
 installed = {pkg.key for pkg in pkg_resources.working_set}
 missing = required - installed
 if not missing:
     import wandb
     from stable_baselines3.common.logger import KVWriter
+
+
+class CustomFormatter(logging.Formatter):
+    """Custom logger format for terminal messages"""
+    grey = "\x1b[38;20m"
+    yellow = "\x1b[33;20m"
+    red = "\x1b[31;20m"
+    bold_red = "\x1b[31;1m"
+    reset = "\x1b[0m"
+    format = LOG_FORMAT
+
+    FORMATS = {
+        logging.DEBUG: grey + format + reset,
+        logging.INFO: grey + format + reset,
+        logging.WARNING: yellow + format + reset,
+        logging.ERROR: red + format + reset,
+        logging.CRITICAL: bold_red + format + reset
+    }
+
+    def format(self, record):
+        log_fmt = self.FORMATS.get(record.levelno)
+        formatter = logging.Formatter(log_fmt)
+        return formatter.format(record)
 
 
 class Logger():
@@ -25,13 +50,13 @@ class Logger():
             self,
             name: str,
             level: str,
-            formatter: str) -> logging.Logger:
+            formatter: Any = CustomFormatter()) -> logging.Logger:
         """Return Sinergym logger for the progress output in terminal.
 
         Args:
             name (str): logger name
             level (str): logger level
-            formatter (str): logger formatter
+            formatter (Callable): logger formatter class
 
         Returns:
             logging.logger
@@ -39,7 +64,7 @@ class Logger():
         """
         logger = logging.getLogger(name)
         consoleHandler = logging.StreamHandler(stream=sys.stdout)
-        consoleHandler.setFormatter(logging.Formatter(formatter))
+        consoleHandler.setFormatter(formatter)
         logger.addHandler(consoleHandler)
         logger.setLevel(level)
         logger.propagate = False
@@ -109,7 +134,7 @@ class CSVLogger(object):
         """
         return [
             info.get('timestep')] + list(obs) + list(action) + [
-            info.get('time_elapsed'),
+            info.get('time_elapsed(hours)'),
             info.get('reward'),
             info.get('reward_energy'),
             info.get('reward_comfort'),

@@ -61,23 +61,15 @@ jobs:
           filters: |
             doc:
               - 'docs/source/**'
-      - name: Upgrade pip
+      - name: Build the latest Docker image
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: python -m pip install --upgrade pip
-      - name: Install pandoc dependencies
-        if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: sudo apt install -y pandoc
-      - name: Install dependencies [sinergym extras]
-        if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: |
-          pip install -e .[extras] &&
-          pip install --upgrade requests
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extras] --tag pullrequest/sinergym:latest
       - name: Compile documentation
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: cd docs && rm -R compilation/ && sphinx-multiversion source compilation
+        run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'sphinx-multiversion docs/source docs/compilation'
       - name: Check sphinx spelling
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: cd docs && sphinx-build -M spelling source compilation
+        run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'sphinx-build -M spelling docs/source docs/compilation'
       - name: Pull local repository (needed if format commit has been done before)
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: git pull origin main

@@ -1,6 +1,6 @@
 {
     "id": "ExperimentExample",
-    "environment": "Eplus-5Zone-hot-continuous-stochastic-v1",
+    "environment": "Eplus-5zone-hot-continuous-stochastic-v1",
     "episodes": 5,
     "algorithm": {
         "name": "SB3-PPO",
@@ -21,23 +21,7 @@
         }
     },
     "env_params": {
-        "reward": "LinearReward",
-        "reward_kwargs": {
-            "temperature_variable": [
-                "Zone Air Temperature(SPACE1-1)",
-                "Zone Air Temperature(SPACE1-2)"
-            ],
-            "energy_variable": "Facility Total HVAC Electricity Demand Rate(Whole Building)",
-            "range_comfort_winter": [
-                20.0,
-                23.5
-            ],
-            "range_comfort_summer": [
-                23.0,
-                26.0
-            ]
-        },
-        "act_repeat": 1
+        "reward": "LinearReward"
     },
     "seed": 3,
     "model": null,
@@ -52,7 +36,7 @@
     },
     "evaluation": {
         "eval_freq": 2,
-        "eval_length": 1
+        "eval_length": 2
     },
     "wandb": {
         "init_params": {

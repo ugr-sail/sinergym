@@ -4,14 +4,17 @@ from typing import Any, List, Sequence
 
 import numpy as np
 
+from sinergym.envs.eplus_env import EplusEnv
+from sinergym.utils.constants import YEAR
+
 
 class RandomController(object):
 
-    def __init__(self, env: Any):
+    def __init__(self, env: EplusEnv):
         """Random agent. It selects available actions randomly.
 
         Args:
-            env (Any): Simulation environment.
+            env (EplusEnv): Simulation environment.
         """
         self.env = env
 
@@ -27,17 +30,18 @@ class RandomController(object):
 
 class RBC5Zone(object):
 
-    def __init__(self, env: Any) -> None:
+    def __init__(self, env: EplusEnv) -> None:
         """Agent based on static rules for controlling 5ZoneAutoDXVAV setpoints.
         Based on ASHRAE Standard 55-2004: Thermal Environmental Conditions for Human Occupancy.
 
         Args:
-            env (Any): Simulation environment
+            env (EplusEnv): Simulation environment
         """
 
         self.env = env
 
-        self.variables = env.variables
+        self.observation_variables = env.observation_variables
+        self.action_varioables = env.action_variables
 
         self.setpoints_summer = (23, 26.0)
         self.setpoints_winter = (20.0, 23.5)
@@ -51,10 +55,10 @@ class RBC5Zone(object):
         Returns:
             Sequence[Any]: Action chosen.
         """
-        obs_dict = dict(zip(self.variables['observation'], observation))
-        year = int(obs_dict['year'])
+        obs_dict = dict(zip(self.observation_variables, observation))
+        year = int(obs_dict['year']) if obs_dict.get('year', False) else YEAR
         month = int(obs_dict['month'])
-        day = int(obs_dict['day'])
+        day = int(obs_dict['day_of_month'])
 
         summer_start_date = datetime(year, 6, 1)
         summer_final_date = datetime(year, 9, 30)
@@ -72,15 +76,16 @@ class RBC5Zone(object):
 
 class RBCDatacenter(object):
 
-    def __init__(self, env: Any) -> None:
+    def __init__(self, env: EplusEnv) -> None:
         """Agent based on static rules for controlling 2ZoneDataCenterHVAC setpoints.
         Follows the ASHRAE recommended temperature ranges for data centers described in ASHRAE TC9.9 (2016).
         Args:
-            env (Any): Simulation environment
+            env (EplusEnv): Simulation environment
         """
 
         self.env = env
-        self.variables = env.variables
+        self.observation_variables = env.observation_variables
+        self.action_variables = env.action_variables
 
         # ASHRAE recommended temperature range = [18, 27] Celsius
         self.range_datacenter = (18, 27)
@@ -92,16 +97,16 @@ class RBCDatacenter(object):
         Returns:
             Sequence[Any]: Action chosen.
         """
-        obs_dict = dict(zip(self.variables['observation'], observation))
+        obs_dict = dict(zip(self.observation_variables, observation))
 
         # Mean temp in datacenter zones
-        mean_temp = np.mean([obs_dict['Zone Air Temperature(West Zone)'],
-                             obs_dict['Zone Air Temperature(East Zone)']])
+        mean_temp = np.mean([obs_dict['west_zone_temperature'],
+                             obs_dict['east_zone_temperature']])
 
         current_heat_setpoint = obs_dict[
-            'Zone Thermostat Heating Setpoint Temperature(West Zone)']
+            'west_htg_setpoint']
         current_cool_setpoint = obs_dict[
-            'Zone Thermostat Cooling Setpoint Temperature(West Zone)']
+            'west_clg_setpoint']
 
         new_heat_setpoint = current_heat_setpoint
         new_cool_setpoint = current_cool_setpoint

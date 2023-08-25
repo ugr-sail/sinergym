@@ -35,13 +35,9 @@ ENV ENERGYPLUS_DOWNLOAD_BASE_URL https://github.com/NREL/EnergyPlus/releases/dow
 ENV ENERGYPLUS_DOWNLOAD_FILENAME EnergyPlus-$ENERGYPLUS_VERSION-$ENERGYPLUS_SHA-Linux-Ubuntu22.04-x86_64.sh 
 ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_FILENAME
 
-# Collapse the update of packages, download and installation into one command
-# to make the container smaller & remove a bunch of the auxiliary apps/files
-# that are not needed in the container
-ENV BCVTB_PATH=/usr/local/bcvtb
-
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y ca-certificates curl libx11-6 libexpat1 \
+    && apt-get install -y git wget \
     #Energyplus installation
     && curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
     && chmod +x $ENERGYPLUS_DOWNLOAD_FILENAME \
@@ -51,12 +47,6 @@ RUN apt-get update && apt-get upgrade -y \
     && rm -rf PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater \
     # Remove the broken symlinks
     && cd /usr/local/bin find -L . -type l -delete \
-    # BCVTB installation
-    && echo "Y\r" | apt-get install default-jre openjdk-8-jdk \ 
-    && apt-get install -y git wget iputils-ping \
-    && wget http://github.com/lbl-srg/bcvtb/releases/download/v1.6.0/bcvtb-install-linux64-v1.6.0.jar \
-    && yes "1" | java -jar bcvtb-install-linux64-v1.6.0.jar \
-    && cp -R 1/ $BCVTB_PATH && rm -R 1/ \
     # Install pip, and make python point to python3
     && apt install python3-pip -y \
     && ln -s /usr/bin/python3 /usr/bin/python \
@@ -67,6 +57,9 @@ RUN apt-get update && apt-get upgrade -y \
     && apt-get autoremove -y && apt-get autoclean -y \
     && rm -rf /var/lib/apt/lists/* 
 
+# Python add pyenergyplus path in order to detect API package
+ENV PYTHONPATH="/usr/local/EnergyPlus-${ENERGYPLUS_INSTALL_VERSION}"
+
 WORKDIR /sinergym
 COPY requirements.txt .
 COPY MANIFEST.in .
@@ -75,6 +68,7 @@ COPY scripts /sinergym/scripts
 COPY sinergym /sinergym/sinergym
 COPY tests /sinergym/tests
 COPY examples /sinergym/examples
+COPY docs/source /sinergym/docs/source
 RUN pip install -e .${SINERGYM_EXTRAS}
 
 #RUN pip install idna && pip install six

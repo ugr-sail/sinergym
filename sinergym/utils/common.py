@@ -1,18 +1,15 @@
 """Common utilities."""
 
 import os
-import textwrap
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
-from pydoc import locate
-from typing import Any, Dict, List, Optional, Tuple, Type, Union
+from typing import Dict, List, Optional, Tuple, Type, Union
 
 import gymnasium as gym
 import numpy as np
 import pandas as pd
 import xlsxwriter
 from eppy.modeleditor import IDF
-from opyplus import Epm, WeatherData
 from opyplus.epm.record import Record
 
 from sinergym.utils.constants import YEAR
@@ -75,60 +72,34 @@ def unwrap_wrapper(env: gym.Env,
     return None
 
 
-def create_variable_weather(
-        weather_data: WeatherData,
-        original_epw_file: str,
-        columns: List[str] = ['drybulb'],
-        variation: Optional[Tuple[float, float, float]] = None) -> Optional[str]:
-    """Create a new weather file using Ornstein-Uhlenbeck process.
+def get_season_comfort_range(
+        year: int, month: int, day: int) -> Tuple[float, float]:
+    """Get comfort temperature range depending on season. The comfort ranges are those
+    defined by ASHRAE in Standard 55—Thermal Environmental Conditions for Human Occupancy (2004).
 
     Args:
-        weather_data (opyplus.WeatherData): Opyplus object with the weather for the simulation.
-        original_epw_file (str): Path to the original EPW file.
-        columns (List[str], optional): List of columns to be affected. Defaults to ['drybulb'].
-        variation (Optional[Tuple[float, float, float]], optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
+        year (int): current year
+        month (int): current month
+        day (int): current day
 
     Returns:
-        Optional[str]: Name of the file created in the same location as the original one.
+        Tuple[float, float]: Comfort temperature from the correct season.
     """
 
-    if variation is None:
-        return None
+    summer_start_date = datetime(year, 6, 1)
+    summer_final_date = datetime(year, 9, 30)
+
+    range_comfort_summer = (23.0, 26.0)
+    range_comfort_winter = (20.0, 23.5)
+
+    current_dt = datetime(year, month, day)
+
+    if current_dt >= summer_start_date and current_dt <= summer_final_date:
+        comfort = range_comfort_summer
     else:
-        # Get dataframe with weather series
-        df = weather_data.get_weather_series()
+        comfort = range_comfort_winter
 
-        sigma = variation[0]  # Standard deviation.
-        mu = variation[1]  # Mean.
-        tau = variation[2]  # Time constant.
-
-        T = 1.  # Total time.
-        # All the columns are going to have the same num of rows since they are
-        # in the same dataframe
-        n = len(df[columns[0]])
-        dt = T / n
-        # t = np.linspace(0., T, n)  # Vector of times.
-
-        sigma_bis = sigma * np.sqrt(2. / tau)
-        sqrtdt = np.sqrt(dt)
-
-        x = np.zeros(n)
-
-        # Create noise
-        for i in range(n - 1):
-            x[i + 1] = x[i] + dt * (-(x[i] - mu) / tau) + \
-                sigma_bis * sqrtdt * np.random.randn()
-
-        for column in columns:
-            # Add noise
-            df[column] += x
-
-        # Save new weather data
-        weather_data.set_weather_series(df)
-        filename = original_epw_file.split('.epw')[0]
-        filename += '_Random_%s_%s_%s.epw' % (str(sigma), str(mu), str(tau))
-        weather_data.to_epw(filename)
-        return filename
+    return comfort
 
 
 def ranges_getter(output_path: str,
@@ -213,42 +184,12 @@ def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
     return {element.Name.lower(): fields}
 
 
-def get_season_comfort_range(
-        year: int, month: int, day: int) -> Tuple[float, float]:
-    """Get comfort temperature range depending on season. The comfort ranges are those
-    defined by ASHRAE in Standard 55—Thermal Environmental Conditions for Human Occupancy (2004).
+def export_schedulers_to_excel(
+        schedulers: Dict[str, Dict[str, Union[str, Dict[str, str]]]], path: str) -> None:  # pragma: no cover
+    """Given a python dictionary with schedulers from modeling format, this method export that information in a excel file
 
     Args:
-        year (int): current year
-        month (int): current month
-        day (int): current day
-
-    Returns:
-        Tuple[float, float]: Comfort temperature from the correct season.
-    """
-
-    summer_start_date = datetime(year, 6, 1)
-    summer_final_date = datetime(year, 9, 30)
-
-    range_comfort_summer = (23.0, 26.0)
-    range_comfort_winter = (20.0, 23.5)
-
-    current_dt = datetime(year, month, day)
-
-    if current_dt >= summer_start_date and current_dt <= summer_final_date:
-        comfort = range_comfort_summer
-    else:
-        comfort = range_comfort_winter
-
-    return comfort
-
-
-def export_actuators_to_excel(
-        actuators: Dict[str, Dict[str, Union[str, Dict[str, str]]]], path: str) -> None:  # pragma: no cover
-    """Given a python dictionary with actuators with Config:_get_actuators() format, this method export that information in a excel file
-
-    Args:
-        actuators (Dict[str, Dict[str, Union[str, Dict[str, str]]]]): Python dictionary with the format correctly.
+        schedulers (Dict[str, Dict[str, Union[str, Dict[str, str]]]]): Python dictionary with the format correctly.
         path (str): Relative path where excel file will be created.
     """
 
@@ -275,7 +216,7 @@ def export_actuators_to_excel(
     worksheet.write(current_row, current_col + 1, 'Type', keys_format)
     current_row += 1
 
-    for key, info in actuators.items():
+    for key, info in schedulers.items():
         worksheet.write(current_row, current_col, key, actuator_format)
         current_col += 1
         worksheet.write(current_row, current_col, info['Type'], cells_format)

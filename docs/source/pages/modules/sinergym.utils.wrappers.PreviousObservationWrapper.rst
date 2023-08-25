@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.PreviousObservationWrapper
+﻿sinergym.utils.wrappers.PreviousObservationWrapper
 ==================================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -33,6 +33,7 @@ sinergym.utils.wrappers.PreviousObservationWrapper
    .. autosummary::
    
       ~PreviousObservationWrapper.action_space
+      ~PreviousObservationWrapper.logger
       ~PreviousObservationWrapper.metadata
       ~PreviousObservationWrapper.np_random
       ~PreviousObservationWrapper.observation_space
