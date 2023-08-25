@@ -21,7 +21,7 @@ The main functionalities of *Sinergym* are the following:
 
 -  **Compatibility with simulation engines**. Communication between
    Python and `EnergyPlus <https://energyplus.net/>`__ is established
-   using `Energyplus Python API <https://energyplus.readthedocs.io/en/latest/api.html>`__ as a middleware.
+   using `Energyplus Python API <https://energyplus.readthedocs.io/en/latest/api.html>`__ as middleware.
    However, more of them (e.g.
    `OpenModelica <https://openmodelica.org/>`__) could be included in
    the backend while maintaining the Gymnasium API in the future.
