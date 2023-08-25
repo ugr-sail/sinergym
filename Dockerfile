@@ -69,6 +69,7 @@ COPY sinergym /sinergym/sinergym
 COPY tests /sinergym/tests
 COPY examples /sinergym/examples
 COPY docs/source /sinergym/docs/source
+COPY .git/ ./.git
 RUN pip install -e .${SINERGYM_EXTRAS}
 
 #RUN pip install idna && pip install six

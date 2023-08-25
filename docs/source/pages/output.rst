@@ -53,7 +53,7 @@ is the result of the simulation and we have:
       If you want to know more about this files, visit 
       `EnergyPlus documentation <https://energyplus.net/documentation>`__.
 
-* **data_available.txt**: This file is generated when *EnergyPlus* API initialize all
+* **data_available.txt**: This file is generated when *EnergyPlus* API initializes all
   callbacks and handlers for the simulation. In this file, we can find all the available
   components of the building model such as actuators, schedulers, meters, variables, internal
   variables, etc.

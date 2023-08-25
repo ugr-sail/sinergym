@@ -69,7 +69,7 @@ jobs:
         run: git config --global --add safe.directory /sinergym
       - name: Compile documentation
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: docker run -v ${GITHUB_WORKSPACE}/docs/compilation:/sinergym/docs/compilation -v ${GITHUB_WORKSPACE}/.git:/sinergym/.git -t pushmain/sinergym:latest /bin/bash -c 'sphinx-multiversion docs/source docs/compilation'
+        run: docker run -v ${GITHUB_WORKSPACE}/docs/compilation:/sinergym/docs/compilation -t pushmain/sinergym:latest /bin/bash -c 'sphinx-multiversion docs/source docs/compilation'
       - name: Check sphinx spelling
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: docker run -t pushmain/sinergym:latest /bin/bash -c 'sphinx-build -M spelling docs/source docs/compilation'
