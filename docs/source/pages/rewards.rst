@@ -7,7 +7,7 @@ Consequently, *Sinergym* allows to use pre-implemented reward functions or to de
 own reward functions (see section bellow).
 
 *Sinergym*'s predefined reward functions are developed as **multi-objective**, where both *energy 
-consumption* and *thermal discomfort* are normalized and add together with different weights.
+consumption* and *thermal discomfort* are normalized and added together with different weights.
 These rewards are **always negative**, meaning that perfect behavior has a cumulative 
 reward of 0. Notice also that there are two temperature comfort ranges defined, 
 one for the summer period and other for the winter period. The weights of each 
