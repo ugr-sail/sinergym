@@ -107,7 +107,7 @@ With more episodes, more accurate the averages of the reward-based indicators wi
 therefore, the more faithful it will be to reality in terms of how good the current model is 
 turning out to be. However, it will take more time.
 
-It calculates timestep and episode average for power consumption, comfort penalty and power penalty.
+It calculates timestep and episode averages for power consumption, comfort penalty and power penalty.
 On the other hand, it calculates comfort violation percentage in episodes too.
 Currently, only mean reward is taken into account to decide when a model is better.
 
