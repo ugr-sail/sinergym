@@ -42,8 +42,8 @@ class EnergyPlus(object):
             info_queue (Queue): Extra information dict queue for Gymnasium environment communication.
             act_queue (Queue): Action queue for Gymnasium environment communication.
             time_variables (List[str]): EnergyPlus time variables we want to observe. The name of the variable must match with the name of the E+ Data Transfer API method name. Defaults to empty list
-            variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output Variables. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.
-            meters (Dict[str, str]): Specification for EnergyPlus Output Meters. The key name is custom, then value is the original EnergyPlus Meters name.
+            variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.
+            meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
             actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. Defaults to empty dict.
         """
 
@@ -175,7 +175,7 @@ class EnergyPlus(object):
         self.energyplus_thread.start()
 
     def stop(self) -> None:
-        """It forces the simulation ends, cleans all communication queues, thread is deleted and simulator attributes are
+        """It forces the simulation ends, cleans all communication queues, thread is deleted (joined) and simulator attributes are
            reset (except handles, to not initialize again if there is a next thread execution).
         """
         if self.is_running:
@@ -227,7 +227,7 @@ class EnergyPlus(object):
 
     def _collect_obs_and_info(self, state_argument: int) -> None:
         """EnergyPlus callback that collects output variables and info
-        values and enqueue them
+        values and enqueue them in each simulation timestep.
 
         Args:
             state_argument (int): EnergyPlus API state
@@ -282,7 +282,7 @@ class EnergyPlus(object):
         self.info_queue.put(self.next_info)
 
     def _process_action(self, state_argument: int) -> None:
-        """EnergyPlus callback that sets output actuator value(s) from last received action
+        """EnergyPlus callback that sets output actuator value(s) from last received action.
 
         Args:
             state_argument (int): EnergyPlus API state

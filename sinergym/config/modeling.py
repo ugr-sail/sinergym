@@ -19,22 +19,22 @@ from sinergym.utils.logger import Logger
 class ModelJSON(object):
     """Class to manage backend models (building, weathers...) and folders in Sinergym (JSON version).
 
-        :param _json_path: JSON path origin for apply extra configuration.
-        :param weather_files: weather available files for each episode
+        :param _json_path: JSON path origin to create the building model.
+        :param weather_files: Available weather files for each episode.
         :param _weather_path: EPW path origin for apply weather to simulation in current episode.
-        :param _ddy_path: DDY path origin for get DesignDays and weather Location
-        :param _idd: IDD opyplus object to set up Epm
-        :param _variables: Output:Variable(s) information about building model
-        :param _meters: Output:Meter(s) information about building model
-        :param _actuators: Actuators information about building model
-        :param experiment_path: Path for Sinergym experiment output
-        :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None)
-        :param max_ep_store: Number of episodes directories will be stored in experiment_path
-        :param config: Dict config with extra configuration which is required to modify building model (may be None)
-        :param building: Building model (Dictionary extracted from JSON)
-        :param ddy_model: opyplus Epm object with DDY model
-        :param weather_data: opyplus WeatherData object with EPW data
-        :param zone_names: List of the zone names available in the building
+        :param _ddy_path: DDY path origin for get DesignDays and weather Location.
+        :param _idd: IDD opyplus object to set up Epm.
+        :param _variables: Output:Variable(s) information about building model.
+        :param _meters: Output:Meter(s) information about building model.
+        :param _actuators: Actuators information about building model.
+        :param experiment_path: Path for Sinergym experiment output.
+        :param episode_path: Path for Sinergym specific episode (before first simulator reset this param is None).
+        :param max_ep_store: Number of episodes directories will be stored in experiment_path.
+        :param config: Dict config with extra configuration which is required to modify building model (may be None).
+        :param building: Building model (Dictionary extracted from JSON).
+        :param ddy_model: opyplus Epm object with DDY model.
+        :param weather_data: opyplus WeatherData object with EPW data.
+        :param zone_names: List of the zone names available in the building.
         :param schedulers: Information in Dict format about all building schedulers.
         :param runperiod: Information in Dict format about runperiod that determine an episode.
         :param episode_length: Time in seconds that an episode has.
@@ -56,7 +56,18 @@ class ModelJSON(object):
             actuators: Dict[str, Tuple[str, str, str]],
             max_ep_store: int,
             extra_config: Dict[str, Any]):
+        """Constructor. Variables, meters and actuators are required to update building model scheme.
 
+        Args:
+            env_name (str): Name of the environment, required for Sinergym output management.
+            json_file (str): Json file name, path is calculated by the constructor.
+            weather_files (List[str]): List of the weather file names, one of them will be select randomly, path will be calculated by the constructor.
+            variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key.
+            meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
+            actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name.
+            max_ep_store (int): Number of episodes directories will be stored in experiment_path.
+            extra_config (Dict[str, Any]): Dict config with extra configuration which is required to modify building model (may be None).
+        """
         self.pkg_data_path = PKG_DATA_PATH
         # ----------------------- Transform filenames in paths ----------------------- #
 

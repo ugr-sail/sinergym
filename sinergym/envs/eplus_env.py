@@ -55,9 +55,9 @@ class EplusEnv(gym.Env):
             building_file (str): Name of the JSON file with the building definition.
             weather_files (Union[str,List[str]]): Name of the EPW file for weather conditions. It can be specified a list of weathers files in order to sample a weather in each episode randomly.
             action_space (Union[gym.spaces.Box, gym.spaces.Discrete], optional): Gym Action Space definition. Defaults to an empty action_space (no control).
-            time_variables (List[str]): EnergyPlus time variables we want to observe. The name of the variable must match with the name of the E+ Data Transfer API method name. Defaults to empty list
-            variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output Variables. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.
-            meters (Dict[str, str]): Specification for EnergyPlus Output Meters. The key name is custom, then value is the original EnergyPlus Meters name.
+            time_variables (List[str]): EnergyPlus time variables we want to observe. The name of the variable must match with the name of the E+ Data Transfer API method name. Defaults to empty list.
+            variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.
+            meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
             actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. Defaults to empty dict.
             action_mapping (Dict[int, Tuple[float, ...]], optional): Action mapping list for discrete actions spaces only. Defaults to empty list.
             flag_normalization (bool): Flag indicating if action space must be normalized to [-1,1]. This flag only take effect in continuous environments. Default to true.
@@ -346,7 +346,7 @@ class EplusEnv(gym.Env):
                            List[Any],
                            Tuple[Any]]
              ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
-        """Sends action to the environment
+        """Sends action to the environment.
 
         Args:
             action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
@@ -457,7 +457,7 @@ class EplusEnv(gym.Env):
     # ---------------------------------------------------------------------------- #
 
     def _get_action(self, action: Any) -> List[float]:
-        """Transform the action to a correct format to send it to the simulator.
+        """Transform the action to a correct format to send it to the simulator if it is necessary.
 
         Args:
             action (Any): Action to be transformed
@@ -526,7 +526,7 @@ class EplusEnv(gym.Env):
                     self.flag_normalization, self.action_space))
         except AssertionError as err:
             self.logger.error(
-                'Only discrete environments can update the normalization flag.')
+                'Only continuous environments can update the normalization flag.')
 
     def _check_eplus_env(self) -> None:
         """This method checks that environment definition is correct and it has not inconsistencies.
