@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -69,12 +69,13 @@
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">16. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">17. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">18. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">20. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">21. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">16. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">17. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">18. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">19. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">21. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">22. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -85,7 +86,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sinergym</a>
       </nav>
@@ -106,7 +107,7 @@
            <div itemprop="articleBody">
              
   <section id="wrappers">
-<h1><span class="section-number">8. </span>Wrappers<a class="headerlink" href="#wrappers" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">8. </span>Wrappers<a class="headerlink" href="#wrappers" title="Link to this heading"></a></h1>
 <p><em>Sinergym</em> has several <strong>wrappers</strong> in order to add some functionality in the environment
 that it doesn’t have by default. The code can be found in
 <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/wrappers.py">sinergym/sinergym/utils/wrappers.py</a>.
@@ -116,7 +117,7 @@ You can implement your own wrappers inheriting from <em>gym.Wrapper</em> or some
 one for each objective) instead of a traditional scalar value. See <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/301">#301</a>.</p></li>
 <li><p><strong>PreviousObservationWrapper</strong>: Wrapper to add observation values from previous timestep to current environment observation.
 It is possible to select the variables you want to track its previous observation values.</p></li>
-<li><p><strong>DatetimeWrapper</strong>: Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
+<li><p><strong>DatetimeWrapper</strong>: Wrapper to substitute <code class="docutils literal notranslate"><span class="pre">day_of_month</span></code> value by <code class="docutils literal notranslate"><span class="pre">is_weekend</span></code> flag, and <code class="docutils literal notranslate"><span class="pre">hour</span></code> and <code class="docutils literal notranslate"><span class="pre">month</span></code> by sin and cos values.
 Observation space is updated automatically.</p></li>
 <li><p><strong>DiscreteIncrementalWrapper</strong>: A wrapper for an incremental setpoint action space environment. This wrapper
 will update a <em>continuous</em> environment, converting it in a <em>discrete</em> environment with an action mapping and action space
@@ -125,12 +126,21 @@ Then, the action is the current setpoints values with the increase instead of th
 environment in the next layer.</p></li>
 </ul>
 <a class="reference internal image-reference" href="../_images/incremental_wrapper.png"><img alt="Incremental wrapper graph." class="align-center" src="../_images/incremental_wrapper.png" style="width: 497.0px; height: 281.0px;" /></a>
-<ul class="simple">
+<ul>
 <li><p><strong>NormalizeObservation</strong>: It is used to transform observation received from simulator in values between 0 and 1.
 It is possible to define a list of variables you want to normalize, if you don’t define this list, all environment
 variables will be included. In order to normalize values, it is necessary a dictionary in order to store max and min values.
 Then, if a environment variable is not included in the dictionary specified in wrapper constructor, then the normalization
-for that variable will be skipped.</p></li>
+for that variable will be skipped.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In case a new observation variable is added to the default ones for an environment, care must be
+taken in case observation normalization is to be done. This is because you have to update
+the dictionary of ranges of values available in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py">constants.py</a> as discussed in
+issue <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/249">#249</a>. You can use the <code class="docutils literal notranslate"><span class="pre">range_getter</span></code> function of <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py">common.py</a> to get these
+ranges automatically from a experiment output folder.</p>
+</div>
+</li>
 <li><p><strong>LoggerWrapper</strong>: Wrapper for logging all interactions between agent and environment. Logger class can be selected
 in the constructor if other type of logging is required. For more information about <em>Sinergym</em> Logger visit <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>.</p></li>
 <li><p><strong>MultiObsWrapper</strong>: Stack observation received in a history queue (size can be customized).</p></li>
@@ -139,16 +149,10 @@ in the constructor if other type of logging is required. For more information ab
 <p class="admonition-title">Note</p>
 <p>For examples about how to use these wrappers, visit <a class="reference internal" href="notebooks/wrappers_examples.html#Wrappers-example"><span class="std std-ref">Wrappers example</span></a>.</p>
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
 <p>The <strong>order of wrappers</strong> if you are going to use several at the same time is really important.
 The correct order is the same than the list shown above or subsets of that order.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>If you add new observation variables to the environment than the default ones, you have
-to update the <strong>value range dictionary</strong> in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py">sinergym/sinergym/utils/constants.py</a>
-so that normalization can be applied correctly. Otherwise, the variable normalization will be skipped.</p>
 </div>
 </section>
 
@@ -215,6 +219,7 @@ so that normalization can be applied correctly. Otherwise, the variable normaliz
             <dd><a href="../../v2.4.1/pages/wrappers.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/wrappers.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/wrappers.html">v2.5.1</a></dd>
+            <dd><a href="../../v2.5.2/pages/wrappers.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -225,7 +230,21 @@ so that normalization can be applied correctly. Otherwise, the variable normaliz
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

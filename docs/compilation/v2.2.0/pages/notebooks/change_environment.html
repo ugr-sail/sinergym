@@ -14,11 +14,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -33,7 +33,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -98,7 +98,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">sinergym</a>
       </nav>
@@ -119,7 +119,7 @@
            <div itemprop="articleBody">
              
   <section id="Changing-an-environment-registered-in-Sinergym">
-<h1><span class="section-number">16. </span>Changing an environment registered in Sinergym<a class="headerlink" href="#Changing-an-environment-registered-in-Sinergym" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">16. </span>Changing an environment registered in Sinergym<a class="headerlink" href="#Changing-an-environment-registered-in-Sinergym" title="Link to this heading"></a></h1>
 <p>As discussed above, Sinergym has a list of available environments that we can call with <code class="docutils literal notranslate"><span class="pre">gym.make(&lt;environment_id&gt;)</span></code> as long as the sinergym package is imported into the python script.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -168,7 +168,7 @@
 <p>Another option (recommended) is to start from one of our environments and change the components you want. You can combine components you want to change obviously.</p>
 <p>The way to do that is to add in the <code class="docutils literal notranslate"><span class="pre">gym.make(&lt;environment_id&gt;)</span></code> those parameters of the constructor of the <em>Sinergym</em> environment we want to change. Let’s see what things we can change starting from any environment:</p>
 <section id="Adding-a-new-reward">
-<h2><span class="section-number">16.1. </span>Adding a new reward<a class="headerlink" href="#Adding-a-new-reward" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">16.1. </span>Adding a new reward<a class="headerlink" href="#Adding-a-new-reward" title="Link to this heading"></a></h2>
 <p>As mentioned above, simply add the appropriate parameters to <code class="docutils literal notranslate"><span class="pre">gym.make()</span></code> after specifying the environment ID.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -209,7 +209,7 @@
 <p>You have to specify the <strong>reward</strong> class you are going to use in the environment. A reward function class has several parameters that can be specified by user like temperature variables, weights, etc. Depending on the reward function you are using. In order to be able to define it, we have <strong>reward_kwargs</strong> parameter. See <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/html/pages/rewards.html">reward documentation</a> for more information about reward classes and how to create a new one.</p>
 </section>
 <section id="Adding-other-new-components-to-the-environment">
-<h2><span class="section-number">16.2. </span>Adding other new components to the environment<a class="headerlink" href="#Adding-other-new-components-to-the-environment" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">16.2. </span>Adding other new components to the environment<a class="headerlink" href="#Adding-other-new-components-to-the-environment" title="Link to this heading"></a></h2>
 <p>In the same way that we can change the default reward function, as we have done in the second example, it is possible to substitute other default values of the environment ID.</p>
 <p>You can change the weather file, the number of timesteps an action repeats (default 1), the last n episodes you want to be stored in the Sinergym output folder (default 10), the name of the environment or the variability in stochastic environments:</p>
 <div class="nbinput docutils container">
@@ -248,7 +248,7 @@
 </div>
 </section>
 <section id="Changing-observation-and-action-spaces">
-<h2><span class="section-number">16.3. </span>Changing observation and action spaces<a class="headerlink" href="#Changing-observation-and-action-spaces" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">16.3. </span>Changing observation and action spaces<a class="headerlink" href="#Changing-observation-and-action-spaces" title="Link to this heading"></a></h2>
 <p>By default, the IDs of the predefined environments in <em>Sinergym</em> already have a space of actions and observations set.</p>
 <p>However, it can be overwritten by a new definition of them. On the one hand, we will have to define the name of the <strong>variables</strong>, and on the other hand, the definition of the <strong>spaces</strong> (and an <strong>action mapping</strong> if it is a discrete environment).</p>
 <div class="nbinput docutils container">
@@ -365,7 +365,7 @@ Episode  0 Mean reward:  -0.3657537644182542 Cumulative reward:  -12816.01190521
 </ul>
 </section>
 <section id="Getting-information-about-building-model-with-Sinergym">
-<h2><span class="section-number">16.4. </span>Getting information about building model with Sinergym<a class="headerlink" href="#Getting-information-about-building-model-with-Sinergym" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">16.4. </span>Getting information about building model with Sinergym<a class="headerlink" href="#Getting-information-about-building-model-with-Sinergym" title="Link to this heading"></a></h2>
 <p>Sinergym can get the schedulers information automatically, in a Python dictionary and/or exporting that information in a excel file. This information lets you know what things can be controlled by an external interface in the building. The way to do it is very simple, just load the environment and call a method:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -643,7 +643,7 @@ Episode  0 Mean reward:  -0.3657537644182542 Cumulative reward:  -12816.01190521
 </div>
 </section>
 <section id="Updating-the-action-definition-of-the-environment">
-<h2><span class="section-number">16.5. </span>Updating the action definition of the environment<a class="headerlink" href="#Updating-the-action-definition-of-the-environment" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">16.5. </span>Updating the action definition of the environment<a class="headerlink" href="#Updating-the-action-definition-of-the-environment" title="Link to this heading"></a></h2>
 <p>As we have explained in the action and observation space example, one of the problems that can arise when modifying the space of actions and observations is that the <em>IDF</em> is not adapted to the new space of actions established.</p>
 <p>For this purpose, the <em>Sinergym</em> <strong>action definition</strong> is available. With a dictionary we can build a definition of what scheduler we want to be replaced in the building by the external control.</p>
 <p>For this example, we are going to add lights control to the external interface for the agent. Then, is not only necessary to update that <strong>action definition</strong>, the list of the action variables and space is necessary to be updated too.</p>
@@ -760,7 +760,7 @@ Episode  0 Mean reward:  -0.4456792859417381 Cumulative reward:  -15616.60217939
 <p>Previously, it is recommended to know what controllers are available in the specific building model, see the previous example of this notebook. For more information about the format of the action definition dictionaries, visit the section called <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/html/pages/environments.html#action-definition">action definition</a>.</p>
 </section>
 <section id="Adding-more-extra-configuration">
-<h2><span class="section-number">16.6. </span>Adding more extra configuration<a class="headerlink" href="#Adding-more-extra-configuration" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">16.6. </span>Adding more extra configuration<a class="headerlink" href="#Adding-more-extra-configuration" title="Link to this heading"></a></h2>
 <p>You can even add a dictionary with extra parameters that update IDF with some new context concerned with simulation directly.</p>
 <p>This new IDF version, which also adapts to the new weather you put in, is saved in the Sinergym output folder, leaving the original intact:</p>
 <div class="nbinput docutils container">
@@ -866,6 +866,7 @@ Episode  0 Mean reward:  -0.4456792859417381 Cumulative reward:  -15616.60217939
             <dd><a href="../../../v2.4.1/index.html">v2.4.1</a></dd>
             <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
             <dd><a href="../../../v2.5.1/index.html">v2.5.1</a></dd>
+            <dd><a href="../../../v2.5.2/index.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -876,7 +877,21 @@ Episode  0 Mean reward:  -0.4456792859417381 Cumulative reward:  -15616.60217939
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

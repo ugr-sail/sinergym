@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -108,7 +108,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sinergym</a>
       </nav>
@@ -129,7 +129,7 @@
            <div itemprop="articleBody">
              
   <section id="sinergym-with-google-cloud">
-<h1><span class="section-number">12. </span>Sinergym with Google Cloud<a class="headerlink" href="#sinergym-with-google-cloud" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">12. </span>Sinergym with Google Cloud<a class="headerlink" href="#sinergym-with-google-cloud" title="Link to this heading"></a></h1>
 <p>In this project, we have defined some functionality based in gcloud API
 python in <code class="docutils literal notranslate"><span class="pre">sinergym/utils/gcloud.py</span></code>. Our team aim to configure a Google
 Cloud account and combine with <em>Sinergym</em> easily.</p>
@@ -143,9 +143,9 @@ instance from Google Cloud Platform if experiments has been configured
 with this option.</p>
 <p>Let’s see a detailed explanation above.</p>
 <section id="preparing-google-cloud">
-<h2><span class="section-number">12.1. </span>Preparing Google Cloud<a class="headerlink" href="#preparing-google-cloud" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">12.1. </span>Preparing Google Cloud<a class="headerlink" href="#preparing-google-cloud" title="Link to this heading"></a></h2>
 <section id="first-steps-configuration">
-<h3><span class="section-number">12.1.1. </span>1. First steps (configuration)<a class="headerlink" href="#first-steps-configuration" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">12.1.1. </span>1. First steps (configuration)<a class="headerlink" href="#first-steps-configuration" title="Link to this heading"></a></h3>
 <p>Firstly, it is necessary that you have a Google Cloud account set up and
 SDK configured (auth, invoicing, project ID, etc). If you don’t have this,
 it is recommended to check <a class="reference external" href="https://cloud.google.com/sdk/docs/install">their documentation</a>.
@@ -212,7 +212,7 @@ the future (for example, <em>Tensorboard</em>). Please, execute the next in your
 </div>
 </section>
 <section id="use-our-container-in-google-cloud-platform">
-<h3><span class="section-number">12.1.2. </span>2. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">12.1.2. </span>2. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Link to this heading"></a></h3>
 <p>Our <em>Sinergym</em> container is uploaded in <strong>Container Registry</strong> as a public one
 currently. You can use it <strong>locally</strong>:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>eu.gcr.io/sinergym/sinergym:latest
@@ -248,7 +248,7 @@ This derive in a silence error for Google Cloud Build
 </div>
 </section>
 <section id="use-your-own-container">
-<h3><span class="section-number">12.1.3. </span>3. Use your own container<a class="headerlink" href="#use-your-own-container" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">12.1.3. </span>3. Use your own container<a class="headerlink" href="#use-your-own-container" title="Link to this heading"></a></h3>
 <p>Suppose you have this repository forked and you want to upload <strong>your own
 container on Google Cloud</strong> and to use it. You can use <strong>cloudbuild.yaml</strong>
 with our <strong>Dockerfile</strong> for this purpose:</p>
@@ -346,7 +346,7 @@ it’s a predetermined variable by Google Cloud. When build begins
 </div>
 </section>
 <section id="create-your-vm-or-mig">
-<h3><span class="section-number">12.1.4. </span>4. Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">12.1.4. </span>4. Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Link to this heading"></a></h3>
 <p>To create a <strong>VM</strong> that uses this container, here there is an example:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>create-with-container<span class="w"> </span>sinergym<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--container-image<span class="w"> </span>eu.gcr.io/sinergym/sinergym<span class="w"> </span><span class="se">\</span>
@@ -411,7 +411,7 @@ we recommend you check your quotes
 </div>
 </section>
 <section id="initiate-your-vm">
-<h3><span class="section-number">12.1.5. </span>5. Initiate your VM<a class="headerlink" href="#initiate-your-vm" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">12.1.5. </span>5. Initiate your VM<a class="headerlink" href="#initiate-your-vm" title="Link to this heading"></a></h3>
 <p>Your virtual machine is ready! To connect you can use ssh
 (see <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh">gcloud-ssh</a>):</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>&lt;machine-name&gt;
@@ -430,7 +430,7 @@ you can enter in remote container with <em>gcloud ssh</em> and execute
 </section>
 </section>
 <section id="executing-experiments-in-remote-containers">
-<h2><span class="section-number">12.2. </span>Executing experiments in remote containers<a class="headerlink" href="#executing-experiments-in-remote-containers" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">12.2. </span>Executing experiments in remote containers<a class="headerlink" href="#executing-experiments-in-remote-containers" title="Link to this heading"></a></h2>
 <p>This script, called <em>DRL_battery.py</em>, will be allocated in every remote
 container and it is used to execute experiments and combine it with
 <strong>Google Cloud Bucket</strong>, <strong>Mlflow Artifacts</strong>, <strong>auto-remove</strong>, etc:</p>
@@ -1084,7 +1084,7 @@ outputs in Mlflow run artifact.</p></li>
 </ol>
 </div></blockquote>
 <section id="containers-permission-to-bucket-storage-output">
-<h3><span class="section-number">12.2.1. </span>Containers permission to bucket storage output<a class="headerlink" href="#containers-permission-to-bucket-storage-output" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">12.2.1. </span>Containers permission to bucket storage output<a class="headerlink" href="#containers-permission-to-bucket-storage-output" title="Link to this heading"></a></h3>
 <p>As you see in sinergym template explained in <a class="reference internal" href="#create-your-vm-or-mig"><span class="std std-ref">4. Create your VM or MIG</span></a>,
 it is specified <code class="docutils literal notranslate"><span class="pre">--scope</span></code>, <code class="docutils literal notranslate"><span class="pre">--service-account</span></code> and <code class="docutils literal notranslate"><span class="pre">--container-env</span></code>.
 This aim to <em>remote_store</em> option in <em>DRL_battery.py</em> works correctly.
@@ -1111,7 +1111,7 @@ in order to gcloud SDK knows that it has to use that token to authenticate.</p>
 </section>
 </section>
 <section id="load-a-trained-model">
-<h2><span class="section-number">12.3. </span>Load a trained model<a class="headerlink" href="#load-a-trained-model" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">12.3. </span>Load a trained model<a class="headerlink" href="#load-a-trained-model" title="Link to this heading"></a></h2>
 <p>For this purpose, we have a script called <em>load_agent.py</em> which can be used both
 on a remote machine and locally on our computer, just like <em>DRL_battery.py</em>.</p>
 <p>So, what this script does is to use the path that we pass as a parameter where our
@@ -1147,7 +1147,7 @@ states during the agreed episodes. The information is collected and sent to a cl
 if it has been specified, otherwise it is stored in local memory.</p>
 </section>
 <section id="remote-tensorboard-log">
-<h2><span class="section-number">12.4. </span>Remote Tensorboard log<a class="headerlink" href="#remote-tensorboard-log" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">12.4. </span>Remote Tensorboard log<a class="headerlink" href="#remote-tensorboard-log" title="Link to this heading"></a></h2>
 <p>In <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> parameter we have to specify a <strong>local path</strong> or a <strong>Bucket path</strong>.</p>
 <p>If we specify a <strong>local path</strong>, tensorboard logs will be stored in remote containers memory.
 If you have specified <code class="docutils literal notranslate"><span class="pre">--remote_store</span></code> or <code class="docutils literal notranslate"><span class="pre">--mlflow_store</span></code>, this logs will be sent to
@@ -1177,7 +1177,7 @@ installation hasn’t got access your google account. Try
 <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login">gcloud auth application-default login</a> command.</p>
 </div>
 <section id="visualize-remote-tensorboard-log-in-real-time">
-<h3><span class="section-number">12.4.1. </span>Visualize remote Tensorboard log in real-time<a class="headerlink" href="#visualize-remote-tensorboard-log-in-real-time" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">12.4.1. </span>Visualize remote Tensorboard log in real-time<a class="headerlink" href="#visualize-remote-tensorboard-log-in-real-time" title="Link to this heading"></a></h3>
 <p>You have two options:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -1194,7 +1194,7 @@ and shut down local service when we finish.</p>
 </section>
 </section>
 <section id="mlflow-tracking-server-set-up">
-<h2><span class="section-number">12.5. </span>Mlflow tracking server set up<a class="headerlink" href="#mlflow-tracking-server-set-up" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">12.5. </span>Mlflow tracking server set up<a class="headerlink" href="#mlflow-tracking-server-set-up" title="Link to this heading"></a></h2>
 <p>Mlflow tracking server can be set up into your google account in order to organize
 your own experiments (<a class="reference internal" href="deep-reinforcement-learning.html#mlflow"><span class="std std-ref">Mlflow</span></a>). You can separate <strong>back-end</strong> (SQL database)
 from tracking server.
@@ -1330,7 +1330,7 @@ as artifacts. These artifacts will be stored in the same bucket where is allocat
 </div>
 </section>
 <section id="google-cloud-alerts">
-<h2><span class="section-number">12.6. </span>Google Cloud Alerts<a class="headerlink" href="#google-cloud-alerts" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">12.6. </span>Google Cloud Alerts<a class="headerlink" href="#google-cloud-alerts" title="Link to this heading"></a></h2>
 <p><strong>Google Cloud Platform</strong> include functionality in order to trigger some events and generate
 alerts in consequence. Then, a trigger has been created in our gcloud project which aim to
 advertise when an experiment has finished.
@@ -1403,6 +1403,7 @@ If you want to do the same, please, check Google Cloud Alerts documentation
             <dd><a href="../../v2.4.1/pages/gcloudAPI.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/gcloudAPI.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/gcloudAPI.html">v2.5.1</a></dd>
+            <dd><a href="../../v2.5.2/pages/gcloudAPI.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -1413,7 +1414,21 @@ If you want to do the same, please, check Google Cloud Alerts documentation
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

@@ -13,11 +13,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -69,12 +69,13 @@
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">16. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">17. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">18. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">20. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">21. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/getting_env_information.html">16. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">17. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">18. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">19. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">21. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">22. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -106,7 +107,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">sinergym</a>
       </nav>
@@ -130,29 +131,47 @@
            <div itemprop="articleBody">
              
   <section id="sinergym-utils-evaluation-evaluate-policy">
-<h1>sinergym.utils.evaluation.evaluate_policy<a class="headerlink" href="#sinergym-utils-evaluation-evaluate-policy" title="Permalink to this heading"></a></h1>
+<h1>sinergym.utils.evaluation.evaluate_policy<a class="headerlink" href="#sinergym-utils-evaluation-evaluate-policy" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="sinergym.utils.evaluation.evaluate_policy">
-<span class="sig-prename descclassname"><span class="pre">sinergym.utils.evaluation.</span></span><span class="sig-name descname"><span class="pre">evaluate_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">stable_baselines3.common.base_class.BaseAlgorithm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Env</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">stable_baselines3.common.vec_env.VecEnv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_eval_episodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#sinergym.utils.evaluation.evaluate_policy" title="Permalink to this definition"></a></dt>
-<dd><p>Runs policy for n_eval_episodes episodes and returns average reward. This is made to work only with one env.
-.. note:: If environment has not been wrapped with Monitor wrapper, reward and
-episode lengths are counted as it appears with env.step calls. If
+<span class="sig-prename descclassname"><span class="pre">sinergym.utils.evaluation.</span></span><span class="sig-name descname"><span class="pre">evaluate_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">stable_baselines3.common.type_aliases.PolicyPredictor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Env</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">stable_baselines3.common.vec_env.VecEnv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_eval_episodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_episode_rewards</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.evaluation.evaluate_policy" title="Link to this definition"></a></dt>
+<dd><p>Runs policy for <code class="docutils literal notranslate"><span class="pre">n_eval_episodes</span></code> episodes and returns average reward and other Sinergym metrics.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If environment has not been wrapped with <code class="docutils literal notranslate"><span class="pre">Monitor</span></code> wrapper, reward and
+episode lengths are counted as it appears with <code class="docutils literal notranslate"><span class="pre">env.step</span></code> calls. If
 the environment contains wrappers that modify rewards or episode lengths
 (e.g. reward scaling, early episode reset), these will affect the evaluation
-results as well. You can avoid this by wrapping environment with Monitor
-wrapper before anything else.
-:param model: The RL agent you want to evaluate.
-:param env: The gym environment. In the case of a VecEnv this must contain only one environment.
-:param n_eval_episodes: Number of episode to evaluate the agent
-:param deterministic: Whether to use deterministic or stochastic actions
-:param render: Whether to render the environment or not
-:param callback: callback function to do additional checks, called after each step. Gets locals() and globals() passed as parameters.
-:param reward_threshold: Minimum expected reward per episode, this will raise an error if the performance is not met
-:param return_episode_rewards: If True, a list of rewards and episode lengths per episode will be returned instead of the mean.
-:return: Mean reward per episode, std of reward per episode.
-Returns ([float], [int]) when return_episode_rewards is True, first
+results as well. You can avoid this by wrapping environment with <code class="docutils literal notranslate"><span class="pre">Monitor</span></code>
+wrapper before anything else.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – The RL agent you want to evaluate. This can be any object
+that implements a <cite>predict</cite> method, such as an RL algorithm (<code class="docutils literal notranslate"><span class="pre">BaseAlgorithm</span></code>)
+or policy (<code class="docutils literal notranslate"><span class="pre">BasePolicy</span></code>).</p></li>
+<li><p><strong>env</strong> – The gym environment or <code class="docutils literal notranslate"><span class="pre">VecEnv</span></code> environment.</p></li>
+<li><p><strong>n_eval_episodes</strong> – Number of episode to evaluate the agent</p></li>
+<li><p><strong>deterministic</strong> – Whether to use deterministic or stochastic actions</p></li>
+<li><p><strong>render</strong> – Whether to render the environment or not</p></li>
+<li><p><strong>callback</strong> – callback function to do additional checks,
+called after each step. Gets locals() and globals() passed as parameters.</p></li>
+<li><p><strong>reward_threshold</strong> – Minimum expected reward per episode,
+this will raise an error if the performance is not met</p></li>
+<li><p><strong>return_episode_rewards</strong> – If True, a list of rewards and episode lengths
+per episode will be returned instead of the mean.</p></li>
+<li><p><strong>warn</strong> – If True (default), warns user about lack of a Monitor wrapper in the
+evaluation environment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mean reward per episode, std of reward per episode.
+Returns ([float], [int]) when <code class="docutils literal notranslate"><span class="pre">return_episode_rewards</span></code> is True, first
 list containing per-episode rewards and second containing per-episode lengths
 (in number of steps).</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -220,6 +239,7 @@ list containing per-episode rewards and second containing per-episode lengths
             <dd><a href="../../../v2.4.1/pages/modules/sinergym.utils.evaluation.evaluate_policy.html">v2.4.1</a></dd>
             <dd><a href="../../../v2.5.0/pages/modules/sinergym.utils.evaluation.evaluate_policy.html">v2.5.0</a></dd>
             <dd><a href="../../../v2.5.1/pages/modules/sinergym.utils.evaluation.evaluate_policy.html">v2.5.1</a></dd>
+            <dd><a href="../../../v2.5.2/pages/modules/sinergym.utils.evaluation.evaluate_policy.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -230,7 +250,21 @@ list containing per-episode rewards and second containing per-episode lengths
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

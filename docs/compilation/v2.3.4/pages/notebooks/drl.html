@@ -14,11 +14,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -33,7 +33,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -92,7 +92,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">sinergym</a>
       </nav>
@@ -113,10 +113,10 @@
            <div itemprop="articleBody">
              
   <section id="DRL-usage-example">
-<h1><span class="section-number">21. </span>DRL usage example<a class="headerlink" href="#DRL-usage-example" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">21. </span>DRL usage example<a class="headerlink" href="#DRL-usage-example" title="Link to this heading"></a></h1>
 <p>In this notebook example, Stable Baselines 3 has been used to train and to load an agent. However, Sinergym is completely agnostic to any DRL algorithm (although there are custom callbacks for SB3 specifically) and can be used with any DRL library that works with gymnasium environments.</p>
 <section id="Training-a-model">
-<h2><span class="section-number">21.1. </span>Training a model<a class="headerlink" href="#Training-a-model" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">21.1. </span>Training a model<a class="headerlink" href="#Training-a-model" title="Link to this heading"></a></h2>
 <p>We are going to rely on the script available in the repository root called <code class="docutils literal notranslate"><span class="pre">DRL_battery.py</span></code>. This script applies all the possibilities that Sinergym has to work with deep reinforcement learning algorithms and set parameters to everything so that we can define the training options from the execution of the script easily by a JSON file.</p>
 <p>For more information about how run <code class="docutils literal notranslate"><span class="pre">DRL_battery.py</span></code>, please, see <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#train-a-model">Train a model</a>.</p>
 <div class="nbinput nblast docutils container">
@@ -776,7 +776,7 @@ Find logs at: <code>./wandb/run-20230405_145126-gxs4rau3/logs</code></div>
 <p><img alt="wandb_training_charts" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_training_charts.png?raw=true" /></p>
 </section>
 <section id="Loading-a-model">
-<h2><span class="section-number">21.2. </span>Loading a model<a class="headerlink" href="#Loading-a-model" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">21.2. </span>Loading a model<a class="headerlink" href="#Loading-a-model" title="Link to this heading"></a></h2>
 <p>We are going to rely on the script available in the repository root called <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code>. This script applies all the possibilities that Sinergym has to work with deep reinforcement learning models loaded and set parameters to everything so that we can define the load options from the execution of the script easily by a JSON file.</p>
 <p>For more information about how run <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code>, please, see <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#load-a-trained-model">Load a trained model</a>.</p>
 <p>First we define the Sinergym environment ID where we want to check the loaded agent and the name of the evaluation experiment.</p>
@@ -1156,6 +1156,7 @@ Find logs at: <code>./wandb/run-20230405_150935-2wfphha2/logs</code></div>
             <dd><a href="../../../v2.4.1/index.html">v2.4.1</a></dd>
             <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
             <dd><a href="../../../v2.5.1/index.html">v2.5.1</a></dd>
+            <dd><a href="../../../v2.5.2/index.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -1166,7 +1167,21 @@ Find logs at: <code>./wandb/run-20230405_150935-2wfphha2/logs</code></div>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

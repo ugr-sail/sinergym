@@ -2,9 +2,8 @@
 Installation
 ############
 
-Sinergym has a set of dependencies (such as the simulator), which have 
-to be covered depending on the version. Below it is a summary table showing 
-the versions supported by Sinergym throughout its releases:
+*Sinergym* has a number of dependencies, which have to be covered depending on the version.
+Below is a summary table with the versions supported by *Sinergym* throughout its releases:
 
 +----------------------+--------------------+--------------------+------------------------+---------------------------+
 | **Sinergym version** | **Ubuntu version** | **Python version** | **EnergyPlus version** | **Building model file**   |
@@ -22,9 +21,9 @@ the versions supported by Sinergym throughout its releases:
 | **2.5.0**            | 22.04 LTS          | 3.10.6             | **23.1.0**             | epJSON                    |
 +----------------------+--------------------+--------------------+------------------------+---------------------------+
 
-In any case, it is recommended to always use the latest version of Sinergym 
-supported by the container to avoid having to go into the installation details. 
-In case you want to perform a manual installation on your computer, documentation 
+In any case, it is recommended to always use the latest version of *Sinergym* 
+supported by the container to avoid having to go into the details of the installation. 
+In case you wish to perform a manual installation on your computer, documentation 
 is also provided in the following sections.
 
 ****************
@@ -34,8 +33,8 @@ Docker container
 We include a **Dockerfile** for installing all dependencies and setting
 up the image for running *Sinergym*. 
 
-By default, *Dockerfile* will do ``pip install -e .[extras]``, if you want 
-to install a different setup, you will have to do in **root repository**:
+By default, *Dockerfile* will do ``pip install -e .[extras]``. However, if you want 
+to install a different setup, you will have to do in **root repository** the next:
 
 .. code:: sh
 
@@ -116,19 +115,13 @@ install it for Linux (only **Ubuntu** is supported by us). Choose any location
 to install the software. Once installed, a folder called
 ``Energyplus-23-1-0`` should appear in the selected location.
 
-Install BCVTB software
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Include Energyplus Python API in python path
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Follow the instructions
-`here <https://simulationresearch.lbl.gov/bcvtb/Download>`__ for
-installing *BCVTB software*.
-
-Set environment variables
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Two environment variables must be set: ``EPLUS_PATH`` and
-``BCVTB_PATH``, with the locations where *EnergyPlus* and *BCVTB* are
-installed respectively.
+*Sinergym* will use the *Energyplus* Python API as backend. The modules of this 
+API are located in the *Energyplus* folder, installed in the previous step. 
+This installation path must be added to the ``PYTHONPATH`` environment variable, 
+so that the interpreter can access these modules.
 
 ***********************
 About Sinergym package
@@ -161,7 +154,7 @@ we select all optional libraries, for example:
 In order to check all our tag list, visit `setup.py <https://github.com/ugr-sail/sinergym/blob/main/setup.py>`__ 
 in *Sinergym* root repository. In any case, they are not a requirement of the package.
 
-You can also install from `oficial pypi repository <https://pypi.org/project/sinergym/>`__ 
+You can also install from `official PyPi repository <https://pypi.org/project/sinergym/>`__ 
 with last stable version by default:
 
 .. code:: sh

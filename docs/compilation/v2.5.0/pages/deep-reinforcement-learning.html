@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -95,7 +95,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sinergym</a>
       </nav>
@@ -116,7 +116,7 @@
            <div itemprop="articleBody">
              
   <section id="deep-reinforcement-learning-integration">
-<h1><span class="section-number">11. </span>Deep Reinforcement Learning Integration<a class="headerlink" href="#deep-reinforcement-learning-integration" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">11. </span>Deep Reinforcement Learning Integration<a class="headerlink" href="#deep-reinforcement-learning-integration" title="Link to this heading"></a></h1>
 <p><em>Sinergym</em> integrates some facilities in order to use <strong>Deep Reinforcement Learning algorithms</strong>
 provided by <a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/">Stable Baselines 3</a>.
 Current algorithms checked by <em>Sinergym</em> are:</p>
@@ -171,7 +171,7 @@ Our callbacks inherit from Stable Baselines 3 and are available in
 <p><code class="docutils literal notranslate"><span class="pre">Type</span></code> column has been specified due to its importance about
 <em>Stable Baselines callback</em> functionality.</p>
 <section id="drl-callback-logger">
-<h2><span class="section-number">11.1. </span>DRL Callback Logger<a class="headerlink" href="#drl-callback-logger" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">11.1. </span>DRL Callback Logger<a class="headerlink" href="#drl-callback-logger" title="Link to this heading"></a></h2>
 <p>A callback allows to custom our own logger for DRL Sinergym executions. Our objective
 is to <strong>log all information about our custom environment</strong> specifically in real-time.
 Each algorithm has its own differences
@@ -212,7 +212,7 @@ of values steps by steps (see <code class="docutils literal notranslate"><span c
 </ul>
 </section>
 <section id="evaluation-callback">
-<h2><span class="section-number">11.2. </span>Evaluation Callback<a class="headerlink" href="#evaluation-callback" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">11.2. </span>Evaluation Callback<a class="headerlink" href="#evaluation-callback" title="Link to this heading"></a></h2>
 <p>A callback has also been refined for the evaluation of the model versions obtained during
 the training process with Sinergym, so that it stores the best model obtained (not the one resulting
 at the end of the training).</p>
@@ -230,7 +230,7 @@ On the other hand, it calculates comfort violation percentage in episodes too.
 Currently, only mean reward is taken into account to decide when a model is better.</p>
 </section>
 <section id="weights-and-biases-structure">
-<h2><span class="section-number">11.3. </span>Weights and Biases structure<a class="headerlink" href="#weights-and-biases-structure" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">11.3. </span>Weights and Biases structure<a class="headerlink" href="#weights-and-biases-structure" title="Link to this heading"></a></h2>
 <p>The main structure for <em>Sinergym</em> with <em>wandb</em> is:</p>
 <ul>
 <li><p><strong>action</strong>: This section has action values during training. When algorithm
@@ -279,10 +279,10 @@ to model learn method.</p>
 </div>
 </section>
 <section id="how-to-use">
-<h2><span class="section-number">11.4. </span>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">11.4. </span>How to use<a class="headerlink" href="#how-to-use" title="Link to this heading"></a></h2>
 <p>For more information about how to use it with cloud computing, visit <a class="reference internal" href="gcloudAPI.html#sinergym-with-google-cloud"><span class="std std-ref">Sinergym with Google Cloud</span></a></p>
 <section id="train-a-model">
-<h3><span class="section-number">11.4.1. </span>Train a model<a class="headerlink" href="#train-a-model" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">11.4.1. </span>Train a model<a class="headerlink" href="#train-a-model" title="Link to this heading"></a></h3>
 <p>You can try your own experiments and benefit from this functionality.
 <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery.py">sinergym/scripts/DRL_battery.py</a>
 is a script to help you to do it. You can use <code class="docutils literal notranslate"><span class="pre">DRL_battery.py</span></code> directly from
@@ -342,7 +342,7 @@ auto-delete has been specified.</p></li>
 </div></blockquote>
 </section>
 <section id="load-a-trained-model">
-<h3><span class="section-number">11.4.2. </span>Load a trained model<a class="headerlink" href="#load-a-trained-model" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">11.4.2. </span>Load a trained model<a class="headerlink" href="#load-a-trained-model" title="Link to this heading"></a></h3>
 <p>You can try load a previous trained model and evaluate or execute it.
 <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent.py">sinergym/scripts/load_agent.py</a>
 is a script to help you to do it. You can use <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code> directly from
@@ -435,6 +435,7 @@ algorithms is being planned for the future!</em></p>
             <dd><a href="../../v2.4.1/pages/deep-reinforcement-learning.html">v2.4.1</a></dd>
             <dd><a href="deep-reinforcement-learning.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/deep-reinforcement-learning.html">v2.5.1</a></dd>
+            <dd><a href="../../v2.5.2/pages/deep-reinforcement-learning.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -445,7 +446,21 @@ algorithms is being planned for the future!</em></p>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

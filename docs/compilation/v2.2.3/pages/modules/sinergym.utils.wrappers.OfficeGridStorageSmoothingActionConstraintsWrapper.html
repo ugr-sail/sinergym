@@ -13,11 +13,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -111,7 +111,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">sinergym</a>
       </nav>
@@ -135,13 +135,13 @@
            <div itemprop="articleBody">
              
   <section id="sinergym-utils-wrappers-officegridstoragesmoothingactionconstraintswrapper">
-<h1>sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper<a class="headerlink" href="#sinergym-utils-wrappers-officegridstoragesmoothingactionconstraintswrapper" title="Permalink to this heading"></a></h1>
+<h1>sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper<a class="headerlink" href="#sinergym-utils-wrappers-officegridstoragesmoothingactionconstraintswrapper" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">OfficeGridStorageSmoothingActionConstraintsWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">OfficeGridStorageSmoothingActionConstraintsWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper" title="Link to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.__init__" title="Link to this definition"></a></dt>
 <dd><p>Constructor for the action wrapper.</p>
 </dd></dl>
 
@@ -160,16 +160,19 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code>()</p></td>
 <td><p>Closes the wrapper and <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
+<td><p>Gets an attribute from the wrapper and lower environments if <cite>name</cite> doesn't exist in this object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
 <td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code>(*[, seed, options])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code>(*[, seed, options])</p></td>
 <td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code>(action)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code>(action)</p></td>
 <td><p>Runs the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> <code class="xref py py-meth docutils literal notranslate"><span class="pre">env.step()</span></code> using the modified <code class="docutils literal notranslate"><span class="pre">action</span></code> from <code class="xref py py-meth docutils literal notranslate"><span class="pre">self.action()</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
 <td><p>Generates a <cite>WrapperSpec</cite> for the wrappers.</p></td>
 </tr>
 </tbody>
@@ -205,7 +208,7 @@
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.action">
-<span class="sig-name descname"><span class="pre">action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">act</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.action" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">act</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.action" title="Link to this definition"></a></dt>
 <dd><dl class="simple">
 <dt>Due to Charge rate and Discharge rate can’t be more than 0.0 simultaneously (in OfficeGridStorageSmoothing.idf),</dt><dd><p>this wrapper clips one of the to 0.0 when both have a value upper than 0.0 (randomly).</p>
 </dd>
@@ -290,6 +293,7 @@
             <dd><a href="../../../v2.4.1/pages/modules/sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.html">v2.4.1</a></dd>
             <dd><a href="../../../v2.5.0/pages/modules/sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.html">v2.5.0</a></dd>
             <dd><a href="../../../v2.5.1/pages/modules/sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.html">v2.5.1</a></dd>
+            <dd><a href="../../../v2.5.2/pages/modules/sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -300,7 +304,21 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

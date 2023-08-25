@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -28,7 +28,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -67,12 +67,13 @@
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">16. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">17. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">18. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">20. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">21. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">16. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">17. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">18. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">19. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">21. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">22. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -83,7 +84,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sinergym</a>
       </nav>
@@ -103,9 +104,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <p>The goal of <em>sinergym</em> is to create an environment following <em>Gymnasium</em> interface for wrapping simulation engines (<em>EnergyPlus</em>) for building control using
+  <p>The goal of <em>Sinergym</em> is to create an environment following <em>Gymnasium</em> interface for wrapping simulation engines (<em>EnergyPlus</em>) for building control using
 <strong>deep reinforcement learning</strong>.</p>
-<a class="reference internal image-reference" href="../_images/general_blueprint.png"><img alt="Sinergym diagram" class="align-center" src="../_images/general_blueprint.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../_images/general_blueprint.png"><img alt="*Sinergym* diagram" class="align-center" src="../_images/general_blueprint.png" style="width: 800px;" /></a>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -156,52 +157,52 @@ info on how to report issues
 </div>
 <p>The main functionalities of <em>Sinergym</em> are the following:</p>
 <ul class="simple">
-<li><p><strong>Include different simulation engines</strong>. Communication between
+<li><p><strong>Compatibility with simulation engines</strong>. Communication between
 Python and <a class="reference external" href="https://energyplus.net/">EnergyPlus</a> is established
-using <a class="reference external" href="https://simulationresearch.lbl.gov/bcvtb/FrontPage">BCVTB</a> middleware.
-Since this tool allows for interacting with several simulation
-engines, more of them (e.g.
+using <a class="reference external" href="https://energyplus.readthedocs.io/en/latest/api.html">Energyplus Python API</a> as middleware.
+However, more of them (e.g.
 <a class="reference external" href="https://openmodelica.org/">OpenModelica</a>) could be included in
-the backend while maintaining the Gymnasium API.</p></li>
+the backend while maintaining the Gymnasium API in the future.</p></li>
 <li><p><strong>Benchmark environments</strong>. Similarly to <em>Atari</em> or <em>Mujoco</em> environments
 for RL community, we are designing a set of environments for
 benchmarking and testing deep RL algorithms. These environments may
 include different buildings, weathers, action/observation spaces, function rewards, etc.</p></li>
 <li><p><strong>Customizable environments</strong>. We aim to provide a
-package that allows to modify experimental settings in an easy
-manner. The user can create his own environments defining his own
-building model, weather, reward, observation/action space and variables, environment name, etc.
+package which allows modifying experimental settings in an easy
+manner. The user can create his own environments, combining his own
+building model, weather, reward, observation/action space, variables, actuators, environment name, etc.
 The user can also use these pre-configured environments available in <em>Sinergym</em>
 and change some aspect of it (for example, the weather) in such
 a way that he does not  have to make an entire definition of the
 environment and can start from one pre-designed by us.
 Some parameters directly associated with the simulator can be set as <strong>extra configuration</strong>
 as well, such as people occupant, time-steps per simulation hour, run-period, etc.</p></li>
-<li><p><strong>Customizable components</strong>: <em>Sinergym</em> is easily scalable by third parties.
+<li><p><strong>Customizable components</strong>. <em>Sinergym</em> is easily scalable by third parties.
 Following the structure of the implemented classes, new custom components
 can be created for new environments such as function rewards, wrappers,
 controllers, etc.</p></li>
-<li><p><strong>Automatic Building Model adaptation to user changes</strong>: Building models (<em>epJSON</em>) will be
-adapted to specification of each simulation by the user. For example, <code class="docutils literal notranslate"><span class="pre">SizingPeriod:Designdays</span></code> and
-<code class="docutils literal notranslate"><span class="pre">Site:Location</span></code> components from building model files will be adapted to weather file (<em>EPW</em>) specified in
-<em>Sinergym</em> simulator backend without any intervention by the user (only the environment definition).
-<em>BCVTB middleware</em> <code class="docutils literal notranslate"><span class="pre">ExternalInterface</span></code> in building model and <em>variables.cfg</em> file is generated when
-simulation starts by <em>Sinergym</em>, this definition depends on action and observation space and variables defined.
-In short, <em>Sinergym</em> automates the whole process of model adaptation so that the user
+<li><p><strong>Automatic Building Model adaptation to user changes</strong>. Many of the updates to the environment definition require changes
+to the building model (<em>epJSON</em> file) to adapt it to these new features before the simulation starts, which <em>Sinergym</em> will
+perform automatically. For example, using another weather file requires building location and design days update, using new
+observation variables requires to update the <code class="docutils literal notranslate"><span class="pre">Output:Variable</span></code> and <code class="docutils literal notranslate"><span class="pre">Output:Meter</span></code> fields, the same occurs with extra
+configuration context concerned with simulation directly, if weather variability is set, then a weather with noise
+will be used. These new building and weather file versions, is saved in the <em>Sinergym</em> output folder, leaving the original
+intact. In short, <em>Sinergym</em> automates the whole process of model adaptation so that the user
 only has to define what he wants for his environment.</p></li>
-<li><p><strong>Automatic external interface integration for actions</strong>. Sinergym provides functionality to obtain information
-about the environments such as the zones or the schedulers available in the environment model. Using that information,
-which is possible to export in a excel, users can know which controllers are available in the building and, then, control
-them with an external interface from an agent. To do this, users will make an <strong>action definition</strong> in which it is
-indicated which default controllers they want to replace in a specific format and <em>Sinergym</em> will take care of the relevant internal
-changes in the model.</p></li>
+<li><p><strong>Automatic actuators control</strong>. Related to the above, it will only be necessary to specify the name of the actuators to be controlled
+through the actions of the Gymnasium interface, and <em>Sinergym</em> will take care of everything.</p></li>
+<li><p><strong>Extensive environment information</strong>. It is important that users can get some information about <em>Sinergym</em> background components from environment interface easily.
+From environment instance, it is possible to consult available schedulers, variables which compose an observation and action, whether simulator is running,
+the building run period, episode length, timesteps per episode, available building zones… And much more.</p></li>
 <li><p><strong>Stable Baseline 3 Integration</strong>. Some functionalities like callbacks
 have been customized by our team in order to test easily these environments
-with deep reinforcement learning algorithms.
-This tool can be used with any other DRL library that supports the <em>Gymnasium</em> interface as well.</p></li>
+with deep reinforcement learning algorithms and logger specific information about
+<em>Sinergym</em> environments.
+However, <em>Sinergym</em> is completely agnostic to any DRL algorithm and can be used with any DRL
+library that works with gymnasium interface.</p></li>
 <li><p><strong>Google Cloud Integration</strong>. Whether you have a Google Cloud account and you want to
-use your infrastructure with <em>Sinergym</em>, we tell you some details about how doing it.</p></li>
-<li><p><strong>Weights &amp; Biases tracking and visualization</strong>. One of Sinergym’s objectives is to automate
+use your infrastructure with <em>Sinergym</em>, we tell you some details about how to do it.</p></li>
+<li><p><strong>Weights &amp; Biases tracking and visualization compatibility</strong>. One of <em>Sinergym</em>’s objectives is to automate
 and facilitate the training, reproducibility and comparison of agents in simulation-based
 building control problems, managing and monitoring model lifecycle from training to deployment. <a class="reference external" href="https://wandb.ai/site">WandB</a>
 is an open-source platform for the machine learning lifecycle helping us with this issue.
@@ -214,9 +215,9 @@ and improvements of the tool itself.</p></li>
 <em>Sinergym</em> an efficient ecosystem for both understanding and development.</p></li>
 <li><p>Many more!</p></li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you want to introduce your own buildings in Sinergym, please visit <a class="reference internal" href="environments.html#adding-new-buildings-for-environments"><span class="std std-ref">Adding new buildings for environments</span></a> section.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If you want to introduce your own buildings in <em>Sinergym</em>, please visit <a class="reference internal" href="environments.html#adding-new-buildings-for-environments"><span class="std std-ref">Adding new buildings for environments</span></a> section.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -283,6 +284,7 @@ and improvements of the tool itself.</p></li>
             <dd><a href="../../v2.4.1/pages/introduction.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/introduction.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/introduction.html">v2.5.1</a></dd>
+            <dd><a href="../../v2.5.2/pages/introduction.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -293,7 +295,21 @@ and improvements of the tool itself.</p></li>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

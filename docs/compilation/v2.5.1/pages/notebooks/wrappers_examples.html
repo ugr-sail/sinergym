@@ -14,11 +14,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -33,7 +33,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -98,7 +98,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">sinergym</a>
       </nav>
@@ -119,7 +119,7 @@
            <div itemprop="articleBody">
              
   <section id="Wrappers-example">
-<h1><span class="section-number">18. </span>Wrappers example<a class="headerlink" href="#Wrappers-example" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">18. </span>Wrappers example<a class="headerlink" href="#Wrappers-example" title="Link to this heading"></a></h1>
 <p>We will see on this notebook what are the wrappers defined by Sinergym and how to use them. You can also implement your own wrappers inheriting from <em>gym.Wrapper</em> or some of its variants.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -134,7 +134,7 @@
 </div>
 </div>
 <section id="Multi-Objective-Wrapper">
-<h2><span class="section-number">18.1. </span>Multi-Objective Wrapper<a class="headerlink" href="#Multi-Objective-Wrapper" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">18.1. </span>Multi-Objective Wrapper<a class="headerlink" href="#Multi-Objective-Wrapper" title="Link to this heading"></a></h2>
 <p><a class="reference external" href="https://github.com/Farama-Foundation/MO-Gymnasium">MO-Gymnasium</a> is an open source Python library for developing and comparing multi-objective reinforcement learning algorithms. These environments return a reward vector instead of a scalar value; one for each objective.</p>
 <p>In order to be more general as possible, it could be interesting that Sinergym would give that reward vector too. In this way, Sinergym would have compatibility with both; multi-objective algorithms and algorithms that work with a traditional reward value.</p>
 <p>We can transform reward returned in a vector using the next wrapper:</p>
@@ -201,7 +201,7 @@
 </div>
 </section>
 <section id="Previous-Observations-Wrappers">
-<h2><span class="section-number">18.2. </span>Previous Observations Wrappers<a class="headerlink" href="#Previous-Observations-Wrappers" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">18.2. </span>Previous Observations Wrappers<a class="headerlink" href="#Previous-Observations-Wrappers" title="Link to this heading"></a></h2>
 <p>This Wrapper will add observation values from previous timestep to current environment observation. It is possible to select the variables you want to track its previous observation values. Observation space will be updated with the new dimension.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -277,7 +277,7 @@ NEW OBSERVATION:  {&#39;year&#39;: 1991.0, &#39;month&#39;: 1.0, &#39;day&#39;: 
 </div>
 </section>
 <section id="Datetime-Wrapper">
-<h2><span class="section-number">18.3. </span>Datetime Wrapper<a class="headerlink" href="#Datetime-Wrapper" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">18.3. </span>Datetime Wrapper<a class="headerlink" href="#Datetime-Wrapper" title="Link to this heading"></a></h2>
 <p>This wrapper will substitute <code class="docutils literal notranslate"><span class="pre">day</span></code> value by <code class="docutils literal notranslate"><span class="pre">is_weekend</span></code> flag, and <code class="docutils literal notranslate"><span class="pre">hour</span></code> and <code class="docutils literal notranslate"><span class="pre">month</span></code> by sin and cos values. Observation space is also updated automatically.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -358,7 +358,7 @@ NEW OBSERVATION:  {&#39;year&#39;: 1991.0, &#39;month_cos&#39;: 1.0, &#39;month_
 </div>
 </section>
 <section id="Discrete-Incremental-Wrapper">
-<h2><span class="section-number">18.4. </span>Discrete Incremental Wrapper<a class="headerlink" href="#Discrete-Incremental-Wrapper" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">18.4. </span>Discrete Incremental Wrapper<a class="headerlink" href="#Discrete-Incremental-Wrapper" title="Link to this heading"></a></h2>
 <p>A wrapper for an incremental discrete setpoint action space environment. This wrapper will update environment action mapping and action space depending on the step and delta specified. The action will be sum with current setpoint values instead of overwrite the latest action. A discrete environment with only temperature setpoints control must be used with this wrapper.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -473,7 +473,7 @@ Setpoints update:  [22.5, 28.0]
 </div>
 </section>
 <section id="Normalization-Wrapper">
-<h2><span class="section-number">18.5. </span>Normalization Wrapper<a class="headerlink" href="#Normalization-Wrapper" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">18.5. </span>Normalization Wrapper<a class="headerlink" href="#Normalization-Wrapper" title="Link to this heading"></a></h2>
 <p>This wrapper is used to transform observation received from simulator in values between 0 and 1. It is possible to define a list of variables you want to normalize, if you don’t define this list, all environment variables will be included.</p>
 <p>In order to normalize values, it is necessary a dictionary in order to store max and min values. Then, if a environment variable is not included in the dictionary specified in wrapper constructor, then the normalization for that variable will be skipped.</p>
 <div class="nbinput docutils container">
@@ -578,7 +578,7 @@ OBSERVATION WITH NORMALIZATION IN VARIABLES SELECTED:  {&#39;year&#39;: 1991.0, 
 </div>
 </section>
 <section id="Logger-Wrapper">
-<h2><span class="section-number">18.6. </span>Logger Wrapper<a class="headerlink" href="#Logger-Wrapper" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">18.6. </span>Logger Wrapper<a class="headerlink" href="#Logger-Wrapper" title="Link to this heading"></a></h2>
 <p>Wrapper for logging all interactions between agent and environment. Logger class can be selected in the constructor if other type of logging is required. For more information about <em>Sinergym</em> Logger visit <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/output.html#logger">Logger</a></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -672,7 +672,7 @@ OBSERVATION WITH NORMALIZATION IN VARIABLES SELECTED:  {&#39;year&#39;: 1991.0, 
 <p>Now, you can see in Sinergym output folder that you will have available <code class="docutils literal notranslate"><span class="pre">progress.csv</span></code> file and <code class="docutils literal notranslate"><span class="pre">monitor.csv</span></code> files in each episode.</p>
 </section>
 <section id="Multi-Observation-Wrapper">
-<h2><span class="section-number">18.7. </span>Multi Observation Wrapper<a class="headerlink" href="#Multi-Observation-Wrapper" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">18.7. </span>Multi Observation Wrapper<a class="headerlink" href="#Multi-Observation-Wrapper" title="Link to this heading"></a></h2>
 <p>This wrapper will stack observation received in a history queue (size can be customized).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -831,7 +831,7 @@ AFTER MULTI OBSERVATION:  [1.9910000e+03 1.0000000e+00 1.0000000e+00 0.0000000e+
 </div>
 </section>
 <section id="Nesting-wrappers">
-<h2><span class="section-number">18.8. </span>Nesting wrappers<a class="headerlink" href="#Nesting-wrappers" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">18.8. </span>Nesting wrappers<a class="headerlink" href="#Nesting-wrappers" title="Link to this heading"></a></h2>
 <p>All the wrappers listed in this notebook can be nested in order to combine functionalities added. However, <strong>the order</strong> in which these wrappers are nested is critical to their proper functionality. We strongly recommend that it be in the same order in which they appear here or in the documentation. In case you want to nest a subset of the total, it is not a problem as long as you continue respecting this order. We see and example:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -1061,6 +1061,7 @@ Reward:  [-0.009213100161810072, -0.2690803078450692] {&#39;timestep&#39;: 35040
             <dd><a href="../../../v2.4.1/index.html">v2.4.1</a></dd>
             <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
             <dd><a href="wrappers_examples.html">v2.5.1</a></dd>
+            <dd><a href="../../../v2.5.2/index.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -1071,7 +1072,21 @@ Reward:  [-0.009213100161810072, -0.2690803078450692] {&#39;timestep&#39;: 35040
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

@@ -14,11 +14,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -33,7 +33,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -92,7 +92,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">sinergym</a>
       </nav>
@@ -113,7 +113,7 @@
            <div itemprop="articleBody">
              
   <section id="Logger-Wrapper-personalization/configuration">
-<h1><span class="section-number">19. </span>Logger Wrapper personalization/configuration<a class="headerlink" href="#Logger-Wrapper-personalization/configuration" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">19. </span>Logger Wrapper personalization/configuration<a class="headerlink" href="#Logger-Wrapper-personalization/configuration" title="Link to this heading"></a></h1>
 <p>We will see on this notebook how to personalize the logger wrapper defined by sinergym.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -129,7 +129,7 @@
 </div>
 </div>
 <section id="Step-1-Inherit-and-modify-the-CSVloger">
-<h2><span class="section-number">19.1. </span>Step 1 Inherit and modify the CSVloger<a class="headerlink" href="#Step-1-Inherit-and-modify-the-CSVloger" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">19.1. </span>Step 1 Inherit and modify the CSVloger<a class="headerlink" href="#Step-1-Inherit-and-modify-the-CSVloger" title="Link to this heading"></a></h2>
 <p>First we need to change the CSV logger to modify the values written into the file on the function create_row_contents</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -176,7 +176,7 @@
 </div>
 </section>
 <section id="Step-2-Instantiate-the-LoggerWrapper">
-<h2><span class="section-number">19.2. </span>Step 2 Instantiate the LoggerWrapper<a class="headerlink" href="#Step-2-Instantiate-the-LoggerWrapper" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">19.2. </span>Step 2 Instantiate the LoggerWrapper<a class="headerlink" href="#Step-2-Instantiate-the-LoggerWrapper" title="Link to this heading"></a></h2>
 <p>now we need to instantiate the loggerwrapper and specify the new headers of our file and the csvlogger class we want to use.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -338,6 +338,7 @@ Episode  0 Mean reward:  -0.587542755084327 Cumulative reward:  -20587.498138154
             <dd><a href="../../../v2.4.1/index.html">v2.4.1</a></dd>
             <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
             <dd><a href="personalize_loggerwrapper.html">v2.5.1</a></dd>
+            <dd><a href="../../../v2.5.2/index.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -348,7 +349,21 @@ Episode  0 Mean reward:  -0.587542755084327 Cumulative reward:  -20587.498138154
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

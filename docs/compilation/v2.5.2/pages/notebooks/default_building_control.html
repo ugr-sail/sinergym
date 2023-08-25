@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>17. Default building control setting up an empty action interface &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/nbsphinx-code-cells.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/doc_theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="18. Wrappers example" href="wrappers_examples.html" />
+    <link rel="prev" title="16. Changing an environment registered in Sinergym" href="change_environment.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">5. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">6. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">7. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">8. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">10. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">13. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">14. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">15. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">16. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">17. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">18. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">20. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">21. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">17. </span>Default building control setting up an empty action interface</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/notebooks/default_building_control.nblink.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Default-building-control-setting-up-an-empty-action-interface">
+<h1><span class="section-number">17. </span>Default building control setting up an empty action interface<a class="headerlink" href="#Default-building-control-setting-up-an-empty-action-interface" title="Link to this heading"></a></h1>
+<p>When you want to run a simulation with all the default building controllers (specified in the building file). You can directly use the <strong>EnergyPlus simulation engine</strong>. For example, placing us in the workspace of the container would be to run the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>energyplus<span class="w"> </span>-w<span class="w"> </span>sinergym/data/weather/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw<span class="w"> </span>sinergym/data/buildings/5ZoneAutoDXVAV.epJSON
+</pre></div>
+</div>
+<p>However, doing so without our framework has some <strong>disadvantages</strong>. You will have EnergyPlus default output and will not have some <strong>added outputs</strong> such as our wrapper logger that monitors all interactions with the environment. The buildings have a default <em>Site:Location</em> and <em>SizingPeriod:DesignDay</em>, which Sinergym changes automatically depending on the specified weather, so you would have to <strong>adjust it</strong> before using the simulator manually. Finally, the <em>RunPeriod</em> of the buildings are set
+to one episode for DRL, which means that as the buildings stand you can only simulate one year. So, you would also have to modify the <em>RunPeriod</em> <strong>manually</strong> in the building file before starting the simulation.</p>
+<p>Therefore, our recommended proposal is setting up an <strong>empty action interface</strong> in an environment with Sinergym. For example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
+    <span class="s1">&#39;Eplus-office-hot-continuous-v1&#39;</span><span class="p">,</span>
+    <span class="n">action_variables</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">action_space</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+        <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">high</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,)),</span>
+    <span class="n">action_definition</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">terminated</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
+            <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s1">&#39;Episode &#39;</span><span class="p">,</span>
+        <span class="n">i</span><span class="p">,</span>
+        <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span>
+        <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span>
+        <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[2023-05-26 08:26:21,986] EPLUS_ENV_office-hot-continuous-v1_MainThread_ROOT INFO:Updating Building model ExternalInterface object if it is not present...
+[2023-05-26 08:26:21,987] EPLUS_ENV_office-hot-continuous-v1_MainThread_ROOT INFO:Updating Building model Site:Location and SizingPeriod:DesignDay(s) to weather and ddy file...
+[2023-05-26 08:26:21,990] EPLUS_ENV_office-hot-continuous-v1_MainThread_ROOT INFO:Updating building model OutPut:Variable and variables XML tree model for BVCTB connection.
+[2023-05-26 08:26:21,992] EPLUS_ENV_office-hot-continuous-v1_MainThread_ROOT INFO:Setting up extra configuration in building model if exists...
+[2023-05-26 08:26:21,992] EPLUS_ENV_office-hot-continuous-v1_MainThread_ROOT INFO:Setting up action definition in building model if exists...
+[2023-05-26 08:26:21,994] EPLUS_ENV_office-hot-continuous-v1_MainThread_ROOT INFO:Creating new EnergyPlus simulation episode...
+[2023-05-26 08:26:22,125] EPLUS_ENV_office-hot-continuous-v1_MainThread_ROOT INFO:EnergyPlus working directory is in /workspaces/sinergym/examples/Eplus-env-office-hot-continuous-v1-res2/Eplus-env-sub_run1
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/opyplus/weather_data/weather_data.py:493: FutureWarning: the &#39;line_terminator&#39;&#39; keyword is deprecated, use &#39;lineterminator&#39; instead.
+  epw_content = self._headers_to_epw(use_datetimes=use_datetimes) + df.to_csv(
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Reward:  -0.008417052432114895 {&#39;timestep&#39;: 1, &#39;time_elapsed&#39;: 900, &#39;year&#39;: 1991, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [], &#39;reward&#39;: -0.008417052432114895, &#39;reward_energy&#39;: -0.01683410486422979, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 168.3410486422979, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [22.53521983917315, 19.55815762759406, 22.14538994164463, 22.09202095142567, 23.0089130888504, 22.04760361521357, 19.67298455304227, 20.01494159872766, 21.50709678475458, 20.5036982527685, 19.79813396884532, 20.07783653111332, 21.2899462240987, 20.52024603483249, 20.44966114692166, 20.79116823683051, 22.25621159111793, 21.27845569962855]}
+Reward:  -1434.9428376416104 {&#39;timestep&#39;: 2976, &#39;time_elapsed&#39;: 2678400, &#39;year&#39;: 1991, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [], &#39;reward&#39;: -0.012472211059939661, &#39;reward_energy&#39;: -0.024944422119879323, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 249.4442211987932, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [23.95529447712287, 22.93330599357152, 24.91120914630909, 24.34759748424246, 25.60529980656519, 25.17241292870662, 23.56088321676432, 23.72285660474848, 24.48878476857699, 24.06823112590142, 22.33229321299511, 22.53941488968512, 23.21224560003259, 22.86950118207466, 23.87860676740183, 24.03504108838575, 24.78653292554888, 24.37516306525545]}
+Reward:  -2098.1863449693465 {&#39;timestep&#39;: 5664, &#39;time_elapsed&#39;: 5097600, &#39;year&#39;: 1991, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [], &#39;reward&#39;: -0.012472211059939661, &#39;reward_energy&#39;: -0.024944422119879323, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 249.4442211987932, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [23.89537368460365, 22.73228573282486, 24.78319753474181, 24.22081948801992, 25.50517507903195, 25.02949560756553, 23.30320823246185, 23.53016106638053, 24.38676574975518, 23.95899166945338, 22.1197378939569, 22.37779165374341, 23.00186172439464, 22.80962279202423, 23.65232271388191, 23.87300159773843, 24.71858098544965, 24.30061854058779]}
+Reward:  -3387.5960212991654 {&#39;timestep&#39;: 8640, &#39;time_elapsed&#39;: 7776000, &#39;year&#39;: 1991, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [], &#39;reward&#39;: -0.010059948897039251, &#39;reward_energy&#39;: -0.020119897794078502, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 201.198977940785, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [23.15118892934099, 22.68245717396391, 24.24402157474289, 23.42391845372941, 24.55701334690791, 24.52489516521943, 23.14721794427982, 23.70576735867768, 24.21813840249226, 24.17410288882376, 21.65263744663373, 22.15637165561054, 22.67644678622419, 22.73343265237197, 23.12290932041643, 23.70313572692205, 24.26957472797558, 24.23273321762333]}
+Reward:  -6511.303282459102 {&#39;timestep&#39;: 11520, &#39;time_elapsed&#39;: 10368000, &#39;year&#39;: 1991, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [], &#39;reward&#39;: -0.010059948897039251, &#39;reward_energy&#39;: -0.020119897794078502, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 201.198977940785, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [24.05264115641391, 24.44729521170201, 25.64918371904614, 24.89887704115841, 25.95299993503936, 25.85657110200199, 25.0783983820759, 25.35999783387461, 25.39475723084232, 25.81166145597138, 23.41449827024159, 23.67206860778739, 23.77440975962447, 24.16817346431958, 25.13722363182544, 25.38254171666813, 25.41823646286382, 25.85447471137039]}
+Reward:  -10535.097308720588 {&#39;timestep&#39;: 14496, &#39;time_elapsed&#39;: 13046400, &#39;year&#39;: 1991, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [], &#39;reward&#39;: -0.008430450234156376, &#39;reward_energy&#39;: -0.01686090046831275, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 168.6090046831275, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [24.10299314796017, 25.29764272369417, 25.92771625840211, 25.18177330280738, 26.00327277795856, 26.06405171899508, 26.02666361701911, 26.24966082016038, 26.03904879581279, 26.85370369344004, 24.23350556151528, 24.39245729803426, 24.29184088039651, 25.02518258185097, 25.98891383439227, 26.19014861710788, 25.97828895622849, 26.78100217713515]}
+Reward:  -17052.899318195246 {&#39;timestep&#39;: 17376, &#39;time_elapsed&#39;: 15638400, &#39;year&#39;: 1991, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [], &#39;reward&#39;: -0.23643866755706006, &#39;reward_energy&#39;: -0.020119897794078502, &#39;reward_comfort&#39;: -0.4527574373200416, &#39;total_energy&#39;: 201.198977940785, &#39;abs_comfort&#39;: 0.4527574373200416, &#39;temperatures&#39;: [25.18285854434887, 26.74872894948834, 26.61189462978766, 26.02086591490914, 25.18184212415447, 26.08560769497404, 26.74962263942351, 26.94705967500637, 26.7662014322217, 27.43423229548982, 25.97855387827666, 26.17288182018041, 25.99294064308231, 26.78120533848021, 26.20917317875767, 26.44762895440854, 26.2262496513037, 27.01852514183022]}
+Reward:  -22936.51953423165 {&#39;timestep&#39;: 20352, &#39;time_elapsed&#39;: 18316800, &#39;year&#39;: 1991, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [], &#39;reward&#39;: -0.018276601381479952, &#39;reward_energy&#39;: -0.020119897794078502, &#39;reward_comfort&#39;: -0.0164333049688814, &#39;total_energy&#39;: 201.198977940785, &#39;abs_comfort&#39;: 0.0164333049688814, &#39;temperatures&#39;: [25.5392169509091, 26.16873133304136, 26.08066550485968, 25.83761436729132, 25.8990371935079, 26.14511417944243, 26.53842299633071, 26.86812113755267, 26.75272617967185, 27.01643330496888, 25.83599947277107, 26.13115881226312, 26.15878336706238, 26.30269066602163, 26.30247967540778, 26.61790313741343, 26.50780463172365, 26.7776207692181]}
+Reward:  -28546.69328617454 {&#39;timestep&#39;: 23328, &#39;time_elapsed&#39;: 20995200, &#39;year&#39;: 1991, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [], &#39;reward&#39;: -0.008430450234156376, &#39;reward_energy&#39;: -0.01686090046831275, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 168.6090046831275, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [25.37560489470522, 25.79474684837675, 25.86698199576748, 25.43363330657174, 26.02366936329494, 26.20719535073523, 26.2989879011191, 26.44670657334948, 26.46931843617206, 26.54775608161636, 25.2344308473864, 25.37859048511651, 25.40024332035621, 25.48304453380965, 26.1537180471515, 26.3032686362277, 26.32247978037293, 26.41230402548253]}
+Reward:  -33156.538182009026 {&#39;timestep&#39;: 26208, &#39;time_elapsed&#39;: 23587200, &#39;year&#39;: 1991, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [], &#39;reward&#39;: -0.010059948897039251, &#39;reward_energy&#39;: -0.020119897794078502, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 201.198977940785, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [25.44123883033579, 25.41619977445056, 25.88987627436478, 25.56828870185858, 26.19812063166409, 26.13931485589389, 26.01020583080124, 26.19149589468718, 26.26855668465098, 26.21149845430837, 25.28885051351978, 25.46710088969173, 25.61904062266798, 25.5053008724018, 26.06650285483307, 26.24231755447375, 26.31755406341168, 26.25921261409608]}
+Reward:  -35863.62199140798 {&#39;timestep&#39;: 29184, &#39;time_elapsed&#39;: 26265600, &#39;year&#39;: 1991, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [], &#39;reward&#39;: -0.010059948897039251, &#39;reward_energy&#39;: -0.020119897794078502, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 201.198977940785, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [24.1877495160313, 23.39942018132908, 25.18171280832089, 24.66871018308847, 25.68478896373198, 25.25242446113143, 24.0090532494292, 24.20737458330498, 25.06701740467029, 24.53709590781486, 22.90144381773696, 23.12430768198516, 23.88987656848913, 23.45426453532504, 24.32224710528407, 24.51629741435834, 25.37530092061942, 24.84193011583043]}
+Reward:  -37237.62787266026 {&#39;timestep&#39;: 32064, &#39;time_elapsed&#39;: 28857600, &#39;year&#39;: 1991, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [], &#39;reward&#39;: -0.008430450234156376, &#39;reward_energy&#39;: -0.01686090046831275, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 168.6090046831275, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [22.95210497536126, 21.57040873358834, 23.99129691926893, 23.39186611484875, 24.51112886488032, 23.88961169723077, 22.10093436763699, 22.35990857059858, 23.237994001168, 22.41603845689724, 21.07804657515512, 21.33953654945672, 22.13313673910118, 21.43223892396855, 22.53463662217912, 22.77811569998267, 23.67095962186454, 22.85581406682531]}
+Reward:  -38261.61061545389 {&#39;timestep&#39;: 35040, &#39;time_elapsed&#39;: 31536000, &#39;year&#39;: 1992, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;action&#39;: [], &#39;reward&#39;: -0.012472211059939661, &#39;reward_energy&#39;: -0.024944422119879323, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 249.4442211987932, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [23.73107679421617, 22.70481166778426, 24.35526077997812, 23.88154331497665, 25.09980439304872, 24.66852229989068, 23.37519187454117, 23.51389693484603, 24.0909126946236, 23.57393397351987, 22.35685000789159, 22.52393219496679, 22.92907195172767, 22.58720938358775, 23.72567767311014, 23.84174091434151, 24.4370711295133, 23.91811470398408]}
+Episode  0 Mean reward:  -1.0919409422220332 Cumulative reward:  -38261.61061545389
+[2023-05-26 08:27:01,448] EPLUS_ENV_office-hot-continuous-v1_MainThread_ROOT INFO:EnergyPlus simulation closed successfully.
+</pre></div></div>
+</div>
+<p>In this example, a default environment is loaded, but the space and definition of the default action <strong>is replaced with an empty one</strong>, Sinergym takes care of making the necessary changes in the background. Then, the random agent implemented send <strong>empty actions ([])</strong>.</p>
+<p>The advantages are that you can <strong>combine the weathers with the buildings</strong> as you want, Sinergym will take care of adapting everything automatically (you don’t have the disadvantages of before), you can run in a single experiment as many years as you want, with our loggers. When you set an empty action interface, Sinergym preserves the default actuators that the building definition comes with (these can be more or less sophisticated depending on the definition of the building in the <em>epJSON</em>
+file).</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="change_environment.html" class="btn btn-neutral float-left" title="16. Changing an environment registered in Sinergym" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="wrappers_examples.html" class="btn btn-neutral float-right" title="18. Wrappers example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v2.5.2
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../../v1.7.2/index.html">v1.7.2</a></dd>
+            <dd><a href="../../../v1.7.5/index.html">v1.7.5</a></dd>
+            <dd><a href="../../../v1.7.6/index.html">v1.7.6</a></dd>
+            <dd><a href="../../../v1.7.7/index.html">v1.7.7</a></dd>
+            <dd><a href="../../../v1.7.8/index.html">v1.7.8</a></dd>
+            <dd><a href="../../../v1.8.2/index.html">v1.8.2</a></dd>
+            <dd><a href="../../../v1.8.4/index.html">v1.8.4</a></dd>
+            <dd><a href="../../../v1.9.1/index.html">v1.9.1</a></dd>
+            <dd><a href="../../../v1.9.5/index.html">v1.9.5</a></dd>
+            <dd><a href="../../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../../v2.1.2/index.html">v2.1.2</a></dd>
+            <dd><a href="../../../v2.1.3/index.html">v2.1.3</a></dd>
+            <dd><a href="../../../v2.1.5/index.html">v2.1.5</a></dd>
+            <dd><a href="../../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../../v2.2.3/index.html">v2.2.3</a></dd>
+            <dd><a href="../../../v2.2.5/index.html">v2.2.5</a></dd>
+            <dd><a href="../../../v2.2.9/index.html">v2.2.9</a></dd>
+            <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
+            <dd><a href="../../../v2.3.1/index.html">v2.3.1</a></dd>
+            <dd><a href="../../../v2.3.2/index.html">v2.3.2</a></dd>
+            <dd><a href="../../../v2.3.3/index.html">v2.3.3</a></dd>
+            <dd><a href="../../../v2.3.4/index.html">v2.3.4</a></dd>
+            <dd><a href="../../../v2.4.1/index.html">v2.4.1</a></dd>
+            <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../../v2.5.1/index.html">v2.5.1</a></dd>
+            <dd><a href="default_building_control.html">v2.5.2</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../../main/index.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>

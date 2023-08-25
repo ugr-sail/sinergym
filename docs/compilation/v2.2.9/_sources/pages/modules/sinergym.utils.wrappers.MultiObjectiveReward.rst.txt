@@ -18,6 +18,7 @@
       ~MultiObjectiveReward.__init__
       ~MultiObjectiveReward.class_name
       ~MultiObjectiveReward.close
+      ~MultiObjectiveReward.get_wrapper_attr
       ~MultiObjectiveReward.render
       ~MultiObjectiveReward.reset
       ~MultiObjectiveReward.step

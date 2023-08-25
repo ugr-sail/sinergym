@@ -19,6 +19,7 @@
       ~NormalizeObservation.class_name
       ~NormalizeObservation.close
       ~NormalizeObservation.get_unwrapped_obs
+      ~NormalizeObservation.get_wrapper_attr
       ~NormalizeObservation.observation
       ~NormalizeObservation.render
       ~NormalizeObservation.reset

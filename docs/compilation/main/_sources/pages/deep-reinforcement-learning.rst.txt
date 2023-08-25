@@ -3,8 +3,8 @@ Deep Reinforcement Learning Integration
 #######################################
 
 *Sinergym* integrates some facilities in order to use **Deep Reinforcement Learning algorithms** 
-provided by `Stable Baselines 3 <https://stable-baselines3.readthedocs.io/en/master/>`__. 
-Current algorithms checked by *Sinergym* are:
+provided by `Stable Baselines 3 <https://stable-baselines3.readthedocs.io/en/master/>`__. Although *Sinergym* is 
+compatible with any algorithm which works with Gymnasium interface.
 
 +--------------------------------------------------------+
 |                   Stable Baselines 3:                  |
@@ -39,12 +39,12 @@ Our callbacks inherit from Stable Baselines 3 and are available in
 DRL Callback Logger
 ********************
 
-A callback allows to custom our own logger for DRL Sinergym executions. Our objective 
+A callback allows to custom our own logger for DRL *Sinergym* executions. Our objective 
 is to **log all information about our custom environment** specifically in real-time.
 Each algorithm has its own differences 
 about how information is extracted which is why its implementation.
 
-.. note:: You can specify if you want Sinergym logger (see :ref:`Logger`) to record 
+.. note:: You can specify if you want *Sinergym* logger (see :ref:`Logger`) to record 
           simulation interactions during training at the same time using 
           ``sinergym_logger`` attribute in constructor. 
 
@@ -52,7 +52,7 @@ The ``LoggerCallback`` inherits from Stable Baselines 3 ``BaseCallback`` and
 uses `Weights&Biases <https://wandb.ai/site>`__ (*wandb*) in the background in order to host 
 all information extracted. With *wandb*, it's possible to track and visualize all DRL 
 training in real time, register hyperparameters and details of each execution, save artifacts 
-such as models and sinergym output, and compare between different executions. This is an example: 
+such as models and *Sinergym* output, and compare between different executions. This is an example: 
 
 - Hyperparameter and summary registration:
 
@@ -92,7 +92,7 @@ Evaluation Callback
 ********************
 
 A callback has also been refined for the evaluation of the model versions obtained during 
-the training process with Sinergym, so that it stores the best model obtained (not the one resulting 
+the training process with *Sinergym*, so that it stores the best model obtained (not the one resulting 
 at the end of the training).
 
 Its name is ``LoggerEvalCallback`` and it inherits from Stable Baselines 3 ``EvalCallback``. 
@@ -103,11 +103,11 @@ We have to define in ``LoggerEvalCallback`` construction how many training episo
 the evaluation process to take place. On the other hand, we have to define how many episodes 
 are going to occupy each of the evaluations to be performed. 
 
-The more episodes, the more accurate the averages of the reward-based indicators will be, and, 
+With more episodes, more accurate the averages of the reward-based indicators will be, and, 
 therefore, the more faithful it will be to reality in terms of how good the current model is 
 turning out to be. However, it will take more time.
 
-It calculates timestep and episode average for power consumption, comfort penalty and power penalty.
+It calculates timestep and episode averages for power consumption, comfort penalty and power penalty.
 On the other hand, it calculates comfort violation percentage in episodes too.
 Currently, only mean reward is taken into account to decide when a model is better.
 
@@ -121,7 +121,7 @@ The main structure for *Sinergym* with *wandb* is:
   is On Policy, it will appear **action_simulation** too. This is because 
   algorithms in continuous environments has their own output and clipped 
   with gymnasium action space. Then, this output is parse to simulation action 
-  space (See :ref:`Observation/action spaces` note box).
+  space.
 
 * **episode**: Here is stored all information about entire episodes. 
   It is equivalent to ``progress.csv`` in *Sinergym logger* 
@@ -152,7 +152,7 @@ The main structure for *Sinergym* with *wandb* is:
 
 * **observation**: Here is recorded all observation values during simulation. 
   This values depends on the environment which is being simulated 
-  (see :ref:`Observation/action spaces` section).
+  (see :ref:`action space` section).
 
 * **normalized_observation** (optional): This section appear only when environment 
   has been **wrapped with normalization** (see :ref:`Wrappers` section). The model 
@@ -170,20 +170,18 @@ The main structure for *Sinergym* with *wandb* is:
 .. note:: Evaluation of models can be recorded too, adding ``EvalLoggerCallback`` 
           to model learn method.
 
+.. note:: For more information about how to use it with cloud computing, visit :ref:`Sinergym with Google Cloud`.
+
 ************
 How to use
 ************
-
-For more information about how to use it with cloud computing, visit :ref:`Sinergym with Google Cloud`
-
 
 Train a model
 ~~~~~~~~~~~~~~~~
 
 You can try your own experiments and benefit from this functionality. 
-`sinergym/scripts/DRL_battery.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery.py>`__
-is a script to help you to do it. You can use ``DRL_battery.py`` directly from 
-your local computer or using Google Cloud Platform.
+`sinergym/scripts/train_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/train_agent.py>`__
+is a script to help you to do it.
 
 The most **important information** you must keep in mind when you try 
 your own experiments are:
@@ -206,10 +204,10 @@ your own experiments are:
   add model field with a valid model path, this script 
   will load the model and execute to train.
 
-``DRL_battery.py`` has a unique parameter to be able to execute it; ``-conf``.
+``train_agent.py`` has a unique parameter to be able to execute it; ``-conf``.
 This parameter is a str to indicate the JSON file in which there are allocated
 all information about the experiment you want to execute. You can see the
-JSON structure example in `sinergym/scripts/DRL_battery_example.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery_example.json>`__:
+JSON structure example in `sinergym/scripts/train_agent_example.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/train_agent_example.json>`__:
 
 * The **obligatory** parameters are: environment, episodes, 
   algorithm (and parameters of the algorithm which don't have 
@@ -257,10 +255,9 @@ This script do the next:
 Load a trained model
 ~~~~~~~~~~~~~~~~~~~~~~
 
-You can try load a previous trained model and evaluate or execute it. 
+You can try to load a previous trained model and evaluate or execute it. 
 `sinergym/scripts/load_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent.py>`__
-is a script to help you to do it. You can use ``load_agent.py`` directly from 
-your local computer or using Google Cloud Platform.
+is a script to help you to do it.
 
 ``load_agent.py`` has a unique parameter to be able to execute it; ``-conf``.
 This parameter is a str to indicate the JSON file in which there are allocated
@@ -278,7 +275,10 @@ JSON structure example in `sinergym/scripts/load_agent_example.json <https://git
 This script loads the model. Once the model is loaded, it predicts the actions from the 
 states during the agreed episodes. The information is collected and sent to a remote
 storage if it is indicated (such as WandB), 
-otherwise it is stored in local memory.
+otherwise it is stored in local memory only.
+
+The model field in JSON can be a **local path** with the model, a **bucket url** with the form ``gs://``,
+or a *wandb* artifact path if we have some model stored there.
 
 .. note:: *This is a work in progress project. Direct support with others 
           algorithms is being planned for the future!*

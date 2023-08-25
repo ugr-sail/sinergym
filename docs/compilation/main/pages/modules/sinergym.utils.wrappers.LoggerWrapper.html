@@ -13,11 +13,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -69,12 +69,13 @@
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">16. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">17. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">18. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">20. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">21. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/getting_env_information.html">16. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">17. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">18. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">19. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">21. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">22. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -113,7 +114,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">sinergym</a>
       </nav>
@@ -137,18 +138,18 @@
            <div itemprop="articleBody">
              
   <section id="sinergym-utils-wrappers-loggerwrapper">
-<h1>sinergym.utils.wrappers.LoggerWrapper<a class="headerlink" href="#sinergym-utils-wrappers-loggerwrapper" title="Permalink to this heading"></a></h1>
+<h1>sinergym.utils.wrappers.LoggerWrapper<a class="headerlink" href="#sinergym-utils-wrappers-loggerwrapper" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.LoggerWrapper">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">LoggerWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env:</span> <span class="pre">~typing.Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_class:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.logger.CSVLogger'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor_header:</span> <span class="pre">~typing.List[str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_header:</span> <span class="pre">~typing.List[str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">LoggerWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env:</span> <span class="pre">~sinergym.envs.eplus_env.EplusEnv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_class:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.logger.CSVLogger'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor_header:</span> <span class="pre">~typing.List[str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_header:</span> <span class="pre">~typing.List[str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper" title="Link to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.LoggerWrapper.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env:</span> <span class="pre">~typing.Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_class:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.logger.CSVLogger'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor_header:</span> <span class="pre">~typing.List[str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_header:</span> <span class="pre">~typing.List[str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env:</span> <span class="pre">~sinergym.envs.eplus_env.EplusEnv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_class:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.logger.CSVLogger'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor_header:</span> <span class="pre">~typing.List[str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_header:</span> <span class="pre">~typing.List[str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.__init__" title="Link to this definition"></a></dt>
 <dd><p>CSVLogger to log interactions with environment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>env</strong> (<em>Any</em>) – Original Gym environment.</p></li>
+<li><p><strong>env</strong> (<a class="reference internal" href="sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv" title="sinergym.envs.eplus_env.EplusEnv"><em>EplusEnv</em></a>) – Original Gym environment in Sinergym.</p></li>
 <li><p><strong>logger_class</strong> (<a class="reference internal" href="sinergym.utils.logger.CSVLogger.html#sinergym.utils.logger.CSVLogger" title="sinergym.utils.logger.CSVLogger"><em>CSVLogger</em></a>) – CSV Logger class to use to log all information.</p></li>
 <li><p><strong>monitor_header</strong> – Header for monitor.csv in each episode. Default is None (default format).</p></li>
 <li><p><strong>progress_header</strong> – Header for progress.csv in whole simulation. Default is None (default format).</p></li>
@@ -176,16 +177,19 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.LoggerWrapper.deactivate_logger" title="sinergym.utils.wrappers.LoggerWrapper.deactivate_logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deactivate_logger</span></code></a>()</p></td>
 <td><p>Deactivate logger if its flag True.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
+<td><p>Gets an attribute from the wrapper and lower environments if <cite>name</cite> doesn't exist in this object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
 <td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.LoggerWrapper.reset" title="sinergym.utils.wrappers.LoggerWrapper.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>([seed, options])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.LoggerWrapper.reset" title="sinergym.utils.wrappers.LoggerWrapper.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>([seed, options])</p></td>
 <td><p>Reset the environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.LoggerWrapper.step" title="sinergym.utils.wrappers.LoggerWrapper.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.LoggerWrapper.step" title="sinergym.utils.wrappers.LoggerWrapper.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
 <td><p>Sends action to the environment.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
 <td><p>Generates a <cite>WrapperSpec</cite> for the wrappers.</p></td>
 </tr>
 </tbody>
@@ -196,50 +200,58 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_space</span></code></p></td>
 <td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">action_space</span></code> unless overwritten then the wrapper <code class="xref py py-attr docutils literal notranslate"><span class="pre">action_space</span></code> is used.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata</span></code></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.LoggerWrapper.logger" title="sinergym.utils.wrappers.LoggerWrapper.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata</span></code></p></td>
 <td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">metadata</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_random</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_random</span></code></p></td>
 <td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">np_random</span></code> attribute.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation_space</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation_space</span></code></p></td>
 <td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">observation_space</span></code> unless overwritten then the wrapper <code class="xref py py-attr docutils literal notranslate"><span class="pre">observation_space</span></code> is used.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_mode</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_mode</span></code></p></td>
 <td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">render_mode</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reward_range</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reward_range</span></code></p></td>
 <td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code> unless overwritten then the wrapper <code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code> is used.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></p></td>
 <td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">spec</span></code> attribute with the <cite>WrapperSpec</cite> if the wrapper inherits from <cite>EzPickle</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></p></td>
 <td><p>Returns the base environment of the wrapper.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.LoggerWrapper.activate_logger">
-<span class="sig-name descname"><span class="pre">activate_logger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.activate_logger" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">activate_logger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.activate_logger" title="Link to this definition"></a></dt>
 <dd><p>Activate logger if its flag False.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.LoggerWrapper.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.close" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.close" title="Link to this definition"></a></dt>
 <dd><p>Recording last episode summary and close env.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.LoggerWrapper.deactivate_logger">
-<span class="sig-name descname"><span class="pre">deactivate_logger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.deactivate_logger" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">deactivate_logger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.deactivate_logger" title="Link to this definition"></a></dt>
 <dd><p>Deactivate logger if its flag True.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.LoggerWrapper.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Logger</span> <span class="pre">WRAPPER</span> <span class="pre">LoggerWrapper</span> <span class="pre">(INFO)&gt;</span></em><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.logger" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.LoggerWrapper.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.reset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.reset" title="Link to this definition"></a></dt>
 <dd><p>Reset the environment. Recording episode summary in logger</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -259,7 +271,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.LoggerWrapper.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.step" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.LoggerWrapper.step" title="Link to this definition"></a></dt>
 <dd><p>Sends action to the environment. Logging new information in monitor.csv.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -341,6 +353,7 @@
             <dd><a href="../../../v2.4.1/pages/modules/sinergym.utils.wrappers.LoggerWrapper.html">v2.4.1</a></dd>
             <dd><a href="../../../v2.5.0/pages/modules/sinergym.utils.wrappers.LoggerWrapper.html">v2.5.0</a></dd>
             <dd><a href="../../../v2.5.1/pages/modules/sinergym.utils.wrappers.LoggerWrapper.html">v2.5.1</a></dd>
+            <dd><a href="../../../v2.5.2/pages/modules/sinergym.utils.wrappers.LoggerWrapper.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -351,7 +364,21 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

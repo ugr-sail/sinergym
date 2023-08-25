@@ -15,8 +15,6 @@ When an instance has finished its job, container **auto-remove** its host
 instance from Google Cloud Platform if experiments has been configured 
 with this option.
 
-Let’s see a detailed explanation above.
-
 ***********************
 Preparing Google Cloud
 ***********************
@@ -282,18 +280,18 @@ To use this container in our machine you only have to do:
 
 And now you can execute your own experiments in Google Cloud! For example, 
 you can enter in remote container with *gcloud ssh* and execute 
-*DRL_battery.py* for the experiment you want.
+*train_agent.py* for the experiment you want.
 
 ********************************************
 Executing experiments in remote containers
 ********************************************
 
-`DRL_battery.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/DRL_battery.py>`__ and 
+`train_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/train_agent.py>`__ and 
 `load_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent.py>`__
 will be allocated in every remote container and it is used to execute experiments and evaluations,
 being possible to combine with **Google Cloud Bucket**, **Weights and Biases**, **auto-remove**, etc:
 
-.. note:: **DRL_battery.py** can be used in local experiments 
+.. note:: **train_agent.py** can be used in local experiments 
           and send output data and artifact to remote storage 
           such as wandb without configure cloud computing too. 
 
@@ -305,9 +303,9 @@ The structure of the JSON to configure the experiment or evaluation is specified
 Containers permission to bucket storage output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As you see in sinergym template explained in :ref:`Create your VM or MIG`, 
+As you see in *Sinergym* template explained in :ref:`Create your VM or MIG`, 
 it is specified ``--scope``, ``--service-account`` and ``--container-env``. 
-This aim to *remote_store* option in *DRL_battery.py* works correctly.
+This aim to *remote_store* option in *train_agent.py* works correctly.
 Those parameters provide each container with permissions to write in the bucket 
 and manage Google Cloud Platform (auto instance remove function).
 Container environment variables indicate zone and project_id.

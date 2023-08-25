@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -95,7 +95,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sinergym</a>
       </nav>
@@ -116,14 +116,14 @@
            <div itemprop="articleBody">
              
   <section id="usage-example">
-<h1><span class="section-number">2. </span>Usage example<a class="headerlink" href="#usage-example" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">2. </span>Usage example<a class="headerlink" href="#usage-example" title="Link to this heading"></a></h1>
 <p>If you used our Dockerfile during installation, you should have the <em>try_env.py</em> file in your workspace as soon as you enter in. In case you have installed everything on your local machine directly, place it inside our cloned repository.
 In any case, we start from the point that you have at your disposal a terminal with the appropriate python version and Sinergym running correctly.</p>
 <p>At this point of the documentation, we have explained how to install Sinergym, the environments it includes, the reward functions we can define, wrappers and controllers.</p>
 <p>In this section we will see some examples of use to better understand how they can be used in practice.</p>
 <p>If you want to execute our notebooks on your own it is possible in <cite>examples</cite> folder.</p>
 <section id="simplest-example">
-<h2><span class="section-number">2.1. </span>Simplest example<a class="headerlink" href="#simplest-example" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">2.1. </span>Simplest example<a class="headerlink" href="#simplest-example" title="Link to this heading"></a></h2>
 <p>Let’s start with the simplest use case for the Sinergym tool. In the root repository we have the script <strong>try_env.py</strong>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -165,7 +165,7 @@ In any case, we start from the point that you have at your disposal a terminal w
 </div>
 </section>
 <section id="adding-a-reward">
-<h2><span class="section-number">2.2. </span>Adding a reward<a class="headerlink" href="#adding-a-reward" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">2.2. </span>Adding a reward<a class="headerlink" href="#adding-a-reward" title="Link to this heading"></a></h2>
 <p>By default, all our environment ID’s make use of a default (linear) reward. But this reward can be changed by adding this parameter to the constructor of our environment:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -209,7 +209,7 @@ In any case, we start from the point that you have at your disposal a terminal w
 If you run the code you can see the difference in the values obtained for the reward (using a seed for randomization).</p>
 </section>
 <section id="adding-wrappers">
-<h2><span class="section-number">2.3. </span>Adding wrappers<a class="headerlink" href="#adding-wrappers" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">2.3. </span>Adding wrappers<a class="headerlink" href="#adding-wrappers" title="Link to this heading"></a></h2>
 <p>By default, the ID’s of our environments do not include any wrapper, but we can add them after the creation of the environment:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -248,7 +248,7 @@ If you run the code you can see the difference in the values obtained for the re
 For more information about how Sinergym displays its output, please visit the section <a class="reference internal" href="output.html#output-format"><span class="std std-ref">Output format</span></a>.</p>
 </section>
 <section id="using-a-rule-based-controller">
-<h2><span class="section-number">2.4. </span>Using a rule-based controller<a class="headerlink" href="#using-a-rule-based-controller" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">2.4. </span>Using a rule-based controller<a class="headerlink" href="#using-a-rule-based-controller" title="Link to this heading"></a></h2>
 <p>You can replace the random actions we have used in the previous examples with one of our rule-based controllers for that type of environment (5Zone IDF):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -288,7 +288,7 @@ For more information about how Sinergym displays its output, please visit the se
 </div>
 </section>
 <section id="overwriting-some-default-values-of-the-environments">
-<h2><span class="section-number">2.5. </span>Overwriting some default values of the environments<a class="headerlink" href="#overwriting-some-default-values-of-the-environments" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">2.5. </span>Overwriting some default values of the environments<a class="headerlink" href="#overwriting-some-default-values-of-the-environments" title="Link to this heading"></a></h2>
 <p>In the same way that we can change the default reward function, as we have done in the second example,
 it is possible to substitute other default values of the environment ID.</p>
 <p>You can change the weather file, the number of timesteps an action repeats (default 1),
@@ -333,7 +333,7 @@ the name of the environment or the variability in stochastic environments:</p>
 </div>
 </section>
 <section id="overwriting-observation-and-action-spaces">
-<h2><span class="section-number">2.6. </span>Overwriting observation and action spaces<a class="headerlink" href="#overwriting-observation-and-action-spaces" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">2.6. </span>Overwriting observation and action spaces<a class="headerlink" href="#overwriting-observation-and-action-spaces" title="Link to this heading"></a></h2>
 <p>By default, the IDs of the predefined environments in <em>Sinergym</em> already have a space of actions and observations set.</p>
 <p>However, it can be overwritten by a new definition of them. On the one hand, we will have to define the name of the
 <strong>variables</strong>, and on the other hand, the definition of the <strong>spaces</strong> (and an <strong>action mapping</strong> if it is a discrete environment).</p>
@@ -416,7 +416,7 @@ adapted to the new actions, the spaces do not fit with the variables, the
 observation variables do not exist, etc. Sinergym will display an error.</p>
 </section>
 <section id="adding-a-new-action-definition">
-<h2><span class="section-number">2.7. </span>Adding a new action definition<a class="headerlink" href="#adding-a-new-action-definition" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">2.7. </span>Adding a new action definition<a class="headerlink" href="#adding-a-new-action-definition" title="Link to this heading"></a></h2>
 <p>As we have explained in the previous example, one of the problems that can arise when
 modifying the space of actions and observations is that the <em>IDF</em> is not adapted to the
 new space of actions established.</p>
@@ -482,7 +482,7 @@ Otherwise, Sinergym will show the inconsistency.</p>
 <p>For more information about the format of the action definition dictionaries, visit the section <a class="reference internal" href="environments.html#action-definition"><span class="std std-ref">Action definition</span></a>.</p>
 </section>
 <section id="adding-extra-configuration-definition">
-<h2><span class="section-number">2.8. </span>Adding extra configuration definition<a class="headerlink" href="#adding-extra-configuration-definition" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">2.8. </span>Adding extra configuration definition<a class="headerlink" href="#adding-extra-configuration-definition" title="Link to this heading"></a></h2>
 <p>You can even add a dictionary with extra parameters that modify the IDF you use before it is
 used in the simulations (or overwrite an existing one).</p>
 <p>This new IDF version, which also adapts to the new weather you put in, is saved in the <em>Sinergym</em>
@@ -601,6 +601,7 @@ output folder, leaving the original intact:</p>
             <dd><a href="../../v2.4.1/pages/usage-example.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/usage-example.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/usage-example.html">v2.5.1</a></dd>
+            <dd><a href="../../v2.5.2/pages/usage-example.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -611,7 +612,21 @@ output folder, leaving the original intact:</p>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

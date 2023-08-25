@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -73,7 +73,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sinergym</a>
       </nav>
@@ -94,7 +94,7 @@
            <div itemprop="articleBody">
              
   <section id="deep-reinforcement-learning-integration">
-<h1>Deep Reinforcement Learning Integration<a class="headerlink" href="#deep-reinforcement-learning-integration" title="Permalink to this heading"></a></h1>
+<h1>Deep Reinforcement Learning Integration<a class="headerlink" href="#deep-reinforcement-learning-integration" title="Link to this heading"></a></h1>
 <p>Sinergym integrates some facilities in order to use Deep Reinforcement Learning algorithms provided by <a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/">Stable Baselines 3</a>.
 Current algorithms checked by Sinergym are:</p>
 <table class="docutils align-default">
@@ -135,7 +135,7 @@ Current algorithms checked by Sinergym are:</p>
 </table>
 <p><code class="docutils literal notranslate"><span class="pre">Type</span></code> column has been specified due to its importance about <em>Stable Baselines callback</em> functionality.</p>
 <section id="drl-logger">
-<h2>DRL Logger<a class="headerlink" href="#drl-logger" title="Permalink to this heading"></a></h2>
+<h2>DRL Logger<a class="headerlink" href="#drl-logger" title="Link to this heading"></a></h2>
 <p><a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html">Callbacks</a> are a set of functions that will
 be called at given stages of the training procedure. You can use callbacks to access internal state of the RL model during training.
 It allows one to do monitoring, auto saving, model manipulation, progress bars, …</p>
@@ -314,7 +314,7 @@ With Tensorboard, it’s possible to visualize all DRL training in real time and
 Some features like actions and observations are set up in each timestep. Thus, Off Policy Algorithms record a mean value of whole episode values instead of values steps by steps (see <code class="docutils literal notranslate"><span class="pre">LoggerCallback</span></code> class implementation).</p></li>
 </ul>
 <section id="tensorboard-structure">
-<h3>Tensorboard structure<a class="headerlink" href="#tensorboard-structure" title="Permalink to this heading"></a></h3>
+<h3>Tensorboard structure<a class="headerlink" href="#tensorboard-structure" title="Link to this heading"></a></h3>
 <p>The main structure for Sinergym with Tensorboard is:</p>
 <ul class="simple">
 <li><p><strong>action</strong>: This section has action values during training. When algorithm is On Policy, it will appear <strong>action_simulation</strong> too. This is because algorithms
@@ -348,7 +348,7 @@ in continuous environments has their own output and clipped with gym action spac
 </section>
 </section>
 <section id="how-use">
-<h2>How use<a class="headerlink" href="#how-use" title="Permalink to this heading"></a></h2>
+<h2>How use<a class="headerlink" href="#how-use" title="Link to this heading"></a></h2>
 <p>You can try your own experiments and benefit from this functionality. <a class="reference external" href="https://github.com/jajimer/sinergym/blob/main/examples/DRL_usage.py">sinergym/examples/DRL_usage.py</a>
 is a example code to use it. You can use directly DRL_battery.py directly from your local computer specifying <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> flag in execution.</p>
 <p>The most important information you must keep in mind when you try your own experiments are:</p>
@@ -446,7 +446,7 @@ specify train <code class="docutils literal notranslate"><span class="pre">times
 </div>
 </section>
 <section id="mlflow">
-<h2>Mlflow<a class="headerlink" href="#mlflow" title="Permalink to this heading"></a></h2>
+<h2>Mlflow<a class="headerlink" href="#mlflow" title="Link to this heading"></a></h2>
 <p>As you have been able to see in usage examples, it is using <a class="reference external" href="https://mlflow.org/">Mlflow</a> in order to tracking experiments and recorded them methodically. It is recommended to use it.
 You can start a local server with information stored during the battery of experiments such as initial and ending date of execution, hyperparameters, duration, etc.
 Here is an example:</p>
@@ -525,6 +525,7 @@ Here is an example:</p>
             <dd><a href="../../v2.4.1/pages/deep-reinforcement-learning.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/deep-reinforcement-learning.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/deep-reinforcement-learning.html">v2.5.1</a></dd>
+            <dd><a href="../../v2.5.2/pages/deep-reinforcement-learning.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -535,7 +536,21 @@ Here is an example:</p>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

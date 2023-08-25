@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>16. Getting information about Sinergym environments &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/nbsphinx-code-cells.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/doc_theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="17. Changing an environment registered in Sinergym" href="change_environment.html" />
+    <link rel="prev" title="15. Basic example" href="basic_example.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">5. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">6. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">7. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">8. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">10. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">13. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">14. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">15. Basic example</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">16. Getting information about Sinergym environments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Schedulers-information">16.1. Schedulers information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Environment-Properties">16.2. Environment Properties</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">17. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">18. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">19. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">21. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">22. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">16. </span>Getting information about Sinergym environments</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/notebooks/getting_env_information.nblink.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Getting-information-about-Sinergym-environments">
+<h1><span class="section-number">16. </span>Getting information about Sinergym environments<a class="headerlink" href="#Getting-information-about-Sinergym-environments" title="Link to this heading"></a></h1>
+<p>The Sinergym environments have a extended backend to work with building and weather models, the EnergyPlus engine, Wrappers, etc.</p>
+<p>However, it is very important that users can get some information about this background components from environment interface. This section will show you how to do it.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.common</span> <span class="kn">import</span> <span class="n">export_schedulers_to_excel</span>
+</pre></div>
+</div>
+</div>
+<section id="Schedulers-information">
+<h2><span class="section-number">16.1. </span>Schedulers information<a class="headerlink" href="#Schedulers-information" title="Link to this heading"></a></h2>
+<p>Buildings have a set of schedulers which control the actuators of the building with a predefined rules. In addition to the information available in the log files generated by EnergyPlus, it is possible to consult Sinergym’s reading of the building and use it to see how these schedulers influence the building. Schedulers information is extracted in a Python dictionary and Sinergym can export that information in a excel file. The way to do it is very simple, just load the environment and do the
+next:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
+<span class="n">schedulers</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">schedulers</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">schedulers</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [demo-v1]
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-demo-v1-res1]
+[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35040
+[MODELING] (INFO) : Model Config is correct.
+[ENVIRONMENT] (INFO) : Environment demo-v1 created successfully.
+{&#39;ActSchd&#39;: {&#39;SPACE1-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;People&#39;},
+             &#39;SPACE2-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;People&#39;},
+             &#39;SPACE3-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;People&#39;},
+             &#39;SPACE4-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;People&#39;},
+             &#39;SPACE5-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;People&#39;},
+             &#39;Type&#39;: &#39;Any Number&#39;},
+ &#39;BasinHeaterSched&#39;: {&#39;Main Cooling Coil 1&#39;: {&#39;field_name&#39;: &#39;basin_heater_operating_schedule_name&#39;,
+                                              &#39;table_name&#39;: &#39;Coil:Cooling:DX:TwoSpeed&#39;},
+                      &#39;Type&#39;: &#39;On/Off&#39;},
+ &#39;Clg-SetP-Sch&#39;: {&#39;CoolingSetpoint&#39;: {&#39;field_name&#39;: &#39;setpoint_temperature_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;ThermostatSetpoint:SingleCooling&#39;},
+                  &#39;DualSetPoint&#39;: {&#39;field_name&#39;: &#39;cooling_setpoint_temperature_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ThermostatSetpoint:DualSetpoint&#39;},
+                  &#39;Type&#39;: &#39;Temperature&#39;},
+ &#39;CoolingCoilAvailSched&#39;: {&#39;DX Cooling Coil System 1&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                        &#39;table_name&#39;: &#39;CoilSystem:Cooling:DX&#39;},
+                           &#39;Main Cooling Coil 1&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                   &#39;table_name&#39;: &#39;Coil:Cooling:DX:TwoSpeed&#39;},
+                           &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;EQUIP-1&#39;: {&#39;SPACE1-1 ElecEq 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ElectricEquipment&#39;},
+             &#39;SPACE2-1 ElecEq 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ElectricEquipment&#39;},
+             &#39;SPACE3-1 ElecEq 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ElectricEquipment&#39;},
+             &#39;SPACE4-1 ElecEq 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ElectricEquipment&#39;},
+             &#39;SPACE5-1 ElecEq 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ElectricEquipment&#39;},
+             &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;FanAvailSched&#39;: {&#39;Supply Fan 1&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;Fan:VariableVolume&#39;},
+                   &#39;Type&#39;: &#39;Fraction&#39;,
+                   &#39;VAV Sys 1 Avail&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                       &#39;table_name&#39;: &#39;AvailabilityManager:Scheduled&#39;}},
+ &#39;Htg-SetP-Sch&#39;: {&#39;DualSetPoint&#39;: {&#39;field_name&#39;: &#39;heating_setpoint_temperature_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ThermostatSetpoint:DualSetpoint&#39;},
+                  &#39;HeatingSetpoint&#39;: {&#39;field_name&#39;: &#39;setpoint_temperature_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;ThermostatSetpoint:SingleHeating&#39;},
+                  &#39;Type&#39;: &#39;Temperature&#39;},
+ &#39;INFIL-SCH&#39;: {&#39;SPACE1-1 Infil 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;SPACE2-1 Infil 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;SPACE3-1 Infil 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;SPACE4-1 Infil 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;SPACE5-1 Infil 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;LIGHTS-1&#39;: {&#39;SPACE1-1 Lights 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;Lights&#39;},
+              &#39;SPACE2-1 Lights 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;Lights&#39;},
+              &#39;SPACE3-1 Lights 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;Lights&#39;},
+              &#39;SPACE4-1 Lights 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;Lights&#39;},
+              &#39;SPACE5-1 Lights 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;Lights&#39;},
+              &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;Min OA Sched&#39;: {&#39;OA Controller 1&#39;: {&#39;field_name&#39;: &#39;minimum_outdoor_air_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;Controller:OutdoorAir&#39;},
+                  &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;Min OARequirements Sched&#39;: {&#39;Type&#39;: &#39;Any Number&#39;,
+                              &#39;ZoneMinOARequirements&#39;: {&#39;field_name&#39;: &#39;outdoor_air_schedule_name&#39;,
+                                                        &#39;table_name&#39;: &#39;DesignSpecification:OutdoorAir&#39;}},
+ &#39;OCCUPY-1&#39;: {&#39;SPACE1-1 People 1&#39;: {&#39;field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;People&#39;},
+              &#39;SPACE2-1 People 1&#39;: {&#39;field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;People&#39;},
+              &#39;SPACE3-1 People 1&#39;: {&#39;field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;People&#39;},
+              &#39;SPACE4-1 People 1&#39;: {&#39;field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;People&#39;},
+              &#39;SPACE5-1 People 1&#39;: {&#39;field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;People&#39;},
+              &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;PlenumClg-SetP-Sch&#39;: {&#39;PlenumCoolingSetpoint&#39;: {&#39;field_name&#39;: &#39;setpoint_temperature_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ThermostatSetpoint:SingleCooling&#39;},
+                        &#39;Type&#39;: &#39;Temperature&#39;},
+ &#39;PlenumHtg-SetP-Sch&#39;: {&#39;PlenumHeatingSetpoint&#39;: {&#39;field_name&#39;: &#39;setpoint_temperature_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ThermostatSetpoint:SingleHeating&#39;},
+                        &#39;Type&#39;: &#39;Temperature&#39;},
+ &#39;ReheatCoilAvailSched&#39;: {&#39;Main heating Coil 1&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;Coil:Heating:Fuel&#39;},
+                          &#39;SPACE1-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;SPACE1-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Fuel&#39;},
+                          &#39;SPACE2-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;SPACE2-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Fuel&#39;},
+                          &#39;SPACE3-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;SPACE3-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Fuel&#39;},
+                          &#39;SPACE4-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;SPACE4-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Fuel&#39;},
+                          &#39;SPACE5-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;SPACE5-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Fuel&#39;},
+                          &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;Seasonal Reset Supply Air Temp Sch&#39;: {&#39;Supply Air Temp Manager 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                                                      &#39;table_name&#39;: &#39;SetpointManager:Scheduled&#39;},
+                                        &#39;Type&#39;: &#39;Temperature&#39;},
+ &#39;ShadeTransSch&#39;: {&#39;Main South Overhang&#39;: {&#39;field_name&#39;: &#39;transmittance_schedule_name&#39;,
+                                           &#39;table_name&#39;: &#39;Shading:Zone:Detailed&#39;},
+                   &#39;South Door Overhang&#39;: {&#39;field_name&#39;: &#39;transmittance_schedule_name&#39;,
+                                           &#39;table_name&#39;: &#39;Shading:Zone:Detailed&#39;},
+                   &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;Zone Control Type Sched&#39;: {&#39;SPACE1-1 Control&#39;: {&#39;field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;SPACE2-1 Control&#39;: {&#39;field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;SPACE3-1 Control&#39;: {&#39;field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;SPACE4-1 Control&#39;: {&#39;field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;SPACE5-1 Control&#39;: {&#39;field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;Type&#39;: &#39;Control Type&#39;}}
+</pre></div></div>
+</div>
+<p>If you want to get an excel with that information, there is a function to do it:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">export_schedulers_to_excel</span><span class="p">(</span><span class="n">schedulers</span><span class="o">=</span><span class="n">schedulers</span><span class="p">,</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;./example.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Environment-Properties">
+<h2><span class="section-number">16.2. </span>Environment Properties<a class="headerlink" href="#Environment-Properties" title="Link to this heading"></a></h2>
+<p>As we have mentioned, some environments features are made in the gym interface layer, but more information is calculated in the backend. Then, Sinergym environments has several properties in order to consult this information. For more information, visit the documentation, but here there are some examples:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;What is all the variables names which conform my Gymnasium observation?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_variables</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;What is all the variables names which conform my Gymnasium action?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_variables</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Is there an episode executing?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">is_running</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;What is the episode run period?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">runperiod</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Episode length in seconds?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">episode_length</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;How many steps have an episode?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">timestep_per_episode</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;How often do steps changed?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">step_size</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;What are the available zones?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">zone_names</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Where is the output path of Sinergym environment?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">experiment_path</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Where is the building used?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">building_path</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Where is the weather used?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">weather_path</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+What is all the variables names which conform my Gymnasium observation?: [&#39;month&#39;, &#39;day_of_month&#39;, &#39;hour&#39;, &#39;outdoor_temperature&#39;, &#39;outdoor_humidity&#39;, &#39;wind_speed&#39;, &#39;wind_direction&#39;, &#39;diffuse_solar_radiation&#39;, &#39;direct_solar_radiation&#39;, &#39;htg_setpoint&#39;, &#39;clg_setpoint&#39;, &#39;air_temperature&#39;, &#39;air_humidity&#39;, &#39;people_occupant&#39;, &#39;co2_emission&#39;, &#39;HVAC_electricity_demand_rate&#39;, &#39;total_electricity_HVAC&#39;]
+What is all the variables names which conform my Gymnasium action?: [&#39;Heating_Setpoint_RL&#39;, &#39;Cooling_Setpoint_RL&#39;]
+Is there an episode executing?: False
+What is the episode run period?: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
+Episode length in seconds?: 31536000.0
+How many steps have an episode?: 35040
+How often do steps changed?: 900.0
+What are the available zones?: [&#39;PLENUM-1&#39;, &#39;SPACE1-1&#39;, &#39;SPACE2-1&#39;, &#39;SPACE3-1&#39;, &#39;SPACE4-1&#39;, &#39;SPACE5-1&#39;]
+Where is the output path of Sinergym environment?: /workspaces/sinergym/examples/Eplus-env-demo-v1-res1
+Where is the building used?: /workspaces/sinergym/sinergym/data/buildings/5ZoneAutoDXVAV.epJSON
+Where is the weather used?: /workspaces/sinergym/sinergym/data/weather/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="basic_example.html" class="btn btn-neutral float-left" title="15. Basic example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="change_environment.html" class="btn btn-neutral float-right" title="17. Changing an environment registered in Sinergym" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: main
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../../v1.7.2/index.html">v1.7.2</a></dd>
+            <dd><a href="../../../v1.7.5/index.html">v1.7.5</a></dd>
+            <dd><a href="../../../v1.7.6/index.html">v1.7.6</a></dd>
+            <dd><a href="../../../v1.7.7/index.html">v1.7.7</a></dd>
+            <dd><a href="../../../v1.7.8/index.html">v1.7.8</a></dd>
+            <dd><a href="../../../v1.8.2/index.html">v1.8.2</a></dd>
+            <dd><a href="../../../v1.8.4/index.html">v1.8.4</a></dd>
+            <dd><a href="../../../v1.9.1/index.html">v1.9.1</a></dd>
+            <dd><a href="../../../v1.9.5/index.html">v1.9.5</a></dd>
+            <dd><a href="../../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../../v2.1.2/index.html">v2.1.2</a></dd>
+            <dd><a href="../../../v2.1.3/index.html">v2.1.3</a></dd>
+            <dd><a href="../../../v2.1.5/index.html">v2.1.5</a></dd>
+            <dd><a href="../../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../../v2.2.3/index.html">v2.2.3</a></dd>
+            <dd><a href="../../../v2.2.5/index.html">v2.2.5</a></dd>
+            <dd><a href="../../../v2.2.9/index.html">v2.2.9</a></dd>
+            <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
+            <dd><a href="../../../v2.3.1/index.html">v2.3.1</a></dd>
+            <dd><a href="../../../v2.3.2/index.html">v2.3.2</a></dd>
+            <dd><a href="../../../v2.3.3/index.html">v2.3.3</a></dd>
+            <dd><a href="../../../v2.3.4/index.html">v2.3.4</a></dd>
+            <dd><a href="../../../v2.4.1/index.html">v2.4.1</a></dd>
+            <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../../v2.5.1/index.html">v2.5.1</a></dd>
+            <dd><a href="../../../v2.5.2/index.html">v2.5.2</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="getting_env_information.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>

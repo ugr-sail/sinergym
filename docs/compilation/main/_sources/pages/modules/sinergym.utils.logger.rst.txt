@@ -20,6 +20,7 @@
       :template: custom-class-template.rst               
    
       CSVLogger
+      CustomFormatter
       Logger
       WandBOutputFormat
    

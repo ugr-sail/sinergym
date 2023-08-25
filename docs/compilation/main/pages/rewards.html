@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -32,7 +32,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -74,12 +74,13 @@
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">16. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">17. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">18. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">20. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">21. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">16. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">17. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">18. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">19. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">21. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">22. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -90,7 +91,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sinergym</a>
       </nav>
@@ -111,17 +112,16 @@
            <div itemprop="articleBody">
              
   <section id="rewards">
-<h1><span class="section-number">6. </span>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">6. </span>Rewards<a class="headerlink" href="#rewards" title="Link to this heading"></a></h1>
 <p>Defining a reward function is one of the most important things in reinforcement learning.
-Consequently, <em>Sinergym</em> allows you to use pre-implemented reward functions or to define your
-own reward functions(see section bellow).</p>
-<p>Sinergym’s predefined reward functions are developed as multi-objective, where both energy
-consumption and thermal discomfort are normalized and add together with different weights.
+Consequently, <em>Sinergym</em> allows to use pre-implemented reward functions or to define your
+own reward functions (see section bellow).</p>
+<p><em>Sinergym</em>’s predefined reward functions are developed as <strong>multi-objective</strong>, where both <em>energy
+consumption</em> and <em>thermal discomfort</em> are normalized and added together with different weights.
 These rewards are <strong>always negative</strong>, meaning that perfect behavior has a cumulative
 reward of 0. Notice also that there are two temperature comfort ranges defined,
 one for the summer period and other for the winter period. The weights of each
-term in the reward allow to adjust the importance of each aspect when evaluating
-the environments.</p>
+term in the reward allow to adjust the importance of each aspect when environments are evaluated.</p>
 <div class="math notranslate nohighlight">
 \[r_t = - \omega \ \lambda_P \ P_t - (1 - \omega) \ \lambda_T \ (|T_t - T_{up}| + |T_t - T_{low}|)\]</div>
 <p>Where <span class="math notranslate nohighlight">\(P_t\)</span> represents power consumption; <span class="math notranslate nohighlight">\(T_t\)</span> is the current indoor temperature;
@@ -136,7 +136,7 @@ respectively.</p>
 proportional concordance between energy and comfort penalties. If you are
 using other buildings, be careful with these constants or update them.</p>
 </div>
-<p>This is the main idea of reward system in Sinergym. However, depending some details,
+<p>This is the main idea of reward system in <em>Sinergym</em>. However, depending some details,
 different kinds of reward function is developed:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">LinearReward</span></code> implements a <strong>linear reward</strong> function where the discomfort is calculated
@@ -180,18 +180,8 @@ Defaults to 1.0.</p></li>
 However, they may have different parameters depending on the
 one being used.</p>
 </div>
-<p>By default, all environments use <code class="docutils literal notranslate"><span class="pre">LinearReward</span></code> with default parameters.
-But you can change this configuration using <code class="docutils literal notranslate"><span class="pre">gym.make()</span></code> as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="n">ExpReward</span>
-
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-discrete-stochastic-mixed-v1&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">ExpReward</span><span class="p">,</span> <span class="n">reward_kwargs</span> <span class="o">=</span> <span class="p">{</span>
-                                                                        <span class="s1">&#39;temperature_variable&#39;</span><span class="p">:</span> <span class="s1">&#39;Zone Air Temperature (SPACE1-1)&#39;</span><span class="p">,</span>
-                                                                        <span class="s1">&#39;energy_variable&#39;</span><span class="p">:</span> <span class="s1">&#39;Facility Total HVAC Electricity Demand Rate (Whole Building)&#39;</span><span class="p">,</span>
-                                                                        <span class="s1">&#39;range_comfort_winter&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
-                                                                        <span class="s1">&#39;range_comfort_summer&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">),</span>
-                                                                        <span class="s1">&#39;energy_weight&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
-</pre></div>
-</div>
+<p>By default, all environments use <code class="docutils literal notranslate"><span class="pre">LinearReward</span></code> with default parameters. If you want to change this, see
+an example in <a class="reference internal" href="notebooks/change_environment.html#Adding-a-new-reward"><span class="std std-ref">Adding a new reward</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>By default, reward class will return the reward value and the terms used in its calculation.
@@ -201,14 +191,10 @@ This terms will be added to info dict in environment automatically.</p>
 <p class="admonition-title">Warning</p>
 <p>When specifying a different reward with <cite>gym.make</cite> than the
 default environment ID, it is very important to set the <cite>reward_kwargs</cite>
-that are required and therefore do not have a default value.
-In the rewards we have defined it is required:
-<strong>temperature_variable(s)</strong>, <strong>energy_variable</strong>,
-<strong>range_comfort_winter</strong>, <strong>range_comfort_summer</strong>.
-The rest of them have default values and it is not necessary to specify.</p>
+that are required and therefore do not have a default value.</p>
 </div>
 <section id="custom-rewards">
-<h2><span class="section-number">6.1. </span>Custom Rewards<a class="headerlink" href="#custom-rewards" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">6.1. </span>Custom Rewards<a class="headerlink" href="#custom-rewards" title="Link to this heading"></a></h2>
 <p>It is also pretty simple to define your <strong>own classes</strong>. For example, imagine you want
 a reward signal which returns always -1 (however we do not recommend using it
 for training agents).
@@ -294,6 +280,7 @@ The below code implements this.</p>
             <dd><a href="../../v2.4.1/pages/rewards.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/rewards.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/rewards.html">v2.5.1</a></dd>
+            <dd><a href="../../v2.5.2/pages/rewards.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -304,7 +291,21 @@ The below code implements this.</p>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

@@ -19,6 +19,7 @@
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.action
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.class_name
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.close
+      ~OfficeGridStorageSmoothingActionConstraintsWrapper.get_wrapper_attr
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.render
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.reset
       ~OfficeGridStorageSmoothingActionConstraintsWrapper.step

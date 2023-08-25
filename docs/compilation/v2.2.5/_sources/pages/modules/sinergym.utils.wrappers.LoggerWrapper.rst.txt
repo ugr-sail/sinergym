@@ -20,6 +20,7 @@
       ~LoggerWrapper.class_name
       ~LoggerWrapper.close
       ~LoggerWrapper.deactivate_logger
+      ~LoggerWrapper.get_wrapper_attr
       ~LoggerWrapper.render
       ~LoggerWrapper.reset
       ~LoggerWrapper.step

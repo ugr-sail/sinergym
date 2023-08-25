@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -83,7 +83,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sinergym</a>
       </nav>
@@ -104,7 +104,7 @@
            <div itemprop="articleBody">
              
   <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
 <p>To install <em>sinergym</em>, follow these steps:</p>
 <ul class="simple">
 <li><p>First, it is recommended to create a virtual environment. You can do so by:</p></li>
@@ -121,7 +121,7 @@ $<span class="w"> </span><span class="nb">source</span><span class="w"> </span>e
 </pre></div>
 </div>
 <section id="docker-container">
-<h2>Docker container<a class="headerlink" href="#docker-container" title="Permalink to this heading"></a></h2>
+<h2>Docker container<a class="headerlink" href="#docker-container" title="Link to this heading"></a></h2>
 <p>We include a <strong>Dockerfile</strong> for installing all dependencies and setting
 up the image for running <em>sinergym</em>.</p>
 <p>By default, Dockerfile will do <cite>pip install -e .[extras]</cite>, if you want to install a diffetent setup, you will have to do in root repository:</p>
@@ -146,10 +146,10 @@ up the image for running <em>sinergym</em>.</p>
 </div>
 </section>
 <section id="manual-installation">
-<h2>Manual installation<a class="headerlink" href="#manual-installation" title="Permalink to this heading"></a></h2>
+<h2>Manual installation<a class="headerlink" href="#manual-installation" title="Link to this heading"></a></h2>
 <p>If you prefer installing <em>sinergym</em> manually, follow the steps below:</p>
 <section id="install-energyplus-9-5-0">
-<h3>1. Install EnergyPlus 9.5.0<a class="headerlink" href="#install-energyplus-9-5-0" title="Permalink to this heading"></a></h3>
+<h3>1. Install EnergyPlus 9.5.0<a class="headerlink" href="#install-energyplus-9-5-0" title="Link to this heading"></a></h3>
 <p>Firstly, install EnergyPlus. Currently it has been update compability to 9.5.0 and it has
 been tested, but code may also work with other versions. Sinergym ensure this support:</p>
 <table class="docutils align-default">
@@ -174,7 +174,7 @@ to install the software. Once installed, a folder called
 <code class="docutils literal notranslate"><span class="pre">Energyplus-9-5-0</span></code> should appear in the selected location.</p>
 </section>
 <section id="install-bcvtb-software">
-<h3>1. Install BCVTB software<a class="headerlink" href="#install-bcvtb-software" title="Permalink to this heading"></a></h3>
+<h3>1. Install BCVTB software<a class="headerlink" href="#install-bcvtb-software" title="Link to this heading"></a></h3>
 <p>Follow the instructions
 <a class="reference external" href="https://simulationresearch.lbl.gov/bcvtb/Download">here</a> for
 installing BCVTB software. Another option is to copy the <code class="docutils literal notranslate"><span class="pre">bcvtb</span></code>
@@ -182,13 +182,13 @@ folder from <a class="reference external" href="https://github.com/zhangzhizza/G
 repository</a>.</p>
 </section>
 <section id="set-environment-variables">
-<h3>3. Set environment variables<a class="headerlink" href="#set-environment-variables" title="Permalink to this heading"></a></h3>
+<h3>3. Set environment variables<a class="headerlink" href="#set-environment-variables" title="Link to this heading"></a></h3>
 <p>Two environment variables must be set: <code class="docutils literal notranslate"><span class="pre">EPLUS_PATH</span></code> and
 <code class="docutils literal notranslate"><span class="pre">BCVTB_PATH</span></code>, with the locations where EnergyPlus and BCVTB are
 installed respectively.</p>
 </section>
 <section id="install-the-package">
-<h3>4. Install the package<a class="headerlink" href="#install-the-package" title="Permalink to this heading"></a></h3>
+<h3>4. Install the package<a class="headerlink" href="#install-the-package" title="Link to this heading"></a></h3>
 <p>Finally, <em>sinergym</em> can be installed by running this command at the repo
 root folder:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
@@ -206,9 +206,9 @@ It’s possible to select a subset of these libraries instead of ‘extras’ ta
 </section>
 </section>
 <section id="cloud-computing">
-<h2>Cloud Computing<a class="headerlink" href="#cloud-computing" title="Permalink to this heading"></a></h2>
+<h2>Cloud Computing<a class="headerlink" href="#cloud-computing" title="Link to this heading"></a></h2>
 <section id="first-steps">
-<h3>1. First steps<a class="headerlink" href="#first-steps" title="Permalink to this heading"></a></h3>
+<h3>1. First steps<a class="headerlink" href="#first-steps" title="Link to this heading"></a></h3>
 <p>You can run your experiments in cloud too. We are using <a class="reference external" href="https://cloud.google.com/">Google Cloud</a> in order to make it possible. Our team aim to set up
 a managed instance group (<a class="reference external" href="https://cloud.google.com/compute/docs/instance-groups/getting-info-about-migs?hl=es-419">MIG</a>) in which execute our Sinergym container.</p>
 <p>Firstly, it is necessary that you have a Google Cloud account set up and SDK configured (auth, invoicing, project ID, etc). If you don’t have this, it is recommended to check <a class="reference external" href="https://cloud.google.com/sdk/docs/install">their documentation</a>.
@@ -242,7 +242,7 @@ On the other hand, we are going to use specifically this services in <strong>Goo
 <a class="reference internal image-reference" href="../_images/service-account-APIs.png"><img alt="API's required for cloud build." class="align-center" src="../_images/service-account-APIs.png" style="width: 800px;" /></a>
 </section>
 <section id="use-our-container-in-google-cloud-platform">
-<h3>1. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Permalink to this heading"></a></h3>
+<h3>1. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Link to this heading"></a></h3>
 <p>Our Sinergym container is uploaded in container registry as a public one currently. You can use it <strong>locally</strong>:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>gcr.io/sinergym/sinergym:latest
 </pre></div>
@@ -272,7 +272,7 @@ This derive in a silence error for Google Cloud Build (and you would need to che
 </div>
 </section>
 <section id="use-your-own-container">
-<h3>1. Use your own container<a class="headerlink" href="#use-your-own-container" title="Permalink to this heading"></a></h3>
+<h3>1. Use your own container<a class="headerlink" href="#use-your-own-container" title="Link to this heading"></a></h3>
 <p>Suppose you have this repository forked and you want to upload your own container on Google Cloud and to use it. You can use <strong>cloudbuild.yaml</strong>
 with our <strong>Dockerfile</strong> for this purpose:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">steps</span><span class="p">:</span>
@@ -354,7 +354,7 @@ variable by Google Cloud. When build begins <em>“$PROJECT_ID”</em> is set to
 </div>
 </section>
 <section id="create-your-vm-or-mig">
-<h3>4. Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Permalink to this heading"></a></h3>
+<h3>4. Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Link to this heading"></a></h3>
 <p>To create a <strong>VM</strong> that uses this container, here there is an example:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>create-with-container<span class="w"> </span>sinergym<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--container-image<span class="w"> </span>gcr.io/sinergym/sinergym<span class="w"> </span><span class="se">\</span>
@@ -409,7 +409,7 @@ You can think that is an error, Google cloud should notify this. If this issue h
 </div>
 </section>
 <section id="init-your-vm">
-<h3>1. Init your VM<a class="headerlink" href="#init-your-vm" title="Permalink to this heading"></a></h3>
+<h3>1. Init your VM<a class="headerlink" href="#init-your-vm" title="Link to this heading"></a></h3>
 <p>Your virtual machine is ready! To connect you can use ssh (see <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh">gcloud-ssh</a>):</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>&lt;machine-name&gt;
 </pre></div>
@@ -489,6 +489,7 @@ You can think that is an error, Google cloud should notify this. If this issue h
             <dd><a href="../../v2.4.1/pages/installation.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/installation.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/installation.html">v2.5.1</a></dd>
+            <dd><a href="../../v2.5.2/pages/installation.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -499,7 +500,21 @@ You can think that is an error, Google cloud should notify this. If this issue h
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

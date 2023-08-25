@@ -13,16 +13,16 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.common.create_variable_weather" href="sinergym.utils.common.create_variable_weather.html" />
+    <link rel="next" title="sinergym.utils.common.eppy_element_to_dict" href="sinergym.utils.common.eppy_element_to_dict.html" />
     <link rel="prev" title="sinergym.utils.callbacks.LoggerEvalCallback" href="sinergym.utils.callbacks.LoggerEvalCallback.html" /> 
 </head>
 
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -69,12 +69,13 @@
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">16. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">17. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">18. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">20. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">21. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/getting_env_information.html">16. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">17. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">18. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">19. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">21. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">22. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -82,9 +83,8 @@
 <li class="toctree-l2 current"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">sinergym.utils.common</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.create_variable_weather.html">sinergym.utils.common.create_variable_weather</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.eppy_element_to_dict.html">sinergym.utils.common.eppy_element_to_dict</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.export_actuators_to_excel.html">sinergym.utils.common.export_actuators_to_excel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.export_schedulers_to_excel.html">sinergym.utils.common.export_schedulers_to_excel</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_delta_seconds.html">sinergym.utils.common.get_delta_seconds</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_record_keys.html">sinergym.utils.common.get_record_keys</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_season_comfort_range.html">sinergym.utils.common.get_season_comfort_range</a></li>
@@ -114,7 +114,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">sinergym</a>
       </nav>
@@ -136,37 +136,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-sinergym.utils.common">
-<span id="sinergym-utils-common"></span><h1>sinergym.utils.common<a class="headerlink" href="#module-sinergym.utils.common" title="Permalink to this heading"></a></h1>
-<p>Common utilities.</p>
+  <section id="sinergym-utils-common">
+<h1>sinergym.utils.common<a class="headerlink" href="#sinergym-utils-common" title="Link to this heading"></a></h1>
+<p id="module-sinergym.utils.common">Common utilities.</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.create_variable_weather.html#sinergym.utils.common.create_variable_weather" title="sinergym.utils.common.create_variable_weather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_variable_weather</span></code></a>(weather_data, ...[, ...])</p></td>
-<td><p>Create a new weather file using Ornstein-Uhlenbeck process.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.eppy_element_to_dict.html#sinergym.utils.common.eppy_element_to_dict" title="sinergym.utils.common.eppy_element_to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eppy_element_to_dict</span></code></a>(element)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.eppy_element_to_dict.html#sinergym.utils.common.eppy_element_to_dict" title="sinergym.utils.common.eppy_element_to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eppy_element_to_dict</span></code></a>(element)</p></td>
 <td><p>Given a eppy element, this function will create a dictionary using the name as key and the rest of fields as value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.export_actuators_to_excel.html#sinergym.utils.common.export_actuators_to_excel" title="sinergym.utils.common.export_actuators_to_excel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_actuators_to_excel</span></code></a>(actuators, path)</p></td>
-<td><p>Given a python dictionary with actuators with Config:_get_actuators() format, this method export that information in a excel file</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.export_schedulers_to_excel.html#sinergym.utils.common.export_schedulers_to_excel" title="sinergym.utils.common.export_schedulers_to_excel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_schedulers_to_excel</span></code></a>(schedulers, path)</p></td>
+<td><p>Given a python dictionary with schedulers from modeling format, this method export that information in a excel file</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.get_delta_seconds.html#sinergym.utils.common.get_delta_seconds" title="sinergym.utils.common.get_delta_seconds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_delta_seconds</span></code></a>(st_year, st_mon, st_day, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.get_delta_seconds.html#sinergym.utils.common.get_delta_seconds" title="sinergym.utils.common.get_delta_seconds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_delta_seconds</span></code></a>(st_year, st_mon, st_day, ...)</p></td>
 <td><p>Returns the delta seconds between st year:st mon:st day:0:0:0 and end year:end mon:end day:24:0:0.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.get_record_keys.html#sinergym.utils.common.get_record_keys" title="sinergym.utils.common.get_record_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_record_keys</span></code></a>(record)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.get_record_keys.html#sinergym.utils.common.get_record_keys" title="sinergym.utils.common.get_record_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_record_keys</span></code></a>(record)</p></td>
 <td><p>Given an opyplus Epm Record (one element from opyplus.epm object) this function returns list of keys (opyplus hasn't got this functionality explicitly)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.get_season_comfort_range.html#sinergym.utils.common.get_season_comfort_range" title="sinergym.utils.common.get_season_comfort_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_season_comfort_range</span></code></a>(year, month, day)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.get_season_comfort_range.html#sinergym.utils.common.get_season_comfort_range" title="sinergym.utils.common.get_season_comfort_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_season_comfort_range</span></code></a>(year, month, day)</p></td>
 <td><p>Get comfort temperature range depending on season.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.is_wrapped.html#sinergym.utils.common.is_wrapped" title="sinergym.utils.common.is_wrapped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_wrapped</span></code></a>(env, wrapper_class)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.is_wrapped.html#sinergym.utils.common.is_wrapped" title="sinergym.utils.common.is_wrapped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_wrapped</span></code></a>(env, wrapper_class)</p></td>
 <td><p>Check if a given environment has been wrapped with a given wrapper.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.ranges_getter.html#sinergym.utils.common.ranges_getter" title="sinergym.utils.common.ranges_getter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ranges_getter</span></code></a>(output_path[, last_result])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.ranges_getter.html#sinergym.utils.common.ranges_getter" title="sinergym.utils.common.ranges_getter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ranges_getter</span></code></a>(output_path[, last_result])</p></td>
 <td><p>Given a path with simulations outputs, this function is used to extract max and min absolute values of all episodes in each variable.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.common.unwrap_wrapper.html#sinergym.utils.common.unwrap_wrapper" title="sinergym.utils.common.unwrap_wrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrap_wrapper</span></code></a>(env, wrapper_class)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.common.unwrap_wrapper.html#sinergym.utils.common.unwrap_wrapper" title="sinergym.utils.common.unwrap_wrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrap_wrapper</span></code></a>(env, wrapper_class)</p></td>
 <td><p>Retrieve a <code class="docutils literal notranslate"><span class="pre">VecEnvWrapper</span></code> object by recursively searching.</p></td>
 </tr>
 </tbody>
@@ -178,7 +175,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="sinergym.utils.callbacks.LoggerEvalCallback.html" class="btn btn-neutral float-left" title="sinergym.utils.callbacks.LoggerEvalCallback" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.common.create_variable_weather.html" class="btn btn-neutral float-right" title="sinergym.utils.common.create_variable_weather" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.common.eppy_element_to_dict.html" class="btn btn-neutral float-right" title="sinergym.utils.common.eppy_element_to_dict" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -236,6 +233,7 @@
             <dd><a href="../../../v2.4.1/pages/modules/sinergym.utils.common.html">v2.4.1</a></dd>
             <dd><a href="../../../v2.5.0/pages/modules/sinergym.utils.common.html">v2.5.0</a></dd>
             <dd><a href="../../../v2.5.1/pages/modules/sinergym.utils.common.html">v2.5.1</a></dd>
+            <dd><a href="../../../v2.5.2/pages/modules/sinergym.utils.common.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -246,7 +244,21 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -106,7 +106,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sinergym</a>
       </nav>
@@ -127,7 +127,7 @@
            <div itemprop="articleBody">
              
   <section id="environments">
-<h1><span class="section-number">5. </span>Environments<a class="headerlink" href="#environments" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">5. </span>Environments<a class="headerlink" href="#environments" title="Link to this heading"></a></h1>
 <p>As mentioned in introduction, Sinergym follows the next structure:</p>
 <a class="reference internal image-reference" href="../_images/sinergym_diagram.png"><img alt="Sinergym backend" class="align-center" src="../_images/sinergym_diagram.png" style="width: 800px;" /></a>
 <div class="line-block">
@@ -143,7 +143,7 @@ via BCVTB, which provide the socket in order to parse the information in EnergyP
 <div class="line"><br /></div>
 </div>
 <section id="environments-list">
-<h2><span class="section-number">5.1. </span>Environments List<a class="headerlink" href="#environments-list" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">5.1. </span>Environments List<a class="headerlink" href="#environments-list" title="Link to this heading"></a></h2>
 <p>The <strong>list of available environments</strong> is the following:</p>
 <table class="docutils align-default">
 <thead>
@@ -592,7 +592,7 @@ please, visit sections <a class="reference internal" href="buildings.html#buildi
 </div>
 </section>
 <section id="available-parameters">
-<h2><span class="section-number">5.2. </span>Available Parameters<a class="headerlink" href="#available-parameters" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">5.2. </span>Available Parameters<a class="headerlink" href="#available-parameters" title="Link to this heading"></a></h2>
 <p>With the <strong>environment constructor</strong> we can configure the complete <strong>context</strong> of our environment
 for experimentation, either starting from one predefined by <em>Sinergym</em> shown in the
 table above or creating a new one.</p>
@@ -743,7 +743,7 @@ table above or creating a new one.</p>
 </div>
 <p>We will show which <strong>parameters</strong> are available and what their function is.</p>
 <section id="idf-file">
-<h3><span class="section-number">5.2.1. </span>IDF file<a class="headerlink" href="#idf-file" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">5.2.1. </span>IDF file<a class="headerlink" href="#idf-file" title="Link to this heading"></a></h3>
 <p>The parameter <em>idf_file</em> is the <em>IDF</em> (Intermediate Data Format) file name
 where <em>Energyplus</em> building model is defined.</p>
 <p><em>Sinergym</em> initially provides <strong>“free” buildings</strong>. This means that the <em>IDF</em> does not have the external
@@ -756,7 +756,7 @@ have mentioned.</p>
 and used by the simulator of that execution.</p>
 </section>
 <section id="epw-file">
-<h3><span class="section-number">5.2.2. </span>EPW file<a class="headerlink" href="#epw-file" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">5.2.2. </span>EPW file<a class="headerlink" href="#epw-file" title="Link to this heading"></a></h3>
 <p>The parameter <em>weather_file</em> is the <em>EPW</em> (EnergyPlus Weather) file name where <strong>climate conditions</strong> during
 a year is defined.</p>
 <p>Depending on the climate that is set for the environment, some of building model components need to be <strong>modified</strong>
@@ -769,7 +769,7 @@ randomly. This is done in order to increase the complexity in the environment wh
 (section <a class="reference internal" href="#weather-variability"><span class="std std-ref">Weather Variability</span></a> is defined), the <em>EPW</em> stored will have that noise included.</p>
 </section>
 <section id="weather-variability">
-<h3><span class="section-number">5.2.3. </span>Weather Variability<a class="headerlink" href="#weather-variability" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">5.2.3. </span>Weather Variability<a class="headerlink" href="#weather-variability" title="Link to this heading"></a></h3>
 <p><strong>Weather variability</strong> can be integrated into an environment using <em>weather_variability</em> parameter.</p>
 <p>It implements the <a class="reference external" href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.4200&amp;rep=rep1&amp;type=pdf">Ornstein-Uhlenbeck process</a>
 in order to introduce <strong>noise</strong> to the weather data episode to episode. Then, parameter established is a Python tuple of three variables
@@ -777,12 +777,12 @@ in order to introduce <strong>noise</strong> to the weather data episode to epis
 <a class="reference internal image-reference" href="../_images/ornstein_noise.png"><img alt="Ornstein-Uhlenbeck process noise with different hyperparameters." class="align-center" src="../_images/ornstein_noise.png" style="width: 1429.6000000000001px; height: 757.6px;" /></a>
 </section>
 <section id="reward">
-<h3><span class="section-number">5.2.4. </span>Reward<a class="headerlink" href="#reward" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">5.2.4. </span>Reward<a class="headerlink" href="#reward" title="Link to this heading"></a></h3>
 <p>The parameter called <em>reward</em> is used to define the <strong>reward class</strong> (see section <a class="reference internal" href="rewards.html#rewards"><span class="std std-ref">Rewards</span></a>)
 that the environment is going to use to calculate and return reward values each timestep.</p>
 </section>
 <section id="reward-kwargs">
-<h3><span class="section-number">5.2.5. </span>Reward Kwargs<a class="headerlink" href="#reward-kwargs" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">5.2.5. </span>Reward Kwargs<a class="headerlink" href="#reward-kwargs" title="Link to this heading"></a></h3>
 <p>Depending on the reward class that is specified to the environment, it may have <strong>different parameters</strong>
 depending on its type. In addition, if a user creates a new custom reward, it can have new parameters as well.</p>
 <p>Moreover, depending on the building being used (<em>IDF</em> file) for the environment, the values of these reward parameters may
@@ -792,12 +792,12 @@ will be used to calculate the reward.</p>
 that they are needed. For more information about rewards, visit section <a class="reference internal" href="rewards.html#rewards"><span class="std std-ref">Rewards</span></a>.</p>
 </section>
 <section id="action-repeat">
-<h3><span class="section-number">5.2.6. </span>Action Repeat<a class="headerlink" href="#action-repeat" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">5.2.6. </span>Action Repeat<a class="headerlink" href="#action-repeat" title="Link to this heading"></a></h3>
 <p>The parameter called <em>act_repeat</em> is the number of timesteps that an <strong>action is repeated</strong> in the simulator,
 regardless of the actions it receives during that repetition interval. Default value is 1.</p>
 </section>
 <section id="maximum-episode-data-stored-in-sinergym-output">
-<h3><span class="section-number">5.2.7. </span>Maximum Episode Data Stored in Sinergym Output<a class="headerlink" href="#maximum-episode-data-stored-in-sinergym-output" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">5.2.7. </span>Maximum Episode Data Stored in Sinergym Output<a class="headerlink" href="#maximum-episode-data-stored-in-sinergym-output" title="Link to this heading"></a></h3>
 <p><em>Sinergym</em> stores all the output of an experiment in a folder organized in sub-folders for each episode
 (see section <a class="reference internal" href="output.html#output-format"><span class="std std-ref">Output format</span></a> for more information). Depending on the value of the parameter <em>max_ep_data_store_num</em>,
 the experiment will store the output data of the <strong>last n episodes</strong> set, where <strong>n</strong> is the value of the parameter.</p>
@@ -805,7 +805,7 @@ the experiment will store the output data of the <strong>last n episodes</strong
 the summary data of each episode.</p>
 </section>
 <section id="observation-action-spaces">
-<h3><span class="section-number">5.2.8. </span>Observation/action spaces<a class="headerlink" href="#observation-action-spaces" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">5.2.8. </span>Observation/action spaces<a class="headerlink" href="#observation-action-spaces" title="Link to this heading"></a></h3>
 <p>Structure of observation and action space is defined in Environment constructor directly.
 This allows for a <strong>dynamic definition</strong> of these spaces. Let’s see the fields required to do it:</p>
 <ul>
@@ -892,11 +892,11 @@ a tool with its own identity.</p>
 </div>
 </section>
 <section id="environment-name">
-<h3><span class="section-number">5.2.9. </span>Environment name<a class="headerlink" href="#environment-name" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">5.2.9. </span>Environment name<a class="headerlink" href="#environment-name" title="Link to this heading"></a></h3>
 <p>The parameter <em>env_name</em> is used to define the <strong>name of working directory</strong> generation.</p>
 </section>
 <section id="action-definition">
-<h3><span class="section-number">5.2.10. </span>Action definition<a class="headerlink" href="#action-definition" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">5.2.10. </span>Action definition<a class="headerlink" href="#action-definition" title="Link to this heading"></a></h3>
 <p>Creating a <strong>new external interface</strong> to control different parts of a building is not a trivial task,
 it requires certain changes in the building model (<em>IDF</em>), configuration files for the external
 interface (<code class="docutils literal notranslate"><span class="pre">variables.cfg</span></code>), etc in order to control it.</p>
@@ -942,7 +942,7 @@ a pdf with such information in a better presented form to study those things tha
 For an example about how to use it, see <a class="reference internal" href="notebooks/change_environment.html#Getting-information-about-building-model-with-Sinergym"><span class="std std-ref">Getting information about building model with Sinergym</span></a>.</p>
 </section>
 <section id="extra-configuration">
-<h3><span class="section-number">5.2.11. </span>Extra configuration<a class="headerlink" href="#extra-configuration" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">5.2.11. </span>Extra configuration<a class="headerlink" href="#extra-configuration" title="Link to this heading"></a></h3>
 <p>Some parameters directly associated with the simulator can be set as extra configuration
 as well, such as <code class="docutils literal notranslate"><span class="pre">people</span> <span class="pre">occupant</span></code>, <code class="docutils literal notranslate"><span class="pre">timesteps</span> <span class="pre">per</span> <span class="pre">simulation</span> <span class="pre">hour</span></code>, <code class="docutils literal notranslate"><span class="pre">runperiod</span></code>, etc.</p>
 <p>Like this <strong>extra configuration context</strong> can grow up in the future, this is specified in <em>config_params</em> field.
@@ -951,7 +951,7 @@ available for <em>Sinergym</em> visit section <a class="reference internal" href
 </section>
 </section>
 <section id="adding-new-weathers-for-environments">
-<h2><span class="section-number">5.3. </span>Adding new weathers for environments<a class="headerlink" href="#adding-new-weathers-for-environments" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">5.3. </span>Adding new weathers for environments<a class="headerlink" href="#adding-new-weathers-for-environments" title="Link to this heading"></a></h2>
 <p>Sinergym includes several weathers covering different types of climate in different areas of the world.
 The aim is to provide the greatest possible diversity for the experiments taking into account certain
 characteristics.</p>
@@ -967,7 +967,7 @@ They should be placed in the <a class="reference external" href="https://github.
 automatically for that weather.</p>
 </section>
 <section id="adding-new-buildings-for-environments">
-<h2><span class="section-number">5.4. </span>Adding new buildings for environments<a class="headerlink" href="#adding-new-buildings-for-environments" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">5.4. </span>Adding new buildings for environments<a class="headerlink" href="#adding-new-buildings-for-environments" title="Link to this heading"></a></h2>
 <p>As we have already mentioned, a user can change the already available environments or even create new environment
 definitions including new climates, action and observation spaces, etc. However, perhaps <strong>the most complex thing
 to incorporate</strong> into the project are <strong>new building models</strong> (<em>IDF</em> files) than the ones we support.</p>
@@ -1063,6 +1063,7 @@ action/observation space, etc. We have examples about how to do it (<a class="re
             <dd><a href="../../v2.4.1/pages/environments.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/environments.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/environments.html">v2.5.1</a></dd>
+            <dd><a href="../../v2.5.2/pages/environments.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -1073,7 +1074,21 @@ action/observation space, etc. We have examples about how to do it (<a class="re
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

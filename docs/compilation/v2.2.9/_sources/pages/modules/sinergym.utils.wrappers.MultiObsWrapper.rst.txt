@@ -18,6 +18,7 @@
       ~MultiObsWrapper.__init__
       ~MultiObsWrapper.class_name
       ~MultiObsWrapper.close
+      ~MultiObsWrapper.get_wrapper_attr
       ~MultiObsWrapper.render
       ~MultiObsWrapper.reset
       ~MultiObsWrapper.step

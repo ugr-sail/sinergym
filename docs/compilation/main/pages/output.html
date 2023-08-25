@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -72,12 +72,13 @@
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">16. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">17. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">18. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">19. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">20. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">21. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">16. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">17. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">18. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">19. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">21. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">22. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -88,7 +89,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sinergym</a>
       </nav>
@@ -109,10 +110,12 @@
            <div itemprop="articleBody">
              
   <section id="output-format">
-<h1><span class="section-number">10. </span>Output format<a class="headerlink" href="#output-format" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">10. </span>Output format<a class="headerlink" href="#output-format" title="Link to this heading"></a></h1>
 <p>When a simulation is running, this generates a directory called
-<code class="docutils literal notranslate"><span class="pre">Eplus-env-&lt;env_name&gt;-res&lt;num_simulation&gt;</span></code>. The content of
-this directory is the result of the simulation and we have:</p>
+<code class="docutils literal notranslate"><span class="pre">Eplus-env-&lt;env_name&gt;-res&lt;num_simulation&gt;</span></code>. The management of
+the directories tree generated during a simulation is done by
+the <em>Modeling</em> module too. The content of this root output directory
+is the result of the simulation and we have:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Eplus-env-&lt;env_name&gt;-res&lt;num_simulation&gt;
 ├── Eplus-env-sub_run1
 ├── Eplus-env-sub_run2
@@ -120,13 +123,11 @@ this directory is the result of the simulation and we have:</p>
 ├── ...
 ├── Eplus-env-sub_runN
 │   ├── output/
-│   ├── variables.cfg
-│   ├── socket.cfg
-│   ├── utilSocket.cfg
 │   ├── environment.epJSON
 |   ├── weather.epw
 │   ├── monitor.csv
 |   └── monitor_normalized.csv (optional)
+├── data_available.txt
 └── progress.csv
 </pre></div>
 </div>
@@ -138,16 +139,13 @@ and <em>maximum episode data value</em>
 <li><p>Within these directories, you have always the same structure:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>A copy of <strong>variables.cfg</strong> and <strong>environment.epJSON</strong> which are being used during
-simulation. <strong>Environment.epJSON</strong> does not have to be the same as the original
+<li><p>A copy of <strong>environment.epJSON</strong> which is being used during
+simulation episode. <strong>Environment.epJSON</strong> does not have to be the same as the original
 hosted in the repository. Since the simulation can be modified to suit the
-specific weather or apply extra user-defined settings when building the
-gymnasium environment.</p></li>
-<li><p>A copy of <strong>Weather.epw</strong> appears only when the weather change for one
-episode to another (using variability, for example). If weather does not
-change, original repository <em>.epw</em> will be used in each episode.</p></li>
-<li><p>A copy of <strong>socket.cfg</strong> and <strong>utilSocket.log</strong> which are being used in
-order to establish communication interface with <em>EnergyPlus</em> during simulation.</p></li>
+specific user-defined settings when building the gymnasium environment.</p></li>
+<li><p>A copy of <strong>Weather.epw</strong> which is being used during
+simulation episode. This file does not have to be the
+same than original (when using variability).</p></li>
 <li><p><strong>monitor.csv</strong>: This records all interactions Agent-Environment during
 the episode timestep by timestep. This file only exists
 when environment has been wrapped with <strong>Logger</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a> for
@@ -161,14 +159,27 @@ If you want to know more about this files, visit
 </ul>
 </div></blockquote>
 </li>
+<li><p><strong>data_available.txt</strong>: This file is generated when <em>EnergyPlus</em> API initializes all
+callbacks and handlers for the simulation. In this file, we can find all the available
+components of the building model such as actuators, schedulers, meters, variables, internal
+variables, etc.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Some list of components such as <code class="docutils literal notranslate"><span class="pre">Output:Variable</span></code>’s does not appear fully in
+<em>data_available.txt</em>, because of it must be declared in the building model first.
+If you want to see all the variables or meters specifically, you should look for them
+in the correct <em>Energyplus</em> output file. If you specify a correct variable in environment,
+<em>Sinergym</em> will add the <code class="docutils literal notranslate"><span class="pre">Output:Variable</span></code> element in the building model before simulation start.</p>
+</div>
+</li>
 <li><p><strong>progress.csv</strong>: This file has information about general simulation results.
 There is a <strong>row per episode</strong> and it records most important data such as mean
-power consumption or , mean comfort penalty, for example. This file only
+power consumption or mean comfort penalty, for example. This file only
 exists when environment has been wrapped with
 <strong>Logger</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a> for more information).</p></li>
 </ul>
 <section id="logger">
-<h2><span class="section-number">10.1. </span>Logger<a class="headerlink" href="#logger" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">10.1. </span>Logger<a class="headerlink" href="#logger" title="Link to this heading"></a></h2>
 <p>The files <strong>monitor.csv</strong>, <strong>monitor_normalized.csv</strong> and <strong>progress.csv</strong>
 belong to <strong>Sinergym logger</strong> which is a wrapper for the environment.
 This logger has the responsibility of recording
@@ -177,7 +188,8 @@ regardless of the training technique which may be being used or any other
 external factor.</p>
 <p>Recording is managed by an instance of the class <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code> which is
 present as a wrapper attribute and is called in each timestep and
-in the end of a episode.</p>
+in the end of a episode. This class can be substitute by a new one,
+see <a class="reference internal" href="notebooks/personalize_loggerwrapper.html#Logger-Wrapper-personalization/configuration"><span class="std std-ref">Logger Wrapper personalization/configuration</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Normalized observation methods are only used when environment is
@@ -255,6 +267,7 @@ you don’t need to unwrap environment.</p>
             <dd><a href="../../v2.4.1/pages/output.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/output.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/output.html">v2.5.1</a></dd>
+            <dd><a href="../../v2.5.2/pages/output.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -265,7 +278,21 @@ you don’t need to unwrap environment.</p>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

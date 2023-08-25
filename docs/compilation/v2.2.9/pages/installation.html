@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -100,7 +100,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sinergym</a>
       </nav>
@@ -121,7 +121,7 @@
            <div itemprop="articleBody">
              
   <section id="installation">
-<h1><span class="section-number">1. </span>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">1. </span>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
 <p>Sinergym has a set of dependencies (such as the simulator), which have
 to be covered depending on the version. Below it is a summary table showing
 the versions supported by Sinergym throughout its releases:</p>
@@ -159,7 +159,7 @@ supported by the container to avoid having to go into the installation details.
 In case you want to perform a manual installation on your computer, documentation
 is also provided in the following sections.</p>
 <section id="docker-container">
-<h2><span class="section-number">1.1. </span>Docker container<a class="headerlink" href="#docker-container" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">1.1. </span>Docker container<a class="headerlink" href="#docker-container" title="Link to this heading"></a></h2>
 <p>We include a <strong>Dockerfile</strong> for installing all dependencies and setting
 up the image for running <em>Sinergym</em>.</p>
 <p>By default, <em>Dockerfile</em> will do <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.[extras]</span></code>, if you want
@@ -194,11 +194,11 @@ check <a class="reference external" href="https://code.visualstudio.com/docs/rem
 </div>
 </section>
 <section id="manual-installation">
-<h2><span class="section-number">1.2. </span>Manual installation<a class="headerlink" href="#manual-installation" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">1.2. </span>Manual installation<a class="headerlink" href="#manual-installation" title="Link to this heading"></a></h2>
 <p>To install <em>Sinergym</em> manually instead of through the container (<strong>recommended</strong>),
 follow these steps:</p>
 <section id="configure-python-environment">
-<h3><span class="section-number">1.2.1. </span>Configure Python environment<a class="headerlink" href="#configure-python-environment" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">1.2.1. </span>Configure Python environment<a class="headerlink" href="#configure-python-environment" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>First, clone this repository:</p></li>
 </ul>
@@ -227,7 +227,7 @@ Let’s continue with the rest of the programs that are needed outside of Python
 to run the simulations:</p>
 </section>
 <section id="install-energyplus-9-5-0">
-<h3><span class="section-number">1.2.2. </span>Install EnergyPlus 9.5.0<a class="headerlink" href="#install-energyplus-9-5-0" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">1.2.2. </span>Install EnergyPlus 9.5.0<a class="headerlink" href="#install-energyplus-9-5-0" title="Link to this heading"></a></h3>
 <p>Install <em>EnergyPlus</em>. Currently it has been update compatibility to <code class="docutils literal notranslate"><span class="pre">9.5.0</span></code> and it has
 been tested, but code may also work with other versions, but they don’t have been tested.</p>
 <p>Follow the instructions <a class="reference external" href="https://energyplus.net/downloads">here</a> and
@@ -236,7 +236,7 @@ to install the software. Once installed, a folder called
 <code class="docutils literal notranslate"><span class="pre">Energyplus-9-5-0</span></code> should appear in the selected location.</p>
 </section>
 <section id="install-bcvtb-software">
-<h3><span class="section-number">1.2.3. </span>Install BCVTB software<a class="headerlink" href="#install-bcvtb-software" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">1.2.3. </span>Install BCVTB software<a class="headerlink" href="#install-bcvtb-software" title="Link to this heading"></a></h3>
 <p>Follow the instructions
 <a class="reference external" href="https://simulationresearch.lbl.gov/bcvtb/Download">here</a> for
 installing <em>BCVTB software</em>. Another option is to copy the <code class="docutils literal notranslate"><span class="pre">bcvtb</span></code>
@@ -244,14 +244,14 @@ folder from <a class="reference external" href="https://github.com/zhangzhizza/G
 repository</a>.</p>
 </section>
 <section id="set-environment-variables">
-<h3><span class="section-number">1.2.4. </span>Set environment variables<a class="headerlink" href="#set-environment-variables" title="Permalink to this heading"></a></h3>
+<h3><span class="section-number">1.2.4. </span>Set environment variables<a class="headerlink" href="#set-environment-variables" title="Link to this heading"></a></h3>
 <p>Two environment variables must be set: <code class="docutils literal notranslate"><span class="pre">EPLUS_PATH</span></code> and
 <code class="docutils literal notranslate"><span class="pre">BCVTB_PATH</span></code>, with the locations where <em>EnergyPlus</em> and <em>BCVTB</em> are
 installed respectively.</p>
 </section>
 </section>
 <section id="about-sinergym-package">
-<h2><span class="section-number">1.3. </span>About Sinergym package<a class="headerlink" href="#about-sinergym-package" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">1.3. </span>About Sinergym package<a class="headerlink" href="#about-sinergym-package" title="Link to this heading"></a></h2>
 <p>As we have told you in section <a class="reference internal" href="#manual-installation"><span class="std std-ref">Manual installation</span></a>, Python environment
 can be set up using <code class="docutils literal notranslate"><span class="pre">python_environment.yml</span></code> with <em>conda</em>. This will install
 the virtual environment with Python version required and all packages used
@@ -281,7 +281,7 @@ with last stable version by default:</p>
 </div>
 </section>
 <section id="check-installation">
-<h2><span class="section-number">1.4. </span>Check Installation<a class="headerlink" href="#check-installation" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">1.4. </span>Check Installation<a class="headerlink" href="#check-installation" title="Link to this heading"></a></h2>
 <p>This project is automatically supervised using <strong>tests</strong> developed specifically for it.
 If you want to check <em>Sinergym</em> has been installed successfully, run <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">tests/</span> <span class="pre">-vv</span></code>
 in the <strong>repository root</strong>.</p>
@@ -290,7 +290,7 @@ using the Dockerfile to build it. <a class="reference external" href="https://do
 (see <a class="reference internal" href="github-actions.html#github-actions"><span class="std std-ref">Github Actions</span></a> section).</p>
 </section>
 <section id="cloud-computing">
-<h2><span class="section-number">1.5. </span>Cloud Computing<a class="headerlink" href="#cloud-computing" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">1.5. </span>Cloud Computing<a class="headerlink" href="#cloud-computing" title="Link to this heading"></a></h2>
 <p>You can run your experiments in the Cloud too. We are using <a class="reference external" href="https://cloud.google.com/">Google Cloud</a>
 in order to make it possible. Our team aim to set up an account in which execute our <em>Sinergym</em> container
 with <strong>remote storage</strong> and <strong>mlflow tracking</strong>.
@@ -362,6 +362,7 @@ visit our section <a class="reference internal" href="gcloudAPI.html#preparing-g
             <dd><a href="../../v2.4.1/pages/installation.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/installation.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/installation.html">v2.5.1</a></dd>
+            <dd><a href="../../v2.5.2/pages/installation.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -372,7 +373,21 @@ visit our section <a class="reference internal" href="gcloudAPI.html#preparing-g
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

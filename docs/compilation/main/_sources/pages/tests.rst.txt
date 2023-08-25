@@ -61,7 +61,11 @@ directory, they are organized by different modules:
 
 - **test_common.py**: Tests for 
   `sinergym/sinergym/utils/common.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py>`__. 
-  Here will be all tests that check *Sinergym* common utils functionalities. 
+  Here will be all tests that check *Sinergym* common utils functionalities.
+
+- **test_constants.py**: Tests for 
+  `sinergym/sinergym/utils/constants.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__. 
+  Here will be all tests that check *Sinergym* global variables.
 
 - **test_reward.py**: Tests for 
   `sinergym/sinergym/utils/rewards.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/rewards.py>`__. 
@@ -69,20 +73,15 @@ directory, they are organized by different modules:
 
 - **test_wrapper.py**: Tests for 
   `sinergym/sinergym/utils/wrappers.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/wrappers.py>`__. 
-  Here will be all tests that check wrappers to normalize Sinergym default environment observations.
+  Here will be all tests that check wrappers to normalize *Sinergym* default environment observations.
 
 - **test_simulator.py**: Tests for 
   `sinergym/sinergym/simulators/\* <https://github.com/ugr-sail/sinergym/tree/main/sinergym/simulators>`__. 
   Here will be all tests that check low level *Sinergym* simulator and communication interface.
 
-- **test_config.py**: Tests for 
-  `sinergym/sinergym/utils/config.py <https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/config.py>`__. 
-  Here will be all tests that check python building model, weather, directories tree for executions and extra 
-  configuration set up in simulator.
-
 - **test_env.py**: Tests for 
   `sinergym/sinergym/envs/\* <https://github.com/ugr-sail/sinergym/tree/main/sinergym/envs>`__. 
-  Here will be all tests that check Sinergym simulation environments based on Gymnasium.
+  Here will be all tests that check *Sinergym* simulation environments based on Gymnasium.
 
 - **test_controller.py**: Tests for 
   `sinergym/sinergym/utils/controllers.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/controllers.py>`__. 
@@ -95,7 +94,7 @@ directory, they are organized by different modules:
 
 - **test_stable_baselines.py**: Tests for 
   `Stable Baselines 3 <https://github.com/DLR-RM/stable-baselines3>`__. 
-  Here will be all tests that check Sinergym simulation environments 
+  Here will be all tests that check *Sinergym* simulation environments 
   can be used correctly with Stable Baselines 3 algorithms.
   If Stable Baselines 3 package is not installed, these tests
   will be ignored by *Sinergym* automatically.

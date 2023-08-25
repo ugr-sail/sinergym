@@ -1,4 +1,4 @@
-﻿sinergym.utils.common.eppy\_element\_to\_dict
+sinergym.utils.common.eppy\_element\_to\_dict
 =============================================
 
 .. currentmodule:: sinergym.utils.common

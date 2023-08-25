@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -86,7 +86,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sinergym</a>
       </nav>
@@ -107,15 +107,15 @@
            <div itemprop="articleBody">
              
   <section id="sinergym-with-google-cloud">
-<h1>Sinergym with Google Cloud<a class="headerlink" href="#sinergym-with-google-cloud" title="Permalink to this heading"></a></h1>
+<h1>Sinergym with Google Cloud<a class="headerlink" href="#sinergym-with-google-cloud" title="Link to this heading"></a></h1>
 <p>In this project, we have defined some functionality based in gcloud API python in <cite>sinergym/utils/gcloud.py</cite>. Our time aim to configure a Google Cloud account and combine with Sinergym easily.</p>
 <p>The main idea is to construct a <strong>virtual machine</strong> (VM) using <strong>Google Cloud Engine</strong> (GCE) in order to execute our <strong>Sinergym container</strong> on it. At the same time, this remote container will update a Google Cloud Bucket with experiments results and mlflow tracking server with artifacts if we configure that experiment with those options.</p>
 <p>When an instance has finished its job, container <strong>auto-remove</strong> its host instance from Google Cloud Platform if experiments has been configured with this option.</p>
 <p>Let’s see a detailed explanation above.</p>
 <section id="preparing-google-cloud">
-<h2>Preparing Google Cloud<a class="headerlink" href="#preparing-google-cloud" title="Permalink to this heading"></a></h2>
+<h2>Preparing Google Cloud<a class="headerlink" href="#preparing-google-cloud" title="Link to this heading"></a></h2>
 <section id="first-steps-configuration">
-<h3>1. First steps (configuration)<a class="headerlink" href="#first-steps-configuration" title="Permalink to this heading"></a></h3>
+<h3>1. First steps (configuration)<a class="headerlink" href="#first-steps-configuration" title="Link to this heading"></a></h3>
 <p>Firstly, it is necessary that you have a Google Cloud account set up and SDK configured (auth, invoicing, project ID, etc). If you don’t have this, it is recommended to check <a class="reference external" href="https://cloud.google.com/sdk/docs/install">their documentation</a>.
 Secondly, It is important to have installed <a class="reference external" href="https://www.docker.com/">Docker</a> in order to be able to manage these containers in Google Cloud.</p>
 <p>You can link <strong>gcloud</strong> with <strong>docker</strong> accounts using the next (see <a class="reference external" href="https://cloud.google.com/container-registry/docs/advanced-authentication">authentication methods</a>):</p>
@@ -171,7 +171,7 @@ $<span class="w"> </span>gcloud<span class="w"> </span>services<span class="w"> 
 </div>
 </section>
 <section id="use-our-container-in-google-cloud-platform">
-<h3>2. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Permalink to this heading"></a></h3>
+<h3>2. Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Link to this heading"></a></h3>
 <p>Our Sinergym container is uploaded in <strong>Container Registry</strong> as a public one currently. You can use it <strong>locally</strong>:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>gcr.io/sinergym/sinergym:latest
 </pre></div>
@@ -201,7 +201,7 @@ This derive in a silence error for Google Cloud Build (and you would need to che
 </div>
 </section>
 <section id="use-your-own-container">
-<h3>3. Use your own container<a class="headerlink" href="#use-your-own-container" title="Permalink to this heading"></a></h3>
+<h3>3. Use your own container<a class="headerlink" href="#use-your-own-container" title="Link to this heading"></a></h3>
 <p>Suppose you have this repository forked and you want to upload <strong>your own container on Google Cloud</strong> and to use it. You can use <strong>cloudbuild.yaml</strong>
 with our <strong>Dockerfile</strong> for this purpose:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">steps</span><span class="p">:</span>
@@ -285,7 +285,7 @@ variable by Google Cloud. When build begins <em>“$PROJECT_ID”</em> is set to
 </div>
 </section>
 <section id="create-your-vm-or-mig">
-<h3>4. Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Permalink to this heading"></a></h3>
+<h3>4. Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Link to this heading"></a></h3>
 <p>To create a <strong>VM</strong> that uses this container, here there is an example:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>create-with-container<span class="w"> </span>sinergym<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--container-image<span class="w"> </span>gcr.io/sinergym/sinergym<span class="w"> </span><span class="se">\</span>
@@ -340,7 +340,7 @@ You can think that is an error, Google cloud should notify this. If this issue h
 </div>
 </section>
 <section id="initiate-your-vm">
-<h3>5. Initiate your VM<a class="headerlink" href="#initiate-your-vm" title="Permalink to this heading"></a></h3>
+<h3>5. Initiate your VM<a class="headerlink" href="#initiate-your-vm" title="Link to this heading"></a></h3>
 <p>Your virtual machine is ready! To connect you can use ssh (see <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh">gcloud-ssh</a>):</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>&lt;machine-name&gt;
 </pre></div>
@@ -356,7 +356,7 @@ You can think that is an error, Google cloud should notify this. If this issue h
 </section>
 </section>
 <section id="executing-experiments-in-remote-containers">
-<h2>Executing experiments in remote containers<a class="headerlink" href="#executing-experiments-in-remote-containers" title="Permalink to this heading"></a></h2>
+<h2>Executing experiments in remote containers<a class="headerlink" href="#executing-experiments-in-remote-containers" title="Link to this heading"></a></h2>
 <p>This script, called <em>DRL_battery.py</em>, will be allocated in every remote container and it is used to execute experiments and combine it with <strong>Google Cloud Bucket</strong>, <strong>Mlflow Artifacts</strong>, <strong>auto-remove</strong>, etc:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -877,7 +877,7 @@ You can think that is an error, Google cloud should notify this. If this issue h
 </ol>
 </div></blockquote>
 <section id="containers-permission-to-bucket-storage-output">
-<h3>Containers permission to bucket storage output<a class="headerlink" href="#containers-permission-to-bucket-storage-output" title="Permalink to this heading"></a></h3>
+<h3>Containers permission to bucket storage output<a class="headerlink" href="#containers-permission-to-bucket-storage-output" title="Link to this heading"></a></h3>
 <p>As you see in sinergym template explained in <a class="reference internal" href="#create-your-vm-or-mig"><span class="std std-ref">4. Create your VM or MIG</span></a>, it is specified <code class="docutils literal notranslate"><span class="pre">--scope</span></code>, <code class="docutils literal notranslate"><span class="pre">--service-account</span></code> and <code class="docutils literal notranslate"><span class="pre">--container-env</span></code>. This aim to <em>remote_store</em> option in <em>DRL_battery.py</em> works correctly.
 Those parameters provide each container with permissions to write in the bucket and manage Google Cloud Platform (auto instance remove function).
 Container environment variables indicate zone, project_id and mlflow tracking server uri need it in <a class="reference internal" href="#mlflow-tracking-server-set-up"><span class="std std-ref">Mlflow tracking server set up</span></a>.</p>
@@ -893,7 +893,7 @@ Finally, we export this file in <strong>GOOGLE_CLOUD_CREDENTIALS</strong> in our
 </section>
 </section>
 <section id="remote-tensorboard-log">
-<h2>Remote Tensorboard log<a class="headerlink" href="#remote-tensorboard-log" title="Permalink to this heading"></a></h2>
+<h2>Remote Tensorboard log<a class="headerlink" href="#remote-tensorboard-log" title="Link to this heading"></a></h2>
 <p>In <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> parameter we have to specify a <strong>local path</strong> or a <strong>Bucket path</strong>.</p>
 <p>If we specify a <strong>local path</strong>, tensorboard logs will be stored in remote containers memory. If you have specified <code class="docutils literal notranslate"><span class="pre">--remote_store</span></code> or <code class="docutils literal notranslate"><span class="pre">--mlflow_store</span></code>, this logs will be sent to those remote storage when experiment finishes.
 One of the strengths of Tensorboard is the ability to see the data in real time as the training is running. Thus, it is recommended to define in <code class="docutils literal notranslate"><span class="pre">--tensorboard</span></code> the <strong>bucket path</strong> directly in order to send that information
@@ -911,7 +911,7 @@ as the training is generating it (see <a class="reference external" href="https:
 <p>In the case that gs URI isn’t recognized. Maybe is due to your tensorboard installation hasn’t got access your google account. Try <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login">gcloud auth application-default login</a> command.</p>
 </div>
 <section id="visualize-remote-tensorboard-log-in-real-time">
-<h3>Visualize remote Tensorboard log in real-time<a class="headerlink" href="#visualize-remote-tensorboard-log-in-real-time" title="Permalink to this heading"></a></h3>
+<h3>Visualize remote Tensorboard log in real-time<a class="headerlink" href="#visualize-remote-tensorboard-log-in-real-time" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>You have two options:</dt><dd><ol class="arabic simple">
 <li><p>Create a remote server with tensorboard service deployed.</p></li>
@@ -926,7 +926,7 @@ as the training is generating it (see <a class="reference external" href="https:
 </section>
 </section>
 <section id="mlflow-tracking-server-set-up">
-<h2>Mlflow tracking server set up<a class="headerlink" href="#mlflow-tracking-server-set-up" title="Permalink to this heading"></a></h2>
+<h2>Mlflow tracking server set up<a class="headerlink" href="#mlflow-tracking-server-set-up" title="Link to this heading"></a></h2>
 <p>Mlflow tracking server can be set up into your google account in order to organize your own experiments (<a class="reference internal" href="deep-reinforcement-learning.html#mlflow"><span class="std std-ref">Mlflow</span></a>). You can separate <strong>back-end</strong> (SQL database) from tracking server.
 In this way, you can shut down or delete server instance without loose your experiments run data, since SQL is always up. Let’s see how:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
@@ -1050,7 +1050,7 @@ Notice that server instance creation use service account for mlflow, with this c
 </div>
 </section>
 <section id="google-cloud-alerts">
-<h2>Google Cloud Alerts<a class="headerlink" href="#google-cloud-alerts" title="Permalink to this heading"></a></h2>
+<h2>Google Cloud Alerts<a class="headerlink" href="#google-cloud-alerts" title="Link to this heading"></a></h2>
 <p><strong>Google Cloud Platform</strong> include functionality in order to trigger some events and generate alerts in consequence.
 Then, a trigger has been created in our gcloud project which aim to advertise when an experiment has finished.
 This alert can be captured in several ways (Slack, SMS, Email, etc).
@@ -1121,6 +1121,7 @@ If you want to do the same, please, check Google Cloud Alerts documentation <a c
             <dd><a href="../../v2.4.1/pages/gcloudAPI.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/gcloudAPI.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/gcloudAPI.html">v2.5.1</a></dd>
+            <dd><a href="../../v2.5.2/pages/gcloudAPI.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -1131,7 +1132,21 @@ If you want to do the same, please, check Google Cloud Alerts documentation <a c
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>

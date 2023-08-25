@@ -13,11 +13,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +30,7 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #a9c1be" >
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
 
           
           
@@ -92,7 +92,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a9c1be" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sinergym</a>
       </nav>
@@ -113,14 +113,14 @@
            <div itemprop="articleBody">
              
   <section id="github-actions">
-<h1><span class="section-number">13. </span>Github Actions<a class="headerlink" href="#github-actions" title="Permalink to this heading"></a></h1>
+<h1><span class="section-number">13. </span>Github Actions<a class="headerlink" href="#github-actions" title="Link to this heading"></a></h1>
 <p>This project is automatically processed using <a class="reference external" href="https://docs.github.com/es/actions/">Github Actions</a>,
 a tool to build continuous integration and continuous deployment pipelines
 for testing, releasing and deploying software without the use of third-party
 websites/platforms.</p>
 <p>Currently, we have developed the next procedures for this project:</p>
 <section id="pull-request">
-<h2><span class="section-number">13.1. </span>Pull Request<a class="headerlink" href="#pull-request" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">13.1. </span>Pull Request<a class="headerlink" href="#pull-request" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><strong>Python Code format check</strong>: Python code format is checked in every pull
 request following <strong>Pep8</strong> <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">standard</a>
@@ -166,7 +166,7 @@ in commit message. For more information, see issue
 </div>
 </section>
 <section id="push-main-or-merge-a-pull-request">
-<h2><span class="section-number">13.2. </span>Push main (or merge a pull request)<a class="headerlink" href="#push-main-or-merge-a-pull-request" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">13.2. </span>Push main (or merge a pull request)<a class="headerlink" href="#push-main-or-merge-a-pull-request" title="Link to this heading"></a></h2>
 <p>These workflows will be executed in sequential order:</p>
 <ul class="simple">
 <li><p><strong>Apply format</strong>: A bot generates a commit in the main branch applying
@@ -187,7 +187,7 @@ register the code coverage percentage in the project.</p></li>
 </ul>
 </section>
 <section id="new-release-created-or-modified">
-<h2><span class="section-number">13.3. </span>New release created or modified<a class="headerlink" href="#new-release-created-or-modified" title="Permalink to this heading"></a></h2>
+<h2><span class="section-number">13.3. </span>New release created or modified<a class="headerlink" href="#new-release-created-or-modified" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>When a <strong>release</strong> is <em>published</em> or <em>edited</em> manually in the repository,
 an action catches the release tag version and it uses it to build
@@ -278,6 +278,7 @@ installation.</p>
             <dd><a href="../../v2.4.1/pages/github-actions.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/github-actions.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/github-actions.html">v2.5.1</a></dd>
+            <dd><a href="../../v2.5.2/pages/github-actions.html">v2.5.2</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
@@ -288,7 +289,21 @@ installation.</p>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
 
 </body>
 </html>
