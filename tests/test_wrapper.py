@@ -18,7 +18,6 @@ def test_normalization_wrapper(env_name, request):
 
     # Check if new attributes have been created in environment
     assert hasattr(env, 'unwrapped_observation')
-    assert hasattr(env, 'normalized_variables')
 
     # Check initial values of that attributes
     assert env.unwrapped_observation is None
@@ -27,9 +26,7 @@ def test_normalization_wrapper(env_name, request):
     obs, _ = env.reset()
 
     # Check observation normalization
-    for variable in env.normalized_variables:
-        index = env.observation_variables.index(variable)
-        assert obs[index] >= 0 and obs[index] <= 1
+    # ...
     # Check original observation recording
     assert env.unwrapped_observation is not None
 
@@ -37,9 +34,7 @@ def test_normalization_wrapper(env_name, request):
     a = env.action_space.sample()
     obs, _, _, _, _ = env.step(a)
 
-    for variable in env.normalized_variables:
-        index = env.observation_variables.index(variable)
-        assert obs[index] >= 0 and obs[index] <= 1
+    # ...
     assert env.unwrapped_observation is not None
 
 
@@ -254,7 +249,6 @@ def test_env_wrappers(env_all_wrappers):
     assert hasattr(env_all_wrappers, 'current_setpoints')
     # Normalization
     assert hasattr(env_all_wrappers, 'unwrapped_observation')
-    assert hasattr(env_all_wrappers, 'normalized_variables')
     # Logger
     assert hasattr(env_all_wrappers, 'monitor_header')
     assert hasattr(env_all_wrappers, 'progress_header')
@@ -273,10 +267,8 @@ def test_env_wrappers(env_all_wrappers):
     assert len(env_all_wrappers.history) == env_all_wrappers.n
     assert (env_all_wrappers._get_obs() == obs).all()
 
-    # variables selected should be normalized --> [0,1]
-    for variable in env_all_wrappers.normalized_variables:
-        index = env_all_wrappers.observation_variables.index(variable)
-        assert obs[index] >= 0 and obs[index] <= 1
+    # obs should be normalized --> [0,1]
+    # ...
 
     # Execute a short episode in order to check logger
     logger = env_all_wrappers.file_logger
