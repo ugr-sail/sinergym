@@ -27,17 +27,9 @@ You can implement your own wrappers inheriting from *gym.Wrapper* or some of its
   :alt: Incremental wrapper graph.
   :align: center
 
-- **NormalizeObservation**: It is used to transform observation received from simulator in values between 0 and 1.
-  It is possible to define a list of variables you want to normalize, if you don't define this list, all environment
-  variables will be included. In order to normalize values, it is necessary a dictionary in order to store max and min values. 
-  Then, if a environment variable is not included in the dictionary specified in wrapper constructor, then the normalization 
-  for that variable will be skipped.
-
-  .. warning:: In case a new observation variable is added to the default ones for an environment, care must be 
-          taken in case observation normalization is to be done. This is because you have to update 
-          the dictionary of ranges of values available in `constants.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__ as discussed in 
-          issue `#249 <https://github.com/ugr-sail/sinergym/issues/249>`__. You can use the ``range_getter`` function of `common.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py>`__ to get these 
-          ranges automatically from a experiment output folder.
+- **NormalizeObservation**: It is used to transform observation received from simulator in values between -1 and 1.
+  It is based in the `dynamic normalization wrapper of Gymnasium <https://gymnasium.farama.org/_modules/gymnasium/wrappers/normalize/#NormalizeObservation>`__. At the beginning,
+  it is not precise and the values may be out of range usually, so use this wrapper carefully.
 
 - **LoggerWrapper**: Wrapper for logging all interactions between agent and environment. Logger class can be selected
   in the constructor if other type of logging is required. For more information about *Sinergym* Logger visit :ref:`Logger`.
