@@ -6,7 +6,6 @@ import numpy as np
 import pytest
 
 from sinergym.utils.common import is_wrapped
-from sinergym.utils.constants import RANGES_5ZONE
 from sinergym.utils.wrappers import NormalizeObservation
 
 
@@ -19,12 +18,10 @@ def test_normalization_wrapper(env_name, request):
 
     # Check if new attributes have been created in environment
     assert hasattr(env, 'unwrapped_observation')
-    assert hasattr(env, 'ranges')
     assert hasattr(env, 'normalized_variables')
 
     # Check initial values of that attributes
     assert env.unwrapped_observation is None
-    assert env.ranges == RANGES_5ZONE
 
     # Initialize env
     obs, _ = env.reset()
@@ -257,7 +254,6 @@ def test_env_wrappers(env_all_wrappers):
     assert hasattr(env_all_wrappers, 'current_setpoints')
     # Normalization
     assert hasattr(env_all_wrappers, 'unwrapped_observation')
-    assert hasattr(env_all_wrappers, 'ranges')
     assert hasattr(env_all_wrappers, 'normalized_variables')
     # Logger
     assert hasattr(env_all_wrappers, 'monitor_header')

@@ -268,7 +268,7 @@ def model_5zone_several_weathers():
 
 @pytest.fixture(scope='function')
 def env_wrapper_normalization(env_5zone_continuous):
-    return NormalizeObservation(env=env_5zone_continuous, ranges=RANGES_5ZONE)
+    return NormalizeObservation(env=env_5zone_continuous)
 
 
 @pytest.fixture(scope='function')
@@ -330,15 +330,7 @@ def env_all_wrappers(env_5zone_continuous):
         env, initial_values=[
             21.0, 25.0], delta_temp=2, step_temp=0.5)
     env = NormalizeObservation(
-        env=env,
-        ranges=RANGES_5ZONE,
-        variables=[
-            'htg_setpoint',
-            'clg_setpoint',
-            'air_temperature',
-            'htg_setpoint_previous',
-            'clg_setpoint_previous',
-            'air_temperature_previous'])
+        env=env)
     env = LoggerWrapper(env=env, flag=True)
     env = MultiObsWrapper(env=env, n=5, flatten=True)
     return env
