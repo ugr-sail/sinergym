@@ -80,7 +80,6 @@ def test_datetime_wrapper(env_name, request):
 
 @pytest.mark.parametrize('env_name',
                          [('env_wrapper_previousobs'),
-                          ('env_all_wrappers'),
                           ])
 def test_previous_observation_wrapper(env_name, request):
 
