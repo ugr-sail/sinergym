@@ -63,10 +63,6 @@ directory, they are organized by different modules:
   `sinergym/sinergym/utils/common.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py>`__. 
   Here will be all tests that check *Sinergym* common utils functionalities.
 
-- **test_constants.py**: Tests for 
-  `sinergym/sinergym/utils/constants.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__. 
-  Here will be all tests that check *Sinergym* global variables.
-
 - **test_reward.py**: Tests for 
   `sinergym/sinergym/utils/rewards.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/rewards.py>`__. 
   Here will be all tests that check implementation(s) of reward function(s) applicable to sinergym environments.

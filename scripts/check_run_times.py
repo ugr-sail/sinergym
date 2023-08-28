@@ -10,6 +10,12 @@ import sinergym
 
 envs_id = [env_spec for env_spec in gym.envs.registration.registry.keys()
            if env_spec.startswith('Eplus')]
+envs_id = ['Eplus-5zone-mixed-continuous-stochastic-v1',
+           'Eplus-datacenter-mixed-continuous-stochastic-v1',
+           'Eplus-office-mixed-continuous-stochastic-v1',
+           'Eplus-warehouse-mixed-continuous-stochastic-v1',
+           'Eplus-officegrid-mixed-continuous-stochastic-v1',
+           'Eplus-shop-mixed-continuous-stochastic-v1']
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--environments', '-envs', default=envs_id, nargs='+')
@@ -35,8 +41,8 @@ for env_id in args.environments:
     results[env_id] = execution_time.total_seconds()
 
     # Rename directory with name TEST for future remove
-    os.rename(env.simulator._env_working_dir_parent, 'Eplus-env-TEST' +
-              env.simulator._env_working_dir_parent.split('/')[-1])
+    os.rename(env.experiment_path, 'Eplus-env-TEST' +
+              env.experiment_path.split('/')[-1])
 
 print('====================================================')
 print('TIMES RECORDED IN ENVIRONMENTS WITH ', args.episodes, ' EPISODE(S):')

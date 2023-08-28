@@ -11,9 +11,8 @@
     "seed": 3,
     "model": "alex_ugr/sinergym/training:latest",
     "wrappers": {
-        "NormalizeObservation": {
-            "ranges": "sinergym.utils.constants.RANGES_5ZONE"
-        },
+        "NormalizeObservation": {},
+        "NormalizeReward": {},
         "LoggerWrapper": {
             "logger_class": "sinergym.utils.logger.CSVLogger",
             "flag": true
@@ -25,14 +24,14 @@
             "entity": "alex_ugr"
         },
         "evaluation_registry": {
-            "artifact_name": "evaluating",
-            "artifact_type": "evaluation1"
+            "artifact_name": "evaluation1",
+            "artifact_type": "evaluating"
         },
         "load_model": {
             "project": "sinergym",
             "entity": "alex_ugr",
-            "artifact_name": "training",
-            "artifact_type": "experiment1",
+            "artifact_name": "experiment1",
+            "artifact_type": "training",
             "artifact_tag": "v0",
             "artifact_path": "evaluation_output/best_model/model.zip"
         }

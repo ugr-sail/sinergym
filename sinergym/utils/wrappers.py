@@ -5,6 +5,7 @@ from collections import deque
 from copy import deepcopy
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
+from gymnasium.wrappers.normalize import RunningMeanStd
 
 import gymnasium as gym
 import numpy as np
@@ -55,75 +56,53 @@ class MultiObjectiveReward(gym.Wrapper):
         return obs, reward_vector, terminated, truncated, info
 
 
-class NormalizeObservation(gym.ObservationWrapper):
+class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
 
     def __init__(self,
                  env: EplusEnv,
-                 ranges: Dict[str, Sequence[Any]],
-                 variables: Optional[List[str]] = None):
-        """Observations normalized to range [0, 1].
+                 epsilon: float = 1e-8):
+        """This wrapper will normalize observations s.t. each coordinate is centered with unit variance.
 
         Args:
-            env (EplusEnv): Original Sinergym environment.
-            ranges (Dict[str, Sequence[Any]]): Observation variables ranges to apply normalization (rely on environment).
-            variables (Optional[List[str]]): List of variables you want to normalize. If it is None, all environment variables are included.
+             env (Env): The environment to apply the wrapper
+             epsilon (float): A stability parameter that is used when scaling the observations. Defaults to 1e-8
         """
-        super(NormalizeObservation, self).__init__(env)
+        gym.utils.RecordConstructorArgs.__init__(self, epsilon=epsilon)
+        gym.Wrapper.__init__(self, env)
+        self.num_envs = 1
+        self.is_vector_env = False
+
         self.unwrapped_observation = None
-        self.ranges = ranges
-        ranges_keys = list(self.ranges.keys())
         self.normalization_variables = deepcopy(
             self.env.observation_variables)
+        self.obs_rms = RunningMeanStd(shape=self.observation_space.shape)
+        self.epsilon = epsilon
 
-        # Normalized variables must be in ranges dict, if not the variable will
-        # not be normalized.
-        if variables is None:
-            self.normalized_variables = [
-                var for var in self.normalization_variables if var in ranges_keys]
-        else:
-            self.normalized_variables = [
-                var for var in variables if var in ranges_keys]
+    def step(self, action):
+        """Steps through the environment and normalizes the observation."""
+        obs, reward, terminated, truncated, info = self.env.step(action)
 
-        for variable in self.normalized_variables:
-            # Check variables exist
-            assert variable in self.normalization_variables, 'NormalizeObservation: {} does not exist in environment.'.format(
-                variable)
-
-    def observation(self, obs: np.ndarray) -> np.ndarray:
-        """Applies normalization to observation.
-
-        Args:
-            obs (np.ndarray): Original observation.
-
-        Returns:
-            np.ndarray: Normalized observation.
-        """
         # Save original obs in class attribute
         self.unwrapped_observation = obs.copy()
 
-        for variable in self.normalized_variables:
-            # Calculate variable index for obs
-            variable_index = self.normalization_variables.index(variable)
-            # normalization (handle DivisionbyZero Error)
-            if (self.ranges[variable][1] -
-                    self.ranges[variable][0] == 0):
-                obs[variable_index] = max(
-                    self.ranges[variable][0], min(
-                        obs[variable_index], self.ranges[variable][1]))
-            else:
-                obs[variable_index] = (
-                    obs[variable_index] - self.ranges[variable][0]) / (
-                    self.ranges[variable][1] - self.ranges[variable][0])
+        # Normalize observation and return
+        return self.normalize(np.array([obs]))[
+            0], reward, terminated, truncated, info
 
-            # If value is out
-            if np.isnan(obs[variable_index]):
-                obs[variable_index] = 0
-            elif obs[variable_index] > 1:
-                obs[variable_index] = 1
-            elif obs[variable_index] < 0:
-                obs[variable_index] = 0
-        # Return obs values in the SAME ORDER than obs argument.
-        return np.array(obs)
+    def reset(self, **kwargs):
+        """Resets the environment and normalizes the observation."""
+        obs, info = self.env.reset(**kwargs)
+
+        # Save original obs in class attribute
+        self.unwrapped_observation = obs.copy()
+
+        return self.normalize(np.array([obs]))[0], info
+
+    def normalize(self, obs):
+        """Normalizes the observation using the running mean and variance of the observations."""
+        self.obs_rms.update(obs)
+        return (obs - self.obs_rms.mean) / \
+            np.sqrt(self.obs_rms.var + self.epsilon)
 
     def get_unwrapped_obs(self) -> Optional[np.ndarray]:
         """Get last environment observation without normalization.

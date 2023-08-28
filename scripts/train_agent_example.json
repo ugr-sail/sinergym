@@ -26,9 +26,8 @@
     "seed": 3,
     "model": null,
     "wrappers": {
-        "NormalizeObservation": {
-            "ranges": "sinergym.utils.constants.RANGES_5ZONE"
-        },
+        "NormalizeObservation": {},
+        "NormalizeReward": {},
         "LoggerWrapper": {
             "logger_class": "sinergym.utils.logger.CSVLogger",
             "flag": true
@@ -43,7 +42,7 @@
             "project": "sinergym",
             "entity": "alex_ugr"
         },
-        "artifact_name": "training",
-        "artifact_type": "experiment1"
+        "artifact_name": "experiment1",
+        "artifact_type": "training"
     }
 }
