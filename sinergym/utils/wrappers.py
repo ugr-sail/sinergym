@@ -5,10 +5,10 @@ from collections import deque
 from copy import deepcopy
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
-from gymnasium.wrappers.normalize import RunningMeanStd
 
 import gymnasium as gym
 import numpy as np
+from gymnasium.wrappers.normalize import RunningMeanStd
 
 from sinergym.envs.eplus_env import EplusEnv
 from sinergym.utils.common import is_wrapped

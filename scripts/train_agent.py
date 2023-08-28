@@ -4,9 +4,9 @@ import sys
 from datetime import datetime
 
 import gymnasium as gym
-from gymnasium.wrappers.normalize import NormalizeReward
 import numpy as np
 import wandb
+from gymnasium.wrappers.normalize import NormalizeReward
 from stable_baselines3 import *
 from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import HumanOutputFormat

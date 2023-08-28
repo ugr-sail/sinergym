@@ -3,9 +3,9 @@ import json
 import sys
 
 import gymnasium as gym
-from gymnasium.wrappers.normalize import NormalizeReward
 import numpy as np
 import wandb
+from gymnasium.wrappers.normalize import NormalizeReward
 from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
 from stable_baselines3.common.monitor import Monitor
 
