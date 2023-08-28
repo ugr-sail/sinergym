@@ -20,7 +20,7 @@
       ~NormalizeObservation.close
       ~NormalizeObservation.get_unwrapped_obs
       ~NormalizeObservation.get_wrapper_attr
-      ~NormalizeObservation.observation
+      ~NormalizeObservation.normalize
       ~NormalizeObservation.render
       ~NormalizeObservation.reset
       ~NormalizeObservation.step

@@ -141,17 +141,16 @@
 <h1>sinergym.utils.wrappers.NormalizeObservation<a class="headerlink" href="#sinergym-utils-wrappers-normalizeobservation" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.NormalizeObservation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">NormalizeObservation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv" title="sinergym.envs.eplus_env.EplusEnv"><span class="pre">EplusEnv</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">NormalizeObservation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv" title="sinergym.envs.eplus_env.EplusEnv"><span class="pre">EplusEnv</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation" title="Link to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.NormalizeObservation.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv" title="sinergym.envs.eplus_env.EplusEnv"><span class="pre">EplusEnv</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation.__init__" title="Link to this definition"></a></dt>
-<dd><p>Observations normalized to range [0, 1].</p>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv" title="sinergym.envs.eplus_env.EplusEnv"><span class="pre">EplusEnv</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation.__init__" title="Link to this definition"></a></dt>
+<dd><p>This wrapper will normalize observations s.t. each coordinate is centered with unit variance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>env</strong> (<a class="reference internal" href="sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv" title="sinergym.envs.eplus_env.EplusEnv"><em>EplusEnv</em></a>) – Original Sinergym environment.</p></li>
-<li><p><strong>ranges</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – Observation variables ranges to apply normalization (rely on environment).</p></li>
-<li><p><strong>variables</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – List of variables you want to normalize. If it is None, all environment variables are included.</p></li>
+<li><p><strong>env</strong> (<em>Env</em>) – The environment to apply the wrapper</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – A stability parameter that is used when scaling the observations. Defaults to 1e-8</p></li>
 </ul>
 </dd>
 </dl>
@@ -160,8 +159,8 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.__init__" title="sinergym.utils.wrappers.NormalizeObservation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env, ranges[, variables])</p></td>
-<td><p>Observations normalized to range [0, 1].</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.__init__" title="sinergym.utils.wrappers.NormalizeObservation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env[, epsilon])</p></td>
+<td><p>This wrapper will normalize observations s.t.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_name</span></code>()</p></td>
 <td><p>Returns the class name of the wrapper.</p></td>
@@ -175,17 +174,17 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
 <td><p>Gets an attribute from the wrapper and lower environments if <cite>name</cite> doesn't exist in this object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.observation" title="sinergym.utils.wrappers.NormalizeObservation.observation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation</span></code></a>(obs)</p></td>
-<td><p>Applies normalization to observation.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.normalize" title="sinergym.utils.wrappers.NormalizeObservation.normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalize</span></code></a>(obs)</p></td>
+<td><p>Normalizes the observation using the running mean and variance of the observations.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
 <td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code>(*[, seed, options])</p></td>
-<td><p>Modifies the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> after calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code>, returning a modified observation using <code class="xref py py-meth docutils literal notranslate"><span class="pre">self.observation()</span></code>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.reset" title="sinergym.utils.wrappers.NormalizeObservation.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>(**kwargs)</p></td>
+<td><p>Resets the environment and normalizes the observation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code>(action)</p></td>
-<td><p>Modifies the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> after calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> using <code class="xref py py-meth docutils literal notranslate"><span class="pre">self.observation()</span></code> on the returned observations.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.step" title="sinergym.utils.wrappers.NormalizeObservation.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
+<td><p>Steps through the environment and normalizes the observation.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
 <td><p>Generates a <cite>WrapperSpec</cite> for the wrappers.</p></td>
@@ -236,20 +235,21 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="sinergym.utils.wrappers.NormalizeObservation.observation">
-<span class="sig-name descname"><span class="pre">observation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation.observation" title="Link to this definition"></a></dt>
-<dd><p>Applies normalization to observation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>obs</strong> (<em>np.ndarray</em>) – Original observation.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Normalized observation.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
-</dd>
-</dl>
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.NormalizeObservation.normalize">
+<span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation.normalize" title="Link to this definition"></a></dt>
+<dd><p>Normalizes the observation using the running mean and variance of the observations.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.NormalizeObservation.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation.reset" title="Link to this definition"></a></dt>
+<dd><p>Resets the environment and normalizes the observation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.NormalizeObservation.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation.step" title="Link to this definition"></a></dt>
+<dd><p>Steps through the environment and normalizes the observation.</p>
 </dd></dl>
 
 </dd></dl>

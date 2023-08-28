@@ -126,21 +126,10 @@ Then, the action is the current setpoints values with the increase instead of th
 environment in the next layer.</p></li>
 </ul>
 <a class="reference internal image-reference" href="../_images/incremental_wrapper.png"><img alt="Incremental wrapper graph." class="align-center" src="../_images/incremental_wrapper.png" style="width: 497.0px; height: 281.0px;" /></a>
-<ul>
-<li><p><strong>NormalizeObservation</strong>: It is used to transform observation received from simulator in values between 0 and 1.
-It is possible to define a list of variables you want to normalize, if you don’t define this list, all environment
-variables will be included. In order to normalize values, it is necessary a dictionary in order to store max and min values.
-Then, if a environment variable is not included in the dictionary specified in wrapper constructor, then the normalization
-for that variable will be skipped.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>In case a new observation variable is added to the default ones for an environment, care must be
-taken in case observation normalization is to be done. This is because you have to update
-the dictionary of ranges of values available in <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py">constants.py</a> as discussed in
-issue <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/249">#249</a>. You can use the <code class="docutils literal notranslate"><span class="pre">range_getter</span></code> function of <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py">common.py</a> to get these
-ranges automatically from a experiment output folder.</p>
-</div>
-</li>
+<ul class="simple">
+<li><p><strong>NormalizeObservation</strong>: It is used to transform observation received from simulator in values between -1 and 1.
+It is based in the <a class="reference external" href="https://gymnasium.farama.org/_modules/gymnasium/wrappers/normalize/#NormalizeObservation">dynamic normalization wrapper of Gymnasium</a>. At the beginning,
+it is not precise and the values may be out of range usually, so use this wrapper carefully.</p></li>
 <li><p><strong>LoggerWrapper</strong>: Wrapper for logging all interactions between agent and environment. Logger class can be selected
 in the constructor if other type of logging is required. For more information about <em>Sinergym</em> Logger visit <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>.</p></li>
 <li><p><strong>MultiObsWrapper</strong>: Stack observation received in a history queue (size can be customized).</p></li>

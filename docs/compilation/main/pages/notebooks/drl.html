@@ -964,8 +964,8 @@ Progress: |*********************************************************************
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">artifact</span> <span class="o">=</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Artifact</span><span class="p">(</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;training&quot;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;experiment1&quot;</span><span class="p">)</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;experiment1&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;training&quot;</span><span class="p">)</span>
 <span class="n">artifact</span><span class="o">.</span><span class="n">add_dir</span><span class="p">(</span>
         <span class="n">env</span><span class="o">.</span><span class="n">experiment_path</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="s1">&#39;training_output/&#39;</span><span class="p">)</span>
@@ -1155,7 +1155,7 @@ View run at <a href='https://wandb.ai/alex_ugr/sinergym_evaluations/runs/empzk2o
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get wandb artifact path (to load model)</span>
 <span class="n">load_artifact_entity</span> <span class="o">=</span> <span class="s1">&#39;alex_ugr&#39;</span>
 <span class="n">load_artifact_project</span> <span class="o">=</span> <span class="s1">&#39;sinergym&#39;</span>
-<span class="n">load_artifact_name</span> <span class="o">=</span> <span class="s1">&#39;training&#39;</span>
+<span class="n">load_artifact_name</span> <span class="o">=</span> <span class="s1">&#39;experiment1&#39;</span>
 <span class="n">load_artifact_tag</span> <span class="o">=</span> <span class="s1">&#39;latest&#39;</span>
 <span class="n">load_artifact_model_path</span> <span class="o">=</span> <span class="s1">&#39;evaluation_output/best_model/model.zip&#39;</span>
 <span class="n">wandb_path</span> <span class="o">=</span> <span class="n">load_artifact_entity</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">load_artifact_project</span> <span class="o">+</span> \
@@ -1437,8 +1437,8 @@ Episode  4 Mean reward:  -0.41174758683638085 Cumulative reward:  -14427.6354427
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">artifact</span> <span class="o">=</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Artifact</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;evaluating&quot;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;evaluation1&quot;</span><span class="p">)</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;evaluation1&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;evaluating&quot;</span><span class="p">)</span>
 <span class="n">artifact</span><span class="o">.</span><span class="n">add_dir</span><span class="p">(</span>
     <span class="n">env</span><span class="o">.</span><span class="n">experiment_path</span><span class="p">,</span>
     <span class="n">name</span><span class="o">=</span><span class="s1">&#39;evaluation_output/&#39;</span><span class="p">)</span>
