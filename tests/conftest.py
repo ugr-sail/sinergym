@@ -275,7 +275,7 @@ def env_wrapper_normalization(env_5zone_continuous):
 def env_wrapper_multiobjective(env_5zone_continuous):
     return MultiObjectiveReward(
         env=env_5zone_continuous, reward_terms=[
-            'reward_energy', 'reward_comfort'])
+            'energy_term', 'comfort_term'])
 
 
 @pytest.fixture(scope='function')
@@ -319,8 +319,8 @@ def env_all_wrappers(env_5zone_continuous):
     env = MultiObjectiveReward(
         env=env_5zone_continuous,
         reward_terms=[
-            'reward_energy',
-            'reward_comfort'])
+            'energy_term',
+            'comfort_term'])
     env = PreviousObservationWrapper(env, previous_variables=[
         'htg_setpoint',
         'clg_setpoint',
