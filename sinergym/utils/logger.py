@@ -305,9 +305,6 @@ class CSVLogger(object):
                 ep_mean_abs_comfort,
                 ep_std_abs_comfort,
                 ep_cumulative_abs_comfort,
-                ep_mean_abs_energy,
-                ep_std_abs_energy,
-                ep_cumulative_abs_energy,
                 self.episode_data['total_timesteps'],
                 self.episode_data['total_time_elapsed']]
 

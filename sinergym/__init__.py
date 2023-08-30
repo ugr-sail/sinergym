@@ -26,8 +26,8 @@ register(
         'actuators': DEFAULT_5ZONE_ACTUATORS,
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variable': 'air_temperature',
-            'energy_variable': 'HVAC_electricity_demand_rate',
+            'temperature_variables': 'air_temperature',
+            'energy_variables': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 20.0,
                 23.5),
@@ -65,8 +65,8 @@ for building in id_bases:
         reg_kwargs['meters'] = DEFAULT_5ZONE_METERS
         reg_kwargs['reward'] = LinearReward
         reg_kwargs['reward_kwargs'] = {
-            'temperature_variable': 'air_temperature',
-            'energy_variable': 'HVAC_electricity_demand_rate',
+            'temperature_variables': 'air_temperature',
+            'energy_variables': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 20.0,
                 23.5),
@@ -84,10 +84,10 @@ for building in id_bases:
         reg_kwargs['meters'] = DEFAULT_DATACENTER_METERS
         reg_kwargs['reward'] = LinearReward
         reg_kwargs['reward_kwargs'] = {
-            'temperature_variable': [
+            'temperature_variables': [
                 'west_zone_temperature',
                 'east_zone_temperature'],
-            'energy_variable': 'HVAC_electricity_demand_rate',
+            'energy_variables': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 18,
                 27),
@@ -105,11 +105,11 @@ for building in id_bases:
         reg_kwargs['meters'] = DEFAULT_WAREHOUSE_METERS
         reg_kwargs['reward'] = LinearReward
         reg_kwargs['reward_kwargs'] = {
-            'temperature_variable': [
+            'temperature_variables': [
                 'office_temperature',
                 'fstorage_temperature',
                 'bstorage_temperature'],
-            'energy_variable': 'HVAC_electricity_demand_rate',
+            'energy_variables': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 18,
                 27),
@@ -127,7 +127,7 @@ for building in id_bases:
         reg_kwargs['meters'] = DEFAULT_OFFICE_METERS
         reg_kwargs['reward'] = LinearReward
         reg_kwargs['reward_kwargs'] = {
-            'temperature_variable': [
+            'temperature_variables': [
                 'zone1_temperature',
                 'zone2_temperature',
                 'zone3_temperature',
@@ -147,7 +147,7 @@ for building in id_bases:
                 'zone17_temperature',
                 'zone18_temperature'
             ],
-            'energy_variable': 'HVAC_electricity_demand_rate',
+            'energy_variables': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (18, 27),
             'range_comfort_summer': (18, 27)
         }
@@ -162,7 +162,7 @@ for building in id_bases:
         reg_kwargs['meters'] = DEFAULT_OFFICEGRID_METERS
         reg_kwargs['reward'] = LinearReward
         reg_kwargs['reward_kwargs'] = {
-            'temperature_variable': [
+            'temperature_variables': [
                 'zone1_temperature',
                 'zone2_temperature',
                 'zone3_temperature',
@@ -182,7 +182,7 @@ for building in id_bases:
                 'zone17_temperature',
                 'zone18_temperature',
                 'zone19_temperature'],
-            'energy_variable': 'HVAC_electricity_demand_rate',
+            'energy_variables': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 20.0,
                 23.5),
@@ -200,13 +200,13 @@ for building in id_bases:
         reg_kwargs['meters'] = DEFAULT_SHOP_METERS
         reg_kwargs['reward'] = LinearReward
         reg_kwargs['reward_kwargs'] = {
-            'temperature_variable': [
+            'temperature_variables': [
                 'zone1_temperature',
                 'zone2_temperature',
                 'zone3_temperature',
                 'zone4_temperature',
                 'zone5_temperature'],
-            'energy_variable': 'HVAC_electricity_demand_rate',
+            'energy_variables': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 20.0,
                 23.5),

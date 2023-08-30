@@ -245,7 +245,7 @@ class ExpReward(LinearReward):
         else:
             temp_range = self.range_comfort_winter
 
-        temps = [v for k, v in obs_dict.items() if k in self.temp_name]
+        temps = [v for k, v in obs_dict.items() if k in self.temp_names]
         comfort = 0.0
         for T in temps:
             if T < temp_range[0] or T > temp_range[1]:
