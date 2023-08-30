@@ -160,9 +160,9 @@ internal temperature or energy variables used to calculate penalties may have a
 different name in different buildings.</p>
 <p>The main parameters that it is considered in a function reward will be the next:</p>
 <ul class="simple">
-<li><p><strong>temperature_variable</strong>: This field can be an <em>str</em> (only a unique zone temperature)
+<li><p><strong>temperature_variables</strong>: This field can be an <em>str</em> (only a unique zone temperature)
 or a <em>list</em> (with several zone temperatures).</p></li>
-<li><p><strong>energy_variable</strong>: Name of the observation variable where energy consumption is
+<li><p><strong>energy_variables</strong>: Name of the observation variables where energy consumption is
 reflected.</p></li>
 <li><p><strong>range_comfort_winter</strong>: Temperature comfort range for cold season. Depends on
 environment you are using.</p></li>
@@ -184,8 +184,9 @@ one being used.</p>
 an example in <a class="reference internal" href="notebooks/change_environment.html#Adding-a-new-reward"><span class="std std-ref">Adding a new reward</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>By default, reward class will return the reward value and the terms used in its calculation.
-This terms will be added to info dict in environment automatically.</p>
+<p>By default, reward class will return the reward value and the terms used in its calculation. Terms
+depends on the reward function used specifically.
+These terms will be added to info dict in environment automatically.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -281,6 +282,7 @@ The below code implements this.</p>
             <dd><a href="../../v2.5.0/pages/rewards.html">v2.5.0</a></dd>
             <dd><a href="../../v2.5.1/pages/rewards.html">v2.5.1</a></dd>
             <dd><a href="../../v2.5.2/pages/rewards.html">v2.5.2</a></dd>
+            <dd><a href="../../v3.0.1/pages/rewards.html">v3.0.1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

@@ -53,10 +53,10 @@ different name in different buildings.
 
 The main parameters that it is considered in a function reward will be the next:
 
-- **temperature_variable**: This field can be an *str* (only a unique zone temperature)
+- **temperature_variables**: This field can be an *str* (only a unique zone temperature)
   or a *list* (with several zone temperatures).
 
-- **energy_variable**: Name of the observation variable where energy consumption is 
+- **energy_variables**: Name of the observation variables where energy consumption is 
   reflected.
 
 - **range_comfort_winter**: Temperature comfort range for cold season. Depends on 
@@ -80,8 +80,9 @@ The main parameters that it is considered in a function reward will be the next:
 By default, all environments use ``LinearReward`` with default parameters. If you want to change this, see
 an example in :ref:`Adding a new reward`.
 
-.. note:: By default, reward class will return the reward value and the terms used in its calculation. 
-          This terms will be added to info dict in environment automatically.
+.. note:: By default, reward class will return the reward value and the terms used in its calculation. Terms
+          depends on the reward function used specifically.
+          These terms will be added to info dict in environment automatically.
 
 .. warning:: When specifying a different reward with `gym.make` than the 
              default environment ID, it is very important to set the `reward_kwargs` 
