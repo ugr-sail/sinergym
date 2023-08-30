@@ -110,6 +110,7 @@ class CSVLogger(object):
             'comfort_penalties': [],
             'abs_comfort': [],
             'power_penalties': [],
+            'abs_energy': [],
             'total_timesteps': 0,
             'total_time_elapsed': 0,
             'comfort_violation_timesteps': 0
@@ -139,6 +140,7 @@ class CSVLogger(object):
             info.get('energy_term'),
             info.get('comfort_term'),
             info.get('abs_comfort'),
+            info.get('abs_energy'),
             terminated]
 
     def _store_step_information(
@@ -169,6 +171,9 @@ class CSVLogger(object):
         if info.get('abs_comfort') is not None:
             self.episode_data['abs_comfort'].append(
                 info.get('abs_comfort'))
+        if info.get('abs_energy') is not None:
+            self.episode_data['abs_energy'].append(
+                info.get('abs_energy'))
         if info.get('comfort_term') != 0:
             self.episode_data['comfort_violation_timesteps'] += 1
         self.episode_data['total_timesteps'] = info.get('timestep')
@@ -185,6 +190,7 @@ class CSVLogger(object):
             'comfort_penalties': [],
             'abs_comfort': [],
             'power_penalties': [],
+            'abs_energy': [],
             'total_timesteps': 0,
             'total_time_elapsed': 0,
             'comfort_violation_timesteps': 0
@@ -299,6 +305,9 @@ class CSVLogger(object):
                 ep_mean_abs_comfort,
                 ep_std_abs_comfort,
                 ep_cumulative_abs_comfort,
+                ep_mean_abs_energy,
+                ep_std_abs_energy,
+                ep_cumulative_abs_energy,
                 self.episode_data['total_timesteps'],
                 self.episode_data['total_time_elapsed']]
 
