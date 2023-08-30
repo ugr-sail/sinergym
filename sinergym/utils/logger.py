@@ -110,6 +110,7 @@ class CSVLogger(object):
             'comfort_penalties': [],
             'abs_comfort': [],
             'power_penalties': [],
+            'abs_energy': [],
             'total_timesteps': 0,
             'total_time_elapsed': 0,
             'comfort_violation_timesteps': 0
@@ -136,9 +137,10 @@ class CSVLogger(object):
             info.get('timestep')] + list(obs) + list(action) + [
             info.get('time_elapsed(hours)'),
             info.get('reward'),
-            info.get('reward_energy'),
-            info.get('reward_comfort'),
+            info.get('energy_term'),
+            info.get('comfort_term'),
             info.get('abs_comfort'),
+            info.get('abs_energy'),
             terminated]
 
     def _store_step_information(
@@ -158,18 +160,21 @@ class CSVLogger(object):
         # In reset, info this keys are not available
         if info.get('reward'):
             self.episode_data['rewards'].append(info.get('reward'))
-        if info.get('total_energy'):
-            self.episode_data['powers'].append(info.get('total_energy'))
-        if info.get('reward_comfort'):
+        if info.get('abd_energy'):
+            self.episode_data['powers'].append(info.get('abs_energy'))
+        if info.get('comfort_term'):
             self.episode_data['comfort_penalties'].append(
-                info.get('reward_comfort'))
-        if info.get('reward_energy') is not None:
+                info.get('comfort_term'))
+        if info.get('energy_term') is not None:
             self.episode_data['power_penalties'].append(
-                info.get('reward_energy'))
+                info.get('energy_term'))
         if info.get('abs_comfort') is not None:
             self.episode_data['abs_comfort'].append(
                 info.get('abs_comfort'))
-        if info.get('reward_comfort') != 0:
+        if info.get('abs_energy') is not None:
+            self.episode_data['abs_energy'].append(
+                info.get('abs_energy'))
+        if info.get('comfort_term') != 0:
             self.episode_data['comfort_violation_timesteps'] += 1
         self.episode_data['total_timesteps'] = info.get('timestep')
         self.episode_data['total_time_elapsed'] = info.get('time_elapsed')
@@ -185,6 +190,7 @@ class CSVLogger(object):
             'comfort_penalties': [],
             'abs_comfort': [],
             'power_penalties': [],
+            'abs_energy': [],
             'total_timesteps': 0,
             'total_time_elapsed': 0,
             'comfort_violation_timesteps': 0

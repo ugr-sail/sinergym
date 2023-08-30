@@ -210,7 +210,7 @@ class LoggerWrapper(gym.Wrapper):
         super(LoggerWrapper, self).__init__(env)
         # Headers for csv logger
         monitor_header_list = monitor_header if monitor_header is not None else ['timestep'] + env.observation_variables + env.action_variables + [
-            'time (hours)', 'reward', 'power_penalty', 'comfort_penalty', 'abs_comfort', 'terminated']
+            'time (hours)', 'reward', 'power_penalty', 'comfort_penalty', 'abs_comfort', 'abs_energy', 'terminated']
         self.monitor_header = ''
         for element_header in monitor_header_list:
             self.monitor_header += element_header + ','

@@ -30,8 +30,8 @@ class LinearReward(BaseReward):
 
     def __init__(
         self,
-        temperature_variable: Union[str, list],
-        energy_variable: str,
+        temperature_variables: Union[str, list],
+        energy_variables: Union[str, list],
         range_comfort_winter: Tuple[int, int],
         range_comfort_summer: Tuple[int, int],
         summer_start: Tuple[int, int] = (6, 1),
@@ -49,8 +49,8 @@ class LinearReward(BaseReward):
             R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))
 
         Args:
-            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
-            energy_variable (str): Name of the energy/power variable.
+            temperature_variables (Union[str, list]): Name(s) of the temperature variable(s).
+            energy_variables (Union[str, list): Name(s) of the energy/power variable(s).
             range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
             range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
             summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
@@ -63,8 +63,8 @@ class LinearReward(BaseReward):
         super(LinearReward, self).__init__()
 
         # Name of the variables
-        self.temp_name = temperature_variable
-        self.energy_name = energy_variable
+        self.temp_names = temperature_variables
+        self.energy_names = energy_variables
 
         # Reward parameters
         self.range_comfort_winter = range_comfort_winter
@@ -89,10 +89,11 @@ class LinearReward(BaseReward):
         """
 
         # Energy term
-        reward_energy = - self.lambda_energy * obs_dict[self.energy_name]
+        energy, enery_values = self._get_energy(obs_dict)
+        reward_energy = - self.lambda_energy * energy
 
         # Comfort
-        comfort, temps = self._get_comfort(obs_dict)
+        comfort, temp_values = self._get_comfort(obs_dict)
         reward_comfort = - self.lambda_temp * comfort
 
         # Weighted sum of both terms
@@ -100,14 +101,36 @@ class LinearReward(BaseReward):
             (1.0 - self.W_energy) * reward_comfort
 
         reward_terms = {
-            'reward_energy': reward_energy,
-            'reward_comfort': reward_comfort,
-            'total_energy': obs_dict[self.energy_name],
+            'energy_term': self.W_energy * reward_energy,
+            'comfort_term': (1.0 - self.W_energy) * reward_comfort,
+            'reward_weight': self.W_energy,
+            'abs_energy': energy,
             'abs_comfort': comfort,
-            'temperatures': temps
+            'energy_values': enery_values,
+            'temp_values': temp_values
         }
 
         return reward, reward_terms
+
+    def _get_energy(self, obs_dict: Dict[str,
+                                         Any]) -> Tuple[float,
+                                                        List[float]]:
+        """Calculate the reward term of the reward.
+
+        Args:
+            obs_dict (Dict[str, Any]): Observation to calculate the reward term.
+
+        Returns:
+            Tuple[float, List[float]]: Energy consumed (sum of variables) and List with energy_variable values used.
+        """
+
+        energy_values = [
+            v for k, v in obs_dict.items() if k in self.energy_names]
+
+        # The total energy is the sum of energies
+        energy_value = sum(energy_values)
+
+        return energy_value, energy_values
 
     def _get_comfort(self,
                      obs_dict: Dict[str,
@@ -139,21 +162,21 @@ class LinearReward(BaseReward):
         else:
             temp_range = self.range_comfort_winter
 
-        temps = [v for k, v in obs_dict.items() if k in self.temp_name]
+        temp_values = [v for k, v in obs_dict.items() if k in self.temp_names]
         comfort = 0.0
-        for T in temps:
+        for T in temp_values:
             if T < temp_range[0] or T > temp_range[1]:
                 comfort += min(abs(temp_range[0] - T), abs(T - temp_range[1]))
 
-        return comfort, temps
+        return comfort, temp_values
 
 
 class ExpReward(LinearReward):
 
     def __init__(
         self,
-        temperature_variable: Union[str, list],
-        energy_variable: str,
+        temperature_variables: Union[str, list],
+        energy_variables: Union[str, list],
         range_comfort_winter: Tuple[int, int],
         range_comfort_summer: Tuple[int, int],
         summer_start: Tuple[int, int] = (6, 1),
@@ -169,8 +192,8 @@ class ExpReward(LinearReward):
             R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T - T_{low}, 0) + max(T_{up} - T, 0)) )
 
         Args:
-            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
-            energy_variable (str): Name of the energy/power variable.
+            temperature_variables (Union[str, list]): Name(s) of the temperature variable(s).
+            energy_variables (Union[str, list]): Name(s) of the energy/power variable(s).
             range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
             range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
             summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
@@ -181,8 +204,8 @@ class ExpReward(LinearReward):
         """
 
         super(ExpReward, self).__init__(
-            temperature_variable,
-            energy_variable,
+            temperature_variables,
+            energy_variables,
             range_comfort_winter,
             range_comfort_summer,
             summer_start,
@@ -222,7 +245,7 @@ class ExpReward(LinearReward):
         else:
             temp_range = self.range_comfort_winter
 
-        temps = [v for k, v in obs_dict.items() if k in self.temp_name]
+        temps = [v for k, v in obs_dict.items() if k in self.temp_names]
         comfort = 0.0
         for T in temps:
             if T < temp_range[0] or T > temp_range[1]:
@@ -236,13 +259,13 @@ class HourlyLinearReward(LinearReward):
 
     def __init__(
         self,
-        temperature_variable: Union[str, list],
-        energy_variable: str,
+        temperature_variables: Union[str, list],
+        energy_variables: Union[str, list],
         range_comfort_winter: Tuple[int, int],
         range_comfort_summer: Tuple[int, int],
         summer_start: Tuple[int, int] = (6, 1),
         summer_final: Tuple[int, int] = (9, 30),
-        min_energy_weight: float = 0.5,
+        default_energy_weight: float = 0.5,
         lambda_energy: float = 1e-4,
         lambda_temperature: float = 1.0,
         range_comfort_hours: tuple = (9, 19),
@@ -251,26 +274,26 @@ class HourlyLinearReward(LinearReward):
         Linear reward function with a time-dependent weight for consumption and energy terms.
 
         Args:
-            temperature_variable (Union[str, list]): Name(s) of the temperature variable(s).
-            energy_variable (str): Name of the energy/power variable.
+            temperature_variables (Union[str, list]): Name(s) of the temperature variable(s).
+            energy_variables (Union[str, list]): Name(s) of the energy/power variable(s).
             range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
             range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
             summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
             summer_final (Tuple[int,int]): Summer session tuple with month and day end. defaults to (9,30).
-            min_energy_weight (float, optional): Minimum weight given to the energy term. Defaults to 0.5.
+            default_energy_weight (float, optional): Default weight given to the energy term when thermal comfort is considered. Defaults to 0.5.
             lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
             lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
             range_comfort_hours (tuple, optional): Hours where thermal comfort is considered. Defaults to (9, 19).
         """
 
         super(HourlyLinearReward, self).__init__(
-            temperature_variable,
-            energy_variable,
+            temperature_variables,
+            energy_variables,
             range_comfort_winter,
             range_comfort_summer,
             summer_start,
             summer_final,
-            min_energy_weight,
+            default_energy_weight,
             lambda_energy,
             lambda_temperature
         )
@@ -289,10 +312,11 @@ class HourlyLinearReward(LinearReward):
             Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
         """
         # Energy term
-        reward_energy = - self.lambda_energy * obs_dict[self.energy_name]
+        energy, enery_values = self._get_energy(obs_dict)
+        reward_energy = - self.lambda_energy * energy
 
         # Comfort
-        comfort, temps = self._get_comfort(obs_dict)
+        comfort, temp_values = self._get_comfort(obs_dict)
         reward_comfort = - self.lambda_temp * comfort
 
         # Determine energy weight depending on the hour
@@ -306,11 +330,13 @@ class HourlyLinearReward(LinearReward):
         reward = weight * reward_energy + (1.0 - weight) * reward_comfort
 
         reward_terms = {
-            'reward_energy': reward_energy,
-            'reward_comfort': reward_comfort,
-            'total_energy': obs_dict[self.energy_name],
+            'energy_term': weight * reward_energy,
+            'comfort_term': (1.0 - weight) * reward_comfort,
+            'reward_weight': weight,
+            'abs_energy': energy,
             'abs_comfort': comfort,
-            'temperatures': temps
+            'energy_values': enery_values,
+            'temp_values': temp_values
         }
 
         return reward, reward_terms

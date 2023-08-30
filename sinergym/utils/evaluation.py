@@ -77,10 +77,10 @@ def evaluate_policy(
                 obs, state=state, deterministic=deterministic)
             obs, reward, terminated, _, info = env.step(action)
             episode_cumulative_reward += reward
-            episode_cumulative_power += info['total_energy']
-            episode_cumulative_power_penalty += info['reward_energy']
-            episode_cumulative_comfort_penalty += info['reward_comfort']
-            if info['reward_comfort'] != 0:
+            episode_cumulative_power += info['abs_energy']
+            episode_cumulative_power_penalty += info['energy_term']
+            episode_cumulative_comfort_penalty += info['comfort_term']
+            if info['comfort_term'] != 0:
                 episode_steps_comfort_violation += 1
             if callback is not None:
                 callback(locals(), globals())

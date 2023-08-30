@@ -69,8 +69,8 @@ def env_5zone_discrete():
         action_mapping=DEFAULT_5ZONE_ACTION_MAPPING,
         reward=LinearReward,
         reward_kwargs={
-            'temperature_variable': 'air_temperature',
-            'energy_variable': 'HVAC_electricity_demand_rate',
+            'temperature_variables': 'air_temperature',
+            'energy_variables': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 20.0,
                 23.5),
@@ -97,8 +97,8 @@ def env_5zone_continuous():
         actuators=DEFAULT_5ZONE_ACTUATORS,
         reward=LinearReward,
         reward_kwargs={
-            'temperature_variable': 'air_temperature',
-            'energy_variable': 'HVAC_electricity_demand_rate',
+            'temperature_variables': 'air_temperature',
+            'energy_variables': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 20.0,
                 23.5),
@@ -126,8 +126,8 @@ def env_5zone_continuous_stochastic():
         weather_variability=(1.0, 0.0, 0.001),
         reward=LinearReward,
         reward_kwargs={
-            'temperature_variable': 'air_temperature',
-            'energy_variable': 'HVAC_electricity_demand_rate',
+            'temperature_variables': 'air_temperature',
+            'energy_variables': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 20.0,
                 23.5),
@@ -155,10 +155,10 @@ def env_datacenter_discrete():
         action_mapping=DEFAULT_DATACENTER_ACTION_MAPPING,
         reward=LinearReward,
         reward_kwargs={
-            'temperature_variable': [
+            'temperature_variables': [
                 'west_zone_temperature',
                 'east_zone_temperature'],
-            'energy_variable': 'HVAC_electricity_demand_rate',
+            'energy_variables': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 18,
                 27),
@@ -185,10 +185,10 @@ def env_datacenter_continuous():
         actuators=DEFAULT_DATACENTER_ACTUATORS,
         reward=LinearReward,
         reward_kwargs={
-            'temperature_variable': [
+            'temperature_variables': [
                 'west_zone_temperature',
                 'east_zone_temperature'],
-            'energy_variable': 'HVAC_electricity_demand_rate',
+            'energy_variables': 'HVAC_electricity_demand_rate',
             'range_comfort_winter': (
                 18,
                 27),
@@ -275,7 +275,7 @@ def env_wrapper_normalization(env_5zone_continuous):
 def env_wrapper_multiobjective(env_5zone_continuous):
     return MultiObjectiveReward(
         env=env_5zone_continuous, reward_terms=[
-            'reward_energy', 'reward_comfort'])
+            'energy_term', 'comfort_term'])
 
 
 @pytest.fixture(scope='function')
@@ -319,8 +319,8 @@ def env_all_wrappers(env_5zone_continuous):
     env = MultiObjectiveReward(
         env=env_5zone_continuous,
         reward_terms=[
-            'reward_energy',
-            'reward_comfort'])
+            'energy_term',
+            'comfort_term'])
     env = PreviousObservationWrapper(env, previous_variables=[
         'htg_setpoint',
         'clg_setpoint',
@@ -398,8 +398,8 @@ def custom_reward():
 @ pytest.fixture(scope='function')
 def linear_reward():
     return LinearReward(
-        temperature_variable='air_temperature',
-        energy_variable='HVAC_electricity_demand_rate',
+        temperature_variables='air_temperature',
+        energy_variables='HVAC_electricity_demand_rate',
         range_comfort_winter=(
             20.0,
             23.5),
@@ -411,10 +411,10 @@ def linear_reward():
 @ pytest.fixture(scope='function')
 def exponential_reward():
     return ExpReward(
-        temperature_variable=[
+        temperature_variables=[
             'air_temperature1',
             'air_temperature2'],
-        energy_variable='HVAC_electricity_demand_rate',
+        energy_variables='HVAC_electricity_demand_rate',
         range_comfort_winter=(
             20.0,
             23.5),
@@ -426,8 +426,8 @@ def exponential_reward():
 @ pytest.fixture(scope='function')
 def hourly_linear_reward():
     return HourlyLinearReward(
-        temperature_variable='air_temperature',
-        energy_variable='HVAC_electricity_demand_rate',
+        temperature_variables='air_temperature',
+        energy_variables='HVAC_electricity_demand_rate',
         range_comfort_winter=(
             20.0,
             23.5),
