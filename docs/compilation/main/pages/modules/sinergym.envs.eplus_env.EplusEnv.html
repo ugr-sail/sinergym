@@ -185,7 +185,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.action_space" title="sinergym.envs.eplus_env.EplusEnv.action_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_space</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.actuator_handles" title="sinergym.envs.eplus_env.EplusEnv.actuator_handles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">actuator_handles</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.actuator_handlers" title="sinergym.envs.eplus_env.EplusEnv.actuator_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">actuator_handlers</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.available_handlers" title="sinergym.envs.eplus_env.EplusEnv.available_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">available_handlers</span></code></a></p></td>
@@ -218,7 +218,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.metadata" title="sinergym.envs.eplus_env.EplusEnv.metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.meter_handles" title="sinergym.envs.eplus_env.EplusEnv.meter_handles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">meter_handles</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.meter_handlers" title="sinergym.envs.eplus_env.EplusEnv.meter_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">meter_handlers</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_random</span></code></p></td>
@@ -251,7 +251,7 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></p></td>
 <td><p>Returns the base non-wrapped environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.var_handles" title="sinergym.envs.eplus_env.EplusEnv.var_handles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var_handles</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.var_handlers" title="sinergym.envs.eplus_env.EplusEnv.var_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var_handlers</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.weather_path" title="sinergym.envs.eplus_env.EplusEnv.weather_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weather_path</span></code></a></p></td>
@@ -268,8 +268,8 @@
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.actuator_handles">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">actuator_handles</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.actuator_handles" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.actuator_handlers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">actuator_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.actuator_handlers" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -329,8 +329,8 @@
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.meter_handles">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">meter_handles</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.meter_handles" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.meter_handlers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">meter_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.meter_handlers" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -418,8 +418,8 @@
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.var_handles">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">var_handles</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.var_handles" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.var_handlers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">var_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.var_handlers" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
