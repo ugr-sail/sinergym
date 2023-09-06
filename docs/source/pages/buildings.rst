@@ -9,6 +9,10 @@ used in each experiment.
 .. important:: If you are interested in including new buildings to this 
                framework, please visit section :ref:`Adding new buildings for environments`.
 
+.. important:: In order to get information about default observation and action variables in each building, it is available in
+               `project constants <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__. Remember that it
+               is possible to set a custom control and observation too, see example :ref:`Changing observation and action spaces`.
+
 **************************
 Datacenter
 **************************
