@@ -131,6 +131,16 @@ _This is a project in active development. Stay tuned for upcoming releases._
   <img src="images/operation_diagram.png"><br><br>
 </div>
 
+## Project structure
+
+This repository is organized in the next directories:
+
+- `sinergym/`: Here you will find all the source code that forms *Sinergym*: environment, modeling, simulator, and tools such as wrappers, reward functions, etc.
+- `docs/`: Online documentation, generated with Sphinx and using Restructured Text (RST).
+- `examples/`: Here there are a set of notebooks written in Jupyter format. Use cases are illustrated with Sinergym.
+- `tests/`: All the unit tests of Sinergym. Fixtures and checks are defined here in order to check that the tool is in a stable state.
+- `scripts/`: This folder contains scripts in which Sinergym is used. We can find useful things for the users, such as agent training, agent loading, performance checks, etc. In addition, these scripts allow a high margin of configuration using the JSON format.
+
 ## List of available environments
 
 If you would like to see a complete and updated list of our available environments, please visit [our list](https://ugr-sail.github.io/sinergym/compilation/main/pages/environments.html#) in the official *Sinergym* documentation.
