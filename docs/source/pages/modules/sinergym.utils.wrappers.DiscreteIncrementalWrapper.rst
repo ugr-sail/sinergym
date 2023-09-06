@@ -19,6 +19,7 @@
       ~DiscreteIncrementalWrapper.action
       ~DiscreteIncrementalWrapper.class_name
       ~DiscreteIncrementalWrapper.close
+      ~DiscreteIncrementalWrapper.get_wrapper_attr
       ~DiscreteIncrementalWrapper.render
       ~DiscreteIncrementalWrapper.reset
       ~DiscreteIncrementalWrapper.step

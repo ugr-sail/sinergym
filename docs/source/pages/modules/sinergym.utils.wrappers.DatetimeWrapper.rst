@@ -18,6 +18,7 @@
       ~DatetimeWrapper.__init__
       ~DatetimeWrapper.class_name
       ~DatetimeWrapper.close
+      ~DatetimeWrapper.get_wrapper_attr
       ~DatetimeWrapper.observation
       ~DatetimeWrapper.render
       ~DatetimeWrapper.reset
