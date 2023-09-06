@@ -631,7 +631,7 @@ class EplusEnv(gym.Env):
     def action_space(
         self
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
-        return self._action_space
+        return getattr(self, '_action_space')
 
     @action_space.setter
     def action_space(self, space: gym.spaces.Space[Any]):
@@ -641,7 +641,7 @@ class EplusEnv(gym.Env):
     def observation_space(
         self
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
-        return self._observation_space
+        return getattr(self, '_observation_space')
 
     @observation_space.setter
     def observation_space(self, space: gym.spaces.Space[Any]):
@@ -650,16 +650,16 @@ class EplusEnv(gym.Env):
     # --------------------------------- Simulator -------------------------------- #
 
     @property
-    def var_handles(self) -> Optional[Dict[str, int]]:
-        return self.energyplus_simulator.var_handles
+    def var_handlers(self) -> Optional[Dict[str, int]]:
+        return self.energyplus_simulator.var_handlers
 
     @property
-    def meter_handles(self) -> Optional[Dict[str, int]]:
-        return self.energyplus_simulator.meter_handles
+    def meter_handlers(self) -> Optional[Dict[str, int]]:
+        return self.energyplus_simulator.meter_handlers
 
     @property
-    def actuator_handles(self) -> Optional[Dict[str, int]]:
-        return self.energyplus_simulator.actuator_handles
+    def actuator_handlers(self) -> Optional[Dict[str, int]]:
+        return self.energyplus_simulator.actuator_handlers
 
     @property
     def available_handlers(self) -> Optional[str]:
@@ -738,21 +738,21 @@ class EplusEnv(gym.Env):
     - Workspace directory: {}
     - Reward function: {}
     - Reset default options: {}
-    - Run Period: {}
-    - Episode Length: {}
+    - Run period: {}
+    - Episode length: {}
     - Number of timesteps in an episode: {}
     - Timestep size (seconds): {}
     #----------------------------------------------------------------------------------#
                                 ENVIRONMENT SPACE:
     #----------------------------------------------------------------------------------#
-    - Observation Space: {}
-    - Observation Variables: {}
-    - Action Space: {}
-    - Action Variables: {}
+    - Observation space: {}
+    - Observation variables: {}
+    - Action space: {}
+    - Action variables: {}
     - Discrete?: {}
-    - Action_mapping: {}
+    - Action mapping: {}
     - Normalized?: {}
-    - Real Action Space (used in simulator): {}
+    - Real action space (used in simulator): {}
     #==================================================================================#
                                     SIMULATOR
     #==================================================================================#
@@ -807,10 +807,7 @@ class EplusEnv(gym.Env):
                 'real_space',
                 None),
             self.is_running,
-            getattr(
-                self,
-                'available_handlers',
-                'Not available yet, it is required to do reset to know.'),
-            self.actuator_handles,
-            self.var_handles,
-            self.meter_handles)
+            self.available_handlers,
+            self.actuator_handlers,
+            self.var_handlers,
+            self.meter_handlers)

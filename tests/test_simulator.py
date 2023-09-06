@@ -10,13 +10,13 @@ import pytest
 def test_simulator(simulator_5zone, pkg_data_path):
     # Checks status before simulator start
     assert not simulator_5zone.warmup_complete
-    assert simulator_5zone.var_handles is None
-    assert simulator_5zone.meter_handles is None
-    assert simulator_5zone.actuator_handles is None
+    assert simulator_5zone.var_handlers is None
+    assert simulator_5zone.meter_handlers is None
+    assert simulator_5zone.actuator_handlers is None
     assert simulator_5zone.available_data is None
     assert simulator_5zone.energyplus_thread is None
     assert simulator_5zone.energyplus_state is None
-    assert not simulator_5zone.initialized_handles
+    assert not simulator_5zone.initialized_handlers
     assert not simulator_5zone.system_ready
     assert not simulator_5zone.simulation_complete
     assert simulator_5zone._building_path is None
@@ -52,11 +52,11 @@ def test_simulator(simulator_5zone, pkg_data_path):
     assert simulator_5zone.warmup_complete
 
     # Until first observation received, system is not initialized
-    assert simulator_5zone.var_handles is None
-    assert simulator_5zone.meter_handles is None
-    assert simulator_5zone.actuator_handles is None
+    assert simulator_5zone.var_handlers is None
+    assert simulator_5zone.meter_handlers is None
+    assert simulator_5zone.actuator_handlers is None
     assert simulator_5zone.available_data is None
-    assert not simulator_5zone.initialized_handles
+    assert not simulator_5zone.initialized_handlers
     assert not simulator_5zone.system_ready
     assert not simulator_5zone.simulation_complete
 
@@ -70,11 +70,11 @@ def test_simulator(simulator_5zone, pkg_data_path):
 
     # Now system should be initialized, since first observation has been
     # received
-    assert simulator_5zone.var_handles is not None
-    assert simulator_5zone.meter_handles is not None
-    assert simulator_5zone.actuator_handles is not None
+    assert simulator_5zone.var_handlers is not None
+    assert simulator_5zone.meter_handlers is not None
+    assert simulator_5zone.actuator_handlers is not None
     assert simulator_5zone.available_data is not None
-    assert simulator_5zone.initialized_handles
+    assert simulator_5zone.initialized_handlers
     assert simulator_5zone.system_ready
     assert not simulator_5zone.simulation_complete
 
@@ -108,7 +108,7 @@ def test_simulator(simulator_5zone, pkg_data_path):
     assert simulator_5zone.warmup_queue.empty()
     assert simulator_5zone.energyplus_thread is None
     assert not simulator_5zone.warmup_complete
-    assert not simulator_5zone.initialized_handles
+    assert not simulator_5zone.initialized_handlers
     assert not simulator_5zone.system_ready
     assert not simulator_5zone.simulation_complete
 

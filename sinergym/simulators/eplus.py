@@ -64,10 +64,10 @@ class EnergyPlus(object):
         self.api = EnergyPlusAPI()
         self.exchange = self.api.exchange
 
-        # Handles
-        self.var_handles: Optional[Dict[str, int]] = None
-        self.meter_handles: Optional[Dict[str, int]] = None
-        self.actuator_handles: Optional[Dict[str, int]] = None
+        # Handlers
+        self.var_handlers: Optional[Dict[str, int]] = None
+        self.meter_handlers: Optional[Dict[str, int]] = None
+        self.actuator_handlers: Optional[Dict[str, int]] = None
         self.available_data: Optional[str] = None
 
         # Simulation elements to read/write
@@ -80,7 +80,7 @@ class EnergyPlus(object):
         self.energyplus_thread: Optional[threading.Thread] = None
         self.energyplus_state: Optional[int] = None
         self.sim_results: Dict[str, Any] = {}
-        self.initialized_handles = False
+        self.initialized_handlers = False
         self.system_ready = False
         self.simulation_complete = False
 
@@ -98,7 +98,7 @@ class EnergyPlus(object):
               building_path: str,
               weather_path: str,
               output_path: str) -> None:
-        """Initializes all callbacks and handles using EnergyPlus API, prepare the simulation system
+        """Initializes all callbacks and handlers using EnergyPlus API, prepare the simulation system
            and start running the simulation in a Python thread.
 
         Args:
@@ -176,7 +176,7 @@ class EnergyPlus(object):
 
     def stop(self) -> None:
         """It forces the simulation ends, cleans all communication queues, thread is deleted (joined) and simulator attributes are
-           reset (except handles, to not initialize again if there is a next thread execution).
+           reset (except handlers, to not initialize again if there is a next thread execution).
         """
         if self.is_running:
             # Set simulation as complete and force thread to finish
@@ -193,7 +193,7 @@ class EnergyPlus(object):
             # Set flags to default value
             self.sim_results: Dict[str, Any] = {}
             self.warmup_complete = False
-            self.initialized_handles = False
+            self.initialized_handlers = False
             self.system_ready = False
             self.simulation_complete = False
 
@@ -251,17 +251,17 @@ class EnergyPlus(object):
                                  '(self.energyplus_state)', {'self': self})
                 for t_variable in self.time_variables
             },
-            # variables (getting value from handles)
+            # variables (getting value from handlers)
             ** {
                 key: self.exchange.get_variable_value(state_argument, handle)
                 for key, handle
-                in self.var_handles.items()
+                in self.var_handlers.items()
             },
-            # meters (getting value from handles)
+            # meters (getting value from handlers)
             **{
                 key: self.exchange.get_meter_value(state_argument, handle)
                 for key, handle
-                in self.meter_handles.items()
+                in self.meter_handlers.items()
             }
         }
 
@@ -302,9 +302,9 @@ class EnergyPlus(object):
         next_action = self.act_queue.get()
         # self.logger.debug('ACTION get from queue: {}'.format(next_action))
 
-        # Set the action values obtained in actuator handles
+        # Set the action values obtained in actuator handlers
         for i, (act_name, act_handle) in enumerate(
-                self.actuator_handles.items()):
+                self.actuator_handlers.items()):
             self.exchange.set_actuator_value(
                 state=state_argument,
                 actuator_handle=act_handle,
@@ -316,20 +316,20 @@ class EnergyPlus(object):
             #         act_name, next_action[i]))
 
     def _init_system(self, state_argument: int) -> None:
-        """Indicate whether system are ready to work. After waiting to API data is available, handles are initialized, and warmup flag is correct.
+        """Indicate whether system are ready to work. After waiting to API data is available, handlers are initialized, and warmup flag is correct.
 
         Args:
             state_argument (int): EnergyPlus API state
         """
         if not self.system_ready:
-            self._init_handles(state_argument)
-            self.system_ready = self.initialized_handles and not self.exchange.warmup_flag(
+            self._init_handlers(state_argument)
+            self.system_ready = self.initialized_handlers and not self.exchange.warmup_flag(
                 state_argument)
             if self.system_ready:
                 self.logger.info('System is ready.')
 
-    def _init_handles(self, state_argument: int) -> None:
-        """initialize sensors/actuators handles to interact with during simulation.
+    def _init_handlers(self, state_argument: int) -> None:
+        """initialize sensors/actuators handlers to interact with during simulation.
 
         Args:
             state_argument (int): EnergyPlus API state
@@ -337,23 +337,23 @@ class EnergyPlus(object):
         """
         # api data must be fully ready, else nothing happens
         if self.exchange.api_data_fully_ready(
-                state_argument) and not self.initialized_handles:
+                state_argument) and not self.initialized_handlers:
 
-            if self.var_handles is None or self.meter_handles is None or self.actuator_handles is None:
-                # Get variable handles using variables info
-                self.var_handles = {
+            if self.var_handlers is None or self.meter_handlers is None or self.actuator_handlers is None:
+                # Get variable handlers using variables info
+                self.var_handlers = {
                     key: self.exchange.get_variable_handle(state_argument, *var)
                     for key, var in self.variables.items()
                 }
 
-                # Get meter handles using meters info
-                self.meter_handles = {
+                # Get meter handlers using meters info
+                self.meter_handlers = {
                     key: self.exchange.get_meter_handle(state_argument, meter)
                     for key, meter in self.meters.items()
                 }
 
-                # Get actuator handles using actuators info
-                self.actuator_handles = {
+                # Get actuator handlers using actuators info
+                self.actuator_handlers = {
                     key: self.exchange.get_actuator_handle(
                         state_argument, *actuator)
                     for key, actuator in self.actuators.items()
@@ -370,32 +370,32 @@ class EnergyPlus(object):
                 with open(parent_dir + '/data_available.txt', "w") as txt_file:
                     txt_file.writelines([line + '\n' for line in data])
 
-                # Check handles specified exists
-                for variable_name, handle_value in self.var_handles.items():
+                # Check handlers specified exists
+                for variable_name, handle_value in self.var_handlers.items():
                     try:
                         assert handle_value > 0
                     except AssertionError as err:
                         self.logger.error(
-                            'Variable Handles: {} is not an available variable, check your variable names and be sure that exists in <env-path>/data_available.txt'.format(variable_name))
+                            'Variable handlers: {} is not an available variable, check your variable names and be sure that exists in <env-path>/data_available.txt'.format(variable_name))
 
-                for meter_name, handle_value in self.meter_handles.items():
+                for meter_name, handle_value in self.meter_handlers.items():
                     try:
                         assert handle_value > 0
                     except AssertionError as err:
                         self.logger.error(
-                            'Meter Handles: {} is not an available meter, check your meter names and be sure that exists in <env-path>/data_available.txt'.format(meter_name))
+                            'Meter handlers: {} is not an available meter, check your meter names and be sure that exists in <env-path>/data_available.txt'.format(meter_name))
 
-                for actuator_name, handle_value in self.actuator_handles.items():
+                for actuator_name, handle_value in self.actuator_handlers.items():
                     try:
                         assert handle_value > 0
                     except AssertionError as err:
                         self.logger.error(
-                            'Actuator Handles: {} is not an available actuator, check your actuator names and be sure that exists in <env-path>/data_available.txt'.format(actuator_name))
+                            'Actuator handlers: {} is not an available actuator, check your actuator names and be sure that exists in <env-path>/data_available.txt'.format(actuator_name))
 
-                self.logger.info('Handles initialized.')
+                self.logger.info('handlers initialized.')
 
-            self.logger.info('Handles are ready.')
-            self.initialized_handles = True
+            self.logger.info('handlers are ready.')
+            self.initialized_handlers = True
 
     def _flush_queues(self) -> None:
         """It empties all values allocated in observation, action and warmup queues
