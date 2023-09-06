@@ -631,7 +631,7 @@ class EplusEnv(gym.Env):
     def action_space(
         self
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
-        return self._action_space
+        return getattr(self, '_action_space')
 
     @action_space.setter
     def action_space(self, space: gym.spaces.Space[Any]):
@@ -641,7 +641,7 @@ class EplusEnv(gym.Env):
     def observation_space(
         self
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
-        return self._observation_space
+        return getattr(self, '_observation_space')
 
     @observation_space.setter
     def observation_space(self, space: gym.spaces.Space[Any]):
@@ -650,16 +650,16 @@ class EplusEnv(gym.Env):
     # --------------------------------- Simulator -------------------------------- #
 
     @property
-    def var_handles(self) -> Optional[Dict[str, int]]:
-        return self.energyplus_simulator.var_handles
+    def var_handlers(self) -> Optional[Dict[str, int]]:
+        return self.energyplus_simulator.var_handlers
 
     @property
-    def meter_handles(self) -> Optional[Dict[str, int]]:
-        return self.energyplus_simulator.meter_handles
+    def meter_handlers(self) -> Optional[Dict[str, int]]:
+        return self.energyplus_simulator.meter_handlers
 
     @property
-    def actuator_handles(self) -> Optional[Dict[str, int]]:
-        return self.energyplus_simulator.actuator_handles
+    def actuator_handlers(self) -> Optional[Dict[str, int]]:
+        return self.energyplus_simulator.actuator_handlers
 
     @property
     def available_handlers(self) -> Optional[str]:
@@ -719,3 +719,95 @@ class EplusEnv(gym.Env):
     @property
     def idd_path(self) -> str:
         return self.model.idd_path
+
+    # -------------------------------- class print ------------------------------- #
+
+    def __str__(self):
+        return """
+    #==================================================================================#
+                                ENVIRONMENT NAME: {}
+    #==================================================================================#
+    #----------------------------------------------------------------------------------#
+                                ENVIRONMENT INFO:
+    #----------------------------------------------------------------------------------#
+    - Building file: {}
+    - Zone names: {}
+    - Weather file(s): {}
+    - Current weather used: {}
+    - Episodes executed: {}
+    - Workspace directory: {}
+    - Reward function: {}
+    - Reset default options: {}
+    - Run period: {}
+    - Episode length: {}
+    - Number of timesteps in an episode: {}
+    - Timestep size (seconds): {}
+    #----------------------------------------------------------------------------------#
+                                ENVIRONMENT SPACE:
+    #----------------------------------------------------------------------------------#
+    - Observation space: {}
+    - Observation variables: {}
+    - Action space: {}
+    - Action variables: {}
+    - Discrete?: {}
+    - Action mapping: {}
+    - Normalized?: {}
+    - Real action space (used in simulator): {}
+    #==================================================================================#
+                                    SIMULATOR
+    #==================================================================================#
+    *NOTE: To have information about available handlers and controlled elements, it is
+    required to do env reset before to print information.*
+
+    Is running? : {}
+    #----------------------------------------------------------------------------------#
+                                AVAILABLE ELEMENTS:
+    #----------------------------------------------------------------------------------#
+    *Some variables can not be here depending if it is defined Output:Variable field
+     in building model. See documentation for more information.*
+
+    {}
+    #----------------------------------------------------------------------------------#
+                                CONTROLLED ELEMENTS:
+    #----------------------------------------------------------------------------------#
+    - Actuators: {}
+    - Variables: {}
+    - Meters: {}
+    - Internal Variables: None
+
+    """.format(
+            self.name,
+            self.building_path,
+            self.zone_names,
+            self.weather_files,
+            self.weather_path,
+            self.episode,
+            self.workspace_dir,
+            self.reward_fn,
+            self.default_options,
+            self.runperiod,
+            self.episode_length,
+            self.timestep_per_episode,
+            self.step_size,
+            self.observation_space,
+            self.observation_variables,
+            self.action_space,
+            self.action_variables,
+            self.flag_discrete,
+            getattr(
+                self,
+                'action_mapping',
+                None),
+            getattr(
+                self,
+                'flag_normalization',
+                False),
+            getattr(
+                self,
+                'real_space',
+                None),
+            self.is_running,
+            self.available_handlers,
+            self.actuator_handlers,
+            self.var_handlers,
+            self.meter_handlers)

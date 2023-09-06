@@ -18,6 +18,7 @@
       ~PreviousObservationWrapper.__init__
       ~PreviousObservationWrapper.class_name
       ~PreviousObservationWrapper.close
+      ~PreviousObservationWrapper.get_wrapper_attr
       ~PreviousObservationWrapper.observation
       ~PreviousObservationWrapper.render
       ~PreviousObservationWrapper.reset

@@ -17,6 +17,7 @@
    
       ~EplusEnv.__init__
       ~EplusEnv.close
+      ~EplusEnv.get_wrapper_attr
       ~EplusEnv.render
       ~EplusEnv.reset
       ~EplusEnv.step
@@ -31,7 +32,7 @@
    .. autosummary::
    
       ~EplusEnv.action_space
-      ~EplusEnv.actuator_handles
+      ~EplusEnv.actuator_handlers
       ~EplusEnv.available_handlers
       ~EplusEnv.building_path
       ~EplusEnv.ddy_path
@@ -42,7 +43,7 @@
       ~EplusEnv.is_running
       ~EplusEnv.logger
       ~EplusEnv.metadata
-      ~EplusEnv.meter_handles
+      ~EplusEnv.meter_handlers
       ~EplusEnv.np_random
       ~EplusEnv.observation_space
       ~EplusEnv.render_mode
@@ -53,7 +54,7 @@
       ~EplusEnv.step_size
       ~EplusEnv.timestep_per_episode
       ~EplusEnv.unwrapped
-      ~EplusEnv.var_handles
+      ~EplusEnv.var_handlers
       ~EplusEnv.weather_path
       ~EplusEnv.zone_names
    
