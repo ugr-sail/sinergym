@@ -719,3 +719,98 @@ class EplusEnv(gym.Env):
     @property
     def idd_path(self) -> str:
         return self.model.idd_path
+
+    # -------------------------------- class print ------------------------------- #
+
+    def __str__(self):
+        return """
+    #==================================================================================#
+                                ENVIRONMENT NAME: {}
+    #==================================================================================#
+    #----------------------------------------------------------------------------------#
+                                ENVIRONMENT INFO:
+    #----------------------------------------------------------------------------------#
+    - Building file: {}
+    - Zone names: {}
+    - Weather file(s): {}
+    - Current weather used: {}
+    - Episodes executed: {}
+    - Workspace directory: {}
+    - Reward function: {}
+    - Reset default options: {}
+    - Run Period: {}
+    - Episode Length: {}
+    - Number of timesteps in an episode: {}
+    - Timestep size (seconds): {}
+    #----------------------------------------------------------------------------------#
+                                ENVIRONMENT SPACE:
+    #----------------------------------------------------------------------------------#
+    - Observation Space: {}
+    - Observation Variables: {}
+    - Action Space: {}
+    - Action Variables: {}
+    - Discrete?: {}
+    - Action_mapping: {}
+    - Normalized?: {}
+    - Real Action Space (used in simulator): {}
+    #==================================================================================#
+                                    SIMULATOR
+    #==================================================================================#
+    *NOTE: To have information about available handlers and controlled elements, it is
+    required to do env reset before to print information.*
+
+    Is running? : {}
+    #----------------------------------------------------------------------------------#
+                                AVAILABLE ELEMENTS:
+    #----------------------------------------------------------------------------------#
+    *Some variables can not be here depending if it is defined Output:Variable field
+     in building model. See documentation for more information.*
+
+    {}
+    #----------------------------------------------------------------------------------#
+                                CONTROLLED ELEMENTS:
+    #----------------------------------------------------------------------------------#
+    - Actuators: {}
+    - Variables: {}
+    - Meters: {}
+    - Internal Variables: None
+
+    """.format(
+            self.name,
+            self.building_path,
+            self.zone_names,
+            self.weather_files,
+            self.weather_path,
+            self.episode,
+            self.workspace_dir,
+            self.reward_fn,
+            self.default_options,
+            self.runperiod,
+            self.episode_length,
+            self.timestep_per_episode,
+            self.step_size,
+            self.observation_space,
+            self.observation_variables,
+            self.action_space,
+            self.action_variables,
+            self.flag_discrete,
+            getattr(
+                self,
+                'action_mapping',
+                None),
+            getattr(
+                self,
+                'flag_normalization',
+                False),
+            getattr(
+                self,
+                'real_space',
+                None),
+            self.is_running,
+            getattr(
+                self,
+                'available_handlers',
+                'Not available yet, it is required to do reset to know.'),
+            self.actuator_handles,
+            self.var_handles,
+            self.meter_handles)
