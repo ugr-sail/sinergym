@@ -81,7 +81,7 @@ class CSVLogger(object):
         :param flag: This flag is used to activate (True) or deactivate (False) Logger in real time.
         :param steps_data, rewards, powers, etc: These arrays are used to record steps data to elaborate main data for progress.csv later.
         :param total_timesteps: Current episode timesteps executed.
-        :param total_time_elapsed: Current episode time elapsed (simulation seconds).
+        :param total_time_elapsed: Current episode time elapsed (simulation hours).
         :param comfort_violation_timesteps: Current episode timesteps whose comfort_penalty!=0.
         :param steps_data: It is a array of str's. Each element belong to a step data.
 
@@ -94,6 +94,15 @@ class CSVLogger(object):
             log_progress_file: str,
             log_file: Optional[str] = None,
             flag: bool = True):
+        """CSVLogger constructor
+
+        Args:
+            monitor_header (str): CSV header for sub_run_N/monitor.csv which record interaction step by step.
+            progress_header (str): CSV header for res_N/progress.csv which record main data episode by episode.
+            log_progress_file (str): log_file path for progress.csv, there will be only one CSV per whole simulation.
+            log_file (Optional[str], optional): log_file path for monitor.csv, there will be one CSV per episode. Defaults to None.
+            flag (bool, optional): Activate (True) or deactivate (False) Logger in real time. Defaults to True.
+        """
 
         self.monitor_header = monitor_header
         self.progress_header = progress_header + '\n'
@@ -157,27 +166,19 @@ class CSVLogger(object):
 
 
         """
-        # In reset, info this keys are not available
-        if info.get('reward'):
-            self.episode_data['rewards'].append(info.get('reward'))
-        if info.get('abd_energy'):
-            self.episode_data['powers'].append(info.get('abs_energy'))
-        if info.get('comfort_term'):
-            self.episode_data['comfort_penalties'].append(
-                info.get('comfort_term'))
-        if info.get('energy_term') is not None:
-            self.episode_data['power_penalties'].append(
-                info.get('energy_term'))
-        if info.get('abs_comfort') is not None:
-            self.episode_data['abs_comfort'].append(
-                info.get('abs_comfort'))
-        if info.get('abs_energy') is not None:
-            self.episode_data['abs_energy'].append(
-                info.get('abs_energy'))
-        if info.get('comfort_term') != 0:
-            self.episode_data['comfort_violation_timesteps'] += 1
-        self.episode_data['total_timesteps'] = info.get('timestep')
-        self.episode_data['total_time_elapsed'] = info.get('time_elapsed')
+        # In reset (timestep=1), some keys are not available in info
+        if info['timestep'] > 1:
+
+            self.episode_data['rewards'].append(info['reward'])
+            self.episode_data['powers'].append(info['abs_energy'])
+            self.episode_data['comfort_penalties'].append(info['comfort_term'])
+            self.episode_data['power_penalties'].append(info['energy_term'])
+            self.episode_data['abs_comfort'].append(info['abs_comfort'])
+            self.episode_data['abs_energy'].append(info['abs_energy'])
+            if info['comfort_term'] != 0:
+                self.episode_data['comfort_violation_timesteps'] += 1
+            self.episode_data['total_time_elapsed'] = info['time_elapsed(hours)']
+            self.episode_data['total_timesteps'] = info['timestep']
 
     def _reset_logger(self) -> None:
         """Reset relevant data to next episode summary in progress.csv.

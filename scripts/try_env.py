@@ -2,9 +2,12 @@ import gymnasium as gym
 import numpy as np
 
 import sinergym
-from sinergym.utils.wrappers import LoggerWrapper
+from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
+from gymnasium.wrappers.normalize import NormalizeReward
 
 env = gym.make('Eplus-demo-v1')
+env = NormalizeObservation(env)
+env = NormalizeReward(env)
 env = LoggerWrapper(env)
 
 for i in range(1):

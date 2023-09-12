@@ -722,8 +722,8 @@ class EplusEnv(gym.Env):
 
     # -------------------------------- class print ------------------------------- #
 
-    def __str__(self):
-        return """
+    def info(self):
+        print("""
     #==================================================================================#
                                 ENVIRONMENT NAME: {}
     #==================================================================================#
@@ -811,3 +811,4 @@ class EplusEnv(gym.Env):
             self.actuator_handlers,
             self.var_handlers,
             self.meter_handlers)
+        )
