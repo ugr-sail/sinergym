@@ -240,10 +240,7 @@ def test_env_wrappers(env_all_wrappers):
     # PreviousObservation
     assert hasattr(env_all_wrappers, 'previous_observation')
     assert hasattr(env_all_wrappers, 'previous_variables')
-    assert hasattr(env_all_wrappers, 'previous_observation_variables')
     # Datetime
-    assert hasattr(env_all_wrappers, 'original_datetime_observation_variables')
-    assert hasattr(env_all_wrappers, 'datetime_observation_variables')
     # IncrementalDiscrete
     assert hasattr(env_all_wrappers, 'current_setpoints')
     # Normalization

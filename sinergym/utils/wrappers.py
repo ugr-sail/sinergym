@@ -2,7 +2,6 @@
 
 import random
 from collections import deque
-from copy import deepcopy
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
@@ -14,6 +13,7 @@ from sinergym.envs.eplus_env import EplusEnv
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 from sinergym.utils.logger import CSVLogger, Logger
+from copy import deepcopy
 
 
 class MultiObjectiveReward(gym.Wrapper):
@@ -45,11 +45,11 @@ class MultiObjectiveReward(gym.Wrapper):
         """
         # Execute normal reward
         obs, _, terminated, truncated, info = self.env.step(action)
-        reward_vector = [
-            value for key,
-            value in info.items() if key in self.reward_terms]
+        reward_vector = [value for key, value in info.items(
+        ) if key in self.get_wrapper_attr('reward_terms')]
         try:
-            assert len(reward_vector) == len(self.reward_terms)
+            assert len(reward_vector) == len(
+                self.get_wrapper_attr('reward_terms'))
         except AssertionError as err:
             self.logger.error('Some reward term is unknown')
             raise err
@@ -73,8 +73,6 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         self.is_vector_env = False
 
         self.unwrapped_observation = None
-        self.normalization_variables = deepcopy(
-            self.env.observation_variables)
         self.obs_rms = RunningMeanStd(shape=self.observation_space.shape)
         self.epsilon = epsilon
 
@@ -110,7 +108,7 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         Returns:
             Optional[np.ndarray]: Last original observation. If it is the first observation, this value is None.
         """
-        return self.unwrapped_observation
+        return self.get_wrapper_attr('unwrapped_observation')
 
 
 class MultiObsWrapper(gym.Wrapper):
@@ -134,7 +132,7 @@ class MultiObsWrapper(gym.Wrapper):
         self.n = n
         self.ind_flat = flatten
         self.history = deque([], maxlen=n)
-        shape = env.observation_space.shape
+        shape = self.get_wrapper_attr('observation_space').shape
         new_shape = (shape[0] * n,) if flatten else ((n,) + shape)
         self.observation_space = gym.spaces.Box(
             low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
@@ -179,7 +177,7 @@ class MultiObsWrapper(gym.Wrapper):
         Returns:
             np.array: Array of previous observations.
         """
-        if self.ind_flat:
+        if self.get_wrapper_attr('ind_flat'):
             return np.array(self.history).reshape(-1,)
         else:
             return np.array(self.history)
@@ -209,8 +207,8 @@ class LoggerWrapper(gym.Wrapper):
         """
         super(LoggerWrapper, self).__init__(env)
         # Headers for csv logger
-        monitor_header_list = monitor_header if monitor_header is not None else ['timestep'] + env.observation_variables + env.action_variables + [
-            'time (hours)', 'reward', 'energy_penalty', 'comfort_penalty', 'abs_comfort', 'abs_energy', 'terminated']
+        monitor_header_list = monitor_header if monitor_header is not None else ['timestep'] + self.get_wrapper_attr('observation_variables') + self.get_wrapper_attr(
+            'action_variables') + ['time (hours)', 'reward', 'energy_penalty', 'comfort_penalty', 'abs_comfort', 'abs_energy', 'terminated']
         self.monitor_header = ''
         for element_header in monitor_header_list:
             self.monitor_header += element_header + ','
@@ -238,9 +236,9 @@ class LoggerWrapper(gym.Wrapper):
 
         # Create simulation logger, by default is active (flag=True)
         self.file_logger = logger_class(
-            monitor_header=self.monitor_header,
-            progress_header=self.progress_header,
-            log_progress_file=env.experiment_path +
+            monitor_header=self.get_wrapper_attr('monitor_header'),
+            progress_header=self.get_wrapper_attr('progress_header'),
+            log_progress_file=self.get_wrapper_attr('experiment_path') +
             '/progress.csv',
             flag=flag)
 
@@ -298,10 +296,11 @@ class LoggerWrapper(gym.Wrapper):
             Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
         """
         # It isn't first episode simulation, so we can logger last episode
-        if self.env.is_running:
+        if self.get_wrapper_attr('is_running'):
             self.logger.info(
                 'End of episode detected, recording summary (progress.csv) if logger is active')
-            self.file_logger.log_episode(episode=self.env.episode)
+            self.file_logger.log_episode(
+                episode=self.env.get_wrapper_attr('episode'))
 
         # Then, reset environment
         obs, info = self.env.reset(seed=seed, options=options)
@@ -309,25 +308,25 @@ class LoggerWrapper(gym.Wrapper):
         # Create monitor.csv for information of this episode
         self.logger.info(
             'Creating monitor.csv for current episode (episode ' + str(
-                self.env.episode) + ') if logger is active')
+                self.get_wrapper_attr('episode')) + ') if logger is active')
         self.file_logger.set_log_file(
-            self.env.model.episode_path + '/monitor.csv')
+            self.get_wrapper_attr('model').episode_path + '/monitor.csv')
 
         if is_wrapped(self, NormalizeObservation):
             # Store initial state of simulation (normalized)
-            self.file_logger.log_step_normalize(obs=obs, action=[None for _ in range(
-                len(self.env.action_variables))], terminated=False, info=info)
+            self.file_logger.log_step_normalize(obs=obs, action=[None for _ in range(len(
+                self.env.get_wrapper_attr('action_variables')))], terminated=False, info=info)
             # And store original obs
             self.file_logger.log_step(obs=self.env.get_unwrapped_obs(),
                                       action=[None for _ in range(
-                                          len(self.env.action_variables))],
+                                          len(self.get_wrapper_attr('action_variables')))],
                                       terminated=False,
                                       info=info)
         else:
             # Only store original step
             self.file_logger.log_step(obs=obs,
                                       action=[None for _ in range(
-                                          len(self.env.action_variables))],
+                                          len(self.get_wrapper_attr('action_variables')))],
                                       terminated=False,
                                       info=info)
 
@@ -339,7 +338,8 @@ class LoggerWrapper(gym.Wrapper):
         # Record last episode summary before end simulation
         self.logger.info(
             'End of episode, recording summary (progress.csv) if logger is active')
-        self.file_logger.log_episode(episode=self.env.episode)
+        self.file_logger.log_episode(
+            episode=self.env.get_wrapper_attr('episode'))
 
         # Then, close env
         self.env.close()
@@ -368,33 +368,31 @@ class DatetimeWrapper(gym.ObservationWrapper):
 
         # Check datetime variables are defined in environment
         try:
-            assert all(
-                time_variable in self.observation_variables for time_variable in [
-                    'month', 'day_of_month', 'hour'])
+            assert all(time_variable in self.get_wrapper_attr('observation_variables')
+                       for time_variable in ['month', 'day_of_month', 'hour'])
         except AssertionError as err:
             self.logger.error(
-                'month, day_of_month and hour must be defined in observation space in environment previously')
+                'month, day_of_month and hour must be defined in observation space in environment previously.')
             raise err
 
-        # Save observation variables before wrapper
-        self.original_datetime_observation_variables = deepcopy(
-            self.observation_variables)
         # Update new shape
-        new_shape = env.observation_space.shape[0] + 2
+        new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 2
         self.observation_space = gym.spaces.Box(
             low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
         # Update observation variables
-        day_index = self.observation_variables.index('day_of_month')
-        self.observation_variables[day_index] = 'is_weekend'
-        hour_index = self.observation_variables.index('hour')
-        self.observation_variables[hour_index] = 'hour_cos'
-        self.observation_variables.insert(hour_index + 1, 'hour_sin')
-        month_index = self.observation_variables.index('month')
-        self.observation_variables[month_index] = 'month_cos'
-        self.observation_variables.insert(month_index + 1, 'month_sin')
-        # Save observation variables after wrapper
-        self.datetime_observation_variables = deepcopy(
-            self.observation_variables)
+        new_observation_variables = deepcopy(
+            self.get_wrapper_attr('observation_variables'))
+
+        day_index = new_observation_variables.index('day_of_month')
+        new_observation_variables[day_index] = 'is_weekend'
+        hour_index = new_observation_variables.index('hour')
+        new_observation_variables[hour_index] = 'hour_cos'
+        new_observation_variables.insert(hour_index + 1, 'hour_sin')
+        month_index = new_observation_variables.index('month')
+        new_observation_variables[month_index] = 'month_cos'
+        new_observation_variables.insert(month_index + 1, 'month_sin')
+
+        self.observation_variables = new_observation_variables
 
         self.logger.info('Wrapper initialized.')
 
@@ -407,11 +405,13 @@ class DatetimeWrapper(gym.ObservationWrapper):
         Returns:
             np.ndarray: Transformed observation.
         """
-        # Get obs_dict with observation variables from unwrapped env
-        obs_dict = dict(zip(self.original_datetime_observation_variables, obs))
+        # Get obs_dict with observation variables from original env
+        obs_dict = dict(
+            zip(self.env.get_wrapper_attr('observation_variables'), obs))
+
         # New obs dict with same values than obs_dict but with new fields with
         # None
-        new_obs = dict.fromkeys(self.datetime_observation_variables)
+        new_obs = dict.fromkeys(self.get_wrapper_attr('observation_variables'))
         for key, value in obs_dict.items():
             if key in new_obs.keys():
                 new_obs[key] = value
@@ -444,19 +444,19 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         # Check and apply previous variables to observation space and variables
         # names
         self.previous_variables = previous_variables
-        self.original_previous_observation_variables = deepcopy(
-            self.observation_variables)
+        new_observation_variables = deepcopy(
+            self.get_wrapper_attr('observation_variables'))
         for obs_var in previous_variables:
-            assert obs_var in self.observation_variables, '{} variable is not defined in observation space, revise the name.'.format(
-                obs_var)
-            self.observation_variables.append(obs_var + '_previous')
+            assert obs_var in self.get_wrapper_attr(
+                'observation_variables'), '{} variable is not defined in observation space, revise the name.'.format(obs_var)
+            new_observation_variables.append(obs_var + '_previous')
+        # Update observation variables
+        self.observation_variables = new_observation_variables
         # Update new shape
-        new_shape = env.observation_space.shape[0] + len(previous_variables)
+        new_shape = self.env.get_wrapper_attr(
+            'observation_space').shape[0] + len(previous_variables)
         self.observation_space = gym.spaces.Box(
             low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
-
-        self.previous_observation_variables = deepcopy(
-            self.observation_variables)
 
         # previous observation initialization
         self.previous_observation = np.zeros(
@@ -474,11 +474,13 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
             np.ndarray: observation with
         """
         # Concatenate current obs with previous observation variables
-        new_obs = np.concatenate((obs, self.previous_observation))
+        new_obs = np.concatenate(
+            (obs, self.get_wrapper_attr('previous_observation')))
         # Update previous observation to current observation
         self.previous_observation = []
         for variable in self.previous_variables:
-            index = self.previous_observation_variables.index(variable)
+            index = self.env.get_wrapper_attr(
+                'observation_variables').index(variable)
             self.previous_observation.append(obs[index])
 
         return new_obs
@@ -511,20 +513,19 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         super().__init__(env)
 
         # Params
-        self.env = env
         self.current_setpoints = initial_values
 
         # Check environment is valid
         try:
-            assert not self.env.flag_discrete
+            assert not self.env.get_wrapper_attr('flag_discrete')
         except AssertionError as err:
             self.logger.error(
                 'Env wrapped by this wrapper must be continuous.')
             raise err
         try:
             assert len(
-                self.current_setpoints) == len(
-                self.env.action_variables)
+                self.get_wrapper_attr('current_setpoints')) == len(
+                self.env.get_wrapper_attr('action_variables'))
         except AssertionError as err:
             self.logger.error(
                 'Number of variables is different from environment')
@@ -539,12 +540,12 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         self.flag_discrete = True
         self.action_mapping = {}
         do_nothing = [0.0 for _ in range(
-            len(self.env.action_variables))]  # do nothing
+            len(self.env.get_wrapper_attr('action_variables')))]  # do nothing
         self.action_mapping[0] = do_nothing
         n = 1
 
         # Generate all posible actions
-        for k in range(len(self.env.action_variables)):
+        for k in range(len(self.env.get_wrapper_attr('action_variables'))):
             for v in values:
                 x = do_nothing.copy()
                 x[k] = v
@@ -553,30 +554,31 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
         self.action_space = gym.spaces.Discrete(n)
         self.logger.info('New incremental action mapping: {}'.format(n))
-        self.logger.info('{}'.format(self.action_mapping))
+        self.logger.info('{}'.format(self.get_wrapper_attr('action_mapping')))
         self.logger.info('Wrapper initialized')
 
     def action(self, action):
         """Takes the discrete action and transforms it to setpoints tuple."""
-        action_ = self.action_mapping[action]
+        action_ = self.get_wrapper_attr('action_mapping')[action]
         # Update current setpoints values with incremental action
         self.current_setpoints = [
             sum(i) for i in zip(
-                self.current_setpoints,
+                self.get_wrapper_attr('current_setpoints'),
                 action_)]
         # clip setpoints returned
         self.current_setpoints = np.clip(
-            np.array(self.current_setpoints),
-            self.env.real_space.low,
-            self.env.real_space.high
+            np.array(self.get_wrapper_attr('current_setpoints')),
+            self.env.get_wrapper_attr('real_space').low,
+            self.env.get_wrapper_attr('real_space').high
         )
 
         # if normalization flag is active, this wrapper should normalize
         # before.
-        if self.env.flag_normalization:
-            norm_values = self.env.normalized_space.high - self.env.normalized_space.low
-            setpoints_normalized = norm_values * ((self.current_setpoints - self.env.real_space.low) / (
-                self.env.real_space.high - self.env.real_space.low)) + self.env.normalized_space.low
+        if self.env.get_wrapper_attr('flag_normalization'):
+            norm_values = self.env.get_wrapper_attr(
+                'normalized_space').high - self.env.get_wrapper_attr('normalized_space').low
+            setpoints_normalized = norm_values * ((self.get_wrapper_attr('current_setpoints') - self.env.get_wrapper_attr('real_space').low) / (
+                self.env.get_wrapper_attr('real_space').high - self.env.get_wrapper_attr('real_space').low)) + self.env.get_wrapper_attr('normalized_space').low
             return list(setpoints_normalized)
 
         return list(self.current_setpoints)

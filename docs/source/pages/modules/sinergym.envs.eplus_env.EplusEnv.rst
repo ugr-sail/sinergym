@@ -18,6 +18,7 @@
       ~EplusEnv.__init__
       ~EplusEnv.close
       ~EplusEnv.get_wrapper_attr
+      ~EplusEnv.info
       ~EplusEnv.render
       ~EplusEnv.reset
       ~EplusEnv.step
