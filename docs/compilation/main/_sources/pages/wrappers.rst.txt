@@ -38,5 +38,5 @@ You can implement your own wrappers inheriting from *gym.Wrapper* or some of its
 
 .. note:: For examples about how to use these wrappers, visit :ref:`Wrappers example`.
 
-.. important:: The **order of wrappers** if you are going to use several at the same time is really important.
-             The correct order is the same than the list shown above or subsets of that order. 
+.. important:: You have to be careful if you are going to use several nested wrappers.
+               A wrapper works on top of the previous one. The order is flexible since *Sinergym* v3.0.5.
