@@ -2,6 +2,7 @@
 
 import random
 from collections import deque
+from copy import deepcopy
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
@@ -13,7 +14,6 @@ from sinergym.envs.eplus_env import EplusEnv
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 from sinergym.utils.logger import CSVLogger, Logger
-from copy import deepcopy
 
 
 class MultiObjectiveReward(gym.Wrapper):
