@@ -86,6 +86,10 @@ present as a wrapper attribute and is called in each timestep and
 in the end of a episode. This class can be substitute by a new one,
 see :ref:`Logger Wrapper personalization/configuration`.
 
+.. warning:: The ``CSVLogger`` requires the info dict with specific keys to 
+             log the information correctly. If you change the info dict structure
+             in Sinergym, you should check this logger or to use a custom one.
+
 .. note:: Normalized observation methods are only used when environment is 
           wrapped with normalization previously.
 

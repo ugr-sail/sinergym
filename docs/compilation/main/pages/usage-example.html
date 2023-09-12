@@ -118,9 +118,12 @@ the appropriate python version and <em>Sinergym</em> running correctly.</p>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">import</span> <span class="nn">sinergym</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeObservation</span>
+<span class="kn">from</span> <span class="nn">gymnasium.wrappers.normalize</span> <span class="kn">import</span> <span class="n">NormalizeReward</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeReward</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>

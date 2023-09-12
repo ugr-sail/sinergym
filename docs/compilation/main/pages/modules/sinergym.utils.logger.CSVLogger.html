@@ -149,7 +149,7 @@
 <li><p><strong>flag</strong> – This flag is used to activate (True) or deactivate (False) Logger in real time.</p></li>
 <li><p><strong>etc</strong> (<em>steps_data</em><em>, </em><em>rewards</em><em>, </em><em>powers</em><em>,</em>) – These arrays are used to record steps data to elaborate main data for progress.csv later.</p></li>
 <li><p><strong>total_timesteps</strong> – Current episode timesteps executed.</p></li>
-<li><p><strong>total_time_elapsed</strong> – Current episode time elapsed (simulation seconds).</p></li>
+<li><p><strong>total_time_elapsed</strong> – Current episode time elapsed (simulation hours).</p></li>
 <li><p><strong>comfort_violation_timesteps</strong> – Current episode timesteps whose comfort_penalty!=0.</p></li>
 <li><p><strong>steps_data</strong> – It is a array of str’s. Each element belong to a step data.</p></li>
 </ul>
@@ -158,13 +158,25 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.logger.CSVLogger.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">monitor_header</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_header</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_progress_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.logger.CSVLogger.__init__" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>CSVLogger constructor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>monitor_header</strong> (<em>str</em>) – CSV header for sub_run_N/monitor.csv which record interaction step by step.</p></li>
+<li><p><strong>progress_header</strong> (<em>str</em>) – CSV header for res_N/progress.csv which record main data episode by episode.</p></li>
+<li><p><strong>log_progress_file</strong> (<em>str</em>) – log_file path for progress.csv, there will be only one CSV per whole simulation.</p></li>
+<li><p><strong>log_file</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – log_file path for monitor.csv, there will be one CSV per episode. Defaults to None.</p></li>
+<li><p><strong>flag</strong> (<em>bool</em><em>, </em><em>optional</em>) – Activate (True) or deactivate (False) Logger in real time. Defaults to True.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.__init__" title="sinergym.utils.logger.CSVLogger.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(monitor_header, progress_header, ...)</p></td>
-<td><p></p></td>
+<td><p>CSVLogger constructor</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.logger.CSVLogger.activate_flag" title="sinergym.utils.logger.CSVLogger.activate_flag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">activate_flag</span></code></a>()</p></td>
 <td><p>Activate Sinergym CSV logger</p></td>

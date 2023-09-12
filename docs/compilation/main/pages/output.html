@@ -190,6 +190,12 @@ external factor.</p>
 present as a wrapper attribute and is called in each timestep and
 in the end of a episode. This class can be substitute by a new one,
 see <a class="reference internal" href="notebooks/personalize_loggerwrapper.html#Logger-Wrapper-personalization/configuration"><span class="std std-ref">Logger Wrapper personalization/configuration</span></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code> requires the info dict with specific keys to
+log the information correctly. If you change the info dict structure
+in Sinergym, you should check this logger or to use a custom one.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Normalized observation methods are only used when environment is
