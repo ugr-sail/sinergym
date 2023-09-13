@@ -14,10 +14,7 @@ def evaluate_policy(
     n_eval_episodes: int = 10,
     deterministic: bool = True,
     render: bool = False,
-    callback: Optional[Callable[[Dict[str, Any], Dict[str, Any]], None]] = None,
-    reward_threshold: Optional[float] = None,
-    return_episode_rewards: bool = False,
-    warn: bool = True,
+    callback: Optional[Callable[[Dict[str, Any], Dict[str, Any]], None]] = None
 ) -> Dict[str, list]:
     """
     Runs policy for ``n_eval_episodes`` episodes and returns average reward and other Sinergym metrics.
@@ -51,13 +48,16 @@ def evaluate_policy(
         (in number of steps).
     """
     result = {
-        'episodes_cumulative_rewards': [],
-        'episodes_mean_rewards': [],
-        'episodes_lengths': [],
-        'episodes_powers': [],
-        'episodes_comfort_violations': [],
-        'episodes_comfort_penalties': [],
-        'episodes_power_penalties': []
+        'episodes_cumulative_reward': [],
+        'episodes_mean_reward': [],
+        'episodes_length': [],
+        'episodes_cumulative_power': [],
+        'episodes_mean_power': [],
+        'episodes_comfort_violation': [],
+        'episodes_cumulative_comfort_penalty': [],
+        'episodes_mean_comfort_penalty': [],
+        'episodes_cumulative_energy_penalty': [],
+        'episodes_mean_energy_penalty': []
     }
     episodes_executed = 0
     while episodes_executed < n_eval_episodes:
@@ -68,7 +68,7 @@ def evaluate_policy(
         episode_steps_comfort_violation = 0
         episode_cumulative_power = 0.0
         episode_cumulative_comfort_penalty = 0.0
-        episode_cumulative_power_penalty = 0.0
+        episode_cumulative_energy_penalty = 0.0
         # ---------------------------------------------------------------------------- #
         #                     Running episode and accumulate values                    #
         # ---------------------------------------------------------------------------- #
@@ -78,9 +78,9 @@ def evaluate_policy(
             obs, reward, terminated, _, info = env.step(action)
             episode_cumulative_reward += reward
             episode_cumulative_power += info['abs_energy']
-            episode_cumulative_power_penalty += info['energy_term']
+            episode_cumulative_energy_penalty += info['energy_term']
             episode_cumulative_comfort_penalty += info['comfort_term']
-            if info['comfort_term'] != 0:
+            if info['comfort_term'] < 0:
                 episode_steps_comfort_violation += 1
             if callback is not None:
                 callback(locals(), globals())
@@ -91,19 +91,25 @@ def evaluate_policy(
         # ---------------------------------------------------------------------------- #
         #                     Storing accumulated values in result                     #
         # ---------------------------------------------------------------------------- #
-        result['episodes_cumulative_rewards'].append(episode_cumulative_reward)
-        result['episodes_mean_rewards'].append(
+        result['episodes_cumulative_reward'].append(episode_cumulative_reward)
+        result['episodes_mean_reward'].append(
             episode_cumulative_reward / episode_length)
-        result['episodes_lengths'].append(episode_length)
-        result['episodes_powers'].append(episode_cumulative_power)
+        result['episodes_length'].append(episode_length)
+        result['episodes_cumulative_power'].append(episode_cumulative_power)
+        result['episodes_mean_power'].append(
+            episode_cumulative_power / episode_length)
         try:
-            result['episodes_comfort_violations'].append(
+            result['episodes_comfort_violation'].append(
                 episode_steps_comfort_violation / episode_length * 100)
         except ZeroDivisionError:
-            result['episodes_comfort_violations'].append(np.nan)
-        result['episodes_comfort_penalties'].append(
+            result['episodes_comfort_violation'].append(np.nan)
+        result['episodes_cumulative_comfort_penalty'].append(
             episode_cumulative_comfort_penalty)
-        result['episodes_power_penalties'].append(
-            episode_cumulative_power_penalty)
+        result['episodes_mean_comfort_penalty'].append(
+            episode_cumulative_comfort_penalty / episode_length)
+        result['episodes_cumulative_energy_penalty'].append(
+            episode_cumulative_energy_penalty)
+        result['episodes_mean_energy_penalty'].append(
+            episode_cumulative_energy_penalty / episode_length)
 
     return result
