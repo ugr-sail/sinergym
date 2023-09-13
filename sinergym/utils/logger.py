@@ -118,7 +118,7 @@ class CSVLogger(object):
             'powers': [],
             'comfort_penalties': [],
             'abs_comfort': [],
-            'power_penalties': [],
+            'energy_penalties': [],
             'abs_energy': [],
             'total_timesteps': 0,
             'total_time_elapsed': 0,
@@ -172,7 +172,7 @@ class CSVLogger(object):
             self.episode_data['rewards'].append(info['reward'])
             self.episode_data['powers'].append(info['abs_energy'])
             self.episode_data['comfort_penalties'].append(info['comfort_term'])
-            self.episode_data['power_penalties'].append(info['energy_term'])
+            self.episode_data['energy_penalties'].append(info['energy_term'])
             self.episode_data['abs_comfort'].append(info['abs_comfort'])
             self.episode_data['abs_energy'].append(info['abs_energy'])
             if info['comfort_term'] != 0:
@@ -190,7 +190,7 @@ class CSVLogger(object):
             'powers': [],
             'comfort_penalties': [],
             'abs_comfort': [],
-            'power_penalties': [],
+            'energy_penalties': [],
             'abs_energy': [],
             'total_timesteps': 0,
             'total_time_elapsed': 0,
@@ -255,10 +255,10 @@ class CSVLogger(object):
                 self.episode_data['comfort_penalties'])
             ep_mean_comfort_penalty = np.mean(
                 self.episode_data['comfort_penalties'])
-            ep_cumulative_power_penalty = np.sum(
-                self.episode_data['power_penalties'])
-            ep_mean_power_penalty = np.mean(
-                self.episode_data['power_penalties'])
+            ep_cumulative_energy_penalty = np.sum(
+                self.episode_data['energy_penalties'])
+            ep_mean_energy_penalty = np.mean(
+                self.episode_data['energy_penalties'])
             ep_mean_abs_comfort = np.mean(self.episode_data['abs_comfort'])
             ep_std_abs_comfort = np.std(self.episode_data['abs_comfort'])
             ep_cumulative_abs_comfort = np.sum(
@@ -300,8 +300,8 @@ class CSVLogger(object):
                 ep_mean_power,
                 ep_cumulative_comfort_penalty,
                 ep_mean_comfort_penalty,
-                ep_cumulative_power_penalty,
-                ep_mean_power_penalty,
+                ep_cumulative_energy_penalty,
+                ep_mean_energy_penalty,
                 comfort_violation,
                 ep_mean_abs_comfort,
                 ep_std_abs_comfort,
