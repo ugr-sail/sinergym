@@ -117,7 +117,7 @@ class LoggerCallback(BaseCallback):
         self.ep_powers.append(info['abs_energy'])
         self.ep_term_comfort.append(info['comfort_term'])
         self.ep_term_energy.append(info['energy_term'])
-        if (info['comfort_term'] > 0):
+        if (info['comfort_term'] < 0):
             self.num_comfort_violation += 1
         self.ep_timesteps += 1
 
