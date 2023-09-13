@@ -16,7 +16,7 @@ from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
 
 
 class LoggerCallback(BaseCallback):
-    """Custom callback for plotting additional values in tensorboard.
+    """Custom callback for plotting additional values in Stable Baselines 3 algorithms.
         :param ep_rewards: Here will be stored all rewards during episode.
         :param ep_powers: Here will be stored all consumption data during episode.
         :param ep_term_comfort: Here will be stored all comfort terms (reward component) during episode.
@@ -25,14 +25,15 @@ class LoggerCallback(BaseCallback):
         :param ep_timesteps: Each timestep during an episode, this value increment 1.
     """
 
-    def __init__(self, sinergym_logger=False, verbose=0):
-        """Custom callback for plotting additional values in tensorboard.
+    def __init__(self, dump_frequency=100, sinergym_logger=False, verbose=0):
+        """Custom callback for plotting additional values in Stable Baselines 3 algorithms.
         Args:
             sinergym_logger (boolean): Indicate if CSVLogger inner Sinergym will be activated or not.
         """
         super(LoggerCallback, self).__init__(verbose)
 
         self.sinergym_logger = sinergym_logger
+        self.dump_frequency = dump_frequency
 
         self.ep_rewards = []
         self.ep_powers = []
@@ -48,90 +49,86 @@ class LoggerCallback(BaseCallback):
                 self.training_env.env_method('activate_logger')
             else:
                 self.training_env.env_method('deactivate_logger')
-
-        # record method depending on the type of algorithm
-
-        if 'OnPolicyAlgorithm' in self.globals.keys():
-            self.record = self.logger.record
-        elif 'OffPolicyAlgorithm' in self.globals.keys():
-            self.record = self.logger.record_mean
-        else:
-            raise KeyError
+        # Global training step count
+        self.timestep = 1
 
     def _on_step(self) -> bool:
+        self.timestep += 1
         info = self.locals['infos'][-1]
-
         # OBSERVATION
-        variables = self.training_env.get_attr('observation_variables')[0]
+        observation_variables = self.training_env.get_attr(
+            'observation_variables')[0]
         # log normalized and original values
         if self.training_env.env_is_wrapped(
                 wrapper_class=NormalizeObservation)[0]:
             obs_normalized = self.locals['new_obs'][-1]
             obs = self.training_env.env_method('get_unwrapped_obs')[-1]
-            for i, variable in enumerate(variables):
-                self.record(
+            for i, variable in enumerate(observation_variables):
+                self.logger.record(
                     'normalized_observation/' + variable, obs_normalized[i])
-                self.record(
+                self.logger.record(
                     'observation/' + variable, obs[i])
         # Only original values
         else:
             obs = self.locals['new_obs'][-1]
-            for i, variable in enumerate(variables):
-                self.record(
+            for i, variable in enumerate(observation_variables):
+                self.logger.record(
                     'observation/' + variable, obs[i])
 
         # ACTION
-        variables = self.training_env.get_attr('action_variables')[0]
+        action_variables = self.training_env.get_attr('action_variables')[
+            0]
         action = None
         # sinergym action received inner its own setpoints range
         action_ = info['action']
-        try:
-            # network output clipped with gym action space
+        # Search network action returned, depends on the algorithm
+        if 'clipped_actions' in self.locals.keys():
             action = self.locals['clipped_actions'][-1]
-        except KeyError:
-            try:
-                action = self.locals['action'][-1]
-            except KeyError:
-                try:
-                    action = self.locals['actions'][-1]
-                except KeyError:
-                    raise KeyError(
-                        'Algorithm action key in locals dict unknown.')
+        elif 'action' in self.locals.keys():
+            action = self.locals['action'][-1]
+        elif 'actions' in self.locals.keys():
+            action = self.locals['actions'][-1]
+        else:
+            raise KeyError('Algorithm action key in locals dict unknown.')
 
         if self.training_env.get_attr('flag_discrete')[0]:
-            action = self.training_env.get_attr('action_mapping')[0][action]
-        for i, variable in enumerate(variables):
-            if action is not None:
-                self.record(
-                    'action/' + variable, action[i])
+            self.logger.record(
+                'action_network/index', action)
+            for i, variable in enumerate(action_variables):
+                self.logger.record(
+                    'action_simulation/' + variable, action_[i])
+        else:
+            for i, variable in enumerate(action_variables):
+                if action is not None:
+                    self.logger.record(
+                        'action_network/' + variable, action[i])
+                self.logger.record(
+                    'action_simulation/' + variable, action_[i])
 
-            self.record(
-                'action_simulation/' + variable, action_[i])
-
-        # Store episode data
-        try:
+        # EPISODE
+        # Store episode data (key depends on algorithm)
+        if 'rewards' in self.locals.keys():
             self.ep_rewards.append(self.locals['rewards'][-1])
-        except KeyError:
-            try:
-                self.ep_rewards.append(self.locals['reward'][-1])
-            except KeyError:
-                print('Algorithm reward key in locals dict unknown')
+        elif 'reward' in self.locals.keys():
+            self.ep_rewards.append(self.locals['reward'][-1])
+        else:
+            raise KeyError('Algorithm reward key in locals dict unknown.')
 
         self.ep_powers.append(info['abs_energy'])
         self.ep_term_comfort.append(info['comfort_term'])
         self.ep_term_energy.append(info['energy_term'])
-        if (info['comfort_term'] != 0):
+        if (info['comfort_term'] > 0):
             self.num_comfort_violation += 1
         self.ep_timesteps += 1
 
         # If episode ends, store summary of episode and reset
-        try:
+        if 'dones' in self.locals.keys():
             done = self.locals['dones'][-1]
-        except KeyError:
-            try:
-                done = self.locals['done'][-1]
-            except KeyError:
-                print('Algorithm done key in locals dict unknown')
+        elif 'done' in self.locals.keys():
+            done = self.locals['done'][-1]
+        else:
+            raise KeyError('Algorithm done key in locals dict unknown.')
+
         if done:
             # store last episode metrics
             self.episode_metrics = {}
@@ -145,9 +142,9 @@ class LoggerCallback(BaseCallback):
                 self.ep_term_comfort)
             self.episode_metrics['cumulative_comfort_penalty'] = np.sum(
                 self.ep_term_comfort)
-            self.episode_metrics['mean_power_penalty'] = np.mean(
+            self.episode_metrics['mean_energy_penalty'] = np.mean(
                 self.ep_term_energy)
-            self.episode_metrics['cumulative_power_penalty'] = np.sum(
+            self.episode_metrics['cumulative_energy_penalty'] = np.sum(
                 self.ep_term_energy)
             try:
                 self.episode_metrics['comfort_violation_time(%)'] = self.num_comfort_violation / \
@@ -163,15 +160,20 @@ class LoggerCallback(BaseCallback):
             self.ep_timesteps = 0
             self.num_comfort_violation = 0
 
-        # During first episode, as it not finished, it shouldn't be recording
-        if hasattr(self, 'episode_metrics'):
+            # Record the episode and dump
             for key, metric in self.episode_metrics.items():
                 self.logger.record(
                     'episode/' + key, metric)
+            self.logger.dump(step=self.timestep)
+
+        # DUMP with the frequency specified
+        if self.timestep % self.dump_frequency == 0:
+            self.logger.dump(step=self.timestep)
 
         return True
 
-    def on_training_end(self):
+    def _on_training_end(self):
+        self.logger.dump(step=self.timestep)
         if is_wrapped(self.training_env, LoggerWrapper):
             self.training_env.env_method('activate_logger')
 
