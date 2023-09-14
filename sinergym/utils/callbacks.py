@@ -28,19 +28,25 @@ class LoggerCallback(BaseCallback):
     def __init__(self, dump_frequency=100, sinergym_logger=False, verbose=0):
         """Custom callback for plotting additional values in Stable Baselines 3 algorithms.
         Args:
+            dump_frequency (int): This is the timestep frequency in which all data recorded is dumped, ignoring algorithm log interval. Defaults to 100.
             sinergym_logger (boolean): Indicate if CSVLogger inner Sinergym will be activated or not.
         """
         super(LoggerCallback, self).__init__(verbose)
 
+        # New attributes
         self.sinergym_logger = sinergym_logger
         self.dump_frequency = dump_frequency
 
-        self.ep_rewards = []
-        self.ep_powers = []
-        self.ep_term_comfort = []
-        self.ep_term_energy = []
-        self.num_comfort_violation = 0
-        self.ep_timesteps = 0
+        # Episode lists of metrics in each timestep.
+        self.episode_logs = {
+            'rewards': [],
+            'powers': [],
+            'comfort_terms': [],
+            'energy_terms': [],
+            'temperature_violations': [],
+            'comfort_violations_count': 0,
+            'timesteps': 0
+        }
 
     def _on_training_start(self):
         # sinergym logger
@@ -53,11 +59,14 @@ class LoggerCallback(BaseCallback):
         self.timestep = 1
 
     def _on_step(self) -> bool:
+
+        # New timestep
         self.timestep += 1
         info = self.locals['infos'][-1]
-        # OBSERVATION
+
+        # OBSERVATION LOG
         observation_variables = self.training_env.get_attr(
-            'observation_variables')[0]
+            'observation_variables')[-1]
         # log normalized and original values
         if self.training_env.env_is_wrapped(
                 wrapper_class=NormalizeObservation)[0]:
@@ -75,9 +84,9 @@ class LoggerCallback(BaseCallback):
                 self.logger.record(
                     'observation/' + variable, obs[i])
 
-        # ACTION
+        # ACTION LOG
         action_variables = self.training_env.get_attr('action_variables')[
-            0]
+            -1]
         action = None
         # sinergym action received inner its own setpoints range
         action_ = info['action']
@@ -91,7 +100,7 @@ class LoggerCallback(BaseCallback):
         else:
             raise KeyError('Algorithm action key in locals dict unknown.')
 
-        if self.training_env.get_attr('flag_discrete')[0]:
+        if self.training_env.get_attr('flag_discrete')[-1]:
             self.logger.record(
                 'action_network/index', action)
             for i, variable in enumerate(action_variables):
@@ -105,21 +114,22 @@ class LoggerCallback(BaseCallback):
                 self.logger.record(
                     'action_simulation/' + variable, action_[i])
 
-        # EPISODE
+        # EPISODE LOG
         # Store episode data (key depends on algorithm)
         if 'rewards' in self.locals.keys():
-            self.ep_rewards.append(self.locals['rewards'][-1])
+            self.episode_logs['rewards'].append(self.locals['rewards'][-1])
         elif 'reward' in self.locals.keys():
-            self.ep_rewards.append(self.locals['reward'][-1])
+            self.episode_logs['rewards'].append(self.locals['reward'][-1])
         else:
             raise KeyError('Algorithm reward key in locals dict unknown.')
 
-        self.ep_powers.append(info['abs_energy'])
-        self.ep_term_comfort.append(info['comfort_term'])
-        self.ep_term_energy.append(info['energy_term'])
+        self.episode_logs['powers'].append(info['abs_energy'])
+        self.episode_logs['temperature_violations'].append(info['abs_comfort'])
+        self.episode_logs['comfort_terms'].append(info['comfort_term'])
+        self.episode_logs['energy_terms'].append(info['energy_term'])
         if (info['comfort_term'] < 0):
-            self.num_comfort_violation += 1
-        self.ep_timesteps += 1
+            self.episode_logs['comfort_violations_count'] += 1
+        self.episode_logs['timesteps'] += 1
 
         # If episode ends, store summary of episode and reset
         if 'dones' in self.locals.keys():
@@ -132,33 +142,43 @@ class LoggerCallback(BaseCallback):
         if done:
             # store last episode metrics
             self.episode_metrics = {}
-            self.episode_metrics['ep_length'] = self.ep_timesteps
+            self.episode_metrics['episode_length'] = self.episode_logs['timesteps']
             self.episode_metrics['cumulative_reward'] = np.sum(
-                self.ep_rewards)
-            self.episode_metrics['mean_reward'] = np.mean(self.ep_rewards)
-            self.episode_metrics['mean_power'] = np.mean(self.ep_powers)
-            self.episode_metrics['cumulative_power'] = np.sum(self.ep_powers)
-            self.episode_metrics['mean_comfort_penalty'] = np.mean(
-                self.ep_term_comfort)
+                self.episode_logs['rewards'])
+            self.episode_metrics['mean_reward'] = np.mean(
+                self.episode_logs['rewards'])
+            self.episode_metrics['cumulative_power'] = np.sum(
+                self.episode_logs['powers'])
+            self.episode_metrics['mean_power'] = np.mean(
+                self.episode_logs['powers'])
             self.episode_metrics['cumulative_comfort_penalty'] = np.sum(
-                self.ep_term_comfort)
-            self.episode_metrics['mean_energy_penalty'] = np.mean(
-                self.ep_term_energy)
+                self.episode_logs['comfort_terms'])
+            self.episode_metrics['mean_comfort_penalty'] = np.mean(
+                self.episode_logs['comfort_terms'])
             self.episode_metrics['cumulative_energy_penalty'] = np.sum(
-                self.ep_term_energy)
+                self.episode_logs['energy_terms'])
+            self.episode_metrics['mean_energy_penalty'] = np.mean(
+                self.episode_logs['energy_terms'])
+            self.episode_metrics['cumulative_temperature_violation'] = np.sum(
+                self.episode_logs['temperature_violations'])
+            self.episode_metrics['mean_temperature_violation'] = np.mean(
+                self.episode_logs['temperature_violations'])
             try:
-                self.episode_metrics['comfort_violation_time(%)'] = self.num_comfort_violation / \
-                    self.ep_timesteps * 100
+                self.episode_metrics['comfort_violation_time(%)'] = self.episode_logs['comfort_violations_count'] / \
+                    self.episode_logs['timesteps'] * 100
             except ZeroDivisionError:
                 self.episode_metrics['comfort_violation_time(%)'] = np.nan
 
             # reset episode info
-            self.ep_rewards = []
-            self.ep_powers = []
-            self.ep_term_comfort = []
-            self.ep_term_energy = []
-            self.ep_timesteps = 0
-            self.num_comfort_violation = 0
+            self.episode_logs = {
+                'rewards': [],
+                'powers': [],
+                'temperature_violations': [],
+                'comfort_terms': [],
+                'energy_terms': [],
+                'comfort_violations_count': 0,
+                'timesteps': 0
+            }
 
             # Record the episode and dump
             for key, metric in self.episode_metrics.items():
