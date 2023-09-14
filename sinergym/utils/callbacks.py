@@ -71,7 +71,7 @@ class LoggerCallback(BaseCallback):
         if self.training_env.env_is_wrapped(
                 wrapper_class=NormalizeObservation)[0]:
             obs_normalized = self.locals['new_obs'][-1]
-            obs = self.training_env.env_method('get_unwrapped_obs')[-1]
+            obs = self.training_env.get_attr('unwrapped_observation')[-1]
             for i, variable in enumerate(observation_variables):
                 self.logger.record(
                     'normalized_observation/' + variable, obs_normalized[i])

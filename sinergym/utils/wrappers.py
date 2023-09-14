@@ -102,14 +102,6 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         return (obs - self.obs_rms.mean) / \
             np.sqrt(self.obs_rms.var + self.epsilon)
 
-    def get_unwrapped_obs(self) -> Optional[np.ndarray]:
-        """Get last environment observation without normalization.
-
-        Returns:
-            Optional[np.ndarray]: Last original observation. If it is the first observation, this value is None.
-        """
-        return self.get_wrapper_attr('unwrapped_observation')
-
 
 class MultiObsWrapper(gym.Wrapper):
 
@@ -266,7 +258,7 @@ class LoggerWrapper(gym.Wrapper):
                 info=info)
             # Record original observation too
             self.file_logger.log_step(
-                obs=self.env.get_unwrapped_obs(),
+                obs=self.env.get_wrapper_attr('unwrapped_observation'),
                 action=info['action'],
                 terminated=terminated,
                 info=info)
@@ -317,7 +309,7 @@ class LoggerWrapper(gym.Wrapper):
             self.file_logger.log_step_normalize(obs=obs, action=[None for _ in range(len(
                 self.env.get_wrapper_attr('action_variables')))], terminated=False, info=info)
             # And store original obs
-            self.file_logger.log_step(obs=self.env.get_unwrapped_obs(),
+            self.file_logger.log_step(obs=self.env.get_wrapper_attr('unwrapped_observation'),
                                       action=[None for _ in range(
                                           len(self.get_wrapper_attr('action_variables')))],
                                       terminated=False,
@@ -603,7 +595,7 @@ class OfficeGridStorageSmoothingActionConstraintsWrapper(
         Returns:
             np.ndarray: Action Clipped
         """
-        if self.flag_discrete:
+        if self.get_wrapper_attr('flag_discrete'):
             null_value = 0.0
         else:
             # -1.0 is 0.0 when action space transformation to simulator action space.
