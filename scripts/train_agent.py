@@ -106,7 +106,8 @@ try:
     # env for evaluation if is enabled
     eval_env = None
     if conf.get('evaluation'):
-        eval_name = conf['evaluation'].get('name', env.name + '-EVAL')
+        eval_name = conf['evaluation'].get(
+            'name', env.name + '-EVAL')
         env_params.update({'env_name': eval_name})
         eval_env = gym.make(
             conf['environment'],
@@ -224,7 +225,8 @@ try:
     # ---------------------------------------------------------------------------- #
     #       Calculating total training timesteps based on number of episodes       #
     # ---------------------------------------------------------------------------- #
-    timesteps = conf['episodes'] * (env.timestep_per_episode - 1)
+    timesteps = conf['episodes'] * \
+        (env.timestep_per_episode - 1)
 
     # ---------------------------------------------------------------------------- #
     #                                   CALLBACKS                                  #
@@ -239,8 +241,8 @@ try:
             '/best_model/',
             log_path=eval_env.experiment_path +
             '/best_model/',
-            eval_freq=(eval_env.timestep_per_episode - 1) *
-            conf['evaluation']['eval_freq'] - 1,
+            eval_freq=(eval_env.timestep_per_episode) *
+            conf['evaluation']['eval_freq'],
             deterministic=True,
             render=False,
             n_eval_episodes=conf['evaluation']['eval_length'])
@@ -258,7 +260,8 @@ try:
                 WandBOutputFormat()])
         model.set_logger(logger)
         # Append callback
-        log_callback = LoggerCallback()
+        dump_frequency = conf['wandb'].get('dump_frequency', 100)
+        log_callback = LoggerCallback(dump_frequency=dump_frequency)
         callbacks.append(log_callback)
 
     callback = CallbackList(callbacks)
