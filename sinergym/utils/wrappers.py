@@ -208,7 +208,7 @@ class LoggerWrapper(gym.Wrapper):
         super(LoggerWrapper, self).__init__(env)
         # Headers for csv logger
         monitor_header_list = monitor_header if monitor_header is not None else ['timestep'] + self.get_wrapper_attr('observation_variables') + self.get_wrapper_attr(
-            'action_variables') + ['time (hours)', 'reward', 'energy_penalty', 'comfort_penalty', 'abs_comfort', 'abs_energy', 'terminated']
+            'action_variables') + ['time (hours)', 'reward', 'energy_penalty', 'comfort_penalty', 'absolute_temperature_violation', 'absolute_energy', 'terminated']
         self.monitor_header = ''
         for element_header in monitor_header_list:
             self.monitor_header += element_header + ','
@@ -224,9 +224,9 @@ class LoggerWrapper(gym.Wrapper):
             'cumulative_energy_penalty',
             'mean_energy_penalty',
             'comfort_violation (%)',
-            'mean_comfort_violation',
-            'std_comfort_violation',
-            'cumulative_comfort_violation',
+            'cumulative_temperature_violation',
+            'mean_temperature_violation',
+            'std_temperature_violation',
             'length (timesteps)',
             'time_elapsed (hours)']
         self.progress_header = ''

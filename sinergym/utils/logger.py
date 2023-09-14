@@ -246,23 +246,28 @@ class CSVLogger(object):
 
         """
         if self.flag:
-            # statistics metrics for whole episode
-            ep_mean_reward = np.mean(self.episode_data['rewards'])
-            ep_cumulative_reward = np.sum(self.episode_data['rewards'])
-            ep_cumulative_power = np.sum(self.episode_data['powers'])
-            ep_mean_power = np.mean(self.episode_data['powers'])
-            ep_cumulative_comfort_penalty = np.sum(
-                self.episode_data['comfort_penalties'])
-            ep_mean_comfort_penalty = np.mean(
-                self.episode_data['comfort_penalties'])
-            ep_cumulative_energy_penalty = np.sum(
-                self.episode_data['energy_penalties'])
-            ep_mean_energy_penalty = np.mean(
-                self.episode_data['energy_penalties'])
-            ep_mean_abs_comfort = np.mean(self.episode_data['abs_comfort'])
-            ep_std_abs_comfort = np.std(self.episode_data['abs_comfort'])
-            ep_cumulative_abs_comfort = np.sum(
-                self.episode_data['abs_comfort'])
+
+            # WRITE steps_info rows in monitor.csv
+            with open(self.log_file, 'w', newline='') as file_obj:
+                # Create a writer object from csv module
+                csv_writer = csv.writer(file_obj)
+                # Add contents of list as last row in the csv file
+                csv_writer.writerows(self.steps_data)
+
+            # WRITE normalize steps_info rows in monitor_normalized.csv
+            if len(self.steps_data_normalized) > 1:
+                with open(self.log_file[:-4] + '_normalized.csv', 'w', newline='') as file_obj:
+                    # Create a writer object from csv module
+                    csv_writer = csv.writer(file_obj)
+                    # Add contents of list as last row in the csv file
+                    csv_writer.writerows(self.steps_data_normalized)
+
+            # CREATE CSV file with header if it's required for progress.csv
+            if not os.path.isfile(self.log_progress_file):
+                with open(self.log_progress_file, 'a', newline='\n') as file_obj:
+                    file_obj.write(self.progress_header)
+
+            # CREATE progress.csv row to add with episode summary
             try:
                 comfort_violation = (
                     self.episode_data['comfort_violation_timesteps'] /
@@ -271,41 +276,20 @@ class CSVLogger(object):
             except ZeroDivisionError:
                 comfort_violation = np.nan
 
-            # write steps_info in monitor.csv
-            with open(self.log_file, 'w', newline='') as file_obj:
-                # Create a writer object from csv module
-                csv_writer = csv.writer(file_obj)
-                # Add contents of list as last row in the csv file
-                csv_writer.writerows(self.steps_data)
-
-            # Write normalize steps_info in monitor_normalized.csv
-            if len(self.steps_data_normalized) > 1:
-                with open(self.log_file[:-4] + '_normalized.csv', 'w', newline='') as file_obj:
-                    # Create a writer object from csv module
-                    csv_writer = csv.writer(file_obj)
-                    # Add contents of list as last row in the csv file
-                    csv_writer.writerows(self.steps_data_normalized)
-
-            # Create CSV file with header if it's required for progress.csv
-            if not os.path.isfile(self.log_progress_file):
-                with open(self.log_progress_file, 'a', newline='\n') as file_obj:
-                    file_obj.write(self.progress_header)
-
-            # building episode row
-            row_contents = [
+            summary_row = [
                 episode,
-                ep_cumulative_reward,
-                ep_mean_reward,
-                ep_cumulative_power,
-                ep_mean_power,
-                ep_cumulative_comfort_penalty,
-                ep_mean_comfort_penalty,
-                ep_cumulative_energy_penalty,
-                ep_mean_energy_penalty,
+                np.sum(self.episode_data['rewards']),
+                np.mean(self.episode_data['rewards']),
+                np.sum(self.episode_data['powers']),
+                np.mean(self.episode_data['powers']),
+                np.sum(self.episode_data['comfort_penalties']),
+                np.mean(self.episode_data['comfort_penalties']),
+                np.sum(self.episode_data['energy_penalties']),
+                np.mean(self.episode_data['energy_penalties']),
                 comfort_violation,
-                ep_mean_abs_comfort,
-                ep_std_abs_comfort,
-                ep_cumulative_abs_comfort,
+                np.sum(self.episode_data['abs_comfort']),
+                np.mean(self.episode_data['abs_comfort']),
+                np.std(self.episode_data['abs_comfort']),
                 self.episode_data['total_timesteps'],
                 self.episode_data['total_time_elapsed']]
 
@@ -313,7 +297,7 @@ class CSVLogger(object):
                 # Create a writer object from csv module
                 csv_writer = csv.writer(file_obj)
                 # Add contents of list as last row in the csv file
-                csv_writer.writerow(row_contents)
+                csv_writer.writerow(summary_row)
 
             # Reset episode information
             self._reset_logger()
