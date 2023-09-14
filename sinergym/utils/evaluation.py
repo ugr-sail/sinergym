@@ -48,16 +48,18 @@ def evaluate_policy(
         (in number of steps).
     """
     result = {
+        'episodes_length': [],
         'episodes_cumulative_reward': [],
         'episodes_mean_reward': [],
-        'episodes_length': [],
         'episodes_cumulative_power': [],
         'episodes_mean_power': [],
-        'episodes_comfort_violation': [],
         'episodes_cumulative_comfort_penalty': [],
         'episodes_mean_comfort_penalty': [],
         'episodes_cumulative_energy_penalty': [],
-        'episodes_mean_energy_penalty': []
+        'episodes_mean_energy_penalty': [],
+        'episodes_comfort_violation': [],
+        'episodes_cumulative_temperature_violation': [],
+        'episodes_mean_temperature_violation': []
     }
     episodes_executed = 0
     while episodes_executed < n_eval_episodes:
@@ -69,6 +71,7 @@ def evaluate_policy(
         episode_cumulative_power = 0.0
         episode_cumulative_comfort_penalty = 0.0
         episode_cumulative_energy_penalty = 0.0
+        episode_cumulative_temperature_violation = 0.0
         # ---------------------------------------------------------------------------- #
         #                     Running episode and accumulate values                    #
         # ---------------------------------------------------------------------------- #
@@ -80,6 +83,7 @@ def evaluate_policy(
             episode_cumulative_power += info['abs_energy']
             episode_cumulative_energy_penalty += info['energy_term']
             episode_cumulative_comfort_penalty += info['comfort_term']
+            episode_cumulative_temperature_violation += info['abs_comfort']
             if info['comfort_term'] < 0:
                 episode_steps_comfort_violation += 1
             if callback is not None:
@@ -91,18 +95,13 @@ def evaluate_policy(
         # ---------------------------------------------------------------------------- #
         #                     Storing accumulated values in result                     #
         # ---------------------------------------------------------------------------- #
+        result['episodes_length'].append(episode_length)
         result['episodes_cumulative_reward'].append(episode_cumulative_reward)
         result['episodes_mean_reward'].append(
             episode_cumulative_reward / episode_length)
-        result['episodes_length'].append(episode_length)
         result['episodes_cumulative_power'].append(episode_cumulative_power)
         result['episodes_mean_power'].append(
             episode_cumulative_power / episode_length)
-        try:
-            result['episodes_comfort_violation'].append(
-                episode_steps_comfort_violation / episode_length * 100)
-        except ZeroDivisionError:
-            result['episodes_comfort_violation'].append(np.nan)
         result['episodes_cumulative_comfort_penalty'].append(
             episode_cumulative_comfort_penalty)
         result['episodes_mean_comfort_penalty'].append(
@@ -111,5 +110,14 @@ def evaluate_policy(
             episode_cumulative_energy_penalty)
         result['episodes_mean_energy_penalty'].append(
             episode_cumulative_energy_penalty / episode_length)
+        try:
+            result['episodes_comfort_violation'].append(
+                episode_steps_comfort_violation / episode_length * 100)
+        except ZeroDivisionError:
+            result['episodes_comfort_violation'].append(np.nan)
+        result['episodes_cumulative_temperature_violation'].append(
+            episode_cumulative_temperature_violation)
+        result['episodes_mean_temperature_violation'].append(
+            episode_cumulative_temperature_violation / episode_length)
 
     return result

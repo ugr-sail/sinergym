@@ -242,6 +242,7 @@ class LoggerEvalCallback(EventCallback):
         self.warn = warn
 
         # Convert to VecEnv for consistency
+        # [Declined for EnergyPlus API particularities]
         # if not isinstance(eval_env, VecEnv):
         #     eval_env = DummyVecEnv([lambda: eval_env])
 
@@ -253,29 +254,23 @@ class LoggerEvalCallback(EventCallback):
         self.log_path = log_path
         self.log_metrics = {
             'timesteps': [],
-            'episodes_mean_reward': [],
-            'episodes_cumulative_reward': [],
             'episodes_length': [],
+            'episodes_cumulative_reward': [],
+            'episodes_mean_reward': [],
             'episodes_cumulative_power': [],
             'episodes_mean_power': [],
-            'episodes_comfort_violation': [],
             'episodes_cumulative_comfort_penalty': [],
             'episodes_mean_comfort_penalty': [],
             'episodes_cumulative_energy_penalty': [],
             'episodes_mean_energy_penalty': [],
+            'episodes_comfort_violation': [],
+            'episodes_cumulative_temperature_violation': [],
+            'episodes_mean_temperature_violation': []
         }
-        self.evaluations_results = []
-        self.evaluations_timesteps = []
-        self.evaluations_length = []
+
         # For computing success rate
         self._is_success_buffer = []
         self.evaluations_successes = []
-
-        # Custom metrics for Sinergym
-        self.evaluations_power_consumption = []
-        self.evaluations_comfort_violation = []
-        self.evaluations_comfort_penalty = []
-        self.evaluations_energy_penalty = []
         self.evaluation_metrics = {}
 
     def _init_callback(self) -> None:
@@ -333,10 +328,13 @@ class LoggerEvalCallback(EventCallback):
             # We close training env before to start the evaluation
             self.training_env.close()
 
-            # episodes_mean_reward, episodes_cumulative_reward, episodes_length,
-            # episodes_cumulative_power, episodes_mean_power, episodes_comfort_violation,
+            # GET evaluation episodes data:
+            # episodes_length, episodes_mean_reward, episodes_cumulative_reward,
+            # episodes_cumulative_power, episodes_mean_power,
             # episodes_cumulative_comfort_penalty, episodes_mean_comfort_penalty,
-            # episodes_cumulative_energy_penalty, episodes_mean_energy_penalty
+            # episodes_cumulative_energy_penalty, episodes_mean_energy_penalty,
+            # episodes_comfort_violation, episodes_cumulative_temperature_violation,
+            # episodes_mean_temperature_violation
             episodes_data = evaluate_policy(
                 self.model,
                 self.eval_env,
@@ -351,27 +349,9 @@ class LoggerEvalCallback(EventCallback):
             self.training_env.reset()
 
             if self.log_path is not None:
+                for key, value in episodes_data.items():
+                    self.log_metrics[key].append(value)
                 self.log_metrics['timesteps'].append(self.num_timesteps)
-                self.log_metrics['episodes_cumulative_reward'].append(
-                    episodes_data['episodes_cumulative_reward'])
-                self.log_metrics['episodes_mean_reward'].append(
-                    episodes_data['episodes_mean_reward'])
-                self.log_metrics['episodes_length'].append(
-                    episodes_data['episodes_length'])
-                self.log_metrics['episodes_cumulative_power'].append(
-                    episodes_data['episodes_cumulative_power'])
-                self.log_metrics['episodes_mean_power'].append(
-                    episodes_data['episodes_mean_power'])
-                self.log_metrics['episodes_comfort_violation'].append(
-                    episodes_data['episodes_comfort_violation'])
-                self.log_metrics['episodes_cumulative_comfort_penalty'].append(
-                    episodes_data['episodes_cumulative_comfort_penalty'])
-                self.log_metrics['episodes_mean_comfort_penalty'].append(
-                    episodes_data['episodes_mean_comfort_penalty'])
-                self.log_metrics['episodes_cumulative_energy_penalty'].append(
-                    episodes_data['episodes_cumulative_energy_penalty'])
-                self.log_metrics['episodes_mean_energy_penalty'].append(
-                    episodes_data['episodes_mean_energy_penalty'])
 
                 kwargs = {}
                 # Save success log if present
@@ -386,28 +366,26 @@ class LoggerEvalCallback(EventCallback):
                     **kwargs,
                 )
 
-            mean_reward, std_reward = np.mean(
-                episodes_data['episodes_mean_reward']), np.std(
-                episodes_data['episodes_mean_reward'])
-            mean_cumulative_reward, std_cumulative_reward = np.mean(
+            # Logging episodes' means
+            cumulative_reward, std_cumulative_reward = np.mean(
                 episodes_data['episodes_cumulative_reward']), np.std(
                 episodes_data['episodes_cumulative_reward'])
             mean_ep_length, std_ep_length = np.mean(
                 episodes_data['episodes_length']), np.std(
                 episodes_data['episodes_length'])
-            self.last_reward = mean_cumulative_reward
+            self.last_reward = cumulative_reward
 
-            self.evaluation_metrics['mean_reward'] = mean_reward
-            self.evaluation_metrics['std_reward'] = std_reward
-            self.evaluation_metrics['cumulative_reward'] = mean_cumulative_reward
-            self.evaluation_metrics['std_cumulative_reward'] = std_cumulative_reward
             self.evaluation_metrics['episode_length'] = mean_ep_length
+            self.evaluation_metrics['cumulative_reward'] = cumulative_reward
+            self.evaluation_metrics['std_cumulative_reward'] = std_cumulative_reward
+            self.evaluation_metrics['mean_reward'] = np.mean(
+                episodes_data['episodes_mean_reward'])
+            self.evaluation_metrics['std_reward'] = np.std(
+                episodes_data['episodes_mean_reward'])
             self.evaluation_metrics['cumulative_power_consumption'] = np.mean(
                 episodes_data['episodes_cumulative_power'])
             self.evaluation_metrics['mean_power_consumption'] = np.mean(
                 episodes_data['episodes_mean_power'])
-            self.evaluation_metrics['comfort_violation(%)'] = np.mean(
-                episodes_data['episodes_comfort_violation'])
             self.evaluation_metrics['cumulative_comfort_penalty'] = np.mean(
                 episodes_data['episodes_cumulative_comfort_penalty'])
             self.evaluation_metrics['mean_comfort_penalty'] = np.mean(
@@ -416,11 +394,17 @@ class LoggerEvalCallback(EventCallback):
                 episodes_data['episodes_cumulative_energy_penalty'])
             self.evaluation_metrics['mean_energy_penalty'] = np.mean(
                 episodes_data['episodes_mean_energy_penalty'])
+            self.evaluation_metrics['comfort_violation(%)'] = np.mean(
+                episodes_data['episodes_comfort_violation'])
+            self.evaluation_metrics['cumulative_temperature_violation'] = np.mean(
+                episodes_data['episodes_cumulative_temperature_violation'])
+            self.evaluation_metrics['mean_temperature_violation'] = np.mean(
+                episodes_data['episodes_mean_temperature_violation'])
 
             if self.verbose >= 1:
                 print(
                     f"Eval num_timesteps={self.num_timesteps}, "
-                    f"episode_reward={mean_cumulative_reward:.2f} +/- {std_cumulative_reward:.2f}")
+                    f"episode_reward={cumulative_reward:.2f} +/- {std_cumulative_reward:.2f}")
                 print(
                     f"Episode length: {mean_ep_length:.2f} +/- {std_ep_length:.2f}")
             # Add to current Logger (our custom metrics)
@@ -443,7 +427,7 @@ class LoggerEvalCallback(EventCallback):
 
             # HERE IS THE CONDITION TO DETERMINE WHEN A MODEL IS BETTER THAN
             # OTHER
-            if mean_cumulative_reward > self.best_mean_reward:
+            if cumulative_reward > self.best_mean_reward:
                 if self.verbose >= 1:
                     print("New best mean reward!")
                 if self.best_model_save_path is not None:
@@ -451,7 +435,7 @@ class LoggerEvalCallback(EventCallback):
                         os.path.join(
                             self.best_model_save_path,
                             "model.zip"))
-                self.best_mean_reward = mean_cumulative_reward
+                self.best_mean_reward = cumulative_reward
                 # Trigger callback on new best model, if needed
                 if self.callback_on_new_best is not None:
                     continue_training = self.callback_on_new_best.on_step()
