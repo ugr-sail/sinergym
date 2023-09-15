@@ -43,6 +43,7 @@
             "entity": "alex_ugr"
         },
         "artifact_name": "experiment1",
-        "artifact_type": "training"
+        "artifact_type": "training",
+        "dump_frequency": 500
     }
 }

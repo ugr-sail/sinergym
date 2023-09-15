@@ -106,7 +106,8 @@ try:
     # env for evaluation if is enabled
     eval_env = None
     if conf.get('evaluation'):
-        eval_name = conf['evaluation'].get('name', env.name + '-EVAL')
+        eval_name = conf['evaluation'].get(
+            'name', env.get_wrapper_attr('name') + '-EVAL')
         env_params.update({'env_name': eval_name})
         eval_env = gym.make(
             conf['environment'],
@@ -224,7 +225,8 @@ try:
     # ---------------------------------------------------------------------------- #
     #       Calculating total training timesteps based on number of episodes       #
     # ---------------------------------------------------------------------------- #
-    timesteps = conf['episodes'] * (env.timestep_per_episode - 1)
+    timesteps = conf['episodes'] * \
+        (env.get_wrapper_attr('timestep_per_episode') - 1)
 
     # ---------------------------------------------------------------------------- #
     #                                   CALLBACKS                                  #
@@ -235,12 +237,12 @@ try:
     if conf.get('evaluation'):
         eval_callback = LoggerEvalCallback(
             eval_env,
-            best_model_save_path=eval_env.experiment_path +
+            best_model_save_path=eval_env.get_wrapper_attr('workspace_path') +
             '/best_model/',
-            log_path=eval_env.experiment_path +
+            log_path=eval_env.get_wrapper_attr('workspace_path') +
             '/best_model/',
-            eval_freq=(eval_env.timestep_per_episode - 1) *
-            conf['evaluation']['eval_freq'] - 1,
+            eval_freq=(eval_env.get_wrapper_attr('timestep_per_episode')) *
+            conf['evaluation']['eval_freq'],
             deterministic=True,
             render=False,
             n_eval_episodes=conf['evaluation']['eval_length'])
@@ -258,7 +260,8 @@ try:
                 WandBOutputFormat()])
         model.set_logger(logger)
         # Append callback
-        log_callback = LoggerCallback()
+        dump_frequency = conf['wandb'].get('dump_frequency', 100)
+        log_callback = LoggerCallback(dump_frequency=dump_frequency)
         callbacks.append(log_callback)
 
     callback = CallbackList(callbacks)
@@ -270,12 +273,12 @@ try:
         total_timesteps=timesteps,
         callback=callback,
         log_interval=conf['algorithm']['log_interval'])
-    model.save(env.experiment_path + '/model')
+    model.save(env.get_wrapper_attr('workspace_path') + '/model')
 
     # If the algorithm doesn't reset or close the environment, this script will do it in
     # order to correctly log all the simulation data (Energyplus + Sinergym
     # logs)
-    if env.is_running:
+    if env.get_wrapper_attr('is_running'):
         env.close()
 
     # ---------------------------------------------------------------------------- #
@@ -287,11 +290,11 @@ try:
             name=conf['wandb']['artifact_name'],
             type=conf['wandb']['artifact_type'])
         artifact.add_dir(
-            env.experiment_path,
+            env.get_wrapper_attr('workspace_path'),
             name='training_output/')
         if conf.get('evaluation'):
             artifact.add_dir(
-                eval_env.experiment_path,
+                eval_env.get_wrapper_attr('workspace_path'),
                 name='evaluation_output/')
         run.log_artifact(artifact)
 
@@ -308,7 +311,7 @@ try:
             # Code for send output to common Google Cloud resource here.
             gcloud.upload_to_bucket(
                 client,
-                src_path=env.experiment_path,
+                src_path=env.get_wrapper_attr('workspace_path'),
                 dest_bucket_name=conf['cloud']['remote_store'],
                 dest_path=experiment_name)
             if conf.get('evaluation'):

@@ -16,7 +16,6 @@
    .. autosummary::
    
       ~LoggerCallback.__init__
-      ~LoggerCallback.on_training_end
    
    
 

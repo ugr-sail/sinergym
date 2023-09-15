@@ -156,7 +156,7 @@ def test_all_environments():
         check_env(env)
 
         # Rename directory with name TEST for future remove
-        os.rename(env.experiment_path, 'Eplus-env-TEST' +
-                  env.experiment_path.split('/')[-1])
+        os.rename(env.get_wrapper_attr('workspace_path'), 'Eplus-env-TEST' +
+                  env.get_wrapper_attr('workspace_path').split('/')[-1])
 
         env.close()

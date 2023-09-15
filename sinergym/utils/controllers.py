@@ -40,8 +40,9 @@ class RBC5Zone(object):
 
         self.env = env
 
-        self.observation_variables = env.observation_variables
-        self.action_varioables = env.action_variables
+        self.observation_variables = env.get_wrapper_attr(
+            'observation_variables')
+        self.action_variables = env.get_wrapper_attr('action_variables')
 
         self.setpoints_summer = (22.5, 26.0)
         self.setpoints_winter = (20.0, 23.5)
@@ -84,8 +85,9 @@ class RBCDatacenter(object):
         """
 
         self.env = env
-        self.observation_variables = env.observation_variables
-        self.action_variables = env.action_variables
+        self.observation_variables = env.get_wrapper_attr(
+            'observation_variables')
+        self.action_variables = env.get_wrapper_attr('action_variables')
 
         # ASHRAE recommended temperature range = [18, 27] Celsius
         self.range_datacenter = (18, 27)

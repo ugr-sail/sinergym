@@ -185,7 +185,8 @@ def test_logger_wrapper(env_name, request):
     env.reset()
 
     # Check CSV's have been created and linked in simulator correctly
-    assert logger.log_progress_file == env.experiment_path + '/progress.csv'
+    assert logger.log_progress_file == env.get_wrapper_attr(
+        'workspace_path') + '/progress.csv'
     assert logger.log_file == env.episode_path + '/monitor.csv'
 
     tmp_log_file = logger.log_file
@@ -281,7 +282,8 @@ def test_env_wrappers(env_all_wrappers):
     assert isinstance(env_all_wrappers.history[0], np.ndarray)
 
     # check logger
-    assert logger.log_progress_file == env_all_wrappers.experiment_path + '/progress.csv'
+    assert logger.log_progress_file == env_all_wrappers.get_wrapper_attr(
+        'workspace_path') + '/progress.csv'
     assert logger.log_file == env_all_wrappers.episode_path + '/monitor.csv'
     assert os.path.isfile(logger.log_progress_file)
     assert os.path.isfile(tmp_log_file)
