@@ -123,7 +123,7 @@
 <h1><span class="section-number">19. </span>Wrappers example<a class="headerlink" href="#Wrappers-example" title="Link to this heading"></a></h1>
 <p>We will see on this notebook what are the wrappers defined by Sinergym and how to use them. You can also implement your own wrappers inheriting from <em>gym.Wrapper</em> or some of its variants.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
@@ -139,11 +139,11 @@
 <p>In order to be more general as possible, it could be interesting that Sinergym would give that reward vector too. In this way, Sinergym would have compatibility with both; multi-objective algorithms and algorithms that work with a traditional reward value.</p>
 <p>We can transform reward returned in a vector using the next wrapper:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">)</span>
-<span class="n">env</span><span class="o">=</span><span class="n">MultiObjectiveReward</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="n">reward_terms</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;reward_energy&#39;</span><span class="p">,</span><span class="s1">&#39;reward_comfort&#39;</span><span class="p">])</span>
+<span class="n">env</span><span class="o">=</span><span class="n">MultiObjectiveReward</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="n">reward_terms</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;energy_term&#39;</span><span class="p">,</span><span class="s1">&#39;comfort_term&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -155,7 +155,7 @@
 #==============================================================================================#
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-discrete-v1]
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res7]
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1]
 [MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
@@ -167,7 +167,7 @@
 </div>
 <p>You have to ensure that <code class="docutils literal notranslate"><span class="pre">reward_terms</span></code> are available in <code class="docutils literal notranslate"><span class="pre">info</span></code> dict returned in step method of the environment. Otherwise, we will encounter an execution error. By default, Sinergym environments return in <code class="docutils literal notranslate"><span class="pre">info</span></code> dict all reward terms specified in reward class used, so if the objective exists in reward term you shouldn’t have any problem.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
@@ -186,14 +186,12 @@
 #----------------------------------------------------------------------------------------------#
 [ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 1]
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res7/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1]
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
 [MODELING] (INFO) : Updated building model with whole Output:Variable available names
 [MODELING] (INFO) : Updated building model with whole Output:Meter available names
 [MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res7/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res7/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res7/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res7/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
-[ENVIRONMENT] (INFO) : Episode 1 started.
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/output]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -210,12 +208,14 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Handles initialized.
-[SIMULATOR] (INFO) : Handles are ready.
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
 Progress: |***************************************************************************************************| 99%
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-discrete-v1]
-[-0.11085250479199188, -2.8562402567058562]
+[-0.05542625239599594, -1.4281201283529281]
 </pre></div></div>
 </div>
 </section>
@@ -223,7 +223,7 @@ Progress: |*********************************************************************
 <h2><span class="section-number">19.2. </span>Previous Observations Wrappers<a class="headerlink" href="#Previous-Observations-Wrappers" title="Link to this heading"></a></h2>
 <p>This Wrapper will add observation values from previous timestep to current environment observation. It is possible to select the variables you want to track its previous observation values. Observation space will be updated with the new dimension.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">)</span>
@@ -242,7 +242,7 @@ Progress: |*********************************************************************
 #==============================================================================================#
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-discrete-v1]
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res8]
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2]
 [MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
@@ -254,12 +254,12 @@ Progress: |*********************************************************************
 </div>
 <p>We can see the observation values has been updated:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 <span class="n">obs</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">())</span>
-<span class="n">obs_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_variables</span><span class="p">,</span><span class="n">obs</span><span class="p">))</span>
+<span class="n">obs_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">),</span><span class="n">obs</span><span class="p">))</span>
 <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;NEW OBSERVATION: &#39;</span><span class="p">,</span><span class="n">obs_dict</span><span class="p">)</span>
 </pre></div>
@@ -273,12 +273,14 @@ Progress: |*********************************************************************
 #----------------------------------------------------------------------------------------------#
 [ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 1]
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res8/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run1]
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
 [MODELING] (INFO) : Updated building model with whole Output:Variable available names
 [MODELING] (INFO) : Updated building model with whole Output:Meter available names
 [MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res8/Eplus-env-sub_run1/output]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run1/output]
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 1 started.
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -295,10 +297,8 @@ Progress: |*********************************************************************
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res8/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res8/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res8/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
-[ENVIRONMENT] (INFO) : Episode 1 started.
-[SIMULATOR] (INFO) : Handles initialized.
-[SIMULATOR] (INFO) : Handles are ready.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
 Progress: |***************************************************************************************************| 99%
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-discrete-v1]
@@ -310,7 +310,7 @@ NEW OBSERVATION:  {&#39;month&#39;: 1.0, &#39;day_of_month&#39;: 1.0, &#39;hour&
 <h2><span class="section-number">19.3. </span>Datetime Wrapper<a class="headerlink" href="#Datetime-Wrapper" title="Link to this heading"></a></h2>
 <p>This wrapper will substitute <code class="docutils literal notranslate"><span class="pre">day</span></code> value by <code class="docutils literal notranslate"><span class="pre">is_weekend</span></code> flag, and <code class="docutils literal notranslate"><span class="pre">hour</span></code> and <code class="docutils literal notranslate"><span class="pre">month</span></code> by sin and cos values. Observation space is also updated automatically.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">)</span>
@@ -326,7 +326,7 @@ NEW OBSERVATION:  {&#39;month&#39;: 1.0, &#39;day_of_month&#39;: 1.0, &#39;hour&
 #==============================================================================================#
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-discrete-v1]
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res9]
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res3]
 [MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
@@ -338,12 +338,12 @@ NEW OBSERVATION:  {&#39;month&#39;: 1.0, &#39;day_of_month&#39;: 1.0, &#39;hour&
 </div>
 <p>Concretely, this wrapper deletes the observation variables <code class="docutils literal notranslate"><span class="pre">month</span></code>, <code class="docutils literal notranslate"><span class="pre">day</span></code> and <code class="docutils literal notranslate"><span class="pre">hour</span></code>, and adds <code class="docutils literal notranslate"><span class="pre">month_sin</span></code>, <code class="docutils literal notranslate"><span class="pre">month_cos</span></code>, <code class="docutils literal notranslate"><span class="pre">is_weekend</span></code>, <code class="docutils literal notranslate"><span class="pre">hour_sin</span></code> and <code class="docutils literal notranslate"><span class="pre">hour_cos</span></code> instead:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 <span class="n">obs</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">())</span>
-<span class="n">obs_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_variables</span><span class="p">,</span><span class="n">obs</span><span class="p">))</span>
+<span class="n">obs_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">),</span><span class="n">obs</span><span class="p">))</span>
 <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;NEW OBSERVATION: &#39;</span><span class="p">,</span><span class="n">obs_dict</span><span class="p">)</span>
 </pre></div>
@@ -357,13 +357,13 @@ NEW OBSERVATION:  {&#39;month&#39;: 1.0, &#39;day_of_month&#39;: 1.0, &#39;hour&
 #----------------------------------------------------------------------------------------------#
 [ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 1]
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res9/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res3/Eplus-env-sub_run1]
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
 [MODELING] (INFO) : Updated building model with whole Output:Variable available names
 [MODELING] (INFO) : Updated building model with whole Output:Meter available names
 [MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res9/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res9/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res9/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res9/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res3/Eplus-env-sub_run1/output]
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res3/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res3/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res3/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
 [ENVIRONMENT] (INFO) : Episode 1 started.
 </pre></div></div>
 </div>
@@ -381,8 +381,8 @@ NEW OBSERVATION:  {&#39;month&#39;: 1.0, &#39;day_of_month&#39;: 1.0, &#39;hour&
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Handles initialized.
-[SIMULATOR] (INFO) : Handles are ready.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
 Progress: |***************************************************************************************************| 99%
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-discrete-v1]
@@ -394,15 +394,15 @@ NEW OBSERVATION:  {&#39;month_cos&#39;: 1.0, &#39;month_sin&#39;: 0.0, &#39;is_w
 <h2><span class="section-number">19.4. </span>Discrete Incremental Wrapper<a class="headerlink" href="#Discrete-Incremental-Wrapper" title="Link to this heading"></a></h2>
 <p>A wrapper for an incremental setpoint action space environment. This wrapper will update a <em>continuous</em> environment, converting it in a <em>discrete</em> environment with an action mapping and action space depending on the step and delta specified. The action will be sum with current setpoint values instead of overwrite the latest action. Then, the action is the current setpoints values with the increase instead of the index of the action_mapping for the continuous environment in the next layer.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ORIGINAL ACTION SPACE: &#39;</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ORIGINAL ACTION SPACE: &#39;</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">))</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">DiscreteIncrementalWrapper</span><span class="p">(</span>
         <span class="n">env</span><span class="p">,</span><span class="n">initial_values</span><span class="o">=</span><span class="p">[</span><span class="mf">21.0</span><span class="p">,</span><span class="mf">25.0</span><span class="p">],</span> <span class="n">delta_temp</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">step_temp</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;WRAPPED ACTION SPACE: &#39;</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;WRAPPED ACTION MAPPING: &#39;</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">action_mapping</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;WRAPPED ACTION SPACE: &#39;</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;WRAPPED ACTION MAPPING: &#39;</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_mapping&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -414,7 +414,7 @@ NEW OBSERVATION:  {&#39;month_cos&#39;: 1.0, &#39;month_sin&#39;: 0.0, &#39;is_w
 #==============================================================================================#
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-continuous-v1]
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res3]
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1]
 [MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
@@ -431,15 +431,15 @@ WRAPPED ACTION MAPPING:  {0: [0.0, 0.0], 1: [0.5, 0.0], 2: [1.0, 0.0], 3: [1.5, 
 </div>
 <p>Maximum and minimum values to create the action mapping is read from environment action space, so that the setpoint increments and decrements do not go outside the agreed limits. The delta and step values are used to determine how the discrete space of these increments and decrements will be constructed. An example of how it works is shown below:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;CURRENT SETPOINTS VALUES: &#39;</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">current_setpoints</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;CURRENT SETPOINTS VALUES: &#39;</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;current_setpoints&#39;</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">action</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
     <span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">info</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Action number &#39;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;: &#39;</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">action_mapping</span><span class="p">[</span><span class="n">action</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Action number &#39;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;: &#39;</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_mapping&#39;</span><span class="p">)[</span><span class="n">action</span><span class="p">])</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Setpoints update: &#39;</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">])</span>
 <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
@@ -453,13 +453,13 @@ WRAPPED ACTION MAPPING:  {0: [0.0, 0.0], 1: [0.5, 0.0], 2: [1.0, 0.0], 3: [1.5, 
 #----------------------------------------------------------------------------------------------#
 [ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-continuous-v1] [Episode 1]
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res3/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1]
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
 [MODELING] (INFO) : Updated building model with whole Output:Variable available names
 [MODELING] (INFO) : Updated building model with whole Output:Meter available names
 [MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res3/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res3/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res3/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res3/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/output]
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
 [ENVIRONMENT] (INFO) : Episode 1 started.
 </pre></div></div>
 </div>
@@ -477,21 +477,21 @@ WRAPPED ACTION MAPPING:  {0: [0.0, 0.0], 1: [0.5, 0.0], 2: [1.0, 0.0], 3: [1.5, 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Handles initialized.
-[SIMULATOR] (INFO) : Handles are ready.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
 CURRENT SETPOINTS VALUES:  [21.0, 25.0]
-Action number  0 :  [-2.0, 0.0]
-Setpoints update:  [19.0, 25.0]
-Action number  1 :  [-1.0, 0.0]
-Setpoints update:  [18.0, 25.0]
+Action number  0 :  [0.0, 0.0]
+Setpoints update:  [21.0, 25.0]
+Action number  1 :  [0.0, 0.0]
+Setpoints update:  [21.0, 25.0]
 Action number  2 :  [1.0, 0.0]
-Setpoints update:  [19.0, 25.0]
-Action number  3 :  [-1.5, 0.0]
-Setpoints update:  [17.5, 25.0]
-Action number  4 :  [1.5, 0.0]
-Setpoints update:  [19.0, 25.0]
-Progress: |*****----------------------------------------------------------------------------------------------| 5%
+Setpoints update:  [22.0, 25.0]
+Action number  3 :  [0.0, 1.0]
+Setpoints update:  [22.0, 26.0]
+Action number  4 :  [-1.0, 0.0]
+Setpoints update:  [21.0, 26.0]
+Progress: |***------------------------------------------------------------------------------------------------| 3%
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -499,7 +499,7 @@ Progress: |*****----------------------------------------------------------------
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/usr/local/lib/python3.10/dist-packages/gymnasium/spaces/box.py:230: UserWarning: <span class="ansi-yellow-fg">WARN: Casting input x to numpy array.</span>
+/usr/local/lib/python3.10/dist-packages/gymnasium/spaces/box.py:240: UserWarning: <span class="ansi-yellow-fg">WARN: Casting input x to numpy array.</span>
   gym.logger.warn(&#34;Casting input x to numpy array.&#34;)
 </pre></div></div>
 </div>
@@ -517,7 +517,7 @@ Progress: |*********************************************************************
 <h2><span class="section-number">19.5. </span>Normalization Wrapper<a class="headerlink" href="#Normalization-Wrapper" title="Link to this heading"></a></h2>
 <p>This wrapper is used to transform observation received from simulator in values between -1 and 1. It is based in the <a class="reference external" href="https://gymnasium.farama.org/_modules/gymnasium/wrappers/normalize/#NormalizeObservation">dynamic normalization wrapper of Gymnasium</a>. At the beginning, it is not precise and the values may be out of range usually, so use this wrapper carefully.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Original env</span>
@@ -535,7 +535,7 @@ Progress: |*********************************************************************
 #==============================================================================================#
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-discrete-v1]
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res10]
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res4]
 [MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
@@ -546,12 +546,12 @@ Progress: |*********************************************************************
 </div>
 <p>We can see in the next code how the variables specified have been normalized correctly:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 <span class="n">obs</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">())</span>
-<span class="n">obs_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_variables</span><span class="p">,</span><span class="n">obs</span><span class="p">))</span>
+<span class="n">obs_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">),</span><span class="n">obs</span><span class="p">))</span>
 <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;OBSERVATION WITH NORMALIZATION: &#39;</span><span class="p">,</span><span class="n">obs_dict</span><span class="p">)</span>
 </pre></div>
@@ -565,14 +565,12 @@ Progress: |*********************************************************************
 #----------------------------------------------------------------------------------------------#
 [ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 1]
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res10/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res4/Eplus-env-sub_run1]
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
 [MODELING] (INFO) : Updated building model with whole Output:Variable available names
 [MODELING] (INFO) : Updated building model with whole Output:Meter available names
 [MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res10/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res10/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res10/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res10/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
-[ENVIRONMENT] (INFO) : Episode 1 started.
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res4/Eplus-env-sub_run1/output]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -589,8 +587,10 @@ Progress: |*********************************************************************
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Handles initialized.
-[SIMULATOR] (INFO) : Handles are ready.
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res4/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res4/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res4/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
 Progress: |***************************************************************************************************| 99%
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-discrete-v1]
@@ -602,7 +602,7 @@ OBSERVATION WITH NORMALIZATION:  {&#39;month&#39;: 0.00499968750430059, &#39;day
 <h2><span class="section-number">19.6. </span>Logger Wrapper<a class="headerlink" href="#Logger-Wrapper" title="Link to this heading"></a></h2>
 <p>Wrapper for logging all interactions between agent and environment. Logger class can be selected in the constructor if other type of logging is required. For more information about <em>Sinergym</em> Logger visit <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/output.html#logger">Logger</a></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">)</span>
@@ -627,7 +627,7 @@ OBSERVATION WITH NORMALIZATION:  {&#39;month&#39;: 0.00499968750430059, &#39;day
 #==============================================================================================#
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-discrete-v1]
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res11]
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res5]
 [MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
@@ -638,14 +638,12 @@ OBSERVATION WITH NORMALIZATION:  {&#39;month&#39;: 0.00499968750430059, &#39;day
 #----------------------------------------------------------------------------------------------#
 [ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 1]
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res11/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res5/Eplus-env-sub_run1]
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
 [MODELING] (INFO) : Updated building model with whole Output:Variable available names
 [MODELING] (INFO) : Updated building model with whole Output:Meter available names
 [MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res11/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res11/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res11/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res11/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
-[ENVIRONMENT] (INFO) : Episode 1 started.
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res5/Eplus-env-sub_run1/output]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -662,8 +660,10 @@ OBSERVATION WITH NORMALIZATION:  {&#39;month&#39;: 0.00499968750430059, &#39;day
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Handles initialized.
-[SIMULATOR] (INFO) : Handles are ready.
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res5/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res5/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res5/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
 [WRAPPER LoggerWrapper] (INFO) : Creating monitor.csv for current episode (episode 1) if logger is active
 Progress: |***************************************************************************************************| 99%
@@ -677,7 +677,7 @@ Progress: |*********************************************************************
 <h2><span class="section-number">19.7. </span>Multi Observation Wrapper<a class="headerlink" href="#Multi-Observation-Wrapper" title="Link to this heading"></a></h2>
 <p>This wrapper will stack observation received in a history queue (size can be customized).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Original environment</span>
@@ -699,7 +699,7 @@ Progress: |*********************************************************************
 #==============================================================================================#
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-discrete-v1]
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res12]
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res6]
 [MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
@@ -709,14 +709,12 @@ Progress: |*********************************************************************
 #----------------------------------------------------------------------------------------------#
 [ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 1]
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res12/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res6/Eplus-env-sub_run1]
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
 [MODELING] (INFO) : Updated building model with whole Output:Variable available names
 [MODELING] (INFO) : Updated building model with whole Output:Meter available names
 [MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res12/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res12/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res12/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res12/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
-[ENVIRONMENT] (INFO) : Episode 1 started.
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res6/Eplus-env-sub_run1/output]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -733,8 +731,10 @@ Progress: |*********************************************************************
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Handles initialized.
-[SIMULATOR] (INFO) : Handles are ready.
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res6/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res6/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res6/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
 BEFORE MULTI OBSERVATION:  [1.0000000e+00 1.0000000e+00 0.0000000e+00 4.4000001e+00 6.5000000e+01
  3.8750000e+00 1.4500000e+02 0.0000000e+00 0.0000000e+00 1.2800000e+01
@@ -745,13 +745,13 @@ Progress: |*********************************************************************
 #----------------------------------------------------------------------------------------------#
 [ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 2]
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res12/Eplus-env-sub_run2]
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res6/Eplus-env-sub_run2]
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
 [MODELING] (INFO) : Updated building model with whole Output:Variable available names
 [MODELING] (INFO) : Updated building model with whole Output:Meter available names
 [MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res12/Eplus-env-sub_run2/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res12/Eplus-env-sub_run2/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res12/Eplus-env-sub_run2/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res12/Eplus-env-sub_run2/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res6/Eplus-env-sub_run2/output]
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res6/Eplus-env-sub_run2/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res6/Eplus-env-sub_run2/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res6/Eplus-env-sub_run2/5ZoneAutoDXVAV.epJSON&#39;]
 [ENVIRONMENT] (INFO) : Episode 2 started.
 </pre></div></div>
 </div>
@@ -765,7 +765,7 @@ Progress: |*********************************************************************
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;AFTER MULTI OBSERVATION: &#39;</span><span class="p">,</span><span class="n">obs</span><span class="p">)</span>
@@ -804,15 +804,15 @@ AFTER MULTI OBSERVATION:  [1.0000000e+00 1.0000000e+00 0.0000000e+00 4.8000002e+
 <h2><span class="section-number">19.8. </span>Nesting wrappers<a class="headerlink" href="#Nesting-wrappers" title="Link to this heading"></a></h2>
 <p>All the wrappers listed in this notebook can be nested in order to combine functionalities added. However, <strong>the order</strong> in which these wrappers are nested is critical to their proper functionality. We strongly recommend that it be in the same order in which they appear here or in the documentation. In case you want to nest a subset of the total, it is not a problem as long as you continue respecting this order. We see and example:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">)</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">MultiObjectiveReward</span><span class="p">(</span>
     <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
     <span class="n">reward_terms</span><span class="o">=</span><span class="p">[</span>
-        <span class="s1">&#39;reward_energy&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;reward_comfort&#39;</span><span class="p">])</span>
+        <span class="s1">&#39;energy_term&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;comfort_term&#39;</span><span class="p">])</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">PreviousObservationWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">previous_variables</span><span class="o">=</span><span class="p">[</span>
     <span class="s1">&#39;htg_setpoint&#39;</span><span class="p">,</span>
     <span class="s1">&#39;clg_setpoint&#39;</span><span class="p">,</span>
@@ -835,7 +835,7 @@ AFTER MULTI OBSERVATION:  [1.0000000e+00 1.0000000e+00 0.0000000e+00 4.8000002e+
 #==============================================================================================#
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-continuous-v1]
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res4]
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res3]
 [MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
@@ -854,7 +854,7 @@ AFTER MULTI OBSERVATION:  [1.0000000e+00 1.0000000e+00 0.0000000e+00 4.8000002e+
 </div>
 <p>Now we just simply use the environment with the wrappers, for example:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
@@ -879,13 +879,13 @@ AFTER MULTI OBSERVATION:  [1.0000000e+00 1.0000000e+00 0.0000000e+00 4.8000002e+
 #----------------------------------------------------------------------------------------------#
 [ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-continuous-v1] [Episode 1]
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res4/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res3/Eplus-env-sub_run1]
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
 [MODELING] (INFO) : Updated building model with whole Output:Variable available names
 [MODELING] (INFO) : Updated building model with whole Output:Meter available names
 [MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res4/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res4/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res4/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res4/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res3/Eplus-env-sub_run1/output]
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res3/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res3/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res3/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
 [ENVIRONMENT] (INFO) : Episode 1 started.
 </pre></div></div>
 </div>
@@ -903,12 +903,11 @@ AFTER MULTI OBSERVATION:  [1.0000000e+00 1.0000000e+00 0.0000000e+00 4.8000002e+
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Handles initialized.
-[SIMULATOR] (INFO) : Handles are ready.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
 [WRAPPER LoggerWrapper] (INFO) : Creating monitor.csv for current episode (episode 1) if logger is active
-Reward:  [-0.11085250479199188, -2.8562402567058562] {&#39;time_elapsed(hours)&#39;: 0.5, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [21.0, 24.5], &#39;timestep&#39;: 2, &#39;reward&#39;: -1.483546380748924, &#39;reward_energy&#39;: -0.11085250479199188, &#39;reward_comfort&#39;: -2.8562402567058562, &#39;total_energy&#39;: 1108.5250479199187, &#39;abs_comfort&#39;: 2.8562402567058562, &#39;temperatures&#39;: [17.143759743294144]}
-Progress: |**-------------------------------------------------------------------------------------------------| 2%
+Reward:  [-0.05542625239599594, -1.4281201283529281] {&#39;time_elapsed(hours)&#39;: 0.5, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [21.0, 24.5], &#39;timestep&#39;: 2, &#39;reward&#39;: -1.483546380748924, &#39;energy_term&#39;: -0.05542625239599594, &#39;comfort_term&#39;: -1.4281201283529281, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 1108.5250479199187, &#39;abs_comfort&#39;: 2.8562402567058562, &#39;energy_values&#39;: [1108.5250479199187], &#39;temp_values&#39;: [17.143759743294144]}
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -916,7 +915,7 @@ Progress: |**-------------------------------------------------------------------
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/usr/local/lib/python3.10/dist-packages/gymnasium/spaces/box.py:230: UserWarning: <span class="ansi-yellow-fg">WARN: Casting input x to numpy array.</span>
+/usr/local/lib/python3.10/dist-packages/gymnasium/spaces/box.py:240: UserWarning: <span class="ansi-yellow-fg">WARN: Casting input x to numpy array.</span>
   gym.logger.warn(&#34;Casting input x to numpy array.&#34;)
 </pre></div></div>
 </div>
@@ -925,17 +924,17 @@ Progress: |**-------------------------------------------------------------------
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Reward:  [-0.00959875470506871, -0.0] {&#39;time_elapsed(hours)&#39;: 744.375, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [21.5, 30.0], &#39;timestep&#39;: 2977, &#39;reward&#39;: -0.004799377352534355, &#39;reward_energy&#39;: -0.00959875470506871, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 95.98754705068708, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.679941105322207]}
-Reward:  [-0.01428023828003289, -0.6179095070455745] {&#39;time_elapsed(hours)&#39;: 1416.375, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [19.0, 22.5], &#39;timestep&#39;: 5665, &#39;reward&#39;: -0.31609487266280367, &#39;reward_energy&#39;: -0.01428023828003289, &#39;reward_comfort&#39;: -0.6179095070455745, &#39;total_energy&#39;: 142.8023828003289, &#39;abs_comfort&#39;: 0.6179095070455745, &#39;temperatures&#39;: [19.382090492954426]}
-Reward:  [-0.0, -0.0] {&#39;time_elapsed(hours)&#39;: 2160.25, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [19.0, 29.5], &#39;timestep&#39;: 8641, &#39;reward&#39;: -0.0, &#39;reward_energy&#39;: -0.0, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.210308738550406]}
-Reward:  [-0.0, -0.4042829598402342] {&#39;time_elapsed(hours)&#39;: 2880.25, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [15.0, 26.5], &#39;timestep&#39;: 11521, &#39;reward&#39;: -0.2021414799201171, &#39;reward_energy&#39;: -0.0, &#39;reward_comfort&#39;: -0.4042829598402342, &#39;total_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.4042829598402342, &#39;temperatures&#39;: [23.904282959840234]}
-Reward:  [-0.0, -0.09800264846136031] {&#39;time_elapsed(hours)&#39;: 3624.25, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [15.5, 23.5], &#39;timestep&#39;: 14497, &#39;reward&#39;: -0.049001324230680154, &#39;reward_energy&#39;: -0.0, &#39;reward_comfort&#39;: -0.09800264846136031, &#39;total_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.09800264846136031, &#39;temperatures&#39;: [26.09800264846136]}
-Reward:  [-0.0, -2.2066365008600854] {&#39;time_elapsed(hours)&#39;: 4344.375, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [22.5, 22.5], &#39;timestep&#39;: 17377, &#39;reward&#39;: -1.1033182504300427, &#39;reward_energy&#39;: -0.0, &#39;reward_comfort&#39;: -2.2066365008600854, &#39;total_energy&#39;: 0.0, &#39;abs_comfort&#39;: 2.2066365008600854, &#39;temperatures&#39;: [28.206636500860085]}
-Reward:  [-0.0, -0.8595308128146435] {&#39;time_elapsed(hours)&#39;: 5088.25, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [22.5, 22.5], &#39;timestep&#39;: 20353, &#39;reward&#39;: -0.42976540640732175, &#39;reward_energy&#39;: -0.0, &#39;reward_comfort&#39;: -0.8595308128146435, &#39;total_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.8595308128146435, &#39;temperatures&#39;: [26.859530812814643]}
-Reward:  [-0.0, -0.0] {&#39;time_elapsed(hours)&#39;: 5832.25, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.0, 22.5], &#39;timestep&#39;: 23329, &#39;reward&#39;: -0.0, &#39;reward_energy&#39;: -0.0, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [25.868898493028976]}
-Reward:  [-0.12892567486050366, -2.1764719481960313] {&#39;time_elapsed(hours)&#39;: 6552.3125, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [15.0, 27.0], &#39;timestep&#39;: 26209, &#39;reward&#39;: -1.1526988115282675, &#39;reward_energy&#39;: -0.12892567486050366, &#39;reward_comfort&#39;: -2.1764719481960313, &#39;total_energy&#39;: 1289.2567486050366, &#39;abs_comfort&#39;: 2.1764719481960313, &#39;temperatures&#39;: [25.67647194819603]}
-Reward:  [-0.009072899955075894, -0.0] {&#39;time_elapsed(hours)&#39;: 7296.25, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [20.5, 23.5], &#39;timestep&#39;: 29185, &#39;reward&#39;: -0.004536449977537947, &#39;reward_energy&#39;: -0.009072899955075894, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 90.72899955075894, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.459687136701213]}
-Reward:  [-0.009072899955075894, -0.36592506134185854] {&#39;time_elapsed(hours)&#39;: 8016.25, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [16.0, 24.0], &#39;timestep&#39;: 32065, &#39;reward&#39;: -0.1874989806484672, &#39;reward_energy&#39;: -0.009072899955075894, &#39;reward_comfort&#39;: -0.36592506134185854, &#39;total_energy&#39;: 90.72899955075894, &#39;abs_comfort&#39;: 0.36592506134185854, &#39;temperatures&#39;: [19.63407493865814]}
+Reward:  [-0.005338511807044024, -0.0] {&#39;time_elapsed(hours)&#39;: 744.3125, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [22.5, 27.0], &#39;timestep&#39;: 2977, &#39;reward&#39;: -0.005338511807044024, &#39;energy_term&#39;: -0.005338511807044024, &#39;comfort_term&#39;: -0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 106.77023614088048, &#39;abs_comfort&#39;: 0.0, &#39;energy_values&#39;: [106.77023614088048], &#39;temp_values&#39;: [22.499132499037866]}
+Reward:  [-0.00730508016410682, -0.30151642474929297] {&#39;time_elapsed(hours)&#39;: 1416.375, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [15.5, 28.0], &#39;timestep&#39;: 5665, &#39;reward&#39;: -0.30882150491339977, &#39;energy_term&#39;: -0.00730508016410682, &#39;comfort_term&#39;: -0.30151642474929297, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 146.1016032821364, &#39;abs_comfort&#39;: 0.6030328494985859, &#39;energy_values&#39;: [146.1016032821364], &#39;temp_values&#39;: [19.396967150501414]}
+Reward:  [-0.0, -0.0] {&#39;time_elapsed(hours)&#39;: 2160.375, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [21.0, 27.5], &#39;timestep&#39;: 8641, &#39;reward&#39;: -0.0, &#39;energy_term&#39;: -0.0, &#39;comfort_term&#39;: -0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.0, &#39;energy_values&#39;: [0.0], &#39;temp_values&#39;: [22.00020723309422]}
+Reward:  [-0.0, -0.1842391378950463] {&#39;time_elapsed(hours)&#39;: 2880.25, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [16.0, 22.5], &#39;timestep&#39;: 11521, &#39;reward&#39;: -0.1842391378950463, &#39;energy_term&#39;: -0.0, &#39;comfort_term&#39;: -0.1842391378950463, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.3684782757900926, &#39;energy_values&#39;: [0.0], &#39;temp_values&#39;: [23.868478275790093]}
+Reward:  [-0.0, -0.07100781942434864] {&#39;time_elapsed(hours)&#39;: 3624.25, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [15.0, 23.5], &#39;timestep&#39;: 14497, &#39;reward&#39;: -0.07100781942434864, &#39;energy_term&#39;: -0.0, &#39;comfort_term&#39;: -0.07100781942434864, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.14201563884869728, &#39;energy_values&#39;: [0.0], &#39;temp_values&#39;: [26.142015638848697]}
+Reward:  [-0.0, -1.1033253318339966] {&#39;time_elapsed(hours)&#39;: 4344.375, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [15.0, 30.0], &#39;timestep&#39;: 17377, &#39;reward&#39;: -1.1033253318339966, &#39;energy_term&#39;: -0.0, &#39;comfort_term&#39;: -1.1033253318339966, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 0.0, &#39;abs_comfort&#39;: 2.2066506636679932, &#39;energy_values&#39;: [0.0], &#39;temp_values&#39;: [28.206650663667993]}
+Reward:  [-0.0, -0.426736721367611] {&#39;time_elapsed(hours)&#39;: 5088.25, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [17.5, 30.0], &#39;timestep&#39;: 20353, &#39;reward&#39;: -0.426736721367611, &#39;energy_term&#39;: -0.0, &#39;comfort_term&#39;: -0.426736721367611, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.853473442735222, &#39;energy_values&#39;: [0.0], &#39;temp_values&#39;: [26.853473442735222]}
+Reward:  [-0.0, -0.0] {&#39;time_elapsed(hours)&#39;: 5832.25, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [22.5, 22.5], &#39;timestep&#39;: 23329, &#39;reward&#39;: -0.0, &#39;energy_term&#39;: -0.0, &#39;comfort_term&#39;: -0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.0, &#39;energy_values&#39;: [0.0], &#39;temp_values&#39;: [25.869297968061936]}
+Reward:  [-0.06446283743025183, -1.0755410499204334] {&#39;time_elapsed(hours)&#39;: 6552.3125, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [20.0, 30.0], &#39;timestep&#39;: 26209, &#39;reward&#39;: -1.1400038873506853, &#39;energy_term&#39;: -0.06446283743025183, &#39;comfort_term&#39;: -1.0755410499204334, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 1289.2567486050366, &#39;abs_comfort&#39;: 2.151082099840867, &#39;energy_values&#39;: [1289.2567486050366], &#39;temp_values&#39;: [25.651082099840867]}
+Reward:  [-0.004536449977537947, -0.0] {&#39;time_elapsed(hours)&#39;: 7296.25, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [22.5, 26.0], &#39;timestep&#39;: 29185, &#39;reward&#39;: -0.004536449977537947, &#39;energy_term&#39;: -0.004536449977537947, &#39;comfort_term&#39;: -0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 90.72899955075894, &#39;abs_comfort&#39;: 0.0, &#39;energy_values&#39;: [90.72899955075894], &#39;temp_values&#39;: [22.499423689715886]}
+Reward:  [-0.004536449977537947, -0.1808879730034061] {&#39;time_elapsed(hours)&#39;: 8016.25, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [21.5, 28.0], &#39;timestep&#39;: 32065, &#39;reward&#39;: -0.18542442298094403, &#39;energy_term&#39;: -0.004536449977537947, &#39;comfort_term&#39;: -0.1808879730034061, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 90.72899955075894, &#39;abs_comfort&#39;: 0.3617759460068122, &#39;energy_values&#39;: [90.72899955075894], &#39;temp_values&#39;: [19.638224053993188]}
 Progress: |***************************************************************************************************| 99%
 [WRAPPER LoggerWrapper] (INFO) : End of episode, recording summary (progress.csv) if logger is active
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-continuous-v1]

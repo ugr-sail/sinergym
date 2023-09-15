@@ -255,7 +255,7 @@ intact.</p>
 <p>However, it can be overwritten by a new definition of them. On the one hand, we will have to define the name of the <strong>time variables</strong>, <strong>variables</strong>, <strong>meters</strong> or <strong>actuators</strong>, and on the other hand, the definition of the <strong>action space</strong> (and an <strong>action mapping</strong> if it is a discrete environment). Observation space is calculated automatically by Sinergym. It is possible to change a subset of these components too. For more information about the structure definitions shown bellow, visit the
 documentation.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
@@ -323,8 +323,8 @@ documentation.</p>
                 <span class="n">action_mapping</span><span class="o">=</span><span class="n">new_action_mapping</span>
             <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;New environment observation varibles (time variables + variables + meters): </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_variables</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;New environment action varibles (actuators): </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_variables</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;New environment observation varibles (time variables + variables + meters): </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;New environment action varibles (actuators): </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_variables&#39;</span><span class="p">)))</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
     <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
@@ -353,7 +353,7 @@ documentation.</p>
 #==============================================================================================#
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment... [datacenter-cool-discrete-stochastic-v1]
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-datacenter-cool-discrete-stochastic-v1-res1]
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-datacenter-cool-discrete-stochastic-v1-res3]
 [MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
@@ -365,12 +365,14 @@ New environment action varibles (actuators): [&#39;Heating_Setpoint_RL&#39;, &#3
 #----------------------------------------------------------------------------------------------#
 [ENVIRONMENT] (INFO) : Starting a new episode... [datacenter-cool-discrete-stochastic-v1] [Episode 1]
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-datacenter-cool-discrete-stochastic-v1-res1/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-datacenter-cool-discrete-stochastic-v1-res3/Eplus-env-sub_run1]
 [MODELING] (INFO) : Weather file USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw used.
 [MODELING] (INFO) : Updated building model with whole Output:Variable available names
 [MODELING] (INFO) : Updated building model with whole Output:Meter available names
 [MODELING] (INFO) : Adapting weather to building model. [USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-datacenter-cool-discrete-stochastic-v1-res1/Eplus-env-sub_run1/output]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-datacenter-cool-discrete-stochastic-v1-res3/Eplus-env-sub_run1/output]
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-discrete-stochastic-v1-res3/Eplus-env-sub_run1/USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3_Random_1.0_0.0_0.001.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-discrete-stochastic-v1-res3/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-discrete-stochastic-v1-res3/Eplus-env-sub_run1/2ZoneDataCenterHVAC_wEconomizer.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 1 started.
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -387,13 +389,11 @@ New environment action varibles (actuators): [&#39;Heating_Setpoint_RL&#39;, &#3
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-discrete-stochastic-v1-res1/Eplus-env-sub_run1/USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3_Random_1.0_0.0_0.001.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-discrete-stochastic-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-discrete-stochastic-v1-res1/Eplus-env-sub_run1/2ZoneDataCenterHVAC_wEconomizer.epJSON&#39;]
-[ENVIRONMENT] (INFO) : Episode 1 started.
-[SIMULATOR] (INFO) : Handles initialized.
-[SIMULATOR] (INFO) : Handles are ready.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
 Progress: |***************************************************************************************************| 99%
-Episode  0 Mean reward:  -1.0457358226428322 Cumulative reward:  -36642.58322540486
+Episode  0 Mean reward:  -1.0539919522167969 Cumulative reward:  -36931.87800567624
 [ENVIRONMENT] (INFO) : Environment closed. [datacenter-cool-discrete-stochastic-v1]
 </pre></div></div>
 </div>
@@ -404,7 +404,7 @@ Episode  0 Mean reward:  -1.0457358226428322 Cumulative reward:  -36642.58322540
 <h2><span class="section-number">17.4. </span>Adding more extra configuration<a class="headerlink" href="#Adding-more-extra-configuration" title="Link to this heading"></a></h2>
 <p>It is possible to update any argument of the environment constructor in Sinergym. Consequently, we can make other changes such as the name of the environment or the maximum number of episodes it will store in its output or the normalization in the gym actions interface.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-datacenter-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
@@ -434,7 +434,7 @@ Episode  0 Mean reward:  -1.0457358226428322 Cumulative reward:  -36642.58322540
 </div>
 <p>You can even add a dictionary with extra parameters that update building model with some new context concerned with simulation directly:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extra_conf</span><span class="o">=</span><span class="p">{</span>
@@ -479,8 +479,6 @@ Episode  0 Mean reward:  -1.0457358226428322 Cumulative reward:  -36642.58322540
 [MODELING] (INFO) : Updated timesteps per episode: 288
 [MODELING] (INFO) : Adapting weather to building model. [USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw]
 [ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1/Eplus-env-sub_run1/USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3_Random_1.0_0.0_0.001.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1/Eplus-env-sub_run1/2ZoneDataCenterHVAC_wEconomizer.epJSON&#39;]
-[ENVIRONMENT] (INFO) : Episode 1 started.
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -497,8 +495,10 @@ Episode  0 Mean reward:  -1.0457358226428322 Cumulative reward:  -36642.58322540
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Handles initialized.
-[SIMULATOR] (INFO) : Handles are ready.
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1/Eplus-env-sub_run1/USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3_Random_1.0_0.0_0.001.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1/Eplus-env-sub_run1/2ZoneDataCenterHVAC_wEconomizer.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
 Progress: |**************************************************-------------------------------------------------| 50%
 [ENVIRONMENT] (INFO) : Environment closed. [datacenter-cool-continuous-stochastic-v1]

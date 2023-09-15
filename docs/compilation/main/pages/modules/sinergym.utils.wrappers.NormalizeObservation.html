@@ -168,25 +168,22 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code>()</p></td>
 <td><p>Closes the wrapper and <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.get_unwrapped_obs" title="sinergym.utils.wrappers.NormalizeObservation.get_unwrapped_obs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_unwrapped_obs</span></code></a>()</p></td>
-<td><p>Get last environment observation without normalization.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
 <td><p>Gets an attribute from the wrapper and lower environments if <cite>name</cite> doesn't exist in this object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.normalize" title="sinergym.utils.wrappers.NormalizeObservation.normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalize</span></code></a>(obs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.normalize" title="sinergym.utils.wrappers.NormalizeObservation.normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalize</span></code></a>(obs)</p></td>
 <td><p>Normalizes the observation using the running mean and variance of the observations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
 <td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.reset" title="sinergym.utils.wrappers.NormalizeObservation.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>(**kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.reset" title="sinergym.utils.wrappers.NormalizeObservation.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>(**kwargs)</p></td>
 <td><p>Resets the environment and normalizes the observation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.step" title="sinergym.utils.wrappers.NormalizeObservation.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.NormalizeObservation.step" title="sinergym.utils.wrappers.NormalizeObservation.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
 <td><p>Steps through the environment and normalizes the observation.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
 <td><p>Generates a <cite>WrapperSpec</cite> for the wrappers.</p></td>
 </tr>
 </tbody>
@@ -220,20 +217,6 @@
 </tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="sinergym.utils.wrappers.NormalizeObservation.get_unwrapped_obs">
-<span class="sig-name descname"><span class="pre">get_unwrapped_obs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation.get_unwrapped_obs" title="Link to this definition"></a></dt>
-<dd><p>Get last environment observation without normalization.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Last original observation. If it is the first observation, this value is None.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Optional[np.ndarray]</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.wrappers.NormalizeObservation.normalize">
 <span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.NormalizeObservation.normalize" title="Link to this definition"></a></dt>

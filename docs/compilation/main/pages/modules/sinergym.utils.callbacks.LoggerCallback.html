@@ -136,7 +136,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.callbacks.LoggerCallback">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.callbacks.</span></span><span class="sig-name descname"><span class="pre">LoggerCallback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.callbacks.LoggerCallback" title="Link to this definition"></a></dt>
-<dd><p>Custom callback for plotting additional values in tensorboard.
+<dd><p>Custom callback for plotting additional values in Stable Baselines 3 algorithms.
 :param ep_rewards: Here will be stored all rewards during episode.
 :param ep_powers: Here will be stored all consumption data during episode.
 :param ep_term_comfort: Here will be stored all comfort terms (reward component) during episode.
@@ -145,8 +145,10 @@
 :param ep_timesteps: Each timestep during an episode, this value increment 1.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.callbacks.LoggerCallback.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sinergym_logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.callbacks.LoggerCallback.__init__" title="Link to this definition"></a></dt>
-<dd><p>Custom callback for plotting additional values in tensorboard.
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dump_frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sinergym_logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.callbacks.LoggerCallback.__init__" title="Link to this definition"></a></dt>
+<dd><p>Custom callback for plotting additional values in Stable Baselines 3 algorithms.
+:param dump_frequency: This is the timestep frequency in which all data recorded is dumped, ignoring algorithm log interval. Defaults to 100.
+:type dump_frequency: int
 :param sinergym_logger: Indicate if CSVLogger inner Sinergym will be activated or not.
 :type sinergym_logger: boolean</p>
 </dd></dl>
@@ -154,19 +156,11 @@
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.callbacks.LoggerCallback.__init__" title="sinergym.utils.callbacks.LoggerCallback.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([sinergym_logger, verbose])</p></td>
-<td><p>Custom callback for plotting additional values in tensorboard.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.callbacks.LoggerCallback.on_training_end" title="sinergym.utils.callbacks.LoggerCallback.on_training_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_training_end</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.callbacks.LoggerCallback.__init__" title="sinergym.utils.callbacks.LoggerCallback.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([dump_frequency, sinergym_logger, ...])</p></td>
+<td><p>Custom callback for plotting additional values in Stable Baselines 3 algorithms.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="sinergym.utils.callbacks.LoggerCallback.on_training_end">
-<span class="sig-name descname"><span class="pre">on_training_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.callbacks.LoggerCallback.on_training_end" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>

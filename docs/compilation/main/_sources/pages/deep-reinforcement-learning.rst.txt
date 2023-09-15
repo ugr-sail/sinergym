@@ -75,17 +75,9 @@ such as models and *Sinergym* output, and compare between different executions. 
   :alt: WandB charts
   :align: center
 
-There are tables which are in some algorithms and not in others and vice versa. 
-It is important the difference between ``OnPolicyAlgorithms`` and ``OffPolicyAlgorithms``:
+There are tables which are in some algorithms and not in others and vice versa. This depends on the algorithm used.
 
-* **OnPolicyAlgorithms** can be recorded **each timestep**, we can set a ``log_interval`` in 
-  learn process in order to specify the **step frequency log**.
-
-* **OffPolicyAlgorithms** can be recorded **each episode**. Consequently, ``log_interval`` in 
-  learn process is used to specify the **episode frequency log** and not step frequency.
-  Some features like actions and observations are set up in each timestep. 
-  Thus, Off Policy Algorithms record a **mean value** of whole episode values instead 
-  of values steps by steps (see ``LoggerCallback`` class implementation).
+.. note:: Since version 3.0.6, *Sinergym* can record real-time data with the same timestep frequency regardless of the algorithm. See `#363 <https://github.com/ugr-sail/sinergym/pull/363>`__.
 
 ********************
 Evaluation Callback
@@ -95,9 +87,10 @@ A callback has also been refined for the evaluation of the model versions obtain
 the training process with *Sinergym*, so that it stores the best model obtained (not the one resulting 
 at the end of the training).
 
-Its name is ``LoggerEvalCallback`` and it inherits from Stable Baselines 3 ``EvalCallback``. 
+Its name is ``LoggerEvalCallback`` and it inherits from Stable Baselines 3 ``EventCallback``. 
 The main feature added is that the model evaluation is logged in a particular section in 
-*wandb* too for the concrete metrics of the building model.
+*wandb* too for the concrete metrics of the building model. The evaluation is customized for
+*Sinergym* particularities. 
 
 We have to define in ``LoggerEvalCallback`` construction how many training episodes we want 
 the evaluation process to take place. On the other hand, we have to define how many episodes 
@@ -107,7 +100,7 @@ With more episodes, more accurate the averages of the reward-based indicators wi
 therefore, the more faithful it will be to reality in terms of how good the current model is 
 turning out to be. However, it will take more time.
 
-It calculates timestep and episode averages for power consumption, comfort penalty and power penalty.
+It calculates timestep and episode averages for power consumption, temperature violation, comfort penalty and power penalty.
 On the other hand, it calculates comfort violation percentage in episodes too.
 Currently, only mean reward is taken into account to decide when a model is better.
 
@@ -117,38 +110,43 @@ Weights and Biases structure
 
 The main structure for *Sinergym* with *wandb* is:
 
-* **action**: This section has action values during training. When algorithm 
-  is On Policy, it will appear **action_simulation** too. This is because 
-  algorithms in continuous environments has their own output and clipped 
-  with gymnasium action space. Then, this output is parse to simulation action 
-  space.
+* **action_network**: The raw output returned by the network in DRL algorithm.
+
+* **action_simulation**: The transformed output, being the values that the simulator 
+  takes for processing and calculation of the next state and reward in Sinergym.
 
 * **episode**: Here is stored all information about entire episodes. 
   It is equivalent to ``progress.csv`` in *Sinergym logger* 
   (see *Sinergym* :ref:`Output format` section):
 
-    - *comfort_violation_time(%)*: Percentage of time in episode simulation 
-      in which temperature has been out of bound comfort temperature ranges.
+    - *ep_length*: Timesteps executed in each episode.
+
+    - *cumulative_reward*: Sum of reward during whole episode.
+
+    - *mean_reward*: Mean reward obtained per step in episode.
+
+    - *cumulative_power*: Sum of power consumption during whole episode.
+
+    - *mean_power*: Mean of power consumption per step during whole episode.
+
+    - *cumulative_temperature_violation*: Sum of temperature (Cº) out of comfort range during whole episode.
+
+    - *mean_temperature_violation*: Mean of temperature (Cº) out of comfort range per step during whole episode.
 
     - *cumulative_comfort_penalty*: Sum of comfort penalties (reward component) 
       during whole episode.
 
-    - *cumulative_power*: Sum of power consumption during whole episode.
-
-    - *cumulative_power_penalty*: Sum of power penalties (reward component) 
+    - *mean_comfort_penalty*: Mean of comfort penalties per step (reward component) 
       during whole episode.
 
-    - *cumulative_reward*: Sum of reward during whole episode.
+    - *cumulative_energy_penalty*: Sum of energy penalties (reward component) 
+      during whole episode.
 
-    - *ep_length*: Timesteps executed in each episode.
+    - *mean_energy_penalty*: Mean of energy penalties per step (reward component) 
+      during whole episode.
 
-    - *mean_comfort_penalty*: Mean comfort penalty per step in episode.
-
-    - *mean_power*: Mean power consumption per step in episode.
-
-    - *mean_power_penalty*: Mean power penalty per step in episode.
-
-    - *mean_reward*: Mean reward obtained per step in episode.
+    - *comfort_violation_time(%)*: Percentage of time in episode simulation 
+      in which temperature has been out of bound comfort temperature ranges.
 
 * **observation**: Here is recorded all observation values during simulation. 
   This values depends on the environment which is being simulated 
@@ -166,6 +164,9 @@ The main structure for *Sinergym* with *wandb* is:
 
 * **train**: Record specific neural network information for each algorithm, 
   provided by **Stable baselines** as well as rollout.
+
+* **eval**: Record all evaluations done during training if the callback has been set up.
+  The graphs here are the same than in *episode* label.
 
 .. note:: Evaluation of models can be recorded too, adding ``EvalLoggerCallback`` 
           to model learn method.

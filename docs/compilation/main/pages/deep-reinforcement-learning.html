@@ -200,33 +200,28 @@ such as models and <em>Sinergym</em> output, and compare between different execu
 <li><p>Metrics visualization in real time:</p></li>
 </ul>
 <a class="reference internal image-reference" href="../_images/wandb_example3.png"><img alt="WandB charts" class="align-center" src="../_images/wandb_example3.png" style="width: 800px;" /></a>
-<p>There are tables which are in some algorithms and not in others and vice versa.
-It is important the difference between <code class="docutils literal notranslate"><span class="pre">OnPolicyAlgorithms</span></code> and <code class="docutils literal notranslate"><span class="pre">OffPolicyAlgorithms</span></code>:</p>
-<ul class="simple">
-<li><p><strong>OnPolicyAlgorithms</strong> can be recorded <strong>each timestep</strong>, we can set a <code class="docutils literal notranslate"><span class="pre">log_interval</span></code> in
-learn process in order to specify the <strong>step frequency log</strong>.</p></li>
-<li><p><strong>OffPolicyAlgorithms</strong> can be recorded <strong>each episode</strong>. Consequently, <code class="docutils literal notranslate"><span class="pre">log_interval</span></code> in
-learn process is used to specify the <strong>episode frequency log</strong> and not step frequency.
-Some features like actions and observations are set up in each timestep.
-Thus, Off Policy Algorithms record a <strong>mean value</strong> of whole episode values instead
-of values steps by steps (see <code class="docutils literal notranslate"><span class="pre">LoggerCallback</span></code> class implementation).</p></li>
-</ul>
+<p>There are tables which are in some algorithms and not in others and vice versa. This depends on the algorithm used.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since version 3.0.6, <em>Sinergym</em> can record real-time data with the same timestep frequency regardless of the algorithm. See <a class="reference external" href="https://github.com/ugr-sail/sinergym/pull/363">#363</a>.</p>
+</div>
 </section>
 <section id="evaluation-callback">
 <h2><span class="section-number">11.2. </span>Evaluation Callback<a class="headerlink" href="#evaluation-callback" title="Link to this heading"></a></h2>
 <p>A callback has also been refined for the evaluation of the model versions obtained during
 the training process with <em>Sinergym</em>, so that it stores the best model obtained (not the one resulting
 at the end of the training).</p>
-<p>Its name is <code class="docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code> and it inherits from Stable Baselines 3 <code class="docutils literal notranslate"><span class="pre">EvalCallback</span></code>.
+<p>Its name is <code class="docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code> and it inherits from Stable Baselines 3 <code class="docutils literal notranslate"><span class="pre">EventCallback</span></code>.
 The main feature added is that the model evaluation is logged in a particular section in
-<em>wandb</em> too for the concrete metrics of the building model.</p>
+<em>wandb</em> too for the concrete metrics of the building model. The evaluation is customized for
+<em>Sinergym</em> particularities.</p>
 <p>We have to define in <code class="docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code> construction how many training episodes we want
 the evaluation process to take place. On the other hand, we have to define how many episodes
 are going to occupy each of the evaluations to be performed.</p>
 <p>With more episodes, more accurate the averages of the reward-based indicators will be, and,
 therefore, the more faithful it will be to reality in terms of how good the current model is
 turning out to be. However, it will take more time.</p>
-<p>It calculates timestep and episode averages for power consumption, comfort penalty and power penalty.
+<p>It calculates timestep and episode averages for power consumption, temperature violation, comfort penalty and power penalty.
 On the other hand, it calculates comfort violation percentage in episodes too.
 Currently, only mean reward is taken into account to decide when a model is better.</p>
 </section>
@@ -234,29 +229,31 @@ Currently, only mean reward is taken into account to decide when a model is bett
 <h2><span class="section-number">11.3. </span>Weights and Biases structure<a class="headerlink" href="#weights-and-biases-structure" title="Link to this heading"></a></h2>
 <p>The main structure for <em>Sinergym</em> with <em>wandb</em> is:</p>
 <ul>
-<li><p><strong>action</strong>: This section has action values during training. When algorithm
-is On Policy, it will appear <strong>action_simulation</strong> too. This is because
-algorithms in continuous environments has their own output and clipped
-with gymnasium action space. Then, this output is parse to simulation action
-space.</p></li>
+<li><p><strong>action_network</strong>: The raw output returned by the network in DRL algorithm.</p></li>
+<li><p><strong>action_simulation</strong>: The transformed output, being the values that the simulator
+takes for processing and calculation of the next state and reward in Sinergym.</p></li>
 <li><p><strong>episode</strong>: Here is stored all information about entire episodes.
 It is equivalent to <code class="docutils literal notranslate"><span class="pre">progress.csv</span></code> in <em>Sinergym logger</em>
 (see <em>Sinergym</em> <a class="reference internal" href="output.html#output-format"><span class="std std-ref">Output format</span></a> section):</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><em>comfort_violation_time(%)</em>: Percentage of time in episode simulation
-in which temperature has been out of bound comfort temperature ranges.</p></li>
+<li><p><em>ep_length</em>: Timesteps executed in each episode.</p></li>
+<li><p><em>cumulative_reward</em>: Sum of reward during whole episode.</p></li>
+<li><p><em>mean_reward</em>: Mean reward obtained per step in episode.</p></li>
+<li><p><em>cumulative_power</em>: Sum of power consumption during whole episode.</p></li>
+<li><p><em>mean_power</em>: Mean of power consumption per step during whole episode.</p></li>
+<li><p><em>cumulative_temperature_violation</em>: Sum of temperature (Cº) out of comfort range during whole episode.</p></li>
+<li><p><em>mean_temperature_violation</em>: Mean of temperature (Cº) out of comfort range per step during whole episode.</p></li>
 <li><p><em>cumulative_comfort_penalty</em>: Sum of comfort penalties (reward component)
 during whole episode.</p></li>
-<li><p><em>cumulative_power</em>: Sum of power consumption during whole episode.</p></li>
-<li><p><em>cumulative_power_penalty</em>: Sum of power penalties (reward component)
+<li><p><em>mean_comfort_penalty</em>: Mean of comfort penalties per step (reward component)
 during whole episode.</p></li>
-<li><p><em>cumulative_reward</em>: Sum of reward during whole episode.</p></li>
-<li><p><em>ep_length</em>: Timesteps executed in each episode.</p></li>
-<li><p><em>mean_comfort_penalty</em>: Mean comfort penalty per step in episode.</p></li>
-<li><p><em>mean_power</em>: Mean power consumption per step in episode.</p></li>
-<li><p><em>mean_power_penalty</em>: Mean power penalty per step in episode.</p></li>
-<li><p><em>mean_reward</em>: Mean reward obtained per step in episode.</p></li>
+<li><p><em>cumulative_energy_penalty</em>: Sum of energy penalties (reward component)
+during whole episode.</p></li>
+<li><p><em>mean_energy_penalty</em>: Mean of energy penalties per step (reward component)
+during whole episode.</p></li>
+<li><p><em>comfort_violation_time(%)</em>: Percentage of time in episode simulation
+in which temperature has been out of bound comfort temperature ranges.</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -272,6 +269,8 @@ DQN has <code class="docutils literal notranslate"><span class="pre">exploration
 <li><p><strong>time</strong>: Monitoring time of execution.</p></li>
 <li><p><strong>train</strong>: Record specific neural network information for each algorithm,
 provided by <strong>Stable baselines</strong> as well as rollout.</p></li>
+<li><p><strong>eval</strong>: Record all evaluations done during training if the callback has been set up.
+The graphs here are the same than in <em>episode</em> label.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
