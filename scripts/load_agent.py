@@ -186,7 +186,7 @@ try:
                 name=conf['wandb']['evaluation_registry']['artifact_name'],
                 type=conf['wandb']['evaluation_registry']['artifact_type'])
             artifact.add_dir(
-                env.experiment_path,
+                env.get_wrapper_attr('workspace_path'),
                 name='evaluation_output/')
 
             run.log_artifact(artifact)
@@ -204,7 +204,7 @@ try:
             # Code for send output to common Google Cloud resource here.
             gcloud.upload_to_bucket(
                 client,
-                src_path=env.experiment_path,
+                src_path=env.get_wrapper_attr('workspace_path'),
                 dest_bucket_name=conf['cloud']['remote_store'],
                 dest_path=evaluation_name)
 
