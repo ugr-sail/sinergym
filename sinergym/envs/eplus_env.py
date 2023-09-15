@@ -94,12 +94,6 @@ class EplusEnv(gym.Env):
         self.meters = meters
         self.actuators = actuators
 
-        # Copy to use original variables in step.obs_dict for reward
-        self.original_time_variables = time_variables
-        self.original_variables = variables
-        self.original_meters = meters
-        self.original_actuators = actuators
-
         # ---------------------------------------------------------------------------- #
         #                    Define observation and action variables                   #
         # ---------------------------------------------------------------------------- #
@@ -107,11 +101,6 @@ class EplusEnv(gym.Env):
         self.observation_variables = self.time_variables + \
             list(self.variables.keys()) + list(self.meters.keys())
         self.action_variables = list(self.actuators.keys())
-
-        self.original_observation_variables = self.original_time_variables + \
-            list(self.original_variables.keys()) + \
-            list(self.original_meters.keys())
-        self.original_action_variables = list(self.original_actuators.keys())
 
         # ---------------------------------------------------------------------------- #
         #                               Building modeling                              #
@@ -134,8 +123,6 @@ class EplusEnv(gym.Env):
         self.name = env_name
         self.episode = 0
         self.timestep = 0
-        # Get environment working dir
-        self.workspace_dir = self.model.experiment_path
         # Queues for E+ Python API communication
         self.obs_queue = Queue(maxsize=1)
         self.info_queue = Queue(maxsize=1)
