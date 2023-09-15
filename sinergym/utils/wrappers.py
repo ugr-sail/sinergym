@@ -230,7 +230,7 @@ class LoggerWrapper(gym.Wrapper):
         self.file_logger = logger_class(
             monitor_header=self.get_wrapper_attr('monitor_header'),
             progress_header=self.get_wrapper_attr('progress_header'),
-            log_progress_file=self.get_wrapper_attr('experiment_path') +
+            log_progress_file=self.get_wrapper_attr('workspace_path') +
             '/progress.csv',
             flag=flag)
 
