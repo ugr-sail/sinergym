@@ -697,7 +697,7 @@ class EplusEnv(gym.Env):
     # ----------------------------------- Paths ---------------------------------- #
 
     @property
-    def experiment_path(self) -> str:
+    def workspace_path(self) -> str:
         return self.model.experiment_path
 
     @property
@@ -782,7 +782,7 @@ class EplusEnv(gym.Env):
             self.weather_files,
             self.weather_path,
             self.episode,
-            self.workspace_dir,
+            self.workspace_path,
             self.reward_fn,
             self.default_options,
             self.runperiod,
