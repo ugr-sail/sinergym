@@ -24,7 +24,7 @@ respectively.
 
 .. warning:: :math:`\lambda_P` and :math:`\lambda_T` are constants established in order to set up a 
              proportional concordance between energy and comfort penalties. If you are
-             using other buildings, be careful with these constants or update them.
+             using other buildings, be careful with these constants and update them.
 
 This is the main idea of reward system in *Sinergym*. However, depending some details,
 different kinds of reward function is developed:
