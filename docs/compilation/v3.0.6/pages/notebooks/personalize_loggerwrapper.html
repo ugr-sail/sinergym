@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>20. Logger Wrapper personalization/configuration &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/nbsphinx-code-cells.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/doc_theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="21. Rule Controller example" href="rule_controller_example.html" />
+    <link rel="prev" title="19. Wrappers example" href="wrappers_examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">5. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">6. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">7. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">8. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">10. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">13. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">14. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">15. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">16. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">17. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">18. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">19. Wrappers example</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">20. Logger Wrapper personalization/configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Step-1-Inherit-and-modify-the-CSVloger">20.1. Step 1 Inherit and modify the CSVloger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Step-2-Instantiate-the-LoggerWrapper">20.2. Step 2 Instantiate the LoggerWrapper</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">21. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">22. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">20. </span>Logger Wrapper personalization/configuration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/notebooks/personalize_loggerwrapper.nblink.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Logger-Wrapper-personalization/configuration">
+<h1><span class="section-number">20. </span>Logger Wrapper personalization/configuration<a class="headerlink" href="#Logger-Wrapper-personalization/configuration" title="Link to this heading"></a></h1>
+<p>We will see on this notebook how to personalize the logger wrapper defined by sinergym.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">MultiObsWrapper</span><span class="p">,</span>
+                                     <span class="n">NormalizeObservation</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.constants</span> <span class="kn">import</span> <span class="n">RANGES_5ZONE</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">/workspaces/sinergym/examples/personalize_loggerwrapper.ipynb Celda 3</span> line <span class="ansi-cyan-fg">6
+</span><span class="ansi-green-intense-fg ansi-bold">      &lt;a href=&#39;vscode-notebook-cell://dev-container%2B2f686f6d652f616c65782f4573637269746f72696f2f73696e657267796d/workspaces/sinergym/examples/personalize_loggerwrapper.ipynb#W2sdnNjb2RlLXJlbW90ZQ%3D%3D?line=2&#39;&gt;3&lt;/a&gt;</span> import sinergym
+<span class="ansi-green-intense-fg ansi-bold">      &lt;a href=&#39;vscode-notebook-cell://dev-container%2B2f686f6d652f616c65782f4573637269746f72696f2f73696e657267796d/workspaces/sinergym/examples/personalize_loggerwrapper.ipynb#W2sdnNjb2RlLXJlbW90ZQ%3D%3D?line=3&#39;&gt;4&lt;/a&gt;</span> from sinergym.utils.wrappers import (LoggerWrapper, MultiObsWrapper,
+<span class="ansi-green-intense-fg ansi-bold">      &lt;a href=&#39;vscode-notebook-cell://dev-container%2B2f686f6d652f616c65782f4573637269746f72696f2f73696e657267796d/workspaces/sinergym/examples/personalize_loggerwrapper.ipynb#W2sdnNjb2RlLXJlbW90ZQ%3D%3D?line=4&#39;&gt;5&lt;/a&gt;</span>                                      NormalizeObservation)
+<span class="ansi-green-fg">----&gt; &lt;a href=&#39;vscode-notebook-cell://dev-container%2B2f686f6d652f616c65782f4573637269746f72696f2f73696e657267796d/workspaces/sinergym/examples/personalize_loggerwrapper.ipynb#W2sdnNjb2RlLXJlbW90ZQ%3D%3D?line=5&#39;&gt;6&lt;/a&gt;</span> from sinergym.utils.constants import RANGES_5ZONE
+
+<span class="ansi-red-fg">ImportError</span>: cannot import name &#39;RANGES_5ZONE&#39; from &#39;sinergym.utils.constants&#39; (/workspaces/sinergym/sinergym/utils/constants.py)
+</pre></div></div>
+</div>
+<section id="Step-1-Inherit-and-modify-the-CSVloger">
+<h2><span class="section-number">20.1. </span>Step 1 Inherit and modify the CSVloger<a class="headerlink" href="#Step-1-Inherit-and-modify-the-CSVloger" title="Link to this heading"></a></h2>
+<p>First we need to change the CSV logger to modify the values written into the file on the function <code class="docutils literal notranslate"><span class="pre">create_row_contents</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="kn">from</span> <span class="nn">sinergym.utils.logger</span> <span class="kn">import</span> <span class="n">CSVLogger</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="k">class</span> <span class="nc">CustomCSVLogger</span><span class="p">(</span><span class="n">CSVLogger</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">monitor_header</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">progress_header</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">log_progress_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">log_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">flag</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CustomCSVLogger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">monitor_header</span><span class="p">,</span><span class="n">progress_header</span><span class="p">,</span><span class="n">log_progress_file</span><span class="p">,</span><span class="n">log_file</span><span class="p">,</span><span class="n">flag</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_10_steps_reward</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span>
+
+    <span class="k">def</span> <span class="nf">_create_row_content</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">obs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+            <span class="n">action</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]],</span>
+            <span class="n">terminated</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;reward&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_10_steps_reward</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_10_steps_reward</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;reward&#39;</span><span class="p">])</span>
+
+
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timestep&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span>
+            <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;time_elapsed(hours)&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;reward&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_10_steps_reward</span><span class="p">),</span>
+            <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;total_power_no_units&#39;</span><span class="p">),</span>
+            <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;comfort_penalty&#39;</span><span class="p">),</span>
+            <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;abs_comfort&#39;</span><span class="p">),</span>
+            <span class="n">terminated</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Step-2-Instantiate-the-LoggerWrapper">
+<h2><span class="section-number">20.2. </span>Step 2 Instantiate the LoggerWrapper<a class="headerlink" href="#Step-2-Instantiate-the-LoggerWrapper" title="Link to this heading"></a></h2>
+<p>Now, we need to instantiate the <code class="docutils literal notranslate"><span class="pre">LoggerWrapper</span></code> and specify the new headers of our file and the <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code> class we want to use.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
+<span class="n">env</span><span class="o">=</span><span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="n">logger_class</span><span class="o">=</span><span class="n">CustomCSVLogger</span><span class="p">,</span><span class="n">monitor_header</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;timestep&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">)</span> <span class="o">+</span>
+                <span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_variables&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;time (hours)&#39;</span><span class="p">,</span> <span class="s1">&#39;reward&#39;</span><span class="p">,</span> <span class="s1">&#39;10-mean-reward&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;power_penalty&#39;</span><span class="p">,</span> <span class="s1">&#39;comfort_penalty&#39;</span><span class="p">,</span> <span class="s1">&#39;done&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [demo-v1]
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-demo-v1-res1]
+[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35040
+[MODELING] (INFO) : Model Config is correct.
+[ENVIRONMENT] (INFO) : Environment demo-v1 created successfully.
+[WRAPPER LoggerWrapper] (INFO) : Wrapper initialized.
+</pre></div></div>
+</div>
+<p>Now, you can see in Sinergym output folder that you will have available <code class="docutils literal notranslate"><span class="pre">progress.csv</span></code> file and <code class="docutils literal notranslate"><span class="pre">monitor.csv</span></code> files in each episode.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">terminated</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
+            <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Episode &#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+        <span class="n">rewards</span><span class="p">),</span> <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode... [demo-v1] [Episode 1]
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1]
+[MODELING] (INFO) : Weather file USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw used.
+[MODELING] (INFO) : Updated building model with whole Output:Variable available names
+[MODELING] (INFO) : Updated building model with whole Output:Meter available names
+[MODELING] (INFO) : Adapting weather to building model. [USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/output]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/opyplus/weather_data/weather_data.py:493: FutureWarning: the &#39;line_terminator&#39;&#39; keyword is deprecated, use &#39;lineterminator&#39; instead.
+  epw_content = self._headers_to_epw(use_datetimes=use_datetimes) + df.to_csv(
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : Handles initialized.
+[SIMULATOR] (INFO) : Handles are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER LoggerWrapper] (INFO) : Creating monitor.csv for current episode (episode 1) if logger is active
+Reward:  -1.4254385096063296 {&#39;time_elapsed(hours)&#39;: 0.5, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [16.7173, 25.51828], &#39;timestep&#39;: 2, &#39;reward&#39;: -1.4254385096063296, &#39;reward_energy&#39;: -0.09759966457086716, &#39;reward_comfort&#39;: -2.753277354641792, &#39;total_energy&#39;: 975.9966457086716, &#39;abs_comfort&#39;: 2.753277354641792, &#39;temperatures&#39;: [17.246722645358208]}
+Reward:  -1356.64076468415 {&#39;time_elapsed(hours)&#39;: 744.3333333333334, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [19.984348, 29.691034], &#39;timestep&#39;: 2977, &#39;reward&#39;: -1.367269479029056, &#39;reward_energy&#39;: -0.09759966457086716, &#39;reward_comfort&#39;: -2.636939293487245, &#39;total_energy&#39;: 975.9966457086716, &#39;abs_comfort&#39;: 2.636939293487245, &#39;temperatures&#39;: [17.363060706512755]}
+Reward:  -3054.0220095941445 {&#39;time_elapsed(hours)&#39;: 1416.375, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [20.9632, 25.817284], &#39;timestep&#39;: 5665, &#39;reward&#39;: -0.02408891647452545, &#39;reward_energy&#39;: -0.0481778329490509, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 481.77832949050895, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.188024759178024]}
+Reward:  -4736.571454268678 {&#39;time_elapsed(hours)&#39;: 2160.375, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.74891, 24.531729], &#39;timestep&#39;: 8641, &#39;reward&#39;: -0.0, &#39;reward_energy&#39;: -0.0, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.221615023532745]}
+Reward:  -6785.093081776233 {&#39;time_elapsed(hours)&#39;: 2880.25, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [22.275679, 29.25613], &#39;timestep&#39;: 11521, &#39;reward&#39;: -0.0, &#39;reward_energy&#39;: -0.0, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.85061459512608]}
+Reward:  -8829.943111164042 {&#39;time_elapsed(hours)&#39;: 3624.25, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.098753, 25.570164], &#39;timestep&#39;: 14497, &#39;reward&#39;: -0.0, &#39;reward_energy&#39;: -0.0, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [23.339699740700098]}
+Reward:  -10546.937765974348 {&#39;time_elapsed(hours)&#39;: 4344.25, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [15.805853, 29.79396], &#39;timestep&#39;: 17377, &#39;reward&#39;: -0.010235060377977945, &#39;reward_energy&#39;: -0.0, &#39;reward_comfort&#39;: -0.02047012075595589, &#39;total_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.02047012075595589, &#39;temperatures&#39;: [22.979529879244044]}
+Reward:  -12117.452740165845 {&#39;time_elapsed(hours)&#39;: 5088.25, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [18.614649, 24.655542], &#39;timestep&#39;: 20353, &#39;reward&#39;: -0.08732701526938413, &#39;reward_energy&#39;: -0.0, &#39;reward_comfort&#39;: -0.17465403053876827, &#39;total_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.17465403053876827, &#39;temperatures&#39;: [22.82534596946123]}
+Reward:  -13646.256713538365 {&#39;time_elapsed(hours)&#39;: 5832.25, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [19.055405, 28.45958], &#39;timestep&#39;: 23329, &#39;reward&#39;: -0.34864576248800994, &#39;reward_energy&#39;: -0.0, &#39;reward_comfort&#39;: -0.6972915249760199, &#39;total_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.6972915249760199, &#39;temperatures&#39;: [22.30270847502398]}
+Reward:  -15633.06135286244 {&#39;time_elapsed(hours)&#39;: 6552.333333333333, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [16.270668, 23.874163], &#39;timestep&#39;: 26209, &#39;reward&#39;: -0.005346094724833048, &#39;reward_energy&#39;: -0.010692189449666096, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 106.92189449666095, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.411057878533825]}
+Reward:  -17869.168300652276 {&#39;time_elapsed(hours)&#39;: 7296.25, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [20.142776, 25.004871], &#39;timestep&#39;: 29185, &#39;reward&#39;: -0.006635015584664937, &#39;reward_energy&#39;: -0.013270031169329875, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 132.70031169329874, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [20.10767561929156]}
+Reward:  -18917.38133695269 {&#39;time_elapsed(hours)&#39;: 8016.333333333333, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: True, &#39;action&#39;: [20.448978, 24.824717], &#39;timestep&#39;: 32065, &#39;reward&#39;: -0.005961230918705193, &#39;reward_energy&#39;: -0.011922461837410386, &#39;reward_comfort&#39;: -0.0, &#39;total_energy&#39;: 119.22461837410385, &#39;abs_comfort&#39;: 0.0, &#39;temperatures&#39;: [21.411502592832264]}
+Progress: |***************************************************************************************************| 99%
+Episode  0 Mean reward:  -0.5716922513376816 Cumulative reward:  -20032.096486873303
+[WRAPPER LoggerWrapper] (INFO) : End of episode, recording summary (progress.csv) if logger is active
+[ENVIRONMENT] (INFO) : Environment closed. [demo-v1]
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="wrappers_examples.html" class="btn btn-neutral float-left" title="19. Wrappers example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rule_controller_example.html" class="btn btn-neutral float-right" title="21. Rule Controller example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.0.6
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../../v1.7.2/index.html">v1.7.2</a></dd>
+            <dd><a href="../../../v1.7.5/index.html">v1.7.5</a></dd>
+            <dd><a href="../../../v1.7.6/index.html">v1.7.6</a></dd>
+            <dd><a href="../../../v1.7.7/index.html">v1.7.7</a></dd>
+            <dd><a href="../../../v1.7.8/index.html">v1.7.8</a></dd>
+            <dd><a href="../../../v1.8.2/index.html">v1.8.2</a></dd>
+            <dd><a href="../../../v1.8.4/index.html">v1.8.4</a></dd>
+            <dd><a href="../../../v1.9.1/index.html">v1.9.1</a></dd>
+            <dd><a href="../../../v1.9.5/index.html">v1.9.5</a></dd>
+            <dd><a href="../../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../../v2.1.2/index.html">v2.1.2</a></dd>
+            <dd><a href="../../../v2.1.3/index.html">v2.1.3</a></dd>
+            <dd><a href="../../../v2.1.5/index.html">v2.1.5</a></dd>
+            <dd><a href="../../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../../v2.2.3/index.html">v2.2.3</a></dd>
+            <dd><a href="../../../v2.2.5/index.html">v2.2.5</a></dd>
+            <dd><a href="../../../v2.2.9/index.html">v2.2.9</a></dd>
+            <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
+            <dd><a href="../../../v2.3.1/index.html">v2.3.1</a></dd>
+            <dd><a href="../../../v2.3.2/index.html">v2.3.2</a></dd>
+            <dd><a href="../../../v2.3.3/index.html">v2.3.3</a></dd>
+            <dd><a href="../../../v2.3.4/index.html">v2.3.4</a></dd>
+            <dd><a href="../../../v2.4.1/index.html">v2.4.1</a></dd>
+            <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../../v2.5.1/index.html">v2.5.1</a></dd>
+            <dd><a href="../../../v2.5.2/index.html">v2.5.2</a></dd>
+            <dd><a href="../../../v3.0.1/index.html">v3.0.1</a></dd>
+            <dd><a href="personalize_loggerwrapper.html">v3.0.6</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../../main/index.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>
