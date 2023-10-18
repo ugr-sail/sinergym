@@ -584,51 +584,53 @@ DEFAULT_AUTOBALANCE_VARIABLES = {
 DEFAULT_AUTOBALANCE_METERS = {}
 
 DEFAULT_AUTOBALANCE_ACTUATORS = {
-    'radiant_kitchen': (
-        'Hydronic Low Temp Radiant',
-        'Water Mass Flow Rate',
-        'FIRSTFLOOR:KITCHEN RADIANT SURFACE'),
+    # 'radiant_livroom': (
+    #     'Hydronic Low Temp Radiant',
+    #     'Water Mass Flow Rate',
+    #     'FIRSTFLOOR:LIVINGROOM RADIANT SURFACE'),
+    # 'radiant_kitchen': (
+    #     'Hydronic Low Temp Radiant',
+    #     'Water Mass Flow Rate',
+    #     'FIRSTFLOOR:KITCHEN RADIANT SURFACE'),
+    # 'radiant_bed1': (
+    #     'Hydronic Low Temp Radiant',
+    #     'Water Mass Flow Rate',
+    #     'SECONDFLOOR:BEDROOM01 RADIANT SURFACE'),
+    # 'radiant_bed2': (
+    #     'Hydronic Low Temp Radiant',
+    #     'Water Mass Flow Rate',
+    #     'SECONDFLOOR:BEDROOM02 RADIANT SURFACE'),
+    # 'radiant_bed3': (
+    #     'Hydronic Low Temp Radiant',
+    #     'Water Mass Flow Rate',
+    #     'SECONDFLOOR:BEDROOM03 RADIANT SURFACE'),
     'radiant_livroom': (
-        'Hydronic Low Temp Radiant',
-        'Water Mass Flow Rate',
-        'FIRSTFLOOR:LIVINGROOM RADIANT SURFACE'),
+        'Schedule:Compact',
+        'Schedule Value',
+        'LIVING RADIANT AVAILAVILITY'),
+    'radiant_kitchen': (
+        'Schedule:Compact',
+        'Schedule Value',
+        'KITCHEN RADIANT AVAILAVILITY'),
     'radiant_bed1': (
-        'Hydronic Low Temp Radiant',
-        'Water Mass Flow Rate',
-        'SECONDFLOOR:BEDROOM01 RADIANT SURFACE'),
+        'Schedule:Compact',
+        'Schedule Value',
+        'BED1 RADIANT AVAILAVILITY'),
     'radiant_bed2': (
-        'Hydronic Low Temp Radiant',
-        'Water Mass Flow Rate',
-        'SECONDFLOOR:BEDROOM02 RADIANT SURFACE'),
+        'Schedule:Compact',
+        'Schedule Value',
+        'BED2 RADIANT AVAILAVILITY'),
     'radiant_bed3': (
-        'Hydronic Low Temp Radiant',
-        'Water Mass Flow Rate',
-        'SECONDFLOOR:BEDROOM03 RADIANT SURFACE'),
+        'Schedule:Compact',
+        'Schedule Value',
+        'BED3 RADIANT AVAILAVILITY'),
     'water_temperature': (
         'Schedule:Compact',
         'Schedule Value',
         'HEATING HIGH WATER TEMPERATURE SCHEDULE: ALWAYS 65.00')}
 
-# DEFAULT_AUTOBALANCE_ACTION_MAPPING = {
-#     0: (15, 30),
-#     1: (16, 29),
-#     2: (17, 28),
-#     3: (18, 27),
-#     4: (19, 26),
-#     5: (20, 25),
-#     6: (21, 24),
-#     7: (22, 23),
-#     8: (22, 22),
-#     9: (21, 21)
-# }
-
-# DEFAULT_AUTOBALANCE_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
-
-DEFAULT_AUTOBALANCE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([10.0, 10.0, 10.0, 10.0, 10.0, 30.0], dtype=np.float32),
-    high=np.array([65.0, 65.0, 65.0, 65.0, 65.0, 80.0], dtype=np.float32),
-    shape=(6,),
-    dtype=np.float32)
+DEFAULT_AUTOBALANCE_ACTION_SPACE = gym.spaces.MultiDiscrete(nvec=np.array(
+    [2, 2, 2, 2, 2, 11]), start=np.array([0, 0, 0, 0, 0, 25]))
 
 
 # ----------------------------------HOSPITAL--------------------------------- #
