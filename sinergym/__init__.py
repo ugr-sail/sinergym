@@ -244,16 +244,18 @@ for building in id_bases:
 
 # Autobalance example in Stockholm
 register(
-    id='Eplus-autobalance-v1',
+    id='Eplus-autobalance-stockholm-multidiscrete-stochastic-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
         'building_file': 'autobalance_model.epJSON',
         'weather_files': 'SWE_Stockholm.Arlanda.024600_IWEC.epw',
-        'action_space': DEFAULT_AUTOBALANCE_ACTION_SPACE_CONTINUOUS,
+        'action_space': DEFAULT_AUTOBALANCE_ACTION_SPACE,
         'time_variables': DEFAULT_TIME_VARIABLES,
         'variables': DEFAULT_AUTOBALANCE_VARIABLES,
         'meters': DEFAULT_AUTOBALANCE_METERS,
         'actuators': DEFAULT_AUTOBALANCE_ACTUATORS,
+        'flag_normalization': False,
+        'weather_variability': (1.0, 0.0, 0.001),
         'reward': LinearReward,
         'reward_kwargs': {
             'temperature_variables': [
@@ -269,4 +271,4 @@ register(
             'range_comfort_summer': (
                 19.0,
                 21.0)},
-        'env_name': 'autobalance-v1'})
+        'env_name': 'autobalance-stockholm-multidiscrete-stochastic-v1'})
