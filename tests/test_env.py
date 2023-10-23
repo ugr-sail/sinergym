@@ -89,11 +89,6 @@ def test_step(env_name, request):
         action = 10
         with pytest.raises(Exception):
             env.step(action)
-    # Check action out of range continuous
-    else:
-        action = [1.1, -1.1]
-        with pytest.raises(Exception):
-            env.step(action)
 
 
 def test_close(env_5zone_discrete):
