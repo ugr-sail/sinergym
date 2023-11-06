@@ -574,6 +574,25 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
             return list(setpoints_normalized)
 
         return list(self.current_setpoints)
+    
+class DiscretizeEnv(gym.ActionWrapper):
+    def __init__(self, 
+                 env: EplusEnv,
+                 discrete_space: Union[gym.spaces.Discrete, gym.spaces.MultiDiscrete, gym.spaces.MultiBinary],
+                 action_mapping: Callable[[Union[int,List[int]]], Union[int,List[int]]]):
+        super().__init__(env)
+        self.action_space=discrete_space
+        self.action_mapping=action_mapping
+
+    def action(self, action: Union[int,List[int]]):
+
+        action_ = self.action_mapping(action)
+        return action_
+
+        
+
+        
+
 
     # ---------------------- Specific environment wrappers ---------------------#
 
