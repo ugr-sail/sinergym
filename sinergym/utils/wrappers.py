@@ -509,7 +509,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
         # Check environment is valid
         try:
-            assert not self.env.get_wrapper_attr('flag_discrete')
+            assert not self.env.get_wrapper_attr('is_discrete')
         except AssertionError as err:
             self.logger.error(
                 'Env wrapped by this wrapper must be continuous.')
@@ -529,11 +529,10 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
         # Reset default environment action_mapping and enable discrete
         # environment flag
-        self.flag_discrete = True
-        self.action_mapping = {}
+        self.mapping = {}
         do_nothing = [0.0 for _ in range(
             len(self.env.get_wrapper_attr('action_variables')))]  # do nothing
-        self.action_mapping[0] = do_nothing
+        self.mapping[0] = do_nothing
         n = 1
 
         # Generate all posible actions
@@ -541,8 +540,12 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
             for v in values:
                 x = do_nothing.copy()
                 x[k] = v
-                self.action_mapping[n] = x
+                self.mapping[n] = x
                 n += 1
+
+        @property
+        def action_mapping(self, action):
+            return self.mapping[action]
 
         self.action_space = gym.spaces.Discrete(n)
         self.logger.info('New incremental action mapping: {}'.format(n))
@@ -551,7 +554,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
     def action(self, action):
         """Takes the discrete action and transforms it to setpoints tuple."""
-        action_ = self.get_wrapper_attr('action_mapping')[action]
+        action_ = self.get_wrapper_attr('action_mapping')(action)
         # Update current setpoints values with incremental action
         self.current_setpoints = [
             sum(i) for i in zip(
@@ -574,25 +577,26 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
             return list(setpoints_normalized)
 
         return list(self.current_setpoints)
-    
-class DiscretizeEnv(gym.ActionWrapper):
-    def __init__(self, 
-                 env: EplusEnv,
-                 discrete_space: Union[gym.spaces.Discrete, gym.spaces.MultiDiscrete, gym.spaces.MultiBinary],
-                 action_mapping: Callable[[Union[int,List[int]]], Union[int,List[int]]]):
-        super().__init__(env)
-        self.action_space=discrete_space
-        self.action_mapping=action_mapping
 
-    def action(self, action: Union[int,List[int]]):
+
+class DiscretizeEnv(gym.ActionWrapper):
+    def __init__(self,
+                 env: EplusEnv,
+                 discrete_space: Union[gym.spaces.Discrete,
+                                       gym.spaces.MultiDiscrete,
+                                       gym.spaces.MultiBinary],
+                 action_mapping: Callable[[Union[int,
+                                                 List[int]]],
+                                          Union[int,
+                                                List[int]]]):
+        super().__init__(env)
+        self.action_space = discrete_space
+        self.action_mapping = action_mapping
+
+    def action(self, action: Union[int, List[int]]):
 
         action_ = self.action_mapping(action)
         return action_
-
-        
-
-        
-
 
     # ---------------------- Specific environment wrappers ---------------------#
 
