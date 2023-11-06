@@ -529,13 +529,6 @@ class EplusEnv(gym.Env):
                 'Continuous environment: real_space attribute should have been defined.')
             raise err
 
-        try:
-            assert not hasattr(self, 'action_mapping')
-        except AssertionError as err:
-            self.logger.warning(
-                'Continuous environment: action mapping should not have been defined.')
-            raise err
-
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #
     # ---------------------------------------------------------------------------- #

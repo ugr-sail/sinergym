@@ -527,8 +527,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         values = np.arange(step_temp, delta_temp + step_temp / 10, step_temp)
         values = [v for v in [*values, *-values]]
 
-        # Reset default environment action_mapping and enable discrete
-        # environment flag
+        # Creating action_mapping function for the discrete environment
         self.mapping = {}
         do_nothing = [0.0 for _ in range(
             len(self.env.get_wrapper_attr('action_variables')))]  # do nothing
@@ -549,7 +548,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
         self.action_space = gym.spaces.Discrete(n)
         self.logger.info('New incremental action mapping: {}'.format(n))
-        self.logger.info('{}'.format(self.get_wrapper_attr('action_mapping')))
+        self.logger.info('{}'.format(self.get_wrapper_attr('mapping')))
         self.logger.info('Wrapper initialized')
 
     def action(self, action):
