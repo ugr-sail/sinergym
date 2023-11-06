@@ -354,7 +354,6 @@ class EplusEnv(gym.Env):
             self.logger.warning(
                 'Step: The action {} is not correct for the Action Space {}'.format(
                     action, self._action_space))
-            raise err
 
         # Check if episode existed and is not terminated
         try:
