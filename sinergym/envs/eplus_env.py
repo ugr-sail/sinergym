@@ -478,7 +478,6 @@ class EplusEnv(gym.Env):
             value (bool): New flag_normalization attribute value
         """
         try:
-            assert not self.flag_discrete
             self.flag_normalization = value
             self._action_space = self.normalized_space if value else self.real_space
             self.logger.debug(
