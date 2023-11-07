@@ -557,11 +557,11 @@ class EplusEnv(gym.Env):
 
     @property
     def is_discrete(self) -> bool:
-        if isinstance(getattr(self, '_action_space'), gym.spaces.Box):
+        if isinstance(self.action_space, gym.spaces.Box):
             return False
-        elif isinstance(getattr(self, '_action_space'), gym.spaces.Discrete) or \
-                isinstance(getattr(self, '_action_space'), gym.spaces.MultiDiscrete) or \
-                isinstance(getattr(self, '_action_space'), gym.spaces.MultiBinary):
+        elif isinstance(self.action_space, gym.spaces.Discrete) or \
+                isinstance(self.action_space, gym.spaces.MultiDiscrete) or \
+                isinstance(self.action_space, gym.spaces.MultiBinary):
             return True
         else:
             self.logger.warning('Action space is not continuous or discrete?')

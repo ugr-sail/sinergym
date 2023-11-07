@@ -58,6 +58,9 @@ class MultiObjectiveReward(gym.Wrapper):
 
 class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
 
+    logger = Logger().getLogger(name='WRAPPER NormalizeObservation',
+                                level=LOG_WRAPPERS_LEVEL)
+
     def __init__(self,
                  env: EplusEnv,
                  epsilon: float = 1e-8):
@@ -75,6 +78,8 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         self.unwrapped_observation = None
         self.obs_rms = RunningMeanStd(shape=self.observation_space.shape)
         self.epsilon = epsilon
+
+        self.logger.info('wrapper initialized.')
 
     def step(self, action):
         """Steps through the environment and normalizes the observation."""
@@ -542,14 +547,15 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
                 self.mapping[n] = x
                 n += 1
 
-        @property
-        def action_mapping(self, action):
-            return self.mapping[action]
-
         self.action_space = gym.spaces.Discrete(n)
+
         self.logger.info('New incremental action mapping: {}'.format(n))
         self.logger.info('{}'.format(self.get_wrapper_attr('mapping')))
         self.logger.info('Wrapper initialized')
+
+    # Define action mapping method
+    def action_mapping(self, action: int) -> List[float]:
+        return self.mapping[action]
 
     def action(self, action):
         """Takes the discrete action and transforms it to setpoints tuple."""
@@ -577,8 +583,26 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
         return list(self.current_setpoints)
 
+    # Updating property
+    @property
+    def is_discrete(self) -> bool:
+        if isinstance(self.action_space, gym.spaces.Box):
+            return False
+        elif isinstance(self.action_space, gym.spaces.Discrete) or \
+                isinstance(self.action_space, gym.spaces.MultiDiscrete) or \
+                isinstance(self.action_space, gym.spaces.MultiBinary):
+            return True
+        else:
+            self.logger.warning(
+                'Action space is not continuous or discrete?')
+            return False
+
 
 class DiscretizeEnv(gym.ActionWrapper):
+
+    logger = Logger().getLogger(name='WRAPPER DiscretizeEnv',
+                                level=LOG_WRAPPERS_LEVEL)
+
     def __init__(self,
                  env: EplusEnv,
                  discrete_space: Union[gym.spaces.Discrete,
@@ -586,16 +610,37 @@ class DiscretizeEnv(gym.ActionWrapper):
                                        gym.spaces.MultiBinary],
                  action_mapping: Callable[[Union[int,
                                                  List[int]]],
-                                          Union[int,
-                                                List[int]]]):
+                                          Union[float,
+                                                List[float]]]):
         super().__init__(env)
         self.action_space = discrete_space
         self.action_mapping = action_mapping
+
+        self.logger.info(
+            'New Discrete Space and mapping: {}'.format(
+                self.action_space))
+        self.logger.info(
+            'Make sure that the action space is compatible and contained in the original environment.')
+        self.logger.info('Wrapper initialized')
 
     def action(self, action: Union[int, List[int]]):
 
         action_ = self.action_mapping(action)
         return action_
+
+    # Updating property
+    @property
+    def is_discrete(self) -> bool:
+        if isinstance(self.action_space, gym.spaces.Box):
+            return False
+        elif isinstance(self.action_space, gym.spaces.Discrete) or \
+                isinstance(self.action_space, gym.spaces.MultiDiscrete) or \
+                isinstance(self.action_space, gym.spaces.MultiBinary):
+            return True
+        else:
+            self.logger.warning(
+                'Action space is not continuous or discrete?')
+            return False
 
     # ---------------------- Specific environment wrappers ---------------------#
 
