@@ -17,10 +17,10 @@ if not missing:
         'env_name',
         [
             (
-                'env_5zone_discrete'
+                'env_wrapper_discretize'
             ),
             (
-                'env_5zone_continuous'
+                'env_5zone'
             ),
         ]
     )
@@ -66,10 +66,10 @@ if not missing:
         'env_name',
         [
             (
-                'env_5zone_discrete'
+                'env_wrapper_discretize'
             ),
             (
-                'env_5zone_continuous'
+                'env_5zone'
             ),
         ]
     )
@@ -113,17 +113,17 @@ if not missing:
         'env_name',
         [
             (
-                'env_5zone_discrete'
+                'env_wrapper_discretize'
             ),
             (
-                'env_5zone_continuous'
+                'env_5zone'
             ),
         ]
     )
     def test_stable_DQN(env_name, request):
         env = request.getfixturevalue(env_name)
         # DQN must fail in continuous environments
-        if env_name == 'env_5zone_continuous':
+        if env_name == 'env_5zone':
             with pytest.raises(AssertionError):
                 model = stable_baselines3.DQN('MlpPolicy', env, verbose=1,
                                               learning_rate=.0001,
@@ -184,10 +184,10 @@ if not missing:
         'env_name',
         [
             (
-                'env_5zone_discrete'
+                'env_wrapper_discretize'
             ),
             (
-                'env_5zone_continuous'
+                'env_5zone'
             ),
         ]
     )
@@ -195,7 +195,7 @@ if not missing:
 
         env = request.getfixturevalue(env_name)
         # DDPG must fail in discrete environments
-        if env_name == 'env_5zone_discrete':
+        if env_name == 'env_wrapper_discretize':
             with pytest.raises(IndexError):
                 env.action_space.shape[-1]
             with pytest.raises(AssertionError):
@@ -238,17 +238,17 @@ if not missing:
         'env_name',
         [
             (
-                'env_5zone_discrete'
+                'env_wrapper_discretize'
             ),
             (
-                'env_5zone_continuous'
+                'env_5zone'
             ),
         ]
     )
     def test_stable_SAC(env_name, request):
         env = request.getfixturevalue(env_name)
         # SAC must fail in discrete environments
-        if env_name == 'env_5zone_discrete':
+        if env_name == 'env_wrapper_discretize':
             with pytest.raises(AssertionError):
                 model = stable_baselines3.SAC(
                     "MlpPolicy", env, verbose=1)

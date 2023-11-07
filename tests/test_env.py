@@ -9,9 +9,8 @@ from sinergym.utils.env_checker import check_env
 
 
 @pytest.mark.parametrize('env_name',
-                         [('env_5zone_discrete'),
-                          ('env_5zone_continuous'),
-                          ('env_5zone_continuous_stochastic')
+                         [('env_5zone'),
+                          ('env_5zone_stochastic')
                           ])
 def test_reset(env_name, request):
     env = request.getfixturevalue(env_name)
@@ -33,30 +32,26 @@ def test_reset(env_name, request):
         assert isinstance(env.default_options['weather_variability'], tuple)
 
 
-def test_reset_custom_options(env_5zone_continuous_stochastic):
+def test_reset_custom_options(env_5zone_stochastic):
     assert isinstance(
-        env_5zone_continuous_stochastic.default_options['weather_variability'],
+        env_5zone_stochastic.default_options['weather_variability'],
         tuple)
     assert len(
-        env_5zone_continuous_stochastic.default_options['weather_variability']) == 3
+        env_5zone_stochastic.default_options['weather_variability']) == 3
     custom_options = {'weather_variability': (1.1, 0.1, 0.002)}
-    env_5zone_continuous_stochastic.reset(options=custom_options)
+    env_5zone_stochastic.reset(options=custom_options)
     # Check if epw with new variation is overwriting default options
-    weather_path = env_5zone_continuous_stochastic.model._weather_path
+    weather_path = env_5zone_stochastic.model._weather_path
     weather_file = weather_path.split('/')[-1][:-4]
     assert os.path.isfile(
-        env_5zone_continuous_stochastic.episode_path +
+        env_5zone_stochastic.episode_path +
         '/' +
         weather_file +
         '_Random_1.1_0.1_0.002.epw')
 
 
-@pytest.mark.parametrize('env_name',
-                         [('env_5zone_discrete'),
-                          ('env_5zone_continuous'),
-                          ])
-def test_step(env_name, request):
-    env = request.getfixturevalue(env_name)
+def test_step(env_5zone):
+    env = env_5zone
     env.reset()
     action = env.action_space.sample()
     obs, reward, terminated, truncated, info = env.step(action)
@@ -84,63 +79,39 @@ def test_step(env_name, request):
     with pytest.raises(Exception):
         env.step(action)
 
-    # Check action out of range discrete
-    if env.flag_discrete:
-        action = 10
-        with pytest.raises(Exception):
-            env.step(action)
-    # Check action out of range continuous
-    else:
-        action = [1.1, -1.1]
-        with pytest.raises(Exception):
-            env.step(action)
+
+def test_close(env_5zone):
+    env_5zone.reset()
+    assert env_5zone.is_running
+    env_5zone.close()
+    assert not env_5zone.is_running
 
 
-def test_close(env_5zone_discrete):
-    env_5zone_discrete.reset()
-    assert env_5zone_discrete.is_running
-    env_5zone_discrete.close()
-    assert not env_5zone_discrete.is_running
+def test_render(env_5zone):
+    env_5zone.render()
 
 
-def test_render(env_5zone_discrete):
-    env_5zone_discrete.render()
-
-
-@pytest.mark.parametrize('env_name',
-                         [('env_5zone_discrete'),
-                          ('env_5zone_continuous')
-                          ])
-def test_get_action(env_name, request):
-    env = request.getfixturevalue(env_name)
+def test_get_action(env_5zone):
+    env = env_5zone
 
     # Here is checked special cases
-    # Discrete
-    if env.flag_discrete:
-        action = randint(0, 9)
-        _action = env._get_action(action)
-        assert isinstance(_action, list)
-        assert len(_action) == 2
-
-    # Continuous
-    else:
-        action = [0.5, -0.9]
-        _action = env._get_action(action)
-        assert isinstance(_action, list)
-        assert len(_action) == 2
+    action = [0.5, -0.9]
+    _action = env._get_action(action)
+    assert isinstance(_action, list)
+    assert len(_action) == 2
 
 
-def test_update_flag_normalization(env_5zone_continuous):
-    assert env_5zone_continuous.flag_normalization
-    assert env_5zone_continuous.action_space == env_5zone_continuous.normalized_space
+def test_update_flag_normalization(env_5zone):
+    assert env_5zone.flag_normalization
+    assert env_5zone.action_space == env_5zone.normalized_space
 
-    env_5zone_continuous.update_flag_normalization(False)
-    assert not env_5zone_continuous.flag_normalization
-    assert env_5zone_continuous.action_space == env_5zone_continuous.real_space
+    env_5zone.update_flag_normalization(False)
+    assert not env_5zone.flag_normalization
+    assert env_5zone.action_space == env_5zone.real_space
 
-    env_5zone_continuous.update_flag_normalization(True)
-    assert env_5zone_continuous.flag_normalization
-    assert env_5zone_continuous.action_space == env_5zone_continuous.normalized_space
+    env_5zone.update_flag_normalization(True)
+    assert env_5zone.flag_normalization
+    assert env_5zone.action_space == env_5zone.normalized_space
 
 
 def test_all_environments():
