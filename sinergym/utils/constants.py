@@ -97,24 +97,28 @@ DEFAULT_5ZONE_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 
 def DEFAULT_5ZONE_DISCRETE_FUNCTION(action: int) -> List[float]:
+    # SB3 algotihms returns a ndarray instead of a int
+    if isinstance(action, np.ndarray):
+        action = int(action.item())
+
     mapping = {
-        0: (15, 30),
-        1: (16, 29),
-        2: (17, 28),
-        3: (18, 27),
-        4: (19, 26),
-        5: (20, 25),
-        6: (21, 24),
-        7: (22, 23),
-        8: (22, 22),
-        9: (21, 21)
+        0: [15, 30],
+        1: [16, 29],
+        2: [17, 28],
+        3: [18, 27],
+        4: [19, 26],
+        5: [20, 25],
+        6: [21, 24],
+        7: [22, 23],
+        8: [22, 22.5],
+        9: [21, 22.5]
     }
 
     return mapping[action]
 
 
 DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 21], dtype=np.float32),
+    low=np.array([15.0, 22.5], dtype=np.float32),
     high=np.array([22.5, 30.0], dtype=np.float32),
     shape=(2,),
     dtype=np.float32
@@ -165,24 +169,28 @@ DEFAULT_DATACENTER_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 
 def DEFAULT_DATACENTER_DISCRETE_FUNCTION(action: int) -> List[float]:
+    # SB3 algotihms returns a ndarray instead of a int
+    if isinstance(action, np.ndarray):
+        action = int(action.item())
+
     mapping = {
-        0: (15, 30),
-        1: (16, 29),
-        2: (17, 28),
-        3: (18, 27),
-        4: (19, 26),
-        5: (20, 25),
-        6: (21, 24),
-        7: (22, 23),
-        8: (22, 22),
-        9: (21, 21)
+        0: [15, 30],
+        1: [16, 29],
+        2: [17, 28],
+        3: [18, 27],
+        4: [19, 26],
+        5: [20, 25],
+        6: [21, 24],
+        7: [22, 23],
+        8: [22, 22.5],
+        9: [21, 22.5]
     }
 
     return mapping[action]
 
 
 DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 21], dtype=np.float32),
+    low=np.array([15.0, 22.5], dtype=np.float32),
     high=np.array([22.5, 30.0], dtype=np.float32),
     shape=(2,),
     dtype=np.float32)
@@ -238,24 +246,28 @@ DEFAULT_WAREHOUSE_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 
 def DEFAULT_WAREHOUSE_DISCRETE_FUNCTION(action: int) -> List[float]:
+    # SB3 algotihms returns a ndarray instead of a int
+    if isinstance(action, np.ndarray):
+        action = int(action.item())
+
     mapping = {
-        0: (15, 30, 15, 30, 15),
-        1: (16, 29, 16, 29, 16),
-        2: (17, 28, 17, 28, 17),
-        3: (18, 27, 18, 27, 18),
-        4: (19, 26, 19, 26, 19),
-        5: (20, 25, 20, 25, 20),
-        6: (21, 24, 21, 24, 21),
-        7: (22, 23, 22, 23, 22.5),
-        8: (22, 22, 22, 22, 22.5),
-        9: (21, 21, 21, 21, 22.5)
+        0: [15, 30, 15, 30, 15],
+        1: [16, 29, 16, 29, 16],
+        2: [17, 28, 17, 28, 17],
+        3: [18, 27, 18, 27, 18],
+        4: [19, 26, 19, 26, 19],
+        5: [20, 25, 20, 25, 20],
+        6: [21, 24, 21, 24, 21],
+        7: [22, 23, 22, 23, 22.5],
+        8: [22, 22.5, 22, 22.5, 22.5],
+        9: [21, 22.5, 21, 22.5, 22.5]
     }
 
     return mapping[action]
 
 
 DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 21, 15.0, 21, 15.0], dtype=np.float32),
+    low=np.array([15.0, 22.5, 15.0, 22.5, 15.0], dtype=np.float32),
     high=np.array([22.5, 30.0, 22.5, 30.0, 22.5], dtype=np.float32),
     shape=(5,),
     dtype=np.float32)
@@ -303,24 +315,28 @@ DEFAULT_OFFICE_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 
 def DEFAULT_OFFICE_DISCRETE_FUNCTION(action: int) -> List[float]:
+    # SB3 algotihms returns a ndarray instead of a int
+    if isinstance(action, np.ndarray):
+        action = int(action.item())
+
     mapping = {
-        0: (15, 30),
-        1: (16, 29),
-        2: (17, 28),
-        3: (18, 27),
-        4: (19, 26),
-        5: (20, 25),
-        6: (21, 24),
-        7: (22, 23),
-        8: (22, 22),
-        9: (21, 21)
+        0: [15, 30],
+        1: [16, 29],
+        2: [17, 28],
+        3: [18, 27],
+        4: [19, 26],
+        5: [20, 25],
+        6: [21, 24],
+        7: [22, 23],
+        8: [22, 22.5],
+        9: [21, 22.5]
     }
 
     return mapping[action]
 
 
 DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 21], dtype=np.float32),
+    low=np.array([15.0, 22.5], dtype=np.float32),
     high=np.array([22.5, 30.0], dtype=np.float32),
     shape=(2,),
     dtype=np.float32)
@@ -419,24 +435,28 @@ DEFAULT_OFFICEGRID_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 
 def DEFAULT_OFFICEGRID_DISCRETE_FUNCTION(action: int) -> List[float]:
+    # SB3 algotihms returns a ndarray instead of a int
+    if isinstance(action, np.ndarray):
+        action = int(action.item())
+
     mapping = {
-        0: (15, 30, 0.0, 0.0),
-        1: (16, 29, 0.0, 0.0),
-        2: (17, 28, 0.0, 0.0),
-        3: (18, 27, 0.0, 0.0),
-        4: (19, 26, 0.0, 0.0),
-        5: (20, 25, 0.0, 0.0),
-        6: (21, 24, 0.0, 0.0),
-        7: (22, 23, 0.0, 0.0),
-        8: (22, 22, 0.0, 0.0),
-        9: (21, 21, 0.0, 0.0)
+        0: [15, 30, 0.0, 0.0],
+        1: [16, 29, 0.0, 0.0],
+        2: [17, 28, 0.0, 0.0],
+        3: [18, 27, 0.0, 0.0],
+        4: [19, 26, 0.0, 0.0],
+        5: [20, 25, 0.0, 0.0],
+        6: [21, 24, 0.0, 0.0],
+        7: [22, 23, 0.0, 0.0],
+        8: [22, 22.5, 0.0, 0.0],
+        9: [21, 22.5, 0.0, 0.0]
     }
 
     return mapping[action]
 
 
 DEFAULT_OFFICEGRID_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 21, 0.0, 0.0], dtype=np.float32),
+    low=np.array([15.0, 22.5, 0.0, 0.0], dtype=np.float32),
     high=np.array([22.5, 30.0, 1.0, 1.0], dtype=np.float32),
     shape=(4,),
     dtype=np.float32
@@ -494,24 +514,28 @@ DEFAULT_SHOP_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
 
 
 def DEFAULT_SHOP_DISCRETE_FUNCTION(action: int) -> List[float]:
+    # SB3 algotihms returns a ndarray instead of a int
+    if isinstance(action, np.ndarray):
+        action = int(action.item())
+
     mapping = {
-        0: (15, 30),
-        1: (16, 29),
-        2: (17, 28),
-        3: (18, 27),
-        4: (19, 26),
-        5: (20, 25),
-        6: (21, 24),
-        7: (22, 23),
-        8: (22, 22),
-        9: (21, 21)
+        0: [15, 30],
+        1: [16, 29],
+        2: [17, 28],
+        3: [18, 27],
+        4: [19, 26],
+        5: [20, 25],
+        6: [21, 24],
+        7: [22, 23],
+        8: [22, 22.5],
+        9: [21, 22.5]
     }
 
     return mapping[action]
 
 
 DEFAULT_SHOP_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 21], dtype=np.float32),
+    low=np.array([15.0, 22.5], dtype=np.float32),
     high=np.array([22.5, 30.0], dtype=np.float32),
     shape=(2,),
     dtype=np.float32
