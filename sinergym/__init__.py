@@ -1,7 +1,7 @@
 import os
 
 import gymnasium as gym
-from gymnasium.envs.registration import register
+from gymnasium.envs.registration import register, WrapperSpec
 
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
@@ -59,7 +59,7 @@ for building in id_bases:
         reg_kwargs['building_file'] = '5ZoneAutoDXVAV.epJSON'
         action_space_continuous = DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS
         action_space_discrete = DEFAULT_5ZONE_ACTION_SPACE_DISCRETE
-        reg_kwargs['action_mapping'] = DEFAULT_5ZONE_ACTION_MAPPING
+        action_mapping = DEFAULT_5ZONE_DISCRETE_FUNCTION
         reg_kwargs['actuators'] = DEFAULT_5ZONE_ACTUATORS
         reg_kwargs['variables'] = DEFAULT_5ZONE_VARIABLES
         reg_kwargs['meters'] = DEFAULT_5ZONE_METERS
@@ -78,7 +78,7 @@ for building in id_bases:
         reg_kwargs['building_file'] = '2ZoneDataCenterHVAC_wEconomizer.epJSON'
         action_space_continuous = DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS
         action_space_discrete = DEFAULT_DATACENTER_ACTION_SPACE_DISCRETE
-        reg_kwargs['action_mapping'] = DEFAULT_DATACENTER_ACTION_MAPPING
+        action_mapping = DEFAULT_DATACENTER_DISCRETE_FUNCTION
         reg_kwargs['actuators'] = DEFAULT_DATACENTER_ACTUATORS
         reg_kwargs['variables'] = DEFAULT_DATACENTER_VARIABLES
         reg_kwargs['meters'] = DEFAULT_DATACENTER_METERS
@@ -99,7 +99,7 @@ for building in id_bases:
         reg_kwargs['building_file'] = 'ASHRAE901_Warehouse_STD2019_Denver.epJSON'
         action_space_continuous = DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS
         action_space_discrete = DEFAULT_WAREHOUSE_ACTION_SPACE_DISCRETE
-        reg_kwargs['action_mapping'] = DEFAULT_WAREHOUSE_ACTION_MAPPING
+        action_mapping = DEFAULT_WAREHOUSE_DISCRETE_FUNCTION
         reg_kwargs['actuators'] = DEFAULT_WAREHOUSE_ACTUATORS
         reg_kwargs['variables'] = DEFAULT_WAREHOUSE_VARIABLES
         reg_kwargs['meters'] = DEFAULT_WAREHOUSE_METERS
@@ -121,7 +121,7 @@ for building in id_bases:
         reg_kwargs['building_file'] = 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON'
         action_space_continuous = DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS
         action_space_discrete = DEFAULT_OFFICE_ACTION_SPACE_DISCRETE
-        reg_kwargs['action_mapping'] = DEFAULT_OFFICE_ACTION_MAPPING
+        action_mapping = DEFAULT_OFFICE_DISCRETE_FUNCTION
         reg_kwargs['actuators'] = DEFAULT_OFFICE_ACTUATORS
         reg_kwargs['variables'] = DEFAULT_OFFICE_VARIABLES
         reg_kwargs['meters'] = DEFAULT_OFFICE_METERS
@@ -156,7 +156,7 @@ for building in id_bases:
         reg_kwargs['building_file'] = 'LrgOff_GridStorageScheduled.epJSON'
         action_space_continuous = DEFAULT_OFFICEGRID_ACTION_SPACE_CONTINUOUS
         action_space_discrete = DEFAULT_OFFICEGRID_ACTION_SPACE_DISCRETE
-        reg_kwargs['action_mapping'] = DEFAULT_OFFICEGRID_ACTION_MAPPING
+        action_mapping = DEFAULT_OFFICEGRID_DISCRETE_FUNCTION
         reg_kwargs['actuators'] = DEFAULT_OFFICEGRID_ACTUATORS
         reg_kwargs['variables'] = DEFAULT_OFFICEGRID_VARIABLES
         reg_kwargs['meters'] = DEFAULT_OFFICEGRID_METERS
@@ -194,7 +194,7 @@ for building in id_bases:
         reg_kwargs['building_file'] = 'ShopWithPVandBattery.epJSON'
         action_space_continuous = DEFAULT_SHOP_ACTION_SPACE_CONTINUOUS
         action_space_discrete = DEFAULT_SHOP_ACTION_SPACE_DISCRETE
-        reg_kwargs['action_mapping'] = DEFAULT_SHOP_ACTION_MAPPING
+        action_mapping = DEFAULT_SHOP_DISCRETE_FUNCTION
         reg_kwargs['actuators'] = DEFAULT_SHOP_ACTUATORS
         reg_kwargs['variables'] = DEFAULT_SHOP_VARIABLES
         reg_kwargs['meters'] = DEFAULT_SHOP_METERS
@@ -226,10 +226,17 @@ for building in id_bases:
         elif register_conf[0] == 'cool':
             reg_kwargs['weather_files'] = 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw'
 
+        reg_kwargs['action_space'] = action_space_continuous
+        additional_wrappers = ()
+
         if register_conf[1] == 'discrete':
-            reg_kwargs['action_space'] = action_space_discrete
-        elif register_conf[1] == 'continuous':
-            reg_kwargs['action_space'] = action_space_continuous
+            discrete_wrapper_spec = WrapperSpec(
+                name='DiscretizeEnv',
+                entry_point='sinergym.utils.wrappers:DiscretizeEnv',
+                kwargs={
+                    'discrete_space': action_space_discrete,
+                    'action_mapping': action_mapping})
+            additional_wrappers = (discrete_wrapper_spec,)
 
         reg_kwargs['weather_variability'] = None
         if len(register_conf) == 3:
@@ -239,5 +246,8 @@ for building in id_bases:
         register(
             id=id,
             entry_point='sinergym.envs:EplusEnv',
+            additional_wrappers=additional_wrappers,
+            # order_enforce=False,
+            # disable_env_checker=True,
             kwargs=reg_kwargs.copy()
         )
