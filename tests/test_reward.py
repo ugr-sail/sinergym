@@ -3,7 +3,7 @@ import pytest
 
 def test_base_reward(base_reward):
     with pytest.raises(NotImplementedError):
-        base_reward()
+        base_reward(obs_dict={})
 
 
 @pytest.mark.parametrize('reward_name',
