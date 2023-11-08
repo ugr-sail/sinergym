@@ -1,7 +1,7 @@
 import os
 
 import gymnasium as gym
-from gymnasium.envs.registration import register, WrapperSpec
+from gymnasium.envs.registration import WrapperSpec, register
 
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *

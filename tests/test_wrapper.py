@@ -2,10 +2,10 @@ import csv
 import os
 from collections import deque
 
+import gymnasium as gym
 import numpy as np
 import pytest
 
-import gymnasium as gym
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.wrappers import NormalizeObservation
 

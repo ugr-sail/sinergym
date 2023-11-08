@@ -1,11 +1,11 @@
 """Constants used in whole project."""
 
 import os
+from typing import List
 
 import gymnasium as gym
 import numpy as np
 import pkg_resources
-from typing import List
 
 # ---------------------------------------------------------------------------- #
 #                               Generic constants                              #
