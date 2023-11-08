@@ -376,9 +376,13 @@ Observation space is created automatically, but action space must be defined in 
 the range values supported by the Gymnasium interface in the actuators, or the number of discrete values if
 it is a discrete environment.
                 
-Then, the argument called ``action_space`` defines this action space following the **gymnasium standard**.  
-This definition can be discrete or continuous and must be consistent with the previously defined actuators 
-(*Sinergym* will show possible inconsistencies).
+Then, the argument called ``action_space`` defines this action space following the **gymnasium standard**.
+*EnergyPlus* simulator works only with continuous values, so *Sinergym* action space defined must be continuous
+too (``gym.spaces.Box``). This definition must be consistent with the previously defined actuators (*Sinergym* 
+will show possible inconsistencies).
+
+.. note:: If you want to adapt a environment to a gym ``Discrete``, ``MultiDiscrete`` or ``MultiBinary`` spaces,
+          like our predefined discrete environments, see section :ref:`DiscretizeEnv` and an example in :ref:`Environment Discretization Wrapper`
 
 .. important:: *Sinergym*'s listed environments have a default observation and action variables defined, 
                it is available in `constants.py <https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/constants.py>`__.
@@ -393,9 +397,9 @@ Normalization flag
 ===================
 
 The argument called ``flag_normalization`` indicates whether action space specified will be normalized to
-``[-1,1]`` or not (only take effect in **continuous** environments). Then, *Sinergym* will use
-the real space specified in **action_space** argument or this normalized space depending on
-this flag value. This is done in order to make environments more generic in DRL solutions.
+``[-1,1]`` or not. Then, *Sinergym* will use the real space specified in **action_space** argument or this 
+normalized space depending on this flag value. This is done in order to make environments more generic 
+in DRL solutions.
 *Sinergym* **parse** these values to real action space defined in environment internally before to 
 send it to *EnergyPlus* Simulator by the API middleware.
 
@@ -408,37 +412,6 @@ send it to *EnergyPlus* Simulator by the API middleware.
 .. note:: By default, all *Sinergym*'s environments will have normalization in action space.
         It is possible to specify the **flag_normalization** to false in the constructor argument or
         to change it during the execution using ``env.update_flag_normalization(False)``.
-
-Action mapping
-===============
-
-The argument called ``action_mapping`` is only necessary to specify it in **discrete** action spaces. 
-It is a dictionary that links an **index** to a specific configuration of values for 
-each action variable. The format of this dictionary is:
-
-.. code-block:: python
-
-  action_space = gym.space.Discrete(10)
-
-  action_mapping = {
-    0: # <tuple with all action variables values for option 0>
-    1: # <tuple with all action variables values for option 1>
-    2: # <tuple with all action variables values for option 2>
-    # ... 
-  }
-
-These tuples must have the same length than the action variables of the environment.
-
-As you can see, some attributes are required depending on the environment is **continuous or discrete**. If
-the environment is discrete, ``action_mapping`` is required, if it is specified in a continuous environment will
-not take effect. On the other hand, in a continuous environment, it will be created a real and normalized space and 
-only one would be the action space depending on ``flag_normalization`` value. If normalization flag is activated
-in a discrete environment, will not take effect.
-
-.. image:: /_static/environment_types.png
-  :scale: 60 %
-  :alt: Attributes depending on environment type.
-  :align: center
 
 Environment name
 ================
