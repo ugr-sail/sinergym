@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.DatetimeWrapper
+sinergym.utils.wrappers.DatetimeWrapper
 =======================================
 
 .. currentmodule:: sinergym.utils.wrappers
