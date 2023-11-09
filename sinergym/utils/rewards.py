@@ -90,7 +90,7 @@ class LinearReward(BaseReward):
         """
 
         # Energy term
-        energy, enery_values = self._get_energy(obs_dict)
+        energy, energy_values = self._get_energy(obs_dict)
         reward_energy = - self.lambda_energy * energy
 
         # Comfort
@@ -107,7 +107,7 @@ class LinearReward(BaseReward):
             'reward_weight': self.W_energy,
             'abs_energy': energy,
             'abs_comfort': comfort,
-            'energy_values': enery_values,
+            'energy_values': energy_values,
             'temp_values': temp_values
         }
 
@@ -313,7 +313,7 @@ class HourlyLinearReward(LinearReward):
             Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
         """
         # Energy term
-        energy, enery_values = self._get_energy(obs_dict)
+        energy, energy_values = self._get_energy(obs_dict)
         reward_energy = - self.lambda_energy * energy
 
         # Comfort
@@ -336,7 +336,7 @@ class HourlyLinearReward(LinearReward):
             'reward_weight': weight,
             'abs_energy': energy,
             'abs_comfort': comfort,
-            'energy_values': enery_values,
+            'energy_values': energy_values,
             'temp_values': temp_values
         }
 
