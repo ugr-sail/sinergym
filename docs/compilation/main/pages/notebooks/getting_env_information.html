@@ -155,7 +155,7 @@ next:</p>
 #==============================================================================================#
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment... [demo-v1]
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-demo-v1-res1]
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-demo-v1-res35041]
 [MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
@@ -311,7 +311,7 @@ next:</p>
 <p>As we have mentioned, some environments features are made in the gym interface layer, but more information is calculated in the backend. Then, Sinergym environments has several properties in order to consult this information. For more information, visit the documentation, but here there are some examples:</p>
 <p>Note: We are using <code class="docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code> method from gymnasium to get information about the attributes, respecting new Gymnasium’s protocol.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;What is all the variables names which conform my Gymnasium observation?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">)))</span>
@@ -325,6 +325,7 @@ next:</p>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Where is the output path of Sinergym environment?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;workspace_path&#39;</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Where is the building used?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;building_path&#39;</span><span class="p">)))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Where is the weather used?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;weather_path&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Is the action space discrete?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;is_discrete&#39;</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -335,15 +336,16 @@ next:</p>
 <div class="highlight"><pre>
 What is all the variables names which conform my Gymnasium observation?: [&#39;month&#39;, &#39;day_of_month&#39;, &#39;hour&#39;, &#39;outdoor_temperature&#39;, &#39;outdoor_humidity&#39;, &#39;wind_speed&#39;, &#39;wind_direction&#39;, &#39;diffuse_solar_radiation&#39;, &#39;direct_solar_radiation&#39;, &#39;htg_setpoint&#39;, &#39;clg_setpoint&#39;, &#39;air_temperature&#39;, &#39;air_humidity&#39;, &#39;people_occupant&#39;, &#39;co2_emission&#39;, &#39;HVAC_electricity_demand_rate&#39;, &#39;total_electricity_HVAC&#39;]
 What is all the variables names which conform my Gymnasium action?: [&#39;Heating_Setpoint_RL&#39;, &#39;Cooling_Setpoint_RL&#39;]
-Is there an episode executing?: False
+Is there an episode executing?: True
 What is the episode run period?: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
 Episode length in seconds?: 31536000.0
 How many steps have an episode?: 35040
 How often do steps changed?: 900.0
 What are the available zones?: [&#39;PLENUM-1&#39;, &#39;SPACE1-1&#39;, &#39;SPACE2-1&#39;, &#39;SPACE3-1&#39;, &#39;SPACE4-1&#39;, &#39;SPACE5-1&#39;]
-Where is the output path of Sinergym environment?: /workspaces/sinergym/examples/Eplus-env-demo-v1-res1
+Where is the output path of Sinergym environment?: /workspaces/sinergym/examples/Eplus-env-demo-v1-res35041
 Where is the building used?: /workspaces/sinergym/sinergym/data/buildings/5ZoneAutoDXVAV.epJSON
 Where is the weather used?: /workspaces/sinergym/sinergym/data/weather/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw
+Is the action space discrete?: False
 </pre></div></div>
 </div>
 </section>
@@ -394,12 +396,12 @@ Observed meters: None
 #----------------------------------------------------------------------------------------------#
 [ENVIRONMENT] (INFO) : Starting a new episode... [demo-v1] [Episode 1]
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-demo-v1-res35041/Eplus-env-sub_run1]
 [MODELING] (INFO) : Weather file USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw used.
 [MODELING] (INFO) : Updated building model with whole Output:Variable available names
 [MODELING] (INFO) : Updated building model with whole Output:Meter available names
 [MODELING] (INFO) : Adapting weather to building model. [USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/output]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-demo-v1-res35041/Eplus-env-sub_run1/output]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -416,7 +418,7 @@ Observed meters: None
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res35041/Eplus-env-sub_run1/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res35041/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res35041/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
@@ -1518,8 +1520,8 @@ Observed meters: {&#39;total_electricity_HVAC&#39;: 91}
     - Weather file(s): [&#39;USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw&#39;]
     - Current weather used: /workspaces/sinergym/sinergym/data/weather/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw
     - Episodes executed: 1
-    - Workspace directory: /workspaces/sinergym/examples/Eplus-env-demo-v1-res1
-    - Reward function: &lt;sinergym.utils.rewards.LinearReward object at 0x7f7fd4f483d0&gt;
+    - Workspace directory: /workspaces/sinergym/examples/Eplus-env-demo-v1-res35041
+    - Reward function: &lt;sinergym.utils.rewards.LinearReward object at 0x7f545bc6aa10&gt;
     - Reset default options: {}
     - Run period: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
     - Episode length: 31536000.0
@@ -1532,8 +1534,6 @@ Observed meters: {&#39;total_electricity_HVAC&#39;: 91}
     - Observation variables: [&#39;month&#39;, &#39;day_of_month&#39;, &#39;hour&#39;, &#39;outdoor_temperature&#39;, &#39;outdoor_humidity&#39;, &#39;wind_speed&#39;, &#39;wind_direction&#39;, &#39;diffuse_solar_radiation&#39;, &#39;direct_solar_radiation&#39;, &#39;htg_setpoint&#39;, &#39;clg_setpoint&#39;, &#39;air_temperature&#39;, &#39;air_humidity&#39;, &#39;people_occupant&#39;, &#39;co2_emission&#39;, &#39;HVAC_electricity_demand_rate&#39;, &#39;total_electricity_HVAC&#39;]
     - Action space: Box(-1.0, 1.0, (2,), float32)
     - Action variables: [&#39;Heating_Setpoint_RL&#39;, &#39;Cooling_Setpoint_RL&#39;]
-    - Discrete?: False
-    - Action mapping: None
     - Normalized?: True
     - Real action space (used in simulator): Box([15.  22.5], [22.5 30. ], (2,), float32)
     #==================================================================================#
