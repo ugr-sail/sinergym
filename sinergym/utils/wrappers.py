@@ -599,6 +599,8 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
 
 class DiscretizeEnv(gym.ActionWrapper):
+    """ Wrapper to discretize an action space.
+    """
 
     logger = Logger().getLogger(name='WRAPPER DiscretizeEnv',
                                 level=LOG_WRAPPERS_LEVEL)
@@ -612,6 +614,13 @@ class DiscretizeEnv(gym.ActionWrapper):
                                                  List[int]]],
                                           Union[float,
                                                 List[float]]]):
+        """Wrapper for Discretize action space.
+
+        Args:
+            env (EplusEnv): Original environment.
+            discrete_space (Union[gym.spaces.Discrete, gym.spaces.MultiDiscrete, gym.spaces.MultiBinary]): Discrete Space.
+            action_mapping (Callable[[Union[int, List[int]]], Union[float, List[float]]]): Function with action as argument, its output must match with original env action space, otherwise an error will be raised.
+        """
         super().__init__(env)
         self.action_space = discrete_space
         self.action_mapping = action_mapping
