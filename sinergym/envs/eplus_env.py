@@ -307,7 +307,7 @@ class EplusEnv(gym.Env):
         self.timestep += 1
         terminated = truncated = False
 
-        # Check if action is correct for the current action space
+        # Check if action is contained for the current action space (warning)
         try:
             assert self._action_space.contains(
                 action)

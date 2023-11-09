@@ -568,18 +568,9 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         # clip setpoints returned
         self.current_setpoints = np.clip(
             np.array(self.get_wrapper_attr('current_setpoints')),
-            self.env.get_wrapper_attr('real_space').low,
-            self.env.get_wrapper_attr('real_space').high
+            self.env.action_space.low,
+            self.env.action_space.high
         )
-
-        # if normalization flag is active, this wrapper should normalize
-        # before.
-        if self.env.get_wrapper_attr('flag_normalization'):
-            norm_values = self.env.get_wrapper_attr(
-                'normalized_space').high - self.env.get_wrapper_attr('normalized_space').low
-            setpoints_normalized = norm_values * ((self.get_wrapper_attr('current_setpoints') - self.env.get_wrapper_attr('real_space').low) / (
-                self.env.get_wrapper_attr('real_space').high - self.env.get_wrapper_attr('real_space').low)) + self.env.get_wrapper_attr('normalized_space').low
-            return list(setpoints_normalized)
 
         return list(self.current_setpoints)
 
