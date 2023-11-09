@@ -3,9 +3,10 @@ import numpy as np
 from gymnasium.wrappers.normalize import NormalizeReward
 
 import sinergym
-from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
+from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation, NormalizeAction
 
 env = gym.make('Eplus-demo-v1')
+env = NormalizeAction(env)
 env = NormalizeObservation(env)
 env = NormalizeReward(env)
 env = LoggerWrapper(env)
