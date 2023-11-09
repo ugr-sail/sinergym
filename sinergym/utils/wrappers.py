@@ -688,6 +688,11 @@ class NormalizeAction(gym.ActionWrapper):
         # Updated action space to normalized space
         self.action_space = self.normalized_space
 
+        self.logger.info(
+            'New normalized action Space: {}'.format(
+                self.action_space))
+        self.logger.info('Wrapper initialized')
+
     def reverting_action(self,
                          action: Any) -> List[float]:
         """ This method maps a normalized action in a real action space.
