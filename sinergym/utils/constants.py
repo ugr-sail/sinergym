@@ -60,19 +60,19 @@ DEFAULT_5ZONE_VARIABLES = {
         'Environment'),
     'htg_setpoint': (
         'Zone Thermostat Heating Setpoint Temperature',
-        'SPACE1-1'),
+        'SPACE5-1'),
     'clg_setpoint': (
         'Zone Thermostat Cooling Setpoint Temperature',
-        'SPACE1-1'),
+        'SPACE5-1'),
     'air_temperature': (
         'Zone Air Temperature',
-        'SPACE1-1'),
+        'SPACE5-1'),
     'air_humidity': (
         'Zone Air Relative Humidity',
-        'SPACE1-1'),
+        'SPACE5-1'),
     'people_occupant': (
         'Zone People Occupant Count',
-        'SPACE1-1'),
+        'SPACE5-1'),
     'co2_emission': (
         'Environmental Impact Total CO2 Emissions Carbon Equivalent Mass',
         'site'),
