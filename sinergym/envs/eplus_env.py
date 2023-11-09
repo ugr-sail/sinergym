@@ -125,7 +125,7 @@ class EplusEnv(gym.Env):
         self.act_queue = Queue(maxsize=1)
         # last obs, action and info
         self.last_obs: Optional[Dict[str, float]] = None
-        self.last_info: Optional[Dict[str, float]] = None
+        self.last_info: Optional[Dict[str, Any]] = None
         self.last_action: Optional[List[float]] = None
 
         # ---------------------------------------------------------------------------- #
