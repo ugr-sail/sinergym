@@ -2,6 +2,7 @@ import csv
 import os
 from collections import deque
 
+import gymnasium as gym
 import numpy as np
 import pytest
 
@@ -128,6 +129,20 @@ def test_incremental_wrapper(env_name, request):
     for i in range(10):
         env.step(2)  # [1,0]
     assert env.current_setpoints[0] == env.real_space.high[0]
+
+
+def test_discretize_wrapper(env_wrapper_discretize):
+
+    env = env_wrapper_discretize
+    # Check is a discrete env and original env is continuous
+    # Wrapped env
+    assert env.is_discrete
+    assert env.action_space.n == 10
+    assert isinstance(env.action_mapping(0), list)
+    # Original continuos env
+    original_env = env.env
+    assert not original_env.is_discrete
+    assert not hasattr(original_env, 'action_mapping')
 
 
 @pytest.mark.parametrize('env_name',

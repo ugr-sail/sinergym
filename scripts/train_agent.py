@@ -5,7 +5,6 @@ from datetime import datetime
 
 import gymnasium as gym
 import numpy as np
-import wandb
 from gymnasium.wrappers.normalize import NormalizeReward
 from stable_baselines3 import *
 from stable_baselines3.common.callbacks import CallbackList
@@ -15,6 +14,7 @@ from stable_baselines3.common.monitor import Monitor
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
+import wandb
 from sinergym.utils.callbacks import *
 from sinergym.utils.constants import *
 from sinergym.utils.logger import WandBOutputFormat

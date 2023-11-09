@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.NormalizeObservation
+sinergym.utils.wrappers.NormalizeObservation
 ============================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -34,6 +34,7 @@
    .. autosummary::
    
       ~NormalizeObservation.action_space
+      ~NormalizeObservation.logger
       ~NormalizeObservation.metadata
       ~NormalizeObservation.np_random
       ~NormalizeObservation.observation_space

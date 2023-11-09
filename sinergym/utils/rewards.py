@@ -20,7 +20,8 @@ class BaseReward(object):
             env (Env): Gym environment.
         """
 
-    def __call__(self):
+    def __call__(self, obs_dict: Dict[str, Any]
+                 ) -> Tuple[float, Dict[str, Any]]:
         """Method for calculating the reward function."""
         raise NotImplementedError(
             "Reward class must have a `__call__` method.")

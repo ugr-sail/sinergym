@@ -34,13 +34,12 @@ class EplusEnv(gym.Env):
         self,
         building_file: str,
         weather_files: Union[str, List[str]],
-        action_space: Union[gym.spaces.Box, gym.spaces.Discrete] = gym.spaces.Box(
+        action_space: gym.spaces.Box = gym.spaces.Box(
             low=0, high=0, shape=(0,), dtype=np.float32),
         time_variables: List[str] = [],
         variables: Dict[str, Tuple[str, str]] = {},
         meters: Dict[str, str] = {},
         actuators: Dict[str, Tuple[str, str, str]] = {},
-        action_mapping: Dict[int, Tuple[float, ...]] = {},
         flag_normalization: bool = True,
         weather_variability: Optional[Tuple[float, float, float]] = None,
         reward: Any = LinearReward,
@@ -54,12 +53,11 @@ class EplusEnv(gym.Env):
         Args:
             building_file (str): Name of the JSON file with the building definition.
             weather_files (Union[str,List[str]]): Name of the EPW file for weather conditions. It can be specified a list of weathers files in order to sample a weather in each episode randomly.
-            action_space (Union[gym.spaces.Box, gym.spaces.Discrete], optional): Gym Action Space definition. Defaults to an empty action_space (no control).
+            action_space (gym.spaces.Box, optional): Gym Action Space definition. Defaults to an empty action_space (no control).
             time_variables (List[str]): EnergyPlus time variables we want to observe. The name of the variable must match with the name of the E+ Data Transfer API method name. Defaults to empty list.
             variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.
             meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
             actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. Defaults to empty dict.
-            action_mapping (Dict[int, Tuple[float, ...]], optional): Action mapping list for discrete actions spaces only. Defaults to empty list.
             flag_normalization (bool): Flag indicating if action space must be normalized to [-1,1]. This flag only take effect in continuous environments. Default to true.
             weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
@@ -176,42 +174,29 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         #                                 Action Space                                 #
         # ---------------------------------------------------------------------------- #
-        # Action space type
-        self.flag_discrete = (
-            isinstance(
-                action_space,
-                gym.spaces.Discrete))
+        self.logger.debug('Continuous environment detected.')
+        # Defining the normalized space (always [-1,1])
+        self.normalized_space = gym.spaces.Box(
+            # continuous_action_def[2] --> shape
+            low=np.array(
+                np.repeat(-1, action_space.shape[0]), dtype=np.float32),
+            high=np.array(
+                np.repeat(1, action_space.shape[0]), dtype=np.float32),
+            dtype=action_space.dtype
+        )
+        # Defining the real space (defined by the user in environment
+        # constructor)
+        self.real_space = action_space
 
-        # Discrete
-        if self.flag_discrete:
-            self.logger.debug('Discrete environment detected.')
-            self.action_mapping = action_mapping
-            self._action_space = action_space
-        # Continuous
+        # Determine if action is normalized or not using flag
+        self.flag_normalization = flag_normalization
+
+        # Depending on the normalized flag, action space will be the normalized space
+        # or the real space.
+        if self.flag_normalization:
+            self._action_space = self.normalized_space
         else:
-            self.logger.debug('Continuous environment detected.')
-            # Defining the normalized space (always [-1,1])
-            self.normalized_space = gym.spaces.Box(
-                # continuous_action_def[2] --> shape
-                low=np.array(
-                    np.repeat(-1, action_space.shape[0]), dtype=np.float32),
-                high=np.array(
-                    np.repeat(1, action_space.shape[0]), dtype=np.float32),
-                dtype=action_space.dtype
-            )
-            # Defining the real space (defined by the user in environment
-            # constructor)
-            self.real_space = action_space
-
-            # Determine if action is normalized or not using flag
-            self.flag_normalization = flag_normalization
-
-            # Depending on the normalized flag, action space will be the normalized space
-            # or the real space.
-            if self.flag_normalization:
-                self._action_space = self.normalized_space
-            else:
-                self._action_space = self.real_space
+            self._action_space = self.real_space
 
         # ---------------------------------------------------------------------------- #
         #                                    Reward                                    #
@@ -354,7 +339,6 @@ class EplusEnv(gym.Env):
             self.logger.warning(
                 'Step: The action {} is not correct for the Action Space {}'.format(
                     action, self._action_space))
-            raise err
 
         # Check if episode existed and is not terminated
         try:
@@ -453,20 +437,9 @@ class EplusEnv(gym.Env):
             List[float]: List of the action values in the correct format for the simulator
         """
 
-        # Discrete
-        if self.flag_discrete:
-            # Index for action_mapping
-            # Some SB3 algorithms returns array(int) in their predictions
-            if isinstance(action, np.ndarray):
-                action = int(action.item())
-            action_ = list(self.action_mapping[action])
-
-        # Continuous
-        else:
-            # Transform action to real space simulation if normalized flag is
-            # true
-            action_ = self._action_transform(
-                action) if self.flag_normalization else action
+        # Transform action to real space simulation if normalization is active
+        action_ = self._action_transform(
+            action) if self.flag_normalization else action
 
         return action_
 
@@ -505,7 +478,6 @@ class EplusEnv(gym.Env):
             value (bool): New flag_normalization attribute value
         """
         try:
-            assert not self.flag_discrete
             self.flag_normalization = value
             self._action_space = self.normalized_space if value else self.real_space
             self.logger.debug(
@@ -528,85 +500,34 @@ class EplusEnv(gym.Env):
             raise err
 
         # ACTION
-        # Discrete
-        if self.flag_discrete:
-            try:
-                assert hasattr(self, 'action_mapping')
-            except AssertionError as err:
-                self.logger.error(
-                    'Discrete environment: action mapping should have been defined.')
-                raise err
+        try:
+            assert len(
+                self.action_variables) == self._action_space.shape[0]
+        except AssertionError as err:
+            self.logger.critical(
+                'Action space shape must match with number of action variables specified.')
+            raise err
 
-            try:
-                assert not hasattr(self, 'real_space')
-            except AssertionError as err:
-                self.logger.warning(
-                    'Discrete environment: real_space should not have been defined.')
+        try:
+            assert hasattr(self, 'flag_normalization')
+        except AssertionError as err:
+            self.logger.error(
+                'Continuous environment: flag_normalization attribute should have been defined.')
+            raise err
 
-            try:
-                assert not hasattr(self, 'normalized_space')
-            except AssertionError as err:
-                self.logger.warning(
-                    'Discrete environment: normalized_space should not have been defined.')
+        try:
+            assert hasattr(self, 'normalized_space')
+        except AssertionError as err:
+            self.logger.error(
+                'Continuous environment: normalized_space attribute should have been defined.')
+            raise err
 
-            try:
-                assert not hasattr(self, 'flag_normalization')
-            except AssertionError as err:
-                self.logger.warning(
-                    'Discrete environment: flag_normalization should not have been defined.')
-
-            try:
-                assert len(
-                    self.actuators) == len(self.action_mapping[0])
-            except AssertionError as err:
-                self.logger.critical(
-                    'Discrete environment: The length of the action_mapping must match the dimension of the controlled actuators.')
-                raise err
-
-            for values in self.action_mapping.values():
-                try:
-                    assert len(values) == len(self.action_variables)
-                except AssertionError as err:
-                    self.logger.critical(
-                        'Discrete environment: Action mapping tuples values must have the same length than action variables specified.')
-                    raise err
-        # Continuous
-        else:
-            try:
-                assert len(
-                    self.action_variables) == self._action_space.shape[0]
-            except AssertionError as err:
-                self.logger.critical(
-                    'Action space shape must match with number of action variables specified.')
-                raise err
-
-            try:
-                assert hasattr(self, 'flag_normalization')
-            except AssertionError as err:
-                self.logger.error(
-                    'Continuous environment: flag_normalization attribute should have been defined.')
-                raise err
-
-            try:
-                assert hasattr(self, 'normalized_space')
-            except AssertionError as err:
-                self.logger.error(
-                    'Continuous environment: normalized_space attribute should have been defined.')
-                raise err
-
-            try:
-                assert hasattr(self, 'real_space')
-            except AssertionError as err:
-                self.logger.error(
-                    'Continuous environment: real_space attribute should have been defined.')
-                raise err
-
-            try:
-                assert not hasattr(self, 'action_mapping')
-            except AssertionError as err:
-                self.logger.warning(
-                    'Continuous environment: action mapping should not have been defined.')
-                raise err
+        try:
+            assert hasattr(self, 'real_space')
+        except AssertionError as err:
+            self.logger.error(
+                'Continuous environment: real_space attribute should have been defined.')
+            raise err
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #
@@ -633,6 +554,18 @@ class EplusEnv(gym.Env):
     @observation_space.setter
     def observation_space(self, space: gym.spaces.Space[Any]):
         self._observation_space = space
+
+    @property
+    def is_discrete(self) -> bool:
+        if isinstance(self.action_space, gym.spaces.Box):
+            return False
+        elif isinstance(self.action_space, gym.spaces.Discrete) or \
+                isinstance(self.action_space, gym.spaces.MultiDiscrete) or \
+                isinstance(self.action_space, gym.spaces.MultiBinary):
+            return True
+        else:
+            self.logger.warning('Action space is not continuous or discrete?')
+            return False
 
     # --------------------------------- Simulator -------------------------------- #
 
@@ -736,8 +669,6 @@ class EplusEnv(gym.Env):
     - Observation variables: {}
     - Action space: {}
     - Action variables: {}
-    - Discrete?: {}
-    - Action mapping: {}
     - Normalized?: {}
     - Real action space (used in simulator): {}
     #==================================================================================#
@@ -780,11 +711,6 @@ class EplusEnv(gym.Env):
             self.observation_variables,
             self.action_space,
             self.action_variables,
-            self.flag_discrete,
-            getattr(
-                self,
-                'action_mapping',
-                None),
             getattr(
                 self,
                 'flag_normalization',
