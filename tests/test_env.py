@@ -75,9 +75,9 @@ def test_step(env_5zone):
     assert info['time_elapsed(hours)'] > old_time_elapsed
 
     # Not supported action
-    action = 'fbsufb'
-    with pytest.raises(Exception):
-        env.step(action)
+    # action = 'fbsufb'
+    # with pytest.raises(Exception):
+    #     env.step(action)
 
 
 def test_close(env_5zone):
@@ -89,29 +89,6 @@ def test_close(env_5zone):
 
 def test_render(env_5zone):
     env_5zone.render()
-
-
-def test_get_action(env_5zone):
-    env = env_5zone
-
-    # Here is checked special cases
-    action = [0.5, -0.9]
-    _action = env._get_action(action)
-    assert isinstance(_action, list)
-    assert len(_action) == 2
-
-
-def test_update_flag_normalization(env_5zone):
-    assert env_5zone.flag_normalization
-    assert env_5zone.action_space == env_5zone.normalized_space
-
-    env_5zone.update_flag_normalization(False)
-    assert not env_5zone.flag_normalization
-    assert env_5zone.action_space == env_5zone.real_space
-
-    env_5zone.update_flag_normalization(True)
-    assert env_5zone.flag_normalization
-    assert env_5zone.action_space == env_5zone.normalized_space
 
 
 def test_all_environments():

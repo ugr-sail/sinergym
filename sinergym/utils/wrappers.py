@@ -568,18 +568,9 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         # clip setpoints returned
         self.current_setpoints = np.clip(
             np.array(self.get_wrapper_attr('current_setpoints')),
-            self.env.get_wrapper_attr('real_space').low,
-            self.env.get_wrapper_attr('real_space').high
+            self.env.action_space.low,
+            self.env.action_space.high
         )
-
-        # if normalization flag is active, this wrapper should normalize
-        # before.
-        if self.env.get_wrapper_attr('flag_normalization'):
-            norm_values = self.env.get_wrapper_attr(
-                'normalized_space').high - self.env.get_wrapper_attr('normalized_space').low
-            setpoints_normalized = norm_values * ((self.get_wrapper_attr('current_setpoints') - self.env.get_wrapper_attr('real_space').low) / (
-                self.env.get_wrapper_attr('real_space').high - self.env.get_wrapper_attr('real_space').low)) + self.env.get_wrapper_attr('normalized_space').low
-            return list(setpoints_normalized)
 
         return list(self.current_setpoints)
 
@@ -599,6 +590,8 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
 
 class DiscretizeEnv(gym.ActionWrapper):
+    """ Wrapper to discretize an action space.
+    """
 
     logger = Logger().getLogger(name='WRAPPER DiscretizeEnv',
                                 level=LOG_WRAPPERS_LEVEL)
@@ -612,6 +605,13 @@ class DiscretizeEnv(gym.ActionWrapper):
                                                  List[int]]],
                                           Union[float,
                                                 List[float]]]):
+        """Wrapper for Discretize action space.
+
+        Args:
+            env (EplusEnv): Original environment.
+            discrete_space (Union[gym.spaces.Discrete, gym.spaces.MultiDiscrete, gym.spaces.MultiBinary]): Discrete Space.
+            action_mapping (Callable[[Union[int, List[int]]], Union[float, List[float]]]): Function with action as argument, its output must match with original env action space, otherwise an error will be raised.
+        """
         super().__init__(env)
         self.action_space = discrete_space
         self.action_mapping = action_mapping
@@ -641,6 +641,90 @@ class DiscretizeEnv(gym.ActionWrapper):
             self.logger.warning(
                 'Action space is not continuous or discrete?')
             return False
+
+
+class NormalizeAction(gym.ActionWrapper):
+    """Wrapper to normalize action space.
+    """
+
+    logger = Logger().getLogger(name='WRAPPER NormalizeAction',
+                                level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: EplusEnv,
+                 normalize_range: Tuple[float, float] = (-1.0, 1.0)):
+        """Wrapper to normalize action space in default continuous environment (not to combine with discrete environments). The action will be parsed to real action space before to send to the simulator (very useful ion DRL algorithms)
+
+        Args:
+            env (EplusEnv): Original environment.
+            normalize_range (Tuple[float,float]): Range to normalize action variable values. Defaults to values between [-1.0,1.0].
+        """
+        super().__init__(env)
+
+        # Checks
+        try:
+            assert not self.get_wrapper_attr('is_discrete')
+        except AssertionError as err:
+            self.logger.critical(
+                'The original environment must be continuous')
+            raise err
+
+        # Define real space for simulator
+        self.real_space = deepcopy(self.action_space)
+        # Define normalize space
+        lower_norm_value, upper_norm_value = normalize_range
+        self.normalized_space = gym.spaces.Box(
+            low=np.array(
+                np.repeat(
+                    lower_norm_value,
+                    env.action_space.shape[0]),
+                dtype=np.float32),
+            high=np.array(
+                np.repeat(
+                    upper_norm_value,
+                    env.action_space.shape[0]),
+                dtype=np.float32),
+            dtype=env.action_space.dtype)
+        # Updated action space to normalized space
+        self.action_space = self.normalized_space
+
+        self.logger.info(
+            'New normalized action Space: {}'.format(
+                self.action_space))
+        self.logger.info('Wrapper initialized')
+
+    def reverting_action(self,
+                         action: Any) -> List[float]:
+        """ This method maps a normalized action in a real action space.
+
+        Args:
+            action (Any): Normalize action received in environment
+
+        Returns:
+            List[float]: Action transformed in simulator real action space.
+        """
+        action_ = []
+
+        for i, value in enumerate(action):
+            a_max_min = self.normalized_space.high[i] - \
+                self.normalized_space.low[i]
+            sp_max_min = self.real_space.high[i] - \
+                self.real_space.low[i]
+
+            action_.append(
+                self.real_space.low[i] +
+                (
+                    value -
+                    self.normalized_space.low[i]) *
+                sp_max_min /
+                a_max_min)
+
+        return action_
+
+    def action(self, action: Any):
+
+        action_ = self.reverting_action(action)
+        return action_
 
     # ---------------------- Specific environment wrappers ---------------------#
 

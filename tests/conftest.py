@@ -255,8 +255,12 @@ def env_wrapper_incremental(env_5zone):
 
 
 @pytest.fixture(scope='function')
+def env_normalize_action_wrapper(env_5zone):
+    return NormalizeAction(env=env_5zone)
+
+
+@pytest.fixture(scope='function')
 def env_wrapper_discretize(env_5zone):
-    env_5zone.update_flag_normalization(False)
     return DiscretizeEnv(
         env=env_5zone,
         discrete_space=DEFAULT_5ZONE_ACTION_SPACE_DISCRETE,
@@ -292,19 +296,16 @@ def env_all_wrappers(env_5zone):
 
 @ pytest.fixture(scope='function')
 def random_controller(env_5zone):
-    env_5zone.update_flag_normalization(False)
     return RandomController(env=env_5zone)
 
 
 @ pytest.fixture(scope='function')
 def zone5_controller(env_5zone):
-    env_5zone.update_flag_normalization(False)
     return RBC5Zone(env=env_5zone)
 
 
 @ pytest.fixture(scope='function')
 def datacenter_controller(env_datacenter):
-    env_datacenter.update_flag_normalization(False)
     return RBCDatacenter(env=env_datacenter)
 
 # ---------------------------------------------------------------------------- #

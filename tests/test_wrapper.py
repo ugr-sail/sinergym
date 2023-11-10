@@ -128,7 +128,7 @@ def test_incremental_wrapper(env_name, request):
     # Check environment clip actions(
     for i in range(10):
         env.step(2)  # [1,0]
-    assert env.current_setpoints[0] == env.real_space.high[0]
+    assert env.unwrapped.action_space.contains(list(env.current_setpoints))
 
 
 def test_discretize_wrapper(env_wrapper_discretize):
@@ -143,6 +143,22 @@ def test_discretize_wrapper(env_wrapper_discretize):
     original_env = env.env
     assert not original_env.is_discrete
     assert not hasattr(original_env, 'action_mapping')
+
+
+def test_normalize_action_wrapper(env_normalize_action_wrapper):
+
+    env = env_normalize_action_wrapper
+    assert not env.is_discrete
+    assert hasattr(env, 'real_space')
+    assert hasattr(env, 'normalized_space')
+    assert env.normalized_space != env.real_space
+    assert env.normalized_space == env.action_space
+    assert env.real_space == env.unwrapped.action_space
+    env.reset()
+    action = env.action_space.sample()
+    assert env.normalized_space.contains(action)
+    _, _, _, _, info = env.step(action)
+    assert env.unwrapped.action_space.contains(info['action'])
 
 
 @pytest.mark.parametrize('env_name',

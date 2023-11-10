@@ -30,6 +30,30 @@ Wrapper to substitute ``day_of_month`` value by ``is_weekend`` flag, and ``hour`
 Observation space is updated automatically.
 
 ***********************
+NormalizeAction
+***********************
+
+Wrapper to apply normalization in action space. It is very useful in DRL algorithms such as some of them
+only works with normalized values correctly, making environments more generic in DRL solutions.
+
+By default, the normalization is applied in the range ``[-1,1]``. However, other **range** can be specified when wrapper
+is instantiated.
+
+*Sinergym* **parse** these values to real action space defined in original environment internally before to 
+send it to *EnergyPlus* Simulator by the API middleware.
+
+.. important:: The method in charge of parse this values from [-1,1] to real action space if it is required is 
+        called ``reverting_action(action)`` in the wrapper class.
+        We always recommend to use the normalization in action space for DRL solutions, since this space is 
+        compatible with all algorithms. However, if you are implementing your own rule-based controller 
+        and working with real action values, for example, you don't must to apply this wrapper.
+
+.. image:: /_static/normalize_action_wrapper.png
+  :scale: 50 %
+  :alt: Normalize action wrapper graph.
+  :align: center
+
+***********************
 DiscretizeEnv
 ***********************
 
