@@ -62,11 +62,12 @@
 <li class="toctree-l2"><a class="reference internal" href="#multiobjectivereward">8.1. MultiObjectiveReward</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#previousobservationwrapper">8.2. PreviousObservationWrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#datetimewrapper">8.3. DatetimeWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#discretizeenv">8.4. DiscretizeEnv</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#discreteincrementalwrapper">8.5. DiscreteIncrementalWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#normalizeobservation">8.6. NormalizeObservation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#loggerwrapper">8.7. LoggerWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#multiobswrapper">8.8. MultiObsWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#normalizeaction">8.4. NormalizeAction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#discretizeenv">8.5. DiscretizeEnv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#discreteincrementalwrapper">8.6. DiscreteIncrementalWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#normalizeobservation">8.7. NormalizeObservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loggerwrapper">8.8. LoggerWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiobswrapper">8.9. MultiObsWrapper</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
@@ -138,8 +139,26 @@ It is possible to select the variables you want to track its previous observatio
 <p>Wrapper to substitute <code class="docutils literal notranslate"><span class="pre">day_of_month</span></code> value by <code class="docutils literal notranslate"><span class="pre">is_weekend</span></code> flag, and <code class="docutils literal notranslate"><span class="pre">hour</span></code> and <code class="docutils literal notranslate"><span class="pre">month</span></code> by sin and cos values.
 Observation space is updated automatically.</p>
 </section>
+<section id="normalizeaction">
+<h2><span class="section-number">8.4. </span>NormalizeAction<a class="headerlink" href="#normalizeaction" title="Link to this heading"></a></h2>
+<p>Wrapper to apply normalization in action space. It is very useful in DRL algorithms such as some of them
+only works with normalized values correctly, making environments more generic in DRL solutions.</p>
+<p>By default, the normalization is applied in the range <code class="docutils literal notranslate"><span class="pre">[-1,1]</span></code>. However, other <strong>range</strong> can be specified when wrapper
+is instantiated.</p>
+<p><em>Sinergym</em> <strong>parse</strong> these values to real action space defined in original environment internally before to
+send it to <em>EnergyPlus</em> Simulator by the API middleware.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The method in charge of parse this values from [-1,1] to real action space if it is required is
+called <code class="docutils literal notranslate"><span class="pre">reverting_action(action)</span></code> in the wrapper class.
+We always recommend to use the normalization in action space for DRL solutions, since this space is
+compatible with all algorithms. However, if you are implementing your own rule-based controller
+and working with real action values, for example, you don’t must to apply this wrapper.</p>
+</div>
+<a class="reference internal image-reference" href="../_images/normalize_action_wrapper.png"><img alt="Normalize action wrapper graph." class="align-center" src="../_images/normalize_action_wrapper.png" style="width: 752.0px; height: 551.0px;" /></a>
+</section>
 <section id="discretizeenv">
-<h2><span class="section-number">8.4. </span>DiscretizeEnv<a class="headerlink" href="#discretizeenv" title="Link to this heading"></a></h2>
+<h2><span class="section-number">8.5. </span>DiscretizeEnv<a class="headerlink" href="#discretizeenv" title="Link to this heading"></a></h2>
 <p>Wrapper to discretize the action space. <strong>Discrete space</strong> must be defined following the Gymnasium standard. This space
 should be <code class="docutils literal notranslate"><span class="pre">gym.spaces.Discrete</span></code>, <code class="docutils literal notranslate"><span class="pre">gym.spaces.MultiDiscrete</span></code> or <code class="docutils literal notranslate"><span class="pre">gym.spaces.MultiBinary</span></code>. An <strong>action mapping function</strong>
 is also given, in order to map this/these value(s) into ones that fit the underlying continuous environment (before to send it to the simulator).</p>
@@ -148,7 +167,7 @@ output doesn’t match with original environment action space, an error will be 
 <a class="reference internal image-reference" href="../_images/discretize_wrapper.png"><img alt="Discretize wrapper graph." class="align-center" src="../_images/discretize_wrapper.png" style="width: 800.0px; height: 512.0px;" /></a>
 </section>
 <section id="discreteincrementalwrapper">
-<h2><span class="section-number">8.5. </span>DiscreteIncrementalWrapper<a class="headerlink" href="#discreteincrementalwrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">8.6. </span>DiscreteIncrementalWrapper<a class="headerlink" href="#discreteincrementalwrapper" title="Link to this heading"></a></h2>
 <p>A wrapper for an incremental setpoint action space environment. This wrapper
 will update an environment, converting it in a <em>discrete</em> environment with an action mapping function and action space
 depending on the <strong>step</strong> and <strong>delta</strong> specified. The action will be sum with <strong>current setpoint</strong> values instead of overwrite the latest action.
@@ -157,18 +176,18 @@ the increment/decrement itself.</p>
 <a class="reference internal image-reference" href="../_images/incremental_wrapper.png"><img alt="Incremental wrapper graph." class="align-center" src="../_images/incremental_wrapper.png" style="width: 850.0px; height: 570.0px;" /></a>
 </section>
 <section id="normalizeobservation">
-<h2><span class="section-number">8.6. </span>NormalizeObservation<a class="headerlink" href="#normalizeobservation" title="Link to this heading"></a></h2>
+<h2><span class="section-number">8.7. </span>NormalizeObservation<a class="headerlink" href="#normalizeobservation" title="Link to this heading"></a></h2>
 <p>It is used to transform observation received from simulator in values between -1 and 1.
 It is based in the <a class="reference external" href="https://gymnasium.farama.org/_modules/gymnasium/wrappers/normalize/#NormalizeObservation">dynamic normalization wrapper of Gymnasium</a>. At the beginning,
 it is not precise and the values may be out of range usually, so use this wrapper carefully.</p>
 </section>
 <section id="loggerwrapper">
-<h2><span class="section-number">8.7. </span>LoggerWrapper<a class="headerlink" href="#loggerwrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">8.8. </span>LoggerWrapper<a class="headerlink" href="#loggerwrapper" title="Link to this heading"></a></h2>
 <p>Wrapper for logging all interactions between agent and environment. Logger class can be selected
 in the constructor if other type of logging is required. For more information about <em>Sinergym</em> Logger visit <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>.</p>
 </section>
 <section id="multiobswrapper">
-<h2><span class="section-number">8.8. </span>MultiObsWrapper<a class="headerlink" href="#multiobswrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">8.9. </span>MultiObsWrapper<a class="headerlink" href="#multiobswrapper" title="Link to this heading"></a></h2>
 <p>Stack observation received in a history queue (size can be customized).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

@@ -233,8 +233,8 @@ View run at <a href='https://wandb.ai/alex_ugr/sinergym/runs/oc9owt77' target="_
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="n">experiment_name</span><span class="p">,</span> <span class="n">flag_normalization</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">eval_env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="n">experiment_name</span><span class="o">+</span><span class="s1">&#39;_EVALUATION&#39;</span><span class="p">,</span> <span class="n">flag_normalization</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="n">experiment_name</span><span class="p">)</span>
+<span class="n">eval_env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="n">experiment_name</span><span class="o">+</span><span class="s1">&#39;_EVALUATION&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -271,12 +271,14 @@ View run at <a href='https://wandb.ai/alex_ugr/sinergym/runs/oc9owt77' target="_
 [WRAPPER DiscretizeEnv] (INFO) : Wrapper initialized
 </pre></div></div>
 </div>
-<p>We can also add a Wrapper to the environment, we are going to use a Logger (extension of <code class="docutils literal notranslate"><span class="pre">gym.Wrapper</span></code>) this is used to monitor and log the interactions with the environment and save the data into a CSV. Files generated will be stored as artifact in <em>wandb</em> too.</p>
+<p>We can also add a Wrapper to the environment, we are going to use an action normalization wrapper and a logger (extensions of <code class="docutils literal notranslate"><span class="pre">gym.Wrapper</span></code>). Normalization is very recommended in DRL algorithms with continuous action space and logger is used to monitor and log the interactions with the environment and save the data into a CSV. Files generated will be stored as artifact in <em>wandb</em> too.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeAction</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">eval_env</span> <span class="o">=</span> <span class="n">NormalizeAction</span><span class="p">(</span><span class="n">eval_env</span><span class="p">)</span>
 <span class="n">eval_env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">eval_env</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -53616,13 +53618,14 @@ View project at <a href='https://wandb.ai/alex_ugr/sinergym_evaluations' target=
 <div class="output_area rendered_html docutils container">
 View run at <a href='https://wandb.ai/alex_ugr/sinergym_evaluations/runs/6ovl50af' target="_blank">https://wandb.ai/alex_ugr/sinergym_evaluations/runs/6ovl50af</a></div>
 </div>
-<p>We make the gymnasium environment and wrap with LoggerWrapper. We can use the evaluation experiment name to rename the environment.</p>
+<p>We make the gymnasium environment, it is <strong>important to wrap the environment with the same wrappers as used in training</strong>. We can use the evaluation experiment name to rename the environment.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="n">evaluation_name</span><span class="p">,</span> <span class="n">flag_normalization</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">env</span><span class="o">=</span><span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="n">evaluation_name</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeAction</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

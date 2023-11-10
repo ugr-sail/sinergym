@@ -79,12 +79,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#Multi-Objective-Wrapper">19.1. Multi-Objective Wrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Previous-Observations-Wrappers">19.2. Previous Observations Wrappers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Datetime-Wrapper">19.3. Datetime Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Environment-Discretization-Wrapper">19.4. Environment Discretization Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Discrete-Incremental-Wrapper">19.5. Discrete Incremental Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Normalization-Wrapper">19.6. Normalization Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Logger-Wrapper">19.7. Logger Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Multi-Observation-Wrapper">19.8. Multi Observation Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Nesting-wrappers">19.9. Nesting wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Environment-Action-Normalization-Wrapper">19.4. Environment Action Normalization Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Environment-Discretization-Wrapper">19.5. Environment Discretization Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Discrete-Incremental-Wrapper">19.6. Discrete Incremental Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Normalization-Wrapper">19.7. Normalization Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Logger-Wrapper">19.8. Logger Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Multi-Observation-Wrapper">19.9. Multi Observation Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Nesting-wrappers">19.10. Nesting wrappers</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
@@ -124,7 +125,7 @@
 <h1><span class="section-number">19. </span>Wrappers example<a class="headerlink" href="#Wrappers-example" title="Link to this heading"></a></h1>
 <p>We will see on this notebook what are the wrappers defined by Sinergym and how to use them. You can also implement your own wrappers inheriting from <em>gym.Wrapper</em> or some of its variants.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
@@ -143,7 +144,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">,</span> <span class="n">flag_normalization</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">)</span>
 <span class="n">env</span><span class="o">=</span><span class="n">MultiObjectiveReward</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="n">reward_terms</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;energy_term&#39;</span><span class="p">,</span><span class="s1">&#39;comfort_term&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -247,7 +248,7 @@ Progress: |*********************************************************************
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">,</span> <span class="n">flag_normalization</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">)</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">PreviousObservationWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">previous_variables</span><span class="o">=</span><span class="p">[</span>
         <span class="s1">&#39;htg_setpoint&#39;</span><span class="p">,</span>
         <span class="s1">&#39;clg_setpoint&#39;</span><span class="p">,</span>
@@ -354,7 +355,7 @@ NEW OBSERVATION:  {&#39;month&#39;: 1.0, &#39;day_of_month&#39;: 1.0, &#39;hour&
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">,</span> <span class="n">flag_normalization</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">)</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">DatetimeWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -451,15 +452,118 @@ NEW OBSERVATION:  {&#39;month_cos&#39;: 1.0, &#39;month_sin&#39;: 0.0, &#39;is_w
 </pre></div></div>
 </div>
 </section>
+<section id="Environment-Action-Normalization-Wrapper">
+<h2><span class="section-number">19.4. </span>Environment Action Normalization Wrapper<a class="headerlink" href="#Environment-Action-Normalization-Wrapper" title="Link to this heading"></a></h2>
+<p>This is an example about how to normalize a previous continuos environment action space. If we don’t define the range values, it will be constructed with the range <code class="docutils literal notranslate"><span class="pre">[-1,1]</span></code> by default:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We will create a continuous environment</span>
+<span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ORIGINAL ACTION SPACE: &#39;</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">))</span>
+<span class="c1"># NORMALIZATION</span>
+<span class="c1"># Apply the normalize action wrapper</span>
+<span class="n">env</span><span class="o">=</span><span class="n">NormalizeAction</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="n">normalize_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;WRAPPED ACTION SPACE: &#39;</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">))</span>
+<span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">action</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Normalized action: &#39;</span><span class="p">,</span><span class="n">action</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">info</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Action done in simulator: &#39;</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">])</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-continuous-v1]
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1]
+[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35040
+[MODELING] (INFO) : Model Config is correct.
+[ENVIRONMENT] (INFO) : Environment 5zone-hot-continuous-v1 created successfully.
+ORIGINAL ACTION SPACE:  Box([15.  22.5], [22.5 30. ], (2,), float32)
+WRAPPED ACTION SPACE:  Box(-1.0, 1.0, (2,), float32)
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-continuous-v1] [Episode 1]
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1]
+[MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
+[MODELING] (INFO) : Updated building model with whole Output:Variable available names
+[MODELING] (INFO) : Updated building model with whole Output:Meter available names
+[MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/output]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/opyplus/weather_data/weather_data.py:493: FutureWarning: the &#39;line_terminator&#39;&#39; keyword is deprecated, use &#39;lineterminator&#39; instead.
+  epw_content = self._headers_to_epw(use_datetimes=use_datetimes) + df.to_csv(
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+Normalized action:  [-0.99848735 -0.40978503]
+Action done in simulator:  [15.005672, 24.713306]
+Normalized action:  [ 0.494854   -0.65120107]
+Action done in simulator:  [20.605701, 23.807997]
+Normalized action:  [0.57518375 0.36482212]
+Action done in simulator:  [20.906939, 27.618084]
+Normalized action:  [-0.42653802  0.17355774]
+Action done in simulator:  [17.150482, 26.90084]
+Normalized action:  [0.20375282 0.6119535 ]
+Action done in simulator:  [19.514072, 28.544827]
+Progress: |*****----------------------------------------------------------------------------------------------| 5%
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/gymnasium/spaces/box.py:240: UserWarning: <span class="ansi-yellow-fg">WARN: Casting input x to numpy array.</span>
+  gym.logger.warn(&#34;Casting input x to numpy array.&#34;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Progress: |***************************************************************************************************| 99%
+[ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-continuous-v1]
+</pre></div></div>
+</div>
+</section>
 <section id="Environment-Discretization-Wrapper">
-<h2><span class="section-number">19.4. </span>Environment Discretization Wrapper<a class="headerlink" href="#Environment-Discretization-Wrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">19.5. </span>Environment Discretization Wrapper<a class="headerlink" href="#Environment-Discretization-Wrapper" title="Link to this heading"></a></h2>
 <p>This is an example about how to discretize a previous continuos environment. We will require the <strong>new discrete action space</strong> and an <strong>action mapping function</strong> whose output matches with the original unwrapped environment action space:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We will create a continuous environment</span>
-<span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">,</span> <span class="n">flag_normalization</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ORIGINAL ACTION SPACE: &#39;</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;IS DISCRETE?: &#39;</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;is_discrete&#39;</span><span class="p">))</span>
 <span class="c1"># DISCRETIZATION</span>
@@ -580,7 +684,7 @@ Progress: |*********************************************************************
 <p>As we can see in output, the input is an int, but a list with original action space is done in the simulator.</p>
 </section>
 <section id="Discrete-Incremental-Wrapper">
-<h2><span class="section-number">19.5. </span>Discrete Incremental Wrapper<a class="headerlink" href="#Discrete-Incremental-Wrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">19.6. </span>Discrete Incremental Wrapper<a class="headerlink" href="#Discrete-Incremental-Wrapper" title="Link to this heading"></a></h2>
 <p>A wrapper for an incremental setpoint action space environment. This wrapper will update an environment, converting it in a <em>discrete</em> environment with an action mapping function and action space depending on the <strong>step</strong> and <strong>delta</strong> specified. The action will be sum with <strong>current setpoint</strong> values instead of overwrite the latest action. Then, the action is the current setpoint values with the increase instead of the discrete value action whose purpose is to define the increment/decrement
 itself.</p>
 <div class="nbinput docutils container">
@@ -689,14 +793,14 @@ Progress: |*********************************************************************
 </div>
 </section>
 <section id="Normalization-Wrapper">
-<h2><span class="section-number">19.6. </span>Normalization Wrapper<a class="headerlink" href="#Normalization-Wrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">19.7. </span>Normalization Wrapper<a class="headerlink" href="#Normalization-Wrapper" title="Link to this heading"></a></h2>
 <p>This wrapper is used to transform observation received from simulator in values between -1 and 1. It is based in the <a class="reference external" href="https://gymnasium.farama.org/_modules/gymnasium/wrappers/normalize/#NormalizeObservation">dynamic normalization wrapper of Gymnasium</a>. At the beginning, it is not precise and the values may be out of range usually, so use this wrapper carefully.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Original env</span>
-<span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">,</span> <span class="n">flag_normalization</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">)</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span>
         <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
 </pre></div>
@@ -795,13 +899,13 @@ OBSERVATION WITH NORMALIZATION:  {&#39;month&#39;: 0.00499968750430059, &#39;day
 </div>
 </section>
 <section id="Logger-Wrapper">
-<h2><span class="section-number">19.7. </span>Logger Wrapper<a class="headerlink" href="#Logger-Wrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">19.8. </span>Logger Wrapper<a class="headerlink" href="#Logger-Wrapper" title="Link to this heading"></a></h2>
 <p>Wrapper for logging all interactions between agent and environment. Logger class can be selected in the constructor if other type of logging is required. For more information about <em>Sinergym</em> Logger visit <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/output.html#logger">Logger</a></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">,</span> <span class="n">flag_normalization</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">)</span>
 <span class="n">env</span><span class="o">=</span><span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 
 
@@ -890,14 +994,14 @@ Progress: |*********************************************************************
 <p>Now, you can see in Sinergym output folder that you will have available <code class="docutils literal notranslate"><span class="pre">progress.csv</span></code> file and <code class="docutils literal notranslate"><span class="pre">monitor.csv</span></code> files in each episode.</p>
 </section>
 <section id="Multi-Observation-Wrapper">
-<h2><span class="section-number">19.8. </span>Multi Observation Wrapper<a class="headerlink" href="#Multi-Observation-Wrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">19.9. </span>Multi Observation Wrapper<a class="headerlink" href="#Multi-Observation-Wrapper" title="Link to this heading"></a></h2>
 <p>This wrapper will stack observation received in a history queue (size can be customized).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Original environment</span>
-<span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">,</span> <span class="n">flag_normalization</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">)</span>
 <span class="n">obs</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BEFORE MULTI OBSERVATION: &#39;</span><span class="p">,</span><span class="n">obs</span><span class="p">)</span>
 
@@ -1029,7 +1133,7 @@ Progress: |*********************************************************************
 </div>
 </section>
 <section id="Nesting-wrappers">
-<h2><span class="section-number">19.9. </span>Nesting wrappers<a class="headerlink" href="#Nesting-wrappers" title="Link to this heading"></a></h2>
+<h2><span class="section-number">19.10. </span>Nesting wrappers<a class="headerlink" href="#Nesting-wrappers" title="Link to this heading"></a></h2>
 <p>All the wrappers listed in this notebook can be nested in order to combine functionalities added. However, <strong>the order</strong> in which these wrappers are nested is critical to their proper functionality. We strongly recommend that it be in the same order in which they appear here or in the documentation. In case you want to nest a subset of the total, it is not a problem as long as you continue respecting this order. We see and example:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:

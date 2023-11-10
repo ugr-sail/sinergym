@@ -70,9 +70,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#meters">5.3.9. Meters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#actuators">5.3.10. Actuators</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#action-space">5.3.11. Action space</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#normalization-flag">5.3.12. Normalization flag</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#environment-name">5.3.13. Environment name</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#extra-configuration">5.3.14. Extra configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#environment-name">5.3.12. Environment name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extra-configuration">5.3.13. Extra configuration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-weathers-for-environments">5.4. Adding new weathers for environments</a></li>
@@ -836,7 +835,7 @@ space of the environment is being made. <code class="docutils literal notranslat
 <p>This allows us to do a <strong>dynamic definition</strong> of spaces, <em>Sinergym</em> will adapt the building model.
 Observation space is created automatically, but action space must be defined in order to set up
 the range values supported by the Gymnasium interface in the actuators, or the number of discrete values if
-it is a discrete environment.</p>
+it is a discrete environment (using the wrapper for discretization).</p>
 <p>Then, the argument called <code class="docutils literal notranslate"><span class="pre">action_space</span></code> defines this action space following the <strong>gymnasium standard</strong>.
 <em>EnergyPlus</em> simulator works only with continuous values, so <em>Sinergym</em> action space defined must be continuous
 too (<code class="docutils literal notranslate"><span class="pre">gym.spaces.Box</span></code>). This definition must be consistent with the previously defined actuators (<em>Sinergym</em>
@@ -857,36 +856,13 @@ of all its benefits instead of using the <em>EnergyPlus</em> simulator directly,
 managed by <strong>default building model schedulers</strong> as mentioned. For more information, see the example of use
 <a class="reference internal" href="notebooks/default_building_control.html#Default-building-control-setting-up-an-empty-action-interface"><span class="std std-ref">Default building control setting up an empty action interface</span></a>.</p>
 </section>
-<section id="normalization-flag">
-<h3><span class="section-number">5.3.12. </span>Normalization flag<a class="headerlink" href="#normalization-flag" title="Link to this heading"></a></h3>
-<p>The argument called <code class="docutils literal notranslate"><span class="pre">flag_normalization</span></code> indicates whether action space specified will be normalized to
-<code class="docutils literal notranslate"><span class="pre">[-1,1]</span></code> or not. Then, <em>Sinergym</em> will use the real space specified in <strong>action_space</strong> argument or this
-normalized space depending on this flag value. This is done in order to make environments more generic
-in DRL solutions.
-<em>Sinergym</em> <strong>parse</strong> these values to real action space defined in environment internally before to
-send it to <em>EnergyPlus</em> Simulator by the API middleware.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The method in charge of parse this values from [-1,1] to real action space if it is required is
-called <code class="docutils literal notranslate"><span class="pre">_action_transform(action)</span></code> in <em>sinergym/sinergym/envs/eplus_env.py</em>.
-We always recommend to use the normalization in action space for DRL solutions, since this space is
-compatible with all algorithms. However, if you are implementing your own rule-based controller
-and working with real action values, for example, you can deactivate normalization.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>By default, all <em>Sinergym</em>’s environments will have normalization in action space.
-It is possible to specify the <strong>flag_normalization</strong> to false in the constructor argument or
-to change it during the execution using <code class="docutils literal notranslate"><span class="pre">env.update_flag_normalization(False)</span></code>.</p>
-</div>
-</section>
 <section id="environment-name">
-<h3><span class="section-number">5.3.13. </span>Environment name<a class="headerlink" href="#environment-name" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.3.12. </span>Environment name<a class="headerlink" href="#environment-name" title="Link to this heading"></a></h3>
 <p>The parameter <code class="docutils literal notranslate"><span class="pre">env_name</span></code> is used to define the <strong>name of working directory</strong> generation. It is very useful to
 difference several experiments in the same environment, for example.</p>
 </section>
 <section id="extra-configuration">
-<h3><span class="section-number">5.3.14. </span>Extra configuration<a class="headerlink" href="#extra-configuration" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.3.13. </span>Extra configuration<a class="headerlink" href="#extra-configuration" title="Link to this heading"></a></h3>
 <p>Some parameters directly associated with the building model and simulator can be set as extra configuration
 as well, such as <code class="docutils literal notranslate"><span class="pre">people</span> <span class="pre">occupant</span></code>, <code class="docutils literal notranslate"><span class="pre">timesteps</span> <span class="pre">per</span> <span class="pre">simulation</span> <span class="pre">hour</span></code>, <code class="docutils literal notranslate"><span class="pre">runperiod</span></code>, etc.</p>
 <p>Like this <strong>extra configuration context</strong> can grow up in the future, this is specified in <code class="docutils literal notranslate"><span class="pre">config_params</span></code> argument.

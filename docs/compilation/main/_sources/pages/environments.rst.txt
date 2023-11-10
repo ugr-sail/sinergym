@@ -374,7 +374,7 @@ space of the environment is being made. ``time_variables``, ``variables`` and ``
 This allows us to do a **dynamic definition** of spaces, *Sinergym* will adapt the building model.
 Observation space is created automatically, but action space must be defined in order to set up
 the range values supported by the Gymnasium interface in the actuators, or the number of discrete values if
-it is a discrete environment.
+it is a discrete environment (using the wrapper for discretization).
                 
 Then, the argument called ``action_space`` defines this action space following the **gymnasium standard**.
 *EnergyPlus* simulator works only with continuous values, so *Sinergym* action space defined must be continuous
@@ -392,26 +392,6 @@ will show possible inconsistencies).
 of all its benefits instead of using the *EnergyPlus* simulator directly, meanwhile the control is 
 managed by **default building model schedulers** as mentioned. For more information, see the example of use 
 :ref:`Default building control setting up an empty action interface`.
-
-Normalization flag
-===================
-
-The argument called ``flag_normalization`` indicates whether action space specified will be normalized to
-``[-1,1]`` or not. Then, *Sinergym* will use the real space specified in **action_space** argument or this 
-normalized space depending on this flag value. This is done in order to make environments more generic 
-in DRL solutions.
-*Sinergym* **parse** these values to real action space defined in environment internally before to 
-send it to *EnergyPlus* Simulator by the API middleware.
-
-.. important:: The method in charge of parse this values from [-1,1] to real action space if it is required is 
-        called ``_action_transform(action)`` in *sinergym/sinergym/envs/eplus_env.py*.
-        We always recommend to use the normalization in action space for DRL solutions, since this space is 
-        compatible with all algorithms. However, if you are implementing your own rule-based controller 
-        and working with real action values, for example, you can deactivate normalization.
-
-.. note:: By default, all *Sinergym*'s environments will have normalization in action space.
-        It is possible to specify the **flag_normalization** to false in the constructor argument or
-        to change it during the execution using ``env.update_flag_normalization(False)``.
 
 Environment name
 ================
