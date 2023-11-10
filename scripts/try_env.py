@@ -3,7 +3,8 @@ import numpy as np
 from gymnasium.wrappers.normalize import NormalizeReward
 
 import sinergym
-from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation, NormalizeAction
+from sinergym.utils.wrappers import (LoggerWrapper, NormalizeAction,
+                                     NormalizeObservation)
 
 env = gym.make('Eplus-demo-v1')
 env = NormalizeAction(env)
