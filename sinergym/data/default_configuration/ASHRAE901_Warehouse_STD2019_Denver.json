@@ -1,4 +1,22 @@
 {
+    "id_base"               : "warehouse",
+
+    "building_file"         : "ASHRAE901_Warehouse_STD2019_Denver.epJSON",
+
+    "weather_specification" : {
+        "weather_files" : ["USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw", 
+                           "USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw", 
+                           "USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw"
+                        ],
+        "keys"          : ["hot", "mixed", "cool"]
+    },
+
+    "config_params"          : null,
+
+    "variation"             : [1.0, 0.0, 0.001],
+
+    "max_ep_data_store_num" : 10,
+
     "time_variables"        : ["month", "day_of_month", "hour"],
 
     "variables"             : {
@@ -52,9 +70,7 @@
         }
     },
 
-    "meters"                : {
-        "Electricity:HVAC" : {"variable_name" : "total_electricity_HVAC"}
-    },
+    "meters"                : {},
 
     "actuators"             : {
         "Office Heating Schedule"                : {
