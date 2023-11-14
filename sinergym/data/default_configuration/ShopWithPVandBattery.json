@@ -135,7 +135,7 @@
             "zn_1_flr_1_sec_4_air_temperature",
             "zn_1_flr_1_sec_5_air_temperature"
         ],
-        "energy_variables": "HVAC_electricity_demand_rate",
+        "energy_variables": ["HVAC_electricity_demand_rate"],
         "range_comfort_winter": [20.0, 23.5],
         "range_comfort_summer": [23.0, 26.0]
     }

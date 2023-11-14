@@ -118,7 +118,7 @@
             "perimeter_top_zn_3_air_temperature",
             "perimeter_top_zn_4_air_temperature"
         ],
-        "energy_variables": "HVAC_electricity_demand_rate",
+        "energy_variables": ["HVAC_electricity_demand_rate"],
         "range_comfort_winter": [18, 27],
         "range_comfort_summer": [18, 27]
     }

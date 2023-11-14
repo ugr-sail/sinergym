@@ -5,10 +5,14 @@ from datetime import datetime
 from math import exp
 from typing import Any, Dict, List, Tuple, Union
 
-from sinergym.utils.constants import YEAR
+from sinergym.utils.constants import YEAR, LOG_REWARD_LEVEL
+from sinergym.utils.logger import Logger
 
 
 class BaseReward(object):
+
+    logger = Logger().getLogger(name='REWARD',
+                                level=LOG_REWARD_LEVEL)
 
     def __init__(self):
         """
@@ -31,8 +35,8 @@ class LinearReward(BaseReward):
 
     def __init__(
         self,
-        temperature_variables: Union[str, list],
-        energy_variables: Union[str, list],
+        temperature_variables: List[str],
+        energy_variables: List[str],
         range_comfort_winter: Tuple[int, int],
         range_comfort_summer: Tuple[int, int],
         summer_start: Tuple[int, int] = (6, 1),
@@ -50,8 +54,8 @@ class LinearReward(BaseReward):
             R = - W * lambda_E * power - (1 - W) * lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0))
 
         Args:
-            temperature_variables (Union[str, list]): Name(s) of the temperature variable(s).
-            energy_variables (Union[str, list): Name(s) of the energy/power variable(s).
+            temperature_variables (List[str]): Name(s) of the temperature variable(s).
+            energy_variables (List[str]): Name(s) of the energy/power variable(s).
             range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
             range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
             summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
@@ -78,6 +82,8 @@ class LinearReward(BaseReward):
         self.summer_start = summer_start  # (month,day)
         self.summer_final = summer_final  # (month,day)
 
+        self.logger.info('Reward function initialized.')
+
     def __call__(self, obs_dict: Dict[str, Any]
                  ) -> Tuple[float, Dict[str, Any]]:
         """Calculate the reward function.
@@ -88,6 +94,21 @@ class LinearReward(BaseReward):
         Returns:
             Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
         """
+        # Check variables to calculate reward are available
+        try:
+            assert all(temp_name in list(obs_dict.keys())
+                       for temp_name in self.temp_names)
+        except AssertionError as err:
+            self.logger.error(
+                'Some of the temperature variables specified are not present in observation.')
+            raise err
+        try:
+            assert all(energy_name in list(obs_dict.keys())
+                       for energy_name in self.energy_names)
+        except AssertionError as err:
+            self.logger.error(
+                'Some of the energy variables specified are not present in observation.')
+            raise err
 
         # Energy term
         energy, energy_values = self._get_energy(obs_dict)
@@ -176,8 +197,8 @@ class ExpReward(LinearReward):
 
     def __init__(
         self,
-        temperature_variables: Union[str, list],
-        energy_variables: Union[str, list],
+        temperature_variables: List[str],
+        energy_variables: List[str],
         range_comfort_winter: Tuple[int, int],
         range_comfort_summer: Tuple[int, int],
         summer_start: Tuple[int, int] = (6, 1),
@@ -193,8 +214,8 @@ class ExpReward(LinearReward):
             R = - W * lambda_E * power - (1 - W) * lambda_T * exp( (max(T - T_{low}, 0) + max(T_{up} - T, 0)) )
 
         Args:
-            temperature_variables (Union[str, list]): Name(s) of the temperature variable(s).
-            energy_variables (Union[str, list]): Name(s) of the energy/power variable(s).
+            temperature_variables (List[str]): Name(s) of the temperature variable(s).
+            energy_variables (List[str]): Name(s) of the energy/power variable(s).
             range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
             range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
             summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
@@ -260,8 +281,8 @@ class HourlyLinearReward(LinearReward):
 
     def __init__(
         self,
-        temperature_variables: Union[str, list],
-        energy_variables: Union[str, list],
+        temperature_variables: List[str],
+        energy_variables: List[str],
         range_comfort_winter: Tuple[int, int],
         range_comfort_summer: Tuple[int, int],
         summer_start: Tuple[int, int] = (6, 1),
@@ -275,8 +296,8 @@ class HourlyLinearReward(LinearReward):
         Linear reward function with a time-dependent weight for consumption and energy terms.
 
         Args:
-            temperature_variables (Union[str, list]): Name(s) of the temperature variable(s).
-            energy_variables (Union[str, list]): Name(s) of the energy/power variable(s).
+            temperature_variables (List[str]]): Name(s) of the temperature variable(s).
+            energy_variables (List[str]): Name(s) of the energy/power variable(s).
             range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
             range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
             summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
@@ -312,6 +333,21 @@ class HourlyLinearReward(LinearReward):
         Returns:
             Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
         """
+        # Check variables to calculate reward are available
+        try:
+            assert all(temp_name in list(obs_dict.keys())
+                       for temp_name in self.temp_names)
+        except AssertionError as err:
+            self.logger.error(
+                'Some of the temperature variables specified are not present in observation.')
+            raise err
+        try:
+            assert all(energy_name in list(obs_dict.keys())
+                       for energy_name in self.energy_names)
+        except AssertionError as err:
+            self.logger.error(
+                'Some of the energy variables specified are not present in observation.')
+            raise err
         # Energy term
         energy, energy_values = self._get_energy(obs_dict)
         reward_energy = - self.lambda_energy * energy
