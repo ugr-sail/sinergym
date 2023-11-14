@@ -3,7 +3,7 @@
 import os
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple, Type, Union
+from typing import Dict, List, Optional, Tuple, Type, Union, Any
 
 import gymnasium as gym
 import numpy as np
@@ -13,35 +13,10 @@ from eppy.modeleditor import IDF
 from opyplus.epm.record import Record
 
 from sinergym.utils.constants import YEAR
+from sinergym.utils.rewards import *
+import gymnasium as gym
 
-
-def get_delta_seconds(
-        st_year: int,
-        st_mon: int,
-        st_day: int,
-        end_year: int,
-        end_mon: int,
-        end_day: int) -> float:
-    """Returns the delta seconds between st year:st mon:st day:0:0:0 and
-    end year:end mon:end day:24:0:0.
-
-    Args:
-        st_year (int): Start year.
-        st_mon (int): Start month.
-        st_day (int): Start day.
-        end_year (int): End year.
-        end_mon (int): End month.
-        end_day (int): End day.
-
-    Returns:
-        float: Time difference in seconds.
-
-    """
-    startTime = datetime(st_year, st_mon, st_day, 0, 0, 0)
-    endTime = datetime(end_year, end_mon, end_day,
-                       23, 0, 0) + timedelta(0, 3600)
-    delta_sec = (endTime - startTime).total_seconds()
-    return delta_sec
+# --------------------------------- Wrappers --------------------------------- #
 
 
 def is_wrapped(env: Type[gym.Env], wrapper_class: Type[gym.Wrapper]) -> bool:
@@ -71,35 +46,36 @@ def unwrap_wrapper(env: gym.Env,
         env_tmp = env_tmp.env
     return None
 
+# ----------------------------- Building modeling ---------------------------- #
 
-def get_season_comfort_range(
-        year: int, month: int, day: int) -> Tuple[float, float]:
-    """Get comfort temperature range depending on season. The comfort ranges are those
-    defined by ASHRAE in Standard 55—Thermal Environmental Conditions for Human Occupancy (2004).
+
+def get_delta_seconds(
+        st_year: int,
+        st_mon: int,
+        st_day: int,
+        end_year: int,
+        end_mon: int,
+        end_day: int) -> float:
+    """Returns the delta seconds between st year:st mon:st day:0:0:0 and
+    end year:end mon:end day:24:0:0.
 
     Args:
-        year (int): current year
-        month (int): current month
-        day (int): current day
+        st_year (int): Start year.
+        st_mon (int): Start month.
+        st_day (int): Start day.
+        end_year (int): End year.
+        end_mon (int): End month.
+        end_day (int): End day.
 
     Returns:
-        Tuple[float, float]: Comfort temperature from the correct season.
+        float: Time difference in seconds.
+
     """
-
-    summer_start_date = datetime(year, 6, 1)
-    summer_final_date = datetime(year, 9, 30)
-
-    range_comfort_summer = (23.0, 26.0)
-    range_comfort_winter = (20.0, 23.5)
-
-    current_dt = datetime(year, month, day)
-
-    if current_dt >= summer_start_date and current_dt <= summer_final_date:
-        comfort = range_comfort_summer
-    else:
-        comfort = range_comfort_winter
-
-    return comfort
+    startTime = datetime(st_year, st_mon, st_day, 0, 0, 0)
+    endTime = datetime(end_year, end_mon, end_day,
+                       23, 0, 0) + timedelta(0, 3600)
+    delta_sec = (endTime - startTime).total_seconds()
+    return delta_sec
 
 
 def ranges_getter(output_path: str,

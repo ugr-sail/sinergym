@@ -58,13 +58,3 @@ def test_unwrap_wrapper(
     assert env is None
     env = common.unwrap_wrapper(env_all_wrappers, NormalizeObservation)
     assert not hasattr(env, 'unwrapped_observation')
-
-
-@pytest.mark.parametrize(
-    'year,month,day,expected',
-    [(1991, 2, 13, (20.0, 23.5)),
-     (1991, 9, 9, (23.0, 26.0))]
-)
-def test_get_season_comfort_range(year, month, day, expected):
-    output_range = common.get_season_comfort_range(year, month, day)
-    assert output_range == expected
