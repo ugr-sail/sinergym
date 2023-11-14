@@ -238,3 +238,172 @@ def export_schedulers_to_excel(
             keys_format)
         object_num += 1
     workbook.close()
+
+# ------------------ Reading JSON environment configuration ------------------ #
+
+
+def json_to_variables(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
+    """Read variables dictionary (from Sinergym JSON conf) and adapt it to the
+       EnergyPlus format. More information about Sinergym JSON configuration format
+       in documentation.
+
+    Args:
+        variables (Dict[str, Any]): Dictionary from Sinergym JSON configuration with variables information.
+
+    Returns:
+        Dict[str, Tuple[str, str]]: Dictionary with variables information in EnergyPlus API format.
+    """
+
+    output = {}
+
+    for variable, specification in variables.items():
+
+        if isinstance(specification['variable_names'], str):
+
+            if isinstance(specification['keys'], str):
+                output[specification['variable_names']] = (
+                    variable, specification['keys'])
+
+            elif isinstance(specification['keys'], list):
+                for key in specification['keys']:
+                    prename = key.lower()
+                    prename = prename.replace(' ', '_')
+                    prename = prename + '_'
+                    output[prename +
+                           specification['variable_names']] = (variable, key)
+
+            else:
+                raise RuntimeError
+
+        elif isinstance(specification['variables_names'], list):
+
+            if isinstance(specification['keys'], str):
+                raise RuntimeError
+
+            elif isinstance(specification['keys'], list):
+                assert len( specification['variables_names']) == len(
+                    specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
+                for variable_name, key_name in list(
+                        zip(specification['variables_names'], specification['keys'])):
+                    output[variable_name] = (variable, key_name)
+
+            else:
+                raise RuntimeError
+
+        else:
+
+            raise RuntimeError
+
+    return output
+
+
+def json_to_meters(meters: Dict[str, str]) -> Dict[str, str]:
+    """Read meters dictionary (from Sinergym JSON conf) and adapt it to the
+       EnergyPlus format. More information about Sinergym JSON configuration format
+       in documentation.
+
+    Args:
+        meters (Dict[str, str]): Dictionary from Sinergym JSON configuration with meters information.
+
+    Returns:
+        Dict[str, str]: Dictionary with meters information in EnergyPlus API format.
+    """
+
+    output = {}
+
+    for meter_name, variable_name in meters.items():
+        output[variable_name] = meter_name
+
+    return output
+
+
+def json_to_actuators(
+        actuators: Dict[str, Dict[str, str]]) -> Dict[str, Tuple[str, str, str]]:
+    """Read actuators dictionary (from Sinergym JSON conf) and adapt it to the
+       EnergyPlus format. More information about Sinergym JSON configuration format
+       in documentation.
+
+    Args:
+        actuators (Dict[str, Dict[str, str]]): Dictionary from Sinergym JSON configuration with actuators information.
+
+    Returns:
+        Dict[str, Tuple[str, str, str]]: Dictionary with actuators information in EnergyPlus API format.
+    """
+
+    output = {}
+
+    for actuator_name, specification in actuators.items():
+        output[specification['variable_name']] = (
+            specification['element_type'], specification['value_type'], actuator_name)
+
+    return output
+
+
+def convert_conf_to_env_parameters(
+        conf: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Convert a conf from json format (sinergym/data/default_configuration/file.json) in a dictionary of all possible environments as dictionary with id as key and env_kwargs as value.
+       More information about Sinergym environment configuration in JSON format in documentation.
+
+    Args:
+        conf (Dict[str, Any]): Dictionary from read json configuration file (sinergym/data/default_configuration/file.json).
+
+    Returns:
+        Dict[str,[Dict[str, Any]]: All possible Sinergym environment constructor kwargs.
+    """
+
+    configurations = {}
+
+    variables = json_to_variables(conf['variables'])
+    meters = json_to_meters(conf['meters'])
+    actuators = json_to_actuators(conf['actuators'])
+
+    assert len(conf['weather_specification']['weather_files']) == len(
+        conf['weather_specification']['keys']), 'Weather files and id keys must have the same len'
+
+    weather_info = list(zip(conf['weather_specification']['keys'],
+                        conf['weather_specification']['weather_files']))
+
+    variation = conf.get('variation')
+
+    for weather_id, weather_file in weather_info:
+
+        id = 'Eplus-' + conf['id_base'] + '-' + weather_id + '-continuous-v1'
+
+        env_kwargs = {
+            'building_file': conf['building_file'],
+            'weather_files': weather_file,
+            'action_space': eval(conf['action_space']),
+            'time_variables': conf['time_variables'],
+            'variables': variables,
+            'meters': meters,
+            'actuators': actuators,
+            'reward': eval(conf['reward']),
+            'reward_kwargs': conf['reward_kwargs'],
+            'max_ep_data_store_num': conf['max_ep_data_store_num'],
+            'env_name': id.replace('Eplus-', ''),
+            'config_params': conf.get('config_params')
+        }
+        configurations[id] = env_kwargs
+
+        if variation:
+
+            id = 'Eplus-' + conf['id_base'] + '-' + \
+                weather_id + '-continuous-stochastic-v1'
+            env_kwargs = {
+                'building_file': conf['building_file'],
+                'weather_files': weather_file,
+                'action_space': eval(conf['action_space']),
+                'time_variables': conf['time_variables'],
+                'variables': variables,
+                'meters': meters,
+                'actuators': actuators,
+                'weather_variability': tuple(variation),
+                'reward': eval(conf['reward']),
+                'reward_kwargs': conf['reward_kwargs'],
+                'max_ep_data_store_num': conf['max_ep_data_store_num'],
+                'env_name': id.replace('Eplus-', ''),
+                'config_params': conf.get('config_params')
+            }
+            configurations[id] = env_kwargs
+
+    return configurations
