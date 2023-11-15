@@ -102,13 +102,13 @@ class RBCDatacenter(object):
         obs_dict = dict(zip(self.observation_variables, observation))
 
         # Mean temp in datacenter zones
-        mean_temp = np.mean([obs_dict['west_zone_temperature'],
-                             obs_dict['east_zone_temperature']])
+        mean_temp = np.mean([obs_dict['west_zone_air_temperature'],
+                             obs_dict['east_zone_air_temperature']])
 
         current_heat_setpoint = obs_dict[
-            'west_htg_setpoint']
+            'west_zone_htg_setpoint']
         current_cool_setpoint = obs_dict[
-            'west_clg_setpoint']
+            'west_zone_clg_setpoint']
 
         new_heat_setpoint = current_heat_setpoint
         new_cool_setpoint = current_cool_setpoint

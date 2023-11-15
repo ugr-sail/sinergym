@@ -1,4 +1,4 @@
-sinergym.utils.rewards.HourlyLinearReward
+﻿sinergym.utils.rewards.HourlyLinearReward
 =========================================
 
 .. currentmodule:: sinergym.utils.rewards
@@ -20,5 +20,11 @@ sinergym.utils.rewards.HourlyLinearReward
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~HourlyLinearReward.logger
    
    

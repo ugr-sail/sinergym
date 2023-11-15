@@ -1,3 +1,6 @@
+import json
+
+import gymnasium as gym
 import pytest
 
 import sinergym.utils.common as common
@@ -60,11 +63,46 @@ def test_unwrap_wrapper(
     assert not hasattr(env, 'unwrapped_observation')
 
 
-@pytest.mark.parametrize(
-    'year,month,day,expected',
-    [(1991, 2, 13, (20.0, 23.5)),
-     (1991, 9, 9, (23.0, 26.0))]
-)
-def test_get_season_comfort_range(year, month, day, expected):
-    output_range = common.get_season_comfort_range(year, month, day)
-    assert output_range == expected
+def test_json_to_variables(conf_5zone):
+
+    assert isinstance(conf_5zone['variables'], dict)
+    output = common.json_to_variables(conf_5zone['variables'])
+
+    assert isinstance(output, dict)
+    assert isinstance(list(output.keys())[0], str)
+    assert isinstance(list(output.values())[0], tuple)
+    assert len(list(output.values())[0]) == 2
+
+
+def test_json_to_meters(conf_5zone):
+
+    assert isinstance(conf_5zone['meters'], dict)
+    output = common.json_to_meters(conf_5zone['meters'])
+
+    assert isinstance(output, dict)
+    assert isinstance(list(output.keys())[0], str)
+    assert isinstance(list(output.values())[0], str)
+
+
+def test_json_to_meters(conf_5zone):
+
+    assert isinstance(conf_5zone['actuators'], dict)
+    output = common.json_to_actuators(conf_5zone['actuators'])
+
+    assert isinstance(output, dict)
+    assert isinstance(list(output.keys())[0], str)
+    assert isinstance(list(output.values())[0], tuple)
+    assert len(list(output.values())[0]) == 3
+
+
+def test_convert_conf_to_env_parameters(conf_5zone):
+
+    configurations = common.convert_conf_to_env_parameters(conf_5zone)
+
+    # Check if environments are valid
+    for env_id, env_kwargs in configurations.items():
+        # Added TEST name in env_kwargs
+        env_kwargs['env_name'] = 'TESTGYM'
+        env = gym.make(env_id, **env_kwargs)
+        env.reset()
+        env.close()

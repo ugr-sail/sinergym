@@ -1,253 +1,125 @@
+import json
 import os
 
 import gymnasium as gym
 from gymnasium.envs.registration import WrapperSpec, register
 
+from sinergym.utils.common import convert_conf_to_env_parameters
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
 
-# Set __version__ in module
+# ------------------------- Set __version__ in module ------------------------ #
 version_file = os.path.join(os.path.dirname(__file__), "version.txt")
 with open(version_file, "r") as file_handler:
     __version__ = file_handler.read().strip()
 
-
-# 0) Demo environment
+# ---------------------------- 0) Demo environment --------------------------- #
 register(
     id='Eplus-demo-v1',
     entry_point='sinergym.envs:EplusEnv',
     kwargs={
         'building_file': '5ZoneAutoDXVAV.epJSON',
         'weather_files': 'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
-        'action_space': DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS,
-        'time_variables': DEFAULT_TIME_VARIABLES,
-        'variables': DEFAULT_5ZONE_VARIABLES,
-        'meters': DEFAULT_5ZONE_METERS,
-        'actuators': DEFAULT_5ZONE_ACTUATORS,
+        'action_space': gym.spaces.Box(
+            low=np.array([15.0, 22.5], dtype=np.float32),
+            high=np.array([22.5, 30.0], dtype=np.float32),
+            shape=(2,),
+            dtype=np.float32),
+        'time_variables': ['month', 'day_of_month', 'hour'],
+        'variables': {
+            'outdoor_temperature': (
+                'Site Outdoor Air DryBulb Temperature',
+                'Environment'),
+            'htg_setpoint': (
+                'Zone Thermostat Heating Setpoint Temperature',
+                'SPACE5-1'),
+            'clg_setpoint': (
+                'Zone Thermostat Cooling Setpoint Temperature',
+                'SPACE5-1'),
+            'air_temperature': (
+                'Zone Air Temperature',
+                'SPACE5-1'),
+            'air_humidity': (
+                'Zone Air Relative Humidity',
+                'SPACE5-1'),
+            'HVAC_electricity_demand_rate': (
+                'Facility Total HVAC Electricity Demand Rate',
+                'Whole Building')
+        },
+        'meters': {},
+        'actuators': {
+            'Heating_Setpoint_RL': (
+                'Schedule:Compact',
+                'Schedule Value',
+                'HTG-SETP-SCH'),
+            'Cooling_Setpoint_RL': (
+                'Schedule:Compact',
+                'Schedule Value',
+                'CLG-SETP-SCH')
+        },
         'reward': LinearReward,
         'reward_kwargs': {
-            'temperature_variables': 'air_temperature',
-            'energy_variables': 'HVAC_electricity_demand_rate',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)},
-        'env_name': 'demo-v1'})
+            'temperature_variables': ['air_temperature'],
+            'energy_variables': ['HVAC_electricity_demand_rate'],
+            'range_comfort_winter': (20.0, 23.5),
+            'range_comfort_summer': (23.0, 26.0)},
+        'env_name': 'demo-v1',
+        'config_params': {
+            'runperiod': (1, 1, 1991, 1, 3, 1991),
+            'timesteps_per_hour': 1
+        }})
 
+# ------------------- Read environment configuration files ------------------- #
+conf_files = []
+for root, dirs, files in os.walk(
+        os.path.abspath('sinergym/data/default_configuration/')):
+    for file in files:
+        # Obtain the whole path for each configuration file
+        file_path = os.path.join(root, file)
+        conf_files.append(file_path)
 
-id_bases = ['5zone', 'datacenter', 'warehouse', 'office', 'officegrid', 'shop']
-id_specifics = [
-    'hot-discrete',
-    'mixed-discrete',
-    'cool-discrete',
-    'hot-continuous',
-    'mixed-continuous',
-    'cool-continuous',
-    'hot-discrete-stochastic',
-    'mixed-discrete-stochastic',
-    'cool-discrete-stochastic',
-    'hot-continuous-stochastic',
-    'mixed-continuous-stochastic',
-    'cool-continuous-stochastic']
-variation = (1.0, 0.0, 0.001)
-for building in id_bases:
-    reg_kwargs = {'time_variables': DEFAULT_TIME_VARIABLES}
+# ---------------- For each conf file, setting up environments --------------- #
+for conf_file in conf_files:
+    with open(conf_file) as json_f:
+        conf = json.load(json_f)
 
-    if building == '5zone':
-        reg_kwargs['building_file'] = '5ZoneAutoDXVAV.epJSON'
-        action_space_continuous = DEFAULT_5ZONE_ACTION_SPACE_CONTINUOUS
-        action_space_discrete = DEFAULT_5ZONE_ACTION_SPACE_DISCRETE
-        action_mapping = DEFAULT_5ZONE_DISCRETE_FUNCTION
-        reg_kwargs['actuators'] = DEFAULT_5ZONE_ACTUATORS
-        reg_kwargs['variables'] = DEFAULT_5ZONE_VARIABLES
-        reg_kwargs['meters'] = DEFAULT_5ZONE_METERS
-        reg_kwargs['reward'] = LinearReward
-        reg_kwargs['reward_kwargs'] = {
-            'temperature_variables': 'air_temperature',
-            'energy_variables': 'HVAC_electricity_demand_rate',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)}
+    # configurations = Dict [key=environment_id, value=env_kwargs dict]
+    configurations = convert_conf_to_env_parameters(conf)
 
-    elif building == 'datacenter':
-        reg_kwargs['building_file'] = '2ZoneDataCenterHVAC_wEconomizer.epJSON'
-        action_space_continuous = DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS
-        action_space_discrete = DEFAULT_DATACENTER_ACTION_SPACE_DISCRETE
-        action_mapping = DEFAULT_DATACENTER_DISCRETE_FUNCTION
-        reg_kwargs['actuators'] = DEFAULT_DATACENTER_ACTUATORS
-        reg_kwargs['variables'] = DEFAULT_DATACENTER_VARIABLES
-        reg_kwargs['meters'] = DEFAULT_DATACENTER_METERS
-        reg_kwargs['reward'] = LinearReward
-        reg_kwargs['reward_kwargs'] = {
-            'temperature_variables': [
-                'west_zone_temperature',
-                'east_zone_temperature'],
-            'energy_variables': 'HVAC_electricity_demand_rate',
-            'range_comfort_winter': (
-                18,
-                27),
-            'range_comfort_summer': (
-                18,
-                27)}
+    for env_id, env_kwargs in configurations.items():
 
-    elif building == 'warehouse':
-        reg_kwargs['building_file'] = 'ASHRAE901_Warehouse_STD2019_Denver.epJSON'
-        action_space_continuous = DEFAULT_WAREHOUSE_ACTION_SPACE_CONTINUOUS
-        action_space_discrete = DEFAULT_WAREHOUSE_ACTION_SPACE_DISCRETE
-        action_mapping = DEFAULT_WAREHOUSE_DISCRETE_FUNCTION
-        reg_kwargs['actuators'] = DEFAULT_WAREHOUSE_ACTUATORS
-        reg_kwargs['variables'] = DEFAULT_WAREHOUSE_VARIABLES
-        reg_kwargs['meters'] = DEFAULT_WAREHOUSE_METERS
-        reg_kwargs['reward'] = LinearReward
-        reg_kwargs['reward_kwargs'] = {
-            'temperature_variables': [
-                'office_temperature',
-                'fstorage_temperature',
-                'bstorage_temperature'],
-            'energy_variables': 'HVAC_electricity_demand_rate',
-            'range_comfort_winter': (
-                18,
-                27),
-            'range_comfort_summer': (
-                18,
-                27)}
+        register(
+            id=env_id,
+            entry_point='sinergym.envs:EplusEnv',
+            # additional_wrappers=additional_wrappers,
+            # order_enforce=False,
+            # disable_env_checker=True,
+            kwargs=env_kwargs
+        )
 
-    elif building == 'office':
-        reg_kwargs['building_file'] = 'ASHRAE901_OfficeMedium_STD2019_Denver.epJSON'
-        action_space_continuous = DEFAULT_OFFICE_ACTION_SPACE_CONTINUOUS
-        action_space_discrete = DEFAULT_OFFICE_ACTION_SPACE_DISCRETE
-        action_mapping = DEFAULT_OFFICE_DISCRETE_FUNCTION
-        reg_kwargs['actuators'] = DEFAULT_OFFICE_ACTUATORS
-        reg_kwargs['variables'] = DEFAULT_OFFICE_VARIABLES
-        reg_kwargs['meters'] = DEFAULT_OFFICE_METERS
-        reg_kwargs['reward'] = LinearReward
-        reg_kwargs['reward_kwargs'] = {
-            'temperature_variables': [
-                'zone1_temperature',
-                'zone2_temperature',
-                'zone3_temperature',
-                'zone4_temperature',
-                'zone5_temperature',
-                'zone6_temperature',
-                'zone7_temperature',
-                'zone8_temperature',
-                'zone9_temperature',
-                'zone10_temperature',
-                'zone11_temperature',
-                'zone12_temperature',
-                'zone13_temperature',
-                'zone14_temperature',
-                'zone15_temperature',
-                'zone16_temperature',
-                'zone17_temperature',
-                'zone18_temperature'
-            ],
-            'energy_variables': 'HVAC_electricity_demand_rate',
-            'range_comfort_winter': (18, 27),
-            'range_comfort_summer': (18, 27)
-        }
+        # If discrete space is included, add the same environment with
+        # discretization
+        if conf.get('action_space_discrete'):
 
-    elif building == 'officegrid':
-        reg_kwargs['building_file'] = 'LrgOff_GridStorageScheduled.epJSON'
-        action_space_continuous = DEFAULT_OFFICEGRID_ACTION_SPACE_CONTINUOUS
-        action_space_discrete = DEFAULT_OFFICEGRID_ACTION_SPACE_DISCRETE
-        action_mapping = DEFAULT_OFFICEGRID_DISCRETE_FUNCTION
-        reg_kwargs['actuators'] = DEFAULT_OFFICEGRID_ACTUATORS
-        reg_kwargs['variables'] = DEFAULT_OFFICEGRID_VARIABLES
-        reg_kwargs['meters'] = DEFAULT_OFFICEGRID_METERS
-        reg_kwargs['reward'] = LinearReward
-        reg_kwargs['reward_kwargs'] = {
-            'temperature_variables': [
-                'zone1_temperature',
-                'zone2_temperature',
-                'zone3_temperature',
-                'zone4_temperature',
-                'zone5_temperature',
-                'zone6_temperature',
-                'zone7_temperature',
-                'zone8_temperature',
-                'zone9_temperature',
-                'zone10_temperature',
-                'zone11_temperature',
-                'zone12_temperature',
-                'zone13_temperature',
-                'zone14_temperature',
-                'zone15_temperature',
-                'zone16_temperature',
-                'zone17_temperature',
-                'zone18_temperature',
-                'zone19_temperature'],
-            'energy_variables': 'HVAC_electricity_demand_rate',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)}
+            # Action mapping must be included in constants.
+            action_mapping = eval(
+                "DEFAULT_" +
+                conf["id_base"].upper() +
+                "_DISCRETE_FUNCTION")
 
-    elif building == 'shop':
-        reg_kwargs['building_file'] = 'ShopWithPVandBattery.epJSON'
-        action_space_continuous = DEFAULT_SHOP_ACTION_SPACE_CONTINUOUS
-        action_space_discrete = DEFAULT_SHOP_ACTION_SPACE_DISCRETE
-        action_mapping = DEFAULT_SHOP_DISCRETE_FUNCTION
-        reg_kwargs['actuators'] = DEFAULT_SHOP_ACTUATORS
-        reg_kwargs['variables'] = DEFAULT_SHOP_VARIABLES
-        reg_kwargs['meters'] = DEFAULT_SHOP_METERS
-        reg_kwargs['reward'] = LinearReward
-        reg_kwargs['reward_kwargs'] = {
-            'temperature_variables': [
-                'zone1_temperature',
-                'zone2_temperature',
-                'zone3_temperature',
-                'zone4_temperature',
-                'zone5_temperature'],
-            'energy_variables': 'HVAC_electricity_demand_rate',
-            'range_comfort_winter': (
-                20.0,
-                23.5),
-            'range_comfort_summer': (
-                23.0,
-                26.0)}
-
-    for id_specific in id_specifics:
-        id = 'Eplus-' + building + '-' + id_specific + '-v1'
-        reg_kwargs['env_name'] = building + '-' + id_specific + '-v1'
-
-        register_conf = id_specific.split('-')
-        if register_conf[0] == 'hot':
-            reg_kwargs['weather_files'] = 'USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw'
-        elif register_conf[0] == 'mixed':
-            reg_kwargs['weather_files'] = 'USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw'
-        elif register_conf[0] == 'cool':
-            reg_kwargs['weather_files'] = 'USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw'
-
-        reg_kwargs['action_space'] = action_space_continuous
-        additional_wrappers = ()
-
-        if register_conf[1] == 'discrete':
             discrete_wrapper_spec = WrapperSpec(
                 name='DiscretizeEnv',
                 entry_point='sinergym.utils.wrappers:DiscretizeEnv',
                 kwargs={
-                    'discrete_space': action_space_discrete,
+                    'discrete_space': eval(conf['action_space_discrete']),
                     'action_mapping': action_mapping})
             additional_wrappers = (discrete_wrapper_spec,)
 
-        reg_kwargs['weather_variability'] = None
-        if len(register_conf) == 3:
-            if register_conf[2] == 'stochastic':
-                reg_kwargs['weather_variability'] = variation
-
-        register(
-            id=id,
-            entry_point='sinergym.envs:EplusEnv',
-            additional_wrappers=additional_wrappers,
-            # order_enforce=False,
-            # disable_env_checker=True,
-            kwargs=reg_kwargs.copy()
-        )
+            register(
+                id=env_id.replace('continuous', 'discrete'),
+                entry_point='sinergym.envs:EplusEnv',
+                additional_wrappers=additional_wrappers,
+                # order_enforce=False,
+                # disable_env_checker=True,
+                kwargs=env_kwargs
+            )
