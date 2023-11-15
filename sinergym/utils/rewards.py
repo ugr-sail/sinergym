@@ -5,7 +5,7 @@ from datetime import datetime
 from math import exp
 from typing import Any, Dict, List, Tuple, Union
 
-from sinergym.utils.constants import YEAR, LOG_REWARD_LEVEL
+from sinergym.utils.constants import LOG_REWARD_LEVEL, YEAR
 from sinergym.utils.logger import Logger
 
 

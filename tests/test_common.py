@@ -1,9 +1,10 @@
+import json
+
+import gymnasium as gym
 import pytest
 
 import sinergym.utils.common as common
 from sinergym.utils.wrappers import NormalizeObservation
-import gymnasium as gym
-import json
 
 
 @pytest.mark.parametrize(

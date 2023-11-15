@@ -1,12 +1,12 @@
-import os
 import json
+import os
 
 import gymnasium as gym
 from gymnasium.envs.registration import WrapperSpec, register
 
+from sinergym.utils.common import convert_conf_to_env_parameters
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
-from sinergym.utils.common import convert_conf_to_env_parameters
 
 # ------------------------- Set __version__ in module ------------------------ #
 version_file = os.path.join(os.path.dirname(__file__), "version.txt")

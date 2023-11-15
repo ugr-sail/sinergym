@@ -3,7 +3,7 @@
 import os
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple, Type, Union, Any
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import gymnasium as gym
 import numpy as np
@@ -14,7 +14,6 @@ from opyplus.epm.record import Record
 
 from sinergym.utils.constants import YEAR
 from sinergym.utils.rewards import *
-import gymnasium as gym
 
 # --------------------------------- Wrappers --------------------------------- #
 
