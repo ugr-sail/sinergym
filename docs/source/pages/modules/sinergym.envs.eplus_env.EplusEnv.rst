@@ -22,7 +22,6 @@
       ~EplusEnv.render
       ~EplusEnv.reset
       ~EplusEnv.step
-      ~EplusEnv.update_flag_normalization
    
    
 
@@ -39,8 +38,8 @@
       ~EplusEnv.ddy_path
       ~EplusEnv.episode_length
       ~EplusEnv.episode_path
-      ~EplusEnv.experiment_path
       ~EplusEnv.idd_path
+      ~EplusEnv.is_discrete
       ~EplusEnv.is_running
       ~EplusEnv.logger
       ~EplusEnv.metadata
@@ -57,6 +56,7 @@
       ~EplusEnv.unwrapped
       ~EplusEnv.var_handlers
       ~EplusEnv.weather_path
+      ~EplusEnv.workspace_path
       ~EplusEnv.zone_names
    
    

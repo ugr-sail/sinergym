@@ -213,6 +213,9 @@ The **list of available environments** is the following:
 | Eplus-shop-hot-discrete-stochastic-v1           | ShopWithVandBattery.idf               | USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw                        | Yes                 | Discrete(10) | 01/01 - 31/12     |
 +-------------------------------------------------+---------------------------------------+-----------------------------------------------------------------+---------------------+--------------+-------------------+
 
+.. important:: Since *Sinergym* v3.0.9, these environments are generated automatically using JSON configuration files
+               for each building instead of register manually each environment id with parameters directly set in 
+               environment constructor. See :ref:`Environments Configuration and Registration`.
 
 .. note:: For more information about buildings (epJSON column) and weathers (EPW column),
           please, visit sections :ref:`Buildings` and :ref:`Weathers` respectively.
@@ -374,11 +377,15 @@ space of the environment is being made. ``time_variables``, ``variables`` and ``
 This allows us to do a **dynamic definition** of spaces, *Sinergym* will adapt the building model.
 Observation space is created automatically, but action space must be defined in order to set up
 the range values supported by the Gymnasium interface in the actuators, or the number of discrete values if
-it is a discrete environment.
+it is a discrete environment (using the wrapper for discretization).
                 
-Then, the argument called ``action_space`` defines this action space following the **gymnasium standard**.  
-This definition can be discrete or continuous and must be consistent with the previously defined actuators 
-(*Sinergym* will show possible inconsistencies).
+Then, the argument called ``action_space`` defines this action space following the **gymnasium standard**.
+*EnergyPlus* simulator works only with continuous values, so *Sinergym* action space defined must be continuous
+too (``gym.spaces.Box``). This definition must be consistent with the previously defined actuators (*Sinergym* 
+will show possible inconsistencies).
+
+.. note:: If you want to adapt a environment to a gym ``Discrete``, ``MultiDiscrete`` or ``MultiBinary`` spaces,
+          like our predefined discrete environments, see section :ref:`DiscretizeEnv` and an example in :ref:`Environment Discretization Wrapper`
 
 .. important:: *Sinergym*'s listed environments have a default observation and action variables defined, 
                it is available in `constants.py <https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/constants.py>`__.
@@ -388,57 +395,6 @@ This definition can be discrete or continuous and must be consistent with the pr
 of all its benefits instead of using the *EnergyPlus* simulator directly, meanwhile the control is 
 managed by **default building model schedulers** as mentioned. For more information, see the example of use 
 :ref:`Default building control setting up an empty action interface`.
-
-Normalization flag
-===================
-
-The argument called ``flag_normalization`` indicates whether action space specified will be normalized to
-``[-1,1]`` or not (only take effect in **continuous** environments). Then, *Sinergym* will use
-the real space specified in **action_space** argument or this normalized space depending on
-this flag value. This is done in order to make environments more generic in DRL solutions.
-*Sinergym* **parse** these values to real action space defined in environment internally before to 
-send it to *EnergyPlus* Simulator by the API middleware.
-
-.. important:: The method in charge of parse this values from [-1,1] to real action space if it is required is 
-        called ``_action_transform(action)`` in *sinergym/sinergym/envs/eplus_env.py*.
-        We always recommend to use the normalization in action space for DRL solutions, since this space is 
-        compatible with all algorithms. However, if you are implementing your own rule-based controller 
-        and working with real action values, for example, you can deactivate normalization.
-
-.. note:: By default, all *Sinergym*'s environments will have normalization in action space.
-        It is possible to specify the **flag_normalization** to false in the constructor argument or
-        to change it during the execution using ``env.update_flag_normalization(False)``.
-
-Action mapping
-===============
-
-The argument called ``action_mapping`` is only necessary to specify it in **discrete** action spaces. 
-It is a dictionary that links an **index** to a specific configuration of values for 
-each action variable. The format of this dictionary is:
-
-.. code-block:: python
-
-  action_space = gym.space.Discrete(10)
-
-  action_mapping = {
-    0: # <tuple with all action variables values for option 0>
-    1: # <tuple with all action variables values for option 1>
-    2: # <tuple with all action variables values for option 2>
-    # ... 
-  }
-
-These tuples must have the same length than the action variables of the environment.
-
-As you can see, some attributes are required depending on the environment is **continuous or discrete**. If
-the environment is discrete, ``action_mapping`` is required, if it is specified in a continuous environment will
-not take effect. On the other hand, in a continuous environment, it will be created a real and normalized space and 
-only one would be the action space depending on ``flag_normalization`` value. If normalization flag is activated
-in a discrete environment, will not take effect.
-
-.. image:: /_static/environment_types.png
-  :scale: 60 %
-  :alt: Attributes depending on environment type.
-  :align: center
 
 Environment name
 ================
@@ -488,7 +444,7 @@ The main steps you have to follow are the next:
 
 1. Add your building file (*epJSON*) to `buildings <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings>`__.
    *EnergyPlus* pretends to work with *JSON* format instead of *IDF* format in their building definitions and simulations. Then,
-   *Sinergym* pretends to work with this format from version 2.4.0 or higher directly. You can download a *IDF* file and convert
+   *Sinergym* pretends to work with this format from v2.4.0 or higher directly. You can download a *IDF* file and convert
    to *epJSON* using their **ConvertInputFormat tool** from *EnergyPlus*.
    **Be sure that new epJSON model version is compatible with EnergyPlus version**.
 
@@ -503,6 +459,10 @@ The main steps you have to follow are the next:
    We have examples about how to get environment information in :ref:`Getting information about Sinergym environments`.
 
 5. Now, you can use your own environment ID with ``gym.make()`` like our documentation examples.
+
+Once the first step has been performed, it is also possible to **register a set of environments 
+automatically** in *Sinergym* by writing its corresponding configuration file in ``sinergym/data/default_configuration/<configuration_JSON_file>``. 
+For more information on this, see :ref:`Environments Configuration and Registration`.
 
 .. important:: In order to know the available variables, meters, actuators, etc. You can try to do an empty control in the building and look for files
                such as RDD, MDD, MTD or ``data_available.txt`` file generated with *EnergyPlus* API in the output folder by *Sinergym*.

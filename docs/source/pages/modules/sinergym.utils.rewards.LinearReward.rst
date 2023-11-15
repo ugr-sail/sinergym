@@ -1,4 +1,4 @@
-sinergym.utils.rewards.LinearReward
+﻿sinergym.utils.rewards.LinearReward
 ===================================
 
 .. currentmodule:: sinergym.utils.rewards
@@ -20,5 +20,11 @@ sinergym.utils.rewards.LinearReward
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~LinearReward.logger
    
    

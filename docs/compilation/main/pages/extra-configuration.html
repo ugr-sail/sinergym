@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>9. Extra Configuration in Sinergym simulations &mdash; sinergym  documentation</title>
+  <title>10. Extra Configuration in Sinergym simulations &mdash; sinergym  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/doc_theme.css" type="text/css" />
@@ -22,8 +22,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="10. Output format" href="output.html" />
-    <link rel="prev" title="8. Wrappers" href="wrappers.html" /> 
+    <link rel="next" title="11. Output format" href="output.html" />
+    <link rel="prev" title="9. Wrappers" href="wrappers.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -56,30 +56,31 @@
 <li class="toctree-l1"><a class="reference internal" href="buildings.html">3. Buildings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weathers.html">4. Weathers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environments.html">5. Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rewards.html">6. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="controllers.html">7. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers.html">8. Wrappers</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">9. Extra Configuration in Sinergym simulations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#timestep-per-hour">9.1. timestep_per_hour</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#runperiod">9.2. runperiod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments_registration.html">6. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">7. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">8. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">9. Wrappers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">10. Extra Configuration in Sinergym simulations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#timestep-per-hour">10.1. timestep_per_hour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#runperiod">10.2. runperiod</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="output.html">10. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="github-actions.html">13. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">14. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">11. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">12. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">13. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">14. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">15. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">16. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">17. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">18. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">19. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">21. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">22. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">16. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">17. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">18. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">19. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">20. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">21. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">22. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">23. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -100,7 +101,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">9. </span>Extra Configuration in Sinergym simulations</li>
+      <li class="breadcrumb-item active"><span class="section-number">10. </span>Extra Configuration in Sinergym simulations</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/pages/extra-configuration.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -111,7 +112,7 @@
            <div itemprop="articleBody">
              
   <section id="extra-configuration-in-sinergym-simulations">
-<h1><span class="section-number">9. </span>Extra Configuration in Sinergym simulations<a class="headerlink" href="#extra-configuration-in-sinergym-simulations" title="Link to this heading"></a></h1>
+<h1><span class="section-number">10. </span>Extra Configuration in Sinergym simulations<a class="headerlink" href="#extra-configuration-in-sinergym-simulations" title="Link to this heading"></a></h1>
 <p>Using <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/config/modeling.py">Modeling class</a>,
 we have the possibility to set up some <strong>details of context</strong> in our simulation.
 This let us to amplify the context of each experiment and have more parameters to investigate.
@@ -131,14 +132,14 @@ To use this functionality easily, you can provide this extra parameters in <stro
 </div>
 <p>Let’s see each implemented parameter for extra configuration separately:</p>
 <section id="timestep-per-hour">
-<h2><span class="section-number">9.1. </span>timestep_per_hour<a class="headerlink" href="#timestep-per-hour" title="Link to this heading"></a></h2>
+<h2><span class="section-number">10.1. </span>timestep_per_hour<a class="headerlink" href="#timestep-per-hour" title="Link to this heading"></a></h2>
 <p>By default, a <em>Sinergym</em> apply <strong>4</strong> timestep per simulation hour,
 the default value in building files. However, you have the possibility to modify
 this value using <strong>timestep_per_hour</strong> key  in <cite>config_params</cite> dictionary and set
 more/less timesteps in each simulation hour.</p>
 </section>
 <section id="runperiod">
-<h2><span class="section-number">9.2. </span>runperiod<a class="headerlink" href="#runperiod" title="Link to this heading"></a></h2>
+<h2><span class="section-number">10.2. </span>runperiod<a class="headerlink" href="#runperiod" title="Link to this heading"></a></h2>
 <p>By default, a <em>Sinergym</em> simulation episode is one year (<em>from 1/1/1991 to 31/12/1991</em>).
 You can use this <strong>runperiod</strong> key and, as a result, determine <strong>episode length</strong> in simulation.
 The format value for <strong>runperiod</strong> key is a <strong>tuple</strong> with
@@ -167,8 +168,8 @@ please see the method <code class="docutils literal notranslate"><span class="pr
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="wrappers.html" class="btn btn-neutral float-left" title="8. Wrappers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="output.html" class="btn btn-neutral float-right" title="10. Output format" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="wrappers.html" class="btn btn-neutral float-left" title="9. Wrappers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="output.html" class="btn btn-neutral float-right" title="11. Output format" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

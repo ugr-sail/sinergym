@@ -56,26 +56,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">5. Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rewards.html">6. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../controllers.html">7. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">8. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../output.html">10. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">13. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tests.html">14. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">6. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">7. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">8. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">9. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">10. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">11. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">12. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">13. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">14. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">15. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/getting_env_information.html">16. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">17. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">18. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">19. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">21. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">22. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">16. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/getting_env_information.html">17. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">18. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">19. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">20. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">21. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">22. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">23. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -125,23 +126,21 @@
 <h1>sinergym.envs.eplus_env.EplusEnv<a class="headerlink" href="#sinergym-envs-eplus-env-eplusenv" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.envs.eplus_env.</span></span><span class="sig-name descname"><span class="pre">EplusEnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">building_file:</span> <span class="pre">str,</span> <span class="pre">weather_files:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.List[str],</span> <span class="pre">action_space:</span> <span class="pre">~gymnasium.spaces.box.Box</span> <span class="pre">|</span> <span class="pre">~gymnasium.spaces.discrete.Discrete</span> <span class="pre">=</span> <span class="pre">Box([],</span> <span class="pre">[],</span> <span class="pre">(0,),</span> <span class="pre">float32),</span> <span class="pre">time_variables:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">[],</span> <span class="pre">variables:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">meters:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">actuators:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">action_mapping:</span> <span class="pre">~typing.Dict[int,</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">...]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">flag_normalization:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">weather_variability:</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">float,</span> <span class="pre">float]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">reward:</span> <span class="pre">~typing.Any</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.rewards.LinearReward'&gt;,</span> <span class="pre">reward_kwargs:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">max_ep_data_store_num:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10,</span> <span class="pre">env_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'eplus-env-v1',</span> <span class="pre">config_params:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.envs.eplus_env.</span></span><span class="sig-name descname"><span class="pre">EplusEnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">building_file:</span> <span class="pre">str,</span> <span class="pre">weather_files:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.List[str],</span> <span class="pre">action_space:</span> <span class="pre">~gymnasium.spaces.box.Box</span> <span class="pre">=</span> <span class="pre">Box([],</span> <span class="pre">[],</span> <span class="pre">(0,),</span> <span class="pre">float32),</span> <span class="pre">time_variables:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">[],</span> <span class="pre">variables:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">meters:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">actuators:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">weather_variability:</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">float,</span> <span class="pre">float]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">reward:</span> <span class="pre">~typing.Any</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.rewards.LinearReward'&gt;,</span> <span class="pre">reward_kwargs:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">max_ep_data_store_num:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10,</span> <span class="pre">env_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'eplus-env-v1',</span> <span class="pre">config_params:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv" title="Link to this definition"></a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">building_file:</span> <span class="pre">str,</span> <span class="pre">weather_files:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.List[str],</span> <span class="pre">action_space:</span> <span class="pre">~gymnasium.spaces.box.Box</span> <span class="pre">|</span> <span class="pre">~gymnasium.spaces.discrete.Discrete</span> <span class="pre">=</span> <span class="pre">Box([],</span> <span class="pre">[],</span> <span class="pre">(0,),</span> <span class="pre">float32),</span> <span class="pre">time_variables:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">[],</span> <span class="pre">variables:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">meters:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">actuators:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">action_mapping:</span> <span class="pre">~typing.Dict[int,</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">...]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">flag_normalization:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">weather_variability:</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">float,</span> <span class="pre">float]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">reward:</span> <span class="pre">~typing.Any</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.rewards.LinearReward'&gt;,</span> <span class="pre">reward_kwargs:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">max_ep_data_store_num:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10,</span> <span class="pre">env_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'eplus-env-v1',</span> <span class="pre">config_params:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.__init__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">building_file:</span> <span class="pre">str,</span> <span class="pre">weather_files:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.List[str],</span> <span class="pre">action_space:</span> <span class="pre">~gymnasium.spaces.box.Box</span> <span class="pre">=</span> <span class="pre">Box([],</span> <span class="pre">[],</span> <span class="pre">(0,),</span> <span class="pre">float32),</span> <span class="pre">time_variables:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">[],</span> <span class="pre">variables:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">meters:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">actuators:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">weather_variability:</span> <span class="pre">~typing.Tuple[float,</span> <span class="pre">float,</span> <span class="pre">float]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">reward:</span> <span class="pre">~typing.Any</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sinergym.utils.rewards.LinearReward'&gt;,</span> <span class="pre">reward_kwargs:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">{},</span> <span class="pre">max_ep_data_store_num:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10,</span> <span class="pre">env_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'eplus-env-v1',</span> <span class="pre">config_params:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.__init__" title="Link to this definition"></a></dt>
 <dd><p>Environment with EnergyPlus simulator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>building_file</strong> (<em>str</em>) – Name of the JSON file with the building definition.</p></li>
 <li><p><strong>weather_files</strong> (<em>Union</em><em>[</em><em>str</em><em>,</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – Name of the EPW file for weather conditions. It can be specified a list of weathers files in order to sample a weather in each episode randomly.</p></li>
-<li><p><strong>action_space</strong> (<em>Union</em><em>[</em><em>gym.spaces.Box</em><em>, </em><em>gym.spaces.Discrete</em><em>]</em><em>, </em><em>optional</em>) – Gym Action Space definition. Defaults to an empty action_space (no control).</p></li>
+<li><p><strong>action_space</strong> (<em>gym.spaces.Box</em><em>, </em><em>optional</em>) – Gym Action Space definition. Defaults to an empty action_space (no control).</p></li>
 <li><p><strong>time_variables</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – EnergyPlus time variables we want to observe. The name of the variable must match with the name of the E+ Data Transfer API method name. Defaults to empty list.</p></li>
 <li><p><strong>variables</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.</p></li>
 <li><p><strong>meters</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.</p></li>
 <li><p><strong>actuators</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. Defaults to empty dict.</p></li>
-<li><p><strong>action_mapping</strong> (<em>Dict</em><em>[</em><em>int</em><em>, </em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>...</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Action mapping list for discrete actions spaces only. Defaults to empty list.</p></li>
-<li><p><strong>flag_normalization</strong> (<em>bool</em>) – Flag indicating if action space must be normalized to [-1,1]. This flag only take effect in continuous environments. Default to true.</p></li>
 <li><p><strong>weather_variability</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.</p></li>
 <li><p><strong>reward</strong> (<em>Any</em><em>, </em><em>optional</em>) – Reward function instance used for agent feedback. Defaults to LinearReward.</p></li>
 <li><p><strong>reward_kwargs</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Parameters to be passed to the reward function. Defaults to empty dict.</p></li>
@@ -177,9 +176,6 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.step" title="sinergym.envs.eplus_env.EplusEnv.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
 <td><p>Sends action to the environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.update_flag_normalization" title="sinergym.envs.eplus_env.EplusEnv.update_flag_normalization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_flag_normalization</span></code></a>(value)</p></td>
-<td><p>Update the normalized flag in continuous environments and update the action space</p></td>
-</tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
@@ -209,58 +205,61 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.idd_path" title="sinergym.envs.eplus_env.EplusEnv.idd_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">idd_path</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.is_running" title="sinergym.envs.eplus_env.EplusEnv.is_running"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_running</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.is_discrete" title="sinergym.envs.eplus_env.EplusEnv.is_discrete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_discrete</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.logger" title="sinergym.envs.eplus_env.EplusEnv.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.is_running" title="sinergym.envs.eplus_env.EplusEnv.is_running"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_running</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.metadata" title="sinergym.envs.eplus_env.EplusEnv.metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.logger" title="sinergym.envs.eplus_env.EplusEnv.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.meter_handlers" title="sinergym.envs.eplus_env.EplusEnv.meter_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">meter_handlers</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.metadata" title="sinergym.envs.eplus_env.EplusEnv.metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_random</span></code></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.meter_handlers" title="sinergym.envs.eplus_env.EplusEnv.meter_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">meter_handlers</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_random</span></code></p></td>
 <td><p>Returns the environment's internal <code class="xref py py-attr docutils literal notranslate"><span class="pre">_np_random</span></code> that if not set will initialise with a random seed.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.observation_space" title="sinergym.envs.eplus_env.EplusEnv.observation_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation_space</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.observation_space" title="sinergym.envs.eplus_env.EplusEnv.observation_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation_space</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_mode</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_mode</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reward_range</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reward_range</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.runperiod" title="sinergym.envs.eplus_env.EplusEnv.runperiod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runperiod</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.runperiod" title="sinergym.envs.eplus_env.EplusEnv.runperiod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runperiod</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.schedulers" title="sinergym.envs.eplus_env.EplusEnv.schedulers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedulers</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.schedulers" title="sinergym.envs.eplus_env.EplusEnv.schedulers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedulers</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.step_size" title="sinergym.envs.eplus_env.EplusEnv.step_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step_size</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.step_size" title="sinergym.envs.eplus_env.EplusEnv.step_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step_size</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.timestep_per_episode" title="sinergym.envs.eplus_env.EplusEnv.timestep_per_episode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timestep_per_episode</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.timestep_per_episode" title="sinergym.envs.eplus_env.EplusEnv.timestep_per_episode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timestep_per_episode</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></p></td>
 <td><p>Returns the base non-wrapped environment.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.var_handlers" title="sinergym.envs.eplus_env.EplusEnv.var_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var_handlers</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.var_handlers" title="sinergym.envs.eplus_env.EplusEnv.var_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var_handlers</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.weather_path" title="sinergym.envs.eplus_env.EplusEnv.weather_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weather_path</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.weather_path" title="sinergym.envs.eplus_env.EplusEnv.weather_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weather_path</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.workspace_path" title="sinergym.envs.eplus_env.EplusEnv.workspace_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">workspace_path</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.workspace_path" title="sinergym.envs.eplus_env.EplusEnv.workspace_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">workspace_path</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.zone_names" title="sinergym.envs.eplus_env.EplusEnv.zone_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_names</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.zone_names" title="sinergym.envs.eplus_env.EplusEnv.zone_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_names</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -314,6 +313,11 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.info">
 <span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.info" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.is_discrete">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_discrete</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.is_discrete" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -408,17 +412,6 @@
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.timestep_per_episode">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">timestep_per_episode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.timestep_per_episode" title="Link to this definition"></a></dt>
 <dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.update_flag_normalization">
-<span class="sig-name descname"><span class="pre">update_flag_normalization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.update_flag_normalization" title="Link to this definition"></a></dt>
-<dd><p>Update the normalized flag in continuous environments and update the action space</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – New flag_normalization attribute value</p>
-</dd>
-</dl>
-</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.var_handlers">

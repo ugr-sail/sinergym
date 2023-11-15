@@ -22,8 +22,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sinergym.utils.common.ranges_getter" href="sinergym.utils.common.ranges_getter.html" />
-    <link rel="prev" title="sinergym.utils.common.get_season_comfort_range" href="sinergym.utils.common.get_season_comfort_range.html" /> 
+    <link rel="next" title="sinergym.utils.common.json_to_actuators" href="sinergym.utils.common.json_to_actuators.html" />
+    <link rel="prev" title="sinergym.utils.common.get_record_keys" href="sinergym.utils.common.get_record_keys.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -56,26 +56,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">5. Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rewards.html">6. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../controllers.html">7. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">8. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../output.html">10. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">13. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tests.html">14. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">6. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">7. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">8. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">9. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">10. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">11. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">12. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">13. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">14. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">15. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/getting_env_information.html">16. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">17. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">18. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">19. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">21. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">22. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">16. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/getting_env_information.html">17. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">18. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">19. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">20. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">21. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">22. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">23. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -83,12 +84,15 @@
 <li class="toctree-l2 current"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.convert_conf_to_env_parameters.html">sinergym.utils.common.convert_conf_to_env_parameters</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.eppy_element_to_dict.html">sinergym.utils.common.eppy_element_to_dict</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.export_schedulers_to_excel.html">sinergym.utils.common.export_schedulers_to_excel</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_delta_seconds.html">sinergym.utils.common.get_delta_seconds</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_record_keys.html">sinergym.utils.common.get_record_keys</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.get_season_comfort_range.html">sinergym.utils.common.get_season_comfort_range</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.common.is_wrapped</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.json_to_actuators.html">sinergym.utils.common.json_to_actuators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.json_to_meters.html">sinergym.utils.common.json_to_meters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.json_to_variables.html">sinergym.utils.common.json_to_variables</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.ranges_getter.html">sinergym.utils.common.ranges_getter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.common.unwrap_wrapper.html">sinergym.utils.common.unwrap_wrapper</a></li>
 </ul>
@@ -162,8 +166,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sinergym.utils.common.get_season_comfort_range.html" class="btn btn-neutral float-left" title="sinergym.utils.common.get_season_comfort_range" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sinergym.utils.common.ranges_getter.html" class="btn btn-neutral float-right" title="sinergym.utils.common.ranges_getter" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sinergym.utils.common.get_record_keys.html" class="btn btn-neutral float-left" title="sinergym.utils.common.get_record_keys" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sinergym.utils.common.json_to_actuators.html" class="btn btn-neutral float-right" title="sinergym.utils.common.json_to_actuators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

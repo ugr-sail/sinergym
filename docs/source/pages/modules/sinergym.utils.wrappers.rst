@@ -21,9 +21,11 @@
    
       DatetimeWrapper
       DiscreteIncrementalWrapper
+      DiscretizeEnv
       LoggerWrapper
       MultiObjectiveReward
       MultiObsWrapper
+      NormalizeAction
       NormalizeObservation
       OfficeGridStorageSmoothingActionConstraintsWrapper
       PreviousObservationWrapper

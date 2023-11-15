@@ -22,7 +22,6 @@
       ~EplusEnv.render
       ~EplusEnv.reset
       ~EplusEnv.step
-      ~EplusEnv.update_flag_normalization
    
    
 
@@ -40,6 +39,7 @@
       ~EplusEnv.episode_length
       ~EplusEnv.episode_path
       ~EplusEnv.idd_path
+      ~EplusEnv.is_discrete
       ~EplusEnv.is_running
       ~EplusEnv.logger
       ~EplusEnv.metadata

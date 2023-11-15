@@ -26,6 +26,7 @@
     "seed": 3,
     "model": null,
     "wrappers": {
+        "NormalizeAction": {},
         "NormalizeObservation": {},
         "NormalizeReward": {},
         "LoggerWrapper": {

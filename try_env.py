@@ -2,10 +2,12 @@ import gymnasium as gym
 import numpy as np
 
 import sinergym
-from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
+from sinergym.utils.wrappers import (LoggerWrapper, NormalizeAction,
+                                     NormalizeObservation)
 
 # Creating environment and applying wrappers for normalization and logging
 env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1')
+env = NormalizeAction(env)
 env = NormalizeObservation(env)
 env = LoggerWrapper(env)
 

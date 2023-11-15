@@ -100,7 +100,7 @@ class LoggerCallback(BaseCallback):
         else:
             raise KeyError('Algorithm action key in locals dict unknown.')
 
-        if self.training_env.get_attr('flag_discrete')[-1]:
+        if self.training_env.get_attr('is_discrete')[-1]:
             self.logger.record(
                 'action_network/index', action)
             for i, variable in enumerate(action_variables):

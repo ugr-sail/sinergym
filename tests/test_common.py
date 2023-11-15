@@ -1,3 +1,6 @@
+import json
+
+import gymnasium as gym
 import pytest
 
 import sinergym.utils.common as common
@@ -29,21 +32,21 @@ def test_get_delta_seconds(
 
 
 def test_is_wrapped(
-        env_5zone_continuous,
+        env_5zone,
         env_wrapper_normalization,
         env_all_wrappers):
     # Check returns
-    assert not common.is_wrapped(env_5zone_continuous, NormalizeObservation)
+    assert not common.is_wrapped(env_5zone, NormalizeObservation)
     assert common.is_wrapped(env_wrapper_normalization, NormalizeObservation)
     assert common.is_wrapped(env_all_wrappers, NormalizeObservation)
 
 
 def test_unwrap_wrapper(
-        env_5zone_continuous,
+        env_5zone,
         env_wrapper_normalization,
         env_all_wrappers):
-    # Check if env_wrapper_normalization unwrapped is env_5zone_continuous
-    assert not hasattr(env_5zone_continuous, 'unwrapped_observation')
+    # Check if env_wrapper_normalization unwrapped is env_5zone
+    assert not hasattr(env_5zone, 'unwrapped_observation')
     assert hasattr(env_all_wrappers, 'unwrapped_observation')
     assert hasattr(env_wrapper_normalization, 'unwrapped_observation')
     assert hasattr(env_wrapper_normalization, 'env')
@@ -53,18 +56,53 @@ def test_unwrap_wrapper(
     assert not hasattr(env, 'unwrapped_observation')
     # Check if trying unwrap a not wrapped environment the result is None
     env = common.unwrap_wrapper(
-        env_5zone_continuous,
+        env_5zone,
         NormalizeObservation)
     assert env is None
     env = common.unwrap_wrapper(env_all_wrappers, NormalizeObservation)
     assert not hasattr(env, 'unwrapped_observation')
 
 
-@pytest.mark.parametrize(
-    'year,month,day,expected',
-    [(1991, 2, 13, (20.0, 23.5)),
-     (1991, 9, 9, (23.0, 26.0))]
-)
-def test_get_season_comfort_range(year, month, day, expected):
-    output_range = common.get_season_comfort_range(year, month, day)
-    assert output_range == expected
+def test_json_to_variables(conf_5zone):
+
+    assert isinstance(conf_5zone['variables'], dict)
+    output = common.json_to_variables(conf_5zone['variables'])
+
+    assert isinstance(output, dict)
+    assert isinstance(list(output.keys())[0], str)
+    assert isinstance(list(output.values())[0], tuple)
+    assert len(list(output.values())[0]) == 2
+
+
+def test_json_to_meters(conf_5zone):
+
+    assert isinstance(conf_5zone['meters'], dict)
+    output = common.json_to_meters(conf_5zone['meters'])
+
+    assert isinstance(output, dict)
+    assert isinstance(list(output.keys())[0], str)
+    assert isinstance(list(output.values())[0], str)
+
+
+def test_json_to_meters(conf_5zone):
+
+    assert isinstance(conf_5zone['actuators'], dict)
+    output = common.json_to_actuators(conf_5zone['actuators'])
+
+    assert isinstance(output, dict)
+    assert isinstance(list(output.keys())[0], str)
+    assert isinstance(list(output.values())[0], tuple)
+    assert len(list(output.values())[0]) == 3
+
+
+def test_convert_conf_to_env_parameters(conf_5zone):
+
+    configurations = common.convert_conf_to_env_parameters(conf_5zone)
+
+    # Check if environments are valid
+    for env_id, env_kwargs in configurations.items():
+        # Added TEST name in env_kwargs
+        env_kwargs['env_name'] = 'TESTGYM'
+        env = gym.make(env_id, **env_kwargs)
+        env.reset()
+        env.close()
