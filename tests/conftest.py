@@ -51,6 +51,14 @@ def weather_path_pittsburgh(pkg_data_path):
         'weather',
         'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw')
 
+
+@pytest.fixture(scope='session')
+def configuration_path_5zone(pkg_data_path):
+    return os.path.join(
+        pkg_data_path,
+        'default_configuration',
+        '5ZoneAutoDXVAV.json')
+
 # ---------------------------------------------------------------------------- #
 #                         Default Environment Arguments                        #
 # ---------------------------------------------------------------------------- #
@@ -199,6 +207,17 @@ def ACTUATORS_DATACENTER():
             'Schedule Value',
             'Cooling Setpoints')
     }
+
+# ---------------------------------------------------------------------------- #
+#                       Default environment configuration                      #
+# ---------------------------------------------------------------------------- #
+
+
+@pytest.fixture(scope='session')
+def conf_5zone(configuration_path_5zone):
+    with open(configuration_path_5zone) as json_f:
+        conf = json.load(json_f)
+    return conf
 
 # ---------------------------------------------------------------------------- #
 #                                 Environments                                 #
