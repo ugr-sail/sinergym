@@ -339,7 +339,7 @@ def json_to_actuators(
 
 
 def convert_conf_to_env_parameters(
-        conf: Dict[str, Any]) -> List[Dict[str, Any]]:
+        conf: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
     """Convert a conf from json format (sinergym/data/default_configuration/file.json) in a dictionary of all possible environments as dictionary with id as key and env_kwargs as value.
        More information about Sinergym environment configuration in JSON format in documentation.
 
