@@ -1,4 +1,4 @@
-sinergym.utils.rewards.BaseReward
+﻿sinergym.utils.rewards.BaseReward
 =================================
 
 .. currentmodule:: sinergym.utils.rewards
@@ -20,5 +20,11 @@ sinergym.utils.rewards.BaseReward
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BaseReward.logger
    
    

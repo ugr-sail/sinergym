@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>21. Rule Controller example &mdash; sinergym  documentation</title>
+  <title>22. Rule Controller example &mdash; sinergym  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/nbsphinx-code-cells.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="22. DRL usage example" href="drl.html" />
-    <link rel="prev" title="20. Logger Wrapper personalization/configuration" href="personalize_loggerwrapper.html" /> 
+    <link rel="next" title="23. DRL usage example" href="drl.html" />
+    <link rel="prev" title="21. Logger Wrapper personalization/configuration" href="personalize_loggerwrapper.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -59,26 +59,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">5. Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rewards.html">6. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../controllers.html">7. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">8. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../output.html">10. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">13. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tests.html">14. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">6. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">7. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">8. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">9. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">10. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">11. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">12. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">13. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">14. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">15. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">16. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="change_environment.html">17. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">18. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">19. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">21. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="drl.html">22. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">16. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">17. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">18. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">19. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">20. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">21. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">22. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">23. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -99,7 +100,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">21. </span>Rule Controller example</li>
+      <li class="breadcrumb-item active"><span class="section-number">22. </span>Rule Controller example</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/notebooks/rule_controller_example.nblink.txt" rel="nofollow"> View page source</a>
       </li>
@@ -110,14 +111,13 @@
            <div itemprop="articleBody">
              
   <section id="Rule-Controller-example">
-<h1><span class="section-number">21. </span>Rule Controller example<a class="headerlink" href="#Rule-Controller-example" title="Link to this heading"></a></h1>
+<h1><span class="section-number">22. </span>Rule Controller example<a class="headerlink" href="#Rule-Controller-example" title="Link to this heading"></a></h1>
 <p>First, we import all the used libraries, remember to always import <code class="docutils literal notranslate"><span class="pre">sinergym</span></code> even if it says is not used, because that is needed to define the environments.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Sequence</span>
-<span class="kn">from</span> <span class="nn">sinergym.utils.common</span> <span class="kn">import</span> <span class="n">get_season_comfort_range</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.constants</span> <span class="kn">import</span> <span class="n">YEAR</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
@@ -189,7 +189,7 @@
             <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_summer</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_summer</span>
-        <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="n">get_season_comfort_range</span><span class="p">(</span><span class="mi">1991</span><span class="p">,</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span>
+        <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_winter</span>
         <span class="c1"># Update setpoints</span>
         <span class="n">in_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;air_temperature&#39;</span><span class="p">]</span>
 
@@ -352,8 +352,8 @@ Episode  0 Mean reward:  -1.1398474376950953 Cumulative reward:  -39940.25421683
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="personalize_loggerwrapper.html" class="btn btn-neutral float-left" title="20. Logger Wrapper personalization/configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="drl.html" class="btn btn-neutral float-right" title="22. DRL usage example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="personalize_loggerwrapper.html" class="btn btn-neutral float-left" title="21. Logger Wrapper personalization/configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="drl.html" class="btn btn-neutral float-right" title="23. DRL usage example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

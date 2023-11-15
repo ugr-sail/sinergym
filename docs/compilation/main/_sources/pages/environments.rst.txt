@@ -213,6 +213,9 @@ The **list of available environments** is the following:
 | Eplus-shop-hot-discrete-stochastic-v1           | ShopWithVandBattery.idf               | USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw                        | Yes                 | Discrete(10) | 01/01 - 31/12     |
 +-------------------------------------------------+---------------------------------------+-----------------------------------------------------------------+---------------------+--------------+-------------------+
 
+.. important:: Since *Sinergym* v3.0.9, these environments are generated automatically using JSON configuration files
+               for each building instead of register manually each environment id with parameters directly set in 
+               environment constructor. See :ref:`Environments Configuration and Registration`.
 
 .. note:: For more information about buildings (epJSON column) and weathers (EPW column),
           please, visit sections :ref:`Buildings` and :ref:`Weathers` respectively.
@@ -441,7 +444,7 @@ The main steps you have to follow are the next:
 
 1. Add your building file (*epJSON*) to `buildings <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings>`__.
    *EnergyPlus* pretends to work with *JSON* format instead of *IDF* format in their building definitions and simulations. Then,
-   *Sinergym* pretends to work with this format from version 2.4.0 or higher directly. You can download a *IDF* file and convert
+   *Sinergym* pretends to work with this format from v2.4.0 or higher directly. You can download a *IDF* file and convert
    to *epJSON* using their **ConvertInputFormat tool** from *EnergyPlus*.
    **Be sure that new epJSON model version is compatible with EnergyPlus version**.
 
@@ -456,6 +459,10 @@ The main steps you have to follow are the next:
    We have examples about how to get environment information in :ref:`Getting information about Sinergym environments`.
 
 5. Now, you can use your own environment ID with ``gym.make()`` like our documentation examples.
+
+Once the first step has been performed, it is also possible to **register a set of environments 
+automatically** in *Sinergym* by writing its corresponding configuration file in ``sinergym/data/default_configuration/<configuration_JSON_file>``. 
+For more information on this, see :ref:`Environments Configuration and Registration`.
 
 .. important:: In order to know the available variables, meters, actuators, etc. You can try to do an empty control in the building and look for files
                such as RDD, MDD, MTD or ``data_available.txt`` file generated with *EnergyPlus* API in the output folder by *Sinergym*.

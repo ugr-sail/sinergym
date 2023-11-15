@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>17. Changing an environment registered in Sinergym &mdash; sinergym  documentation</title>
+  <title>18. Changing an environment registered in Sinergym &mdash; sinergym  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/nbsphinx-code-cells.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="18. Default building control setting up an empty action interface" href="default_building_control.html" />
-    <link rel="prev" title="16. Getting information about Sinergym environments" href="getting_env_information.html" /> 
+    <link rel="next" title="19. Default building control setting up an empty action interface" href="default_building_control.html" />
+    <link rel="prev" title="17. Getting information about Sinergym environments" href="getting_env_information.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -59,32 +59,33 @@
 <li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">5. Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rewards.html">6. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../controllers.html">7. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">8. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../output.html">10. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">13. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tests.html">14. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">6. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">7. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">8. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">9. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">10. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">11. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">12. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">13. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">14. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">15. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">16. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">17. Changing an environment registered in Sinergym</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Adding-a-new-reward">17.1. Adding a new reward</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Updating-the-weather-used-in-environment">17.2. Updating the weather used in environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Changing-observation-and-action-spaces">17.3. Changing observation and action spaces</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Adding-more-extra-configuration">17.4. Adding more extra configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">16. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">17. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">18. Changing an environment registered in Sinergym</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Adding-a-new-reward">18.1. Adding a new reward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Updating-the-weather-used-in-environment">18.2. Updating the weather used in environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Changing-observation-and-action-spaces">18.3. Changing observation and action spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Adding-more-extra-configuration">18.4. Adding more extra configuration</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">18. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">19. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">21. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="drl.html">22. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">19. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">20. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">21. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">22. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">23. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -105,7 +106,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">17. </span>Changing an environment registered in Sinergym</li>
+      <li class="breadcrumb-item active"><span class="section-number">18. </span>Changing an environment registered in Sinergym</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/notebooks/change_environment.nblink.txt" rel="nofollow"> View page source</a>
       </li>
@@ -116,7 +117,7 @@
            <div itemprop="articleBody">
              
   <section id="Changing-an-environment-registered-in-Sinergym">
-<h1><span class="section-number">17. </span>Changing an environment registered in Sinergym<a class="headerlink" href="#Changing-an-environment-registered-in-Sinergym" title="Link to this heading"></a></h1>
+<h1><span class="section-number">18. </span>Changing an environment registered in Sinergym<a class="headerlink" href="#Changing-an-environment-registered-in-Sinergym" title="Link to this heading"></a></h1>
 <p>As discussed above, Sinergym has a list of available environments which we can call with <code class="docutils literal notranslate"><span class="pre">gym.make(&lt;environment_id&gt;)</span></code> as long as the Sinergym package is imported into the python script.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -155,7 +156,7 @@
 intact.</p>
 <p>Let’s see some things we can update starting from any environment:</p>
 <section id="Adding-a-new-reward">
-<h2><span class="section-number">17.1. </span>Adding a new reward<a class="headerlink" href="#Adding-a-new-reward" title="Link to this heading"></a></h2>
+<h2><span class="section-number">18.1. </span>Adding a new reward<a class="headerlink" href="#Adding-a-new-reward" title="Link to this heading"></a></h2>
 <p>As mentioned above, simply add the appropriate parameters to <code class="docutils literal notranslate"><span class="pre">gym.make()</span></code> after specifying the environment ID.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -192,7 +193,7 @@ intact.</p>
 <p>You have to specify the <strong>reward</strong> class you are going to use in the environment. A reward function class has several parameters that can be specified by user like temperature variables, weights, etc. Depending on the reward function you are using. In order to be able to define it, we have <strong>reward_kwargs</strong> parameter. See <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/html/pages/rewards.html">reward documentation</a> for more information about reward classes and how to create a new one.</p>
 </section>
 <section id="Updating-the-weather-used-in-environment">
-<h2><span class="section-number">17.2. </span>Updating the weather used in environment<a class="headerlink" href="#Updating-the-weather-used-in-environment" title="Link to this heading"></a></h2>
+<h2><span class="section-number">18.2. </span>Updating the weather used in environment<a class="headerlink" href="#Updating-the-weather-used-in-environment" title="Link to this heading"></a></h2>
 <p>It is possible to substitute the weather file (and the weather variability if you want a stochastic environment) used in the environment by a new one. The methodology is the same than the reward example:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -250,7 +251,7 @@ intact.</p>
 </div>
 </section>
 <section id="Changing-observation-and-action-spaces">
-<h2><span class="section-number">17.3. </span>Changing observation and action spaces<a class="headerlink" href="#Changing-observation-and-action-spaces" title="Link to this heading"></a></h2>
+<h2><span class="section-number">18.3. </span>Changing observation and action spaces<a class="headerlink" href="#Changing-observation-and-action-spaces" title="Link to this heading"></a></h2>
 <p>By default, the IDs of the predefined environments in <em>Sinergym</em> already have the <strong>time variables</strong>, <strong>variables</strong>, <strong>meters</strong> and <strong>actuators</strong> set up, together observation (time variables, variables and meters) and action (actuators) spaces for those components.</p>
 <p>However, it can be overwritten by a new definition of them. On the one hand, we will have to define the name of the <strong>time variables</strong>, <strong>variables</strong>, <strong>meters</strong> or <strong>actuators</strong>, and on the other hand, the definition of the <strong>action space</strong> (and an <strong>action mapping</strong> if it is a discrete environment). Observation space is calculated automatically by Sinergym. It is possible to change a subset of these components too. For more information about the structure definitions shown bellow, visit the
 documentation.</p>
@@ -391,7 +392,7 @@ Episode  0 Mean reward:  -1.0965845733705148 Cumulative reward:  -38424.32345090
 <p>The time variables, variables, meters or actuators definition must be correct for Energyplus Engine. Otherwise, an error message will be shown by Sinergym. See documentation for more information.</p>
 </section>
 <section id="Adding-more-extra-configuration">
-<h2><span class="section-number">17.4. </span>Adding more extra configuration<a class="headerlink" href="#Adding-more-extra-configuration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">18.4. </span>Adding more extra configuration<a class="headerlink" href="#Adding-more-extra-configuration" title="Link to this heading"></a></h2>
 <p>It is possible to update any argument of the environment constructor in Sinergym. Consequently, we can make other changes such as the name of the environment or the maximum number of episodes it will store in its output or the normalization in the gym actions interface.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -501,8 +502,8 @@ Progress: |**************************************************-------------------
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="getting_env_information.html" class="btn btn-neutral float-left" title="16. Getting information about Sinergym environments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="default_building_control.html" class="btn btn-neutral float-right" title="18. Default building control setting up an empty action interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="getting_env_information.html" class="btn btn-neutral float-left" title="17. Getting information about Sinergym environments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="default_building_control.html" class="btn btn-neutral float-right" title="19. Default building control setting up an empty action interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

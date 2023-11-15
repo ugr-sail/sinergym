@@ -22,7 +22,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6. Rewards" href="rewards.html" />
+    <link rel="next" title="6. Environments Configuration and Registration" href="environments_registration.html" />
     <link rel="prev" title="4. Weathers" href="weathers.html" /> 
 </head>
 
@@ -78,26 +78,27 @@
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-buildings-for-environments">5.5. Adding new buildings for environments</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="rewards.html">6. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="controllers.html">7. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers.html">8. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="output.html">10. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="github-actions.html">13. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">14. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments_registration.html">6. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">7. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">8. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">9. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">10. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">11. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">12. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">13. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">14. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">15. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">16. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">17. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">18. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">19. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">21. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">22. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">16. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">17. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">18. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">19. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">20. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">21. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">22. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">23. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -700,6 +701,12 @@ the reward function used.</p></li>
 </tr>
 </tbody>
 </table>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Since <em>Sinergym</em> v3.0.9, these environments are generated automatically using JSON configuration files
+for each building instead of register manually each environment id with parameters directly set in
+environment constructor. See <a class="reference internal" href="environments_registration.html#environments-configuration-and-registration"><span class="std std-ref">Environments Configuration and Registration</span></a>.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For more information about buildings (epJSON column) and weathers (EPW column),
@@ -896,7 +903,7 @@ The main steps you have to follow are the next:</p>
 <ol class="arabic simple">
 <li><p>Add your building file (<em>epJSON</em>) to <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings">buildings</a>.
 <em>EnergyPlus</em> pretends to work with <em>JSON</em> format instead of <em>IDF</em> format in their building definitions and simulations. Then,
-<em>Sinergym</em> pretends to work with this format from version 2.4.0 or higher directly. You can download a <em>IDF</em> file and convert
+<em>Sinergym</em> pretends to work with this format from v2.4.0 or higher directly. You can download a <em>IDF</em> file and convert
 to <em>epJSON</em> using their <strong>ConvertInputFormat tool</strong> from <em>EnergyPlus</em>.
 <strong>Be sure that new epJSON model version is compatible with EnergyPlus version</strong>.</p></li>
 <li><p>Add your own <em>EPW</em> file for weather conditions (section <a class="reference internal" href="#adding-new-weathers-for-environments"><span class="std std-ref">Adding new weathers for environments</span></a>)
@@ -908,6 +915,9 @@ following the same structure than the demo environment. You will have to specify
 We have examples about how to get environment information in <a class="reference internal" href="notebooks/getting_env_information.html#Getting-information-about-Sinergym-environments"><span class="std std-ref">Getting information about Sinergym environments</span></a>.</p></li>
 <li><p>Now, you can use your own environment ID with <code class="docutils literal notranslate"><span class="pre">gym.make()</span></code> like our documentation examples.</p></li>
 </ol>
+<p>Once the first step has been performed, it is also possible to <strong>register a set of environments
+automatically</strong> in <em>Sinergym</em> by writing its corresponding configuration file in <code class="docutils literal notranslate"><span class="pre">sinergym/data/default_configuration/&lt;configuration_JSON_file&gt;</span></code>.
+For more information on this, see <a class="reference internal" href="environments_registration.html#environments-configuration-and-registration"><span class="std std-ref">Environments Configuration and Registration</span></a>.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>In order to know the available variables, meters, actuators, etc. You can try to do an empty control in the building and look for files
@@ -921,7 +931,7 @@ such as RDD, MDD, MTD or <code class="docutils literal notranslate"><span class=
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="weathers.html" class="btn btn-neutral float-left" title="4. Weathers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rewards.html" class="btn btn-neutral float-right" title="6. Rewards" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="environments_registration.html" class="btn btn-neutral float-right" title="6. Environments Configuration and Registration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

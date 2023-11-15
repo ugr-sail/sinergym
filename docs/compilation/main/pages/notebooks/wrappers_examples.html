@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>19. Wrappers example &mdash; sinergym  documentation</title>
+  <title>20. Wrappers example &mdash; sinergym  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/nbsphinx-code-cells.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="20. Logger Wrapper personalization/configuration" href="personalize_loggerwrapper.html" />
-    <link rel="prev" title="18. Default building control setting up an empty action interface" href="default_building_control.html" /> 
+    <link rel="next" title="21. Logger Wrapper personalization/configuration" href="personalize_loggerwrapper.html" />
+    <link rel="prev" title="19. Default building control setting up an empty action interface" href="default_building_control.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -59,38 +59,39 @@
 <li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">5. Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rewards.html">6. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../controllers.html">7. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">8. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">9. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../output.html">10. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">11. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">12. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">13. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tests.html">14. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">6. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">7. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">8. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">9. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">10. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">11. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">12. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">13. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">14. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">15. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="basic_example.html">15. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">16. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="change_environment.html">17. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">18. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">19. Wrappers example</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Multi-Objective-Wrapper">19.1. Multi-Objective Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Previous-Observations-Wrappers">19.2. Previous Observations Wrappers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Datetime-Wrapper">19.3. Datetime Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Environment-Action-Normalization-Wrapper">19.4. Environment Action Normalization Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Environment-Discretization-Wrapper">19.5. Environment Discretization Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Discrete-Incremental-Wrapper">19.6. Discrete Incremental Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Normalization-Wrapper">19.7. Normalization Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Logger-Wrapper">19.8. Logger Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Multi-Observation-Wrapper">19.9. Multi Observation Wrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Nesting-wrappers">19.10. Nesting wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">16. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">17. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">18. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">19. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">20. Wrappers example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Multi-Objective-Wrapper">20.1. Multi-Objective Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Previous-Observations-Wrappers">20.2. Previous Observations Wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Datetime-Wrapper">20.3. Datetime Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Environment-Action-Normalization-Wrapper">20.4. Environment Action Normalization Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Environment-Discretization-Wrapper">20.5. Environment Discretization Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Discrete-Incremental-Wrapper">20.6. Discrete Incremental Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Normalization-Wrapper">20.7. Normalization Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Logger-Wrapper">20.8. Logger Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Multi-Observation-Wrapper">20.9. Multi Observation Wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Nesting-wrappers">20.10. Nesting wrappers</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">20. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">21. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="drl.html">22. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">21. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">22. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">23. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -111,7 +112,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">19. </span>Wrappers example</li>
+      <li class="breadcrumb-item active"><span class="section-number">20. </span>Wrappers example</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/notebooks/wrappers_examples.nblink.txt" rel="nofollow"> View page source</a>
       </li>
@@ -122,7 +123,7 @@
            <div itemprop="articleBody">
              
   <section id="Wrappers-example">
-<h1><span class="section-number">19. </span>Wrappers example<a class="headerlink" href="#Wrappers-example" title="Link to this heading"></a></h1>
+<h1><span class="section-number">20. </span>Wrappers example<a class="headerlink" href="#Wrappers-example" title="Link to this heading"></a></h1>
 <p>We will see on this notebook what are the wrappers defined by Sinergym and how to use them. You can also implement your own wrappers inheriting from <em>gym.Wrapper</em> or some of its variants.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -136,7 +137,7 @@
 </div>
 </div>
 <section id="Multi-Objective-Wrapper">
-<h2><span class="section-number">19.1. </span>Multi-Objective Wrapper<a class="headerlink" href="#Multi-Objective-Wrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">20.1. </span>Multi-Objective Wrapper<a class="headerlink" href="#Multi-Objective-Wrapper" title="Link to this heading"></a></h2>
 <p><a class="reference external" href="https://github.com/Farama-Foundation/MO-Gymnasium">MO-Gymnasium</a> is an open source Python library for developing and comparing multi-objective reinforcement learning algorithms. These environments return a reward vector instead of a scalar value; one for each objective.</p>
 <p>In order to be more general as possible, it could be interesting that Sinergym would give that reward vector too. In this way, Sinergym would have compatibility with both; multi-objective algorithms and algorithms that work with a traditional reward value.</p>
 <p>We can transform reward returned in a vector using the next wrapper:</p>
@@ -242,7 +243,7 @@ Progress: |*********************************************************************
 </div>
 </section>
 <section id="Previous-Observations-Wrappers">
-<h2><span class="section-number">19.2. </span>Previous Observations Wrappers<a class="headerlink" href="#Previous-Observations-Wrappers" title="Link to this heading"></a></h2>
+<h2><span class="section-number">20.2. </span>Previous Observations Wrappers<a class="headerlink" href="#Previous-Observations-Wrappers" title="Link to this heading"></a></h2>
 <p>This Wrapper will add observation values from previous timestep to current environment observation. It is possible to select the variables you want to track its previous observation values. Observation space will be updated with the new dimension.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
@@ -349,7 +350,7 @@ NEW OBSERVATION:  {&#39;month&#39;: 1.0, &#39;day_of_month&#39;: 1.0, &#39;hour&
 </div>
 </section>
 <section id="Datetime-Wrapper">
-<h2><span class="section-number">19.3. </span>Datetime Wrapper<a class="headerlink" href="#Datetime-Wrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">20.3. </span>Datetime Wrapper<a class="headerlink" href="#Datetime-Wrapper" title="Link to this heading"></a></h2>
 <p>This wrapper will substitute <code class="docutils literal notranslate"><span class="pre">day</span></code> value by <code class="docutils literal notranslate"><span class="pre">is_weekend</span></code> flag, and <code class="docutils literal notranslate"><span class="pre">hour</span></code> and <code class="docutils literal notranslate"><span class="pre">month</span></code> by sin and cos values. Observation space is also updated automatically.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -453,7 +454,7 @@ NEW OBSERVATION:  {&#39;month_cos&#39;: 1.0, &#39;month_sin&#39;: 0.0, &#39;is_w
 </div>
 </section>
 <section id="Environment-Action-Normalization-Wrapper">
-<h2><span class="section-number">19.4. </span>Environment Action Normalization Wrapper<a class="headerlink" href="#Environment-Action-Normalization-Wrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">20.4. </span>Environment Action Normalization Wrapper<a class="headerlink" href="#Environment-Action-Normalization-Wrapper" title="Link to this heading"></a></h2>
 <p>This is an example about how to normalize a previous continuos environment action space. If we don’t define the range values, it will be constructed with the range <code class="docutils literal notranslate"><span class="pre">[-1,1]</span></code> by default:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -556,7 +557,7 @@ Progress: |*********************************************************************
 </div>
 </section>
 <section id="Environment-Discretization-Wrapper">
-<h2><span class="section-number">19.5. </span>Environment Discretization Wrapper<a class="headerlink" href="#Environment-Discretization-Wrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">20.5. </span>Environment Discretization Wrapper<a class="headerlink" href="#Environment-Discretization-Wrapper" title="Link to this heading"></a></h2>
 <p>This is an example about how to discretize a previous continuos environment. We will require the <strong>new discrete action space</strong> and an <strong>action mapping function</strong> whose output matches with the original unwrapped environment action space:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
@@ -684,7 +685,7 @@ Progress: |*********************************************************************
 <p>As we can see in output, the input is an int, but a list with original action space is done in the simulator.</p>
 </section>
 <section id="Discrete-Incremental-Wrapper">
-<h2><span class="section-number">19.6. </span>Discrete Incremental Wrapper<a class="headerlink" href="#Discrete-Incremental-Wrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">20.6. </span>Discrete Incremental Wrapper<a class="headerlink" href="#Discrete-Incremental-Wrapper" title="Link to this heading"></a></h2>
 <p>A wrapper for an incremental setpoint action space environment. This wrapper will update an environment, converting it in a <em>discrete</em> environment with an action mapping function and action space depending on the <strong>step</strong> and <strong>delta</strong> specified. The action will be sum with <strong>current setpoint</strong> values instead of overwrite the latest action. Then, the action is the current setpoint values with the increase instead of the discrete value action whose purpose is to define the increment/decrement
 itself.</p>
 <div class="nbinput docutils container">
@@ -793,7 +794,7 @@ Progress: |*********************************************************************
 </div>
 </section>
 <section id="Normalization-Wrapper">
-<h2><span class="section-number">19.7. </span>Normalization Wrapper<a class="headerlink" href="#Normalization-Wrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">20.7. </span>Normalization Wrapper<a class="headerlink" href="#Normalization-Wrapper" title="Link to this heading"></a></h2>
 <p>This wrapper is used to transform observation received from simulator in values between -1 and 1. It is based in the <a class="reference external" href="https://gymnasium.farama.org/_modules/gymnasium/wrappers/normalize/#NormalizeObservation">dynamic normalization wrapper of Gymnasium</a>. At the beginning, it is not precise and the values may be out of range usually, so use this wrapper carefully.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
@@ -899,7 +900,7 @@ OBSERVATION WITH NORMALIZATION:  {&#39;month&#39;: 0.00499968750430059, &#39;day
 </div>
 </section>
 <section id="Logger-Wrapper">
-<h2><span class="section-number">19.8. </span>Logger Wrapper<a class="headerlink" href="#Logger-Wrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">20.8. </span>Logger Wrapper<a class="headerlink" href="#Logger-Wrapper" title="Link to this heading"></a></h2>
 <p>Wrapper for logging all interactions between agent and environment. Logger class can be selected in the constructor if other type of logging is required. For more information about <em>Sinergym</em> Logger visit <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/output.html#logger">Logger</a></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
@@ -994,7 +995,7 @@ Progress: |*********************************************************************
 <p>Now, you can see in Sinergym output folder that you will have available <code class="docutils literal notranslate"><span class="pre">progress.csv</span></code> file and <code class="docutils literal notranslate"><span class="pre">monitor.csv</span></code> files in each episode.</p>
 </section>
 <section id="Multi-Observation-Wrapper">
-<h2><span class="section-number">19.9. </span>Multi Observation Wrapper<a class="headerlink" href="#Multi-Observation-Wrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">20.9. </span>Multi Observation Wrapper<a class="headerlink" href="#Multi-Observation-Wrapper" title="Link to this heading"></a></h2>
 <p>This wrapper will stack observation received in a history queue (size can be customized).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
@@ -1133,7 +1134,7 @@ Progress: |*********************************************************************
 </div>
 </section>
 <section id="Nesting-wrappers">
-<h2><span class="section-number">19.10. </span>Nesting wrappers<a class="headerlink" href="#Nesting-wrappers" title="Link to this heading"></a></h2>
+<h2><span class="section-number">20.10. </span>Nesting wrappers<a class="headerlink" href="#Nesting-wrappers" title="Link to this heading"></a></h2>
 <p>All the wrappers listed in this notebook can be nested in order to combine functionalities added. However, <strong>the order</strong> in which these wrappers are nested is critical to their proper functionality. We strongly recommend that it be in the same order in which they appear here or in the documentation. In case you want to nest a subset of the total, it is not a problem as long as you continue respecting this order. We see and example:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
@@ -1281,8 +1282,8 @@ Progress: |*********************************************************************
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="default_building_control.html" class="btn btn-neutral float-left" title="18. Default building control setting up an empty action interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="personalize_loggerwrapper.html" class="btn btn-neutral float-right" title="20. Logger Wrapper personalization/configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="default_building_control.html" class="btn btn-neutral float-left" title="19. Default building control setting up an empty action interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="personalize_loggerwrapper.html" class="btn btn-neutral float-right" title="21. Logger Wrapper personalization/configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

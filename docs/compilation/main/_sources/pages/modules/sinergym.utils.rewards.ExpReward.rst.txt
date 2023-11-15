@@ -1,4 +1,4 @@
-sinergym.utils.rewards.ExpReward
+﻿sinergym.utils.rewards.ExpReward
 ================================
 
 .. currentmodule:: sinergym.utils.rewards
@@ -20,5 +20,11 @@ sinergym.utils.rewards.ExpReward
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ExpReward.logger
    
    
