@@ -69,37 +69,6 @@ register(
             'timesteps_per_hour': 1
         }})
 
-# Autobalance example in Stockholm
-register(
-    id='Eplus-autobalance-stockholm-multidiscrete-stochastic-v1',
-    entry_point='sinergym.envs:EplusEnv',
-    kwargs={
-        'building_file': 'autobalance_model.epJSON',
-        'weather_files': 'SWE_Stockholm.Arlanda.024600_IWEC.epw',
-        'action_space': DEFAULT_AUTOBALANCE_ACTION_SPACE,
-        'time_variables': DEFAULT_TIME_VARIABLES,
-        'variables': DEFAULT_AUTOBALANCE_VARIABLES,
-        'meters': DEFAULT_AUTOBALANCE_METERS,
-        'actuators': DEFAULT_AUTOBALANCE_ACTUATORS,
-        'flag_normalization': False,
-        'weather_variability': (1.0, 0.0, 0.001),
-        'reward': LinearReward,
-        'reward_kwargs': {
-            'temperature_variables': [
-                'air_temperature_livroom',
-                'air_temperature_kitchen',
-                'air_temperature_bed1',
-                'air_temperature_bed2',
-                'air_temperature_bed3'],
-            'energy_variables': 'HVAC_electricity_demand_rate',
-            'range_comfort_winter': (
-                19.0,
-                21.0),
-            'range_comfort_summer': (
-                19.0,
-                21.0)},
-        'env_name': 'autobalance-stockholm-multidiscrete-stochastic-v1'})
-
 # ------------------- Read environment configuration files ------------------- #
 conf_files = []
 for root, dirs, files in os.walk(
@@ -119,14 +88,16 @@ for conf_file in conf_files:
 
     for env_id, env_kwargs in configurations.items():
 
-        register(
-            id=env_id,
-            entry_point='sinergym.envs:EplusEnv',
-            # additional_wrappers=additional_wrappers,
-            # order_enforce=False,
-            # disable_env_checker=True,
-            kwargs=env_kwargs
-        )
+        if not conf.get('only_discrete', False):
+
+            register(
+                id=env_id,
+                entry_point='sinergym.envs:EplusEnv',
+                # additional_wrappers=additional_wrappers,
+                # order_enforce=False,
+                # disable_env_checker=True,
+                kwargs=env_kwargs
+            )
 
         # If discrete space is included, add the same environment with
         # discretization
@@ -145,6 +116,9 @@ for conf_file in conf_files:
                     'discrete_space': eval(conf['action_space_discrete']),
                     'action_mapping': action_mapping})
             additional_wrappers = (discrete_wrapper_spec,)
+
+            env_kwargs['env_name'] = env_kwargs['env_name'].replace(
+                'continuous', 'discrete')
 
             register(
                 id=env_id.replace('continuous', 'discrete'),
