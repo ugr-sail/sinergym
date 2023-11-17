@@ -9,8 +9,8 @@ from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
 
 # ------------------------- Set __version__ in module ------------------------ #
-version_file = os.path.join(os.path.dirname(__file__), "version.txt")
-with open(version_file, "r") as file_handler:
+version_file = os.path.join(os.path.dirname(__file__), 'version.txt')
+with open(version_file, 'r') as file_handler:
     __version__ = file_handler.read().strip()
 
 # ---------------------------- 0) Demo environment --------------------------- #
@@ -71,8 +71,10 @@ register(
 
 # ------------------- Read environment configuration files ------------------- #
 conf_files = []
-for root, dirs, files in os.walk(
-        os.path.abspath('sinergym/data/default_configuration/')):
+configuration_path = os.path.join(
+    os.path.dirname(__file__),
+    'data/default_configuration')
+for root, dirs, files in os.walk(configuration_path):
     for file in files:
         # Obtain the whole path for each configuration file
         file_path = os.path.join(root, file)
