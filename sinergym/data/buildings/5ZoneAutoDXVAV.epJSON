@@ -2335,113 +2335,6 @@
             ]
         }
     },
-    "Output:Variable": {
-        "Output:Variable 1": {
-            "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Site Outdoor Air Drybulb Temperature"
-        },
-        "Output:Variable 2": {
-            "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Site Outdoor Air Relative Humidity"
-        },
-        "Output:Variable 3": {
-            "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Site Wind Speed"
-        },
-        "Output:Variable 4": {
-            "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Site Wind Direction"
-        },
-        "Output:Variable 5": {
-            "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Site Diffuse Solar Radiation Rate per Area"
-        },
-        "Output:Variable 6": {
-            "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Site Direct Solar Radiation Rate per Area"
-        },
-        "Output:Variable 7": {
-            "key_value": "SPACE1-1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Air Temperature"
-        },
-        "Output:Variable 8": {
-            "key_value": "SPACE1-1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Air Relative Humidity"
-        },
-        "Output:Variable 9": {
-            "key_value": "SPACE1-1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermostat Heating Setpoint Temperature"
-        },
-        "Output:Variable 10": {
-            "key_value": "SPACE1-1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermostat Cooling Setpoint Temperature"
-        },
-        "Output:Variable 11": {
-            "key_value": "SPACE1-1 PEOPLE 1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Fanger Model PMV"
-        },
-        "Output:Variable 12": {
-            "key_value": "SPACE1-1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone People Occupant Count"
-        },
-        "Output:Variable 13": {
-            "key_value": "SPACE1-1 PEOPLE 1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Fanger Model PPD"
-        },
-        "Output:Variable 14": {
-            "key_value": "SPACE1-1 PEOPLE 1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Clothing Value"
-        },
-        "Output:Variable 15": {
-            "key_value": "SPACE1-1 PEOPLE 1",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Zone Thermal Comfort Mean Radiant Temperature"
-        },
-        "Output:Variable 16": {
-            "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "People Air Temperature"
-        },
-        "Output:Variable 17": {
-            "key_value": "*",
-            "reporting_frequency": "Timestep",
-            "variable_name": "Facility Total HVAC Electricity Demand Rate"
-        },
-        "Output:Variable 18": {
-            "key_value": "SPACE1-1 IN NODE",
-            "reporting_frequency": "Timestep",
-            "variable_name": "System Node Temperature"
-        },
-        "Output:Variable 19": {
-            "key_value": "VAV SYS 1 OUTLET NODE",
-            "reporting_frequency": "Timestep",
-            "variable_name": "System Node Temperature"
-        },
-        "Output:Variable 20": {
-            "key_value": "SPACE1-1 IN NODE",
-            "reporting_frequency": "Timestep",
-            "variable_name": "System Node Mass Flow Rate"
-        },
-        "Output:Variable 21": {
-            "key_value": "VAV SYS 1 OUTLET NODE",
-            "reporting_frequency": "Timestep",
-            "variable_name": "System Node Mass Flow Rate"
-        }
-    },
     "Output:VariableDictionary": {
         "Output:VariableDictionary 1": {
             "key_field": "regular"
@@ -3499,11 +3392,11 @@
         }
     },
     "Site:Location": {
-        "Pittsburgh Allegheny Co Ap_PA_USA Design_Conditions": {
-            "elevation": 380.0,
-            "latitude": 40.35,
-            "longitude": -79.92,
-            "time_zone": -5.0
+        "CHICAGO_IL_USA TMY2-94846": {
+            "elevation": 190.0,
+            "latitude": 41.78,
+            "longitude": -87.75,
+            "time_zone": -6.0
         }
     },
     "Sizing:Parameters": {
@@ -3669,42 +3562,39 @@
         }
     },
     "SizingPeriod:DesignDay": {
-        "Pittsburgh Allegheny Co Ap Ann Clg .4% Condns DB=>MWB": {
-            "ashrae_clear_sky_optical_depth_for_beam_irradiance_taub_": 0.484,
-            "ashrae_clear_sky_optical_depth_for_diffuse_irradiance_taud_": 1.916,
-            "barometric_pressure": 96842.0,
-            "daily_dry_bulb_temperature_range": 9.9,
-            "day_of_month": 21,
+        "CHICAGO_IL_USA Annual Cooling 1% Design Conditions DB/MCWB": {
+            "barometric_pressure": 99063.0,
+            "daily_dry_bulb_temperature_range": 10.7,
+            "day_of_month": 3,
             "day_type": "SummerDesignDay",
             "daylight_saving_time_indicator": "No",
-            "dry_bulb_temperature_range_modifier_type": "DefaultMultipliers",
             "humidity_condition_type": "WetBulb",
-            "maximum_dry_bulb_temperature": 32.2,
+            "maximum_dry_bulb_temperature": 31.5,
             "month": 7,
             "rain_indicator": "No",
+            "sky_clearness": 1.0,
             "snow_indicator": "No",
-            "solar_model_indicator": "ASHRAETau",
-            "wetbulb_or_dewpoint_at_maximum_dry_bulb": 22.5,
-            "wind_direction": 240,
-            "wind_speed": 4.4
+            "solar_model_indicator": "ASHRAEClearSky",
+            "wetbulb_or_dewpoint_at_maximum_dry_bulb": 23.0,
+            "wind_direction": 230,
+            "wind_speed": 5.3
         },
-        "Pittsburgh Allegheny Co Ap Ann Htg 99.6% Condns DB": {
-            "barometric_pressure": 96842.0,
+        "CHICAGO_IL_USA Annual Heating 99% Design Conditions DB": {
+            "barometric_pressure": 99063.0,
             "daily_dry_bulb_temperature_range": 0.0,
-            "day_of_month": 21,
+            "day_of_month": 8,
             "day_type": "WinterDesignDay",
             "daylight_saving_time_indicator": "No",
-            "dry_bulb_temperature_range_modifier_type": "DefaultMultipliers",
             "humidity_condition_type": "WetBulb",
-            "maximum_dry_bulb_temperature": -15.4,
+            "maximum_dry_bulb_temperature": -17.3,
             "month": 1,
             "rain_indicator": "No",
             "sky_clearness": 0.0,
             "snow_indicator": "No",
             "solar_model_indicator": "ASHRAEClearSky",
-            "wetbulb_or_dewpoint_at_maximum_dry_bulb": -15.4,
-            "wind_direction": 240,
-            "wind_speed": 4.7
+            "wetbulb_or_dewpoint_at_maximum_dry_bulb": -17.3,
+            "wind_direction": 270,
+            "wind_speed": 4.9
         }
     },
     "SurfaceConvectionAlgorithm:Inside": {
