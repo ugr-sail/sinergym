@@ -1,7 +1,7 @@
 """Constants used in whole project."""
 
 import os
-from typing import List
+from typing import List, Union
 
 import gymnasium as gym
 import numpy as np
@@ -61,10 +61,6 @@ def DEFAULT_5ZONE_DISCRETE_FUNCTION(action: int) -> List[float]:
 
 # ----------------------------------DATACENTER--------------------------------- #
 
-
-DEFAULT_DATACENTER_ACTION_SPACE_DISCRETE = gym.spaces.Discrete(10)
-
-
 def DEFAULT_DATACENTER_DISCRETE_FUNCTION(action: int) -> List[float]:
     # SB3 algotihms returns a ndarray instead of a int
     if isinstance(action, np.ndarray):
@@ -84,13 +80,6 @@ def DEFAULT_DATACENTER_DISCRETE_FUNCTION(action: int) -> List[float]:
     }
 
     return mapping[action]
-
-
-DEFAULT_DATACENTER_ACTION_SPACE_CONTINUOUS = gym.spaces.Box(
-    low=np.array([15.0, 22.5], dtype=np.float32),
-    high=np.array([22.5, 30.0], dtype=np.float32),
-    shape=(2,),
-    dtype=np.float32)
 
 # ----------------------------------WAREHOUSE--------------------------------- #
 
@@ -183,6 +172,15 @@ def DEFAULT_SHOP_DISCRETE_FUNCTION(action: int) -> List[float]:
     }
 
     return mapping[action]
+
+# -------------------------------- AUTOBALANCE ------------------------------- #
+
+
+def DEFAULT_AUTOBALANCE_DISCRETE_FUNCTION(
+        action: Union[np.ndarray, List[int]]) -> List[float]:
+    action[5] += 25
+    return list(action)
+
 
 # ----------------------------------HOSPITAL--------------------------------- #
 # DEFAULT_HOSPITAL_OBSERVATION_VARIABLES = [

@@ -15,8 +15,9 @@ required = {'stable-baselines3', 'wandb'}
 installed = {pkg.key for pkg in pkg_resources.working_set}
 missing = required - installed
 if not missing:
-    import wandb
     from stable_baselines3.common.logger import KVWriter
+
+    import wandb
 
 
 class CustomFormatter(logging.Formatter):

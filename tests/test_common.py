@@ -84,7 +84,7 @@ def test_json_to_meters(conf_5zone):
     assert isinstance(list(output.values())[0], str)
 
 
-def test_json_to_meters(conf_5zone):
+def test_json_to_actuators(conf_5zone):
 
     assert isinstance(conf_5zone['actuators'], dict)
     output = common.json_to_actuators(conf_5zone['actuators'])

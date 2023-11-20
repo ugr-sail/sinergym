@@ -9,8 +9,8 @@ from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
 
 # ------------------------- Set __version__ in module ------------------------ #
-version_file = os.path.join(os.path.dirname(__file__), "version.txt")
-with open(version_file, "r") as file_handler:
+version_file = os.path.join(os.path.dirname(__file__), 'version.txt')
+with open(version_file, 'r') as file_handler:
     __version__ = file_handler.read().strip()
 
 # ---------------------------- 0) Demo environment --------------------------- #
@@ -71,8 +71,10 @@ register(
 
 # ------------------- Read environment configuration files ------------------- #
 conf_files = []
-for root, dirs, files in os.walk(
-        os.path.abspath('sinergym/data/default_configuration/')):
+configuration_path = os.path.join(
+    os.path.dirname(__file__),
+    'data/default_configuration')
+for root, dirs, files in os.walk(configuration_path):
     for file in files:
         # Obtain the whole path for each configuration file
         file_path = os.path.join(root, file)
@@ -88,14 +90,16 @@ for conf_file in conf_files:
 
     for env_id, env_kwargs in configurations.items():
 
-        register(
-            id=env_id,
-            entry_point='sinergym.envs:EplusEnv',
-            # additional_wrappers=additional_wrappers,
-            # order_enforce=False,
-            # disable_env_checker=True,
-            kwargs=env_kwargs
-        )
+        if not conf.get('only_discrete', False):
+
+            register(
+                id=env_id,
+                entry_point='sinergym.envs:EplusEnv',
+                # additional_wrappers=additional_wrappers,
+                # order_enforce=False,
+                # disable_env_checker=True,
+                kwargs=env_kwargs
+            )
 
         # If discrete space is included, add the same environment with
         # discretization
@@ -114,6 +118,9 @@ for conf_file in conf_files:
                     'discrete_space': eval(conf['action_space_discrete']),
                     'action_mapping': action_mapping})
             additional_wrappers = (discrete_wrapper_spec,)
+
+            env_kwargs['env_name'] = env_kwargs['env_name'].replace(
+                'continuous', 'discrete')
 
             register(
                 id=env_id.replace('continuous', 'discrete'),

@@ -75,6 +75,7 @@ def test_step(env_5zone):
     assert info['time_elapsed(hours)'] > old_time_elapsed
 
     # Not supported action
+
     # action = 'fbsufb'
     # with pytest.raises(Exception):
     #     env.step(action)

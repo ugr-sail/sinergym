@@ -61,6 +61,9 @@ Wrapper to discretize the action space. **Discrete space** must be defined follo
 should be ``gym.spaces.Discrete``, ``gym.spaces.MultiDiscrete`` or ``gym.spaces.MultiBinary``. An **action mapping function**
 is also given, in order to map this/these value(s) into ones that fit the underlying continuous environment (before to send it to the simulator).
 
+.. important:: The discrete space **must** discretize the original continuous space. Therefore, discrete space only should reach values which
+               are considered in the original environment action space.
+
 This action mapping function can be defined by users to specify how to jump from discrete to continuous values. If action mapping function
 output doesn't match with original environment action space, an error will be raised. See :ref:`Environment Discretization Wrapper` for an example of use.
 
