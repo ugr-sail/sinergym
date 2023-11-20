@@ -69,7 +69,8 @@
 				"ue.alphabetical-sorter",
 				"yzhang.markdown-all-in-one",
 				"ms-vscode.makefile-tools",
-				"ms-python.autopep8"
+				"ms-python.autopep8",
+				"shuworks.vscode-table-formatter"
 			]
 		}
 	}
