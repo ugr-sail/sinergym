@@ -180,7 +180,7 @@ the reward function used.</p></li>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Env. name</p></th>
-<th class="head"><p>IDF file</p></th>
+<th class="head"><p>epJSON file</p></th>
 <th class="head"><p>EPW file</p></th>
 <th class="head"><p>Weather variability</p></th>
 <th class="head"><p>Action space</p></th>
@@ -189,515 +189,571 @@ the reward function used.</p></li>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Eplus-demo-v1</p></td>
-<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>5ZoneAutoDXVAV.epJSON</p></td>
 <td><p>USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/03</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-5zone-hot-discrete-v1</p></td>
-<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>5ZoneAutoDXVAV.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-5zone-mixed-discrete-v1</p></td>
-<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>5ZoneAutoDXVAV.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-5zone-cool-discrete-v1</p></td>
-<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>5ZoneAutoDXVAV.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-5zone-hot-continuous-v1</p></td>
-<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>5ZoneAutoDXVAV.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-5zone-mixed-continuous-v1</p></td>
-<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>5ZoneAutoDXVAV.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-5zone-cool-continuous-v1</p></td>
-<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>5ZoneAutoDXVAV.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-5zone-hot-discrete-stochastic-v1</p></td>
-<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>5ZoneAutoDXVAV.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-5zone-mixed-discrete-stochastic-v1</p></td>
-<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>5ZoneAutoDXVAV.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-5zone-cool-discrete-stochastic-v1</p></td>
-<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>5ZoneAutoDXVAV.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-5zone-hot-continuous-stochastic-v1</p></td>
-<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>5ZoneAutoDXVAV.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-5zone-mixed-continuous-stochastic-v1</p></td>
-<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>5ZoneAutoDXVAV.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-5zone-cool-continuous-stochastic-v1</p></td>
-<td><p>5ZoneAutoDXVAV.idf</p></td>
+<td><p>5ZoneAutoDXVAV.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-datacenter-hot-discrete-v1</p></td>
-<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-datacenter-hot-continuous-v1</p></td>
-<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(4)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-datacenter-hot-discrete-stochastic-v1</p></td>
-<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-datacenter-hot-continuous-stochastic-v1</p></td>
-<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(4)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-datacenter-mixed-discrete-stochastic-v1</p></td>
-<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-datacenter-mixed-continuous-v1</p></td>
-<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(4)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-datacenter-mixed-discrete-v1</p></td>
-<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-datacenter-mixed-continuous-stochastic-v1</p></td>
-<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(4)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-datacenter-cool-discrete-stochastic-v1</p></td>
-<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-datacenter-cool-continuous-v1</p></td>
-<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(4)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-datacenter-cool-discrete-v1</p></td>
-<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-datacenter-cool-continuous-stochastic-v1</p></td>
-<td><p>2ZoneDataCenterHVAC_wEconomizer.idf</p></td>
+<td><p>2ZoneDataCenterHVAC_wEconomizer.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(4)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-warehouse-hot-discrete-v1</p></td>
-<td><p>ASHRAE9012016_Warehouse_Denver.idf</p></td>
+<td><p>ASHRAE9012016_Warehouse_Denver.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-warehouse-hot-continuous-v1</p></td>
-<td><p>ASHRAE9012016_Warehouse_Denver.idf</p></td>
+<td><p>ASHRAE9012016_Warehouse_Denver.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(5)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-warehouse-hot-discrete-stochastic-v1</p></td>
-<td><p>ASHRAE9012016_Warehouse_Denver.idf</p></td>
+<td><p>ASHRAE9012016_Warehouse_Denver.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-warehouse-hot-continuous-stochastic-v1</p></td>
-<td><p>ASHRAE9012016_Warehouse_Denver.idf</p></td>
+<td><p>ASHRAE9012016_Warehouse_Denver.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(5)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-warehouse-mixed-discrete-stochastic-v1</p></td>
-<td><p>ASHRAE9012016_Warehouse_Denver.idf</p></td>
+<td><p>ASHRAE9012016_Warehouse_Denver.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-warehouse-mixed-continuous-v1</p></td>
-<td><p>ASHRAE9012016_Warehouse_Denver.idf</p></td>
+<td><p>ASHRAE9012016_Warehouse_Denver.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(5)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-warehouse-mixed-discrete-v1</p></td>
-<td><p>ASHRAE9012016_Warehouse_Denver.idf</p></td>
+<td><p>ASHRAE9012016_Warehouse_Denver.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-warehouse-mixed-continuous-stochastic-v1</p></td>
-<td><p>ASHRAE9012016_Warehouse_Denver.idf</p></td>
+<td><p>ASHRAE9012016_Warehouse_Denver.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(5)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-warehouse-cool-discrete-stochastic-v1</p></td>
-<td><p>ASHRAE9012016_Warehouse_Denver.idf</p></td>
+<td><p>ASHRAE9012016_Warehouse_Denver.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-warehouse-cool-continuous-v1</p></td>
-<td><p>ASHRAE9012016_Warehouse_Denver.idf</p></td>
+<td><p>ASHRAE9012016_Warehouse_Denver.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(5)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-warehouse-cool-discrete-v1</p></td>
-<td><p>ASHRAE9012016_Warehouse_Denver.idf</p></td>
+<td><p>ASHRAE9012016_Warehouse_Denver.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-warehouse-cool-continuous-stochastic-v1</p></td>
-<td><p>ASHRAE9012016_Warehouse_Denver.idf</p></td>
+<td><p>ASHRAE9012016_Warehouse_Denver.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(5)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-office-hot-discrete-v1</p></td>
-<td><p>ASHRAE9012016_OfficeMedium_Denver.idf</p></td>
+<td><p>ASHRAE9012016_OfficeMedium_Denver.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-office-hot-continuous-v1</p></td>
-<td><p>ASHRAE9012016_OfficeMedium_Denver.idf</p></td>
+<td><p>ASHRAE9012016_OfficeMedium_Denver.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-office-hot-discrete-stochastic-v1</p></td>
-<td><p>ASHRAE9012016_OfficeMedium_Denver.idf</p></td>
+<td><p>ASHRAE9012016_OfficeMedium_Denver.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-office-hot-continuous-stochastic-v1</p></td>
-<td><p>ASHRAE9012016_OfficeMedium_Denver.idf</p></td>
+<td><p>ASHRAE9012016_OfficeMedium_Denver.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-office-mixed-discrete-stochastic-v1</p></td>
-<td><p>ASHRAE9012016_OfficeMedium_Denver.idf</p></td>
+<td><p>ASHRAE9012016_OfficeMedium_Denver.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-office-mixed-continuous-v1</p></td>
-<td><p>ASHRAE9012016_OfficeMedium_Denver.idf</p></td>
+<td><p>ASHRAE9012016_OfficeMedium_Denver.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-office-mixed-discrete-v1</p></td>
-<td><p>ASHRAE9012016_OfficeMedium_Denver.idf</p></td>
+<td><p>ASHRAE9012016_OfficeMedium_Denver.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-office-mixed-continuous-stochastic-v1</p></td>
-<td><p>ASHRAE9012016_OfficeMedium_Denver.idf</p></td>
+<td><p>ASHRAE9012016_OfficeMedium_Denver.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-office-cool-discrete-stochastic-v1</p></td>
-<td><p>ASHRAE9012016_OfficeMedium_Denver.idf</p></td>
+<td><p>ASHRAE9012016_OfficeMedium_Denver.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-office-cool-continuous-v1</p></td>
-<td><p>ASHRAE9012016_OfficeMedium_Denver.idf</p></td>
+<td><p>ASHRAE9012016_OfficeMedium_Denver.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-office-cool-discrete-v1</p></td>
-<td><p>ASHRAE9012016_OfficeMedium_Denver.idf</p></td>
+<td><p>ASHRAE9012016_OfficeMedium_Denver.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-office-cool-continuous-stochastic-v1</p></td>
-<td><p>ASHRAE9012016_OfficeMedium_Denver.idf</p></td>
+<td><p>ASHRAE9012016_OfficeMedium_Denver.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-officegrid-cool-continuous-v1</p></td>
-<td><p>OfficeGridStorageSmoothing.idf</p></td>
+<td><p>OfficeGridStorageSmoothing.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(4)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-officegrid-mixed-continuous-v1</p></td>
-<td><p>OfficeGridStorageSmoothing.idf</p></td>
+<td><p>OfficeGridStorageSmoothing.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(4)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-officegrid-hot-continuous-v1</p></td>
-<td><p>OfficeGridStorageSmoothing.idf</p></td>
+<td><p>OfficeGridStorageSmoothing.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(4)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-officegrid-cool-continuous-stochastic-v1</p></td>
-<td><p>OfficeGridStorageSmoothing.idf</p></td>
+<td><p>OfficeGridStorageSmoothing.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(4)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-officegrid-mixed-continuous-stochastic-v1</p></td>
-<td><p>OfficeGridStorageSmoothing.idf</p></td>
+<td><p>OfficeGridStorageSmoothing.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(4)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-officegrid-hot-continuous-stochastic-v1</p></td>
-<td><p>OfficeGridStorageSmoothing.idf</p></td>
+<td><p>OfficeGridStorageSmoothing.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(4)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-officegrid-cool-discrete-v1</p></td>
-<td><p>OfficeGridStorageSmoothing.idf</p></td>
+<td><p>OfficeGridStorageSmoothing.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-officegrid-mixed-discrete-v1</p></td>
-<td><p>OfficeGridStorageSmoothing.idf</p></td>
+<td><p>OfficeGridStorageSmoothing.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-officegrid-hot-discrete-v1</p></td>
-<td><p>OfficeGridStorageSmoothing.idf</p></td>
+<td><p>OfficeGridStorageSmoothing.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-officegrid-cool-discrete-stochastic-v1</p></td>
-<td><p>OfficeGridStorageSmoothing.idf</p></td>
+<td><p>OfficeGridStorageSmoothing.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-officegrid-mixed-discrete-stochastic-v1</p></td>
-<td><p>OfficeGridStorageSmoothing.idf</p></td>
+<td><p>OfficeGridStorageSmoothing.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-officegrid-hot-discrete-stochastic-v1</p></td>
-<td><p>OfficeGridStorageSmoothing.idf</p></td>
+<td><p>OfficeGridStorageSmoothing.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-shop-cool-continuous-v1</p></td>
-<td><p>ShopWithVandBattery.idf</p></td>
+<td><p>ShopWithVandBattery.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-shop-mixed-continuous-v1</p></td>
-<td><p>ShopWithVandBattery.idf</p></td>
+<td><p>ShopWithVandBattery.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-shop-hot-continuous-v1</p></td>
-<td><p>ShopWithVandBattery.idf</p></td>
+<td><p>ShopWithVandBattery.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-shop-cool-continuous-stochastic-v1</p></td>
-<td><p>ShopWithVandBattery.idf</p></td>
+<td><p>ShopWithVandBattery.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-shop-mixed-continuous-stochastic-v1</p></td>
-<td><p>ShopWithVandBattery.idf</p></td>
+<td><p>ShopWithVandBattery.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-shop-hot-continuous-stochastic-v1</p></td>
-<td><p>ShopWithVandBattery.idf</p></td>
+<td><p>ShopWithVandBattery.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Box(2)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-shop-cool-discrete-v1</p></td>
-<td><p>ShopWithVandBattery.idf</p></td>
+<td><p>ShopWithVandBattery.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-shop-mixed-discrete-v1</p></td>
-<td><p>ShopWithVandBattery.idf</p></td>
+<td><p>ShopWithVandBattery.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-shop-hot-discrete-v1</p></td>
-<td><p>ShopWithVandBattery.idf</p></td>
+<td><p>ShopWithVandBattery.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>No</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-shop-cool-discrete-stochastic-v1</p></td>
-<td><p>ShopWithVandBattery.idf</p></td>
+<td><p>ShopWithVandBattery.epJSON</p></td>
 <td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-odd"><td><p>Eplus-shop-mixed-discrete-stochastic-v1</p></td>
-<td><p>ShopWithVandBattery.idf</p></td>
+<td><p>ShopWithVandBattery.epJSON</p></td>
 <td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
 </tr>
 <tr class="row-even"><td><p>Eplus-shop-hot-discrete-stochastic-v1</p></td>
-<td><p>ShopWithVandBattery.idf</p></td>
+<td><p>ShopWithVandBattery.epJSON</p></td>
 <td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
 <td><p>Yes</p></td>
 <td><p>Discrete(10)</p></td>
 <td><p>01/01 - 31/12</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-autobalance-cool-discrete-v1</p></td>
+<td><p>autobalanceStorageSmoothing.epJSON</p></td>
+<td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
+<td><p>No</p></td>
+<td><p>MultiDiscrete(5)</p></td>
+<td><p>01/10 - 30/04 (next year)</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-autobalance-mixed-discrete-v1</p></td>
+<td><p>autobalanceStorageSmoothing.epJSON</p></td>
+<td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
+<td><p>No</p></td>
+<td><p>MultiDiscrete(5)</p></td>
+<td><p>01/10 - 30/04 (next year)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-autobalance-hot-discrete-v1</p></td>
+<td><p>autobalanceStorageSmoothing.epJSON</p></td>
+<td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
+<td><p>No</p></td>
+<td><p>MultiDiscrete(5)</p></td>
+<td><p>01/10 - 30/04 (next year)</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-autobalance-stockholm-discrete-v1</p></td>
+<td><p>autobalanceStorageSmoothing.epJSON</p></td>
+<td><p>SWE_Stockholm.Arlanda.024600_IWEC.epw</p></td>
+<td><p>No</p></td>
+<td><p>MultiDiscrete(5)</p></td>
+<td><p>01/10 - 30/04 (next year)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-autobalance-cool-discrete-stochastic-v1</p></td>
+<td><p>autobalanceStorageSmoothing.epJSON</p></td>
+<td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw</p></td>
+<td><p>Yes</p></td>
+<td><p>MultiDiscrete(5)</p></td>
+<td><p>01/10 - 30/04 (next year)</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-autobalance-mixed-discrete-stochastic-v1</p></td>
+<td><p>autobalanceStorageSmoothing.epJSON</p></td>
+<td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw</p></td>
+<td><p>Yes</p></td>
+<td><p>MultiDiscrete(5)</p></td>
+<td><p>01/10 - 30/04 (next year)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eplus-autobalance-hot-discrete-stochastic-v1</p></td>
+<td><p>autobalanceStorageSmoothing.epJSON</p></td>
+<td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw</p></td>
+<td><p>Yes</p></td>
+<td><p>MultiDiscrete(5)</p></td>
+<td><p>01/10 - 30/04 (next year)</p></td>
+</tr>
+<tr class="row-even"><td><p>Eplus-autobalance-stockholm-discrete-stochastic-v1</p></td>
+<td><p>autobalanceStorageSmoothing.epJSON</p></td>
+<td><p>SWE_Stockholm.Arlanda.024600_IWEC.epw</p></td>
+<td><p>Yes</p></td>
+<td><p>MultiDiscrete(5)</p></td>
+<td><p>01/10 - 30/04 (next year)</p></td>
 </tr>
 </tbody>
 </table>
@@ -706,6 +762,12 @@ the reward function used.</p></li>
 <p>Since <em>Sinergym</em> v3.0.9, these environments are generated automatically using JSON configuration files
 for each building instead of register manually each environment id with parameters directly set in
 environment constructor. See <a class="reference internal" href="environments_registration.html#environments-configuration-and-registration"><span class="std std-ref">Environments Configuration and Registration</span></a>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Discrete environments can be customized. In fact, the default control of discrete environments is very simple.
+You can use a continuous environment and custom discretization using our dedicated wrapper directly, for more
+information see <a class="reference internal" href="wrappers.html#discretizeenv"><span class="std std-ref">DiscretizeEnv</span></a>.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -855,7 +917,7 @@ like our predefined discrete environments, see section <a class="reference inter
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p><em>Sinergym</em>’s listed environments have a default observation and action variables defined,
-it is available in <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/utils/constants.py">constants.py</a>.
+all information is available in <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/default_configuration">default_configuration</a>.
 However, the users can experiment with this spaces, see <a class="reference internal" href="notebooks/change_environment.html#Changing-observation-and-action-spaces"><span class="std std-ref">Changing observation and action spaces</span></a>.</p>
 </div>
 <p><em>Sinergym</em> offers the possibility to create <strong>empty action interfaces</strong> too, so that you can take advantage

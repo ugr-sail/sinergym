@@ -181,16 +181,26 @@ to EnergyPlus Python API format automatically.</p>
 <td><p>Yes</p></td>
 <td><p>If you want that <em>Sinergym</em> auto-generate a discrete version of environments, you should write this space too.</p></td>
 </tr>
-<tr class="row-even"><td><p>reward</p></td>
+<tr class="row-even"><td><p>only_discrete</p></td>
+<td><p>Yes</p></td>
+<td><p>If you have specified action_space and a discrete_space based on action_space (required, see <a class="reference internal" href="wrappers.html#discretizeenv"><span class="std std-ref">DiscretizeEnv</span></a>), you can only register discrete version with this flag</p></td>
+</tr>
+<tr class="row-odd"><td><p>reward</p></td>
 <td><p>No</p></td>
 <td><p>Reward class name to use.</p></td>
 </tr>
-<tr class="row-odd"><td><p>reward_kwargs</p></td>
+<tr class="row-even"><td><p>reward_kwargs</p></td>
 <td><p>No</p></td>
 <td><p>Reward kwargs for Reward class constructor in dict format.</p></td>
 </tr>
 </tbody>
 </table>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>As you can see, the continuous action space is mandatory, while the discrete one is not.
+This is because Sinergym starts from continuous environments and then discretizes them
+through a wrapper. For more information see <a class="reference internal" href="wrappers.html#discretizeenv"><span class="std std-ref">DiscretizeEnv</span></a>.</p>
+</div>
 <p>These are the keys of the JSON, an example could be more intuitive:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;id_base&quot;</span><span class="w">               </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5zone&quot;</span><span class="p">,</span>
@@ -285,7 +295,7 @@ to EnergyPlus Python API format automatically.</p>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">},</span>
 
-<span class="w">    </span><span class="nt">&quot;action_space&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gym.spaces.Box(low=np.array([15.0, 22.5], dtype=np.float32), high=np.array([22.5, 30.0], dtype=np.float32), shape=(2,), dtype=np.float32)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;action_space&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gym.spaces.Box(low=np.array([15.0, 22.5], dtype=np.float32), high=np.array([23.0, 30.0], dtype=np.float32), shape=(2,), dtype=np.float32)&quot;</span><span class="p">,</span>
 
 <span class="w">    </span><span class="nt">&quot;action_space_discrete&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gym.spaces.Discrete(10)&quot;</span><span class="p">,</span>
 

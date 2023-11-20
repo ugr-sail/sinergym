@@ -163,6 +163,11 @@ and working with real action values, for example, you don’t must to apply this
 <p>Wrapper to discretize the action space. <strong>Discrete space</strong> must be defined following the Gymnasium standard. This space
 should be <code class="docutils literal notranslate"><span class="pre">gym.spaces.Discrete</span></code>, <code class="docutils literal notranslate"><span class="pre">gym.spaces.MultiDiscrete</span></code> or <code class="docutils literal notranslate"><span class="pre">gym.spaces.MultiBinary</span></code>. An <strong>action mapping function</strong>
 is also given, in order to map this/these value(s) into ones that fit the underlying continuous environment (before to send it to the simulator).</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The discrete space <strong>must</strong> discretize the original continuous space. Therefore, discrete space only should reach values which
+are considered in the original environment action space.</p>
+</div>
 <p>This action mapping function can be defined by users to specify how to jump from discrete to continuous values. If action mapping function
 output doesn’t match with original environment action space, an error will be raised. See <a class="reference internal" href="notebooks/wrappers_examples.html#Environment-Discretization-Wrapper"><span class="std std-ref">Environment Discretization Wrapper</span></a> for an example of use.</p>
 <a class="reference internal image-reference" href="../_images/discretize_wrapper.png"><img alt="Discretize wrapper graph." class="align-center" src="../_images/discretize_wrapper.png" style="width: 800.0px; height: 512.0px;" /></a>
