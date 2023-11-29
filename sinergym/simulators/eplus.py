@@ -145,7 +145,7 @@ class EnergyPlus(object):
             self.energyplus_state, self._collect_obs_and_info)
 
         # register callback used to send actions
-        self.api.runtime.callback_after_predictor_after_hvac_managers(
+        self.api.runtime.callback_begin_system_timestep_before_predictor(
             self.energyplus_state, self._process_action)
 
         # run EnergyPlus in a non-blocking way
