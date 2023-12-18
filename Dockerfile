@@ -60,16 +60,16 @@ RUN apt-get update && apt-get upgrade -y \
 # Python add pyenergyplus path in order to detect API package
 ENV PYTHONPATH="/usr/local/EnergyPlus-${ENERGYPLUS_INSTALL_VERSION}"
 
-WORKDIR /sinergym
-COPY requirements.txt .
-COPY MANIFEST.in .
-COPY setup.py .
-COPY scripts /sinergym/scripts
-COPY sinergym /sinergym/sinergym
-COPY tests /sinergym/tests
-COPY examples /sinergym/examples
-COPY docs/source /sinergym/docs/source
-COPY .git/ ./.git
+WORKDIR /workspaces/sinergym
+COPY requirements.txt /workspaces/sinergym/requirements.txt
+COPY MANIFEST.in /workspaces/sinergym/MANIFEST.in
+COPY setup.py /workspaces/sinergym/setup.py
+COPY scripts /workspaces/sinergym/scripts
+COPY sinergym /workspaces/sinergym/sinergym
+COPY tests /workspaces/sinergym/tests
+COPY examples /workspaces/sinergym/examples
+COPY docs/source /workspaces/sinergym/docs/source
+COPY .git/ /workspaces/sinergym/.git
 RUN pip install -e .${SINERGYM_EXTRAS}
 
 #RUN pip install idna && pip install six
