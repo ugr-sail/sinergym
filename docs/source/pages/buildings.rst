@@ -108,17 +108,3 @@ It has a battery control for charging and discharging from the grid.
   :width: 700
   :alt: Shop building
   :align: center
-
-**************************
-AutobalanceModel
-**************************
-
-**autobalance_model.epJSON:**
-It is a family house with three bedrooms, bathroom, living room and kitchen. The building has underfloor 
-heating from which you can control the water inlet and outlet of each room and the water temperature of 
-the boiler.
-
-.. image:: /_static/autobalance_model.png
-  :width: 700
-  :alt: Autobalance building
-  :align: center
