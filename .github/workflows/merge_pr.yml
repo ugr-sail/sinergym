@@ -27,7 +27,7 @@ jobs:
         with:
           args: --exit-code --recursive --in-place --aggressive --aggressive .
       - name: Detect changes by isort
-        uses: tj-actions/verify-changed-files@v13
+        uses: tj-actions/verify-changed-files@v17
         id: verify-isort-update
         with:
           files: |
