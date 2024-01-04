@@ -559,7 +559,8 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
     def action(self, action):
         """Takes the discrete action and transforms it to setpoints tuple."""
-        action_ = self.get_wrapper_attr('action_mapping')(action)
+        action_ = action.copy()
+        action_ = self.get_wrapper_attr('action_mapping')(action_)
         # Update current setpoints values with incremental action
         self.current_setpoints = [
             sum(i) for i in zip(
@@ -624,8 +625,8 @@ class DiscretizeEnv(gym.ActionWrapper):
         self.logger.info('Wrapper initialized')
 
     def action(self, action: Union[int, List[int]]):
-
-        action_ = self.action_mapping(action)
+        action_ = action.copy()
+        action_ = self.get_wrapper_attr('action_mapping')(action_)
         return action_
 
     # Updating property
@@ -722,8 +723,8 @@ class NormalizeAction(gym.ActionWrapper):
         return action_
 
     def action(self, action: Any):
-
-        action_ = self.reverting_action(action)
+        action_ = action.copy()
+        action_ = self.get_wrapper_attr('reverting_action')(action_)
         return action_
 
     # ---------------------- Specific environment wrappers ---------------------#
