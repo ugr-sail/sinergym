@@ -10,7 +10,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
       - name: autopep8 check
@@ -39,7 +39,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
       - name: Install pytype
