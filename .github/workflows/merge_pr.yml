@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Setup Python
@@ -89,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build the latest Docker image
         run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[test] --tag pushmain/sinergym:latest
       - name: Create a shared folder for coverage output
@@ -115,7 +115,7 @@ jobs:
     steps:
       - name: Checkout code
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build the latest Docker image
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extras] --tag $DOCKER_USER/sinergym:latest

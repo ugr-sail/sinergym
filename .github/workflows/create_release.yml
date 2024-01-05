@@ -56,6 +56,8 @@ jobs:
       # IMPORTANT: this permission is mandatory for trusted publishing
       id-token: write
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Preparing dist directory
         run: python setup.py sdist
       - name: Publish package distributions to PyPI

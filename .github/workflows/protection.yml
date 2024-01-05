@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - name: Copy code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: check workflows and tests changes
         uses: dorny/paths-filter@v2
