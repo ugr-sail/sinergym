@@ -47,36 +47,16 @@ jobs:
           TAG: ${{ steps.tag_version.outputs.latest_tag }}
         run: docker push $DOCKER_USER/sinergym:$TAG-lite
 
-  update-pypi:
-    env:
-      PYPI_USER: ${{ secrets.PYPI_USER }}
-      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-    # If you don't have secrets configured with pypi credential, this job will be skipped
-    name: PyPi package update
+  pypi-publish:
+    name: upload release to PyPI
     runs-on: ubuntu-latest
+    # Specifying a GitHub environment is optional, but strongly encouraged
+    environment: release
+    permissions:
+      # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
     steps:
-      - name: Checkout code
-        if: "${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}"
-        uses: actions/checkout@v2
+      # retrieve your distributions here
 
-      # - name: Checking Sinergym version is updated
-      #   if: "${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}"
-      #   uses: dorny/paths-filter@v2
-      #   id: verify-version-update
-      #   with:
-      #     filters: |
-      #       version:
-      #         - 'sinergym/version.txt'
-
-      - name: Preparing dist directory
-        if: ${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}
-        run: python setup.py sdist
-
-      - name: Publish a Python distribution to PyPi
-        if: ${{ env.PYPI_USER != '' && env.PYPI_API_TOKEN != '' }}
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: ${{ env.PYPI_USER }}
-          password: ${{ env.PYPI_API_TOKEN }}
-          skip-existing: true
-          verbose: true
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1  
