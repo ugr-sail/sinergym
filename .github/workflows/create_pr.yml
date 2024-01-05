@@ -43,7 +43,7 @@ jobs:
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
       - name: Install pytype
-        run: pip install pytype
+        run: pip install pytype requests urllib3
       - name: Check pytype
         run: pytype -d import-error sinergym/
 
