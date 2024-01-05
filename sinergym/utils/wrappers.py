@@ -86,7 +86,7 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         obs, reward, terminated, truncated, info = self.env.step(action)
 
         # Save original obs in class attribute
-        self.unwrapped_observation = obs.copy()
+        self.unwrapped_observation = deepcopy(obs)
 
         # Normalize observation and return
         return self.normalize(np.array([obs]))[
@@ -97,7 +97,7 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         obs, info = self.env.reset(**kwargs)
 
         # Save original obs in class attribute
-        self.unwrapped_observation = obs.copy()
+        self.unwrapped_observation = deepcopy(obs)
 
         return self.normalize(np.array([obs]))[0], info
 
@@ -542,7 +542,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         # Generate all posible actions
         for k in range(len(self.env.get_wrapper_attr('action_variables'))):
             for v in values:
-                x = do_nothing.copy()
+                x = deepcopy(do_nothing)
                 x[k] = v
                 self.mapping[n] = x
                 n += 1
@@ -559,7 +559,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
     def action(self, action):
         """Takes the discrete action and transforms it to setpoints tuple."""
-        action_ = action.copy()
+        action_ = deepcopy(action)
         action_ = self.get_wrapper_attr('action_mapping')(action_)
         # Update current setpoints values with incremental action
         self.current_setpoints = [
@@ -624,8 +624,8 @@ class DiscretizeEnv(gym.ActionWrapper):
             'Make sure that the action space is compatible and contained in the original environment.')
         self.logger.info('Wrapper initialized')
 
-    def action(self, action: Union[int, List[int]]):
-        action_ = action.copy()
+    def action(self, action: Union[int, List[int]]) -> List[int]:
+        action_ = deepcopy(action)
         action_ = self.get_wrapper_attr('action_mapping')(action_)
         return action_
 
@@ -723,7 +723,7 @@ class NormalizeAction(gym.ActionWrapper):
         return action_
 
     def action(self, action: Any):
-        action_ = action.copy()
+        action_ = deepcopy(action)
         action_ = self.get_wrapper_attr('reverting_action')(action_)
         return action_
 
