@@ -345,6 +345,13 @@ def simulator_datacenter(env_datacenter):
 
 
 @pytest.fixture(scope='function')
+def building_5zone(json_path_5zone):
+    with open(json_path_5zone) as json_f:
+        building = json.load(json_f)
+        return building
+
+
+@pytest.fixture(scope='function')
 def model_5zone(VARIABLES_5ZONE, METERS_5ZONE, ACTUATORS_5ZONE):
 
     return ModelJSON(
