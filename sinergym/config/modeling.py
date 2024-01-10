@@ -119,6 +119,17 @@ class ModelJSON(object):
         # Extract schedulers available in building model
         self.schedulers = self.get_schedulers()
 
+        # ------------------------ Checking config definition ------------------------ #
+
+        # Check config definition
+        self._check_eplus_config()
+        self.logger.info('Model Config is correct.')
+
+        # ------------- Apply adaptations in building model automatically ------------ #
+        self.adapt_building_to_variables()
+        self.adapt_building_to_meters()
+        self.adapt_building_to_config()
+
         # Runperiod information
         self.runperiod = self._get_eplus_runperiod()
         self.episode_length = self._get_runperiod_len()
@@ -133,12 +144,6 @@ class ModelJSON(object):
         self.logger.info(
             'timesteps per episode: {}'.format(
                 self.timestep_per_episode))
-
-        # ------------------------ Checking config definition ------------------------ #
-
-        # Check config definition
-        self._check_eplus_config()
-        self.logger.info('Model Config is correct.')
 
     # ---------------------------------------------------------------------------- #
     #                 Variables and Building model adaptation                      #

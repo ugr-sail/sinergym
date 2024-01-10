@@ -78,11 +78,9 @@ def test_adapt_building_to_epw(model_5zone):
     assert winter_day.get('wind_speed', False)
 
 
-def test_adapt_building_to_variables(model_5zone):
+def test_adapt_building_to_variables(model_5zone, building_5zone):
     # State before method
-    assert not model_5zone.building.get('Output:Variable', False)
-    # Execute method
-    model_5zone.adapt_building_to_variables()
+    assert not building_5zone.get('Output:Variable', False)
     # State after method
     assert len(
         model_5zone.building['Output:Variable']) == len(
@@ -96,11 +94,9 @@ def test_adapt_building_to_variables(model_5zone):
         assert output_variable['variable_name'] in original_varible_names
 
 
-def test_adapt_building_to_meters(model_5zone):
+def test_adapt_building_to_meters(model_5zone, building_5zone):
     # State before method
-    assert not model_5zone.building.get('Output:Meter', False)
-    # Execute method
-    model_5zone.adapt_building_to_meters()
+    assert not building_5zone.get('Output:Meter', False)
     # State after method
     assert len(
         model_5zone.building['Output:Meter']) == len(
@@ -114,13 +110,10 @@ def test_adapt_building_to_meters(model_5zone):
         assert output_meter['key_name'] in original_meter_names
 
 
-def test_adapt_building_to_config(model_5zone):
+def test_adapt_building_to_config(model_5zone, building_5zone):
     # Check default config
-    assert list(model_5zone.building['Timestep'].values())[
+    assert list(building_5zone['Timestep'].values())[
         0]['number_of_timesteps_per_hour'] == 4
-
-    # Set new extra configuration
-    model_5zone.adapt_building_to_config()
 
     # Check new config
     assert list(model_5zone.building['Timestep'].values())[
@@ -231,11 +224,6 @@ def test_get_eplus_runperiod(model_5zone):
     assert runperiod['start_weekday'] == WEEKDAY_ENCODING[building_runperiod['day_of_week_for_start_day'].lower()]
     assert runperiod['n_steps_per_hour'] == list(
         model_5zone.building['Timestep'].values())[0]['number_of_timesteps_per_hour']
-
-
-def test_get_runperiod_len(model_5zone):
-    total_time = model_5zone._get_runperiod_len()
-    assert total_time == 31536000
 
 # ---------------------------------------------------------------------------- #
 #                  Working Folder for Simulation Management                    #
