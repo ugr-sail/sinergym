@@ -223,7 +223,12 @@
                                    "secondfloor:bedroom03_air_temperature"],
         "energy_variables"      : ["HVAC_electricity_demand_rate"],
         "range_comfort_winter"  : [19.0, 21.0],
-        "range_comfort_summer"  : [19.0, 21.0]
+        "range_comfort_summer"  : [19.0, 21.0],
+        "summer_start"          : [6, 1],
+        "summer_final"          : [9, 30],
+        "energy_weight"         : 0.5,
+        "lambda_energy"         : 1.0,
+        "lambda_temperature"    : 1.0
     }
 
 }

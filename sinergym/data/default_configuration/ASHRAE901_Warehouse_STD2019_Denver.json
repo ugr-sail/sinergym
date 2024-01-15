@@ -106,13 +106,18 @@
 
     "reward"                : "LinearReward",
     "reward_kwargs"         : {
-        "temperature_variables": [
+        "temperature_variables" : [
             "zone1_office_air_temperature",
             "zone2_fine_storage_air_temperature",
             "zone3_bulk_storage_air_temperature"],
-        "energy_variables": ["HVAC_electricity_demand_rate"],
-        "range_comfort_winter": [18, 27],
-        "range_comfort_summer": [18, 27]
+        "energy_variables"      : ["HVAC_electricity_demand_rate"],
+        "range_comfort_winter"  : [18, 27],
+        "range_comfort_summer"  : [18, 27],
+        "summer_start"          : [6, 1],
+        "summer_final"          : [9, 30],
+        "energy_weight"         : 0.5,
+        "lambda_energy"         : 1e-4,
+        "lambda_temperature"    : 1.0
     }
 
 }

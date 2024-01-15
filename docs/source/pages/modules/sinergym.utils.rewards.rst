@@ -1,4 +1,4 @@
-sinergym.utils.rewards
+﻿sinergym.utils.rewards
 ======================
 
 .. automodule:: sinergym.utils.rewards
@@ -23,6 +23,7 @@ sinergym.utils.rewards
       ExpReward
       HourlyLinearReward
       LinearReward
+      NormalizedLinearReward
    
    
 
