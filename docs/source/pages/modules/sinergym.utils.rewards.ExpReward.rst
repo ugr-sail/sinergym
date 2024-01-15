@@ -1,4 +1,4 @@
-﻿sinergym.utils.rewards.ExpReward
+sinergym.utils.rewards.ExpReward
 ================================
 
 .. currentmodule:: sinergym.utils.rewards

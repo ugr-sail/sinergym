@@ -1,9 +1,9 @@
-sinergym.utils.rewards.BaseReward
-=================================
+sinergym.utils.rewards.NormalizedLinearReward
+=============================================
 
 .. currentmodule:: sinergym.utils.rewards
 
-.. autoclass:: BaseReward
+.. autoclass:: NormalizedLinearReward
    :members:                                                           
    :undoc-members:               
 
@@ -15,7 +15,7 @@ sinergym.utils.rewards.BaseReward
 
    .. autosummary::
    
-      ~BaseReward.__init__
+      ~NormalizedLinearReward.__init__
    
    
 
@@ -25,6 +25,6 @@ sinergym.utils.rewards.BaseReward
 
    .. autosummary::
    
-      ~BaseReward.logger
+      ~NormalizedLinearReward.logger
    
    
