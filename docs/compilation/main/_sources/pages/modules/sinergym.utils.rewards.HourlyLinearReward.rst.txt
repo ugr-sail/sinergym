@@ -1,4 +1,4 @@
-﻿sinergym.utils.rewards.HourlyLinearReward
+sinergym.utils.rewards.HourlyLinearReward
 =========================================
 
 .. currentmodule:: sinergym.utils.rewards

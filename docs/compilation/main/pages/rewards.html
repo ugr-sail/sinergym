@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>7. Rewards &mdash; sinergym  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/doc_theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=bb66aae0" />
+
+  
     <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -135,11 +137,12 @@ respectively.</p>
 <p class="admonition-title">Warning</p>
 <p><span class="math notranslate nohighlight">\(\lambda_P\)</span> and <span class="math notranslate nohighlight">\(\lambda_T\)</span> are constants established in order to set up a
 proportional concordance between energy and comfort penalties. If you are
-using other buildings, be careful with these constants and update them.</p>
+using other buildings, be careful with these constants and update them in order to
+have a similar magnitude of the reward components.</p>
 </div>
 <p>This is the main idea of reward system in <em>Sinergym</em>. However, depending some details,
 different kinds of reward function is developed:</p>
-<ul class="simple">
+<ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">LinearReward</span></code> implements a <strong>linear reward</strong> function where the discomfort is calculated
 as the absolute difference between current temperature and comfort range (so if the
 temperature is inside that range, the discomfort would be 0).
@@ -154,6 +157,16 @@ the weight given to the discomfort depends on the <strong>hour of the day</stron
 hour of the simulation is in working hours (by default, from 9 AM to 7 PM) both
 comfort and energy consumption weights equally, but outside those hours only energy
 is considered.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NormalizedLinearReward</span></code> is the same function than <code class="docutils literal notranslate"><span class="pre">LinearReward</span></code>, but it does not use
+the <span class="math notranslate nohighlight">\(\lambda_P\)</span> and <span class="math notranslate nohighlight">\(\lambda_T\)</span> to equilibrate the value magnitudes in reward
+components. Instead, it applies a normalization using the maximum energy consumption and comfort
+out of range values. This reward function is adaptive, since these maximum values are updated
+along the process. It is possible to specify the initial maximum values, by default they are 0.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This reward function is not very precise at the beginning of the simulation, be careful with that.</p>
+</div>
+</li>
 </ul>
 <p>The reward functions have a series of <strong>parameters</strong> in their constructor whose values
 may depend on the building we are using or other characteristics. For example, the
@@ -171,9 +184,6 @@ environment you are using.</p></li>
 environment you are using.</p></li>
 <li><p><strong>energy_weight</strong>: Weight given to the energy term. Defaults to 0.5. Comfort weight
 will have 1-<em>energy_weight</em>.</p></li>
-<li><p><strong>lambda_energy</strong>: Constant for removing dimensions from power(1/W). Defaults to 1e-4.</p></li>
-<li><p><strong>lambda_temperature</strong>: Constant for removing dimensions from temperature(1/C).
-Defaults to 1.0.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -285,6 +295,7 @@ The below code implements this.</p>
             <dd><a href="../../v2.5.2/pages/rewards.html">v2.5.2</a></dd>
             <dd><a href="../../v3.0.1/pages/rewards.html">v3.0.1</a></dd>
             <dd><a href="../../v3.0.6/pages/rewards.html">v3.0.6</a></dd>
+            <dd><a href="../../v3.1.0/pages/rewards.html">v3.1.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>6. Environments Configuration and Registration &mdash; sinergym  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/doc_theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=bb66aae0" />
+
+  
     <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -295,7 +297,7 @@ through a wrapper. For more information see <a class="reference internal" href="
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">},</span>
 
-<span class="w">    </span><span class="nt">&quot;action_space&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gym.spaces.Box(low=np.array([15.0, 22.5], dtype=np.float32), high=np.array([23.0, 30.0], dtype=np.float32), shape=(2,), dtype=np.float32)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;action_space&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gym.spaces.Box(low=np.array([15.0, 22.5], dtype=np.float32), high=np.array([22.5, 30.0], dtype=np.float32), shape=(2,), dtype=np.float32)&quot;</span><span class="p">,</span>
 
 <span class="w">    </span><span class="nt">&quot;action_space_discrete&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gym.spaces.Discrete(10)&quot;</span><span class="p">,</span>
 
@@ -305,7 +307,12 @@ through a wrapper. For more information see <a class="reference internal" href="
 <span class="w">        </span><span class="nt">&quot;temperature_variables&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;air_temperature&quot;</span><span class="p">],</span>
 <span class="w">        </span><span class="nt">&quot;energy_variables&quot;</span><span class="w">      </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;HVAC_electricity_demand_rate&quot;</span><span class="p">],</span>
 <span class="w">        </span><span class="nt">&quot;range_comfort_winter&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">20.0</span><span class="p">,</span><span class="w"> </span><span class="mf">23.5</span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;range_comfort_summer&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">23.0</span><span class="p">,</span><span class="w"> </span><span class="mf">26.0</span><span class="p">]</span>
+<span class="w">        </span><span class="nt">&quot;range_comfort_summer&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">23.0</span><span class="p">,</span><span class="w"> </span><span class="mf">26.0</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;summer_start&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;summer_final&quot;</span><span class="w">          </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;energy_weight&quot;</span><span class="w">         </span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;lambda_energy&quot;</span><span class="w">         </span><span class="p">:</span><span class="w"> </span><span class="mf">1e-4</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;lambda_temperature&quot;</span><span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
 <span class="w">    </span><span class="p">}</span>
 
 <span class="p">}</span>
@@ -414,6 +421,7 @@ The same is done with <code class="docutils literal notranslate"><span class="pr
             <dd><a href="../../v2.5.2/index.html">v2.5.2</a></dd>
             <dd><a href="../../v3.0.1/index.html">v3.0.1</a></dd>
             <dd><a href="../../v3.0.6/index.html">v3.0.6</a></dd>
+            <dd><a href="../../v3.1.0/pages/environments_registration.html">v3.1.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

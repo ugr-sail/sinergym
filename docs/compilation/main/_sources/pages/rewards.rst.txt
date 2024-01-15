@@ -24,7 +24,8 @@ respectively.
 
 .. warning:: :math:`\lambda_P` and :math:`\lambda_T` are constants established in order to set up a 
              proportional concordance between energy and comfort penalties. If you are
-             using other buildings, be careful with these constants and update them.
+             using other buildings, be careful with these constants and update them in order to
+             have a similar magnitude of the reward components.
 
 This is the main idea of reward system in *Sinergym*. However, depending some details,
 different kinds of reward function is developed:
@@ -45,6 +46,14 @@ different kinds of reward function is developed:
    hour of the simulation is in working hours (by default, from 9 AM to 7 PM) both 
    comfort and energy consumption weights equally, but outside those hours only energy 
    is considered.
+
+- ``NormalizedLinearReward`` is the same function than ``LinearReward``, but it does not use
+  the :math:`\lambda_P` and :math:`\lambda_T` to equilibrate the value magnitudes in reward
+  components. Instead, it applies a normalization using the maximum energy consumption and comfort
+  out of range values. This reward function is adaptive, since these maximum values are updated
+  along the process. It is possible to specify the initial maximum values, by default they are 0.
+
+  .. warning:: This reward function is not very precise at the beginning of the simulation, be careful with that.
 
 The reward functions have a series of **parameters** in their constructor whose values 
 may depend on the building we are using or other characteristics. For example, the 
@@ -67,11 +76,6 @@ The main parameters that it is considered in a function reward will be the next:
 
 - **energy_weight**: Weight given to the energy term. Defaults to 0.5. Comfort weight
   will have 1-*energy_weight*.
-
-- **lambda_energy**: Constant for removing dimensions from power(1/W). Defaults to 1e-4.
-
-- **lambda_temperature**: Constant for removing dimensions from temperature(1/C). 
-  Defaults to 1.0.
 
 .. note:: These parameters are usually common to any reward function. 
           However, they may have different parameters depending on the 
