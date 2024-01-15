@@ -42,7 +42,7 @@ class LinearReward(BaseReward):
         summer_start: Tuple[int, int] = (6, 1),
         summer_final: Tuple[int, int] = (9, 30),
         energy_weight: float = 0.5,
-        lambda_energy: float = 1e-4,
+        lambda_energy: float = 1.0,
         lambda_temperature: float = 1.0
     ):
         """
@@ -112,11 +112,9 @@ class LinearReward(BaseReward):
 
         # Energy term
         energy, energy_values = self._get_energy(obs_dict)
-        reward_energy = - self.lambda_energy * energy
 
         # Comfort
         comfort, temp_values = self._get_comfort(obs_dict)
-        reward_comfort = - self.lambda_temp * comfort
 
         # Weighted sum of both terms
         energy_term, comfort_term, reward = self._get_reward(energy, comfort)
@@ -219,7 +217,7 @@ class ExpReward(LinearReward):
         summer_start: Tuple[int, int] = (6, 1),
         summer_final: Tuple[int, int] = (9, 30),
         energy_weight: float = 0.5,
-        lambda_energy: float = 1e-4,
+        lambda_energy: float = 1.0,
         lambda_temperature: float = 1.0
     ):
         """
@@ -303,7 +301,7 @@ class HourlyLinearReward(LinearReward):
         summer_start: Tuple[int, int] = (6, 1),
         summer_final: Tuple[int, int] = (9, 30),
         default_energy_weight: float = 0.5,
-        lambda_energy: float = 1e-4,
+        lambda_energy: float = 1.0,
         lambda_temperature: float = 1.0,
         range_comfort_hours: tuple = (9, 19),
     ):
