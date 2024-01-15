@@ -119,12 +119,11 @@ class LinearReward(BaseReward):
         reward_comfort = - self.lambda_temp * comfort
 
         # Weighted sum of both terms
-        reward = self.W_energy * reward_energy + \
-            (1.0 - self.W_energy) * reward_comfort
+        energy_term, comfort_term, reward = self._get_reward(energy, comfort)
 
         reward_terms = {
-            'energy_term': self.W_energy * reward_energy,
-            'comfort_term': (1.0 - self.W_energy) * reward_comfort,
+            'energy_term': energy_term,
+            'comfort_term': comfort_term,
             'reward_weight': self.W_energy,
             'abs_energy': energy,
             'abs_comfort': comfort,
@@ -191,6 +190,22 @@ class LinearReward(BaseReward):
                 comfort += min(abs(temp_range[0] - T), abs(T - temp_range[1]))
 
         return comfort, temp_values
+
+    def _get_reward(self, energy: float,
+                    comfort: float) -> Tuple[float, float, float]:
+        """It calculates reward value using energy consumption and grades of temperature out of comfort range.
+
+        Args:
+            energy (float): Energy consumed
+            comfort (float): Grades out of ranges
+
+        Returns:
+            Tuple[float,float,float]: reward term for energy , reward term for comfort and total reward calculated.
+        """
+        reward_energy = -self.lambda_energy * self.W_energy * energy
+        reward_comfort = -self.lambda_temp * (1 - self.W_energy) * comfort
+        reward = reward_energy + reward_comfort
+        return reward_energy, reward_comfort, reward
 
 
 class ExpReward(LinearReward):
