@@ -337,6 +337,7 @@ class HourlyLinearReward(LinearReward):
 
         # Reward parameters
         self.range_comfort_hours = range_comfort_hours
+        self.default_energy_weight = default_energy_weight
 
     def __call__(self, obs_dict: Dict[str, Any]
                  ) -> Tuple[float, Dict[str, Any]]:
@@ -363,28 +364,27 @@ class HourlyLinearReward(LinearReward):
             self.logger.error(
                 'Some of the energy variables specified are not present in observation.')
             raise err
+
         # Energy term
         energy, energy_values = self._get_energy(obs_dict)
-        reward_energy = - self.lambda_energy * energy
 
         # Comfort
         comfort, temp_values = self._get_comfort(obs_dict)
-        reward_comfort = - self.lambda_temp * comfort
 
-        # Determine energy weight depending on the hour
+        # Determine reward weight depending on the hour
         hour = obs_dict['hour']
         if hour >= self.range_comfort_hours[0] and hour <= self.range_comfort_hours[1]:
-            weight = self.W_energy
+            self.W_energy = self.default_energy_weight
         else:
-            weight = 1.0
+            self.W_energy = 1.0
 
         # Weighted sum of both terms
-        reward = weight * reward_energy + (1.0 - weight) * reward_comfort
+        energy_term, comfort_term, reward = self._get_reward(energy, comfort)
 
         reward_terms = {
-            'energy_term': weight * reward_energy,
-            'comfort_term': (1.0 - weight) * reward_comfort,
-            'reward_weight': weight,
+            'energy_term': energy_term,
+            'comfort_term': comfort_term,
+            'reward_weight': self.W_energy,
             'abs_energy': energy,
             'abs_comfort': comfort,
             'energy_values': energy_values,
