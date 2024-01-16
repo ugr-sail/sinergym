@@ -104,6 +104,8 @@ for conf_file in conf_files:
         # If discrete space is included, add the same environment with
         # discretization
         if conf.get('action_space_discrete'):
+            # Copy the dictionary since is used by reference
+            env_kwargs_discrete = env_kwargs.copy()
 
             # Action mapping must be included in constants.
             action_mapping = eval(
@@ -119,7 +121,7 @@ for conf_file in conf_files:
                     'action_mapping': action_mapping})
             additional_wrappers = (discrete_wrapper_spec,)
 
-            env_kwargs['env_name'] = env_kwargs['env_name'].replace(
+            env_kwargs_discrete['env_name'] = env_kwargs_discrete['env_name'].replace(
                 'continuous', 'discrete')
 
             register(
@@ -128,5 +130,5 @@ for conf_file in conf_files:
                 additional_wrappers=additional_wrappers,
                 # order_enforce=False,
                 # disable_env_checker=True,
-                kwargs=env_kwargs
+                kwargs=env_kwargs_discrete
             )
