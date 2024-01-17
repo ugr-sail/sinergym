@@ -16,7 +16,7 @@
             "gamma": 0.99,
             "train_freq": [1, "episode"],
             "gradient_steps": -1,
-            "action_noise": null,
+            "action_noise": "NormalActionNoise(mean=np.array([0]), sigma=np.array([0.1]))",
             "replay_buffer_class": null,
             "replay_buffer_kwargs": null,
             "optimize_memory_usage": false,

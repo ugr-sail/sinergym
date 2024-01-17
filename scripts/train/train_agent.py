@@ -12,6 +12,7 @@ from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import HumanOutputFormat
 from stable_baselines3.common.logger import Logger as SB3Logger
 from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.noise import NormalActionNoise
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
@@ -47,6 +48,8 @@ def process_algorithm_parameters(alg_params: dict):
     if alg_params.get('train_freq') and isinstance(
             alg_params.get('train_freq'), list):
         alg_params['train_freq'] = tuple(alg_params['train_freq'])
+    if alg_params.get('action_noise'):
+        alg_params['action_noise'] = eval(alg_params['action_noise'])
     # Add more keys if it is needed
 
     return alg_params
