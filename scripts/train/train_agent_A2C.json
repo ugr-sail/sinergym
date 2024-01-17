@@ -1,33 +1,31 @@
+
 {
-    "id": "PPOExperimentExample",
+    "id": "A2CExperimentExample",
     "environment": "Eplus-5zone-hot-continuous-stochastic-v1",
     "episodes": 5,
     "algorithm": {
-        "name": "SB3-PPO",
+        "name": "SB3-A2C",
         "log_interval": 500,
         "parameters": {
             "policy": "MlpPolicy",
-            "learning_rate": 0.0003,
-            "n_steps": 2048,
-            "batch_size": 64,
-            "n_epochs": 10,
+            "learning_rate": 7e-4,
+            "n_steps": 5,
             "gamma": 0.99,
-            "gae_lambda": 0.95,
-            "clip_range": 0.2,
-            "clip_range_vf": null,
-            "normalize_advantage": true,
-            "ent_coef": 0,
+            "gae_lambda": 1.0,
+            "ent_coef": 0.0,
             "vf_coef": 0.5,
             "max_grad_norm": 0.5,
+            "rms_prop_eps": 1e-5,
+            "use_rms_prop": true,
             "use_sde": false,
             "sde_sample_freq": -1,
             "rollout_buffer_class": null,
             "rollout_buffer_kwargs": null,
-            "target_kl": null,
+            "normalize_advantage": false,
             "stats_window_size": 100,
             "tensorboard_log": null,
             "policy_kwargs": null,
-            "verbose": 1,
+            "verbose": 0,
             "seed": null,
             "device": "auto",
             "_init_setup_model": true
@@ -55,7 +53,7 @@
             "project": "sinergym",
             "entity": "alex_ugr"
         },
-        "artifact_name": "experiment_PPO",
+        "artifact_name": "experiment_A2C",
         "artifact_type": "training",
         "dump_frequency": 500
     }
