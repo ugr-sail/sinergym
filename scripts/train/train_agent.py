@@ -133,7 +133,8 @@ try:
     #                           Defining model (algorithm)                         #
     # ---------------------------------------------------------------------------- #
     algorithm_name = conf['algorithm']['name']
-    algorithm_parameters = conf['algorithm']['parameters']
+    algorithm_parameters = conf['algorithm'].get(
+        'parameters', {'policy': 'MlpPolicy'})
     if conf.get('model') is None:
 
         # --------------------------------------------------------#
@@ -142,42 +143,37 @@ try:
         if algorithm_name == 'SB3-DQN':
 
             model = DQN(env=env,
-                        seed=conf.get('seed', None),
                         ** algorithm_parameters)
         # --------------------------------------------------------#
         #                           DDPG                         #
         # --------------------------------------------------------#
         elif algorithm_name == 'SB3-DDPG':
             model = DDPG(env=env,
-                         seed=conf.get('seed', None),
+
                          ** algorithm_parameters)
         # --------------------------------------------------------#
         #                           A2C                          #
         # --------------------------------------------------------#
         elif algorithm_name == 'SB3-A2C':
             model = A2C(env=env,
-                        seed=conf.get('seed', None),
                         ** algorithm_parameters)
         # --------------------------------------------------------#
         #                           PPO                          #
         # --------------------------------------------------------#
         elif algorithm_name == 'SB3-PPO':
             model = PPO(env=env,
-                        seed=conf.get('seed', None),
                         ** algorithm_parameters)
         # --------------------------------------------------------#
         #                           SAC                          #
         # --------------------------------------------------------#
         elif algorithm_name == 'SB3-SAC':
             model = SAC(env=env,
-                        seed=conf.get('seed', None),
                         ** algorithm_parameters)
         # --------------------------------------------------------#
         #                           TD3                          #
         # --------------------------------------------------------#
         elif algorithm_name == 'SB3-TD3':
             model = TD3(env=env,
-                        seed=conf.get('seed', None),
                         ** algorithm_parameters)
         # --------------------------------------------------------#
         #                           Error                        #
