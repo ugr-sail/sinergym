@@ -73,7 +73,6 @@
         "Zone People Occupant Count"                                      : {
             "variable_names" : "people_count",
             "keys"          : ["Basement", "core_bottom", "core_mid", "core_top", 
-                               "GroundFloor_Plenum", "MidFloor_Plenum", "TopFloor_Plenum", 
                                "Perimeter_bot_ZN_1", "Perimeter_bot_ZN_2", "Perimeter_bot_ZN_3", "Perimeter_bot_ZN_4", 
                                "Perimeter_mid_ZN_1", "Perimeter_mid_ZN_2", "Perimeter_mid_ZN_3", "Perimeter_mid_ZN_4", 
                                "Perimeter_top_ZN_1", "Perimeter_top_ZN_2", "Perimeter_top_ZN_3", "Perimeter_top_ZN_4"

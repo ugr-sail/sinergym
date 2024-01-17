@@ -739,7 +739,7 @@ class OfficeGridStorageSmoothingActionConstraintsWrapper(
 
     def action(self, act: np.ndarray) -> np.ndarray:
         """Due to Charge rate and Discharge rate can't be more than 0.0 simultaneously (in OfficeGridStorageSmoothing.epJSON),
-           this wrapper clips one of the to 0.0 when both have a value upper than 0.0 (randomly).
+           this wrapper clips one of them to 0.0 when both have a value upper than 0.0 (randomly).
 
         Args:
             act (np.ndarray): Action to be clipped
