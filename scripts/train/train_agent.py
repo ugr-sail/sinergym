@@ -29,15 +29,41 @@ from sinergym.utils.wrappers import *
 
 def process_environment_parameters(env_params: dict) -> dict:
 
-    # Transform required str's into Callables
-    if env_params.get('reward'):
-        env_params['reward'] = eval(env_params['reward'])
+    # Transform required str's into Callables or list in tuples
     if env_params.get('action_space'):
         env_params['action_space'] = eval(
             env_params['action_space'])
-    if env_params.get('observation_space'):
-        env_params['observation_space'] = eval(
-            env_params['observation_space'])
+
+    if env_params.get('variables'):
+        for variable_name, components in env_params['variables'].items():
+            env_params['variables'][variable_name] = tuple(components)
+
+    if env_params.get('actuators'):
+        for actuator_name, components in env_params['actuators'].items():
+            env_params['actuators'][actuator_name] = tuple(components)
+
+    if env_params.get('weather_variability'):
+        env_params['weather_variability'] = tuple(
+            env_params['weather_variability'])
+
+    if env_params.get('reward'):
+        env_params['reward'] = eval(env_params['reward'])
+
+    if env_params.get('reward_kwargs'):
+        for reward_param_name, reward_value in env_params.items():
+            if reward_param_name in [
+                'range_comfort_winter',
+                'range_comfort_summer',
+                'summer_start',
+                    'summer_final']:
+                env_params['reward_kwargs'][reward_param_name] = tuple(
+                    reward_value)
+
+    if env_params.get('config_params'):
+        if env_params['config_params'].get('runperiod'):
+            env_params['config_params']['runperiod'] = tuple(
+                env_params['config_params']['runperiod'])
+
     # Add more keys if it is needed
 
     return env_params
@@ -45,9 +71,11 @@ def process_environment_parameters(env_params: dict) -> dict:
 
 def process_algorithm_parameters(alg_params: dict):
 
+    # Transform required str's into Callables or list in tuples
     if alg_params.get('train_freq') and isinstance(
             alg_params.get('train_freq'), list):
         alg_params['train_freq'] = tuple(alg_params['train_freq'])
+
     if alg_params.get('action_noise'):
         alg_params['action_noise'] = eval(alg_params['action_noise'])
     # Add more keys if it is needed
