@@ -82,37 +82,20 @@
             "variable_name" : "Office_Cooling_RL",
             "element_type"  : "Schedule:Year", 
             "value_type"    : "Schedule Value"
-        },
-        "Fine Storage Heating Setpoint Schedule" : {
-            "variable_name" : "FineStorage_Heating_RL",
-            "element_type"  : "Schedule:Compact", 
-            "value_type"    : "Schedule Value"
-        },
-        "Fine Storage Cooling Setpoint Schedule" : {
-            "variable_name" : "FineStorage_Cooling_RL",
-            "element_type"  : "Schedule:Compact", 
-            "value_type"    : "Schedule Value"
-        },
-        "Bulk Storage Heating Setpoint Schedule" : {
-            "variable_name" : "BulkStorage_Heating_RL",
-            "element_type"  : "Schedule:Compact", 
-            "value_type"    : "Schedule Value"
         }
     },
 
-    "action_space"          : "gym.spaces.Box(low=np.array([15.0, 22.5, 15.0, 22.5, 15.0], dtype=np.float32), high=np.array([22.5, 30.0, 22.5, 30.0, 22.5], dtype=np.float32) ,shape=(5,), dtype=np.float32)",
+    "action_space"          : "gym.spaces.Box(low=np.array([15.0, 22.5], dtype=np.float32), high=np.array([22.5, 35.0], dtype=np.float32) ,shape=(2,), dtype=np.float32)",
 
     "action_space_discrete" : "gym.spaces.Discrete(10)",
 
     "reward"                : "LinearReward",
     "reward_kwargs"         : {
         "temperature_variables" : [
-            "zone1_office_air_temperature",
-            "zone2_fine_storage_air_temperature",
-            "zone3_bulk_storage_air_temperature"],
+                "zone1_office_air_temperature"],
         "energy_variables"      : ["HVAC_electricity_demand_rate"],
-        "range_comfort_winter"  : [18, 27],
-        "range_comfort_summer"  : [18, 27],
+        "range_comfort_winter"  : [20.0, 23.5],
+        "range_comfort_summer"  : [23.0, 26.0],
         "summer_start"          : [6, 1],
         "summer_final"          : [9, 30],
         "energy_weight"         : 0.5,
