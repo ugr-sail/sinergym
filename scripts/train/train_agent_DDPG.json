@@ -1,23 +1,31 @@
+
 {
-    "id": "ExperimentExample",
+    "id": "DDPGExperimentExample",
     "environment": "Eplus-5zone-hot-continuous-stochastic-v1",
     "episodes": 5,
     "algorithm": {
-        "name": "SB3-PPO",
+        "name": "SB3-DDPG",
         "log_interval": 1,
         "parameters": {
             "policy": "MlpPolicy",
-            "verbose": 1,
-            "learning_rate": 0.0003,
-            "n_steps": 2048,
-            "batch_size": 64,
-            "n_epochs": 10,
+            "learning_rate": 1e-3,
+            "buffer_size": 1000000,
+            "learning_starts": 100,
+            "batch_size": 100,
+            "tau": 0.005,
             "gamma": 0.99,
-            "gae_lambda": 0.95,
-            "clip_range": 0.2,
-            "ent_coef": 0,
-            "vf_coef": 0.5,
-            "max_grad_norm": 0.5
+            "train_freq": [1, "episode"],
+            "gradient_steps": -1,
+            "action_noise": null,
+            "replay_buffer_class": null,
+            "replay_buffer_kwargs": null,
+            "optimize_memory_usage": false,
+            "tensorboard_log": null,
+            "policy_kwargs": null,
+            "verbose": 0,
+            "seed": null,
+            "device": "auto",
+            "_init_setup_model": true
         }
     },
     "env_params": {
@@ -28,7 +36,6 @@
     "wrappers": {
         "NormalizeAction": {},
         "NormalizeObservation": {},
-        "NormalizeReward": {},
         "LoggerWrapper": {
             "logger_class": "sinergym.utils.logger.CSVLogger",
             "flag": true
@@ -43,7 +50,7 @@
             "project": "sinergym",
             "entity": "alex_ugr"
         },
-        "artifact_name": "experiment1",
+        "artifact_name": "experiment_DDPG",
         "artifact_type": "training",
         "dump_frequency": 500
     }

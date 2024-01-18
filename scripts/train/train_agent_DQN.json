@@ -1,0 +1,60 @@
+{
+    "id": "DQNExperimentExample",
+    "environment": "Eplus-5zone-hot-discrete-stochastic-v1",
+    "episodes": 5,
+    "algorithm": {
+        "name": "SB3-DQN",
+        "log_interval": 1,
+        "parameters": {
+            "policy": "MlpPolicy",
+            "learning_rate": 1e-4,
+            "buffer_size": 1000000,
+            "learning_starts": 50000,
+            "batch_size": 32,
+            "tau": 1.0,
+            "gamma": 0.99,
+            "train_freq": 4,
+            "gradient_steps": 1,
+            "replay_buffer_class": null,
+            "replay_buffer_kwargs": null,
+            "optimize_memory_usage": false,
+            "target_update_interval": 10000,
+            "exploration_fraction": 0.1,
+            "exploration_initial_eps": 1.0,
+            "exploration_final_eps": 0.05,
+            "max_grad_norm": 10,
+            "stats_window_size": 100,
+            "tensorboard_log": null,
+            "policy_kwargs": null,
+            "verbose": 1,
+            "seed": null,
+            "device": "auto",
+            "_init_setup_model": true
+        }
+    },
+    "env_params": {
+        "reward": "LinearReward"
+    },
+    "seed": 3,
+    "model": null,
+    "wrappers": {
+        "NormalizeObservation": {},
+        "LoggerWrapper": {
+            "logger_class": "sinergym.utils.logger.CSVLogger",
+            "flag": true
+        }
+    },
+    "evaluation": {
+        "eval_freq": 2,
+        "eval_length": 2
+    },
+    "wandb": {
+        "init_params": {
+            "project": "sinergym",
+            "entity": "alex_ugr"
+        },
+        "artifact_name": "experiment_DQN",
+        "artifact_type": "training",
+        "dump_frequency": 500
+    }
+}

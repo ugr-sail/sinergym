@@ -161,7 +161,7 @@ try:
         terminated = False
         current_month = 0
         while not terminated:
-            a, _ = model.predict(obs)
+            a, _ = model.predict(obs, deterministic=True)
             obs, reward, terminated, truncated, info = env.step(a)
             rewards.append(reward)
             if info['month'] != current_month:

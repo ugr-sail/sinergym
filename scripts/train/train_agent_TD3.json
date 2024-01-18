@@ -1,0 +1,61 @@
+
+{
+    "id": "TD3ExperimentExample",
+    "environment": "Eplus-5zone-hot-continuous-stochastic-v1",
+    "episodes": 5,
+    "algorithm": {
+        "name": "SB3-TD3",
+        "log_interval": 1,
+        "parameters": {
+            "policy": "MlpPolicy",
+            "learning_rate": 1e-3,
+            "buffer_size": 1000000,
+            "learning_starts": 100,
+            "batch_size": 100,
+            "tau": 0.005,
+            "gamma": 0.99,
+            "train_freq": [1, "episode"],
+            "gradient_steps": -1,
+            "action_noise": "NormalActionNoise(mean=np.array([0]), sigma=np.array([0.1]))",
+            "replay_buffer_class": null,
+            "replay_buffer_kwargs": null,
+            "optimize_memory_usage": false,
+            "policy_delay": 2,
+            "target_policy_noise": 0.2,
+            "target_noise_clip": 0.5,
+            "stats_window_size": 100,
+            "tensorboard_log": null,
+            "policy_kwargs": null,
+            "verbose": 1,
+            "seed": null,
+            "device": "auto",
+            "_init_setup_model": true
+        }
+    },
+    "env_params": {
+        "reward": "LinearReward"
+    },
+    "seed": 3,
+    "model": null,
+    "wrappers": {
+        "NormalizeAction": {},
+        "NormalizeObservation": {},
+        "LoggerWrapper": {
+            "logger_class": "sinergym.utils.logger.CSVLogger",
+            "flag": true
+        }
+    },
+    "evaluation": {
+        "eval_freq": 2,
+        "eval_length": 2
+    },
+    "wandb": {
+        "init_params": {
+            "project": "sinergym",
+            "entity": "alex_ugr"
+        },
+        "artifact_name": "experiment_TD3",
+        "artifact_type": "training",
+        "dump_frequency": 500
+    }
+}

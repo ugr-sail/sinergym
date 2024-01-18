@@ -1,0 +1,60 @@
+
+{
+    "id": "A2CExperimentExample",
+    "environment": "Eplus-5zone-hot-continuous-stochastic-v1",
+    "episodes": 5,
+    "algorithm": {
+        "name": "SB3-A2C",
+        "log_interval": 1,
+        "parameters": {
+            "policy": "MlpPolicy",
+            "learning_rate": 7e-4,
+            "n_steps": 5,
+            "gamma": 0.99,
+            "gae_lambda": 1.0,
+            "ent_coef": 0.0,
+            "vf_coef": 0.5,
+            "max_grad_norm": 0.5,
+            "rms_prop_eps": 1e-5,
+            "use_rms_prop": true,
+            "use_sde": false,
+            "sde_sample_freq": -1,
+            "rollout_buffer_class": null,
+            "rollout_buffer_kwargs": null,
+            "normalize_advantage": false,
+            "stats_window_size": 100,
+            "tensorboard_log": null,
+            "policy_kwargs": null,
+            "verbose": 0,
+            "seed": null,
+            "device": "auto",
+            "_init_setup_model": true
+        }
+    },
+    "env_params": {
+        "reward": "LinearReward"
+    },
+    "seed": 3,
+    "model": null,
+    "wrappers": {
+        "NormalizeAction": {},
+        "NormalizeObservation": {},
+        "LoggerWrapper": {
+            "logger_class": "sinergym.utils.logger.CSVLogger",
+            "flag": true
+        }
+    },
+    "evaluation": {
+        "eval_freq": 2,
+        "eval_length": 2
+    },
+    "wandb": {
+        "init_params": {
+            "project": "sinergym",
+            "entity": "alex_ugr"
+        },
+        "artifact_name": "experiment_A2C",
+        "artifact_type": "training",
+        "dump_frequency": 500
+    }
+}

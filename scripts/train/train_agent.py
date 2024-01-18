@@ -12,6 +12,7 @@ from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import HumanOutputFormat
 from stable_baselines3.common.logger import Logger as SB3Logger
 from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.noise import NormalActionNoise
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
@@ -20,6 +21,39 @@ from sinergym.utils.constants import *
 from sinergym.utils.logger import WandBOutputFormat
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import *
+
+# ---------------------------------------------------------------------------- #
+#                       Function to process configuration                      #
+# ---------------------------------------------------------------------------- #
+
+
+def process_environment_parameters(env_params: dict) -> dict:
+
+    # Transform required str's into Callables
+    if env_params.get('reward'):
+        env_params['reward'] = eval(env_params['reward'])
+    if env_params.get('action_space'):
+        env_params['action_space'] = eval(
+            env_params['action_space'])
+    if env_params.get('observation_space'):
+        env_params['observation_space'] = eval(
+            env_params['observation_space'])
+    # Add more keys if it is needed
+
+    return env_params
+
+
+def process_algorithm_parameters(alg_params: dict):
+
+    if alg_params.get('train_freq') and isinstance(
+            alg_params.get('train_freq'), list):
+        alg_params['train_freq'] = tuple(alg_params['train_freq'])
+    if alg_params.get('action_noise'):
+        alg_params['action_noise'] = eval(alg_params['action_noise'])
+    # Add more keys if it is needed
+
+    return alg_params
+
 
 # ---------------------------------------------------------------------------- #
 #                             Parameters definition                            #
@@ -78,21 +112,8 @@ try:
         )
 
     # --------------------- Overwrite environment parameters --------------------- #
-    env_params = {}
-
-    if conf.get('env_params'):
-        # Transform required str's into Callables
-        if conf['env_params'].get('reward'):
-            conf['env_params']['reward'] = eval(conf['env_params']['reward'])
-        if conf['env_params'].get('action_space'):
-            conf['env_params']['action_space'] = eval(
-                conf['env_params']['action_space'])
-        if conf['env_params'].get('action_mapping'):
-            for key in list(conf['env_params']['action_mapping'].keys()):
-                conf['env_params']['action_mapping'][int(
-                    key)] = conf['env_params']['action_mapping'].pop(key)
-
-        env_params = conf['env_params']
+    env_params = conf.get('env_params', {})
+    env_params = process_environment_parameters(env_params)
 
     # ---------------------------------------------------------------------------- #
     #                           Environment construction                           #
@@ -132,59 +153,57 @@ try:
     # ---------------------------------------------------------------------------- #
     #                           Defining model (algorithm)                         #
     # ---------------------------------------------------------------------------- #
-    algorithm_name = conf['algorithm']['name']
-    algorithm_parameters = conf['algorithm']['parameters']
+    alg_name = conf['algorithm']['name']
+    alg_params = conf['algorithm'].get(
+        'parameters', {'policy': 'MlpPolicy'})
+    alg_params = process_algorithm_parameters(alg_params)
+
     if conf.get('model') is None:
 
         # --------------------------------------------------------#
         #                           DQN                          #
         # --------------------------------------------------------#
-        if algorithm_name == 'SB3-DQN':
+        if alg_name == 'SB3-DQN':
 
             model = DQN(env=env,
-                        seed=conf.get('seed', None),
-                        ** algorithm_parameters)
+                        ** alg_params)
         # --------------------------------------------------------#
         #                           DDPG                         #
         # --------------------------------------------------------#
-        elif algorithm_name == 'SB3-DDPG':
+        elif alg_name == 'SB3-DDPG':
             model = DDPG(env=env,
-                         seed=conf.get('seed', None),
-                         ** algorithm_parameters)
+
+                         ** alg_params)
         # --------------------------------------------------------#
         #                           A2C                          #
         # --------------------------------------------------------#
-        elif algorithm_name == 'SB3-A2C':
+        elif alg_name == 'SB3-A2C':
             model = A2C(env=env,
-                        seed=conf.get('seed', None),
-                        ** algorithm_parameters)
+                        ** alg_params)
         # --------------------------------------------------------#
         #                           PPO                          #
         # --------------------------------------------------------#
-        elif algorithm_name == 'SB3-PPO':
+        elif alg_name == 'SB3-PPO':
             model = PPO(env=env,
-                        seed=conf.get('seed', None),
-                        ** algorithm_parameters)
+                        ** alg_params)
         # --------------------------------------------------------#
         #                           SAC                          #
         # --------------------------------------------------------#
-        elif algorithm_name == 'SB3-SAC':
+        elif alg_name == 'SB3-SAC':
             model = SAC(env=env,
-                        seed=conf.get('seed', None),
-                        ** algorithm_parameters)
+                        ** alg_params)
         # --------------------------------------------------------#
         #                           TD3                          #
         # --------------------------------------------------------#
-        elif algorithm_name == 'SB3-TD3':
+        elif alg_name == 'SB3-TD3':
             model = TD3(env=env,
-                        seed=conf.get('seed', None),
-                        ** algorithm_parameters)
+                        ** alg_params)
         # --------------------------------------------------------#
         #                           Error                        #
         # --------------------------------------------------------#
         else:
             raise RuntimeError(
-                F'Algorithm specified [{algorithm_name} ] is not registered.')
+                F'Algorithm specified [{alg_name} ] is not registered.')
 
     else:
         model_path = ''
@@ -199,22 +218,22 @@ try:
             model_path = conf['model']
 
         model = None
-        if algorithm_name == 'SB3-DQN':
+        if alg_name == 'SB3-DQN':
             model = DQN.load(
                 model_path)
-        elif algorithm_name == 'SB3-DDPG':
+        elif alg_name == 'SB3-DDPG':
             model = DDPG.load(
                 model_path)
-        elif algorithm_name == 'SB3-A2C':
+        elif alg_name == 'SB3-A2C':
             model = A2C.load(
                 model_path)
-        elif algorithm_name == 'SB3-PPO':
+        elif alg_name == 'SB3-PPO':
             model = PPO.load(
                 model_path)
-        elif algorithm_name == 'SB3-SAC':
+        elif alg_name == 'SB3-SAC':
             model = SAC.load(
                 model_path)
-        elif algorithm_name == 'SB3-TD3':
+        elif alg_name == 'SB3-TD3':
             model = TD3.load(
                 model_path)
         else:
