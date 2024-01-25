@@ -727,6 +727,16 @@ class NormalizeAction(gym.ActionWrapper):
         action_ = self.get_wrapper_attr('reverting_action')(action_)
         return action_
 
+
+class RoundActionWrapper(gym.ActionWrapper):
+    def __init__(self, env):
+        super().__init__(env)
+
+    def action(self, a):
+        rounded = np.round(a[:5])
+        new_a = np.concatenate([rounded, a[-1].reshape(1)])
+        return new_a
+
     # ---------------------- Specific environment wrappers ---------------------#
 
 
