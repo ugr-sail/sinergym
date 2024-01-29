@@ -733,7 +733,9 @@ class RoundActionWrapper(gym.ActionWrapper):
         super().__init__(env)
 
     def action(self, a):
-        rounded = np.round(a[:5])
+        # rounded = np.round(a[:5])
+        # new_a = np.concatenate([rounded, a[-1].reshape(1)])
+        rounded = np.where(a[:5] >= 0, 1, -1)
         new_a = np.concatenate([rounded, a[-1].reshape(1)])
         return new_a
 
