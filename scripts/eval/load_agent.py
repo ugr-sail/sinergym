@@ -158,9 +158,9 @@ try:
     for i in range(conf['episodes']):
         obs, info = env.reset()
         rewards = []
-        terminated = False
+        truncated = terminated = False
         current_month = 0
-        while not terminated:
+        while not (terminated or truncated):
             a, _ = model.predict(obs, deterministic=True)
             obs, reward, terminated, truncated, info = env.step(a)
             rewards.append(reward)

@@ -130,6 +130,7 @@ class CSVLogger(object):
             obs: List[Any],
             action: Union[int, np.ndarray, List[Any]],
             terminated: bool,
+            truncated: bool,
             info: Dict[str, Any]) -> List:
         """Assemble the array data to log in the new row
 
@@ -137,6 +138,7 @@ class CSVLogger(object):
             obs (List[Any]): Observation from step.
             action (Union[int, np.ndarray, List[Any]]): Action done in step.
             terminated (bool): terminated flag in step.
+            truncated (bool): truncated flag in step.
             info (Optional[Dict[str, Any]]): Extra info collected in step.
 
         Returns:
@@ -150,7 +152,8 @@ class CSVLogger(object):
             info.get('comfort_term'),
             info.get('abs_comfort'),
             info.get('abs_energy'),
-            terminated]
+            terminated,
+            truncated]
 
     def _store_step_information(
             self,
@@ -158,13 +161,7 @@ class CSVLogger(object):
         """Store relevant data to episode summary in progress.csv.
 
         Args:
-            obs (List[Any]): Observation from step.
-            action (Union[int, np.ndarray, List[Any]]): Action done in step.
-            reward (Optional[float]): Reward returned in step.
-            terminated (bool): terminated flag in step.
             info (Optional[Dict[str, Any]]): Extra info collected in step.
-
-
         """
         # In reset (timestep=1), some keys are not available in info
         if info['timestep'] > 1:
@@ -202,6 +199,7 @@ class CSVLogger(object):
             obs: List[Any],
             action: Union[int, np.ndarray, List[Any]],
             terminated: bool,
+            truncated: bool,
             info: Dict[str, Any]) -> None:
         """Log step information and store it in steps_data attribute.
 
@@ -209,12 +207,13 @@ class CSVLogger(object):
             obs (List[Any]): Observation from step.
             action (Union[int, np.ndarray, List[Any]]): Action done in step.
             terminated (bool): terminated flag in step.
+            truncated (bool): truncated flag in step.
             info (Dict[str, Any]): Extra info collected in step.
         """
         if self.flag:
             self.steps_data.append(
                 self._create_row_content(
-                    obs, action, terminated, info))
+                    obs, action, terminated, truncated, info))
             # Store step information for episode
             self._store_step_information(info)
 
@@ -223,6 +222,7 @@ class CSVLogger(object):
             obs: List[Any],
             action: Union[int, np.ndarray, List[Any]],
             terminated: bool,
+            truncated: bool,
             info: Dict[str, Any]) -> None:
         """Log step information and store it in steps_data attribute.
 
@@ -231,12 +231,13 @@ class CSVLogger(object):
             action (Union[int, np.ndarray, List[Any]]): Action done in step.
             reward (Optional[float]): Reward returned in step.
             terminated (bool): terminated flag in step.
+            truncated (bool): truncated flag in step.
             info (Optional[Dict[str, Any]]): Extra info collected in step.
         """
         if self.flag:
             self.steps_data_normalized.append(
                 self._create_row_content(
-                    obs, action, terminated, info))
+                    obs, action, terminated, truncated, info))
 
     def log_episode(self, episode: int) -> None:
         """Log episode main information using steps_data param.

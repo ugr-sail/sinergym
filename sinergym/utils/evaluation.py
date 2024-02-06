@@ -64,7 +64,8 @@ def evaluate_policy(
     episodes_executed = 0
     while episodes_executed < n_eval_episodes:
         obs, info = env.reset()
-        terminated, state = False, None
+        state = None
+        truncated = terminated = False
         episode_cumulative_reward = 0.0
         episode_length = 0
         episode_steps_comfort_violation = 0
@@ -75,10 +76,10 @@ def evaluate_policy(
         # ---------------------------------------------------------------------------- #
         #                     Running episode and accumulate values                    #
         # ---------------------------------------------------------------------------- #
-        while not terminated:
+        while not (truncated or terminated):
             action, state = model.predict(
                 obs, state=state, deterministic=deterministic)
-            obs, reward, terminated, _, info = env.step(action)
+            obs, reward, terminated, truncated, info = env.step(action)
             episode_cumulative_reward += reward
             episode_cumulative_power += info['abs_energy']
             episode_cumulative_energy_penalty += info['energy_term']
