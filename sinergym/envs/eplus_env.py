@@ -350,8 +350,8 @@ class EplusEnv(gym.Env):
                 self.last_info = info = self.info_queue.get(timeout=timeout)
             except (Full, Empty):
                 self.logger.debug(
-                    'STEP queues not receive value, simulation must be completed. changing TERMINATED flag to TRUE')
-                terminated = True
+                    'STEP queues not receive value, simulation must be completed. changing TRUNCATED flag to TRUE')
+                truncated = True
                 obs = self.last_obs
                 info = self.last_info
 
