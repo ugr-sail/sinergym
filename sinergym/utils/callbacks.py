@@ -302,7 +302,7 @@ class LoggerEvalCallback(EventCallback):
         """
         info = locals_["info"]
 
-        if locals_["terminated"]:
+        if locals_["truncated"]:
             maybe_is_success = info.get("is_success")
             if maybe_is_success is not None:
                 self._is_success_buffer.append(maybe_is_success)

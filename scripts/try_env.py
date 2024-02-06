@@ -15,9 +15,9 @@ env = LoggerWrapper(env)
 for i in range(1):
     obs, info = env.reset()
     rewards = []
-    terminated = False
+    truncated = terminated = False
     current_month = 0
-    while not terminated:
+    while not (terminated or truncated):
         a = env.action_space.sample()
         obs, reward, terminated, truncated, info = env.step(a)
         rewards.append(reward)

@@ -165,9 +165,9 @@ import sinergym
 env = gym.make('Eplus-datacenter-mixed-continuous-stochastic-v1')
 # Initialize the episode
 obs, info = env.reset()
-terminated = False
+truncated = terminated = False
 R = 0.0
-while not terminated:
+while not (terminated or truncated):
     a = env.action_space.sample() # random action selection
     obs, reward, terminated, truncated, info = env.step(a) # get new observation and reward
     R += reward

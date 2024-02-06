@@ -205,7 +205,7 @@ class LoggerWrapper(gym.Wrapper):
         super(LoggerWrapper, self).__init__(env)
         # Headers for csv logger
         monitor_header_list = monitor_header if monitor_header is not None else ['timestep'] + self.get_wrapper_attr('observation_variables') + self.get_wrapper_attr(
-            'action_variables') + ['time (hours)', 'reward', 'energy_penalty', 'comfort_penalty', 'absolute_temperature_violation', 'absolute_energy', 'terminated']
+            'action_variables') + ['time (hours)', 'reward', 'energy_penalty', 'comfort_penalty', 'absolute_temperature_violation', 'absolute_energy', 'terminated', 'truncated']
         self.monitor_header = ''
         for element_header in monitor_header_list:
             self.monitor_header += element_header + ','
@@ -260,12 +260,14 @@ class LoggerWrapper(gym.Wrapper):
                 obs=obs,
                 action=info['action'],
                 terminated=terminated,
+                truncated=truncated,
                 info=info)
             # Record original observation too
             self.file_logger.log_step(
                 obs=self.env.get_wrapper_attr('unwrapped_observation'),
                 action=info['action'],
                 terminated=terminated,
+                truncated=truncated,
                 info=info)
         else:
             # Only record observation without normalization
@@ -273,6 +275,7 @@ class LoggerWrapper(gym.Wrapper):
                 obs=obs,
                 action=info['action'],
                 terminated=terminated,
+                truncated=truncated,
                 info=info)
 
         return obs, reward, terminated, truncated, info
@@ -311,20 +314,32 @@ class LoggerWrapper(gym.Wrapper):
 
         if is_wrapped(self, NormalizeObservation):
             # Store initial state of simulation (normalized)
-            self.file_logger.log_step_normalize(obs=obs, action=[None for _ in range(len(
-                self.env.get_wrapper_attr('action_variables')))], terminated=False, info=info)
+            self.file_logger.log_step_normalize(
+                obs=obs,
+                action=[
+                    None for _ in range(
+                        len(
+                            self.env.get_wrapper_attr('action_variables')))],
+                terminated=False,
+                truncated=False,
+                info=info)
             # And store original obs
-            self.file_logger.log_step(obs=self.env.get_wrapper_attr('unwrapped_observation'),
-                                      action=[None for _ in range(
-                                          len(self.get_wrapper_attr('action_variables')))],
-                                      terminated=False,
-                                      info=info)
+            self.file_logger.log_step(
+                obs=self.env.get_wrapper_attr('unwrapped_observation'),
+                action=[
+                    None for _ in range(
+                        len(
+                            self.get_wrapper_attr('action_variables')))],
+                terminated=False,
+                truncated=False,
+                info=info)
         else:
             # Only store original step
             self.file_logger.log_step(obs=obs,
                                       action=[None for _ in range(
                                           len(self.get_wrapper_attr('action_variables')))],
                                       terminated=False,
+                                      truncated=False,
                                       info=info)
 
         return obs, info

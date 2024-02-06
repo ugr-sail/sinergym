@@ -16,9 +16,9 @@ for i in range(3):
     # Reset the environment to start a new episode
     obs, info = env.reset()
     rewards = []
-    terminated = False
+    truncated = terminated = False
     current_month = 0
-    while not terminated:
+    while not (terminated or truncated):
         # Random action control
         a = env.action_space.sample()
         # Read observation and reward
