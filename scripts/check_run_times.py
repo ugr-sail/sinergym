@@ -27,10 +27,10 @@ for env_id in args.environments:
     env = gym.make(env_id)
     # BEGIN EXECUTION TIME
     begin_time = datetime.now()
-    terminated = False
+    truncated = terminated = False
     for _ in range(args.episodes):
         env.reset()
-        while not terminated:
+        while not (terminated or truncated):
             a = env.action_space.sample()
             obs, reward, terminated, truncated, info = env.step(a)
     end_time = datetime.now()

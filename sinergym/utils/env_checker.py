@@ -128,6 +128,8 @@ def _check_returned_values(
     assert isinstance(
         terminated, bool), "The `terminated` signal must be a boolean"
     assert isinstance(
+        truncated, bool), "The `truncated` signal must be a boolean"
+    assert isinstance(
         info, dict), "The `info` returned by `step()` must be a python dictionary"
 
 

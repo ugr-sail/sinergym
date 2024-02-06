@@ -58,6 +58,7 @@ if not missing:
         assert reward is not None and reward < 0
         assert a is not None
         assert isinstance(terminated, bool)
+        assert isinstance(truncated, bool)
         assert info['timestep'] == 2
 
         env.close()
@@ -105,6 +106,7 @@ if not missing:
         assert reward is not None and reward < 0
         assert a is not None
         assert isinstance(terminated, bool)
+        assert isinstance(truncated, bool)
         assert info['timestep'] == 2
 
         env.close()
@@ -176,6 +178,7 @@ if not missing:
             assert reward is not None and reward < 0
             assert a is not None
             assert isinstance(terminated, bool)
+            assert isinstance(truncated, bool)
             assert info['timestep'] == 2
 
             env.close()
@@ -230,6 +233,7 @@ if not missing:
             assert reward is not None and reward < 0
             assert a is not None
             assert isinstance(terminated, bool)
+            assert isinstance(truncated, bool)
             assert info['timestep'] == 2
 
             env.close()
@@ -278,6 +282,7 @@ if not missing:
             assert reward is not None and reward < 0
             assert a is not None
             assert isinstance(terminated, bool)
+            assert isinstance(truncated, bool)
             assert info['timestep'] == 2
 
             env.close()
