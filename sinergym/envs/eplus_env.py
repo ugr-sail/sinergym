@@ -313,7 +313,7 @@ class EplusEnv(gym.Env):
                 'Step: The action {} is not correct for the Action Space {}'.format(
                     action, self._action_space))
 
-        # Check if episode existed and is not terminated
+        # Check if episode existed and is not terminated or truncated
         try:
             assert self.energyplus_simulator
         except AssertionError as err:
@@ -332,8 +332,8 @@ class EplusEnv(gym.Env):
 
         if self.energyplus_simulator.simulation_complete:
             self.logger.debug(
-                'Trying STEP in a simulation completed, changing TERMINATED flag to TRUE.')
-            terminated = True
+                'Trying STEP in a simulation completed, changing TRUNCATED flag to TRUE.')
+            truncated = True
             obs = self.last_obs
             info = self.last_info
         else:
@@ -350,7 +350,7 @@ class EplusEnv(gym.Env):
                 self.last_info = info = self.info_queue.get(timeout=timeout)
             except (Full, Empty):
                 self.logger.debug(
-                    'STEP queues not receive value, simulation must be completed.')
+                    'STEP queues not receive value, simulation must be completed. changing TERMINATED flag to TRUE')
                 terminated = True
                 obs = self.last_obs
                 info = self.last_info
