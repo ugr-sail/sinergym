@@ -55,8 +55,9 @@ class LoggerCallback(BaseCallback):
                 self.training_env.env_method('activate_logger')
             else:
                 self.training_env.env_method('deactivate_logger')
-        # Global training step count
+        # Global training step and episode count
         self.timestep = 1
+        self.episode_num = 1
 
     def _on_step(self) -> bool:
 
@@ -142,6 +143,7 @@ class LoggerCallback(BaseCallback):
         if done:
             # store last episode metrics
             self.episode_metrics = {}
+            self.episode_metrics['episode_num'] = self.episode_num
             self.episode_metrics['episode_length'] = self.episode_logs['timesteps']
             self.episode_metrics['cumulative_reward'] = np.sum(
                 self.episode_logs['rewards'])
@@ -185,6 +187,9 @@ class LoggerCallback(BaseCallback):
                 self.logger.record(
                     'episode/' + key, metric)
             self.logger.dump(step=self.timestep)
+
+            # Count next episode
+            self.episode_num += 1
 
         # DUMP with the frequency specified
         if self.timestep % self.dump_frequency == 0:
