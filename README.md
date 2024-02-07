@@ -199,6 +199,10 @@ The following are some of the projects benefiting from the advantages of Sinergy
   </a>
 </p>
 
+## Repo Activity
+
+![Alt](https://repobeats.axiom.co/api/embed/d8dc96d423d6996351e728a2412dba2551f99cca.svg "Repobeats analytics image")
+
 ## Citing Sinergym
 
 If you use *Sinergym* in your work, please cite our [paper](https://dl.acm.org/doi/abs/10.1145/3486611.3488729):
