@@ -40,12 +40,14 @@ class LoggerCallback(BaseCallback):
         # Episode lists of metrics in each timestep.
         self.episode_logs = {
             'rewards': [],
-            'powers': [],
-            'comfort_terms': [],
-            'energy_terms': [],
-            'temperature_violations': [],
-            'comfort_violations_count': 0,
-            'timesteps': 0
+            'reward_energy_terms': [],
+            'reward_comfort_terms': [],
+            'abs_energy_penalties': [],
+            'abs_comfort_penalties': [],
+            'total_power_demands': [],
+            'total_temperature_violations': [],
+            'total_timesteps': 0,
+            'comfort_violation_timesteps': 0
         }
 
     def _on_training_start(self):
@@ -123,14 +125,20 @@ class LoggerCallback(BaseCallback):
             self.episode_logs['rewards'].append(self.locals['reward'][-1])
         else:
             raise KeyError('Algorithm reward key in locals dict unknown.')
-
-        self.episode_logs['powers'].append(info['abs_energy'])
-        self.episode_logs['temperature_violations'].append(info['abs_comfort'])
-        self.episode_logs['comfort_terms'].append(info['comfort_term'])
-        self.episode_logs['energy_terms'].append(info['energy_term'])
+        # Rest of the info store
+        self.episode_logs['reward_energy_terms'].append(info['energy_term'])
+        self.episode_logs['reward_comfort_terms'].append(info['comfort_term'])
+        self.episode_logs['abs_energy_penalties'].append(
+            info['abs_energy_penalty'])
+        self.episode_logs['abs_comfort_penalties'].append(
+            info['abs_comfort_penalty'])
+        self.episode_logs['total_power_demands'].append(
+            info['total_power_demand'])
+        self.episode_logs['total_temperature_violations'].append(
+            info['total_temperature_violation'])
         if (info['comfort_term'] < 0):
-            self.episode_logs['comfort_violations_count'] += 1
-        self.episode_logs['timesteps'] += 1
+            self.episode_logs['comfort_violation_timesteps'] += 1
+        self.episode_logs['total_timesteps'] += 1
 
         # If episode ends, store summary of episode and reset
         if 'dones' in self.locals.keys():
@@ -142,44 +150,57 @@ class LoggerCallback(BaseCallback):
 
         if done:
             # store last episode metrics
+            # 'comfort_violation_time (%)',
+            # 'length (timesteps)',
+            # 'time_elapsed (hours)'
             self.episode_metrics = {}
             self.episode_metrics['episode_num'] = self.episode_num
-            self.episode_metrics['episode_length'] = self.episode_logs['timesteps']
+            self.episode_metrics['episode_length'] = self.episode_logs['total_timesteps']
             self.episode_metrics['cumulative_reward'] = np.sum(
                 self.episode_logs['rewards'])
             self.episode_metrics['mean_reward'] = np.mean(
                 self.episode_logs['rewards'])
-            self.episode_metrics['cumulative_power'] = np.sum(
-                self.episode_logs['powers'])
-            self.episode_metrics['mean_power'] = np.mean(
-                self.episode_logs['powers'])
-            self.episode_metrics['cumulative_comfort_penalty'] = np.sum(
-                self.episode_logs['comfort_terms'])
-            self.episode_metrics['mean_comfort_penalty'] = np.mean(
-                self.episode_logs['comfort_terms'])
-            self.episode_metrics['cumulative_energy_penalty'] = np.sum(
-                self.episode_logs['energy_terms'])
-            self.episode_metrics['mean_energy_penalty'] = np.mean(
-                self.episode_logs['energy_terms'])
+            self.episode_metrics['cumulative_reward_energy_term'] = np.sum(
+                self.episode_logs['reward_energy_terms'])
+            self.episode_metrics['mean_reward_energy_term'] = np.mean(
+                self.episode_logs['reward_energy_terms'])
+            self.episode_metrics['cumulative_reward_comfort_term'] = np.sum(
+                self.episode_logs['reward_comfort_terms'])
+            self.episode_metrics['mean_reward_comfort_term'] = np.mean(
+                self.episode_logs['reward_comfort_terms'])
+            self.episode_metrics['cumulative_abs_energy_penalty'] = np.sum(
+                self.episode_logs['abs_energy_penalties'])
+            self.episode_metrics['mean_abs_energy_penalty'] = np.mean(
+                self.episode_logs['abs_energy_penalties'])
+            self.episode_metrics['cumulative_abs_comfort_penalty'] = np.sum(
+                self.episode_logs['abs_comfort_penalties'])
+            self.episode_metrics['mean_abs_comfort_penalty'] = np.mean(
+                self.episode_logs['abs_comfort_penalties'])
+            self.episode_metrics['cumulative_power_demand'] = np.sum(
+                self.episode_logs['total_power_demands'])
+            self.episode_metrics['mean_power_demand'] = np.mean(
+                self.episode_logs['total_power_demands'])
             self.episode_metrics['cumulative_temperature_violation'] = np.sum(
-                self.episode_logs['temperature_violations'])
+                self.episode_logs['total_temperature_violations'])
             self.episode_metrics['mean_temperature_violation'] = np.mean(
-                self.episode_logs['temperature_violations'])
+                self.episode_logs['total_temperature_violations'])
             try:
-                self.episode_metrics['comfort_violation_time(%)'] = self.episode_logs['comfort_violations_count'] / \
-                    self.episode_logs['timesteps'] * 100
+                self.episode_metrics['comfort_violation_time(%)'] = self.episode_logs['comfort_violation_timesteps'] / \
+                    self.episode_logs['total_timesteps'] * 100
             except ZeroDivisionError:
                 self.episode_metrics['comfort_violation_time(%)'] = np.nan
 
             # reset episode info
             self.episode_logs = {
                 'rewards': [],
-                'powers': [],
-                'temperature_violations': [],
-                'comfort_terms': [],
-                'energy_terms': [],
-                'comfort_violations_count': 0,
-                'timesteps': 0
+                'reward_energy_terms': [],
+                'reward_comfort_terms': [],
+                'abs_energy_penalties': [],
+                'abs_comfort_penalties': [],
+                'total_power_demands': [],
+                'total_temperature_violations': [],
+                'total_timesteps': 0,
+                'comfort_violation_timesteps': 0
             }
 
             # Record the episode and dump
@@ -262,15 +283,19 @@ class LoggerEvalCallback(EventCallback):
             'episodes_length': [],
             'episodes_cumulative_reward': [],
             'episodes_mean_reward': [],
-            'episodes_cumulative_power': [],
-            'episodes_mean_power': [],
-            'episodes_cumulative_comfort_penalty': [],
-            'episodes_mean_comfort_penalty': [],
-            'episodes_cumulative_energy_penalty': [],
-            'episodes_mean_energy_penalty': [],
-            'episodes_comfort_violation': [],
+            'episodes_cumulative_reward_energy_term': [],
+            'episodes_mean_reward_energy_term': [],
+            'episodes_cumulative_reward_comfort_term': [],
+            'episodes_mean_reward_comfort_term': [],
+            'episodes_cumulative_absolute_energy_penalty': [],
+            'episodes_mean_absolute_energy_penalty': [],
+            'episodes_cumulative_absolute_comfort_penalty': [],
+            'episodes_mean_absolute_comfort_penalty': [],
+            'episodes_cumulative_power_demand': [],
+            'episodes_mean_power_demand': [],
             'episodes_cumulative_temperature_violation': [],
-            'episodes_mean_temperature_violation': []
+            'episodes_mean_temperature_violation': [],
+            'episodes_comfort_violation': [],
         }
 
         # For computing success rate
@@ -334,12 +359,6 @@ class LoggerEvalCallback(EventCallback):
             self.training_env.close()
 
             # GET evaluation episodes data:
-            # episodes_length, episodes_mean_reward, episodes_cumulative_reward,
-            # episodes_cumulative_power, episodes_mean_power,
-            # episodes_cumulative_comfort_penalty, episodes_mean_comfort_penalty,
-            # episodes_cumulative_energy_penalty, episodes_mean_energy_penalty,
-            # episodes_comfort_violation, episodes_cumulative_temperature_violation,
-            # episodes_mean_temperature_violation
             episodes_data = evaluate_policy(
                 self.model,
                 self.eval_env,
@@ -371,7 +390,7 @@ class LoggerEvalCallback(EventCallback):
                     **kwargs,
                 )
 
-            # Logging episodes' means
+            # Logging episodes' metrics
             cumulative_reward, std_cumulative_reward = np.mean(
                 episodes_data['episodes_cumulative_reward']), np.std(
                 episodes_data['episodes_cumulative_reward'])
@@ -380,31 +399,42 @@ class LoggerEvalCallback(EventCallback):
                 episodes_data['episodes_length'])
             self.last_reward = cumulative_reward
 
-            self.evaluation_metrics['episode_length'] = mean_ep_length
-            self.evaluation_metrics['cumulative_reward'] = cumulative_reward
-            self.evaluation_metrics['std_cumulative_reward'] = std_cumulative_reward
+            self.evaluation_metrics['episode_length'] = np.mean(
+                episodes_data['episodes_length'])
+            self.evaluation_metrics['cumulative_reward'] = np.mean(
+                episodes_data['episodes_cumulative_reward'])
+            self.evaluation_metrics['std_cumulative_reward'] = np.std(
+                episodes_data['episodes_cumulative_reward'])
             self.evaluation_metrics['mean_reward'] = np.mean(
                 episodes_data['episodes_mean_reward'])
-            self.evaluation_metrics['std_reward'] = np.std(
+            self.evaluation_metrics['std_mean_reward'] = np.std(
                 episodes_data['episodes_mean_reward'])
-            self.evaluation_metrics['cumulative_power_consumption'] = np.mean(
-                episodes_data['episodes_cumulative_power'])
-            self.evaluation_metrics['mean_power_consumption'] = np.mean(
-                episodes_data['episodes_mean_power'])
-            self.evaluation_metrics['cumulative_comfort_penalty'] = np.mean(
-                episodes_data['episodes_cumulative_comfort_penalty'])
-            self.evaluation_metrics['mean_comfort_penalty'] = np.mean(
-                episodes_data['episodes_mean_comfort_penalty'])
-            self.evaluation_metrics['cumulative_energy_penalty'] = np.mean(
-                episodes_data['episodes_cumulative_energy_penalty'])
-            self.evaluation_metrics['mean_energy_penalty'] = np.mean(
-                episodes_data['episodes_mean_energy_penalty'])
-            self.evaluation_metrics['comfort_violation(%)'] = np.mean(
-                episodes_data['episodes_comfort_violation'])
+            self.evaluation_metrics['cumulative_reward_energy_term'] = np.mean(
+                episodes_data['episodes_cumulative_reward_energy_term'])
+            self.evaluation_metrics['mean_reward_energy_term'] = np.mean(
+                episodes_data['episodes_mean_reward_energy_term'])
+            self.evaluation_metrics['cumulative_reward_comfort_term'] = np.mean(
+                episodes_data['episodes_cumulative_reward_comfort_term'])
+            self.evaluation_metrics['mean_reward_comfort_term'] = np.mean(
+                episodes_data['episodes_mean_reward_comfort_term'])
+            self.evaluation_metrics['cumulative_absolute_energy_penalty'] = np.mean(
+                episodes_data['episodes_cumulative_absolute_energy_penalty'])
+            self.evaluation_metrics['mean_absolute_energy_penalty'] = np.mean(
+                episodes_data['episodes_mean_absolute_energy_penalty'])
+            self.evaluation_metrics['cumulative_absolute_comfort_penalty'] = np.mean(
+                episodes_data['episodes_cumulative_absolute_comfort_penalty'])
+            self.evaluation_metrics['mean_absolute_comfort_penalty'] = np.mean(
+                episodes_data['episodes_mean_absolute_comfort_penalty'])
+            self.evaluation_metrics['cumulative_power_demand'] = np.mean(
+                episodes_data['episodes_cumulative_power_demand'])
+            self.evaluation_metrics['mean_power_demand'] = np.mean(
+                episodes_data['episodes_mean_power_demand'])
             self.evaluation_metrics['cumulative_temperature_violation'] = np.mean(
                 episodes_data['episodes_cumulative_temperature_violation'])
             self.evaluation_metrics['mean_temperature_violation'] = np.mean(
                 episodes_data['episodes_mean_temperature_violation'])
+            self.evaluation_metrics['comfort_violation(%)'] = np.mean(
+                episodes_data['episodes_comfort_violation'])
 
             if self.verbose >= 1:
                 print(

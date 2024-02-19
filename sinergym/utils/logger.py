@@ -115,11 +115,12 @@ class CSVLogger(object):
         self.steps_data_normalized = [self.monitor_header.split(',')]
         self.episode_data = {
             'rewards': [],
-            'powers': [],
-            'comfort_penalties': [],
-            'abs_comfort': [],
-            'energy_penalties': [],
-            'abs_energy': [],
+            'reward_energy_terms': [],
+            'reward_comfort_terms': [],
+            'abs_energy_penalties': [],
+            'abs_comfort_penalties': [],
+            'total_power_demands': [],
+            'total_temperature_violations': [],
             'total_timesteps': 0,
             'total_time_elapsed': 0,
             'comfort_violation_timesteps': 0
@@ -150,8 +151,10 @@ class CSVLogger(object):
             info.get('reward'),
             info.get('energy_term'),
             info.get('comfort_term'),
-            info.get('abs_comfort'),
-            info.get('abs_energy'),
+            info.get('abs_energy_penalty'),
+            info.get('abs_comfort_penalty'),
+            info.get('total_power_demand'),
+            info.get('total_temperature_violation'),
             terminated,
             truncated]
 
@@ -167,12 +170,19 @@ class CSVLogger(object):
         if info['timestep'] > 1:
 
             self.episode_data['rewards'].append(info['reward'])
-            self.episode_data['powers'].append(info['abs_energy'])
-            self.episode_data['comfort_penalties'].append(info['comfort_term'])
-            self.episode_data['energy_penalties'].append(info['energy_term'])
-            self.episode_data['abs_comfort'].append(info['abs_comfort'])
-            self.episode_data['abs_energy'].append(info['abs_energy'])
-            if info['comfort_term'] != 0:
+            self.episode_data['reward_energy_terms'].append(
+                info['energy_term'])
+            self.episode_data['reward_comfort_terms'].append(
+                info['comfort_term'])
+            self.episode_data['abs_energy_penalties'].append(
+                info['abs_energy_penalty'])
+            self.episode_data['abs_comfort_penalties'].append(
+                info['abs_comfort_penalty'])
+            self.episode_data['total_power_demands'].append(
+                info['total_power_demand'])
+            self.episode_data['total_temperature_violations'].append(
+                info['total_temperature_violation'])
+            if info['comfort_term'] < 0:
                 self.episode_data['comfort_violation_timesteps'] += 1
             self.episode_data['total_time_elapsed'] = info['time_elapsed(hours)']
             self.episode_data['total_timesteps'] = info['timestep']
@@ -184,11 +194,12 @@ class CSVLogger(object):
         self.steps_data_normalized = [self.monitor_header.split(',')]
         self.episode_data = {
             'rewards': [],
-            'powers': [],
-            'comfort_penalties': [],
-            'abs_comfort': [],
-            'energy_penalties': [],
-            'abs_energy': [],
+            'reward_energy_terms': [],
+            'reward_comfort_terms': [],
+            'abs_energy_penalties': [],
+            'abs_comfort_penalties': [],
+            'total_power_demands': [],
+            'total_temperature_violations': [],
             'total_timesteps': 0,
             'total_time_elapsed': 0,
             'comfort_violation_timesteps': 0
@@ -281,16 +292,19 @@ class CSVLogger(object):
                 episode,
                 np.sum(self.episode_data['rewards']),
                 np.mean(self.episode_data['rewards']),
-                np.sum(self.episode_data['powers']),
-                np.mean(self.episode_data['powers']),
-                np.sum(self.episode_data['comfort_penalties']),
-                np.mean(self.episode_data['comfort_penalties']),
-                np.sum(self.episode_data['energy_penalties']),
-                np.mean(self.episode_data['energy_penalties']),
+                np.sum(self.episode_data['reward_energy_terms']),
+                np.mean(self.episode_data['reward_energy_terms']),
+                np.sum(self.episode_data['reward_comfort_terms']),
+                np.mean(self.episode_data['reward_comfort_terms']),
+                np.sum(self.episode_data['abs_energy_penalties']),
+                np.mean(self.episode_data['abs_energy_penalties']),
+                np.sum(self.episode_data['abs_comfort_penalties']),
+                np.mean(self.episode_data['abs_comfort_penalties']),
+                np.sum(self.episode_data['total_power_demands']),
+                np.mean(self.episode_data['total_power_demands']),
+                np.sum(self.episode_data['total_temperature_violations']),
+                np.mean(self.episode_data['total_temperature_violations']),
                 comfort_violation,
-                np.sum(self.episode_data['abs_comfort']),
-                np.mean(self.episode_data['abs_comfort']),
-                np.std(self.episode_data['abs_comfort']),
                 self.episode_data['total_timesteps'],
                 self.episode_data['total_time_elapsed']]
 
