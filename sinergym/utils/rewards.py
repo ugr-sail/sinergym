@@ -112,12 +112,12 @@ class LinearReward(BaseReward):
 
         # Energy calculation
         energy_consumed, energy_values = self._get_energy_consumed(obs_dict)
-        energy_penalty = self._get_energy(energy_values)
+        energy_penalty = self._get_energy_penalty(energy_values)
 
         # Comfort violation calculation
         total_temp_violation, temp_violations = self._get_temperature_violation(
             obs_dict)
-        comfort_penalty = self._get_comfort(temp_violations)
+        comfort_penalty = self._get_comfort_penalty(temp_violations)
 
         # Weighted sum of both terms
         reward, energy_term, comfort_term = self._get_reward(
@@ -371,12 +371,12 @@ class HourlyLinearReward(LinearReward):
 
         # Energy calculation
         energy_consumed, energy_values = self._get_energy_consumed(obs_dict)
-        energy_penalty = self._get_energy(energy_values)
+        energy_penalty = self._get_energy_penalty(energy_values)
 
         # Comfort violation calculation
         total_temp_violation, temp_violations = self._get_temperature_violation(
             obs_dict)
-        comfort_penalty = self._get_comfort(temp_violations)
+        comfort_penalty = self._get_comfort_penalty(temp_violations)
 
         # Determine reward weight depending on the hour
         hour = obs_dict['hour']
