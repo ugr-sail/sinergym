@@ -40,12 +40,14 @@ class LoggerCallback(BaseCallback):
         # Episode lists of metrics in each timestep.
         self.episode_logs = {
             'rewards': [],
-            'powers': [],
-            'comfort_terms': [],
-            'energy_terms': [],
-            'temperature_violations': [],
-            'comfort_violations_count': 0,
-            'timesteps': 0
+            'reward_energy_terms': [],
+            'reward_comfort_terms': [],
+            'abs_energy_penalties': [],
+            'abs_comfort_penalties': [],
+            'total_power_demands': [],
+            'total_temperature_violations': [],
+            'total_timesteps': 0,
+            'comfort_violation_timesteps': 0
         }
 
     def _on_training_start(self):
@@ -123,14 +125,20 @@ class LoggerCallback(BaseCallback):
             self.episode_logs['rewards'].append(self.locals['reward'][-1])
         else:
             raise KeyError('Algorithm reward key in locals dict unknown.')
-
-        self.episode_logs['powers'].append(info['abs_energy'])
-        self.episode_logs['temperature_violations'].append(info['abs_comfort'])
-        self.episode_logs['comfort_terms'].append(info['comfort_term'])
-        self.episode_logs['energy_terms'].append(info['energy_term'])
+        # Rest of the info store
+        self.episode_logs['reward_energy_terms'].append(info['energy_term'])
+        self.episode_logs['reward_comfort_terms'].append(info['comfort_term'])
+        self.episode_logs['abs_energy_penalties'].append(
+            info['abs_energy_penalty'])
+        self.episode_logs['abs_comfort_penalties'].append(
+            info['abs_comfort_penalty'])
+        self.episode_logs['total_power_demands'].append(
+            info['total_power_demand'])
+        self.episode_logs['total_temperature_violations'].append(
+            info['total_temperature_violation'])
         if (info['comfort_term'] < 0):
-            self.episode_logs['comfort_violations_count'] += 1
-        self.episode_logs['timesteps'] += 1
+            self.episode_logs['comfort_violation_timesteps'] += 1
+        self.episode_logs['total_timesteps'] += 1
 
         # If episode ends, store summary of episode and reset
         if 'dones' in self.locals.keys():
@@ -142,44 +150,57 @@ class LoggerCallback(BaseCallback):
 
         if done:
             # store last episode metrics
+            # 'comfort_violation_time (%)',
+            # 'length (timesteps)',
+            # 'time_elapsed (hours)'
             self.episode_metrics = {}
             self.episode_metrics['episode_num'] = self.episode_num
-            self.episode_metrics['episode_length'] = self.episode_logs['timesteps']
+            self.episode_metrics['episode_length'] = self.episode_logs['total_timesteps']
             self.episode_metrics['cumulative_reward'] = np.sum(
                 self.episode_logs['rewards'])
             self.episode_metrics['mean_reward'] = np.mean(
                 self.episode_logs['rewards'])
-            self.episode_metrics['cumulative_power'] = np.sum(
-                self.episode_logs['powers'])
-            self.episode_metrics['mean_power'] = np.mean(
-                self.episode_logs['powers'])
-            self.episode_metrics['cumulative_comfort_penalty'] = np.sum(
-                self.episode_logs['comfort_terms'])
-            self.episode_metrics['mean_comfort_penalty'] = np.mean(
-                self.episode_logs['comfort_terms'])
-            self.episode_metrics['cumulative_energy_penalty'] = np.sum(
-                self.episode_logs['energy_terms'])
-            self.episode_metrics['mean_energy_penalty'] = np.mean(
-                self.episode_logs['energy_terms'])
+            self.episode_metrics['cumulative_reward_energy_term'] = np.sum(
+                self.episode_logs['reward_energy_terms'])
+            self.episode_metrics['mean_reward_energy_term'] = np.mean(
+                self.episode_logs['reward_energy_terms'])
+            self.episode_metrics['cumulative_reward_comfort_term'] = np.sum(
+                self.episode_logs['reward_comfort_terms'])
+            self.episode_metrics['mean_reward_comfort_term'] = np.mean(
+                self.episode_logs['reward_comfort_terms'])
+            self.episode_metrics['cumulative_abs_energy_penalty'] = np.sum(
+                self.episode_logs['abs_energy_penalties'])
+            self.episode_metrics['mean_abs_energy_penalty'] = np.mean(
+                self.episode_logs['abs_energy_penalties'])
+            self.episode_metrics['cumulative_abs_comfort_penalty'] = np.sum(
+                self.episode_logs['abs_comfort_penalties'])
+            self.episode_metrics['mean_abs_comfort_penalty'] = np.mean(
+                self.episode_logs['abs_comfort_penalties'])
+            self.episode_metrics['cumulative_power_demand'] = np.sum(
+                self.episode_logs['total_power_demands'])
+            self.episode_metrics['mean_power_demand'] = np.mean(
+                self.episode_logs['total_power_demands'])
             self.episode_metrics['cumulative_temperature_violation'] = np.sum(
-                self.episode_logs['temperature_violations'])
+                self.episode_logs['total_temperature_violations'])
             self.episode_metrics['mean_temperature_violation'] = np.mean(
-                self.episode_logs['temperature_violations'])
+                self.episode_logs['total_temperature_violations'])
             try:
-                self.episode_metrics['comfort_violation_time(%)'] = self.episode_logs['comfort_violations_count'] / \
-                    self.episode_logs['timesteps'] * 100
+                self.episode_metrics['comfort_violation_time(%)'] = self.episode_logs['comfort_violation_timesteps'] / \
+                    self.episode_logs['total_timesteps'] * 100
             except ZeroDivisionError:
                 self.episode_metrics['comfort_violation_time(%)'] = np.nan
 
             # reset episode info
             self.episode_logs = {
                 'rewards': [],
-                'powers': [],
-                'temperature_violations': [],
-                'comfort_terms': [],
-                'energy_terms': [],
-                'comfort_violations_count': 0,
-                'timesteps': 0
+                'reward_energy_terms': [],
+                'reward_comfort_terms': [],
+                'abs_energy_penalties': [],
+                'abs_comfort_penalties': [],
+                'total_power_demands': [],
+                'total_temperature_violations': [],
+                'total_timesteps': 0,
+                'comfort_violation_timesteps': 0
             }
 
             # Record the episode and dump
