@@ -462,8 +462,8 @@ class NormalizedLinearReward(LinearReward):
         self.max_comfort_penalty = max(
             self.max_comfort_penalty, comfort_penalty)
         # Calculate normalization
-        energy_norm = 0 if energy_penalty == 0 else energy_penalty / self.max_energy
-        comfort_norm = 0 if comfort_penalty == 0 else comfort_penalty / self.max_comfort
+        energy_norm = 0 if energy_penalty == 0 else energy_penalty / self.max_energy_penalty
+        comfort_norm = 0 if comfort_penalty == 0 else comfort_penalty / self.max_comfort_penalty
         # Calculate reward terms with norm values
         energy_term = self.W_energy * energy_norm
         comfort_term = (1 - self.W_energy) * comfort_norm
