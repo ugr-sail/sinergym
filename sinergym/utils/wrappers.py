@@ -204,8 +204,17 @@ class LoggerWrapper(gym.Wrapper):
         """
         super(LoggerWrapper, self).__init__(env)
         # Headers for csv logger
-        monitor_header_list = monitor_header if monitor_header is not None else ['timestep'] + self.get_wrapper_attr('observation_variables') + self.get_wrapper_attr(
-            'action_variables') + ['time (hours)', 'reward', 'energy_penalty', 'comfort_penalty', 'absolute_temperature_violation', 'absolute_energy', 'terminated', 'truncated']
+        monitor_header_list = monitor_header if monitor_header is not None else ['timestep'] + self.get_wrapper_attr('observation_variables') + self.get_wrapper_attr('action_variables') + [
+            'time (hours)',
+            'reward',
+            'reward_energy_term',
+            'reward_comfort_term',
+            'absolute_energy_penalty',
+            'absolute_comfort_penalty',
+            'total_power_demand',
+            'total_temperature_violation',
+            'terminated',
+            'truncated']
         self.monitor_header = ''
         for element_header in monitor_header_list:
             self.monitor_header += element_header + ','
@@ -214,16 +223,19 @@ class LoggerWrapper(gym.Wrapper):
             'episode_num',
             'cumulative_reward',
             'mean_reward',
-            'cumulative_power_consumption',
-            'mean_power_consumption',
-            'cumulative_comfort_penalty',
-            'mean_comfort_penalty',
-            'cumulative_energy_penalty',
-            'mean_energy_penalty',
-            'comfort_violation (%)',
+            'cumulative_reward_energy_term',
+            'mean_reward_energy_term',
+            'cumulative_reward_comfort_term',
+            'mean_reward_comfort_term',
+            'cumulative_abs_energy_penalty',
+            'mean_abs_energy_penalty',
+            'cumulative_abs_comfort_penalty',
+            'mean_abs_comfort_penalty',
+            'cumulative_power_demand',
+            'mean_power_demand',
             'cumulative_temperature_violation',
             'mean_temperature_violation',
-            'std_temperature_violation',
+            'comfort_violation_time (%)',
             'length (timesteps)',
             'time_elapsed (hours)']
         self.progress_header = ''
