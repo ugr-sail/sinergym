@@ -110,55 +110,57 @@ class LinearReward(BaseReward):
                 'Some of the energy variables specified are not present in observation.')
             raise err
 
-        # Energy term
-        energy, energy_values = self._get_energy(obs_dict)
+        # Energy calculation
+        energy_consumed, energy_values = self._get_energy_consumed(obs_dict)
+        energy_penalty = self._get_energy(energy_values)
 
-        # Comfort
-        comfort, temp_values = self._get_comfort(obs_dict)
+        # Comfort violation calculation
+        total_temp_violation, temp_violations = self._get_temperature_violation(
+            obs_dict)
+        comfort_penalty = self._get_comfort(temp_violations)
 
         # Weighted sum of both terms
-        energy_term, comfort_term, reward = self._get_reward(energy, comfort)
+        reward, energy_term, comfort_term = self._get_reward(
+            energy_penalty, comfort_penalty)
 
         reward_terms = {
             'energy_term': energy_term,
             'comfort_term': comfort_term,
             'reward_weight': self.W_energy,
-            'abs_energy': energy,
-            'abs_comfort': comfort,
-            'energy_values': energy_values,
-            'temp_values': temp_values
+            'abs_energy_penalty': energy_penalty,
+            'abs_comfort_penalty': comfort_penalty,
+            'total_power_demand': energy_consumed,
+            'total_temperature_violation': total_temp_violation
         }
 
         return reward, reward_terms
 
-    def _get_energy(self, obs_dict: Dict[str,
-                                         Any]) -> Tuple[float,
-                                                        List[float]]:
-        """Calculate the reward term of the reward.
+    def _get_energy_consumed(self, obs_dict: Dict[str,
+                                                  Any]) -> Tuple[float,
+                                                                 List[float]]:
+        """Calculate the total energy consumed in the current observation.
 
         Args:
-            obs_dict (Dict[str, Any]): Observation to calculate the reward term.
+            obs_dict (Dict[str, Any]): Environment observation.
 
         Returns:
-            Tuple[float, List[float]]: Energy consumed (sum of variables) and List with energy_variable values used.
+            Tuple[float, List[float]]: Total energy consumed (sum of variables) and List with energy consumed in each energy variable.
         """
 
         energy_values = [
             v for k, v in obs_dict.items() if k in self.energy_names]
 
         # The total energy is the sum of energies
-        energy_value = sum(energy_values)
+        total_energy = sum(energy_values)
 
-        return energy_value, energy_values
+        return total_energy, energy_values
 
-    def _get_comfort(self,
-                     obs_dict: Dict[str,
-                                    Any]) -> Tuple[float,
-                                                   List[float]]:
-        """Calculate the comfort term of the reward.
+    def _get_temperature_violation(
+            self, obs_dict: Dict[str, Any]) -> Tuple[float, List[float]]:
+        """Calculate the total temperature violation (ºC) in the current observation.
 
         Returns:
-            Tuple[float, List[float]]: comfort penalty and List with temperatures used.
+            Tuple[float, List[float]]: Total temperature violation (ºC) and list with temperature violation in each zone.
         """
 
         month = obs_dict['month']
@@ -181,29 +183,59 @@ class LinearReward(BaseReward):
         else:
             temp_range = self.range_comfort_winter
 
-        temp_values = [v for k, v in obs_dict.items() if k in self.temp_names]
-        comfort = 0.0
+        temp_values = [
+            v for k, v in obs_dict.items() if k in self.temp_names]
+        total_temp_violation = 0.0
+        temp_violations = []
         for T in temp_values:
             if T < temp_range[0] or T > temp_range[1]:
-                comfort += min(abs(temp_range[0] - T), abs(T - temp_range[1]))
+                temp_violation = min(
+                    abs(temp_range[0] - T), abs(T - temp_range[1]))
+                temp_violations.append(temp_violation)
+                total_temp_violation += temp_violation
 
-        return comfort, temp_values
+        return total_temp_violation, temp_violations
 
-    def _get_reward(self, energy: float,
-                    comfort: float) -> Tuple[float, float, float]:
-        """It calculates reward value using energy consumption and grades of temperature out of comfort range.
+    def _get_energy_penalty(self, energy_values: List[float]) -> float:
+        """Calculate the negative absolute energy penalty based on energy values
 
         Args:
-            energy (float): Energy consumed
-            comfort (float): Grades out of ranges
+            energy_values (List[float]): Energy values
 
         Returns:
-            Tuple[float,float,float]: reward term for energy , reward term for comfort and total reward calculated.
+            float: Negative absolute energy penalty value
         """
-        reward_energy = -self.lambda_energy * self.W_energy * energy
-        reward_comfort = -self.lambda_temp * (1 - self.W_energy) * comfort
-        reward = reward_energy + reward_comfort
-        return reward_energy, reward_comfort, reward
+        energy_penalty = -sum(energy_values)
+        return energy_penalty
+
+    def _get_comfort_penalty(self, temp_violations: List[float]) -> float:
+        """Calculate the negative absolute comfort penalty based on temperature violation values
+
+        Args:
+            temp_violations (List[float]): Temperature violation values
+
+        Returns:
+            float: Negative absolute comfort penalty value
+        """
+        comfort_penalty = -sum(temp_violations)
+        return comfort_penalty
+
+    def _get_reward(self, energy_penalty: float,
+                    comfort_penalty: float) -> Tuple[float, float, float]:
+        """It calculates reward value using the negative absolute comfort and energy penalty calculates previously.
+
+        Args:
+            energy_penalty (float): Negative absolute energy penalty value.
+            comfort_penalty (float): Negative absolute comfort penalty value.
+
+        Returns:
+            Tuple[float,float,float]: total reward calculated, reward term for energy, reward term for comfort.
+        """
+        energy_term = self.lambda_energy * self.W_energy * energy_penalty
+        comfort_term = self.lambda_temp * \
+            (1 - self.W_energy) * comfort_penalty
+        reward = energy_term + comfort_term
+        return reward, energy_term, comfort_term
 
 
 class ExpReward(LinearReward):
@@ -250,44 +282,18 @@ class ExpReward(LinearReward):
             lambda_temperature
         )
 
-    def _get_comfort(self,
-                     obs_dict: Dict[str,
-                                    Any]) -> Tuple[float,
-                                                   List[float]]:
-        """Calculate the comfort term of the reward.
+    def _get_comfort_penalty(self, temp_violations: List[float]) -> float:
+        """Calculate the negative absolute comfort penalty based on temperature violation values, using an exponential concept when temperature violation > 0.
+
+        Args:
+            temp_violations (List[float]): Temperature violation values
 
         Returns:
-            Tuple[float, List[float]]: comfort penalty and List with temperatures used.
+            float: Negative absolute comfort penalty value
         """
-
-        month = obs_dict['month']
-        day = obs_dict['day_of_month']
-        year = YEAR
-        current_dt = datetime(int(year), int(month), int(day))
-
-        # Periods
-        summer_start_date = datetime(
-            int(year),
-            self.summer_start[0],
-            self.summer_start[1])
-        summer_final_date = datetime(
-            int(year),
-            self.summer_final[0],
-            self.summer_final[1])
-
-        if current_dt >= summer_start_date and current_dt <= summer_final_date:
-            temp_range = self.range_comfort_summer
-        else:
-            temp_range = self.range_comfort_winter
-
-        temps = [v for k, v in obs_dict.items() if k in self.temp_names]
-        comfort = 0.0
-        for T in temps:
-            if T < temp_range[0] or T > temp_range[1]:
-                comfort += exp(min(abs(temp_range[0] - T),
-                                   abs(T - temp_range[1])))
-
-        return comfort, temps
+        comfort_penalty = -sum(list(map(lambda temp_violation: exp(
+            temp_violation) if temp_violation > 0 else 0, temp_violations)))
+        return comfort_penalty
 
 
 class HourlyLinearReward(LinearReward):
@@ -363,11 +369,14 @@ class HourlyLinearReward(LinearReward):
                 'Some of the energy variables specified are not present in observation.')
             raise err
 
-        # Energy term
-        energy, energy_values = self._get_energy(obs_dict)
+        # Energy calculation
+        energy_consumed, energy_values = self._get_energy_consumed(obs_dict)
+        energy_penalty = self._get_energy(energy_values)
 
-        # Comfort
-        comfort, temp_values = self._get_comfort(obs_dict)
+        # Comfort violation calculation
+        total_temp_violation, temp_violations = self._get_temperature_violation(
+            obs_dict)
+        comfort_penalty = self._get_comfort(temp_violations)
 
         # Determine reward weight depending on the hour
         hour = obs_dict['hour']
@@ -377,16 +386,17 @@ class HourlyLinearReward(LinearReward):
             self.W_energy = 1.0
 
         # Weighted sum of both terms
-        energy_term, comfort_term, reward = self._get_reward(energy, comfort)
+        reward, energy_term, comfort_term = self._get_reward(
+            energy_penalty, comfort_penalty)
 
         reward_terms = {
             'energy_term': energy_term,
             'comfort_term': comfort_term,
             'reward_weight': self.W_energy,
-            'abs_energy': energy,
-            'abs_comfort': comfort,
-            'energy_values': energy_values,
-            'temp_values': temp_values
+            'abs_energy_penalty': energy_penalty,
+            'abs_comfort_penalty': comfort_penalty,
+            'total_power_demand': energy_consumed,
+            'total_temperature_violation': total_temp_violation
         }
 
         return reward, reward_terms
@@ -403,8 +413,8 @@ class NormalizedLinearReward(LinearReward):
         summer_start: Tuple[int, int] = (6, 1),
         summer_final: Tuple[int, int] = (9, 30),
         energy_weight: float = 0.5,
-        max_energy: float = 8,
-        max_comfort: float = 12,
+        max_energy_penalty: float = 8,
+        max_comfort_penalty: float = 12,
     ):
         """
         Linear reward function with a time-dependent weight for consumption and energy terms.
@@ -433,28 +443,29 @@ class NormalizedLinearReward(LinearReward):
         )
 
         # Reward parameters
-        self.max_energy = max_energy
-        self.max_comfort = max_comfort
+        self.max_energy_penalty = max_energy_penalty
+        self.max_comfort_penalty = max_comfort_penalty
 
-    def _get_reward(self, energy: float,
-                    comfort: float) -> Tuple[float, float, float]:
+    def _get_reward(self, energy_penalty: float,
+                    comfort_penalty: float) -> Tuple[float, float, float]:
         """It calculates reward value using energy consumption and grades of temperature out of comfort range. Aplying normalization
 
         Args:
-            energy (float): Energy consumed
-            comfort (float): Grades out of ranges
+            energy (float): Negative absolute energy penalty value.
+            comfort (float): Negative absolute comfort penalty value.
 
         Returns:
-            Tuple[float,float,float]: reward term for energy , reward term for comfort and total reward calculated.
+            Tuple[float,float,float]: total reward calculated, reward term for energy and reward term for comfort.
         """
         # Update max energy and comfort
-        self.max_energy = max(self.max_energy, energy)
-        self.max_comfort = max(self.max_comfort, comfort)
+        self.max_energy_penalty = max(self.max_energy_penalty, energy_penalty)
+        self.max_comfort_penalty = max(
+            self.max_comfort_penalty, comfort_penalty)
         # Calculate normalization
-        energy_norm = 0 if energy == 0 else energy / self.max_energy
-        comfort_norm = 0 if comfort == 0 else comfort / self.max_comfort
-        # Calculate norm values
-        reward_energy = -self.W_energy * energy_norm
-        reward_comfort = -(1 - self.W_energy) * comfort_norm
-        reward = reward_energy + reward_comfort
-        return reward_energy, reward_comfort, reward
+        energy_norm = 0 if energy_penalty == 0 else energy_penalty / self.max_energy
+        comfort_norm = 0 if comfort_penalty == 0 else comfort_penalty / self.max_comfort
+        # Calculate reward terms with norm values
+        energy_term = self.W_energy * energy_norm
+        comfort_term = (1 - self.W_energy) * comfort_norm
+        reward = energy_term + comfort_term
+        return reward, energy_term, comfort_term
