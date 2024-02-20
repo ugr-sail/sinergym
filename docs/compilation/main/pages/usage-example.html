@@ -7,7 +7,7 @@
   <title>2. Usage example &mdash; sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=bb66aae0" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=816ccb90" />
 
   
     <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
@@ -134,9 +134,9 @@ the appropriate python version and <em>Sinergym</em> running correctly.</p>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
     <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">truncated</span> <span class="o">=</span> <span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="ow">not</span> <span class="n">terminated</span><span class="p">:</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">):</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
         <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
         <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
@@ -202,36 +202,13 @@ When we have finished displaying the results on the screen and the episode is fi
             <dd><a href="../../v1.4.0/pages/usage-example.html">v1.4.0</a></dd>
             <dd><a href="../../v1.6.0/pages/usage-example.html">v1.6.0</a></dd>
             <dd><a href="../../v1.7.0/pages/usage-example.html">v1.7.0</a></dd>
-            <dd><a href="../../v1.7.2/pages/usage-example.html">v1.7.2</a></dd>
-            <dd><a href="../../v1.7.5/pages/usage-example.html">v1.7.5</a></dd>
-            <dd><a href="../../v1.7.6/pages/usage-example.html">v1.7.6</a></dd>
-            <dd><a href="../../v1.7.7/pages/usage-example.html">v1.7.7</a></dd>
-            <dd><a href="../../v1.7.8/pages/usage-example.html">v1.7.8</a></dd>
-            <dd><a href="../../v1.8.2/pages/usage-example.html">v1.8.2</a></dd>
-            <dd><a href="../../v1.8.4/pages/usage-example.html">v1.8.4</a></dd>
-            <dd><a href="../../v1.9.1/pages/usage-example.html">v1.9.1</a></dd>
-            <dd><a href="../../v1.9.5/pages/usage-example.html">v1.9.5</a></dd>
             <dd><a href="../../v2.0.0/pages/usage-example.html">v2.0.0</a></dd>
             <dd><a href="../../v2.1.0/pages/usage-example.html">v2.1.0</a></dd>
-            <dd><a href="../../v2.1.2/pages/usage-example.html">v2.1.2</a></dd>
-            <dd><a href="../../v2.1.3/pages/usage-example.html">v2.1.3</a></dd>
-            <dd><a href="../../v2.1.5/pages/usage-example.html">v2.1.5</a></dd>
             <dd><a href="../../v2.2.0/pages/usage-example.html">v2.2.0</a></dd>
-            <dd><a href="../../v2.2.3/pages/usage-example.html">v2.2.3</a></dd>
-            <dd><a href="../../v2.2.5/pages/usage-example.html">v2.2.5</a></dd>
-            <dd><a href="../../v2.2.9/pages/usage-example.html">v2.2.9</a></dd>
             <dd><a href="../../v2.3.0/pages/usage-example.html">v2.3.0</a></dd>
-            <dd><a href="../../v2.3.1/pages/usage-example.html">v2.3.1</a></dd>
-            <dd><a href="../../v2.3.2/pages/usage-example.html">v2.3.2</a></dd>
-            <dd><a href="../../v2.3.3/pages/usage-example.html">v2.3.3</a></dd>
-            <dd><a href="../../v2.3.4/pages/usage-example.html">v2.3.4</a></dd>
-            <dd><a href="../../v2.4.1/pages/usage-example.html">v2.4.1</a></dd>
             <dd><a href="../../v2.5.0/pages/usage-example.html">v2.5.0</a></dd>
-            <dd><a href="../../v2.5.1/pages/usage-example.html">v2.5.1</a></dd>
-            <dd><a href="../../v2.5.2/pages/usage-example.html">v2.5.2</a></dd>
-            <dd><a href="../../v3.0.1/pages/usage-example.html">v3.0.1</a></dd>
-            <dd><a href="../../v3.0.6/pages/usage-example.html">v3.0.6</a></dd>
             <dd><a href="../../v3.1.0/pages/usage-example.html">v3.1.0</a></dd>
+            <dd><a href="../../v3.2.0/pages/usage-example.html">v3.2.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
