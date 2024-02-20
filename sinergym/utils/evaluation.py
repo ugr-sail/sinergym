@@ -51,28 +51,34 @@ def evaluate_policy(
         'episodes_length': [],
         'episodes_cumulative_reward': [],
         'episodes_mean_reward': [],
-        'episodes_cumulative_power': [],
-        'episodes_mean_power': [],
-        'episodes_cumulative_comfort_penalty': [],
-        'episodes_mean_comfort_penalty': [],
-        'episodes_cumulative_energy_penalty': [],
-        'episodes_mean_energy_penalty': [],
-        'episodes_comfort_violation': [],
+        'episodes_cumulative_reward_energy_term': [],
+        'episodes_mean_reward_energy_term': [],
+        'episodes_cumulative_reward_comfort_term': [],
+        'episodes_mean_reward_comfort_term': [],
+        'episodes_cumulative_absolute_energy_penalty': [],
+        'episodes_mean_absolute_energy_penalty': [],
+        'episodes_cumulative_absolute_comfort_penalty': [],
+        'episodes_mean_absolute_comfort_penalty': [],
+        'episodes_cumulative_power_demand': [],
+        'episodes_mean_power_demand': [],
         'episodes_cumulative_temperature_violation': [],
-        'episodes_mean_temperature_violation': []
+        'episodes_mean_temperature_violation': [],
+        'episodes_comfort_violation': [],
     }
     episodes_executed = 0
     while episodes_executed < n_eval_episodes:
         obs, info = env.reset()
         state = None
         truncated = terminated = False
-        episode_cumulative_reward = 0.0
         episode_length = 0
+        episode_reward = 0.0
+        episode_reward_energy_term = 0.0
+        episode_reward_comfort_term = 0.0
+        episode_abs_energy_penalty = 0.0
+        episode_abs_comfort_penalty = 0.0
+        episode_power_demand = 0.0
+        episode_temperature_violation = 0.0
         episode_steps_comfort_violation = 0
-        episode_cumulative_power = 0.0
-        episode_cumulative_comfort_penalty = 0.0
-        episode_cumulative_energy_penalty = 0.0
-        episode_cumulative_temperature_violation = 0.0
         # ---------------------------------------------------------------------------- #
         #                     Running episode and accumulate values                    #
         # ---------------------------------------------------------------------------- #
@@ -80,11 +86,13 @@ def evaluate_policy(
             action, state = model.predict(
                 obs, state=state, deterministic=deterministic)
             obs, reward, terminated, truncated, info = env.step(action)
-            episode_cumulative_reward += reward
-            episode_cumulative_power += info['abs_energy']
-            episode_cumulative_energy_penalty += info['energy_term']
-            episode_cumulative_comfort_penalty += info['comfort_term']
-            episode_cumulative_temperature_violation += info['abs_comfort']
+            episode_reward += reward
+            episode_reward_energy_term += info['energy_term']
+            episode_reward_comfort_term += info['comfort_term']
+            episode_abs_energy_penalty += info['abs_energy_penalty']
+            episode_abs_comfort_penalty += info['abs_comfort_penalty']
+            episode_power_demand += info['total_power_demand']
+            episode_temperature_violation += info['total_temperature_violation']
             if info['comfort_term'] < 0:
                 episode_steps_comfort_violation += 1
             if callback is not None:
@@ -97,28 +105,36 @@ def evaluate_policy(
         #                     Storing accumulated values in result                     #
         # ---------------------------------------------------------------------------- #
         result['episodes_length'].append(episode_length)
-        result['episodes_cumulative_reward'].append(episode_cumulative_reward)
+        result['episodes_cumulative_reward'].append(episode_reward)
         result['episodes_mean_reward'].append(
-            episode_cumulative_reward / episode_length)
-        result['episodes_cumulative_power'].append(episode_cumulative_power)
-        result['episodes_mean_power'].append(
-            episode_cumulative_power / episode_length)
-        result['episodes_cumulative_comfort_penalty'].append(
-            episode_cumulative_comfort_penalty)
-        result['episodes_mean_comfort_penalty'].append(
-            episode_cumulative_comfort_penalty / episode_length)
-        result['episodes_cumulative_energy_penalty'].append(
-            episode_cumulative_energy_penalty)
-        result['episodes_mean_energy_penalty'].append(
-            episode_cumulative_energy_penalty / episode_length)
+            episode_reward / episode_length)
+        result['episodes_cumulative_reward_energy_term'].append(
+            episode_reward_energy_term)
+        result['episodes_mean_reward_energy_term'].append(
+            episode_reward_energy_term / episode_length)
+        result['episodes_cumulative_reward_comfort_term'].append(
+            episode_reward_comfort_term)
+        result['episodes_mean_reward_comfort_term'].append(
+            episode_reward_comfort_term / episode_length)
+        result['episodes_cumulative_absolute_energy_penalty'].append(
+            episode_abs_energy_penalty)
+        result['episodes_mean_absolute_energy_penalty'].append(
+            episode_abs_energy_penalty / episode_length)
+        result['episodes_cumulative_absolute_comfort_penalty'].append(
+            episode_abs_comfort_penalty)
+        result['episodes_mean_absolute_comfort_penalty'].append(
+            episode_abs_comfort_penalty / episode_length)
+        result['episodes_cumulative_power_demand'].append(episode_power_demand)
+        result['episodes_mean_power_demand'].append(
+            episode_power_demand / episode_length)
+        result['episodes_cumulative_temperature_violation'].append(
+            episode_temperature_violation)
+        result['episodes_mean_temperature_violation'].append(
+            episode_temperature_violation / episode_length)
         try:
             result['episodes_comfort_violation'].append(
                 episode_steps_comfort_violation / episode_length * 100)
         except ZeroDivisionError:
             result['episodes_comfort_violation'].append(np.nan)
-        result['episodes_cumulative_temperature_violation'].append(
-            episode_cumulative_temperature_violation)
-        result['episodes_mean_temperature_violation'].append(
-            episode_cumulative_temperature_violation / episode_length)
 
     return result

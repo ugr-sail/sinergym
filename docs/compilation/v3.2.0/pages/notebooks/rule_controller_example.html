@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>22. Rule Controller example &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=816ccb90" />
+
+  
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="23. DRL usage example" href="drl.html" />
+    <link rel="prev" title="21. Logger Wrapper personalization/configuration" href="personalize_loggerwrapper.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">5. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">6. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">7. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">8. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">9. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">10. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">11. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">12. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">13. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">14. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">15. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">16. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">17. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">18. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">19. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">20. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">21. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">22. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">23. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">22. </span>Rule Controller example</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/notebooks/rule_controller_example.nblink.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Rule-Controller-example">
+<h1><span class="section-number">22. </span>Rule Controller example<a class="headerlink" href="#Rule-Controller-example" title="Link to this heading"></a></h1>
+<p>First, we import all the used libraries, remember to always import <code class="docutils literal notranslate"><span class="pre">sinergym</span></code> even if it says is not used, because that is needed to define the environments.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.constants</span> <span class="kn">import</span> <span class="n">YEAR</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sinergym</span>
+</pre></div>
+</div>
+</div>
+<p>Now, we can define the environment we want to use, in our case we are using the Eplus demo.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-discrete-v1]
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res35041]
+[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35040
+[MODELING] (INFO) : Model Config is correct.
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment 5zone-hot-discrete-v1 created successfully.
+</pre></div></div>
+</div>
+<p>For the Rule-base controller have a look at the already defined controllers, there is one for each building, since the demo is based on the 5Zone building we are extending that controller and defining the action function we desire, feel free to play with the function to define your own action.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sinergym.utils.controllers</span> <span class="kn">import</span> <span class="n">RBC5Zone</span>
+
+<span class="k">class</span> <span class="nc">MyRuleBasedController</span><span class="p">(</span><span class="n">RBC5Zone</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select action based on outdoor air drybulb temperature and daytime.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            observation (List[Any]): Perceived observation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Sequence[Any]: Action chosen.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">obs_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">),</span> <span class="n">observation</span><span class="p">))</span>
+
+        <span class="n">out_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;outdoor_temperature&#39;</span><span class="p">]</span>
+
+        <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;day_of_month&#39;</span><span class="p">])</span>
+        <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">])</span>
+        <span class="n">hour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">])</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">obs_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">,</span><span class="kc">False</span><span class="p">)</span> <span class="k">else</span> <span class="n">YEAR</span><span class="p">)</span>
+
+        <span class="n">summer_start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">summer_final_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+
+        <span class="n">current_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span>
+
+        <span class="c1"># Get season comfort range</span>
+        <span class="k">if</span> <span class="n">current_dt</span> <span class="o">&gt;=</span> <span class="n">summer_start_date</span> <span class="ow">and</span> <span class="n">current_dt</span> <span class="o">&lt;=</span> <span class="n">summer_final_date</span><span class="p">:</span>
+            <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_summer</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_summer</span>
+        <span class="n">season_comfort_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setpoints_winter</span>
+        <span class="c1"># Update setpoints</span>
+        <span class="n">in_temp</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span><span class="s1">&#39;air_temperature&#39;</span><span class="p">]</span>
+
+        <span class="n">current_heat_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
+            <span class="s1">&#39;htg_setpoint&#39;</span><span class="p">]</span>
+        <span class="n">current_cool_setpoint</span> <span class="o">=</span> <span class="n">obs_dict</span><span class="p">[</span>
+            <span class="s1">&#39;clg_setpoint&#39;</span><span class="p">]</span>
+
+        <span class="n">new_heat_setpoint</span> <span class="o">=</span> <span class="n">current_heat_setpoint</span>
+        <span class="n">new_cool_setpoint</span> <span class="o">=</span> <span class="n">current_cool_setpoint</span>
+
+        <span class="k">if</span> <span class="n">in_temp</span> <span class="o">&lt;</span> <span class="n">season_comfort_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">new_heat_setpoint</span> <span class="o">=</span> <span class="n">current_heat_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">new_cool_setpoint</span> <span class="o">=</span> <span class="n">current_cool_setpoint</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">in_temp</span> <span class="o">&gt;</span> <span class="n">season_comfort_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">new_cool_setpoint</span> <span class="o">=</span> <span class="n">current_cool_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">new_heat_setpoint</span> <span class="o">=</span> <span class="n">current_heat_setpoint</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1">#Clip setpoints to the action space</span>
+        <span class="k">if</span> <span class="n">new_heat_setpoint</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">high</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">new_heat_setpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">high</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">new_heat_setpoint</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">low</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">new_heat_setpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">low</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">new_cool_setpoint</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">high</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">new_cool_setpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">high</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">new_cool_setpoint</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">low</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">new_cool_setpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_space&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">low</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">action</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_heat_setpoint</span><span class="p">,</span> <span class="n">new_cool_setpoint</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">current_dt</span><span class="o">.</span><span class="n">weekday</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="ow">or</span> <span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+            <span class="c1">#weekend or night</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="p">(</span><span class="mf">18.33</span><span class="p">,</span> <span class="mf">23.33</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">action</span>
+</pre></div>
+</div>
+</div>
+<p>Now that we have our controller ready, we can use it:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="c1"># create rule-based controller</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">MyRuleBasedController</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">truncated</span> <span class="o">=</span> <span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">):</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">act</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
+        <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s1">&#39;Episode &#39;</span><span class="p">,</span>
+    <span class="n">i</span><span class="p">,</span>
+    <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span>
+    <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span>
+    <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 1]
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res35041/Eplus-env-sub_run1]
+[MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
+[MODELING] (INFO) : Updated building model with whole Output:Variable available names
+[MODELING] (INFO) : Updated building model with whole Output:Meter available names
+[MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res35041/Eplus-env-sub_run1/output]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/opyplus/weather_data/weather_data.py:493: FutureWarning: the &#39;line_terminator&#39;&#39; keyword is deprecated, use &#39;lineterminator&#39; instead.
+  epw_content = self._headers_to_epw(use_datetimes=use_datetimes) + df.to_csv(
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res35041/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res35041/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res35041/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+Reward:  -0.913313585398759 {&#39;time_elapsed(hours)&#39;: 0.5, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (15.0, 30.0), &#39;timestep&#39;: 2, &#39;reward&#39;: -0.913313585398759, &#39;energy_term&#39;: -0.05542625239599594, &#39;comfort_term&#39;: -0.857887333002763, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 1108.5250479199187, &#39;abs_comfort&#39;: 1.715774666005526, &#39;energy_values&#39;: [1108.5250479199187], &#39;temp_values&#39;: [18.284225333994474]}
+Progress: |**-------------------------------------------------------------------------------------------------| 2%
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/gymnasium/spaces/box.py:240: UserWarning: <span class="ansi-yellow-fg">WARN: Casting input x to numpy array.</span>
+  gym.logger.warn(&#34;Casting input x to numpy array.&#34;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Reward:  -2795.338629010751 {&#39;time_elapsed(hours)&#39;: 744.375, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (15.0, 22.5), &#39;timestep&#39;: 2977, &#39;reward&#39;: -0.005629148688825955, &#39;energy_term&#39;: -0.005629148688825955, &#39;comfort_term&#39;: -0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 112.5829737765191, &#39;abs_comfort&#39;: 0.0, &#39;energy_values&#39;: [112.5829737765191], &#39;temp_values&#39;: [20.780085346555335]}
+Reward:  -3442.9942477932536 {&#39;time_elapsed(hours)&#39;: 1416.25, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (17.0, 24.5), &#39;timestep&#39;: 5665, &#39;reward&#39;: -0.22725948485913058, &#39;energy_term&#39;: -0.00882370430179678, &#39;comfort_term&#39;: -0.21843578055733381, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 176.47408603593558, &#39;abs_comfort&#39;: 0.43687156111466763, &#39;energy_values&#39;: [176.47408603593558], &#39;temp_values&#39;: [19.563128438885332]}
+Reward:  -6086.758193423204 {&#39;time_elapsed(hours)&#39;: 2160.25, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (18.33, 23.33), &#39;timestep&#39;: 8641, &#39;reward&#39;: -0.0, &#39;energy_term&#39;: -0.0, &#39;comfort_term&#39;: -0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.0, &#39;energy_values&#39;: [0.0], &#39;temp_values&#39;: [21.98606808783697]}
+Reward:  -8588.569469115886 {&#39;time_elapsed(hours)&#39;: 2880.25, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (15.0, 22.5), &#39;timestep&#39;: 11521, &#39;reward&#39;: -0.4531417474460593, &#39;energy_term&#39;: -0.0, &#39;comfort_term&#39;: -0.4531417474460593, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.9062834948921186, &#39;energy_values&#39;: [0.0], &#39;temp_values&#39;: [24.40628349489212]}
+Reward:  -11765.765367945189 {&#39;time_elapsed(hours)&#39;: 3624.25, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (15.0, 22.5), &#39;timestep&#39;: 14497, &#39;reward&#39;: -0.0, &#39;energy_term&#39;: -0.0, &#39;comfort_term&#39;: -0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.0, &#39;energy_values&#39;: [0.0], &#39;temp_values&#39;: [25.900405758648773]}
+Reward:  -14245.140165597242 {&#39;time_elapsed(hours)&#39;: 4344.375, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (18.33, 23.33), &#39;timestep&#39;: 17377, &#39;reward&#39;: -0.9700071561753898, &#39;energy_term&#39;: -0.0, &#39;comfort_term&#39;: -0.9700071561753898, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 0.0, &#39;abs_comfort&#39;: 1.9400143123507796, &#39;energy_values&#39;: [0.0], &#39;temp_values&#39;: [27.94001431235078]}
+Reward:  -16167.362661542358 {&#39;time_elapsed(hours)&#39;: 5088.25, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (15.0, 22.5), &#39;timestep&#39;: 20353, &#39;reward&#39;: -0.0, &#39;energy_term&#39;: -0.0, &#39;comfort_term&#39;: -0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.0, &#39;energy_values&#39;: [0.0], &#39;temp_values&#39;: [25.996330089060972]}
+Reward:  -18044.632044925856 {&#39;time_elapsed(hours)&#39;: 5832.25, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (15.0, 22.5), &#39;timestep&#39;: 23329, &#39;reward&#39;: -0.0, &#39;energy_term&#39;: -0.0, &#39;comfort_term&#39;: -0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 0.0, &#39;abs_comfort&#39;: 0.0, &#39;energy_values&#39;: [0.0], &#39;temp_values&#39;: [25.799172085986662]}
+Reward:  -19572.469153276368 {&#39;time_elapsed(hours)&#39;: 6552.3125, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (15.0, 22.5), &#39;timestep&#39;: 26209, &#39;reward&#39;: -1.0005842181877573, &#39;energy_term&#39;: -0.06446283743025183, &#39;comfort_term&#39;: -0.9361213807575055, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 1289.2567486050366, &#39;abs_comfort&#39;: 1.872242761515011, &#39;energy_values&#39;: [1289.2567486050366], &#39;temp_values&#39;: [25.37224276151501]}
+Reward:  -25697.968230973762 {&#39;time_elapsed(hours)&#39;: 7296.25, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (15.0, 22.5), &#39;timestep&#39;: 29185, &#39;reward&#39;: -0.004536449977537947, &#39;energy_term&#39;: -0.004536449977537947, &#39;comfort_term&#39;: -0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 90.72899955075894, &#39;abs_comfort&#39;: 0.0, &#39;energy_values&#39;: [90.72899955075894], &#39;temp_values&#39;: [21.766705234161947]}
+Reward:  -28175.99400805497 {&#39;time_elapsed(hours)&#39;: 8016.25, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: (15.0, 22.5), &#39;timestep&#39;: 32065, &#39;reward&#39;: -0.004536449977537947, &#39;energy_term&#39;: -0.004536449977537947, &#39;comfort_term&#39;: -0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy&#39;: 90.72899955075894, &#39;abs_comfort&#39;: 0.0, &#39;energy_values&#39;: [90.72899955075894], &#39;temp_values&#39;: [20.933681388733177]}
+Progress: |***************************************************************************************************| 99%
+Episode  0 Mean reward:  -0.8548035936270668 Cumulative reward:  -29952.317920693455
+</pre></div></div>
+</div>
+<p>Always remember to close the environment:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-discrete-v1]
+</pre></div></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information about our defines controllers and how create a new one, please, visit our <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/html/pages/controllers.html">Controller Documentation</a></p>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="personalize_loggerwrapper.html" class="btn btn-neutral float-left" title="21. Logger Wrapper personalization/configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="drl.html" class="btn btn-neutral float-right" title="23. DRL usage example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.2.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
+            <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="rule_controller_example.html">v3.2.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../../main/index.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>
