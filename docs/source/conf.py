@@ -49,7 +49,7 @@ templates_path = ['_templates']
 
 # VERSIONING configuration
 # Whitelist pattern for tags (set to None to ignore all tags)
-smv_tag_whitelist = r'^.*$'
+smv_tag_whitelist = r'^.*0$'
 # smv_tag_whitelist = None
 
 # Whitelist pattern for branches (set to None to ignore all branches)
@@ -60,7 +60,7 @@ smv_branch_whitelist = r'main'
 smv_remote_whitelist = None
 
 # Pattern for released versions
-smv_released_pattern = r'^tags/.*$'
+smv_released_pattern = r'^tags/.+?0$'
 
 # Format for versioned output directories inside the build directory
 smv_outputdir_format = '{ref.name}'

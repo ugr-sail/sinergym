@@ -19,8 +19,7 @@ The main idea behind the reward system in *Sinergym* is captured by the equation
 
 .. math:: r_t = - \omega \ \lambda_P \ P_t - (1 - \omega) \ \lambda_T \ (|T_t - T_{up}| + |T_t - T_{low}|)
 
-Where: 
-
+Where: |br|
 :math:`P_t` represents power consumption, |br|
 :math:`T_t` is the current indoor temperature, |br|
 :math:`T_{up}` and :math:`T_{low}` are the upper and lower comfort range limits, respectively, |br|
