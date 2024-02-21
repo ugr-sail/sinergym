@@ -1,0 +1,128 @@
+{
+    "id_base"               : "smalldatacenter",
+
+    "building_file"         : "1ZoneDataCenterCRAC_wApproachTemp.epJSON",
+
+    "weather_specification" : {
+        "weather_files" : ["USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw", 
+                           "USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw", 
+                           "USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw"
+                        ],
+        "keys"          : ["hot", "mixed", "cool"]
+    },
+
+    "config_params"          : null,
+
+    "variation"             : [1.0, 0.0, 0.001],
+
+    "max_ep_data_store_num" : 10,
+    
+    "time_variables"        : ["month", "day_of_month", "hour"],
+
+    "variables"             : {
+        "Site Outdoor Air Drybulb Temperature"          : {
+            "variable_names" : "outdoor_temperature",
+            "keys"          : "Environment"            
+        },
+        "Site Outdoor Air Relative Humidity"            : {
+            "variable_names" : "outdoor_humidity",
+            "keys"          : "Environment"            
+        },
+        "Site Wind Speed"                               : {
+            "variable_names" : "wind_speed",
+            "keys"          : "Environment"           
+        },
+        "Site Wind Direction"                           : {
+            "variable_names" : "wind_direction",
+            "keys"          : "Environment"           
+        },
+        "Site Diffuse Solar Radiation Rate per Area"    : {
+            "variable_names" : "diffuse_solar_radiation",
+            "keys"          : "Environment"            
+        },
+        "Site Direct Solar Radiation Rate per Area"     : {
+            "variable_names" : "direct_solar_radiation",
+            "keys"          : "Environment"            
+        },
+        "Zone Thermostat Heating Setpoint Temperature"  : {
+            "variable_names" : "htg_setpoint",
+            "keys"          : "Main Zone"           
+        },
+        "Zone Thermostat Cooling Setpoint Temperature"  : {
+            "variable_names" : "clg_setpoint",
+            "keys"          : "Main Zone"            
+        },
+        "Zone Air Temperature"                          : {
+            "variable_names" : "air_temperature",
+            "keys"          : "Main Zone"            
+        },
+        "Zone Air Relative Humidity"                    : {
+            "variable_names" : "air_humidity",
+            "keys"          : "Main Zone"            
+        },
+        "Cooling Coil Electricity Rate"   : {
+            "variable_names" : "cooling_coil_demand_rate",
+            "keys"          : "MAIN COOLING COIL 1"            
+        },
+        "Fan Electricity Rate"   : {
+            "variable_names" : "fan_demand_rate",
+            "keys"          : "EC PLUG FAN 1"            
+        },
+        "ITE UPS Electricity Rate"   : {
+            "variable_names" : "ups_demand_rate",
+            "keys"          : "DATA CENTER SERVERS"            
+        },
+        "ITE Fan Electricity Rate"   : {
+            "variable_names" : "ite_fan_demand_rate",
+            "keys"          : "DATA CENTER SERVERS"            
+        },
+        "ITE CPU Electricity Rate"   : {
+            "variable_names" : "cpu_demand_rate",
+            "keys"          : "DATA CENTER SERVERS"            
+        },
+        "Facility Total HVAC Electricity Demand Rate"   : {
+            "variable_names" : "HVAC_electricity_demand_rate",
+            "keys"          : "Whole Building"            
+        },
+        "Facility Total Building Electricity Demand Rate" : {
+            "variable_names" : "building_electricity_demand_rate",
+            "keys"          : "Whole Building"
+        },
+        "Facility Total Electricity Demand Rate" : {
+            "variable_names" : "total_electricity_demand_rate",
+            "keys"          : "Whole Building"
+        }
+    },
+
+    "meters"                : {},
+
+    "actuators"             : {
+        "COOLING RETURN AIR SETPOINT SCHEDULE"          : {
+            "variable_name" : "Cooling_Setpoint_RL",
+            "element_type"  : "Schedule:Compact", 
+            "value_type"    : "Schedule Value"
+        },
+        "SUPPLY AIR SETPOINT SCHEDULE"          : {
+            "variable_name" : "Supply_Air_RL",
+            "element_type"  : "Schedule:Compact", 
+            "value_type"    : "Schedule Value"
+        }
+    },
+
+    "action_space"          : "gym.spaces.Box(low=np.array([20.0, 5.0], dtype=np.float32), high=np.array([40.0, 15.0], dtype=np.float32), shape=(2,), dtype=np.float32)",
+
+    "reward"                : "LinearReward",
+
+    "reward_kwargs"         : {
+        "temperature_variables": ["air_temperature"],
+        "energy_variables": ["total_electricity_demand_rate"],
+        "range_comfort_winter": [10, 35],
+        "range_comfort_summer": [10, 35],
+        "summer_start"          : [6, 1],
+        "summer_final"          : [9, 30],
+        "energy_weight"         : 0.5,
+        "lambda_energy"         : 1e-5,
+        "lambda_temperature"    : 1.0
+    }
+
+}
