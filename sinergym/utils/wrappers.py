@@ -617,6 +617,115 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
             return False
 
 
+class ContinuousIncrementalWrapper(gym.ActionWrapper):
+    """A wrapper for an incremental values of desired action variables"""
+
+    logger = Logger().getLogger(name='WRAPPER ContinuousIncrementalWrapper',
+                                level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(
+        self,
+        env: gym.Env,
+        incremental_variables_definition: Dict[str, Tuple[str, str]],
+        initial_values: List[float],
+    ):
+        """
+        Args:
+            env (gym.Env): Original Sinergym environment.
+            incremental_variables_definition (Dict[str, Tuple[str, str]]): Dictionary defining incremental variables.
+                                                                           Key: variable name, Value: Tuple with delta and step values.
+                                                                           Delta: maximum range, Step: intermediate value jumps.
+            initial_values (List[float]): Initial values for incremental variables. Length of this list and dictionary must match.
+        """
+
+        super().__init__(env)
+
+        # Params
+        self.current_values = initial_values
+
+        # Check environment is valid
+        try:
+            assert not self.env.get_wrapper_attr('is_discrete')
+        except AssertionError as err:
+            self.logger.error(
+                'Env wrapped by this wrapper must be continuous.')
+            raise err
+        try:
+            assert all([variable in self.env.get_wrapper_attr('action_variables')
+                       for variable in list(incremental_variables_definition.keys())])
+        except AssertionError as err:
+            self.logger.error(
+                'Some of the incremental variables specified does not exist as action variable in environment.')
+            raise err
+        try:
+            assert len(initial_values) == len(
+                incremental_variables_definition)
+        except AssertionError as err:
+            self.logger.error(
+                'Number of incremental variables does not match with initial values')
+            raise err
+
+        # Define all posible incremental variations
+        self.values_definition = {}
+        for variable, (delta_temp,
+                       step_temp) in incremental_variables_definition.items():
+
+            # Possible incrementations for each incremental variable.
+            values = np.arange(
+                step_temp,
+                delta_temp +
+                step_temp /
+                10,
+                step_temp)
+            values = [v for v in [*-np.flip(values), 0, *values]]
+
+            # Index of the action variable
+            index = self.env.get_wrapper_attr(
+                'action_variables').index(variable)
+
+            self.values_definition[index] = values
+
+        # New action space definition
+        # Modifying original action space variables
+        action_space_low = deepcopy(self.env.action_space.low)
+        action_space_high = deepcopy(self.env.action_space.high)
+        for index, values in self.values_definition.items():
+            action_space_low[index] = min(values)
+            action_space_high[index] = max(values)
+
+        self.action_space = gym.spaces.Box(
+            low=action_space_low,
+            high=action_space_high,
+            shape=self.env.action_space.shape,
+            dtype=np.float32)
+
+        self.logger.info(
+            'New incremental continuous action space: {}'.format(
+                self.action_space))
+        self.logger.info(
+            'Incremental variables configuration (variable: delta, step): {}'.format(
+                incremental_variables_definition))
+        self.logger.info('Wrapper initialized')
+
+    def action(self, action):
+        """Takes the continuous action and apply increment/decrement before to send to the next environment layer."""
+        action_ = deepcopy(action)
+
+        # Update current values with incremental values where required
+        for i, (index, values) in enumerate(self.values_definition.items()):
+            increment_value = action_[index]
+            increment_value = min(
+                values, key=lambda x: abs(
+                    x - increment_value))
+            self.current_values[i] += increment_value
+            # Clip the value with original action space
+            self.current_values[i] = max(self.env.action_space.low[index], min(
+                self.current_values[i], self.env.action_space.high[index]))
+            action_[index] = self.current_values[i]
+
+        return list(action_)
+
+
 class DiscretizeEnv(gym.ActionWrapper):
     """ Wrapper to discretize an action space.
     """
