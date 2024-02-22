@@ -57,11 +57,12 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">3. Buildings</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#datacenter">3.1. Datacenter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#zone">3.2. 5Zone</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#warehouse">3.3. Warehouse</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#officemedium">3.4. OfficeMedium</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#shopwithvanbattery">3.5. ShopWithVanBattery</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#officegridstoragesmoothing">3.6. OfficeGridStorageSmoothing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#small-datacenter">3.2. Small Datacenter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#zone">3.3. 5Zone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#warehouse">3.4. Warehouse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#officemedium">3.5. OfficeMedium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shopwithvanbattery">3.6. ShopWithVanBattery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#officegridstoragesmoothing">3.7. OfficeGridStorageSmoothing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="weathers.html">4. Weathers</a></li>
@@ -142,8 +143,19 @@ coolers, DX cooling coil, chilled water coil, and VAV. The
 main source of heat comes from the hosted servers.</p>
 <a class="reference internal image-reference" href="../_images/datacenter.png"><img alt="Datacenter building" class="align-center" src="../_images/datacenter.png" style="width: 700px;" /></a>
 </section>
+<section id="small-datacenter">
+<h2><span class="section-number">3.2. </span>Small Datacenter<a class="headerlink" href="#small-datacenter" title="Link to this heading"></a></h2>
+<p><strong>1ZoneDataCenterCRAC_wApproachTemp.epJSON</strong>:
+This file demonstrates a simple data center model with air-cooled IT equipment
+(ITE) served by a CRAC system. The air-cooled ITE illustrates the user of various schedules
+and curves to vary server power use. The CRAC system has been setup to represent a
+Lieber DSE 125 with pumped refrigerant economizer DX cooling coil system.Fictional
+1 zone building with resistive walls. No windows. Data Center server ITE object
+for internal gains.  No internal mass.  The building is oriented due north.</p>
+<a class="reference internal image-reference" href="../_images/small_datacenter.png"><img alt="Small Datacenter building" class="align-center" src="../_images/small_datacenter.png" style="width: 700px;" /></a>
+</section>
 <section id="zone">
-<h2><span class="section-number">3.2. </span>5Zone<a class="headerlink" href="#zone" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.3. </span>5Zone<a class="headerlink" href="#zone" title="Link to this heading"></a></h2>
 <p><strong>5ZoneAutoDXVAV.epJSON:</strong>
 A single-story building divided
 into 5 zones (1 indoor and 4 outdoor). Its surface area is 463.6
@@ -153,7 +165,7 @@ system to be controlled.</p>
 <a class="reference internal image-reference" href="../_images/5zone.png"><img alt="5Zone building" class="align-center" src="../_images/5zone.png" style="width: 700px;" /></a>
 </section>
 <section id="warehouse">
-<h2><span class="section-number">3.3. </span>Warehouse<a class="headerlink" href="#warehouse" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.4. </span>Warehouse<a class="headerlink" href="#warehouse" title="Link to this heading"></a></h2>
 <p><strong>ASHRAE9012016_Warehouse.epJSON:</strong>
 It is a non-residential 4598 m2 floor building,
 divided into 3 zones: bulk storage, fine storage and an office.
@@ -164,7 +176,7 @@ with HVAC system.</p>
 <a class="reference internal image-reference" href="../_images/warehouse.png"><img alt="Warehouse building" class="align-center" src="../_images/warehouse.png" style="width: 700px;" /></a>
 </section>
 <section id="officemedium">
-<h2><span class="section-number">3.4. </span>OfficeMedium<a class="headerlink" href="#officemedium" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.5. </span>OfficeMedium<a class="headerlink" href="#officemedium" title="Link to this heading"></a></h2>
 <p><strong>ASHRAE9012016_OfficeMedium.epJSON:</strong>
 It is a 4979.6 m2 building with 3 floors. Each floor has
 four perimeter zones and one core zone. Available fuel types
@@ -172,7 +184,7 @@ are gas and electricity, and it is equipped with HVAC system.</p>
 <a class="reference internal image-reference" href="../_images/officeMedium.png"><img alt="OfficeMedium building" class="align-center" src="../_images/officeMedium.png" style="width: 700px;" /></a>
 </section>
 <section id="shopwithvanbattery">
-<h2><span class="section-number">3.5. </span>ShopWithVanBattery<a class="headerlink" href="#shopwithvanbattery" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.6. </span>ShopWithVanBattery<a class="headerlink" href="#shopwithvanbattery" title="Link to this heading"></a></h2>
 <p><strong>ShopWithVanBattery.epJSON:</strong>
 It is a 390.2 m2 building, with only one floor. It has five
 zones; four of them are perimeter zones and one in the center.
@@ -185,7 +197,7 @@ This is a small repair shop. Open Monday through Friday,
 <a class="reference internal image-reference" href="../_images/shop.png"><img alt="Shop building" class="align-center" src="../_images/shop.png" style="width: 700px;" /></a>
 </section>
 <section id="officegridstoragesmoothing">
-<h2><span class="section-number">3.6. </span>OfficeGridStorageSmoothing<a class="headerlink" href="#officegridstoragesmoothing" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.7. </span>OfficeGridStorageSmoothing<a class="headerlink" href="#officegridstoragesmoothing" title="Link to this heading"></a></h2>
 <p><strong>OfficeGridStorageSmoothing.epJSON:</strong>
 It is a large office building with 12 floors and a basement, with a rectangular aspect and 46,320 m2.
 The building is organized in 19 zones: the basement, bot, mid and top level. Each level has a
