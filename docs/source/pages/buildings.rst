@@ -34,12 +34,11 @@ Small Datacenter
 
 **1ZoneDataCenterCRAC_wApproachTemp.epJSON**:
 This file demonstrates a simple data center model with air-cooled IT equipment 
-(ITE) served by a CRAC system.
-The air-cooled ITE illustrates the user of various schedules and curves to 
-vary server power use. The CRAC system has been setup to represent a Lieber 
-DSE 125 with pumped refrigerant economizer DX cooling coil system.
-Fictional 1 zone building with resistive walls. No windows. Data Center server 
-ITE object for internal gains.  No internal mass.  The building is oriented due north.
+(ITE) served by a CRAC system. The air-cooled ITE illustrates the user of various schedules 
+and curves to vary server power use. The CRAC system has been setup to represent a 
+Lieber DSE 125 with pumped refrigerant economizer DX cooling coil system.Fictional 
+1 zone building with resistive walls. No windows. Data Center server ITE object 
+for internal gains.  No internal mass.  The building is oriented due north.
 
 
 .. image:: /_static/small_datacenter.png
