@@ -420,54 +420,64 @@ available for *Sinergym* visit section :ref:`Extra Configuration in Sinergym sim
 Adding new weathers for environments
 **************************************
 
-*Sinergym* includes several weathers covering different types of climate in different areas of the world. 
-The aim is to provide the greatest possible diversity for the experiments taking into account certain 
-characteristics.
+*Sinergym* includes diverse weather files covering various climates worldwide to maximize experiment diversity.
 
-However, you may need or want to include a **new weather** for an experiment. Therefore, this section 
-is dedicated to give an explanation of how to do it:
+To add a **new weather**:
 
-1. Download **EPW** file and **DDY** file in `EnergyPlus page <https://energyplus.net/weather>`__. *DDY* file
-   contains information about the location and different design days available for that weather.
-2. Both files (*EPW* and *DDY*) must have exactly the same name, being the extension the only difference. 
-   They should be placed in the `weathers <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/weather>`__ folder.
+1. Download an **EPW** and a corresponding **DDY** file from the `EnergyPlus page <https://energyplus.net/weather>`__.
+   The *DDY* file specifies location and design day information.
 
-That is all! *Sinergym* should be able to adapt ``SizingPeriod:DesignDays`` and ``Site:Location`` fields in building 
-model file using *DDY* automatically for that weather.
+2. Ensure both files have identical names, differing only in their extensions, and place them in 
+   the `weathers <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/weather>`__ folder.
+
+*Sinergym* will automatically adjust the ``SizingPeriod:DesignDays`` and ``Site:Location`` fields in 
+the building model file using the *DDY* file for the added weather.
 
 **************************************
 Adding new buildings for environments
 **************************************
 
-As we have already mentioned, a user can change the already available environments or even create new environment 
-definitions including new climates, action and observation spaces, etc. However, perhaps you want to use a 
-**new building model** (*epJSON* file) than the ones we support.
+Users can modify existing environments or create new environment definitions, incorporating new climates, 
+action and observation spaces. Additionally, they have the option to use a different **building model** (epJSON file) 
+than the ones currently supported.
 
-This section is intended to provide information if someone decides to add new buildings for use with *Sinergym*. 
-The main steps you have to follow are the next:
+To add new buildings for use with *Sinergym*, follow these steps:
 
-1. Add your building file (*epJSON*) to `buildings <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings>`__.
-   *EnergyPlus* pretends to work with *JSON* format instead of *IDF* format in their building definitions and simulations. Then,
-   *Sinergym* pretends to work with this format from v2.4.0 or higher directly. You can download a *IDF* file and convert
-   to *epJSON* using their **ConvertInputFormat tool** from *EnergyPlus*.
-   **Be sure that new epJSON model version is compatible with EnergyPlus version**.
+1. **Add your building file** (*epJSON*) to the `buildings <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings>`__.
+   Ensure compatibility with EnergyPlus version used in *Sinergym*.
+   If you are using an *IDF* file with an older version, it is advisable to update it with **IDFVersionUpdater** and then convert 
+   it to *epJSON* format using **ConvertInputFormat**. Both tools are accessible in the EnergyPlus installation folder.
 
-2. Add your own *EPW* file for weather conditions (section :ref:`Adding new weathers for environments`) 
-   or use ours in environment constructor. 
+2. **Adjusting building objects** like ``RunPeriod`` and ``SimulationControl`` to meet user needs, 
+   as these elements define how interaction episodes will be in *Sinergym*.
 
-3. *Sinergym* will check that observation and action variables specified in environments constructor are 
-   available in the simulation before starting. You need to ensure that the variables definition are correct. 
+3. We need to **identify the components** of the building that we want to observe and control, respectively. This is the most 
+   challenging part of the process. Typically, the user is already familiar with the building and therefore knows the *name* 
+   and *key* of the elements in advance. If not, the following process can be followed.
 
-4. Use the environment constructor or register your own environment ID `here <https://github.com/ugr-sail/sinergym/blob/main/sinergym/__init__.py>`__ 
-   following the same structure than the demo environment. You will have to specify environment components. 
-   We have examples about how to get environment information in :ref:`Getting information about Sinergym environments`.
+   To view the different ``OutputVariables`` and ``Meters``, a preliminary simulation with EnergyPlus can be conducted directly 
+   without establishing any control flow. The output files, specifically the file with the *RDD* extension, can be consulted 
+   to identify the possible observable variables.
 
-5. Now, you can use your own environment ID with ``gym.make()`` like our documentation examples.
+   The challenge lies in knowing the names but not the possible *Keys* (EnergyPlus does not initially provide this information). 
+   These names can be used to define the environment (see step 3). If the *Key* is incorrect, *Sinergym* will notify of the 
+   error and provide a file called **data_available.txt** in the aoutput, since it has already connected with the EnergyPlus API. This file will 
+   contain all the **controllable schedulers** for the actions and all the **observable variables**, this time with their respective *Keys*, 
+   enabling the correct definition of the environment.
 
-Once the first step has been performed, it is also possible to **register a set of environments 
-automatically** in *Sinergym* by writing its corresponding configuration file in ``sinergym/data/default_configuration/<configuration_JSON_file>``. 
-For more information on this, see :ref:`Environments Configuration and Registration`.
+4. Once this information is obtained, the next step is **defining the environment** using the building model. 
+   We have several options:
 
-.. important:: In order to know the available variables, meters, actuators, etc. You can try to do an empty control in the building and look for files
-               such as RDD, MDD, MTD or ``data_available.txt`` file generated with *EnergyPlus* API in the output folder by *Sinergym*.
+  a. Use the *Sinergym* environment constructor directly. The arguments for building observation and 
+     control are explained within the class and should be specified in the same format as the EnergyPlus API.
+
+  b. Set up the configuration to register environment IDs directly. For detailed information on this, refer to 
+     the documentation :ref:`Environments Configuration and Registration`. *Sinergym* will verify that the 
+     established configuration is entirely correct and notify of any potential errors.
+
+5. If you've used *Sinergym*'s registry, you'll have access to environment IDs paired with your building. Use them 
+   with ``gym.make(<environment_id>)`` as usual. If you've created an environment instance directly, simply use 
+   that instance to start interacting with the building.
+
+.. note:: For obtain information about the environment instance with the new building model, see reference :ref:`Getting information about Sinergym environments`.
 

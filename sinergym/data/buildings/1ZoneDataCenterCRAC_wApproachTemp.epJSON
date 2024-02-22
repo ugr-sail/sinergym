@@ -1,0 +1,1961 @@
+{
+    "AirLoopHVAC": {
+        "CRAC system": {
+            "availability_manager_list_name": "CRAC 1 Availability List",
+            "branch_list_name": "Air Loop Branches",
+            "demand_side_inlet_node_names": "Zone Equipment Inlet Node",
+            "demand_side_outlet_node_name": "Zone Equipment Outlet Node",
+            "design_supply_air_flow_rate": 8.5,
+            "supply_side_inlet_node_name": "Supply Inlet Node",
+            "supply_side_outlet_node_names": "Supply Outlet Node"
+        }
+    },
+    "AirLoopHVAC:ReturnPath": {
+        "Zone Return Air Path": {
+            "components": [
+                {
+                    "component_name": "Zone Return Air Mixer",
+                    "component_object_type": "AirLoopHVAC:ZoneMixer"
+                }
+            ],
+            "return_air_path_outlet_node_name": "Zone Equipment Outlet Node"
+        }
+    },
+    "AirLoopHVAC:SupplyPath": {
+        "Zone Supply Air Path": {
+            "components": [
+                {
+                    "component_name": "Zone Supply Air Splitter",
+                    "component_object_type": "AirLoopHVAC:ZoneSplitter"
+                }
+            ],
+            "supply_air_path_inlet_node_name": "Zone Equipment Inlet Node"
+        }
+    },
+    "AirLoopHVAC:ZoneMixer": {
+        "Zone Return Air Mixer": {
+            "nodes": [
+                {
+                    "inlet_node_name": "Main Zone Outlet Node"
+                }
+            ],
+            "outlet_node_name": "Zone Equipment Outlet Node"
+        }
+    },
+    "AirLoopHVAC:ZoneSplitter": {
+        "Zone Supply Air Splitter": {
+            "inlet_node_name": "Zone Equipment Inlet Node",
+            "nodes": [
+                {
+                    "outlet_node_name": "Main Zone ATU In Node"
+                }
+            ]
+        }
+    },
+    "AirTerminal:SingleDuct:VAV:NoReheat": {
+        "Main Zone VAV Air": {
+            "air_inlet_node_name": "Main Zone ATU In Node",
+            "air_outlet_node_name": "Main Zone Inlet Node",
+            "availability_schedule_name": "System Availability Schedule",
+            "constant_minimum_air_flow_fraction": 0.05,
+            "maximum_air_flow_rate": 8.5,
+            "zone_minimum_air_flow_input_method": "Constant"
+        }
+    },
+    "AvailabilityManager:Scheduled": {
+        "CRAC 1 Avail": {
+            "schedule_name": "System Availability Schedule"
+        }
+    },
+    "AvailabilityManagerAssignmentList": {
+        "CRAC 1 Availability List": {
+            "managers": [
+                {
+                    "availability_manager_name": "CRAC 1 Avail",
+                    "availability_manager_object_type": "AvailabilityManager:Scheduled"
+                }
+            ]
+        }
+    },
+    "Branch": {
+        "Air Loop Main Branch": {
+            "components": [
+                {
+                    "component_inlet_node_name": "Supply Inlet Node",
+                    "component_name": "DX Cooling Coil System 1",
+                    "component_object_type": "CoilSystem:Cooling:DX",
+                    "component_outlet_node_name": "Main Cooling Coil 1 Outlet Node"
+                },
+                {
+                    "component_inlet_node_name": "Main Cooling Coil 1 Outlet Node",
+                    "component_name": "EC Plug Fan 1",
+                    "component_object_type": "Fan:VariableVolume",
+                    "component_outlet_node_name": "Supply Outlet Node"
+                }
+            ]
+        }
+    },
+    "BranchList": {
+        "Air Loop Branches": {
+            "branches": [
+                {
+                    "branch_name": "Air Loop Main Branch"
+                }
+            ]
+        }
+    },
+    "Building": {
+        "Bldg": {
+            "loads_convergence_tolerance_value": 0.05,
+            "maximum_number_of_warmup_days": 30,
+            "minimum_number_of_warmup_days": 6,
+            "north_axis": 0.0,
+            "solar_distribution": "MinimalShadowing",
+            "temperature_convergence_tolerance_value": 0.05,
+            "terrain": "Suburbs"
+        }
+    },
+    "BuildingSurface:Detailed": {
+        "Zn001:Flr001": {
+            "construction_name": "FLOOR",
+            "number_of_vertices": 4,
+            "outside_boundary_condition": "Surface",
+            "outside_boundary_condition_object": "Zn001:Flr001",
+            "sun_exposure": "NoSun",
+            "surface_type": "Floor",
+            "vertices": [
+                {
+                    "vertex_x_coordinate": 15.24,
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
+                },
+                {
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
+                },
+                {
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 15.24,
+                    "vertex_z_coordinate": 0.0
+                },
+                {
+                    "vertex_x_coordinate": 15.24,
+                    "vertex_y_coordinate": 15.24,
+                    "vertex_z_coordinate": 0.0
+                }
+            ],
+            "view_factor_to_ground": 1.0,
+            "wind_exposure": "NoWind",
+            "zone_name": "Main Zone"
+        },
+        "Zn001:Roof001": {
+            "construction_name": "ROOF31",
+            "number_of_vertices": 4,
+            "outside_boundary_condition": "Outdoors",
+            "sun_exposure": "SunExposed",
+            "surface_type": "Roof",
+            "vertices": [
+                {
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 15.24,
+                    "vertex_z_coordinate": 4.572
+                },
+                {
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 4.572
+                },
+                {
+                    "vertex_x_coordinate": 15.24,
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 4.572
+                },
+                {
+                    "vertex_x_coordinate": 15.24,
+                    "vertex_y_coordinate": 15.24,
+                    "vertex_z_coordinate": 4.572
+                }
+            ],
+            "view_factor_to_ground": 0,
+            "wind_exposure": "WindExposed",
+            "zone_name": "Main Zone"
+        },
+        "Zn001:Wall001": {
+            "construction_name": "R13WALL",
+            "number_of_vertices": 4,
+            "outside_boundary_condition": "Outdoors",
+            "sun_exposure": "SunExposed",
+            "surface_type": "Wall",
+            "vertices": [
+                {
+                    "vertex_x_coordinate": 0,
+                    "vertex_y_coordinate": 0,
+                    "vertex_z_coordinate": 4.572
+                },
+                {
+                    "vertex_x_coordinate": 0,
+                    "vertex_y_coordinate": 0,
+                    "vertex_z_coordinate": 0
+                },
+                {
+                    "vertex_x_coordinate": 15.24,
+                    "vertex_y_coordinate": 0,
+                    "vertex_z_coordinate": 0
+                },
+                {
+                    "vertex_x_coordinate": 15.24,
+                    "vertex_y_coordinate": 0,
+                    "vertex_z_coordinate": 4.572
+                }
+            ],
+            "view_factor_to_ground": 0.5,
+            "wind_exposure": "WindExposed",
+            "zone_name": "Main Zone"
+        },
+        "Zn001:Wall002": {
+            "construction_name": "R13WALL",
+            "number_of_vertices": 4,
+            "outside_boundary_condition": "Outdoors",
+            "sun_exposure": "SunExposed",
+            "surface_type": "Wall",
+            "vertices": [
+                {
+                    "vertex_x_coordinate": 15.24,
+                    "vertex_y_coordinate": 0,
+                    "vertex_z_coordinate": 4.572
+                },
+                {
+                    "vertex_x_coordinate": 15.24,
+                    "vertex_y_coordinate": 0,
+                    "vertex_z_coordinate": 0
+                },
+                {
+                    "vertex_x_coordinate": 15.24,
+                    "vertex_y_coordinate": 15.24,
+                    "vertex_z_coordinate": 0
+                },
+                {
+                    "vertex_x_coordinate": 15.24,
+                    "vertex_y_coordinate": 15.24,
+                    "vertex_z_coordinate": 4.572
+                }
+            ],
+            "view_factor_to_ground": 0.5,
+            "wind_exposure": "WindExposed",
+            "zone_name": "Main Zone"
+        },
+        "Zn001:Wall003": {
+            "construction_name": "R13WALL",
+            "number_of_vertices": 4,
+            "outside_boundary_condition": "Outdoors",
+            "sun_exposure": "SunExposed",
+            "surface_type": "Wall",
+            "vertices": [
+                {
+                    "vertex_x_coordinate": 15.24,
+                    "vertex_y_coordinate": 15.24,
+                    "vertex_z_coordinate": 4.572
+                },
+                {
+                    "vertex_x_coordinate": 15.24,
+                    "vertex_y_coordinate": 15.24,
+                    "vertex_z_coordinate": 0
+                },
+                {
+                    "vertex_x_coordinate": 0,
+                    "vertex_y_coordinate": 15.24,
+                    "vertex_z_coordinate": 0
+                },
+                {
+                    "vertex_x_coordinate": 0,
+                    "vertex_y_coordinate": 15.24,
+                    "vertex_z_coordinate": 4.572
+                }
+            ],
+            "view_factor_to_ground": 0.5,
+            "wind_exposure": "WindExposed",
+            "zone_name": "Main Zone"
+        },
+        "Zn001:Wall004": {
+            "construction_name": "R13WALL",
+            "number_of_vertices": 4,
+            "outside_boundary_condition": "Outdoors",
+            "sun_exposure": "SunExposed",
+            "surface_type": "Wall",
+            "vertices": [
+                {
+                    "vertex_x_coordinate": 0,
+                    "vertex_y_coordinate": 15.24,
+                    "vertex_z_coordinate": 4.572
+                },
+                {
+                    "vertex_x_coordinate": 0,
+                    "vertex_y_coordinate": 15.24,
+                    "vertex_z_coordinate": 0
+                },
+                {
+                    "vertex_x_coordinate": 0,
+                    "vertex_y_coordinate": 0,
+                    "vertex_z_coordinate": 0
+                },
+                {
+                    "vertex_x_coordinate": 0,
+                    "vertex_y_coordinate": 0,
+                    "vertex_z_coordinate": 4.572
+                }
+            ],
+            "view_factor_to_ground": 0.5,
+            "wind_exposure": "WindExposed",
+            "zone_name": "Main Zone"
+        }
+    },
+    "Coil:Cooling:DX:SingleSpeed": {
+        "Main Cooling Coil 1": {
+            "2023_rated_evaporator_fan_power_per_volume_flow_rate": 934.4,
+            "air_inlet_node_name": "Supply Inlet Node",
+            "air_outlet_node_name": "Main Cooling Coil 1 Outlet Node",
+            "availability_schedule_name": "System Availability Schedule",
+            "energy_input_ratio_function_of_flow_fraction_curve_name": "HPACCOOLEIRFFF",
+            "energy_input_ratio_function_of_temperature_curve_name": "Liebert Econophase EIR Func T",
+            "gross_rated_cooling_cop": 4.5669,
+            "gross_rated_sensible_heat_ratio": 0.83,
+            "gross_rated_total_cooling_capacity": 148300,
+            "part_load_fraction_correlation_curve_name": "HPACCOOLPLFFPLR",
+            "rated_air_flow_rate": 8.5,
+            "total_cooling_capacity_function_of_flow_fraction_curve_name": "HPACCoolCapFFF",
+            "total_cooling_capacity_function_of_temperature_curve_name": "Cool Cap Mod func of Temperature",
+            "zone_name_for_condenser_placement": "Yes"
+        }
+    },
+    "CoilSystem:Cooling:DX": {
+        "DX Cooling Coil System 1": {
+            "availability_schedule_name": "System Availability Schedule",
+            "cooling_coil_name": "Main Cooling Coil 1",
+            "cooling_coil_object_type": "Coil:Cooling:DX:SingleSpeed",
+            "dx_cooling_coil_system_inlet_node_name": "Supply Inlet Node",
+            "dx_cooling_coil_system_outlet_node_name": "Main Cooling Coil 1 Outlet Node",
+            "dx_cooling_coil_system_sensor_node_name": "Main Cooling Coil 1 Outlet Node"
+        }
+    },
+    "Construction": {
+        "FLOOR": {
+            "outside_layer": "C5 - 4 IN HW CONCRETE"
+        },
+        "R13WALL": {
+            "outside_layer": "R13LAYER"
+        },
+        "ROOF31": {
+            "outside_layer": "R31LAYER"
+        }
+    },
+    "Curve:Biquadratic": {
+        "Data Center Recirculation fLoadTemp": {
+            "coefficient1_constant": 1.0,
+            "coefficient2_x": 0.0,
+            "coefficient3_x_2": 0.0,
+            "coefficient4_y": 0.0,
+            "coefficient5_y_2": 0.0,
+            "coefficient6_x_y": 0.0,
+            "input_unit_type_for_x": "Dimensionless",
+            "input_unit_type_for_y": "Temperature",
+            "maximum_curve_output": 99.0,
+            "maximum_value_of_x": 1.5,
+            "maximum_value_of_y": 99.0,
+            "minimum_curve_output": 0.0,
+            "minimum_value_of_x": 0.0,
+            "minimum_value_of_y": -10,
+            "output_unit_type": "Dimensionless"
+        },
+        "Data Center Servers Airflow fLoadTemp": {
+            "coefficient1_constant": -1.4,
+            "coefficient2_x": 0.9,
+            "coefficient3_x_2": 0.0,
+            "coefficient4_y": 0.1,
+            "coefficient5_y_2": 0.0,
+            "coefficient6_x_y": 0.0,
+            "input_unit_type_for_x": "Dimensionless",
+            "input_unit_type_for_y": "Temperature",
+            "maximum_curve_output": 99.0,
+            "maximum_value_of_x": 1.5,
+            "maximum_value_of_y": 99.0,
+            "minimum_curve_output": 0.0,
+            "minimum_value_of_x": 0.0,
+            "minimum_value_of_y": -10,
+            "output_unit_type": "Dimensionless"
+        },
+        "Data Center Servers Power fLoadTemp": {
+            "coefficient1_constant": -1.0,
+            "coefficient2_x": 1.0,
+            "coefficient3_x_2": 0.0,
+            "coefficient4_y": 0.06667,
+            "coefficient5_y_2": 0.0,
+            "coefficient6_x_y": 0.0,
+            "input_unit_type_for_x": "Dimensionless",
+            "input_unit_type_for_y": "Temperature",
+            "maximum_curve_output": 99.0,
+            "maximum_value_of_x": 1.5,
+            "maximum_value_of_y": 99.0,
+            "minimum_curve_output": 0.0,
+            "minimum_value_of_x": 0.0,
+            "minimum_value_of_y": -10,
+            "output_unit_type": "Dimensionless"
+        },
+        "Liebert Econophase quadratic fit": {
+            "coefficient1_constant": 0.1416159,
+            "coefficient2_x": 0.0,
+            "coefficient3_x_2": 0.0,
+            "coefficient4_y": 0.013828452,
+            "coefficient5_y_2": 0.00023872,
+            "coefficient6_x_y": 0.0,
+            "input_unit_type_for_x": "Temperature",
+            "input_unit_type_for_y": "Temperature",
+            "maximum_curve_output": 1.4,
+            "maximum_value_of_x": 23.88889,
+            "maximum_value_of_y": 46.11111,
+            "minimum_curve_output": 0.04,
+            "minimum_value_of_x": 12.77778,
+            "minimum_value_of_y": -10,
+            "output_unit_type": "Dimensionless"
+        }
+    },
+    "Curve:Quadratic": {
+        "ECM FanPower fFlow": {
+            "coefficient1_constant": 0.0,
+            "coefficient2_x": 1.0,
+            "coefficient3_x_2": 0.0,
+            "maximum_value_of_x": 99.0,
+            "minimum_value_of_x": 0.0
+        },
+        "HPACCOOLEIRFFF": {
+            "coefficient1_constant": 1.156,
+            "coefficient2_x": -0.1816,
+            "coefficient3_x_2": 0.0256,
+            "maximum_value_of_x": 1.5,
+            "minimum_value_of_x": 0.5
+        },
+        "HPACCOOLPLFFPLR": {
+            "coefficient1_constant": 0.85,
+            "coefficient2_x": 0.15,
+            "coefficient3_x_2": 0.0,
+            "maximum_value_of_x": 1.0,
+            "minimum_value_of_x": 0.0
+        },
+        "HPACCoolCapFFF": {
+            "coefficient1_constant": 0.8,
+            "coefficient2_x": 0.2,
+            "coefficient3_x_2": 0.0,
+            "maximum_value_of_x": 1.5,
+            "minimum_value_of_x": 0.5
+        },
+        "UPS Efficiency fPLR": {
+            "coefficient1_constant": 1.0,
+            "coefficient2_x": 0.0,
+            "coefficient3_x_2": 0.0,
+            "maximum_value_of_x": 99.0,
+            "minimum_value_of_x": 0.0
+        }
+    },
+    "ElectricEquipment:ITE:AirCooled": {
+        "Data Center Servers": {
+            "air_flow_calculation_method": "FlowControlWithApproachTemperatures",
+            "air_flow_function_of_loading_and_air_temperature_curve_name": "Data Center Servers Airflow fLoadTemp",
+            "air_inlet_connection_type": "AdjustedSupply",
+            "cpu_end_use_subcategory": "ITE-CPU",
+            "cpu_loading_schedule_name": "Data Center CPU Loading Schedule",
+            "cpu_power_input_function_of_loading_and_air_temperature_curve_name": "Data Center Servers Power fLoadTemp",
+            "design_electric_power_supply_efficiency": 0.9,
+            "design_entering_air_temperature": 15,
+            "design_fan_air_flow_rate_per_power_input": 0.0001,
+            "design_fan_power_input_fraction": 0.4,
+            "design_power_input_calculation_method": "Watts/Unit",
+            "design_power_input_schedule_name": "Data Center Operation Schedule",
+            "design_recirculation_fraction": 0.1,
+            "electric_power_supply_efficiency_function_of_part_load_ratio_curve_name": "UPS Efficiency fPLR",
+            "electric_power_supply_end_use_subcategory": "ITE-UPS",
+            "environmental_class": "A3",
+            "fan_end_use_subcategory": "ITE-Fans",
+            "fan_power_input_function_of_flow_curve_name": "ECM FanPower fFlow",
+            "fraction_of_electric_power_supply_losses_to_zone": 1,
+            "number_of_units": 100,
+            "recirculation_function_of_loading_and_supply_temperature_curve_name": "Data Center Recirculation fLoadTemp",
+            "return_temperature_difference": -1,
+            "supply_air_node_name": "Main Zone Inlet Node",
+            "supply_temperature_difference": 2,
+            "watts_per_unit": 500,
+            "zone_or_space_name": "Main Zone"
+        }
+    },
+    "EnergyManagementSystem:GlobalVariable": {
+        "EnergyManagementSystem:GlobalVariable 1": {
+            "variables": [
+                {
+                    "erl_variable_name": "SCOP"
+                },
+                {
+                    "erl_variable_name": "QdotNetSens"
+                },
+                {
+                    "erl_variable_name": "PowerCRAC"
+                }
+            ]
+        },
+        "EnergyManagementSystem:GlobalVariable 2": {
+            "variables": [
+                {
+                    "erl_variable_name": "PUE"
+                }
+            ]
+        }
+    },
+    "EnergyManagementSystem:OutputVariable": {
+        "CRAC Net Sensible Capacity": {
+            "ems_variable_name": "QdotNetSens",
+            "type_of_data_in_variable": "Averaged",
+            "units": "W",
+            "update_frequency": "SystemTimestep"
+        },
+        "CRAC SCOP": {
+            "ems_variable_name": "SCOP",
+            "type_of_data_in_variable": "Averaged",
+            "update_frequency": "SystemTimestep"
+        },
+        "CRAC total system Power": {
+            "ems_variable_name": "PowerCRAC",
+            "type_of_data_in_variable": "Averaged",
+            "units": "W",
+            "update_frequency": "SystemTimestep"
+        },
+        "PUE": {
+            "ems_variable_name": "PUE",
+            "type_of_data_in_variable": "Averaged",
+            "update_frequency": "SystemTimestep"
+        }
+    },
+    "EnergyManagementSystem:Program": {
+        "CalcPUE": {
+            "lines": [
+                {
+                    "program_line": "IF IT_Equip_power > 0.0"
+                },
+                {
+                    "program_line": "set PUE = whole_building_power / IT_Equip_power"
+                },
+                {
+                    "program_line": "ELSE"
+                },
+                {
+                    "program_line": "set PUE = 0.0"
+                },
+                {
+                    "program_line": "ENDIF"
+                }
+            ]
+        },
+        "CalcSCOP": {
+            "lines": [
+                {
+                    "program_line": "set cpair = @CpAirFnW Wout_SupplyFan"
+                },
+                {
+                    "program_line": "set FanSensHeat = (Mdot_SupplyFan * cpair ) * DeltaT_SupplyFan"
+                },
+                {
+                    "program_line": "set numerator = Qdot_DXCoil_Sens - FanSensHeat"
+                },
+                {
+                    "program_line": "set denominator = Power_DX_Coil_Elec + Power_SupplyFan_Elec"
+                },
+                {
+                    "program_line": "Set SCOP = numerator / denominator"
+                },
+                {
+                    "program_line": "Set QdotNetSens = numerator"
+                },
+                {
+                    "program_line": "Set PowerCRAC = denominator"
+                }
+            ]
+        }
+    },
+    "EnergyManagementSystem:ProgramCallingManager": {
+        "Calculate Sensible Coefficient of Performance": {
+            "energyplus_model_calling_point": "EndOfZoneTimestepBeforeZoneReporting",
+            "programs": [
+                {
+                    "program_name": "CalcSCOP"
+                },
+                {
+                    "program_name": "CalcPUE"
+                }
+            ]
+        }
+    },
+    "EnergyManagementSystem:Sensor": {
+        "DeltaT_SupplyFan": {
+            "output_variable_or_output_meter_index_key_name": "EC Plug Fan 1",
+            "output_variable_or_output_meter_name": "Fan Rise in Air Temperature"
+        },
+        "IT_Equip_power": {
+            "output_variable_or_output_meter_index_key_name": "Whole Building",
+            "output_variable_or_output_meter_name": "Facility Total Building Electricity Demand Rate"
+        },
+        "Mdot_SupplyFan": {
+            "output_variable_or_output_meter_index_key_name": "Supply Outlet Node",
+            "output_variable_or_output_meter_name": "System Node Mass Flow Rate"
+        },
+        "Power_DX_Coil_Elec": {
+            "output_variable_or_output_meter_index_key_name": "Main Cooling Coil 1",
+            "output_variable_or_output_meter_name": "Cooling Coil Electricity Rate"
+        },
+        "Power_SupplyFan_Elec": {
+            "output_variable_or_output_meter_index_key_name": "EC Plug Fan 1",
+            "output_variable_or_output_meter_name": "Fan Electricity Rate"
+        },
+        "Qdot_DXCoil_Sens": {
+            "output_variable_or_output_meter_index_key_name": "Main Cooling Coil 1",
+            "output_variable_or_output_meter_name": "Cooling Coil Sensible Cooling Rate"
+        },
+        "Tout_SupplyFan": {
+            "output_variable_or_output_meter_index_key_name": "Supply Outlet Node",
+            "output_variable_or_output_meter_name": "System Node Temperature"
+        },
+        "Wout_SupplyFan": {
+            "output_variable_or_output_meter_index_key_name": "Supply Outlet Node",
+            "output_variable_or_output_meter_name": "System Node Humidity Ratio"
+        },
+        "whole_building_power": {
+            "output_variable_or_output_meter_index_key_name": "Whole Building",
+            "output_variable_or_output_meter_name": "Facility Total Electricity Demand Rate"
+        }
+    },
+    "Fan:VariableVolume": {
+        "EC Plug Fan 1": {
+            "air_inlet_node_name": "Main Cooling Coil 1 Outlet Node",
+            "air_outlet_node_name": "Supply Outlet Node",
+            "availability_schedule_name": "System Availability Schedule",
+            "fan_power_coefficient_1": 0.06990146,
+            "fan_power_coefficient_2": 1.39500612,
+            "fan_power_coefficient_3": -3.35487336,
+            "fan_power_coefficient_4": 2.89232315,
+            "fan_power_coefficient_5": 0.0,
+            "fan_power_minimum_flow_fraction": 0.05,
+            "fan_power_minimum_flow_rate_input_method": "Fraction",
+            "fan_total_efficiency": 0.7,
+            "maximum_flow_rate": 8.5,
+            "motor_efficiency": 0.9,
+            "motor_in_airstream_fraction": 1.0,
+            "pressure_rise": 486.0
+        }
+    },
+    "GlobalGeometryRules": {
+        "GlobalGeometryRules 1": {
+            "coordinate_system": "World",
+            "starting_vertex_position": "UpperLeftCorner",
+            "vertex_entry_direction": "Counterclockwise"
+        }
+    },
+    "HeatBalanceAlgorithm": {
+        "HeatBalanceAlgorithm 1": {
+            "algorithm": "ConductionTransferFunction"
+        }
+    },
+    "Material": {
+        "C5 - 4 IN HW CONCRETE": {
+            "conductivity": 1.729577,
+            "density": 2242.585,
+            "roughness": "MediumRough",
+            "solar_absorptance": 0.65,
+            "specific_heat": 836.8,
+            "thermal_absorptance": 0.9,
+            "thickness": 0.1014984,
+            "visible_absorptance": 0.65
+        }
+    },
+    "Material:NoMass": {
+        "R13LAYER": {
+            "roughness": "Rough",
+            "solar_absorptance": 0.75,
+            "thermal_absorptance": 0.9,
+            "thermal_resistance": 2.290965,
+            "visible_absorptance": 0.75
+        },
+        "R31LAYER": {
+            "roughness": "Rough",
+            "solar_absorptance": 0.75,
+            "thermal_absorptance": 0.9,
+            "thermal_resistance": 5.456,
+            "visible_absorptance": 0.75
+        }
+    },
+    "Output:Constructions": {
+        "Output:Constructions 1": {
+            "details_type_1": "Constructions"
+        }
+    },
+    "Output:EnergyManagementSystem": {
+        "Output:EnergyManagementSystem 1": {
+            "actuator_availability_dictionary_reporting": "Verbose",
+            "ems_runtime_language_debug_output_level": "Verbose",
+            "internal_variable_availability_dictionary_reporting": "Verbose"
+        }
+    },
+    "Output:Meter:MeterFileOnly": {
+        "Output:Meter:MeterFileOnly 1": {
+            "key_name": "Electricity:Facility",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter:MeterFileOnly 2": {
+            "key_name": "Electricity:HVAC",
+            "reporting_frequency": "Monthly"
+        },
+        "Output:Meter:MeterFileOnly 3": {
+            "key_name": "Electricity:Facility",
+            "reporting_frequency": "RunPeriod"
+        },
+        "Output:Meter:MeterFileOnly 4": {
+            "key_name": "Electricity:HVAC",
+            "reporting_frequency": "RunPeriod"
+        }
+    },
+    "Output:SQLite": {
+        "Output:SQLite 1": {
+            "option_type": "Simple"
+        }
+    },
+    "Output:Surfaces:Drawing": {
+        "Output:Surfaces:Drawing 1": {
+            "report_type": "DXF"
+        }
+    },
+    "Output:Table:SummaryReports": {
+        "Output:Table:SummaryReports 1": {
+            "reports": [
+                {
+                    "report_name": "AllSummary"
+                }
+            ]
+        }
+    },
+    "Output:Variable": {
+        "Output:Variable 1": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Site Outdoor Air Drybulb Temperature"
+        },
+        "Output:Variable 2": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Site Outdoor Air Wetbulb Temperature"
+        },
+        "Output:Variable 3": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Site Outdoor Air Humidity Ratio"
+        },
+        "Output:Variable 4": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Site Outdoor Air Relative Humidity"
+        },
+        "Output:Variable 5": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Mean Air Temperature"
+        },
+        "Output:Variable 6": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Baseboard Electricity Rate"
+        },
+        "Output:Variable 7": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Performance Curve Input Variable 1 Value"
+        },
+        "Output:Variable 8": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Performance Curve Input Variable 2 Value"
+        },
+        "Output:Variable 9": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Performance Curve Output Value"
+        },
+        "Output:Variable 10": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Temperature"
+        },
+        "Output:Variable 11": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Mass Flow Rate"
+        },
+        "Output:Variable 12": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Setpoint Temperature"
+        },
+        "Output:Variable 13": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Standard Density Volume Flow Rate"
+        },
+        "Output:Variable 14": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Humidity Ratio"
+        },
+        "Output:Variable 15": {
+            "key_value": "Supply Inlet Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Dewpoint Temperature"
+        },
+        "Output:Variable 16": {
+            "key_value": "Main Cooling Coil 1 Outlet Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Dewpoint Temperature"
+        },
+        "Output:Variable 17": {
+            "key_value": "Supply Inlet Node",
+            "reporting_frequency": "Hourly",
+            "variable_name": "System Node Relative Humidity"
+        },
+        "Output:Variable 18": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Predicted Sensible Load to Cooling Setpoint Heat Transfer Rate"
+        },
+        "Output:Variable 19": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Cooling Coil Total Cooling Rate"
+        },
+        "Output:Variable 20": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Cooling Coil Sensible Cooling Rate"
+        },
+        "Output:Variable 21": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Cooling Coil Latent Cooling Rate"
+        },
+        "Output:Variable 22": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Cooling Coil Electricity Rate"
+        },
+        "Output:Variable 23": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Cooling Coil Runtime Fraction"
+        },
+        "Output:Variable 24": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Coil System Part Load Ratio"
+        },
+        "Output:Variable 25": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Coil System Frost Control Status"
+        },
+        "Output:Variable 26": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Facility Total Building Electricity Demand Rate"
+        },
+        "Output:Variable 27": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Facility Total HVAC Electricity Demand Rate"
+        },
+        "Output:Variable 28": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Facility Total Electricity Demand Rate"
+        },
+        "Output:Variable 29": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Site Outdoor Air Drybulb Temperature"
+        },
+        "Output:Variable 30": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Site Outdoor Air Dewpoint Temperature"
+        },
+        "Output:Variable 31": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Site Outdoor Air Wetbulb Temperature"
+        },
+        "Output:Variable 32": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Fan Electricity Rate"
+        },
+        "Output:Variable 33": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Fan Rise in Air Temperature"
+        },
+        "Output:Variable 34": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Schedule Value"
+        },
+        "Output:Variable 35": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE CPU Electricity Rate"
+        },
+        "Output:Variable 36": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Fan Electricity Rate"
+        },
+        "Output:Variable 37": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE UPS Electricity Rate"
+        },
+        "Output:Variable 38": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE CPU Electricity Rate at Design Inlet Conditions"
+        },
+        "Output:Variable 39": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Fan Electricity Rate at Design Inlet Conditions"
+        },
+        "Output:Variable 40": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE UPS Heat Gain to Zone Rate"
+        },
+        "Output:Variable 41": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Total Heat Gain to Zone Rate"
+        },
+        "Output:Variable 42": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Standard Density Air Volume Flow Rate"
+        },
+        "Output:Variable 43": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Mass Flow Rate"
+        },
+        "Output:Variable 44": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dry-Bulb Temperature"
+        },
+        "Output:Variable 45": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dewpoint Temperature"
+        },
+        "Output:Variable 46": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Relative Humidity"
+        },
+        "Output:Variable 47": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Outlet Dry-Bulb Temperature"
+        },
+        "Output:Variable 48": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Supply Heat Index"
+        },
+        "Output:Variable 49": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Operating Range Exceeded Time"
+        },
+        "Output:Variable 50": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dry-Bulb Temperature Above Operating Range Time"
+        },
+        "Output:Variable 51": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dry-Bulb Temperature Below Operating Range Time"
+        },
+        "Output:Variable 52": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dewpoint Temperature Above Operating Range Time"
+        },
+        "Output:Variable 53": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dewpoint Temperature Below Operating Range Time"
+        },
+        "Output:Variable 54": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Relative Humidity Above Operating Range Time"
+        },
+        "Output:Variable 55": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Relative Humidity Below Operating Range Time"
+        },
+        "Output:Variable 56": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dry-Bulb Temperature Difference Above Operating Range"
+        },
+        "Output:Variable 57": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dry-Bulb Temperature Difference Below Operating Range"
+        },
+        "Output:Variable 58": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dewpoint Temperature Difference Above Operating Range"
+        },
+        "Output:Variable 59": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Dewpoint Temperature Difference Below Operating Range"
+        },
+        "Output:Variable 60": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Relative Humidity Difference Above Operating Range"
+        },
+        "Output:Variable 61": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "ITE Air Inlet Relative Humidity Difference Below Operating Range"
+        },
+        "Output:Variable 62": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone ITE Adjusted Return Air Temperature"
+        },
+        "Output:Variable 63": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air Temperature"
+        },
+        "Output:Variable 64": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air Heat Balance Internal Convective Heat Gain Rate"
+        },
+        "Output:Variable 65": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air Heat Balance Surface Convection Rate"
+        },
+        "Output:Variable 66": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air Heat Balance Interzone Air Transfer Rate"
+        },
+        "Output:Variable 67": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air Heat Balance Outdoor Air Transfer Rate"
+        },
+        "Output:Variable 68": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air Heat Balance System Air Transfer Rate"
+        },
+        "Output:Variable 69": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air Heat Balance System Convective Heat Gain Rate"
+        },
+        "Output:Variable 70": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "Zone Air Heat Balance Air Energy Storage Rate"
+        },
+        "Output:Variable 71": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "CRAC SCOP"
+        },
+        "Output:Variable 72": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "CRAC total system Power"
+        },
+        "Output:Variable 73": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "CRAC Net Sensible Capacity"
+        },
+        "Output:Variable 74": {
+            "key_value": "*",
+            "reporting_frequency": "Hourly",
+            "variable_name": "PUE"
+        }
+    },
+    "Output:VariableDictionary": {
+        "Output:VariableDictionary 1": {
+            "key_field": "IDF"
+        }
+    },
+    "OutputControl:Table:Style": {
+        "OutputControl:Table:Style 1": {
+            "column_separator": "HTML"
+        }
+    },
+    "RunPeriod": {
+        "RUNPERIOD 1": {
+            "apply_weekend_holiday_rule": "No",
+            "begin_day_of_month": 1,
+            "begin_month": 1,
+            "begin_year": 1991,
+            "day_of_week_for_start_day": "Tuesday",
+            "end_day_of_month": 31,
+            "end_month": 12,
+            "end_year": 1991,
+            "use_weather_file_daylight_saving_period": "Yes",
+            "use_weather_file_holidays_and_special_days": "Yes",
+            "use_weather_file_rain_indicators": "Yes",
+            "use_weather_file_snow_indicators": "Yes"
+        }
+    },
+    "Schedule:Compact": {
+        "Cooling Return Air Setpoint Schedule": {
+            "data": [
+                {
+                    "field": "Through: 12/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 29.3
+                }
+            ],
+            "schedule_type_limits_name": "Any Number"
+        },
+        "Data Center CPU Loading Schedule": {
+            "data": [
+                {
+                    "field": "Through: 1/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 1.0
+                },
+                {
+                    "field": "Through: 2/29"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.5
+                },
+                {
+                    "field": "Through: 3/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.75
+                },
+                {
+                    "field": "Through: 4/30"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 1.0
+                },
+                {
+                    "field": "Through: 5/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.25
+                },
+                {
+                    "field": "Through: 6/30"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.5
+                },
+                {
+                    "field": "Through: 7/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.1
+                },
+                {
+                    "field": "Through: 8/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 1.0
+                },
+                {
+                    "field": "Through: 9/30"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.25
+                },
+                {
+                    "field": "Through: 10/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.5
+                },
+                {
+                    "field": "Through: 11/30"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 0.75
+                },
+                {
+                    "field": "Through: 12/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 1.0
+                }
+            ],
+            "schedule_type_limits_name": "Any Number"
+        },
+        "Heating Setpoint Schedule": {
+            "data": [
+                {
+                    "field": "Through: 12/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 15.0
+                }
+            ],
+            "schedule_type_limits_name": "Any Number"
+        },
+        "Supply Air Setpoint Schedule": {
+            "data": [
+                {
+                    "field": "Through: 12/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 10.0
+                }
+            ],
+            "schedule_type_limits_name": "Any Number"
+        },
+        "System Availability Schedule": {
+            "data": [
+                {
+                    "field": "THROUGH: 12/31"
+                },
+                {
+                    "field": "FOR: AllDays"
+                },
+                {
+                    "field": "UNTIL: 24:00"
+                },
+                {
+                    "field": 1
+                }
+            ],
+            "schedule_type_limits_name": "Any Number"
+        },
+        "Zone Control Type Sched": {
+            "data": [
+                {
+                    "field": "Through: 12/31"
+                },
+                {
+                    "field": "For: AllDays"
+                },
+                {
+                    "field": "Until: 24:00"
+                },
+                {
+                    "field": 4
+                }
+            ],
+            "schedule_type_limits_name": "Any Number"
+        }
+    },
+    "Schedule:Constant": {
+        "Data Center Operation Schedule": {
+            "hourly_value": 1.0,
+            "schedule_type_limits_name": "Any Number"
+        }
+    },
+    "ScheduleTypeLimits": {
+        "Any Number": {},
+        "Fraction": {
+            "lower_limit_value": 0.0,
+            "numeric_type": "Continuous",
+            "upper_limit_value": 1.0
+        }
+    },
+    "SetpointManager:MixedAir": {
+        "Coil Exit Temp Manager 1": {
+            "control_variable": "Temperature",
+            "fan_inlet_node_name": "Main Cooling Coil 1 Outlet Node",
+            "fan_outlet_node_name": "Supply Outlet Node",
+            "reference_setpoint_node_name": "Supply Outlet Node",
+            "setpoint_node_or_nodelist_name": "Main Cooling Coil 1 Outlet Node"
+        }
+    },
+    "SetpointManager:Warmest": {
+        "Supply air control": {
+            "control_variable": "Temperature",
+            "hvac_air_loop_name": "CRAC system",
+            "maximum_setpoint_temperature": 25.0,
+            "minimum_setpoint_temperature": 10.0,
+            "setpoint_node_or_nodelist_name": "Supply Outlet Node",
+            "strategy": "MaximumTemperature"
+        }
+    },
+    "SimulationControl": {
+        "SimulationControl 1": {
+            "do_hvac_sizing_simulation_for_sizing_periods": "No",
+            "do_plant_sizing_calculation": "No",
+            "do_system_sizing_calculation": "Yes",
+            "do_zone_sizing_calculation": "Yes",
+            "maximum_number_of_hvac_sizing_simulation_passes": 1,
+            "run_simulation_for_sizing_periods": "No",
+            "run_simulation_for_weather_file_run_periods": "Yes"
+        }
+    },
+    "Site:GroundTemperature:BuildingSurface": {
+        "Site:GroundTemperature:BuildingSurface 1": {
+            "april_ground_temperature": 19.12,
+            "august_ground_temperature": 19.32,
+            "december_ground_temperature": 18.96,
+            "february_ground_temperature": 18.92,
+            "january_ground_temperature": 18.89,
+            "july_ground_temperature": 19.07,
+            "june_ground_temperature": 19.23,
+            "march_ground_temperature": 19.02,
+            "may_ground_temperature": 19.21,
+            "november_ground_temperature": 19.13,
+            "october_ground_temperature": 19.21,
+            "september_ground_temperature": 19.09
+        }
+    },
+    "Site:Location": {
+        "Denver Centennial CO USA WMO=724666": {
+            "elevation": 1793.0,
+            "latitude": 39.74,
+            "longitude": -105.18,
+            "time_zone": -7.0
+        }
+    },
+    "SizingPeriod:DesignDay": {
+        "Denver Centennial Ann Clg 1% Condns DB=>MWB": {
+            "barometric_pressure": 81560.0,
+            "daily_dry_bulb_temperature_range": 15.2,
+            "day_of_month": 21,
+            "day_type": "SummerDesignDay",
+            "daylight_saving_time_indicator": "No",
+            "humidity_condition_type": "WetBulb",
+            "maximum_dry_bulb_temperature": 32,
+            "month": 7,
+            "rain_indicator": "No",
+            "sky_clearness": 1.0,
+            "snow_indicator": "No",
+            "solar_model_indicator": "ASHRAEClearSky",
+            "wetbulb_or_dewpoint_at_maximum_dry_bulb": 15.5,
+            "wind_direction": 0,
+            "wind_speed": 4.9
+        },
+        "Denver Centennial Ann Htg 99.6% Condns DB": {
+            "barometric_pressure": 81560.0,
+            "daily_dry_bulb_temperature_range": 0.0,
+            "day_of_month": 21,
+            "day_type": "WinterDesignDay",
+            "daylight_saving_time_indicator": "No",
+            "humidity_condition_type": "WetBulb",
+            "maximum_dry_bulb_temperature": -18.8,
+            "month": 12,
+            "rain_indicator": "No",
+            "sky_clearness": 0.0,
+            "snow_indicator": "No",
+            "solar_model_indicator": "ASHRAEClearSky",
+            "wetbulb_or_dewpoint_at_maximum_dry_bulb": -18.8,
+            "wind_direction": 340,
+            "wind_speed": 3
+        }
+    },
+    "SurfaceConvectionAlgorithm:Inside": {
+        "SurfaceConvectionAlgorithm:Inside 1": {
+            "algorithm": "TARP"
+        }
+    },
+    "SurfaceConvectionAlgorithm:Outside": {
+        "SurfaceConvectionAlgorithm:Outside 1": {
+            "algorithm": "DOE-2"
+        }
+    },
+    "Table:IndependentVariable": {
+        "Cool Cap Mod func of Temperature_IndependentVariable1": {
+            "extrapolation_method": "Constant",
+            "interpolation_method": "Linear",
+            "maximum_value": 23.89,
+            "minimum_value": 13.0,
+            "unit_type": "Temperature",
+            "values": [
+                {
+                    "value": 13.0
+                },
+                {
+                    "value": 17.0
+                },
+                {
+                    "value": 19.4444
+                },
+                {
+                    "value": 21.0
+                },
+                {
+                    "value": 23.9
+                }
+            ]
+        },
+        "Cool Cap Mod func of Temperature_IndependentVariable2": {
+            "extrapolation_method": "Constant",
+            "interpolation_method": "Linear",
+            "maximum_value": 46.0,
+            "minimum_value": -10.0,
+            "unit_type": "Temperature",
+            "values": [
+                {
+                    "value": -10.0
+                },
+                {
+                    "value": 15.0
+                },
+                {
+                    "value": 18.0
+                },
+                {
+                    "value": 24.0
+                },
+                {
+                    "value": 30.0
+                },
+                {
+                    "value": 35.0
+                },
+                {
+                    "value": 38.0
+                },
+                {
+                    "value": 46.0
+                }
+            ]
+        },
+        "Liebert Econophase EIR Func T_IndependentVariable1": {
+            "extrapolation_method": "Constant",
+            "interpolation_method": "Linear",
+            "maximum_value": 23.8,
+            "minimum_value": 12.7,
+            "unit_type": "Temperature",
+            "values": [
+                {
+                    "value": 12.7
+                },
+                {
+                    "value": 23.8
+                }
+            ]
+        },
+        "Liebert Econophase EIR Func T_IndependentVariable2": {
+            "extrapolation_method": "Constant",
+            "interpolation_method": "Linear",
+            "maximum_value": 50,
+            "minimum_value": -50,
+            "unit_type": "Temperature",
+            "values": [
+                {
+                    "value": -50.0
+                },
+                {
+                    "value": -4.0
+                },
+                {
+                    "value": -1.2222
+                },
+                {
+                    "value": 1.5555
+                },
+                {
+                    "value": 4.3333
+                },
+                {
+                    "value": 7.1111
+                },
+                {
+                    "value": 9.8888
+                },
+                {
+                    "value": 12.6667
+                },
+                {
+                    "value": 15.4444
+                },
+                {
+                    "value": 18.222
+                },
+                {
+                    "value": 21.0
+                },
+                {
+                    "value": 23.77778
+                },
+                {
+                    "value": 26.55556
+                },
+                {
+                    "value": 29.33333
+                },
+                {
+                    "value": 32.11111
+                },
+                {
+                    "value": 34.88889
+                },
+                {
+                    "value": 50.0
+                }
+            ]
+        }
+    },
+    "Table:IndependentVariableList": {
+        "Cool Cap Mod func of Temperature_IndependentVariableList": {
+            "independent_variables": [
+                {
+                    "independent_variable_name": "Cool Cap Mod func of Temperature_IndependentVariable1"
+                },
+                {
+                    "independent_variable_name": "Cool Cap Mod func of Temperature_IndependentVariable2"
+                }
+            ]
+        },
+        "Liebert Econophase EIR Func T_IndependentVariableList": {
+            "independent_variables": [
+                {
+                    "independent_variable_name": "Liebert Econophase EIR Func T_IndependentVariable1"
+                },
+                {
+                    "independent_variable_name": "Liebert Econophase EIR Func T_IndependentVariable2"
+                }
+            ]
+        }
+    },
+    "Table:Lookup": {
+        "Cool Cap Mod func of Temperature": {
+            "independent_variable_list_name": "Cool Cap Mod func of Temperature_IndependentVariableList",
+            "output_unit_type": "Dimensionless",
+            "values": [
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 0.924738271
+                },
+                {
+                    "output_value": 0.883909339
+                },
+                {
+                    "output_value": 0.835522309
+                },
+                {
+                    "output_value": 0.800222635
+                },
+                {
+                    "output_value": 0.683109499
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 0.976933863
+                },
+                {
+                    "output_value": 0.937696593
+                },
+                {
+                    "output_value": 0.907886775
+                },
+                {
+                    "output_value": 0.805413255
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 0.9718
+                },
+                {
+                    "output_value": 0.8782
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0385
+                },
+                {
+                    "output_value": 1.0142
+                },
+                {
+                    "output_value": 0.9264
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.110828252
+                },
+                {
+                    "output_value": 1.090488436
+                },
+                {
+                    "output_value": 1.013268253
+                }
+            ]
+        },
+        "Liebert Econophase EIR Func T": {
+            "independent_variable_list_name": "Liebert Econophase EIR Func T_IndependentVariableList",
+            "maximum_output": 1.5,
+            "minimum_output": 0.03,
+            "output_unit_type": "Dimensionless",
+            "values": [
+                {
+                    "output_value": 0.042
+                },
+                {
+                    "output_value": 0.042
+                },
+                {
+                    "output_value": 0.084
+                },
+                {
+                    "output_value": 0.084
+                },
+                {
+                    "output_value": 0.2269
+                },
+                {
+                    "output_value": 0.2395
+                },
+                {
+                    "output_value": 0.311
+                },
+                {
+                    "output_value": 0.3697
+                },
+                {
+                    "output_value": 0.4454
+                },
+                {
+                    "output_value": 0.5462
+                },
+                {
+                    "output_value": 0.6723
+                },
+                {
+                    "output_value": 0.7227
+                },
+                {
+                    "output_value": 0.7773
+                },
+                {
+                    "output_value": 0.8193
+                },
+                {
+                    "output_value": 0.895
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.5
+                },
+                {
+                    "output_value": 0.042
+                },
+                {
+                    "output_value": 0.042
+                },
+                {
+                    "output_value": 0.084
+                },
+                {
+                    "output_value": 0.084
+                },
+                {
+                    "output_value": 0.2269
+                },
+                {
+                    "output_value": 0.2395
+                },
+                {
+                    "output_value": 0.311
+                },
+                {
+                    "output_value": 0.3697
+                },
+                {
+                    "output_value": 0.4454
+                },
+                {
+                    "output_value": 0.5462
+                },
+                {
+                    "output_value": 0.6723
+                },
+                {
+                    "output_value": 0.7227
+                },
+                {
+                    "output_value": 0.7773
+                },
+                {
+                    "output_value": 0.8193
+                },
+                {
+                    "output_value": 0.895
+                },
+                {
+                    "output_value": 1.0
+                },
+                {
+                    "output_value": 1.5
+                }
+            ]
+        }
+    },
+    "ThermostatSetpoint:DualSetpoint": {
+        "DualSetPoint": {
+            "cooling_setpoint_temperature_schedule_name": "Cooling Return Air Setpoint Schedule",
+            "heating_setpoint_temperature_schedule_name": "Heating Setpoint Schedule"
+        }
+    },
+    "Timestep": {
+        "Timestep 1": {
+            "number_of_timesteps_per_hour": 6
+        }
+    },
+    "Version": {
+        "Version 1": {
+            "version_identifier": "23.2"
+        }
+    },
+    "Zone": {
+        "Main Zone": {
+            "ceiling_height": "Autocalculate",
+            "direction_of_relative_north": 0,
+            "multiplier": 1,
+            "type": 1,
+            "volume": "Autocalculate",
+            "x_origin": 0,
+            "y_origin": 0,
+            "z_origin": 0
+        }
+    },
+    "ZoneControl:Thermostat": {
+        "Main Zone Thermostat": {
+            "control_1_name": "DualSetPoint",
+            "control_1_object_type": "ThermostatSetpoint:DualSetpoint",
+            "control_type_schedule_name": "Zone Control Type Sched",
+            "zone_or_zonelist_name": "Main Zone"
+        }
+    },
+    "ZoneHVAC:AirDistributionUnit": {
+        "Main Zone ATU": {
+            "air_distribution_unit_outlet_node_name": "Main Zone Inlet Node",
+            "air_terminal_name": "Main Zone VAV Air",
+            "air_terminal_object_type": "AirTerminal:SingleDuct:VAV:NoReheat"
+        }
+    },
+    "ZoneHVAC:Baseboard:Convective:Electric": {
+        "Main Zone Baseboard": {
+            "availability_schedule_name": "System Availability Schedule",
+            "efficiency": 0.97,
+            "heating_design_capacity": 8000,
+            "heating_design_capacity_method": "HeatingDesignCapacity"
+        }
+    },
+    "ZoneHVAC:EquipmentConnections": {
+        "ZoneHVAC:EquipmentConnections 1": {
+            "zone_air_inlet_node_or_nodelist_name": "Main Zone Inlet Node",
+            "zone_air_node_name": "Main Zone Node",
+            "zone_conditioning_equipment_list_name": "Main Zone Equipment",
+            "zone_name": "Main Zone",
+            "zone_return_air_node_or_nodelist_name": "Main Zone Outlet Node"
+        }
+    },
+    "ZoneHVAC:EquipmentList": {
+        "Main Zone Equipment": {
+            "equipment": [
+                {
+                    "zone_equipment_cooling_sequence": 1,
+                    "zone_equipment_heating_or_no_load_sequence": 2,
+                    "zone_equipment_name": "Main Zone ATU",
+                    "zone_equipment_object_type": "ZoneHVAC:AirDistributionUnit"
+                },
+                {
+                    "zone_equipment_cooling_sequence": 2,
+                    "zone_equipment_heating_or_no_load_sequence": 1,
+                    "zone_equipment_name": "Main Zone Baseboard",
+                    "zone_equipment_object_type": "ZoneHVAC:Baseboard:Convective:Electric"
+                }
+            ],
+            "load_distribution_scheme": "SequentialLoad"
+        }
+    }
+}
