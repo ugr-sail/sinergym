@@ -73,18 +73,42 @@ output doesn't match with original environment action space, an error will be ra
   :align: center
 
 ***************************
+IncrementalWrapper
+***************************
+
+A wrapper to transform some of the continuous environment variables into actions indicating an increase/decrease in their current value, 
+rather than directly setting the value. To compute the possible increments/decrements for each variable, a dictionary is specified as 
+an argument, indicating the name of each variable to be transformed as the key, and the value being a tuple of values called **delta** and 
+**step**. This achieves a set of possible increments for each desired variable.
+
+- **delta**: Maximum range of increments and decrements.
+
+- **step**: Interval of intermediate values within the ranges.
+
+The following figure illustrates its operation, basically the values are rounded with nearest increment value and summed with
+current real values of simulation:
+
+.. image:: /_static/incremental_wrapper.png
+  :scale: 50 %
+  :alt: Incremental wrapper graph.
+  :align: center
+
+***************************
 DiscreteIncrementalWrapper
 ***************************
 
 A wrapper for an incremental setpoint action space environment. This wrapper
 will update an environment, converting it in a *discrete* environment with an action mapping function and action space 
-depending on the **step** and **delta** specified. The action will be sum with **current setpoint** values instead of overwrite the latest action. 
+depending on the **delta** and **step** specified. The action will be sum with **current setpoint** values instead of overwrite the latest action. 
 Then, the action is the current setpoint values with the increase instead of the discrete value action whose purpose is to define 
-the increment/decrement itself. 
+the increment/decrement itself.
 
-.. image:: /_static/incremental_wrapper.png
+.. warning:: "This wrapper fully changes the action space from continuous to discrete, meaning that increments/decrements 
+             apply to all variables. In essence, selecting variables individually as in IncrementalWrapper is not possible."
+
+.. image:: /_static/discrete_incremental_wrapper.png
   :scale: 50 %
-  :alt: Incremental wrapper graph.
+  :alt: Discrete incremental wrapper graph.
   :align: center
 
 ***********************
