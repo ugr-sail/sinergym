@@ -461,7 +461,7 @@ To add new buildings for use with *Sinergym*, follow these steps:
 
    The challenge lies in knowing the names but not the possible *Keys* (EnergyPlus does not initially provide this information). 
    These names can be used to define the environment (see step 3). If the *Key* is incorrect, *Sinergym* will notify of the 
-   error and provide a file called **data_available.txt** in the aoutput, since it has already connected with the EnergyPlus API. This file will 
+   error and provide a file called **data_available.txt** in the output, since it has already connected with the EnergyPlus API. This file will 
    contain all the **controllable schedulers** for the actions and all the **observable variables**, this time with their respective *Keys*, 
    enabling the correct definition of the environment.
 

@@ -67,10 +67,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#datetimewrapper">9.3. DatetimeWrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#normalizeaction">9.4. NormalizeAction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#discretizeenv">9.5. DiscretizeEnv</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#discreteincrementalwrapper">9.6. DiscreteIncrementalWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#normalizeobservation">9.7. NormalizeObservation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#loggerwrapper">9.8. LoggerWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#multiobswrapper">9.9. MultiObsWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#incrementalwrapper">9.6. IncrementalWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#discreteincrementalwrapper">9.7. DiscreteIncrementalWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#normalizeobservation">9.8. NormalizeObservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loggerwrapper">9.9. LoggerWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiobswrapper">9.10. MultiObsWrapper</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">10. Extra Configuration in Sinergym simulations</a></li>
@@ -174,28 +175,47 @@ are considered in the original environment action space.</p>
 output doesn’t match with original environment action space, an error will be raised. See <a class="reference internal" href="notebooks/wrappers_examples.html#Environment-Discretization-Wrapper"><span class="std std-ref">Environment Discretization Wrapper</span></a> for an example of use.</p>
 <a class="reference internal image-reference" href="../_images/discretize_wrapper.png"><img alt="Discretize wrapper graph." class="align-center" src="../_images/discretize_wrapper.png" style="width: 800.0px; height: 512.0px;" /></a>
 </section>
+<section id="incrementalwrapper">
+<h2><span class="section-number">9.6. </span>IncrementalWrapper<a class="headerlink" href="#incrementalwrapper" title="Link to this heading"></a></h2>
+<p>A wrapper to transform some of the continuous environment variables into actions indicating an increase/decrease in their current value,
+rather than directly setting the value. To compute the possible increments/decrements for each variable, a dictionary is specified as
+an argument, indicating the name of each variable to be transformed as the key, and the value being a tuple of values called <strong>delta</strong> and
+<strong>step</strong>. This achieves a set of possible increments for each desired variable.</p>
+<ul class="simple">
+<li><p><strong>delta</strong>: Maximum range of increments and decrements.</p></li>
+<li><p><strong>step</strong>: Interval of intermediate values within the ranges.</p></li>
+</ul>
+<p>The following figure illustrates its operation, basically the values are rounded with nearest increment value and summed with
+current real values of simulation:</p>
+<a class="reference internal image-reference" href="../_images/incremental_wrapper.png"><img alt="Incremental wrapper graph." class="align-center" src="../_images/incremental_wrapper.png" style="width: 991.0px; height: 941.0px;" /></a>
+</section>
 <section id="discreteincrementalwrapper">
-<h2><span class="section-number">9.6. </span>DiscreteIncrementalWrapper<a class="headerlink" href="#discreteincrementalwrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">9.7. </span>DiscreteIncrementalWrapper<a class="headerlink" href="#discreteincrementalwrapper" title="Link to this heading"></a></h2>
 <p>A wrapper for an incremental setpoint action space environment. This wrapper
 will update an environment, converting it in a <em>discrete</em> environment with an action mapping function and action space
-depending on the <strong>step</strong> and <strong>delta</strong> specified. The action will be sum with <strong>current setpoint</strong> values instead of overwrite the latest action.
+depending on the <strong>delta</strong> and <strong>step</strong> specified. The action will be sum with <strong>current setpoint</strong> values instead of overwrite the latest action.
 Then, the action is the current setpoint values with the increase instead of the discrete value action whose purpose is to define
 the increment/decrement itself.</p>
-<a class="reference internal image-reference" href="../_images/incremental_wrapper.png"><img alt="Incremental wrapper graph." class="align-center" src="../_images/incremental_wrapper.png" style="width: 850.0px; height: 570.0px;" /></a>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>“This wrapper fully changes the action space from continuous to discrete, meaning that increments/decrements
+apply to all variables. In essence, selecting variables individually as in IncrementalWrapper is not possible.”</p>
+</div>
+<a class="reference internal image-reference" href="../_images/discrete_incremental_wrapper.png"><img alt="Discrete incremental wrapper graph." class="align-center" src="../_images/discrete_incremental_wrapper.png" style="width: 850.0px; height: 570.0px;" /></a>
 </section>
 <section id="normalizeobservation">
-<h2><span class="section-number">9.7. </span>NormalizeObservation<a class="headerlink" href="#normalizeobservation" title="Link to this heading"></a></h2>
+<h2><span class="section-number">9.8. </span>NormalizeObservation<a class="headerlink" href="#normalizeobservation" title="Link to this heading"></a></h2>
 <p>It is used to transform observation received from simulator in values between -1 and 1.
 It is based in the <a class="reference external" href="https://gymnasium.farama.org/_modules/gymnasium/wrappers/normalize/#NormalizeObservation">dynamic normalization wrapper of Gymnasium</a>. At the beginning,
 it is not precise and the values may be out of range usually, so use this wrapper carefully.</p>
 </section>
 <section id="loggerwrapper">
-<h2><span class="section-number">9.8. </span>LoggerWrapper<a class="headerlink" href="#loggerwrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">9.9. </span>LoggerWrapper<a class="headerlink" href="#loggerwrapper" title="Link to this heading"></a></h2>
 <p>Wrapper for logging all interactions between agent and environment. Logger class can be selected
 in the constructor if other type of logging is required. For more information about <em>Sinergym</em> Logger visit <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>.</p>
 </section>
 <section id="multiobswrapper">
-<h2><span class="section-number">9.9. </span>MultiObsWrapper<a class="headerlink" href="#multiobswrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">9.10. </span>MultiObsWrapper<a class="headerlink" href="#multiobswrapper" title="Link to this heading"></a></h2>
 <p>Stack observation received in a history queue (size can be customized).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
