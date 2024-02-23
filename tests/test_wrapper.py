@@ -111,11 +111,32 @@ def test_previous_observation_wrapper(env_name, request):
         original_obs1, obs2[-len(env.previous_variables):])
 
 
+def test_incremental_wrapper(env_wrapper_incremental):
+
+    # Check initial values are initialized
+    assert hasattr(env_wrapper_incremental, 'values_definition')
+    assert len(env_wrapper_incremental.get_wrapper_attr('current_values')) == 2
+
+    old_values = env_wrapper_incremental.get_wrapper_attr(
+        'current_values').copy()
+    # Check if action selected is applied correctly
+    env_wrapper_incremental.reset()
+    action = [-0.42, 0.3]
+    rounded_action = [-0.5, 0.25]
+    _, _, _, _, info = env_wrapper_incremental.step(action)
+    assert env_wrapper_incremental.get_wrapper_attr(
+        'current_values') == [old_values[i] + rounded_action[i] for i in range(len(old_values))]
+    for i, (index, values) in enumerate(
+            env_wrapper_incremental.get_wrapper_attr('values_definition').items()):
+        assert env_wrapper_incremental.get_wrapper_attr(
+            'current_values')[i] == info['action'][index]
+
+
 @pytest.mark.parametrize('env_name',
-                         [('env_wrapper_incremental'),
+                         [('env_discrete_wrapper_incremental'),
                           ('env_all_wrappers'),
                           ])
-def test_incremental_wrapper(env_name, request):
+def test_discrete_incremental_wrapper(env_name, request):
 
     env = request.getfixturevalue(env_name)
     # Check initial setpoints values is initialized
