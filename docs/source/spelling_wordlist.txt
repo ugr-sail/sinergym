@@ -10,6 +10,7 @@ async
 atari
 attr
 auth
+AUTOBALANCE
 avconv
 backend
 backpropagate
@@ -24,10 +25,12 @@ cartpole
 cfg
 Cloudpickle
 cnn
+Cº
 coef
 colab
 Conda
 conda
+conf
 Config
 config
 Contrib
@@ -56,6 +59,11 @@ deserialized
 dicts
 dir
 DiscreteIncrementalWrapper
+discretization
+Discretization
+discretize
+DiscretizeEnv
+discretizes
 Dockerfile
 docstring
 doesn
@@ -111,6 +119,7 @@ hyperparameter
 hyperparameters
 idd
 idf
+IncrementalWrapper
 init
 initialise
 initialize
@@ -122,6 +131,7 @@ json
 kfac
 Khee
 kwargs
+Lieber
 lifecycle
 LinearReward
 Lisboa
@@ -140,6 +150,7 @@ Mlflow
 mlflow
 mlp
 ModelJSON
+modularizing
 mon
 mujoco
 MultiObjectiveReward
@@ -154,6 +165,8 @@ ndarrays
 neglogp
 nn
 normalisation
+NormalizeAction
+NormalizedLinearReward
 NormalizeObservation
 np
 npz
@@ -198,6 +211,7 @@ RBCDatacenter
 repo
 reproducibility
 rescale
+resistive
 rl
 rollout
 rollouts
@@ -215,6 +229,7 @@ softmax
 src
 stdout
 stepsize
+stochasticity
 str
 subprocess
 subprocesses

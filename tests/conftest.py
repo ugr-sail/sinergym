@@ -439,6 +439,18 @@ def env_wrapper_previousobs(env_5zone):
 
 @pytest.fixture(scope='function')
 def env_wrapper_incremental(env_5zone):
+    return IncrementalWrapper(
+        env=env_5zone,
+        incremental_variables_definition={
+            'Heating_Setpoint_RL': (2.0, 0.5),
+            'Cooling_Setpoint_RL': (1.0, 0.25)
+        },
+        initial_values=[21.0, 25.0],
+    )
+
+
+@pytest.fixture(scope='function')
+def env_discrete_wrapper_incremental(env_5zone):
     return DiscreteIncrementalWrapper(
         env=env_5zone,
         initial_values=[21.0, 25.0],
