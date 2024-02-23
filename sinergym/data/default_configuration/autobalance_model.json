@@ -158,6 +158,14 @@
                                 "SecondFloor:Bedroom02_floor_0_0_0", 
                                 "SecondFloor:Bedroom03_floor_0_0_0"]            
         },
+        "Zone Radiant HVAC Operation Mode"                                : {
+            "variable_names" : "radiant_availavility",
+            "keys"           : ["FirstFloor:LivingRoom radiant surface", 
+                                "FirstFloor:Kitchen radiant surface", 
+                                "SecondFloor:Bedroom01 radiant surface", 
+                                "SecondFloor:Bedroom02 radiant surface", 
+                                "SecondFloor:Bedroom03 radiant surface"]           
+        },
         "Boiler NaturalGas Rate"                                          : {
             "variable_names" : "boiler_rate",
             "keys"          : "Boiler"            
@@ -165,6 +173,10 @@
         "Boiler Part Load Ratio"                                          : {
             "variable_names" : "boiler_load_ratio",
             "keys"          : "Boiler"            
+        },
+        "Boiler Outlet Temperature"                                       : {
+            "variable_names" : "boiler_temperature",
+            "keys"           : "Boiler"    
         },
         "Facility Total HVAC Electricity Demand Rate"                     : {
             "variable_names" : "HVAC_electricity_demand_rate",
@@ -211,7 +223,7 @@
 
     "action_space_discrete" : "gym.spaces.MultiDiscrete(nvec=np.array([2, 2, 2, 2, 2, 21]))",
 
-    "only_discrete": true,
+    "only_discrete": false,
 
     "reward"                : "LinearReward",
 
