@@ -22,6 +22,7 @@
       DatetimeWrapper
       DiscreteIncrementalWrapper
       DiscretizeEnv
+      IncrementalWrapper
       LoggerWrapper
       MultiObjectiveReward
       MultiObsWrapper
