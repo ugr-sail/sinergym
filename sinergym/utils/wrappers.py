@@ -519,13 +519,13 @@ class IncrementalWrapper(gym.ActionWrapper):
     def __init__(
         self,
         env: gym.Env,
-        incremental_variables_definition: Dict[str, Tuple[str, str]],
+        incremental_variables_definition: Dict[str, Tuple[float, float]],
         initial_values: List[float],
     ):
         """
         Args:
             env (gym.Env): Original Sinergym environment.
-            incremental_variables_definition (Dict[str, Tuple[str, str]]): Dictionary defining incremental variables.
+            incremental_variables_definition (Dict[str, Tuple[float, float]]): Dictionary defining incremental variables.
                                                                            Key: variable name, Value: Tuple with delta and step values.
                                                                            Delta: maximum range, Step: intermediate value jumps.
             initial_values (List[float]): Initial values for incremental variables. Length of this list and dictionary must match.
