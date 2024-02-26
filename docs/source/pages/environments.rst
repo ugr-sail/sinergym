@@ -448,8 +448,10 @@ To add new buildings for use with *Sinergym*, follow these steps:
    If you are using an *IDF* file with an older version, it is advisable to update it with **IDFVersionUpdater** and then convert 
    it to *epJSON* format using **ConvertInputFormat**. Both tools are accessible in the EnergyPlus installation folder.
 
-2. **Adjusting building objects** like ``RunPeriod`` and ``SimulationControl`` to meet user needs, 
-   as these elements define how interaction episodes will be in *Sinergym*.
+2. **Adjust building objects** such as ``RunPeriod`` and ``SimulationControl`` to suit user needs in Sinergym. 
+   We suggest setting ``run_simulation_for_sizing_periods`` to ``No`` in ``SimulationControl``. ``RunPeriod`` 
+   sets the episode length, which can be configured in the building file or Sinergym settings (see :ref:`runperiod`). 
+   These modifications can be made in the *IDF* prior to step 1 or directly in the *epJSON* file.
 
 3. We need to **identify the components** of the building that we want to observe and control, respectively. This is the most 
    challenging part of the process. Typically, the user is already familiar with the building and therefore knows the *name* 
@@ -460,7 +462,7 @@ To add new buildings for use with *Sinergym*, follow these steps:
    to identify the possible observable variables.
 
    The challenge lies in knowing the names but not the possible *Keys* (EnergyPlus does not initially provide this information). 
-   These names can be used to define the environment (see step 3). If the *Key* is incorrect, *Sinergym* will notify of the 
+   These names can be used to define the environment (see step 4). If the *Key* is incorrect, *Sinergym* will notify of the 
    error and provide a file called **data_available.txt** in the output, since it has already connected with the EnergyPlus API. This file will 
    contain all the **controllable schedulers** for the actions and all the **observable variables**, this time with their respective *Keys*, 
    enabling the correct definition of the environment.
