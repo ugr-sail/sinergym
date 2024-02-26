@@ -11,7 +11,7 @@
 			"WANDB_API_KEY": "${localEnv:WANDB_API_KEY}"
 		}
 	},
-	"dockerFile": "../Dockerfile",
+	"dockerFile": "./Dockerfile",
 	"context": "..",
 	"customizations": {
 		"vscode": {

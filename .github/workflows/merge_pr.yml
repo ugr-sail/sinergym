@@ -27,7 +27,7 @@ jobs:
         with:
           args: --exit-code --recursive --in-place --aggressive --aggressive .
       - name: Detect changes by isort
-        uses: tj-actions/verify-changed-files@v17
+        uses: tj-actions/verify-changed-files@v18
         id: verify-isort-update
         with:
           files: |
@@ -37,7 +37,7 @@ jobs:
             *.py
       - name: Commit format changes
         if: steps.autopep8.outputs.exit-code == 2 || steps.verify-isort-update.outputs.files_changed == 'true'
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Automated format fixes (autopep8 + isort)
 
@@ -55,7 +55,7 @@ jobs:
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
       - name: Verify documentation update
-        uses: dorny/paths-filter@v2
+        uses: dorny/paths-filter@v3
         id: verify-documentation-update
         with:
           filters: |
@@ -69,7 +69,7 @@ jobs:
         run: git config --global --add safe.directory /sinergym
       - name: Compile documentation
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: docker run -v ${GITHUB_WORKSPACE}/docs/compilation:/sinergym/docs/compilation -t pushmain/sinergym:latest /bin/bash -c 'sphinx-multiversion docs/source docs/compilation'
+        run: docker run -v ${GITHUB_WORKSPACE}/docs/compilation:/workspaces/sinergym/docs/compilation -t pushmain/sinergym:latest /bin/bash -c 'sphinx-multiversion docs/source docs/compilation'
       - name: Check sphinx spelling
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: docker run -t pushmain/sinergym:latest /bin/bash -c 'sphinx-build -M spelling docs/source docs/compilation'
@@ -78,7 +78,7 @@ jobs:
         run: git pull origin main
       - name: Commit and push changes if exists
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: docs/compilation/*
           commit_message: Documentation source update detected and pushed compilation build directory for Github Pages
@@ -95,9 +95,9 @@ jobs:
       - name: Create a shared folder for coverage output
         run: mkdir shared
       - name: Execute tests from container
-        run: docker run -v "/home/runner/work/sinergym/sinergym/shared:/shared" -t pushmain/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym --cov-report=xml tests/ && mv coverage.xml /shared'
+        run: docker run -v ${GITHUB_WORKSPACE}/shared:/shared -t pushmain/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym --cov-report=xml tests/ && mv coverage.xml /shared'
       - name: Upload to CodeCov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: /home/runner/work/sinergym/sinergym/shared/coverage.xml

@@ -35,27 +35,31 @@ ENV ENERGYPLUS_DOWNLOAD_BASE_URL https://github.com/NREL/EnergyPlus/releases/dow
 ENV ENERGYPLUS_DOWNLOAD_FILENAME EnergyPlus-$ENERGYPLUS_VERSION-$ENERGYPLUS_SHA-Linux-Ubuntu22.04-x86_64.sh 
 ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_FILENAME
 
-RUN apt-get update && apt-get upgrade -y \
-    && apt-get install -y ca-certificates curl libx11-6 libexpat1 \
-    && apt-get install -y git wget \
-    #Energyplus installation
-    && curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
+# Mandatory apt packages
+RUN apt update && apt upgrade -y
+RUN apt install -y ca-certificates curl libx11-6 libexpat1 git wget
+
+#Energyplus installation
+RUN curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
     && chmod +x $ENERGYPLUS_DOWNLOAD_FILENAME \
     && echo "y\r" | ./$ENERGYPLUS_DOWNLOAD_FILENAME \
     && rm $ENERGYPLUS_DOWNLOAD_FILENAME \
     && cd /usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION \
     && rm -rf PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater \
     # Remove the broken symlinks
-    && cd /usr/local/bin find -L . -type l -delete \
-    # Install pip, and make python point to python3
-    && apt install python3-pip -y \
+    && cd /usr/local/bin find -L . -type l -delete
+
+# Install pip, and make python point to python3
+RUN apt install python3-pip -y \
     && ln -s /usr/bin/python3 /usr/bin/python \
     # Install some apt dependencies
-    && echo "Y\r" | apt-get install python3-enchant -y \
-    && echo "Y\r" | apt-get install pandoc -y \
-    # clean files
-    && apt-get autoremove -y && apt-get autoclean -y \
+    && echo "Y\r" | apt install python3-enchant -y \
+    && echo "Y\r" | apt install pandoc -y 
+
+# clean files
+RUN apt autoremove -y && apt autoclean -y \
     && rm -rf /var/lib/apt/lists/* 
+    
 
 # Python add pyenergyplus path in order to detect API package
 ENV PYTHONPATH="/usr/local/EnergyPlus-${ENERGYPLUS_INSTALL_VERSION}"
