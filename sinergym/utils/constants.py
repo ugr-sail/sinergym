@@ -176,7 +176,7 @@ def DEFAULT_SHOP_DISCRETE_FUNCTION(action: int) -> List[float]:
 # -------------------------------- AUTOBALANCE ------------------------------- #
 
 
-def DEFAULT_AUTOBALANCE_DISCRETE_FUNCTION(
+def DEFAULT_RADIANT_DISCRETE_FUNCTION(
         action: Union[np.ndarray, List[int]]) -> List[float]:
     action[5] += 25
     return list(action)
