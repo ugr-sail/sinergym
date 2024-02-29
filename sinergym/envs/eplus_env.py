@@ -548,7 +548,7 @@ class EplusEnv(gym.Env):
     - Reward function: {}
     - Reset default options: {}
     - Run period: {}
-    - Episode length: {}
+    - Episode length (seconds): {}
     - Number of timesteps in an episode: {}
     - Timestep size (seconds): {}
     - It is discrete?: {}

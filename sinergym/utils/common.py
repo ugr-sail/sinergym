@@ -12,8 +12,27 @@ import xlsxwriter
 from eppy.modeleditor import IDF
 from opyplus.epm.record import Record
 
+import sinergym
 from sinergym.utils.constants import YEAR
 from sinergym.utils.rewards import *
+
+# --------------------- Sinergym environment information --------------------- #
+
+
+def get_ids(start='Eplus') -> List[str]:
+    """
+    Returns a list of environment IDs created by Sinergym (starting by Eplus).
+
+    Parameters:
+        start (str): The prefix to filter the environment IDs. Defaults to 'Eplus'.
+
+    Returns:
+        List[str]: A list of Sinergym environment IDs.
+
+    """
+    envs_id = [env_id for env_id in gym.envs.registration.registry.keys()
+               if env_id.startswith(start)]
+    return envs_id
 
 # --------------------------------- Wrappers --------------------------------- #
 
