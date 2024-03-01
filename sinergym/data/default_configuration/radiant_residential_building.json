@@ -1,7 +1,7 @@
 {
-    "id_base"               : "autobalance",
+    "id_base"               : "radiant",
 
-    "building_file"         : "autobalance_model.epJSON",
+    "building_file"         : "radiant_residential_building.epJSON",
 
     "weather_specification" : {
         "weather_files" : ["USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw", 
@@ -223,7 +223,7 @@
 
     "action_space_discrete" : "gym.spaces.MultiDiscrete(nvec=np.array([2, 2, 2, 2, 2, 21]))",
 
-    "only_discrete": false,
+    "only_discrete": true,
 
     "reward"                : "LinearReward",
 
