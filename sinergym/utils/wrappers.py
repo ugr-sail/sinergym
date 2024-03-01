@@ -872,12 +872,11 @@ class RoundActionWrapper(gym.ActionWrapper):
     def __init__(self, env):
         super().__init__(env)
 
-    def action(self, a):
-        # rounded = np.round(a[:5])
-        # new_a = np.concatenate([rounded, a[-1].reshape(1)])
-        rounded = np.where(a[:5] >= 0, 1, -1)
-        new_a = np.concatenate([rounded, a[-1].reshape(1)])
-        return new_a
+    def action(self, action):
+        action_ = np.array(deepcopy(action))
+        rounded = np.round(action_[:5])
+        new_a = np.concatenate([rounded, action_[-1].reshape(1)])
+        return list(new_a)
 
     # ---------------------- Specific environment wrappers ---------------------#
 
