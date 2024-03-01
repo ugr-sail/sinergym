@@ -145,7 +145,7 @@ class EnergyPlus(object):
             self.energyplus_state, self._collect_obs_and_info)
 
         # register callback used to send actions
-        self.api.runtime.callback_begin_system_timestep_before_predictor(
+        self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
             self.energyplus_state, self._process_action)
 
         # run EnergyPlus in a non-blocking way
