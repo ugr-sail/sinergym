@@ -223,7 +223,7 @@
 
     "action_space_discrete" : "gym.spaces.MultiDiscrete(nvec=np.array([2, 2, 2, 2, 2, 21]))",
 
-    "only_discrete": true,
+    "only_discrete": false,
 
     "reward"                : "LinearReward",
 
