@@ -3004,22 +3004,13 @@
                     "field": "Through: 12/31"
                 },
                 {
-                    "field": "For: Weekdays SummerDesignDay WinterDesignDay"
+                    "field": "For: AllDays"
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1.0
-                },
-                {
-                    "field": "For: AllOtherDays"
-                },
-                {
-                    "field": "Until: 24:00"
-                },
-                {
-                    "field": 0.25
+                    "field": 0.005
                 }
             ],
             "schedule_type_limits_name": "Any Number"
