@@ -80,6 +80,33 @@ class RBCDatacenter(object):
     def __init__(self, env: EplusEnv) -> None:
         """Agent based on static rules for controlling 2ZoneDataCenterHVAC setpoints.
         Follows the ASHRAE recommended temperature ranges for data centers described in ASHRAE TC9.9 (2016).
+
+        Args:
+            env (EplusEnv): Simulation environment
+        """
+
+        self.env = env
+        self.observation_variables = env.get_wrapper_attr(
+            'observation_variables')
+        self.action_variables = env.get_wrapper_attr('action_variables')
+
+        # ASHRAE recommended temperature range = [18, 27] Celsius
+        self.range_datacenter = (18, 27)
+
+    def act(self) -> Sequence[Any]:
+        """Select same action always, corresponding with comfort range.
+
+        Returns:
+            Sequence[Any]: Action chosen.
+        """
+        return (18, 27)
+
+
+class RBCIncrementalDatacenter(object):
+
+    def __init__(self, env: EplusEnv) -> None:
+        """Agent based on rules for controlling 2ZoneDataCenterHVAC setpoints in a incremental way.
+        Follows the ASHRAE recommended temperature ranges for data centers described in ASHRAE TC9.9 (2016).
         Args:
             env (EplusEnv): Simulation environment
         """
