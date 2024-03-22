@@ -166,10 +166,6 @@
                                 "SecondFloor:Bedroom02 radiant surface", 
                                 "SecondFloor:Bedroom03 radiant surface"]           
         },
-        "Boiler NaturalGas Rate"                                          : {
-            "variable_names" : "boiler_rate",
-            "keys"          : "Boiler"            
-        },
         "Boiler Part Load Ratio"                                          : {
             "variable_names" : "boiler_load_ratio",
             "keys"          : "Boiler"            
@@ -178,9 +174,9 @@
             "variable_names" : "boiler_temperature",
             "keys"           : "Boiler"    
         },
-        "Facility Total HVAC Electricity Demand Rate"                     : {
-            "variable_names" : "HVAC_electricity_demand_rate",
-            "keys"           : "Whole Building"            
+        "Boiler NaturalGas Rate"                                       : {
+            "variable_names" : "boiler_electricity_demand_rate",
+            "keys"           : "Boiler"    
         }
     },
 
@@ -233,7 +229,7 @@
                                    "secondfloor:bedroom01_air_temperature", 
                                    "secondfloor:bedroom02_air_temperature", 
                                    "secondfloor:bedroom03_air_temperature"],
-        "energy_variables"      : ["HVAC_electricity_demand_rate"],
+        "energy_variables"      : ["boiler_electricity_demand_rate"],
         "range_comfort_winter"  : [19.0, 21.0],
         "range_comfort_summer"  : [19.0, 21.0],
         "summer_start"          : [6, 1],
