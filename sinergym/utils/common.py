@@ -293,16 +293,16 @@ def json_to_variables(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
             else:
                 raise RuntimeError
 
-        elif isinstance(specification['variables_names'], list):
+        elif isinstance(specification['variable_names'], list):
 
             if isinstance(specification['keys'], str):
                 raise RuntimeError
 
             elif isinstance(specification['keys'], list):
-                assert len( specification['variables_names']) == len(
+                assert len( specification['variable_names']) == len(
                     specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
                 for variable_name, key_name in list(
-                        zip(specification['variables_names'], specification['keys'])):
+                        zip(specification['variable_names'], specification['keys'])):
                     output[variable_name] = (variable, key_name)
 
             else:
