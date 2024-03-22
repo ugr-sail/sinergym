@@ -867,6 +867,8 @@ class NormalizeAction(gym.ActionWrapper):
         action_ = self.get_wrapper_attr('reverting_action')(action_)
         return action_
 
+# ---------------------- Specific environment wrappers ---------------------#
+
 
 class RoundActionWrapper(gym.ActionWrapper):
     def __init__(self, env):
@@ -878,7 +880,35 @@ class RoundActionWrapper(gym.ActionWrapper):
         new_a = np.concatenate([rounded, action_[-1].reshape(1)])
         return list(new_a)
 
-    # ---------------------- Specific environment wrappers ---------------------#
+
+class ExtremeFlowControlWrapper(gym.ActionWrapper):
+    def __init__(self, env):
+        super().__init__(env)
+
+    def action(self, action):
+        action_ = np.array(deepcopy(action))
+        for i, action_value_ in enumerate(action_):
+            if i < 5:
+                minimum = self.env.action_space.low[i]
+                maximum = self.env.action_space.high[i]
+                action_[i] = maximum if abs(
+                    action_value_ -
+                    maximum) < abs(
+                    action_value_ -
+                    minimum) else minimum
+        return list(action_)
+
+
+class DiscreteSetpointControlWrapper(gym.ActionWrapper):
+    def __init__(self, env):
+        super().__init__(env)
+
+    def action(self, action):
+        action_ = np.array(deepcopy(action))
+        for i, action_value_ in enumerate(action_):
+            if i > 4 and i < 10:
+                action_[i] = round(action_[i] * 2) / 2
+        return list(action_)
 
 
 class OfficeGridStorageSmoothingActionConstraintsWrapper(
