@@ -513,6 +513,11 @@ def zone5_controller(env_5zone):
 def datacenter_controller(env_datacenter):
     return RBCDatacenter(env=env_datacenter)
 
+
+@ pytest.fixture(scope='function')
+def datacenter_incremental_controller(env_datacenter):
+    return RBCIncrementalDatacenter(env=env_datacenter)
+
 # ---------------------------------------------------------------------------- #
 #                      Building and weather python models                      #
 # ---------------------------------------------------------------------------- #
