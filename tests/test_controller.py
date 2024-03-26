@@ -29,11 +29,16 @@ def test_controller_5Zone(zone5_controller):
 
 
 def test_controller_datacenter(datacenter_controller):
-    env = datacenter_controller.env
+    action = datacenter_controller.act()
+    assert action == datacenter_controller.range_datacenter
+
+
+def test_incremental_controller_datacenter(datacenter_incremental_controller):
+    env = datacenter_incremental_controller.env
     obs, info = env.reset()
 
     for i in range(3):
-        action = datacenter_controller.act(obs)
+        action = datacenter_incremental_controller.act(obs)
         assert isinstance(action, tuple)
         for value in action:
             assert value is not None
