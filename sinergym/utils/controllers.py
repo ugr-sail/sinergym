@@ -99,7 +99,7 @@ class RBCDatacenter(object):
         Returns:
             Sequence[Any]: Action chosen.
         """
-        return (18, 27)
+        return self.range_datacenter
 
 
 class RBCIncrementalDatacenter(object):
