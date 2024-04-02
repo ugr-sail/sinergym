@@ -1,5 +1,6 @@
-The goal of *Sinergym* is to create an environment following *Gymnasium* interface for wrapping simulation engines (*EnergyPlus*) for building control using
-**deep reinforcement learning** or any external control.
+The goal of *Sinergym* is to create an environment following *Gymnasium* interface for wrapping 
+simulation engines (*EnergyPlus*) for building control using **deep reinforcement learning** 
+or any external control.
 
 
 .. image:: /_static/general_blueprint.png
