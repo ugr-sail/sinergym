@@ -2,10 +2,10 @@
 Extra Configuration in Sinergym simulations
 ############################################
 
-Using `Modeling class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/config/modeling.py>`__, 
-we have the possibility to set up some **details of context** in our simulation. 
-This let us to amplify the context of each experiment and have more parameters to investigate.
-To use this functionality easily, you can provide this extra parameters in **environment constructor** in this way:
+With the `Modeling class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/config/modeling.py>`__, 
+we have the ability to set up some **context details** in our simulation. This allows us to expand the 
+context of each experiment and investigate more parameters. To use this functionality easily, you can 
+provide these extra parameters in the **environment constructor** as follows:
 
 .. code:: python
 
@@ -16,37 +16,34 @@ To use this functionality easily, you can provide this extra parameters in **env
                   'runperiod' : (1,1,1997,12,3,1998)}
     env = gym.make('Eplus-5Zone-hot-continuous-v1', config_params=extra_params)
 
-The format for apply extra configuration is a **Python dictionary** with extra parameter key name and value.
+The format for applying extra configuration is a **Python dictionary** with the extra parameter key name and its value.
 
 .. note:: *Currently, only code skeleton and some parameters has been designed. Stay tuned for upcoming releases!*
 
-Let's see each implemented parameter for extra configuration separately:
+Let's examine each implemented parameter for extra configuration separately:
 
 ******************
 timestep_per_hour
 ******************
 
-By default, a *Sinergym* apply **4** timestep per simulation hour, 
-the default value in building files. However, you have the possibility to modify 
-this value using **timestep_per_hour** key  in `config_params` dictionary and set 
-more/less timesteps in each simulation hour.
+By default, *Sinergym* applies **4** timesteps per simulation hour, which is the default value in building files. 
+However, you can modify this value using the **timestep_per_hour** key in the `config_params` dictionary and set 
+more or fewer timesteps in each simulation hour.
 
 ******************
 runperiod
 ******************
 
-By default, a *Sinergym* simulation episode is one year (*from 1/1/1991 to 31/12/1991*). 
-You can use this **runperiod** key and, as a result, determine **episode length** in simulation. 
-The format value for **runperiod** key is a **tuple** with 
+By default, a *Sinergym* simulation episode lasts one year (*from 1/1/1991 to 31/12/1991*). 
+You can use the **runperiod** key to determine the **episode length** in the simulation. 
+The format value for the **runperiod** key is a **tuple** with 
 (*start_day*, *start_month*, *start_year*, *end_day*, *end_month*, *end_year*).
 
-.. warning:: If we include a manual runperiod with this functionality, we should not include any 
-             February 29th of a leap year in that range. Otherwise, the simulator will fail, 
-             since *EnergyPlus* does not take into account leap days and the weather files 
-             do not include these days.
+.. warning:: If you include a manual runperiod with this functionality, make sure not to include 
+             February 29th of a leap year in that range. Otherwise, the simulator will fail, as 
+             *EnergyPlus* does not account for leap days and the weather files do not include these days.
 
-.. note:: More components could be managed in the future. Stay tuned for upcoming releases! 
+.. note:: More components may be managed in the future. Keep an eye out for upcoming releases!
 
-.. note:: If you want to create your own extra configuration parameters, 
-          please see the method ``apply_extra_conf`` from 
-          `Modeling class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/config/modeling.py>`__.
+.. note:: If you wish to create your own extra configuration parameters, refer to the method 
+          ``apply_extra_conf`` in the `Modeling class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/config/modeling.py>`__.
