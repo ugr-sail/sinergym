@@ -1,4 +1,4 @@
-sinergym.utils.controllers
+﻿sinergym.utils.controllers
 ==========================
 
 .. automodule:: sinergym.utils.controllers
@@ -21,6 +21,7 @@ sinergym.utils.controllers
    
       RBC5Zone
       RBCDatacenter
+      RBCIncrementalDatacenter
       RandomController
    
    
