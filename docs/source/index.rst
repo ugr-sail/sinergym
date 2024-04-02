@@ -69,6 +69,7 @@ If you use *Sinergym* in your work, please cite our `paper <https://dl.acm.org/d
 
    pages/buildings.rst
    pages/weathers.rst
+   pages/architecture.rst
    pages/environments.rst
    pages/environments_registration.rst
    pages/rewards.rst
