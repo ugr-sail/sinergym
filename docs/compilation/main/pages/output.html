@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>11. Output format &mdash; sinergym  documentation</title>
+  <title>12. Output format &mdash; sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=816ccb90" />
@@ -24,8 +24,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="12. Deep Reinforcement Learning Integration" href="deep-reinforcement-learning.html" />
-    <link rel="prev" title="10. Extra Configuration in Sinergym simulations" href="extra-configuration.html" /> 
+    <link rel="next" title="13. Deep Reinforcement Learning Integration" href="deep-reinforcement-learning.html" />
+    <link rel="prev" title="11. Extra Configuration in Sinergym simulations" href="extra-configuration.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,37 +51,38 @@
               <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">1. Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage-example.html">2. Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">2. Usage Example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="buildings.html">3. Buildings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weathers.html">4. Weathers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="environments.html">5. Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="environments_registration.html">6. Environments Configuration and Registration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rewards.html">7. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="controllers.html">8. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers.html">9. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">10. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">11. Output format</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#logger">11.1. Logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">5. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">6. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">8. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">9. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">10. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">12. Output format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#logger">12.1. Logger</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">12. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">13. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="github-actions.html">14. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">15. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">14. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">15. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">16. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">16. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">17. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">18. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">19. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">20. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">21. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">22. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">23. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">17. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">18. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">19. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">20. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">21. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">23. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">24. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -102,7 +103,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">11. </span>Output format</li>
+      <li class="breadcrumb-item active"><span class="section-number">12. </span>Output format</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/pages/output.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -113,12 +114,10 @@
            <div itemprop="articleBody">
              
   <section id="output-format">
-<h1><span class="section-number">11. </span>Output format<a class="headerlink" href="#output-format" title="Link to this heading"></a></h1>
-<p>When a simulation is running, this generates a directory called
-<code class="docutils literal notranslate"><span class="pre">Eplus-env-&lt;env_name&gt;-res&lt;num_simulation&gt;</span></code>. The management of
-the directories tree generated during a simulation is done by
-the <em>Modeling</em> module too. The content of this root output directory
-is the result of the simulation and we have:</p>
+<h1><span class="section-number">12. </span>Output format<a class="headerlink" href="#output-format" title="Link to this heading"></a></h1>
+<p>When a simulation is running, it generates a directory named <code class="docutils literal notranslate"><span class="pre">Eplus-env-&lt;env_name&gt;-res&lt;num_simulation&gt;</span></code>.
+The <em>Modeling</em> module also manages the directory tree generated during a simulation. The content of this
+root output directory is the result of the simulation and includes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Eplus-env-&lt;env_name&gt;-res&lt;num_simulation&gt;
 ├── Eplus-env-sub_run1
 ├── Eplus-env-sub_run2
@@ -135,80 +134,64 @@ is the result of the simulation and we have:</p>
 </pre></div>
 </div>
 <ul>
-<li><p><strong>Eplus-env-sub_run&lt;num_episode&gt;</strong> records the results of each episode in
-simulation. The number of these directories depends on the number of episodes
-and <em>maximum episode data value</em>
+<li><p><strong>Eplus-env-sub_run&lt;num_episode&gt;</strong> directories that record the results of each episode in the simulation.
+The number of these directories depends on the number of episodes and the <em>maximum episode data value</em>
 (see <a class="reference internal" href="environments.html#maximum-episode-data-stored-in-sinergym-output"><span class="std std-ref">Maximum Episode Data Stored in Sinergym Output</span></a>).</p></li>
-<li><p>Within these directories, you have always the same structure:</p>
+<li><p>Within these directories, the structure is always the same:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>A copy of <strong>environment.epJSON</strong> which is being used during
-simulation episode. <strong>Environment.epJSON</strong> does not have to be the same as the original
-hosted in the repository. Since the simulation can be modified to suit the
-specific user-defined settings when building the gymnasium environment.</p></li>
-<li><p>A copy of <strong>Weather.epw</strong> which is being used during
-simulation episode. This file does not have to be the
-same than original (when using variability).</p></li>
-<li><p><strong>monitor.csv</strong>: This records all interactions Agent-Environment during
-the episode timestep by timestep. This file only exists
-when environment has been wrapped with <strong>Logger</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a> for
-more information).</p></li>
-<li><p><strong>monitor_normalized.csv</strong>: This file is only generated when environment is
-wrapped with <strong>logger and normalization</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>). The structure
-is the same than <strong>monitor.csv</strong> but <code class="docutils literal notranslate"><span class="pre">observation_values</span></code> are normalized.</p></li>
-<li><p><strong>output/</strong>: This directory has <strong>EnergyPlus simulation output</strong>.
-If you want to know more about this files, visit
-<a class="reference external" href="https://energyplus.net/documentation">EnergyPlus documentation</a>.</p></li>
+<li><p>A copy of the <strong>environment.epJSON</strong> used during the simulation episode. This does not have to be the same
+as the original hosted in the repository, as the simulation can be modified to suit specific user-defined
+settings when building the gymnasium environment.</p></li>
+<li><p>A copy of the <strong>Weather.epw</strong> used during the simulation episode. This file does not have to be the same as
+the original (when using variability).</p></li>
+<li><p><strong>monitor.csv</strong>: This records all Agent-Environment interactions during the episode, timestep by timestep.
+This file only exists when the environment has been wrapped with <strong>Logger</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a> for more information).</p></li>
+<li><p><strong>monitor_normalized.csv</strong>: This file is only generated when the environment is wrapped
+with <strong>logger and normalization</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a>). The structure is the same as <strong>monitor.csv</strong>,
+but the <code class="docutils literal notranslate"><span class="pre">observation_values</span></code> are normalized.</p></li>
+<li><p><strong>output/</strong>: This directory contains the <strong>EnergyPlus simulation output</strong>. To learn more about these files,
+visit the <a class="reference external" href="https://energyplus.net/documentation">EnergyPlus documentation</a>.</p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p><strong>data_available.txt</strong>: This file is generated when <em>EnergyPlus</em> API initializes all
-callbacks and handlers for the simulation. In this file, we can find all the available
-components of the building model such as actuators, schedulers, meters, variables, internal
-variables, etc.</p>
+<li><p><strong>data_available.txt</strong>: This file is generated when the <em>EnergyPlus</em> API initializes all callbacks and handlers
+for the simulation. In this file, you can find all the available components of the building model, such as
+actuators, schedulers, meters, variables, internal variables, etc.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Some list of components such as <code class="docutils literal notranslate"><span class="pre">Output:Variable</span></code>’s does not appear fully in
-<em>data_available.txt</em>, because of it must be declared in the building model first.
-If you want to see all the variables or meters specifically, you should look for them
-in the correct <em>Energyplus</em> output file. If you specify a correct variable in environment,
-<em>Sinergym</em> will add the <code class="docutils literal notranslate"><span class="pre">Output:Variable</span></code> element in the building model before simulation start.</p>
+<p>Some lists of components, such as <code class="docutils literal notranslate"><span class="pre">Output:Variable</span></code>’s, do not fully appear in <em>data_available.txt</em>
+because they must be declared in the building model first. If you want to see all the variables
+or meters specifically, you should look for them in the correct <em>Energyplus</em> output file.
+If you specify a correct variable in the environment, <em>Sinergym</em> will add the <code class="docutils literal notranslate"><span class="pre">Output:Variable</span></code>
+element in the building model before the simulation starts.</p>
 </div>
 </li>
-<li><p><strong>progress.csv</strong>: This file has information about general simulation results.
-There is a <strong>row per episode</strong> and it records most important data such as mean
-power consumption or mean comfort penalty, for example. This file only
-exists when environment has been wrapped with
-<strong>Logger</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a> for more information).</p></li>
+<li><p><strong>progress.csv</strong>: This file contains information about general simulation results. There is a <strong>row per episode</strong>
+and it records important data such as mean power consumption or mean comfort penalty, for example. This file
+only exists when the environment has been wrapped with <strong>Logger</strong> (see <a class="reference internal" href="wrappers.html#wrappers"><span class="std std-ref">Wrappers</span></a> for more information).</p></li>
 </ul>
 <section id="logger">
-<h2><span class="section-number">11.1. </span>Logger<a class="headerlink" href="#logger" title="Link to this heading"></a></h2>
-<p>The files <strong>monitor.csv</strong>, <strong>monitor_normalized.csv</strong> and <strong>progress.csv</strong>
-belong to <strong>Sinergym logger</strong> which is a wrapper for the environment.
-This logger has the responsibility of recording
-all the interactions that are carried out in a simulation,
-regardless of the training technique which may be being used or any other
-external factor.</p>
-<p>Recording is managed by an instance of the class <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code> which is
-present as a wrapper attribute and is called in each timestep and
-in the end of a episode. This class can be substitute by a new one,
-see <a class="reference internal" href="notebooks/personalize_loggerwrapper.html#Logger-Wrapper-personalization/configuration"><span class="std std-ref">Logger Wrapper personalization/configuration</span></a>.</p>
+<h2><span class="section-number">12.1. </span>Logger<a class="headerlink" href="#logger" title="Link to this heading"></a></h2>
+<p>The files <strong>monitor.csv</strong>, <strong>monitor_normalized.csv</strong>, and <strong>progress.csv</strong> belong to the <strong>Sinergym logger</strong>,
+which is a wrapper for the environment. This logger is responsible for recording all the interactions that
+occur in a simulation, regardless of the training technique being used or any other external factor.</p>
+<p>Recording is managed by an instance of the <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code> class, which is present as a wrapper attribute and
+is called at each timestep and at the end of an episode. This class can be replaced by a new one
+(see <a class="reference internal" href="notebooks/personalize_loggerwrapper.html#Logger-Wrapper-personalization/configuration"><span class="std std-ref">Logger Wrapper personalization/configuration</span></a>).</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code> requires the info dict with specific keys to
-log the information correctly. If you change the info dict structure
-in Sinergym, you should check this logger or to use a custom one.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code> requires the info dict with specific keys to log the information correctly.
+If you change the info dict structure in Sinergym, you should check this logger or use a custom one.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Normalized observation methods are only used when environment is
-wrapped with normalization previously.</p>
+<p>Normalized observation methods are only used when the environment is wrapped with normalization previously.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Note that you can activate and deactivate logger from environment
-when you want it, using methods activate and deactivate, so
-you don’t need to unwrap environment.</p>
+<p>You can activate and deactivate the logger from the environment whenever you want, using the activate
+and deactivate methods, so you don’t need to unwrap the environment.</p>
 </div>
 </section>
 </section>
@@ -217,8 +200,8 @@ you don’t need to unwrap environment.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="extra-configuration.html" class="btn btn-neutral float-left" title="10. Extra Configuration in Sinergym simulations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="deep-reinforcement-learning.html" class="btn btn-neutral float-right" title="12. Deep Reinforcement Learning Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="extra-configuration.html" class="btn btn-neutral float-left" title="11. Extra Configuration in Sinergym simulations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deep-reinforcement-learning.html" class="btn btn-neutral float-right" title="13. Deep Reinforcement Learning Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -257,6 +240,7 @@ you don’t need to unwrap environment.</p>
             <dd><a href="../../v2.5.0/pages/output.html">v2.5.0</a></dd>
             <dd><a href="../../v3.1.0/pages/output.html">v3.1.0</a></dd>
             <dd><a href="../../v3.2.0/pages/output.html">v3.2.0</a></dd>
+            <dd><a href="../../v3.2.10/pages/output.html">v3.2.10</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

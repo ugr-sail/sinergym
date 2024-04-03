@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>23. DRL usage example &mdash; sinergym  documentation</title>
+  <title>24. DRL usage example &mdash; sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -28,7 +28,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="API reference" href="../API-reference.html" />
-    <link rel="prev" title="22. Rule Controller example" href="rule_controller_example.html" /> 
+    <link rel="prev" title="23. Rule Controller example" href="rule_controller_example.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,36 +54,37 @@
               <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">1. Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage Example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../environments.html">5. Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">6. Environments Configuration and Registration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rewards.html">7. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../controllers.html">8. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">9. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">10. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../output.html">11. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">12. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">13. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">14. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tests.html">15. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">5. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">6. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">8. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">9. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">10. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">12. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">14. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">15. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">16. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="basic_example.html">16. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">17. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="change_environment.html">18. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">19. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">20. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">21. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">22. Rule Controller example</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">23. DRL usage example</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Training-a-model">23.1. Training a model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Loading-a-model">23.2. Loading a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">17. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">18. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">19. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">20. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">21. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">23. Rule Controller example</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">24. DRL usage example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Training-a-model">24.1. Training a model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Loading-a-model">24.2. Loading a model</a></li>
 </ul>
 </li>
 </ul>
@@ -106,7 +107,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">23. </span>DRL usage example</li>
+      <li class="breadcrumb-item active"><span class="section-number">24. </span>DRL usage example</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/notebooks/drl.nblink.txt" rel="nofollow"> View page source</a>
       </li>
@@ -117,12 +118,12 @@
            <div itemprop="articleBody">
              
   <section id="DRL-usage-example">
-<h1><span class="section-number">23. </span>DRL usage example<a class="headerlink" href="#DRL-usage-example" title="Link to this heading"></a></h1>
-<p>In this notebook example, Stable Baselines 3 has been used to train and to load an agent. However, Sinergym is completely agnostic to any DRL algorithm (although there are custom callbacks for SB3 specifically) and can be used with any DRL library that works with gymnasium interface.</p>
+<h1><span class="section-number">24. </span>DRL usage example<a class="headerlink" href="#DRL-usage-example" title="Link to this heading"></a></h1>
+<p>In this notebook example, we’ve used Stable Baselines 3 to train and load an agent. However, Sinergym is entirely agnostic to any DRL algorithm (though it does have custom callbacks specifically for SB3) and can be used with any DRL library that interfaces with Gymnasium.</p>
 <section id="Training-a-model">
-<h2><span class="section-number">23.1. </span>Training a model<a class="headerlink" href="#Training-a-model" title="Link to this heading"></a></h2>
-<p>We are going to rely on the script available in the repository root called <code class="docutils literal notranslate"><span class="pre">train_agent.py</span></code>. This script applies all the possibilities that Sinergym has to work with deep reinforcement learning algorithms and set parameters to everything so that we can define the training options from the execution of the script easily by a JSON file.</p>
-<p>For more information about how run <code class="docutils literal notranslate"><span class="pre">train_agent.py</span></code>, please, see <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#train-a-model">Train a model</a>.</p>
+<h2><span class="section-number">24.1. </span>Training a model<a class="headerlink" href="#Training-a-model" title="Link to this heading"></a></h2>
+<p>We’ll be using the <code class="docutils literal notranslate"><span class="pre">train_agent.py</span></code> script located in the repository root. This script leverages all the capabilities of Sinergym for working with deep reinforcement learning algorithms and sets parameters for everything, allowing us to easily define training options via a JSON file when executing the script.</p>
+<p>For more details on how to run <code class="docutils literal notranslate"><span class="pre">train_agent.py</span></code>, please refer to <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#train-a-model">Train a model</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -149,7 +150,7 @@
 </pre></div>
 </div>
 </div>
-<p>First let’s define some variables for the execution.</p>
+<p>First, let’s set some variables for the execution.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -166,7 +167,7 @@
 </pre></div>
 </div>
 </div>
-<p>We can combine this experiment executions with <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#weights-and-biases-structure">Weights&amp;Biases</a> in order to host all information extracted. With <em>wandb</em>, it’s possible to track and visualize all DRL training process in real time, register hyperparameters and details of each experiment, save artifacts such as models and <em>sinergym</em> output, and compare between different executions.</p>
+<p>This experiment can be combined with <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#weights-and-biases-structure">Weights&amp;Biases</a> to manage all extracted information. With <em>wandb</em>, you can track and visualize the entire DRL training process in real time, record hyperparameters and experiment details, save artifacts like models and <em>sinergym</em> output, and compare different executions.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -238,7 +239,7 @@ View project at <a href='https://wandb.ai/alex_ugr/sinergym' target="_blank">htt
 <div class="output_area rendered_html docutils container">
 View run at <a href='https://wandb.ai/alex_ugr/sinergym/runs/pf27dlou' target="_blank">https://wandb.ai/alex_ugr/sinergym/runs/pf27dlou</a></div>
 </div>
-<p>Now we are ready to create the Gymnasium Environment. Here we use the environment name defined, remember that you can <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/notebooks/change_environment.html#Changing-an-environment-registered-in-Sinergym">change default environment configuration</a>. We will create a eval_env too in order to interact in the evaluation episodes. We can overwrite the env name with experiment name if we want.</p>
+<p>Now, we’re ready to create the Gym environment. We’ll use the previously defined environment name, but remember that you can <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/notebooks/change_environment.html#Changing-an-environment-registered-in-Sinergym">change the default environment configuration</a>. We’ll also create an eval_env for evaluation episodes. If desired, we can replace the env name with the experiment name.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -283,7 +284,7 @@ View run at <a href='https://wandb.ai/alex_ugr/sinergym/runs/pf27dlou' target="_
 [WRAPPER DiscretizeEnv] (INFO) : Wrapper initialized
 </pre></div></div>
 </div>
-<p>We can also add a Wrapper to the environment, we are going to use an action normalization wrapper and a logger (extensions of <code class="docutils literal notranslate"><span class="pre">gym.Wrapper</span></code>). Normalization is very recommended in DRL algorithms with continuous action space and logger is used to monitor and log the interactions with the environment and save the data into a CSV. Files generated will be stored as artifact in <em>wandb</em> too.</p>
+<p>We can also add a Wrapper to the environment. We’ll use an action normalization wrapper and a logger (extensions of <code class="docutils literal notranslate"><span class="pre">gym.Wrapper</span></code>). Normalization is highly recommended for DRL algorithms with continuous action space, and the logger is used to monitor and log environment interactions and save the data into a CSV. The generated files will also be stored as <em>wandb</em> artifacts.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -302,7 +303,7 @@ View run at <a href='https://wandb.ai/alex_ugr/sinergym/runs/pf27dlou' target="_
 [WRAPPER LoggerWrapper] (INFO) : Wrapper initialized.
 </pre></div></div>
 </div>
-<p>At this point, we have the environment set up and ready to be used. We are going to create our learning model (Stable Baselines 3 DQN), but we can use any other algorithm.</p>
+<p>At this point, the environment is set up and ready to use. We’ll create our learning model (Stable Baselines 3 DQN), but any other algorithm can be used.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -321,7 +322,7 @@ Wrapping the env with a `Monitor` wrapper
 Wrapping the env in a DummyVecEnv.
 </pre></div></div>
 </div>
-<p>Evaluation will execute the current model during a number of episodes determined to decide if it is the best current version of the model at that point of the training. Output generated will be stored in <em>wandb</em> server too. We are going to use the LoggerEval callback to print and save the best model evaluated during training.</p>
+<p>Evaluation will run the current model for a set number of episodes to determine if it’s the best current version of the model at that training stage. The generated output will also be stored on the <em>wandb</em> server. We’ll use the LoggerEval callback to print and save the best evaluated model during training.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -343,7 +344,7 @@ Wrapping the env in a DummyVecEnv.
 <br/></pre></div>
 </div>
 </div>
-<p>In order to track all the training process in <em>wandb</em>, it is necessary to create a callback with a compatible wandb output format (which call <em>wandb</em> log method in the learning algorithm process).</p>
+<p>To track the entire training process in <em>wandb</em>, we need to create a callback with a compatible wandb output format (which calls the <em>wandb</em> log method in the learning algorithm process).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -366,7 +367,7 @@ Wrapping the env in a DummyVecEnv.
 </pre></div>
 </div>
 </div>
-<p>This is the number of total time steps for the training.</p>
+<p>This is the total number of time steps for the training.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -375,12 +376,7 @@ Wrapping the env in a DummyVecEnv.
 </pre></div>
 </div>
 </div>
-<p>Now, is time to train the model with the callbacks defined earlier. This may take a few minutes, depending on your computer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">warning<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The warning messages that appear in <code class="docutils literal notranslate"><span class="pre">model.learn()</span></code> output is due to Stable Baselines 3 is not adapted to new standard to get environment attributes yet.</p>
-</dd>
-</dl>
+<p>Now, it’s time to train the model with the previously defined callbacks. This may take a few minutes, depending on your computer.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -53460,7 +53456,7 @@ Episode length: 35040.00 +/- 0.00
 <span class="ansi-blue-intense-fg ansi-bold">wandb</span>: <span class="ansi-yellow-fg">WARNING</span> (User provided step: 175194 is less than current step: 175195. Dropping entry: {&#39;time/total_timesteps&#39;: 175194, &#39;_timestamp&#39;: 1700214442.7391007}).
 </pre></div></div>
 </div>
-<p>Now, we save the current model (model version when training has finished).</p>
+<p>Now, we save the current model (the model version when training has finished).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
@@ -53497,7 +53493,7 @@ Progress: |*********************************************************************
 [ENVIRONMENT] (INFO) : Environment closed. [SB3_DQN-Eplus-5zone-mixed-discrete-stochastic-v1-episodes-5_2023-11-17_09:43]
 </pre></div></div>
 </div>
-<p>We have to upload all Sinergym output as <em>wandb</em> artifact. This output include all sinergym_output (and LoggerWrapper CSV files) and models generated in training and evaluation episodes.</p>
+<p>Finally, we need to upload all Sinergym output as <em>wandb</em> artifacts. This output includes all sinergym_output (and LoggerWrapper CSV files) and models generated during training and evaluation episodes.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
@@ -53565,29 +53561,29 @@ View run <strong style="color:#cdcd00">SB3_DQN-Eplus-5zone-mixed-discrete-stocha
 <div class="output_area rendered_html docutils container">
 Find logs at: <code>./wandb/run-20231117_094304-pf27dlou/logs</code></div>
 </div>
-<p>We have all the experiments results in our local computer, but we can see the execution in <em>wandb</em> too:</p>
+<p>All experiment results are stored locally, but you can also view the execution in <em>wandb</em>:</p>
 <ul class="simple">
-<li><p>If we check our projects, we can see the execution allocated:</p></li>
+<li><p>When you check your projects, you’ll see the execution allocated:</p></li>
 </ul>
 <p><img alt="wandb_projects1" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_projects1.png?raw=true" /></p>
 <ul class="simple">
-<li><p>Hyperparameters tracked in the training experiment:</p></li>
+<li><p>The training experiment’s tracked hyperparameters:</p></li>
 </ul>
 <p><img alt="wandb_training_hyperparameters" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_training_hyperparameters.png?raw=true" /></p>
 <ul class="simple">
-<li><p>Artifacts registered (if evaluation is enabled, best model is registered too):</p></li>
+<li><p>Registered artifacts (if evaluation is enabled, the best model is also registered):</p></li>
 </ul>
 <p><img alt="wandb_training_artifact" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_training_artifact.png?raw=true" /></p>
 <ul class="simple">
-<li><p>Visualization of metrics in real time:</p></li>
+<li><p>Real-time visualization of metrics:</p></li>
 </ul>
 <p><img alt="wandb_training_charts" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_training_charts.png?raw=true" /></p>
 </section>
 <section id="Loading-a-model">
-<h2><span class="section-number">23.2. </span>Loading a model<a class="headerlink" href="#Loading-a-model" title="Link to this heading"></a></h2>
-<p>We are going to rely on the script available in the repository root called <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code>. This script applies all the possibilities that Sinergym has to work with deep reinforcement learning models loaded and set parameters to everything, so that we can define the load options from the execution of the script easily by a JSON file.</p>
-<p>For more information about how run <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code>, please, see <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#load-a-trained-model">Load a trained model</a>.</p>
-<p>First, we define the Sinergym environment ID where we want to check the loaded agent and the name of the evaluation experiment.</p>
+<h2><span class="section-number">24.2. </span>Loading a model<a class="headerlink" href="#Loading-a-model" title="Link to this heading"></a></h2>
+<p>We’ll be using the <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code> script located in the repository root. This script leverages all the capabilities of Sinergym for working with loaded deep reinforcement learning models and sets parameters for everything, allowing us to easily define load options via a JSON file when executing the script.</p>
+<p>For more details on how to run <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code>, please refer to <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#load-a-trained-model">Load a trained model</a>.</p>
+<p>First, we’ll define the Sinergym environment ID where we want to test the loaded agent and the name of the evaluation experiment.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
@@ -53604,7 +53600,7 @@ Find logs at: <code>./wandb/run-20231117_094304-pf27dlou/logs</code></div>
 </pre></div>
 </div>
 </div>
-<p>We can also use <em>wandb</em> here. We can allocate this evaluation of a loaded model in other project in order to not merge experiments.</p>
+<p>We can also use <em>wandb</em> here. We can allocate this evaluation of a loaded model to a different project to avoid merging experiments.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -53660,7 +53656,7 @@ View project at <a href='https://wandb.ai/alex_ugr/sinergym_evaluations' target=
 <div class="output_area rendered_html docutils container">
 View run at <a href='https://wandb.ai/alex_ugr/sinergym_evaluations/runs/15owsnpb' target="_blank">https://wandb.ai/alex_ugr/sinergym_evaluations/runs/15owsnpb</a></div>
 </div>
-<p>We make the gymnasium environment, it is <strong>important to wrap the environment with the same wrappers as used in training</strong>. We can use the evaluation experiment name to rename the environment.</p>
+<p>We’ll create the Gym environment, but it’s <strong>important to wrap the environment with the same wrappers used during training</strong>. We can use the evaluation experiment name to rename the environment.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -53692,7 +53688,7 @@ View run at <a href='https://wandb.ai/alex_ugr/sinergym_evaluations/runs/15owsnp
 [WRAPPER LoggerWrapper] (INFO) : Wrapper initialized.
 </pre></div></div>
 </div>
-<p>We load the Stable Baselines 3 DQN model using the model allocated in our local computer, although we can use a remote model allocated in <em>wandb</em> from other training experiment.</p>
+<p>We’ll load the Stable Baselines 3 DQN model from our local computer, but we could also use a remote model stored in <em>wandb</em> from another training experiment.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
@@ -53714,7 +53710,7 @@ View run at <a href='https://wandb.ai/alex_ugr/sinergym_evaluations/runs/15owsnp
 </pre></div>
 </div>
 </div>
-<p>As we can see, The <em>wandb</em> model we want to load can come from an artifact of an different entity or project from the one we are using to register the evaluation of the loaded model, as long as it is accessible. The next step is use the model to predict actions and interact with the environment in order to collect data to evaluate the model.</p>
+<p>As you can see, the <em>wandb</em> model we want to load can come from an artifact of a different entity or project than the one we’re using to register the evaluation of the loaded model, as long as it’s accessible. The next step is to use the model to predict actions and interact with the environment to collect data for model evaluation.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
@@ -54061,7 +54057,7 @@ Episode  4 Mean reward:  -0.43131719567353316 Cumulative reward:  -15113.3545363
 [ENVIRONMENT] (INFO) : Environment closed. [SB3_DQN-EVAL-Eplus-5zone-mixed-discrete-stochastic-v1-episodes-5_2023-11-17_09:48]
 </pre></div></div>
 </div>
-<p>Finally, we register the evaluation data in wandb as an artifact to save it.</p>
+<p>Finally, we’ll register the evaluation data in <em>wandb</em> as an artifact for preservation.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -54106,17 +54102,17 @@ View run <strong style="color:#cdcd00">SB3_DQN-Eplus-5zone-mixed-discrete-stocha
 <div class="output_area rendered_html docutils container">
 Find logs at: <code>./wandb/run-20230803_133654-empzk2on/logs</code></div>
 </div>
-<p>We have the loaded model results in our local computer, but we can see the execution in <em>wandb</em> too:</p>
+<p>The results from the loaded model are stored locally, but you can also view the execution in <em>wandb</em>:</p>
 <ul class="simple">
-<li><p>If we check the wandb project list, we can see that sinergym_evaluations project has a new run:</p></li>
+<li><p>When you check the wandb project list, you’ll see that the sinergym_evaluations project has a new run:</p></li>
 </ul>
 <p><img alt="wandb_project2" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_project2.png?raw=true" /></p>
 <ul class="simple">
-<li><p>Hyperparameters tracked in the evaluation experiment and we can see the previous training artifact used to load the model:</p></li>
+<li><p>The evaluation experiment’s tracked hyperparameters, and the previous training artifact used to load the model:</p></li>
 </ul>
 <p><img alt="wandb_evaluating_hyperparameters" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_evaluating_hyperparameters.png?raw=true" /></p>
 <ul class="simple">
-<li><p>Artifact registered with Sinergym Output (and CSV files generated with the Logger Wrapper):</p></li>
+<li><p>The registered artifact with Sinergym Output (and CSV files generated with the Logger Wrapper):</p></li>
 </ul>
 <p><img alt="wandb_evaluating_artifact" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_evaluating_artifact.png?raw=true" /></p>
 </section>
@@ -54126,7 +54122,7 @@ Find logs at: <code>./wandb/run-20230803_133654-empzk2on/logs</code></div>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="rule_controller_example.html" class="btn btn-neutral float-left" title="22. Rule Controller example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rule_controller_example.html" class="btn btn-neutral float-left" title="23. Rule Controller example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../API-reference.html" class="btn btn-neutral float-right" title="API reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
@@ -54166,6 +54162,7 @@ Find logs at: <code>./wandb/run-20230803_133654-empzk2on/logs</code></div>
             <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
             <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
             <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
+            <dd><a href="../../../v3.2.10/index.html">v3.2.10</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
