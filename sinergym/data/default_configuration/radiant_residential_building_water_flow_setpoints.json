@@ -1,7 +1,7 @@
 {
-    "id_base"               : "radiant",
+    "id_base"               : "radiant_flow_setpoints",
 
-    "building_file"         : "radiant_residential_building.epJSON",
+    "building_file"         : "radiant_residential_building_water_flow.epJSON",
 
     "weather_specification" : {
         "weather_files" : ["USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw", 
@@ -158,13 +158,21 @@
                                 "SecondFloor:Bedroom02_floor_0_0_0", 
                                 "SecondFloor:Bedroom03_floor_0_0_0"]            
         },
-        "Zone Radiant HVAC Operation Mode"                                : {
-            "variable_names" : "radiant_availavility",
+        "Zone Radiant HVAC Mass Flow Rate"                                : {
+            "variable_names" : "flow_rate",
             "keys"           : ["FirstFloor:LivingRoom radiant surface", 
                                 "FirstFloor:Kitchen radiant surface", 
                                 "SecondFloor:Bedroom01 radiant surface", 
                                 "SecondFloor:Bedroom02 radiant surface", 
                                 "SecondFloor:Bedroom03 radiant surface"]           
+        },
+        "Schedule Value"                                 : {
+            "variable_names" : "value",
+            "keys"           : ["Living Radiant Heating SP SCHED", 
+                                "Kitchen Radiant Heating SP SCHED", 
+                                "Bed1 Radiant Heating SP SCHED",
+                                "Bed2 Radiant Heating SP SCHED",
+                                "Bed3 Radiant Heating SP SCHED"]            
         },
         "Boiler Part Load Ratio"                                          : {
             "variable_names" : "boiler_load_ratio",
@@ -183,31 +191,58 @@
     "meters"                : {},
 
     "actuators"             : {
-        "LIVING RADIANT AVAILAVILITY"                           : {
-            "variable_name" : "radiant_livroom",
+        "FirstFloor:LivingRoom Radiant surface"                           : {
+            "variable_name" : "flow_livroom",
+            "element_type"  : "Hydronic Low Temp Radiant", 
+            "value_type"    : "Water Mass Flow Rate"
+        },
+        "FirstFloor:Kitchen Radiant surface"                          : {
+            "variable_name" : "flow_kitchen",
+            "element_type"  : "Hydronic Low Temp Radiant", 
+            "value_type"    : "Water Mass Flow Rate"
+        },
+        "SecondFloor:Bedroom01 Radiant surface"                             : {
+            "variable_name" : "flow_bed1",
+            "element_type"  : "Hydronic Low Temp Radiant", 
+            "value_type"    : "Water Mass Flow Rate"
+        },
+        "SecondFloor:Bedroom02 Radiant surface"                             : {
+            "variable_name" : "flow_bed2",
+            "element_type"  : "Hydronic Low Temp Radiant", 
+            "value_type"    : "Water Mass Flow Rate"
+        },
+        "SecondFloor:Bedroom03 Radiant surface"                             : {
+            "variable_name" : "flow_bed3",
+            "element_type"  : "Hydronic Low Temp Radiant", 
+            "value_type"    : "Water Mass Flow Rate"
+        },
+
+        "Living Radiant Heating SP SCHED"                           : {
+            "variable_name" : "sp_livroom",
             "element_type"  : "Schedule:Compact", 
             "value_type"    : "Schedule Value"
         },
-        "KITCHEN RADIANT AVAILAVILITY"                          : {
-            "variable_name" : "radiant_kitchen",
+        "Kitchen Radiant Heating SP SCHED"                          : {
+            "variable_name" : "sp_kitchen",
             "element_type"  : "Schedule:Compact", 
             "value_type"    : "Schedule Value"
         },
-        "BED1 RADIANT AVAILAVILITY"                             : {
-            "variable_name" : "radiant_bed1",
+        "Bed1 Radiant Heating SP SCHED"                             : {
+            "variable_name" : "sp_bed1",
             "element_type"  : "Schedule:Compact", 
             "value_type"    : "Schedule Value"
         },
-        "BED2 RADIANT AVAILAVILITY"                             : {
-            "variable_name" : "radiant_bed2",
+        "Bed2 Radiant Heating SP SCHED"                             : {
+            "variable_name" : "sp_bed2",
             "element_type"  : "Schedule:Compact", 
             "value_type"    : "Schedule Value"
         },
-        "BED3 RADIANT AVAILAVILITY"                             : {
-            "variable_name" : "radiant_bed3",
+        "Bed3 Radiant Heating SP SCHED"                             : {
+            "variable_name" : "sp_bed3",
             "element_type"  : "Schedule:Compact", 
             "value_type"    : "Schedule Value"
         },
+
         "HEATING HIGH WATER TEMPERATURE SCHEDULE: ALWAYS 65.00" : {
             "variable_name" : "water_temperature",
             "element_type"  : "Schedule:Compact", 
@@ -215,13 +250,11 @@
         }
     },
 
-    "action_space"          : "gym.spaces.Box(low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 25.0], dtype=np.float32), high=np.array([1.0, 1.0, 1.0, 1.0, 1.0, 45.0], dtype=np.float32), shape=(6,), dtype=np.float32)",
-
-    "action_space_discrete" : "gym.spaces.MultiDiscrete(nvec=np.array([2, 2, 2, 2, 2, 21]))",
+    "action_space"          : "gym.spaces.Box(low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 19.0, 19.0, 19.0, 19.0, 19.0, 25.0], dtype=np.float32), high=np.array([0.0642111736148491, 0.101458821605256, 0.0260745613080282, 0.0527167485454115, 0.0416549441500946, 21.0, 21.0, 21.0, 21.0, 21.0, 45.0], dtype=np.float32), shape=(11,), dtype=np.float32)",
 
     "only_discrete": false,
 
-    "reward"                : "LinearReward",
+    "reward"                : "ExpReward",
 
     "reward_kwargs"         : {
         "temperature_variables" : ["firstfloor:livingroom_air_temperature", 

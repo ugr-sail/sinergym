@@ -1,5 +1,5 @@
 {
-    "id_base"               : "radiantflow",
+    "id_base"               : "radiant_flow",
 
     "building_file"         : "radiant_residential_building_water_flow.epJSON",
 
