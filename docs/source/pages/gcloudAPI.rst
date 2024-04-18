@@ -2,18 +2,15 @@
 Sinergym with Google Cloud
 ###########################
 
-In this project, we have defined some functionality based in gcloud API 
-python in ``sinergym/utils/gcloud.py``. Our team aim to configure a Google 
-Cloud account and combine with *Sinergym* easily.
+In this project, we've implemented functionality based on the gcloud API in ``sinergym/utils/gcloud.py``. 
+Our goal is to easily configure a Google Cloud account and integrate it with *Sinergym*.
 
-The main idea is to construct a **virtual machine** (VM) using 
-**Google Cloud Engine** (GCE) in order to execute our **Sinergym container** 
-on it. At the same time, this remote container will update **Weights and Biases tracking server** with artifacts 
-if we configure that experiment with those options.
+The primary objective is to create a **virtual machine** (VM) using **Google Cloud Engine** (GCE) 
+to run our **Sinergym container**. This remote container can update the **Weights and Biases 
+tracking server** with artifacts if the experiment is configured with these options.
 
-When an instance has finished its job, container **auto-remove** its host 
-instance from Google Cloud Platform if experiments has been configured 
-with this option.
+Once an instance completes its task, the container will **auto-remove** its host instance from 
+the Google Cloud Platform if the experiment is configured with this option.
 
 ***********************
 Preparing Google Cloud
@@ -22,23 +19,21 @@ Preparing Google Cloud
 First steps (configuration)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Firstly, it is necessary that you have a Google Cloud account set up and 
-SDK configured (auth, invoicing, project ID, etc). If you don't have this, 
-it is recommended to check `their documentation <https://cloud.google.com/sdk/docs/install>`__.
-Secondly, It is important to have installed 
-`Docker <https://www.docker.com/>`__ in order to be able to manage these 
+Initially, you need a set up Google Cloud account and configured SDK (auth, invoicing, project ID, 
+etc). If you don't have this, check `their documentation <https://cloud.google.com/sdk/docs/install>`__. 
+
+Secondly, it's important to have `Docker <https://www.docker.com/>`__ installed to manage these 
 containers in Google Cloud.
 
-You can link **gcloud** with **docker** accounts using the next 
-(see `authentication methods <https://cloud.google.com/container-registry/docs/advanced-authentication>`__):
+You can link **gcloud** with **docker** accounts using the next (see 
+`authentication methods <https://cloud.google.com/container-registry/docs/advanced-authentication>`__):
 
 .. code:: sh
 
     $ gcloud auth configure-docker
 
-If you don't want to have several problems in the future with the image 
-build and Google Cloud functionality in general, we recommend you to 
-**allow permissions for google cloud build** at the beginning 
+To avoid future issues with image build and Google Cloud functionality, we recommend 
+**allowing permissions for google cloud build** at the start 
 (see `this documentation <https://cloud.google.com/build/docs/securing-builds/configure-access-for-cloud-build-service-account>`__).
 
 .. image:: /_static/service-account-permissions.png
@@ -46,8 +41,9 @@ build and Google Cloud functionality in general, we recommend you to
   :alt: Permissions required for cloud build.
   :align: center
 
-On the other hand, we are going to enable **Google Cloud services** 
-in *API library*. These are API's which we need currently:
+We also need to enable certain **Google Cloud services** in the *API library*. 
+You can allow these services in your **Google account** using the **gcloud client SDK** 
+or the **Google Cloud Platform Console**.
 
     - Google Container Registry API.
     - Artifact Registry API
@@ -63,9 +59,6 @@ in *API library*. These are API's which we need currently:
     - Service Usage API
     - Cloud storage
     - Gmail API
-
-Hence, you will have to allow this services into your **Google account**.
-You can do it using **gcloud client SDK**:
 
 .. code:: sh
 
@@ -86,16 +79,17 @@ You can do it using **gcloud client SDK**:
                              drive.googleapis.com \
                              appengine.googleapis.com
 
-Or you can use **Google Cloud Platform Console**:
+
 
 .. image:: /_static/service-account-APIs.png
   :width: 800
   :alt: API's required for cloud build.
   :align: center
 
-If you have installed *Sinergym* and *Sinergym extras*. **Google Cloud SDK must 
-be linked with other python modules** in order to some functionality works in 
-the future. Please, execute the next in your terminal:
+If you've installed *Sinergym* and *Sinergym extras*, the 
+**Google Cloud SDK must be linked with other python modules** 
+for some functionalities to work. Please, execute the following 
+in your terminal:
 
 .. code:: sh
 
@@ -104,14 +98,12 @@ the future. Please, execute the next in your terminal:
 Use our container in Google Cloud Platform
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Our *Sinergym* container is uploaded in **Container Registry** as a public one 
-currently. You can use it **locally**:
+Our *Sinergym* container is currently uploaded in the **Container Registry** as a public one. 
+You can use it **locally** or in a **GCE VM**.
 
 .. code:: sh
 
     $ docker run -it eu.gcr.io/sinergym/sinergym:latest
-
-If you want to use it in a **GCE VM**, you can execute the next:
 
 .. code:: sh
 
@@ -126,76 +118,64 @@ If you want to use it in a **GCE VM**, you can execute the next:
         --boot-disk-type pd-ssd \
         --machine-type n2-highcpu-8
 
-We have available containers in Docker Hub too. Please, visit 
-our `repository <https://hub.docker.com/repository/docker/sailugr/sinergym>`__
+We also have containers available in Docker Hub. Please, visit our 
+`repository <https://hub.docker.com/repository/docker/sailugr/sinergym>`__
 
-.. note:: It is possible to change parameters in order to set 
-          up your own VM with your preferences (see 
-          `create-with-container <https://cloud.google.com/sdk/gcloud/reference/compute/instances/create-with-container>`__).
+.. note:: You can change parameters to set up your own VM according to your preferences 
+          (see `create-with-container <https://cloud.google.com/sdk/gcloud/reference/compute/instances/create-with-container>`__).
 
-.. warning:: ``--boot-disk-size`` is really important, by default 
-             VM set 10GB and it isn't enough at all for *Sinergym* container.
-             This derive in a silence error for Google Cloud Build 
-             (and you would need to check logs, which incident is not clear).
+.. warning:: The ``--boot-disk-size`` is crucial. By default, the VM sets 10GB, which is insufficient for the *Sinergym* 
+             container. This results in a silent error for Google Cloud Build, and you would need to check the logs, 
+             which are not clear.
 
-Use your own container
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Use your Own Container
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Suppose you have this repository forked and you want to upload **your own 
-container on Google Cloud** and to use it. You can use **cloudbuild.yaml** 
-with our **Dockerfile** for this purpose:
+If you have forked this repository and want to upload **your own container on Google Cloud** and use it, ç
+you can use **cloudbuild.yaml** with our **Dockerfile** for this purpose:
 
 .. literalinclude:: ../../../cloudbuild.yaml
     :language: yaml
 
-This file does the next:
+This file performs the following:
 
-    1. Write in **cache** for quick updates 
-       (if a older container was uploaded already).
-    2. **Build** image (using cache if it's available)
-    3. **Push** image built to Container Registry
-    4. Make container public inner Container Registry.
+    1. Writes in **cache** for quick updates (if an older container was already uploaded).
+    2. **Builds** the image (using cache if available)
+    3. **Pushes** the built image to the Container Registry
+    4. Makes the container public within the Container Registry.
 
-There is an option section at the end of the file. Do not confuse 
-this part with the virtual machine configuration. Google Cloud 
-uses a helper VM to build everything mentioned above. At the same 
-time, we are using this *YAML* file in order to upgrade our container 
-because of ``PROJECT_ID`` environment variable is defined by Google 
-Cloud SDK, so its value is your current project in Google Cloud 
-global configuration.
+Don't confuse the option section at the end of the file with the virtual machine configuration. 
+Google Cloud uses a helper VM to build everything mentioned above. We use this *YAML* file to 
+upgrade our container because the ``PROJECT_ID`` environment variable is defined by the Google 
+Cloud SDK, so its value is your current project in the Google Cloud global configuration.
 
-.. warning:: In the same way VM needs more memory, Google Cloud 
-             Build needs at least 10GB to work correctly. In other 
-             case it may fail.
+.. warning:: Just like the VM needs more memory, Google Cloud Build needs at least 10GB to work 
+             correctly. Otherwise, it may fail.
 
-.. warning:: If your local computer doesn't have enough free space 
-             it might report the same error (there isn't difference 
-             by Google cloud error manager), so be careful.
+.. warning:: If your local computer doesn't have enough free space, it might report the same error 
+             (there isn't a difference by Google cloud error manager), so be careful.
 
-In order to execute **cloudbuild.yaml**, you have to do the next:
+To execute **cloudbuild.yaml**, do the following:
 
 .. code:: sh
 
     $ gcloud builds submit --region europe-west1 \
         --config ./cloudbuild.yaml .
 
-``--substitutions`` can be used in order to configure build 
-parameters if they are needed.
+You can use ``--substitutions`` to configure build parameters if needed.
 
-.. note:: "." in ``--config`` refers to **Dockerfile**, which is 
-          necessary to build container image (see 
-          `build-config <https://cloud.google.com/build/docs/build-config>`__).
+.. note:: The "." in ``--config`` refers to the **Dockerfile**, which is necessary to build the container 
+          image (see `build-config <https://cloud.google.com/build/docs/build-config>`__).
 
-.. note:: In **cloudbuild.yaml** there is a variable named *PROJECT_ID*. 
-          However, it is not defined in substitutions. This is because 
-          it's a predetermined variable by Google Cloud. When build begins 
-          *"$PROJECT_ID"* is set to current value in gcloud configuration 
+.. note:: In **cloudbuild.yaml**, there is a variable named *PROJECT_ID*. However, it is not defined 
+          in substitutions. This is because it's a predetermined variable by Google Cloud. When the 
+          build begins, *"$PROJECT_ID"* is set to the current value in the gcloud configuration 
           (see `substitutions-variables <https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values>`__).
 
 Create your VM or MIG
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-To create a **VM** that uses this container, here there is an example:
+To create a VM that uses this container, use the following command:
 
 .. code:: sh
 
@@ -218,8 +198,7 @@ To create a **VM** that uses this container, here there is an example:
              You can think that is an error, Google cloud should notify this. 
              If this issue happens, you should wait for a several minutes.
 
-To create a **MIG**, you need to create a machine set up **template** 
-firstly, for example:
+To create a MIG, first create a machine template:
 
 .. code:: sh
 
@@ -236,12 +215,11 @@ firstly, for example:
     --boot-disk-type pd-ssd \
     --machine-type n2-highcpu-8
 
-.. note:: ``--service-account``, ``--scopes`` and ``--container-env`` parameters 
-          will be explained in :ref:`Containers permission to bucket storage 
-          output`. Please, read that documentation before using these parameters, 
-          since they require a previous configuration.
+.. note:: The ``--service-account``, ``--scopes``, and ``--container-env`` parameters will be explained 
+          in the :ref:`Containers permission to bucket storage output`. Please read that documentation 
+          before using these parameters, as they require prior configuration.
 
-Then, you can create a group-instances as large as you want:
+Then, create a managed instance group:
 
 .. code:: sh
 
@@ -250,84 +228,87 @@ Then, you can create a group-instances as large as you want:
         --size 3 \
         --template sinergym-template
 
-.. warning:: It is possible that quote doesn't let you have more than one 
-             VM at the same time. Hence, the rest of VM's probably will 
-             be *initializing* always but never ready. If it is your case, 
-             we recommend you check your quotes 
-             `here <https://console.cloud.google.com/iam-admin/quotas>`__
+.. note:: If you encounter issues with VM initialization, check your quotas 
+          `here <https://console.cloud.google.com/iam-admin/quotas>`__.
+
 
 Initiate your VM
 ~~~~~~~~~~~~~~~~~~~~
 
-Your virtual machine is ready! To connect you can use ssh 
+Your virtual machine is ready! To connect, you can use SSH 
 (see `gcloud-ssh <https://cloud.google.com/sdk/gcloud/reference/compute/ssh>`__):
 
 .. code:: sh
 
     $ gcloud compute ssh <machine-name>
 
-Google Cloud use a **Container-Optimized OS** (see 
+Google Cloud uses a **Container-Optimized OS** (see 
 `documentation <https://cloud.google.com/container-optimized-os/docs>`__) 
-in VM. This SO have docker pre-installed with *Sinergym* container.
+in the VM. This OS has Docker pre-installed with the *Sinergym* container.
 
-To use this container in our machine you only have to do:
+To use this container on your machine, simply run:
 
 .. code:: sh
 
     $ docker attach <container-name-or-ID>
 
-
-
-And now you can execute your own experiments in Google Cloud! For example, 
-you can enter in remote container with *gcloud ssh* and execute 
-*train_agent.py* for the experiment you want.
+Now you can execute your own experiments in Google Cloud! For example, 
+you can enter the remote container with *gcloud ssh* and execute 
+*train_agent.py* for the desired experiment.
 
 ********************************************
 Executing experiments in remote containers
 ********************************************
 
-`train_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/train_agent.py>`__ and 
-`load_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent.py>`__
-will be allocated in every remote container and it is used to execute experiments and evaluations,
-being possible to combine with **Google Cloud Bucket**, **Weights and Biases**, **auto-remove**, etc:
+The `train_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/train_agent.py>`__ and 
+`load_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent.py>`__ scripts are 
+used to execute experiments and evaluations in remote containers. These scripts can be combined with 
+features such as Google Cloud Bucket, Weights and Biases, and auto-remove functionality.
 
-.. note:: **train_agent.py** can be used in local experiments 
-          and send output data and artifact to remote storage 
-          such as wandb without configure cloud computing too. 
+.. note:: The **train_agent.py** script can also be used for local experiments and sending output data 
+          and artifacts to remote storage, such as wandb, without configuring cloud computing.
 
-The structure of the JSON to configure the experiment or evaluation is specified in :ref:`How to use` section.
+The JSON structure for configuring experiments or evaluations is explained in the :ref:`Usage` section.
 
-.. warning:: For a correct auto_delete functionality, please, use MIG's 
-             instead of individual instances.
+.. warning:: To ensure correct auto_delete functionality, it is recommended to use Managed Instance Groups 
+             (MIGs) instead of individual instances.
 
 Containers permission to bucket storage output
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As you see in *Sinergym* template explained in :ref:`Create your VM or MIG`, 
-it is specified ``--scope``, ``--service-account`` and ``--container-env``. 
-This aim to *remote_store* option in *train_agent.py* works correctly.
-Those parameters provide each container with permissions to write in the bucket 
-and manage Google Cloud Platform (auto instance remove function).
-Container environment variables indicate zone and project_id.
+To enable the *remote_store* option in *train_agent.py* to work correctly, the *Sinergym* 
+template in the :ref:`Create your VM or MIG` section specifies the 
+``--scope``, ``--service-account``, and ``--container-env`` parameters. 
+These parameters provide the necessary permissions for each container to write to the bucket 
+and manage Google Cloud Platform.
 
-Hence, it is **necessary** to **set up this service account** and give privileges 
-in order to that objective. Then, following 
-`Google authentication documentation <https://cloud.google.com/docs/authentication/getting-started>`__ 
-we will do the next:
+To set up the service account and grant the required privileges, follow the steps below:
+
+1. Create a new service account named **storage-account**:
 
 .. code:: sh
 
     $ gcloud iam service-accounts create storage-account
-    $ gcloud projects add-iam-policy-binding PROJECT_ID --member="serviceAccount:storage-account@PROJECT_ID.iam.gserviceaccount.com" --role="roles/owner"
-    $ gcloud iam service-accounts keys create PROJECT_PATH/google-storage.json --iam-account=storage-account@PROJECT_ID.iam.gserviceaccount.com
-    $ export GOOGLE_CLOUD_CREDENTIALS= PROJECT_PATH/google-storage.json
 
-In short, we create a new service account called **storage-account**. 
-Then, we dote this account with *roles/owner* permission. The next step 
-is create a file key (json) called **google-storage.json** in our project 
-root (gitignore will ignore this file in remote).
-Finally, we export this file in **GOOGLE_CLOUD_CREDENTIALS** in our local computer 
-in order to gcloud SDK knows that it has to use that token to authenticate.
+2. Grant the *roles/owner* permission to the service account:
+
+.. code:: sh
+
+    $ gcloud projects add-iam-policy-binding PROJECT_ID --member="serviceAccount:storage-account@PROJECT_ID.iam.gserviceaccount.com" --role="roles/owner"
+
+3. Create a JSON key file named **google-storage.json** in the project root directory (this file should be ignored by git):
+
+.. code:: sh
+
+    $ gcloud iam service-accounts keys create PROJECT_PATH/google-storage.json --iam-account=storage-account@PROJECT_ID.iam.gserviceaccount.com
+
+4. Export the path to the JSON key file as the **GOOGLE_CLOUD_CREDENTIALS** environment variable on your local computer:
+
+.. code:: sh
+
+    $ export GOOGLE_CLOUD_CREDENTIALS=PROJECT_PATH/google-storage.json
+
+These steps ensure that the gcloud SDK uses the specified token for authentication.
 
 Visualize remote wandb log in real-time
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -338,10 +319,9 @@ You only have to enter in `Weights & Biases <https://wandb.ai/site>`__ and log i
 Google Cloud Alerts
 ********************
 
-**Google Cloud Platform** include functionality in order to trigger some events and generate 
-alerts in consequence. Then, a trigger has been created in our gcloud project which aim to 
-advertise when an experiment has finished.
-This alert can be captured in several ways (Slack, SMS, Email, etc).
-If you want to do the same, please, check Google Cloud Alerts documentation 
+**Google Cloud Platform** provides functionality to trigger events and generate alerts. 
+We have created a trigger in our gcloud project to notify when an experiment is finished. 
+This alert can be received through various channels such as Slack, SMS, or Email. 
+To learn more about setting up alerts, refer to the Google Cloud Alerts documentation 
 `here <https://cloud.google.com/monitoring/alerts>`__.
 

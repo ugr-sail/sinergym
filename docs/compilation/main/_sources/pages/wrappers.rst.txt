@@ -2,51 +2,46 @@
 Wrappers
 ############
 
-*Sinergym* has several **wrappers** in order to add some functionality in the environment 
-that it doesn't have by default. The code can be found in 
-`sinergym/sinergym/utils/wrappers.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/wrappers.py>`__.
-You can implement your own wrappers inheriting from *gym.Wrapper* or some of its variants, see 
+*Sinergym* provides several **wrappers** to add functionality to the environment that isn't included by default. 
+The code is available in 
+`sinergym/sinergym/utils/wrappers.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/wrappers.py>`__. 
+You can create your own wrappers by inheriting from *gym.Wrapper* or one of its variants, as seen in the 
 `Gymnasium documentation <https://gymnasium.farama.org/tutorials/gymnasium_basics/implementing_custom_wrappers/>`__.
 
 ***********************
 MultiObjectiveReward
 ***********************
 
-Environment step will return a vector reward (selected elements in wrapper constructor, 
-one for each objective) instead of a traditional scalar value. See `#301 <https://github.com/ugr-sail/sinergym/issues/301>`__.
+The environment step will return a vector reward (selected elements in the wrapper constructor, 
+one for each objective) instead of a traditional scalar value. Refer to 
+`#301 <https://github.com/ugr-sail/sinergym/issues/301>`__ for more information.
 
 ***************************
 PreviousObservationWrapper
 ***************************
 
-Wrapper to add observation values from previous timestep to current environment observation.
-It is possible to select the variables you want to track its previous observation values.
+This wrapper adds observation values from the previous timestep to the current environment 
+observation. You can select the variables you want to track for their previous observation values.
 
 ***********************
 DatetimeWrapper
 ***********************
 
-Wrapper to substitute ``day_of_month`` value by ``is_weekend`` flag, and ``hour`` and ``month`` by sin and cos values. 
-Observation space is updated automatically.
+This wrapper replaces the ``day_of_month`` value with the ``is_weekend`` flag, and the ``hour`` and ``month`` 
+values with sin and cos values. The observation space is automatically updated.
 
 ***********************
 NormalizeAction
 ***********************
 
-Wrapper to apply normalization in action space. It is very useful in DRL algorithms such as some of them
-only works with normalized values correctly, making environments more generic in DRL solutions.
+This wrapper applies normalization in the action space. It's particularly useful in DRL algorithms, 
+as some of them only work correctly with normalized values, making environments more generic in DRL solutions.
 
-By default, the normalization is applied in the range ``[-1,1]``. However, other **range** can be specified when wrapper
-is instantiated.
+By default, normalization is applied in the range ``[-1,1]``. However, a different **range** can be specified 
+when the wrapper is instantiated.
 
-*Sinergym* **parse** these values to real action space defined in original environment internally before to 
-send it to *EnergyPlus* Simulator by the API middleware.
-
-.. important:: The method in charge of parse this values from [-1,1] to real action space if it is required is 
-        called ``reverting_action(action)`` in the wrapper class.
-        We always recommend to use the normalization in action space for DRL solutions, since this space is 
-        compatible with all algorithms. However, if you are implementing your own rule-based controller 
-        and working with real action values, for example, you don't must to apply this wrapper.
+*Sinergym* **parses** these values to the real action space defined in the original environment internally 
+before sending it to the *EnergyPlus* Simulator via the API middleware.
 
 .. image:: /_static/normalize_action_wrapper.png
   :scale: 50 %
@@ -57,15 +52,18 @@ send it to *EnergyPlus* Simulator by the API middleware.
 DiscretizeEnv
 ***********************
 
-Wrapper to discretize the action space. **Discrete space** must be defined following the Gymnasium standard. This space
-should be ``gym.spaces.Discrete``, ``gym.spaces.MultiDiscrete`` or ``gym.spaces.MultiBinary``. An **action mapping function**
-is also given, in order to map this/these value(s) into ones that fit the underlying continuous environment (before to send it to the simulator).
+Wrapper to discretize the action space. The **Discrete space** should be defined according to the Gymnasium standard. 
+This space should be either ``gym.spaces.Discrete``, ``gym.spaces.MultiDiscrete``, or ``gym.spaces.MultiBinary``. 
+An **action mapping function** is also provided to map these values into ones that are compatible with the underlying 
+continuous environment (before sending it to the simulator).
 
-.. important:: The discrete space **must** discretize the original continuous space. Therefore, discrete space only should reach values which
-               are considered in the original environment action space.
+.. important:: The discrete space **must** discretize the original continuous space. Hence, 
+               the discrete space should only reach values that are considered in the original 
+               environment action space.
 
-This action mapping function can be defined by users to specify how to jump from discrete to continuous values. If action mapping function
-output doesn't match with original environment action space, an error will be raised. See :ref:`Environment Discretization Wrapper` for an example of use.
+Users can define this action mapping function to specify the transition from discrete to continuous values. 
+If the output of the action mapping function doesn't align with the original environment action space, 
+an error will be raised. Refer to :ref:`Environment Discretization Wrapper` for a usage example.
 
 .. image:: /_static/discretize_wrapper.png
   :scale: 50 %
@@ -76,17 +74,18 @@ output doesn't match with original environment action space, an error will be ra
 IncrementalWrapper
 ***************************
 
-A wrapper to transform some of the continuous environment variables into actions indicating an increase/decrease in their current value, 
-rather than directly setting the value. To compute the possible increments/decrements for each variable, a dictionary is specified as 
-an argument, indicating the name of each variable to be transformed as the key, and the value being a tuple of values called **delta** and 
-**step**. This achieves a set of possible increments for each desired variable.
+A wrapper is available to convert some of the continuous environment variables into actions that indicate an 
+increase/decrease in their current value, rather than directly setting the value. A dictionary is specified 
+as an argument to calculate the possible increments/decrements for each variable. This dictionary uses the name 
+of each variable to be transformed as the key, and the value is a tuple of values called **delta** and **step**, 
+which creates a set of possible increments for each desired variable.
 
-- **delta**: Maximum range of increments and decrements.
+- **delta**: The maximum range of increments and decrements.
 
-- **step**: Interval of intermediate values within the ranges.
+- **step**: The interval of intermediate values within the ranges.
 
-The following figure illustrates its operation, basically the values are rounded with nearest increment value and summed with
-current real values of simulation:
+The following figure illustrates its operation. Essentially, the values are rounded to the nearest increment 
+value and added to the current real values of the simulation:
 
 .. image:: /_static/incremental_wrapper.png
   :scale: 50 %
@@ -97,14 +96,14 @@ current real values of simulation:
 DiscreteIncrementalWrapper
 ***************************
 
-A wrapper for an incremental setpoint action space environment. This wrapper
-will update an environment, converting it in a *discrete* environment with an action mapping function and action space 
-depending on the **delta** and **step** specified. The action will be sum with **current setpoint** values instead of overwrite the latest action. 
-Then, the action is the current setpoint values with the increase instead of the discrete value action whose purpose is to define 
-the increment/decrement itself.
+A wrapper for an incremental setpoint action space environment is also available. This wrapper updates 
+an environment, transforming it into a *discrete* environment with an action mapping function and action 
+space based on the specified **delta** and **step**. The action will be added to the **current setpoint** 
+values instead of overwriting the latest action. Therefore, the action is the current setpoint values with 
+the increase, rather than the discrete value action, which is intended to define the increment/decrement itself.
 
-.. warning:: "This wrapper fully changes the action space from continuous to discrete, meaning that increments/decrements 
-             apply to all variables. In essence, selecting variables individually as in IncrementalWrapper is not possible."
+.. warning:: This wrapper fully changes the action space from continuous to discrete, meaning that increments/decrements 
+             apply to all variables. In essence, selecting variables individually as in IncrementalWrapper is not possible.
 
 .. image:: /_static/discrete_incremental_wrapper.png
   :scale: 50 %
@@ -115,22 +114,25 @@ the increment/decrement itself.
 NormalizeObservation
 ***********************
 
-It is used to transform observation received from simulator in values between -1 and 1.
-It is based in the `dynamic normalization wrapper of Gymnasium <https://gymnasium.farama.org/_modules/gymnasium/wrappers/normalize/#NormalizeObservation>`__. At the beginning,
-it is not precise and the values may be out of range usually, so use this wrapper carefully.
+This is used to transform observations received from the simulator into values between -1 and 1. 
+It's based on the 
+`dynamic normalization wrapper of Gymnasium <https://gymnasium.farama.org/_modules/gymnasium/wrappers/normalize/#NormalizeObservation>`__. 
+Initially, it may not be precise and the values might often be out of range, so use this wrapper 
+with caution.
 
 ***********************
 LoggerWrapper
 ***********************
 
-Wrapper for logging all interactions between agent and environment. Logger class can be selected
-in the constructor if other type of logging is required. For more information about *Sinergym* Logger visit :ref:`Logger`.
+This is a wrapper for logging all interactions between the agent and the environment. The Logger class can 
+be selected in the constructor if a different type of logging is required. For more information about the 
+*Sinergym* Logger, refer to :ref:`Logger`.
 
 ***********************
 MultiObsWrapper
 ***********************
 
-Stack observation received in a history queue (size can be customized).
+This stacks observations received in a history queue (the size can be customized).
 
 
 .. note:: For examples about how to use these wrappers, visit :ref:`Wrappers example`.

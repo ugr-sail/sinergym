@@ -2,9 +2,8 @@
 Weathers
 ############
 
-Specific information on the climates included in *Sinergym* is provided below, 
-independently of the rest of the components that make up the environment to 
-be used in each experiment.
+Detailed climate data incorporated in *Sinergym* is presented below, 
+independent of other environmental components utilized in each experiment.
 
 .. important:: If you are interested in including new weathers to this framework, 
                please visit section :ref:`Adding new weathers for environments`.

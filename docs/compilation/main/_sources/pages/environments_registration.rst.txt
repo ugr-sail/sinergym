@@ -2,21 +2,22 @@
 Environments Configuration and Registration
 ############################################
 
-When defining a new environment, we can use the *Sinergym* environment constructor and 
-fill the parameters that we explained in section :ref:`Available Parameters`.
+When defining a new environment, we can use the *Sinergym* environment constructor and fill the parameters 
+explained in section :ref:`Available Parameters`.
 
-Many environments can be made based on the same building, depending on its configurations. 
-Therefore, this can be tedious to create (or register Gymnasium ID's) of all of them.
+Many environments can be created based on the same building, depending on its configurations. Therefore, 
+creating (or registering Gymnasium IDs) for all of them can be tedious.
 
 *Sinergym* has a system that automates this process. From a JSON file hosted in 
 `sinergym/data/default_configuration <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/default_configuration>`__, 
-a set of parameters for each of the possible configurations will be built, along with an associated 
-ID, and will be registered in gymnasium automatically.
+a set of parameters for each of the possible configurations will be built, along with an associated ID, and will be 
+registered in Gymnasium automatically.
 
-The structure of these JSON configuration definitions will be explained in this section. Additionally, this structure facilitates 
-the definition of observation variables (``time_variables``, ``variables`` and ``meters``) and action variables (``actuators``).
-Instead of defining in EnergyPlus Python API format like environment constructor, *Sinergym* will read this simpler structure and parse
-to EnergyPlus Python API format automatically.
+This section will explain the structure of these JSON configuration definitions. Additionally, this structure 
+facilitates the definition of observation variables (``time_variables``, ``variables`` and ``meters``) and 
+action variables (``actuators``). Instead of defining in the EnergyPlus Python API format like the environment 
+constructor, *Sinergym* will read this simpler structure and parse it to the EnergyPlus Python API format 
+automatically.
 
 +-----------------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |        **Key**        | **Optional** |                                                                              **Description**                                                                              |
@@ -52,17 +53,18 @@ to EnergyPlus Python API format automatically.
 | reward_kwargs         | No           | Reward kwargs for Reward class constructor in dict format.                                                                                                                |
 +-----------------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-.. important:: As you can see, the continuous action space is mandatory, while the discrete one is not. 
-               This is because Sinergym starts from continuous environments and then discretizes them 
-               through a wrapper. For more information see :ref:`DiscretizeEnv`.
+.. important:: Sinergym requires a continuous action space, but not a discrete one. 
+               It begins with continuous environments and discretizes them using a wrapper. 
+               For more details, refer to :ref:`DiscretizeEnv`.
 
 
-These are the keys of the JSON, an example could be more intuitive:
+These are the keys of the JSON. An example might make it clearer:
 
 .. literalinclude:: ../../../sinergym/data/default_configuration/5ZoneAutoDXVAV.json
     :language: json
 
-With this JSON configuration for the building ``5ZoneAutoDXVAV.epJSON``, we will have the next environment automatically configured ::
+With this JSON configuration for the building ``5ZoneAutoDXVAV.epJSON``, the following 
+environments will be automatically configured ::
 
     ['Eplus-5zone-hot-continuous-v1', 
      'Eplus-5zone-hot-discrete-v1', 
@@ -78,33 +80,39 @@ With this JSON configuration for the building ``5ZoneAutoDXVAV.epJSON``, we will
      'Eplus-5zone-cool-discrete-stochastic-v1'
     ]
 
-For example, if you don't define discrete space or variation, the discrete and stochastic versions will not appear in the list.
+For example, if you don't define discrete space or variation, the discrete and stochastic versions will 
+not appear in the list.
 
-.. warning:: For Discrete environments, it must be defined an action mapping in `constants.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__
-          with the name DEFAULT_<id_base in upper case>_DISCRETE_FUNCTION to register correctly.
+.. warning:: For discrete environments, an action mapping must be defined in 
+             `constants.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/constants.py>`__ 
+             named as DEFAULT_<id_base in upper case>_DISCRETE_FUNCTION for correct registration.
 
 
 ****************************
 Weather Specification field
 ****************************
 
-Weather specification is configured to generate several environments depending on the weathers defined. Weather files must be in
-the correct folder and the keys are used in order to define the final name in environment's ID's.
+The weather specification is set up to generate multiple environments based on the defined weathers. 
+Weather files must be in the correct folder, and the keys are used to define the final name 
+in the environment's IDs.
+
 
 *****************
 Variables field
 *****************
 
-``variables`` field have a specific format in order to define all the variables observed in the environment faster. The variable names and keys
-can be an individual str or a list of str. The next graph explain how its functionality is:
+The ``variables`` field uses a specific format to quickly define all the observed variables 
+in the environment. The variable names and keys can be either an individual string or a list of 
+strings. The following graph explains its functionality:
 
 .. image:: /_static/json_variables_conf.png
   :scale: 70 %
   :alt: Configuration for *variables* in json configuration for *Sinergym* environments.
   :align: center
 
-*Sinergym* will parse this information to variables parameter to env constructor (same that EnergyPlus Python API) in the registration.
-The same is done with ``meters`` and ``actuators`` fields, but they are simpler.
+*Sinergym* will parse this information into the variables parameter for the environment constructor 
+(similar to the EnergyPlus Python API) during registration. The same process is applied to the 
+``meters`` and ``actuators`` fields, although they are simpler.
 
 
 

@@ -2,9 +2,9 @@
 Deep Reinforcement Learning Integration
 #######################################
 
-*Sinergym* integrates some facilities in order to use **Deep Reinforcement Learning algorithms** 
-provided by `Stable Baselines 3 <https://stable-baselines3.readthedocs.io/en/master/>`__. Although *Sinergym* is 
-compatible with any algorithm which works with Gymnasium interface.
+*Sinergym* provides features to utilize **Deep Reinforcement Learning algorithms** from 
+`Stable Baselines 3 <https://stable-baselines3.readthedocs.io/en/master/>`__. However, 
+*Sinergym* is also compatible with any algorithm that operates with the Gymnasium interface.
 
 +--------------------------------------------------------+
 |                   Stable Baselines 3:                  |
@@ -24,35 +24,35 @@ compatible with any algorithm which works with Gymnasium interface.
 | TD3       |    NO    |     YES    | OffPolicyAlgorithm |
 +-----------+----------+------------+--------------------+
 
-For that purpose, we are going to refine and develop 
-`Callbacks <https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html>`__ 
-which are a set of functions that will be called at given **stages of the training procedure**. 
-You can use callbacks to access internal state of the RL model **during training**. 
-It allows one to do monitoring, auto saving, model manipulation, progress bars, ...
-Our callbacks inherit from Stable Baselines 3 and are available in 
+To this end, we will refine and develop 
+`Callbacks <https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html>`__, 
+a set of functions that will be called at specific **stages of the training procedure**. 
+Callbacks allow you to access the internal state of the RL model **during training**. 
+They enable monitoring, auto-saving, model manipulation, progress bars, and more. 
+Our callbacks inherit from Stable Baselines 3 and can be found in 
 `sinergym/sinergym/utils/callbacks.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/callbacks.py>`__.
 
-``Type`` column has been specified due to its importance about 
+The ``Type`` column is specified due to its importance in the 
 *Stable Baselines callback* functionality.
 
 ********************
 DRL Callback Logger
 ********************
 
-A callback allows to custom our own logger for DRL *Sinergym* executions. Our objective 
-is to **log all information about our custom environment** specifically in real-time.
-Each algorithm has its own differences 
-about how information is extracted which is why its implementation.
+A callback allows us to customize our own logger for DRL *Sinergym* executions. Our goal is to 
+**log all information about our custom environment** specifically in real-time. 
+Each algorithm has its own nuances regarding how information is extracted, 
+hence its implementation.
 
-.. note:: You can specify if you want *Sinergym* logger (see :ref:`Logger`) to record 
-          simulation interactions during training at the same time using 
-          ``sinergym_logger`` attribute in constructor. 
+.. note:: You can specify if you want the *Sinergym* logger (see :ref:`Logger`) to record simulation 
+          interactions during training simultaneously using the ``sinergym_logger`` 
+          attribute in the constructor. 
 
-The ``LoggerCallback`` inherits from Stable Baselines 3 ``BaseCallback`` and 
-uses `Weights&Biases <https://wandb.ai/site>`__ (*wandb*) in the background in order to host 
-all information extracted. With *wandb*, it's possible to track and visualize all DRL 
-training in real time, register hyperparameters and details of each execution, save artifacts 
-such as models and *Sinergym* output, and compare between different executions. This is an example: 
+The ``LoggerCallback`` inherits from Stable Baselines 3's ``BaseCallback`` and uses 
+`Weights&Biases <https://wandb.ai/site>`__ (*wandb*) in the background to host all extracted 
+information. With *wandb*, it's possible to track and visualize all DRL training in real time, 
+register hyperparameters and details of each execution, save artifacts such as models and *Sinergym* 
+output, and compare different executions. Here is an example:
 
 - Hyperparameter and summary registration:
 
@@ -77,209 +77,164 @@ such as models and *Sinergym* output, and compare between different executions. 
 
 There are tables which are in some algorithms and not in others and vice versa. This depends on the algorithm used.
 
-.. note:: Since version 3.0.6, *Sinergym* can record real-time data with the same timestep frequency regardless of the algorithm. See `#363 <https://github.com/ugr-sail/sinergym/pull/363>`__.
+.. note:: Since version 3.0.6, *Sinergym* can record real-time data with the same timestep frequency 
+          regardless of the algorithm. See `#363 <https://github.com/ugr-sail/sinergym/pull/363>`__.
 
 ********************
 Evaluation Callback
 ********************
 
-A callback has also been refined for the evaluation of the model versions obtained during 
-the training process with *Sinergym*, so that it stores the best model obtained (not the one resulting 
-at the end of the training).
+An enhanced callback, named ``LoggerEvalCallback``, is used for evaluating the model versions obtained during 
+the training process with *Sinergym*. It stores the best model obtained, not necessarily the final one from 
+the training process. This callback inherits from Stable Baselines 3's ``EventCallback``. 
 
-Its name is ``LoggerEvalCallback`` and it inherits from Stable Baselines 3 ``EventCallback``. 
-The main feature added is that the model evaluation is logged in a particular section in 
-*wandb* too for the concrete metrics of the building model. The evaluation is customized for
-*Sinergym* particularities. 
+A key feature is that the model evaluation is logged in a specific section in *wandb* for the precise metrics 
+of the building model. The evaluation is tailored for *Sinergym*'s specific characteristics. 
 
-We have to define in ``LoggerEvalCallback`` construction how many training episodes we want 
-the evaluation process to take place. On the other hand, we have to define how many episodes 
-are going to occupy each of the evaluations to be performed. 
+In the ``LoggerEvalCallback`` constructor, we define the number of training episodes for the evaluation process. 
+We also specify the number of episodes for each evaluation to be performed. 
 
-With more episodes, more accurate the averages of the reward-based indicators will be, and, 
-therefore, the more faithful it will be to reality in terms of how good the current model is 
-turning out to be. However, it will take more time.
+More episodes lead to more accurate averages of the reward-based indicators, providing a more realistic 
+assessment of the current model's performance. However, this increases the time required.
 
-It calculates timestep and episode averages for power consumption, temperature violation, comfort penalty and power penalty.
-On the other hand, it calculates comfort violation percentage in episodes too.
-Currently, only mean reward is taken into account to decide when a model is better.
+The callback calculates timestep and episode averages for power consumption, temperature violation, comfort 
+penalty, and power penalty. It also calculates the percentage of comfort violation in episodes. Currently, 
+only the mean reward is considered when deciding if a model is better.
 
 ******************************
-Weights and Biases structure
+Weights and Biases Structure
 ******************************
 
-The main structure for *Sinergym* with *wandb* is:
+The primary structure for *Sinergym* with *wandb* includes:
 
-* **action_network**: The raw output returned by the network in DRL algorithm.
+* **action_network**: The raw output from the DRL algorithm network.
 
-* **action_simulation**: The transformed output, being the values that the simulator 
-  takes for processing and calculation of the next state and reward in Sinergym.
+* **action_simulation**: The transformed output used by the simulator for processing and calculating 
+  the next state and reward in Sinergym.
 
-* **episode**: Here is stored all information about entire episodes. 
-  It is equivalent to ``progress.csv`` in *Sinergym logger* 
-  (see *Sinergym* :ref:`Output format` section):
+* **episode**: Stores comprehensive information about each episode, equivalent to ``progress.csv`` in 
+  *Sinergym logger* (:ref:`Output format` section). It includes:
 
-    - *ep_length*: Timesteps executed in each episode.
+    - *episode_num*: Episode number.
+    - *episode_length*: Timesteps per episode.
+    - *mean_reward*: Average reward per step in the episode.
+    - *cumulative_reward*: Total reward for the entire episode.
+    - *mean_power_demand*: Average power demand per step in the episode.
+    - *cumulative_power_demand*: Total power demand for the entire episode.
+    - *mean_temperature_violation*: Average degrees temperature violation (out of comfort range) per step 
+      in the episode.
+    - *cumulative_temperature_violation*: Total degrees temperature violation for the entire episode.
+    - *comfort_violation_time(%)*: Percentage of time the comfort range is violated in the episode (timesteps out of range).
+    - *mean_abs_energy_penalty*: Average absolute energy penalty per step in the episode.
+    - *cumulative_abs_energy_penalty*: Total absolute energy penalty for the entire episode.
+    - *mean_abs_comfort_penalty*: Average absolute comfort penalty per step in the episode.
+    - *cumulative_abs_comfort_penalty*: Total absolute comfort penalty for the entire episode.
+    - *mean_reward_energy_term*: Average reward energy term per step in the episode (weighted absolute energy penalty).
+    - *cumulative_reward_energy_term*: Total reward energy term for the entire episode (weighted absolute energy penalty).
+    - *mean_reward_comfort_term*: Average reward comfort term per step in the episode (weighted absolute comfort penalty).
+    - *cumulative_reward_comfort_term*: Total reward comfort term for the entire episode (weighted absolute comfort penalty).
 
-    - *cumulative_reward*: Sum of reward during whole episode.
+* **observation**: Records all observation values during simulation, dependent on the simulated environment 
+  (:ref:`action space` section).
 
-    - *mean_reward*: Mean reward obtained per step in episode.
+* **normalized_observation** (optional): Appears only when the environment is **wrapped with normalization** 
+  (:ref:`Wrappers` section). The model trains with these normalized values, and both original and 
+  normalized observations are recorded.
 
-    - *cumulative_power*: Sum of power consumption during whole episode.
+* **rollout**: Default algorithm metrics in **Stable Baselines**. For instance, DQN includes ``exploration_rate``, 
+  which is not present in other algorithms.
 
-    - *mean_power*: Mean of power consumption per step during whole episode.
+* **time**: Monitors execution time.
 
-    - *cumulative_temperature_violation*: Sum of temperature (Cº) out of comfort range during whole episode.
+* **train**: Records specific neural network information for each algorithm, provided by 
+  **Stable Baselines** and rollout.
 
-    - *mean_temperature_violation*: Mean of temperature (Cº) out of comfort range per step during whole episode.
+* **eval**: Records all evaluations conducted during training if the callback is set up. The graphs here mirror 
+  those in the *episode* label.
 
-    - *cumulative_comfort_penalty*: Sum of comfort penalties (reward component) 
-      during whole episode.
-
-    - *mean_comfort_penalty*: Mean of comfort penalties per step (reward component) 
-      during whole episode.
-
-    - *cumulative_energy_penalty*: Sum of energy penalties (reward component) 
-      during whole episode.
-
-    - *mean_energy_penalty*: Mean of energy penalties per step (reward component) 
-      during whole episode.
-
-    - *comfort_violation_time(%)*: Percentage of time in episode simulation 
-      in which temperature has been out of bound comfort temperature ranges.
-
-* **observation**: Here is recorded all observation values during simulation. 
-  This values depends on the environment which is being simulated 
-  (see :ref:`action space` section).
-
-* **normalized_observation** (optional): This section appear only when environment 
-  has been **wrapped with normalization** (see :ref:`Wrappers` section). The model 
-  will train with this normalized values and they will be recorded both; 
-  original observation and normalized observation.
-
-* **rollout**: Algorithm metrics in **Stable Baselines by default**. For example, 
-  DQN has ``exploration_rate`` and this value doesn't appear in other algorithms.
-
-* **time**: Monitoring time of execution.
-
-* **train**: Record specific neural network information for each algorithm, 
-  provided by **Stable baselines** as well as rollout.
-
-* **eval**: Record all evaluations done during training if the callback has been set up.
-  The graphs here are the same than in *episode* label.
-
-.. note:: Evaluation of models can be recorded too, adding ``EvalLoggerCallback`` 
-          to model learn method.
-
-.. note:: For more information about how to use it with cloud computing, visit :ref:`Sinergym with Google Cloud`.
+.. note:: Model evaluations can also be recorded by adding ``EvalLoggerCallback`` to the model learn method.
 
 ************
-How to use
+Usage
 ************
 
-Train a model
+Model Training
 ~~~~~~~~~~~~~~~~
 
-You can try your own experiments and benefit from this functionality. 
-`sinergym/scripts/train_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/train_agent.py>`__
-is a script to help you to do it.
+Leverage this functionality for your experiments using the script 
+`sinergym/scripts/train/train_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/train_agent.py>`__.
 
-The most **important information** you must keep in mind when you try 
-your own experiments are:
+Key considerations for your experiments:
 
-* Model is constructed with a algorithm constructor. 
-  Each algorithm can use its **particular parameters**.
+* Models are built using an algorithm constructor, each with its own **specific parameters**. 
+  Defaults are used if none are defined.
 
-* If you wrapper environment with normalization, models 
-  will **train** with those **normalized** values.
+* If you normalize the environment wrapper, models will **train** in these **normalized** spaces.
 
-* Callbacks can be **concatenated** in a ``CallbackList`` 
-  instance from Stable Baselines 3.
+* **Concatenate** callbacks in a ``CallbackList`` instance from Stable Baselines 3.
 
-* Neural network will not train until you execute 
-  ``model.learn()`` method. Here is where you
-  specify train ``timesteps``, ``callbacks`` and ``log_interval`` 
-  as we commented in type algorithms (On and Off Policy).
+* The neural network begins training upon executing the ``model.learn()`` method, where you specify ``timesteps``, 
+  ``callbacks``, and ``log_interval``.
 
-* You can execute **Curriculum Learning**, you only have to 
-  add model field with a valid model path, this script 
-  will load the model and execute to train.
+* **Curriculum Learning** can be implemented by adding a model field with a valid model path. 
+  The script will load and train the model.
 
-``train_agent.py`` has a unique parameter to be able to execute it; ``-conf``.
-This parameter is a str to indicate the JSON file in which there are allocated
-all information about the experiment you want to execute. You can see the
-JSON structure example in `sinergym/scripts/train_agent_example.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/train_agent_example.json>`__:
+The ``train_agent.py`` script requires a single parameter, ``-conf``, a string indicating the JSON 
+file containing all experiment details. Refer to the JSON structure in `sinergym/scripts/train/train_agent_PPO.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/train_agent_PPO.json>`__:
 
-* The **obligatory** parameters are: environment, episodes, 
-  algorithm (and parameters of the algorithm which don't have 
-  default values).
+* **Mandatory** parameters: environment, episodes, algorithm (and any non-default algorithm parameters).
 
-* The **optional** parameters are: All environment parameters (if it is specified 
-  will be overwrite the default environment value), seed, model to load (before training),
-  experiment ID, wrappers to use (respecting the order), training evaluation,
-  wandb functionality and cloud options.
+* **Optional** parameters: environment parameters (overwrites default if specified), seed, pre-training 
+  model to load, experiment ID, wrappers (in order), training evaluation, wandb functionality, and cloud options.
 
-* The name of the fields must be like in example mentioned. Otherwise, the experiment
-  will return an error.
+* Field names must match the example, or the experiment will fail.
 
-This script do the next:
+The script performs the following:
 
-    1. Setting an appropriate name for the experiment. Following the next
-       format: ``<algorithm>-<environment_name>-episodes<episodes_int>-seed<seed_value>(<experiment_date>)``
+    1. Names the experiment in the format: ``<algorithm>-<environment_name>-episodes<episodes_int>-seed<seed_value>(<experiment_date>)``
 
-    2. Starting WandB track experiment with that name (if configured in JSON), it will create an local path (*./wandb*) too.
+    2. Initiates WandB experiment tracking with that name (if configured in JSON), creating a local path (*./wandb*).
 
-    3. Log all parameters allocated in JSON configuration (including *sinergym.__version__* and python version).
+    3. Logs all JSON configuration parameters (including *sinergym.__version__* and Python version).
 
-    4. Setting env with parameters overwritten in case of establishing them.
+    4. Sets environment parameters if specified.
 
-    5. Setting wrappers specified in JSON.
+    5. Applies specified wrappers from JSON.
 
-    6. Defining model algorithm using hyperparameters defined.
+    6. Defines model algorithm with specified hyperparameters.
 
-    7. Calculate training timesteps using number of episodes.
+    7. Calculates training timesteps from number of episodes.
 
-    8. Setting up evaluation callback if it has been specified.
+    8. Sets up evaluation callback if specified.
 
-    9. Setting up WandB logger callback if it has been specified.
+    9. Sets up WandB logger callback if specified.
 
-    10. Training with environment.
+    10. Trains with environment.
 
-    11. If remote store has been specified, saving all outputs in Google 
-        Cloud Bucket. If wandb has been specified, saving all 
-        outputs in wandb run artifact.
+    11. If remote store is specified, saves all outputs in Google Cloud Bucket. If wandb is specified, saves all outputs in wandb run artifact.
 
-    12. Auto-delete remote container in Google Cloud Platform when parameter 
-        auto-delete has been specified.
+    12. Auto-deletes remote container in Google Cloud Platform if auto-delete parameter is specified.
 
 
-Load a trained model
+Model Loading
 ~~~~~~~~~~~~~~~~~~~~~~
 
-You can try to load a previous trained model and evaluate or execute it. 
-`sinergym/scripts/load_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent.py>`__
-is a script to help you to do it.
+Use the script `sinergym/scripts/eval/load_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent.py>`__ 
+to load and evaluate or execute a previously trained model.
 
-``load_agent.py`` has a unique parameter to be able to execute it; ``-conf``.
-This parameter is a str to indicate the JSON file in which there are allocated
-all information about the evaluation you want to execute. You can see the
-JSON structure example in `sinergym/scripts/load_agent_example.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent_example.json>`__:
+The ``load_agent.py`` script requires a single parameter, ``-conf``, a string indicating the JSON file 
+containing all evaluation details. Refer to the JSON structure in 
+`sinergym/scripts/eval/load_agent_example.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent_example.json>`__:
 
-* The **obligatory** parameters are: environment, episodes,
-  algorithm (only algorithm name is necessary) and model to load.
+* **Mandatory** parameters: environment, episodes, algorithm (name only), and model to load.
 
-* The **optional** parameters are: All environment parameters (if it is specified 
-  will be overwrite the default environment value),
-  experiment ID, wrappers to use (respecting the order),
-  wandb functionality and cloud options.
+* **Optional** parameters: environment parameters (overwrites default if specified), experiment ID, 
+  wrappers (in order), wandb functionality, and cloud options.
 
-This script loads the model. Once the model is loaded, it predicts the actions from the 
-states during the agreed episodes. The information is collected and sent to a remote
-storage if it is indicated (such as WandB), 
-otherwise it is stored in local memory only.
+The script loads the model and predicts actions from states over the specified episodes. The information 
+is collected and sent to remote storage (like WandB) if specified, otherwise it remains in local memory.
 
-The model field in JSON can be a **local path** with the model, a **bucket url** with the form ``gs://``,
-or a *wandb* artifact path if we have some model stored there.
+The model field in JSON can be a **local path** to the model, a **bucket url** in the form 
+``gs://``, or a *wandb* artifact path for stored models.
 
-.. note:: *This is a work in progress project. Direct support with others 
-          algorithms is being planned for the future!*
+.. note:: *This project is a work in progress. Direct support for additional algorithms is planned for the future!*

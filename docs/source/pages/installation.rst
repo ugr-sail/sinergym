@@ -2,8 +2,8 @@
 Installation
 ############
 
-*Sinergym* has a number of dependencies, which have to be covered depending on the version.
-Below is a summary table with the versions supported by *Sinergym* throughout its releases:
+*Sinergym* relies on several dependencies, the specifics of which vary by version. 
+The table below provides a summary of the versions supported by *Sinergym* across its various releases:
 
 +----------------------+--------------------+--------------------+------------------------+---------------------------+
 | **Sinergym version** | **Ubuntu version** | **Python version** | **EnergyPlus version** | **Building model file**   |
@@ -21,68 +21,67 @@ Below is a summary table with the versions supported by *Sinergym* throughout it
 | **2.5.0**            | 22.04 LTS          | 3.10.6             | **23.1.0**             | epJSON                    |
 +----------------------+--------------------+--------------------+------------------------+---------------------------+
 
-In any case, it is recommended to always use the latest version of *Sinergym* 
-supported by the container to avoid having to go into the details of the installation. 
-In case you wish to perform a manual installation on your computer, documentation 
-is also provided in the following sections.
+We recommend always using the latest version of *Sinergym* that is supported by the container. 
+This approach helps you avoid the complexities of the installation process. However, 
+if you prefer to manually install *Sinergym* on your computer, we provide the necessary 
+documentation in the subsequent sections.
 
 ****************
 Docker container
 ****************
 
-We include a **Dockerfile** for installing all dependencies and setting
-up the image for running *Sinergym*. 
+We provide a **Dockerfile** to install all dependencies and prepare the 
+image for running *Sinergym*. 
 
-By default, *Dockerfile* will do ``pip install -e .[extras]``. However, if you want 
-to install a different setup, you will have to do in **root repository** the next:
+By default, the *Dockerfile* executes ``pip install -e .[extras]``. If you wish 
+to install a different setup, you need to execute the following command in the 
+**root repository**:
 
 .. code:: sh
 
     $ docker build -t <tag_name> --build-arg SINERGYM_EXTRAS=[<setup_tag(s)>] .
 
-For example, if you want a container with only documentation libraries 
-and testing:
+For instance, to create a container with only the documentation libraries 
+and testing, use:
 
 .. code:: sh
 
     $ docker build -t example1/sinergym:latest --build-arg SINERGYM_EXTRAS=[doc,test] .
 
-On the other hand, if you don't want any extra library, it's necessary 
-to write an empty value like this:
+If you do not require any extra libraries, specify an empty value as follows:
 
 .. code:: sh
 
     $ docker build -t example1/sinergym:latest --build-arg SINERGYM_EXTRAS= .
 
-.. note:: You can install directly our container from 
-          `Docker Hub repository <https://hub.docker.com/repository/docker/sailugr/sinergym>`__, 
-          all releases of this project are there.
+.. note:: Our container can also be directly installed from the 
+          `Docker Hub repository <https://hub.docker.com/repository/docker/sailugr/sinergym>`__. 
+          It contains all the project's releases.
 
-.. note:: If you use `Visual Studio Code <https://code.visualstudio.com/>`__, 
-          by simply opening the root directory and clicking on the pop-up button 
-          *Reopen in container*, all the dependencies will be installed automatically 
-          and you will be able to run *Sinergym* in an isolated environment.
-          For more information about how to use this functionality, 
-          check `VSCode Containers extension documentation <https://code.visualstudio.com/docs/remote/containers>`__.
+.. note:: For `Visual Studio Code <https://code.visualstudio.com/>`__ users, 
+          simply open the root directory and click on the *Reopen in container* pop-up button. 
+          This action will automatically install all dependencies and enable you to run *Sinergym* 
+          in an isolated environment. For more details on this feature, 
+          refer to the `VSCode Containers extension documentation <https://code.visualstudio.com/docs/remote/containers>`__.
 
 *******************
 Manual installation
 *******************
 
-To install *Sinergym* manually instead of through the container (**recommended**), 
+To manually install *Sinergym* (although using the container is **recommended**), 
 follow these steps:
 
-Configure Python environment
+Configure Python Environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* First, clone this repository:
+* Begin by cloning this repository:
 
 .. code:: sh
 
     $ git clone https://github.com/ugr-sail/sinergym.git
     $ cd sinergym
 
-* Then, it is recommended to create a **virtual environment**. You can do so by:
+* Next, we recommend creating a **virtual environment** as follows:
 
 .. code:: sh
 
@@ -91,37 +90,38 @@ Configure Python environment
     $ source env_sinergym/bin/activate
     $ pip install -e .[extras]
 
-There are other alternatives like **conda environments** (*recommended*). 
-*Conda* is very comfortable to use and we have a file to configure it automatically:
+Alternatively, you can use **conda environments** (*recommended*). 
+*Conda* is user-friendly and we provide a file for automatic configuration:
 
 .. code:: sh
     
-    $ cd sinergym
-    $ conda env create -f python_environment.yml
-    $ conda activate sinergym
+        $ cd sinergym
+        $ conda env create -f python_environment.yml
+        $ conda activate sinergym
 
-Now, we have a correct python version with required modules to run *Sinergym*. 
-Let's continue with the rest of the programs that are needed outside of Python 
-to run the simulations:
+With this, you have the correct Python version and the necessary modules to run 
+*Sinergym*. Let's proceed with the installation of other required programs 
+outside of Python to run the simulations:
 
 Install EnergyPlus 23.1.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Install *EnergyPlus*. Currently it has been update compatibility to ``23.1.0`` and it has
-been tested, but code may also work with other versions, but they don't have been tested.
+You need to install *EnergyPlus*. We have tested and confirmed compatibility 
+with version ``23.1.0``. The code might work with other versions, but we 
+have not tested them.
 
-Follow the instructions `here <https://energyplus.net/downloads>`__ and
-install it for Linux (only **Ubuntu** is supported by us). Choose any location
-to install the software. Once installed, a folder called
-``Energyplus-23-1-0`` should appear in the selected location.
+Follow the instructions `here <https://energyplus.net/downloads>`__ to install 
+it for Linux (we only support **Ubuntu**). You can choose any location for the 
+installation. After installation, a folder named ``Energyplus-23-1-0`` should 
+appear in the chosen location.
 
-Include Energyplus Python API in python path
+Include Energyplus Python API in Python Path
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Sinergym* will use the *Energyplus* Python API as backend. The modules of this 
-API are located in the *Energyplus* folder, installed in the previous step. 
-This installation path must be added to the ``PYTHONPATH`` environment variable, 
-so that the interpreter can access these modules.
+*Sinergym* uses the *Energyplus* Python API as its backend. The modules of this 
+API are located in the *Energyplus* folder that you installed in the previous 
+step. You must add this installation path to the ``PYTHONPATH`` environment 
+variable so that the interpreter can access these modules.
 
 ***********************
 About Sinergym package
@@ -162,23 +162,23 @@ with last stable version by default:
     $ pip install sinergym[extras]
 
 *******************
-Check Installation
+Verify Installation
 *******************
 
-This project is automatically supervised using **tests** developed specifically for it. 
-If you want to check *Sinergym* has been installed successfully, run ``pytest tests/ -vv`` 
+This project is automatically monitored using **tests** specifically developed for it. 
+To verify that *Sinergym* has been installed correctly, execute ``pytest tests/ -vv`` 
 in the **repository root**.
 
-Anyway, every time *Sinergym* repository is updated, the tests will run automatically in a remote container 
-using the Dockerfile to build it. `Github Action <https://docs.github.com/es/actions/>`__ will do that job 
-(see :ref:`Github Actions` section).
+Furthermore, each time the *Sinergym* repository is updated, the tests are automatically executed in a remote container 
+built using the Dockerfile. This task is performed by `Github Action <https://docs.github.com/es/actions/>`__ 
+(refer to the :ref:`Github Actions` section for more details).
 
 ****************
 Cloud Computing
 ****************
 
-You can run your experiments in the Cloud too. We are using `Google Cloud <https://cloud.google.com/>`__ 
-in order to make it possible. Our team aim to set up an account in which execute our *Sinergym* container 
-with **remote storage** and **WandB tracking**.
-For more detail about installation and getting Google Cloud SDK ready to run your experiments, 
-visit our section :ref:`Preparing Google Cloud`.
+You also have the option to run your experiments in the Cloud. We utilize `Google Cloud <https://cloud.google.com/>`__ 
+for this purpose. Our team is working on setting up an account to run our *Sinergym* container 
+with **remote storage** and **Weights&Biases tracking**.
+For more information on installation and preparing the Google Cloud SDK to run your experiments, 
+please visit our :ref:`Preparing Google Cloud` section.

@@ -49,83 +49,41 @@
   <img src="images/general_blueprint.png" width=80%><br><br>
 </div>
 
-The goal of this project is to create an environment following [Gymnasium interface](https://gymnasium.farama.org/), for wrapping simulation engines for building control using **deep reinforcement learning**.
+The goal of this project is to create an environment following *Gymnasium* interface for wrapping 
+simulation engines (*EnergyPlus*) for building control using **deep reinforcement learning** 
+or any external control.
 
-For more information about Sinergym, we recommend to visit our [documentation here](https://ugr-sail.github.io/sinergym/compilation/main/index.html).
+For more information about Sinergym, please visit our [documentation](https://ugr-sail.github.io/sinergym/compilation/main/index.html).
 
-Please, help us to improve by **reporting your questions and issues** [here](https://github.com/ugr-sail/sinergym/issues). It is easy, just 2 clicks using our issue templates (questions, bugs, improvements, etc.). More detailed info on how to report issues [here](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue). Don't forget to take a look at [CONTRIBUTING.md](https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md) if you're thinking about contributing to Sinergym.
+To report questions and issues, please use our [issue tracker](https://github.com/ugr-sail/sinergym/issues). We appreciate your feedback and contributions. Check out our [CONTRIBUTING.md](https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md) for more details on how to contribute.
 
-The main functionalities of *Sinergym* are the following :
+The main functionalities of *Sinergym* are the following:
 
--  **Compatibility with simulation engines**. Communication between
-   Python and [EnergyPlus](https://energyplus.net/) is established
-   using [Energyplus Python API](https://energyplus.readthedocs.io/en/latest/api.html) as a middleware.
-   However, more of them (e.g.
-   [OpenModelica](https://openmodelica.org/)) could be included in
-   the backend while maintaining the Gymnasium API in the future.
+- **Simulation Engine Compatibility**: Uses [EnergyPlus Python API](https://energyplus.readthedocs.io/en/latest/api.html) for Python-EnergyPlus communication. Future plans include more engines like [OpenModelica](https://openmodelica.org/).
 
--  **Benchmark environments**. Similarly to *Atari* or *Mujoco* environments
-   for RL community, we are designing a set of environments for
-   benchmarking and testing deep RL algorithms. These environments may
-   include different buildings, weathers, action/observation spaces, function rewards, etc.
+- **Benchmark Environments**: Designs environments for benchmarking and testing deep RL algorithms or other external strategies, similar to *Atari* or *Mujoco*.
 
--  **Customizable environments**. We aim to provide a
-   package which allows modifying experimental settings in an easy
-   manner. The user can create his own environments, combining his own
-   building model, weather, reward, observation/action space, variables, actuators, environment name, etc.
-   The user can also use these pre-configured environments available in *Sinergym* 
-   and change some aspect of it (for example, the weather) in such 
-   a way that he does not  have to make an entire definition of the 
-   environment and can start from one pre-designed by us.
-   Some parameters directly associated with the simulator can be set as **extra configuration** 
-   as well, such as people occupant, time-steps per simulation hour, run-period, etc.
+- **Customizable Environments**: Allows easy modification of experimental settings. Users can create their own environments or modify pre-configured ones in *Sinergym*.
 
--  **Customizable components**. *Sinergym* is easily scalable by third parties.
-   Following the structure of the implemented classes, new custom components 
-   can be created for new environments such as function rewards, wrappers,
-   controllers, etc.
+- **Customizable Components**: Enables creation of new custom components for new environments, making *Sinergym* scalable, such as function rewards, wrappers, controllers, etc.
 
--  **Automatic Building Model adaptation to user changes**. Many of the updates to the environment definition require changes 
-   to the building model (*epJSON* file) to adapt it to these new features before the simulation starts, which *Sinergym* will 
-   perform automatically. For example, using another weather file requires building location and design days update, using new 
-   observation variables requires to update the `Output:Variable` and `Output:Meter` fields, the same occurs with extra 
-   configuration context concerned with simulation directly, if weather variability is set, then a weather with noise 
-   will be used. These new building and weather file versions, is saved in the *Sinergym* output folder, leaving the original 
-   intact. In short, *Sinergym* automates the whole process of model adaptation so that the user 
-   only has to define what he wants for his environment.
+- **Automatic Building Model Adaptation**: *Sinergym* automates the process of adapting the building model to user changes in the environment definition.
 
--  **Automatic actuators control**. Related to the above, it will only be necessary to specify the name of the actuators to be controlled 
-   through the actions of the Gymnasium interface, and *Sinergym* will take care of everything.
+- **Automatic Actuators Control**: Controls actuators through the Gymnasium interface based on user specification, only actuators names are required and *Sinergym* will do the rest.
 
--  **Extensive environment information**. It is important that users can get some information about *Sinergym* background components from environment interface easily.
-   From environment instance, it is possible to consult available schedulers, variables which compose an observation and action, whether simulator is running,
-   the building run period, episode length, timesteps per episode, available building zones... And much more.
+- **Extensive Environment Information**: Provides comprehensive information about *Sinergym* background components from the environment interface.
 
--  **Stable Baseline 3 Integration**. Some functionalities like callbacks
-   have been customized by our team in order to test easily these environments
-   with deep reinforcement learning algorithms and logger specific information about 
-   *Sinergym* environments. 
-   However, *Sinergym* is completely agnostic to any DRL algorithm and can be used with any DRL 
-   library that works with gymnasium interface.
+- **Stable Baseline 3 Integration**: Customizes functionalities for easy testing of environments with SB3 algorithms, such as callbacks and customizable training real-time logging. However, *Sinergym* is agnostic to any DRL algorithm.
 
--  **Google Cloud Integration**. Whether you have a Google Cloud account and you want to
-   use your infrastructure with *Sinergym*, we tell you some details about how to do it.
+- **Google Cloud Integration**: Offers guidance on using *Sinergym* with Google Cloud infrastructure.
 
--  **Weights & Biases tracking and visualization compatibility**. One of *Sinergym*'s objectives is to automate
-   and facilitate the training, reproducibility and comparison of agents in simulation-based 
-   building control problems, managing and monitoring model lifecycle from training to deployment. [WandB](https://wandb.ai/site)
-   is an open-source platform for the machine learning lifecycle helping us with this issue. 
-   It lets us register experiments hyperparameters, visualize data recorded in real-time, 
-   and store artifacts with experiment outputs and best obtained models. 
+- **Weights & Biases Compatibility**: Automates and facilitates training, reproducibility, and comparison of agents in simulation-based building control problems. [WandB](https://wandb.ai/site) assists in managing and monitoring model lifecycle.
 
--  **Notebooks examples**. *Sinergym* develops code in notebook format with the purpose of offering use cases to 
-   the users in order to help them become familiar with the tool. They are constantly updated, along with the updates 
-   and improvements of the tool itself.
+- **Notebook Examples**: Provides code in notebook format for user familiarity with the tool.
 
--  This project is accompanied by extensive **documentation**, **unit tests** and **github actions workflows** to make 
-   *Sinergym* an efficient ecosystem for both understanding and development.
+- **Extensive Documentation, Unit Tests, and GitHub Actions Workflows**: Ensures *Sinergym* is an efficient ecosystem for understanding and development.
 
--  Many more!
+- And much more!
 
 _This is a project in active development. Stay tuned for upcoming releases._
 
@@ -133,29 +91,30 @@ _This is a project in active development. Stay tuned for upcoming releases._
   <img src="images/operation_diagram.png"><br><br>
 </div>
 
-## Project structure
+## Project Structure
 
-This repository is organized in the next directories:
+This repository is organized into the following directories:
 
-- `sinergym/`: Here you will find all the source code that forms *Sinergym*: environment, modeling, simulator, and tools such as wrappers, reward functions, etc.
-- `docs/`: Online documentation, generated with Sphinx and using Restructured Text (RST).
-- `examples/`: Here there are a set of notebooks written in Jupyter format. Use cases are illustrated with Sinergym.
-- `tests/`: All the unit tests of Sinergym. Fixtures and checks are defined here in order to check that the tool is in a stable state.
-- `scripts/`: This folder contains scripts in which Sinergym is used. We can find useful things for the users, such as agent training, agent loading, performance checks, etc. In addition, these scripts allow a high margin of configuration using the JSON format.
+- `sinergym/`: Contains the source code for *Sinergym*, including the environment, modeling, simulator, and tools such as wrappers and reward functions.
+- `docs/`: Online documentation generated with Sphinx and using Restructured Text (RST).
+- `examples/`: Jupyter notebooks illustrating use cases with Sinergym.
+- `tests/`: Unit tests for Sinergym to ensure stability.
+- `scripts/`: Scripts for various tasks such as agent training and performance checks, allowing configuration using JSON format.
 
-## List of available environments
+## Available Environments
 
-If you would like to see a complete and updated list of our available environments, please visit [our list](https://ugr-sail.github.io/sinergym/compilation/main/pages/environments.html#) in the official *Sinergym* documentation.
+For a complete and up-to-date list of available environments, please refer to [our documentation](https://ugr-sail.github.io/sinergym/compilation/main/pages/environments.html#).
 
 ## Installation
 
-Please, visit [INSTALL.md](https://github.com/ugr-sail/sinergym/blob/main/INSTALL.md) for more information about Sinergym installation.
+Please visit [INSTALL.md](https://github.com/ugr-sail/sinergym/blob/main/INSTALL.md) for detailed installation instructions.
 
 ## Usage example
 
+
 If you used our Dockerfile during installation, you should have the *try_env.py* file in your workspace as soon as you enter in. In case you have installed everything on your local machine directly, place it inside our cloned repository. In any case, we start from the point that you have at your disposal a terminal with the appropriate python version and *Sinergym* running correctly.
 
-*Sinergym* uses the standard Gymnasium API. So basic loop should be something like:
+*Sinergym* uses the standard Gymnasium API. So a basic loop should look like:
 
 ```python
 
@@ -175,9 +134,10 @@ print('Total reward for the episode: %.4f' % R)
 env.close()
 ```
 
-Notice that a folder will be created in the working directory after creating the environment. It will contain the EnergyPlus outputs produced during the simulation.
+A folder will be created in the working directory after creating the environment. It will contain the Sinergym outputs produced during the simulation.
 
-:pencil: For more examples and details, please visit our [usage examples](https://ugr-sail.github.io/sinergym/compilation/main/pages/notebooks/basic_example.html#Basic-example) documentation section.
+For more examples and details, please visit our [usage examples](https://ugr-sail.github.io/sinergym/compilation/main/pages/notebooks/basic_example.html#Basic-example) documentation section.
+
 
 ## Google Cloud Platform support
 

@@ -2,102 +2,82 @@
 Tests
 ############
 
-This project is **automatically supervised** using tests developed specifically for it. 
-If you want to check *Sinergym* has been installed successfully, run next command:
+This project is automatically supervised using specific tests. To check if *Sinergym* is installed successfully, 
+run the following command:
 
 .. code:: sh
 
-    $ pytest tests/ -vv
+  $ pytest tests/ -vv
 
-Anyway, every time *Sinergym* repository is updated, the tests will run automatically 
-in a remote container using the Dockerfile to build it. 
-`Github Action <https://docs.github.com/es/actions/>`__ will do that job.
+Whenever the *Sinergym* repository is updated, the tests will automatically run in a remote container 
+using the Dockerfile. This is done through `Github Actions <https://docs.github.com/en/actions/>`__.
 
-.. note:: See `.github/workflows YML files <https://github.com/ugr-sail/sinergym/tree/develop/.github/workflows>`__ 
-          and :ref:`Github Actions` section for more information.
+.. note:: Refer to the `.github/workflows YML files <https://github.com/ugr-sail/sinergym/tree/develop/.github/workflows>`__ 
+          and the :ref:`Github Actions` section for more details.
 
-These tests running under `pytest <https://docs.pytest.org/en/6.2.x/>`__ 
-framework which makes it easy to write small tests, yet scales to support 
-complex functional testing for applications and libraries.
+These tests are executed using the `pytest <https://docs.pytest.org/en/6.2.x/>`__ framework, which allows 
+for writing small tests that can scale to support complex functional testing for applications and libraries.
 
 ****************
 Install Pytest
 ****************
 
-This project has already established this dependency if you have installed *extras* 
-libraries or *test* library specifically. However, to install it independently:
+To install Pytest independently, use the following command, although it is already included in the project requirements:
 
 .. code:: sh
 
-    $ pip install pytest
+  $ pip install pytest
 
 
 ****************
 Running tests
 ****************
 
-In order to run current tests:
+To run all tests within the ``tests/`` directory, use the following command:
 
 .. code:: sh
 
-    $ pytest tests/ -vv
+  $ pytest tests/ -vv
 
 
-This runs all tests within ``tests/`` directory. If you want verbose use ``-v`` or ``-vv``
-option. To run an unique module tests, for example: 
+To run tests for a specific module, such as ``test_common.py``, use the following command:
 
 .. code:: sh
 
-    $ pytest tests/test_common.py -vv
+  $ pytest tests/test_common.py -vv
 
 
 ****************
 Create new tests
 ****************
 
-These tests have been created in 
-`sinergym/tests <https://github.com/ugr-sail/sinergym/tree/main/tests>`__ 
-directory, they are organized by different modules:
+New tests have been created in the `sinergym/tests` directory. They are organized by different modules:
 
-- **test_common.py**: Tests for 
-  `sinergym/sinergym/utils/common.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/common.py>`__. 
-  Here will be all tests that check *Sinergym* common utils functionalities.
+- **test_common.py**: Tests for `sinergym/sinergym/utils/common.py`. These tests check the functionalities 
+  of *Sinergym* common utils.
 
-- **test_reward.py**: Tests for 
-  `sinergym/sinergym/utils/rewards.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/rewards.py>`__. 
-  Here will be all tests that check implementation(s) of reward function(s) applicable to sinergym environments.
+- **test_reward.py**: Tests for `sinergym/sinergym/utils/rewards.py`. These tests check the implementation 
+  of reward functions applicable to sinergym environments.
 
-- **test_wrapper.py**: Tests for 
-  `sinergym/sinergym/utils/wrappers.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/wrappers.py>`__. 
-  Here will be all tests that check wrappers to normalize *Sinergym* default environment observations.
+- **test_wrapper.py**: Tests for `sinergym/sinergym/utils/wrappers.py`. These tests check the wrappers 
+  used to normalize *Sinergym* default environment observations.
 
-- **test_simulator.py**: Tests for 
-  `sinergym/sinergym/simulators/\* <https://github.com/ugr-sail/sinergym/tree/main/sinergym/simulators>`__. 
-  Here will be all tests that check low level *Sinergym* simulator and communication interface.
+- **test_simulator.py**: Tests for `sinergym/sinergym/simulators/*`. These tests check the low-level 
+  *Sinergym* simulator and communication interface.
 
-- **test_env.py**: Tests for 
-  `sinergym/sinergym/envs/\* <https://github.com/ugr-sail/sinergym/tree/main/sinergym/envs>`__. 
-  Here will be all tests that check *Sinergym* simulation environments based on Gymnasium.
+- **test_env.py**: Tests for `sinergym/sinergym/envs/*`. These tests check the *Sinergym* simulation 
+  environments based on Gymnasium.
 
-- **test_controller.py**: Tests for 
-  `sinergym/sinergym/utils/controllers.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/controllers.py>`__. 
-  Here will be all tests that check agent controller like Rule-Based-Controller for example.
+- **test_controller.py**: Tests for `sinergym/sinergym/utils/controllers.py`. These tests check the 
+  agent controller, such as the Rule-Based-Controller.
 
-- **test_modeling.py**: Tests for 
-  `sinergym/sinergym/config/modeling.py <https://github.com/ugr-sail/sinergym/blob/main/tests/test_modeling.py>`__. 
-  Here will be all tests that check simulator configuration (epJSON and EPW Python models and 
-  extra configuration functionality).
+- **test_modeling.py**: Tests for `sinergym/sinergym/config/modeling.py`. These tests check the simulator 
+  configuration, including epJSON and EPW Python models.
 
-- **test_stable_baselines.py**: Tests for 
-  `Stable Baselines 3 <https://github.com/DLR-RM/stable-baselines3>`__. 
-  Here will be all tests that check *Sinergym* simulation environments 
-  can be used correctly with Stable Baselines 3 algorithms.
-  If Stable Baselines 3 package is not installed, these tests
-  will be ignored by *Sinergym* automatically.
+- **test_stable_baselines.py**: Tests for `Stable Baselines 3`. These tests check the compatibility of 
+  *Sinergym* simulation environments with Stable Baselines 3 algorithms. If Stable Baselines 3 package is not installed, these tests will be ignored by *Sinergym*.
 
+If you want to create new tests, you can append them to these modules or create a new one if the conceptual 
+context is different.
 
-If you want to **make new tests**, you can append to this modules or 
-create a new one if the conceptual context is different.
-
-.. note:: For more information about *Sinergym* tests, visit our 
-          `repository README <https://github.com/ugr-sail/sinergym/blob/main/tests/README.md>`__.
+For more information about *Sinergym* tests, please refer to our repository README.

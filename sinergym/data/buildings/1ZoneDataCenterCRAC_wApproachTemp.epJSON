@@ -1111,7 +1111,7 @@
     },
     "Output:VariableDictionary": {
         "Output:VariableDictionary 1": {
-            "key_field": "IDF"
+            "key_field": "regular"
         }
     },
     "OutputControl:Table:Style": {

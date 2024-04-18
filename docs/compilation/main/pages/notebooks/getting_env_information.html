@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>17. Getting information about Sinergym environments &mdash; sinergym  documentation</title>
+  <title>18. Getting information about Sinergym environments &mdash; sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -27,8 +27,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="18. Changing an environment registered in Sinergym" href="change_environment.html" />
-    <link rel="prev" title="16. Basic example" href="basic_example.html" /> 
+    <link rel="next" title="19. Changing an environment registered in Sinergym" href="change_environment.html" />
+    <link rel="prev" title="17. Basic example" href="basic_example.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,40 +54,41 @@
               <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">1. Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage Example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../environments.html">5. Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">6. Environments Configuration and Registration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rewards.html">7. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../controllers.html">8. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">9. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">10. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../output.html">11. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">12. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">13. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">14. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tests.html">15. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">5. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">6. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">8. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">9. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">10. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">12. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">14. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">15. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">16. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="basic_example.html">16. Basic example</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">17. Getting information about Sinergym environments</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Schedulers-information">17.1. Schedulers information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Environment-Properties">17.2. Environment Properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Handlers-information">17.3. Handlers information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Displaying-all-the-environment-information">17.4. Displaying all the environment information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">17. Basic example</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">18. Getting information about Sinergym environments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Schedulers-information">18.1. Schedulers information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Environment-Properties">18.2. Environment Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Handlers-information">18.3. Handlers information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Displaying-all-the-environment-information">18.4. Displaying all the environment information</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="change_environment.html">18. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">19. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">20. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">21. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">22. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="drl.html">23. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">19. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">20. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">21. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">23. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">24. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -108,7 +109,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">17. </span>Getting information about Sinergym environments</li>
+      <li class="breadcrumb-item active"><span class="section-number">18. </span>Getting information about Sinergym environments</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/notebooks/getting_env_information.nblink.txt" rel="nofollow"> View page source</a>
       </li>
@@ -119,9 +120,9 @@
            <div itemprop="articleBody">
              
   <section id="Getting-information-about-Sinergym-environments">
-<h1><span class="section-number">17. </span>Getting information about Sinergym environments<a class="headerlink" href="#Getting-information-about-Sinergym-environments" title="Link to this heading"></a></h1>
-<p>The Sinergym environments have a extended backend to work with building and weather models, the EnergyPlus engine, Wrappers, etc.</p>
-<p>However, it is very important that users can get some information about this background components from environment interface. This section will show you how to do it.</p>
+<h1><span class="section-number">18. </span>Getting information about Sinergym environments<a class="headerlink" href="#Getting-information-about-Sinergym-environments" title="Link to this heading"></a></h1>
+<p>Sinergym environments have an extended backend to work with building and weather models, the EnergyPlus engine, Wrappers, etc.</p>
+<p>However, it’s crucial that users can access information about these background components from the environment interface. This section will show you how to do that.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -135,9 +136,8 @@
 </div>
 </div>
 <section id="Schedulers-information">
-<h2><span class="section-number">17.1. </span>Schedulers information<a class="headerlink" href="#Schedulers-information" title="Link to this heading"></a></h2>
-<p>Buildings have a set of schedulers which control the actuators of the building with a predefined rules. In addition to the information available in the log files generated by EnergyPlus, it is possible to consult Sinergym’s reading of the building and use it to see how these schedulers influence the building. Schedulers information is extracted in a Python dictionary and Sinergym can export that information in a excel file. The way to do it is very simple, just load the environment and do the
-next:</p>
+<h2><span class="section-number">18.1. </span>Schedulers information<a class="headerlink" href="#Schedulers-information" title="Link to this heading"></a></h2>
+<p>Buildings have a set of schedulers that control the building’s actuators according to predefined rules. In addition to the information available in the log files generated by EnergyPlus, you can consult Sinergym’s reading of the building to see how these schedulers affect the building. Schedulers information is extracted into a Python dictionary, and Sinergym can export that information to an Excel file. To do this, simply load the environment and follow the next steps:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -300,7 +300,7 @@ next:</p>
                              &#39;Type&#39;: &#39;Control Type&#39;}}
 </pre></div></div>
 </div>
-<p>If you want to get an excel with that information, there is a function to do it:</p>
+<p>If you want to get an Excel file with that information, there’s a function for that:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -311,9 +311,9 @@ next:</p>
 </div>
 </section>
 <section id="Environment-Properties">
-<h2><span class="section-number">17.2. </span>Environment Properties<a class="headerlink" href="#Environment-Properties" title="Link to this heading"></a></h2>
-<p>As we have mentioned, some environments features are made in the gym interface layer, but more information is calculated in the backend. Then, Sinergym environments has several properties in order to consult this information. For more information, visit the documentation, but here there are some examples:</p>
-<p>Note: We are using <code class="docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code> method from gymnasium to get information about the attributes, respecting new Gymnasium’s protocol.</p>
+<h2><span class="section-number">18.2. </span>Environment Properties<a class="headerlink" href="#Environment-Properties" title="Link to this heading"></a></h2>
+<p>As mentioned, some environment features are created in the gym interface layer, but more information is calculated in the backend. Therefore, Sinergym environments have several properties to consult this information. For more details, visit the documentation, but here are some examples:</p>
+<p>Note: We’re using the <code class="docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code> method from Gym to get information about the attributes, in line with the new Gymnasium protocol.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -354,9 +354,9 @@ Is the action space discrete?: False
 </div>
 </section>
 <section id="Handlers-information">
-<h2><span class="section-number">17.3. </span>Handlers information<a class="headerlink" href="#Handlers-information" title="Link to this heading"></a></h2>
-<p>In the same way, we can consult the actuators, variables and meters that are available in the environment, together with those that we are controlling and observing specifically with our environment.</p>
-<p>We can consult it in the following way:</p>
+<h2><span class="section-number">18.3. </span>Handlers information<a class="headerlink" href="#Handlers-information" title="Link to this heading"></a></h2>
+<p>Similarly, we can consult the actuators, variables, and meters available in the environment, along with those we’re specifically controlling and observing with our environment.</p>
+<p>You can consult it as follows:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -379,7 +379,7 @@ Observed variables: None
 Observed meters: None
 </pre></div></div>
 </div>
-<p>As you can see, the information is not displayed. This is due to internal reasons of the Energyplus API. To have this information available, it requires that we do the first <code class="docutils literal notranslate"><span class="pre">reset()</span></code> to the environment:</p>
+<p>As you can see, the information isn’t displayed. This is due to internal reasons of the EnergyPlus API. To make this information available, we need to perform the first <code class="docutils literal notranslate"><span class="pre">reset()</span></code> on the environment:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -1495,8 +1495,8 @@ Observed meters: {}
 </div>
 </section>
 <section id="Displaying-all-the-environment-information">
-<h2><span class="section-number">17.4. </span>Displaying all the environment information<a class="headerlink" href="#Displaying-all-the-environment-information" title="Link to this heading"></a></h2>
-<p>It is possible to print all the environment information too. Just remember to do <code class="docutils literal notranslate"><span class="pre">reset()</span></code> before to have handlers information too:</p>
+<h2><span class="section-number">18.4. </span>Displaying all the environment information<a class="headerlink" href="#Displaying-all-the-environment-information" title="Link to this heading"></a></h2>
+<p>You can also print all the environment information. Just remember to do <code class="docutils literal notranslate"><span class="pre">reset()</span></code> beforehand to have handlers information too:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -2634,8 +2634,8 @@ OutputVariable,Environmental Impact Total CO2 Emissions Carbon Equivalent Mass,S
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="basic_example.html" class="btn btn-neutral float-left" title="16. Basic example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="change_environment.html" class="btn btn-neutral float-right" title="18. Changing an environment registered in Sinergym" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="basic_example.html" class="btn btn-neutral float-left" title="17. Basic example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="change_environment.html" class="btn btn-neutral float-right" title="19. Changing an environment registered in Sinergym" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -2674,6 +2674,7 @@ OutputVariable,Environmental Impact Total CO2 Emissions Carbon Equivalent Mass,S
             <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
             <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
             <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
+            <dd><a href="../../../v3.2.10/index.html">v3.2.10</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
