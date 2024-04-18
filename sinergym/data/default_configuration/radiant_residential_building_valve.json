@@ -184,27 +184,27 @@
 
     "actuators"             : {
         "LIVING RADIANT AVAILAVILITY"                           : {
-            "variable_name" : "radiant_livroom",
+            "variable_name" : "livroom_valve_avail",
             "element_type"  : "Schedule:Compact", 
             "value_type"    : "Schedule Value"
         },
         "KITCHEN RADIANT AVAILAVILITY"                          : {
-            "variable_name" : "radiant_kitchen",
+            "variable_name" : "kitchen_valve_avail",
             "element_type"  : "Schedule:Compact", 
             "value_type"    : "Schedule Value"
         },
         "BED1 RADIANT AVAILAVILITY"                             : {
-            "variable_name" : "radiant_bed1",
+            "variable_name" : "bed1_valve_avail",
             "element_type"  : "Schedule:Compact", 
             "value_type"    : "Schedule Value"
         },
         "BED2 RADIANT AVAILAVILITY"                             : {
-            "variable_name" : "radiant_bed2",
+            "variable_name" : "bed2_valve_avail",
             "element_type"  : "Schedule:Compact", 
             "value_type"    : "Schedule Value"
         },
         "BED3 RADIANT AVAILAVILITY"                             : {
-            "variable_name" : "radiant_bed3",
+            "variable_name" : "bed3_valve_avail",
             "element_type"  : "Schedule:Compact", 
             "value_type"    : "Schedule Value"
         },
