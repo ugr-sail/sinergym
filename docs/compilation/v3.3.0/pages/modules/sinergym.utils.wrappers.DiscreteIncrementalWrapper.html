@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sinergym.utils.wrappers.DiscreteIncrementalWrapper &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=816ccb90" />
+
+  
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="sinergym.utils.wrappers.DiscretizeEnv" href="sinergym.utils.wrappers.DiscretizeEnv.html" />
+    <link rel="prev" title="sinergym.utils.wrappers.DatetimeWrapper" href="sinergym.utils.wrappers.DatetimeWrapper.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">5. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">6. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">8. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">9. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">10. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">12. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">14. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">15. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">16. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">17. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/getting_env_information.html">18. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">19. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">20. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">21. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">23. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">24. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../API-reference.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="sinergym.utils.html">sinergym.utils</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.callbacks.html">sinergym.utils.callbacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.common.html">sinergym.utils.common</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.rewards.html">sinergym.utils.rewards</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.DatetimeWrapper.html">sinergym.utils.wrappers.DatetimeWrapper</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.wrappers.DiscreteIncrementalWrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.DiscretizeEnv.html">sinergym.utils.wrappers.DiscretizeEnv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.IncrementalWrapper.html">sinergym.utils.wrappers.IncrementalWrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.LoggerWrapper.html">sinergym.utils.wrappers.LoggerWrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.MultiObjectiveReward.html">sinergym.utils.wrappers.MultiObjectiveReward</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.MultiObsWrapper.html">sinergym.utils.wrappers.MultiObsWrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.NormalizeAction.html">sinergym.utils.wrappers.NormalizeAction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.NormalizeObservation.html">sinergym.utils.wrappers.NormalizeObservation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.html">sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.PreviousObservationWrapper.html">sinergym.utils.wrappers.PreviousObservationWrapper</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sinergym.envs.html">sinergym.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sinergym.simulators.html">sinergym.simulators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sinergym.config.html">sinergym.config</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API-reference.html">API reference</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.utils.html">sinergym.utils</a></li>
+          <li class="breadcrumb-item"><a href="sinergym.utils.wrappers.html">sinergym.utils.wrappers</a></li>
+      <li class="breadcrumb-item active">sinergym.utils.wrappers.DiscreteIncrementalWrapper</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/modules/sinergym.utils.wrappers.DiscreteIncrementalWrapper.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sinergym-utils-wrappers-discreteincrementalwrapper">
+<h1>sinergym.utils.wrappers.DiscreteIncrementalWrapper<a class="headerlink" href="#sinergym-utils-wrappers-discreteincrementalwrapper" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.DiscreteIncrementalWrapper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.wrappers.</span></span><span class="sig-name descname"><span class="pre">DiscreteIncrementalWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_temp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_temp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DiscreteIncrementalWrapper" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for an incremental setpoint discrete action space environment.
+WARNING: A environment with only temperature setpoints control must be used
+with this wrapper.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.DiscreteIncrementalWrapper.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_temp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_temp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DiscreteIncrementalWrapper.__init__" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> – The original Sinergym env.</p></li>
+<li><p><strong>action_names</strong> – Name of the action variables with the setpoint control you want to do incremental.</p></li>
+<li><p><strong>initial_values</strong> – Initial values of the setpoints.</p></li>
+<li><p><strong>delta_temp</strong> – Maximum temperature variation in the setpoints in one step.</p></li>
+<li><p><strong>step_temp</strong> – Minimum temperature variation in the setpoints in one step.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DiscreteIncrementalWrapper.__init__" title="sinergym.utils.wrappers.DiscreteIncrementalWrapper.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env, initial_values[, delta_temp, ...])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">param env<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The original Sinergym env.</p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DiscreteIncrementalWrapper.action" title="sinergym.utils.wrappers.DiscreteIncrementalWrapper.action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action</span></code></a>(action)</p></td>
+<td><p>Takes the discrete action and transforms it to setpoints tuple.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DiscreteIncrementalWrapper.action_mapping" title="sinergym.utils.wrappers.DiscreteIncrementalWrapper.action_mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_mapping</span></code></a>(action)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_name</span></code>()</p></td>
+<td><p>Returns the class name of the wrapper.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code>()</p></td>
+<td><p>Closes the wrapper and <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code>(name)</p></td>
+<td><p>Gets an attribute from the wrapper and lower environments if <cite>name</cite> doesn't exist in this object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
+<td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">render()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code>(*[, seed, options])</p></td>
+<td><p>Uses the <code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code> of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> that can be overwritten to change the returned data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code>(action)</p></td>
+<td><p>Runs the <code class="xref py py-attr docutils literal notranslate"><span class="pre">env</span></code> <code class="xref py py-meth docutils literal notranslate"><span class="pre">env.step()</span></code> using the modified <code class="docutils literal notranslate"><span class="pre">action</span></code> from <code class="xref py py-meth docutils literal notranslate"><span class="pre">self.action()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrapper_spec</span></code>(**kwargs)</p></td>
+<td><p>Generates a <cite>WrapperSpec</cite> for the wrappers.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_space</span></code></p></td>
+<td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">action_space</span></code> unless overwritten then the wrapper <code class="xref py py-attr docutils literal notranslate"><span class="pre">action_space</span></code> is used.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DiscreteIncrementalWrapper.is_discrete" title="sinergym.utils.wrappers.DiscreteIncrementalWrapper.is_discrete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_discrete</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.wrappers.DiscreteIncrementalWrapper.logger" title="sinergym.utils.wrappers.DiscreteIncrementalWrapper.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata</span></code></p></td>
+<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">metadata</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_random</span></code></p></td>
+<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">np_random</span></code> attribute.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation_space</span></code></p></td>
+<td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">observation_space</span></code> unless overwritten then the wrapper <code class="xref py py-attr docutils literal notranslate"><span class="pre">observation_space</span></code> is used.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_mode</span></code></p></td>
+<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">render_mode</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reward_range</span></code></p></td>
+<td><p>Return the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code> unless overwritten then the wrapper <code class="xref py py-attr docutils literal notranslate"><span class="pre">reward_range</span></code> is used.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></p></td>
+<td><p>Returns the <code class="xref py py-attr docutils literal notranslate"><span class="pre">Env</span></code> <code class="xref py py-attr docutils literal notranslate"><span class="pre">spec</span></code> attribute with the <cite>WrapperSpec</cite> if the wrapper inherits from <cite>EzPickle</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></p></td>
+<td><p>Returns the base environment of the wrapper.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.DiscreteIncrementalWrapper.action">
+<span class="sig-name descname"><span class="pre">action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.wrappers.DiscreteIncrementalWrapper.action" title="Link to this definition"></a></dt>
+<dd><p>Takes the discrete action and transforms it to setpoints tuple.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.DiscreteIncrementalWrapper.action_mapping">
+<span class="sig-name descname"><span class="pre">action_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#sinergym.utils.wrappers.DiscreteIncrementalWrapper.action_mapping" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.DiscreteIncrementalWrapper.is_discrete">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_discrete</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#sinergym.utils.wrappers.DiscreteIncrementalWrapper.is_discrete" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sinergym.utils.wrappers.DiscreteIncrementalWrapper.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Logger</span> <span class="pre">WRAPPER</span> <span class="pre">DiscreteIncrementalWrapper</span> <span class="pre">(INFO)&gt;</span></em><a class="headerlink" href="#sinergym.utils.wrappers.DiscreteIncrementalWrapper.logger" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sinergym.utils.wrappers.DatetimeWrapper.html" class="btn btn-neutral float-left" title="sinergym.utils.wrappers.DatetimeWrapper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sinergym.utils.wrappers.DiscretizeEnv.html" class="btn btn-neutral float-right" title="sinergym.utils.wrappers.DiscretizeEnv" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.3.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../../v2.3.0/pages/modules/sinergym.utils.wrappers.DiscreteIncrementalWrapper.html">v2.3.0</a></dd>
+            <dd><a href="../../../v2.5.0/pages/modules/sinergym.utils.wrappers.DiscreteIncrementalWrapper.html">v2.5.0</a></dd>
+            <dd><a href="../../../v3.1.0/pages/modules/sinergym.utils.wrappers.DiscreteIncrementalWrapper.html">v3.1.0</a></dd>
+            <dd><a href="../../../v3.2.0/pages/modules/sinergym.utils.wrappers.DiscreteIncrementalWrapper.html">v3.2.0</a></dd>
+            <dd><a href="../../../v3.2.10/pages/modules/sinergym.utils.wrappers.DiscreteIncrementalWrapper.html">v3.2.10</a></dd>
+            <dd><a href="sinergym.utils.wrappers.DiscreteIncrementalWrapper.html">v3.3.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../../main/pages/modules/sinergym.utils.wrappers.DiscreteIncrementalWrapper.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>

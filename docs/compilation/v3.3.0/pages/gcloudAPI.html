@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>14. Sinergym with Google Cloud &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=816ccb90" />
+
+  
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="15. Github Actions" href="github-actions.html" />
+    <link rel="prev" title="13. Deep Reinforcement Learning Integration" href="deep-reinforcement-learning.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">2. Usage Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">5. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">6. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">8. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">9. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">10. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">12. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">14. Sinergym with Google Cloud</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#preparing-google-cloud">14.1. Preparing Google Cloud</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#first-steps-configuration">14.1.1. First steps (configuration)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-our-container-in-google-cloud-platform">14.1.2. Use our container in Google Cloud Platform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-your-own-container">14.1.3. Use your Own Container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-your-vm-or-mig">14.1.4. Create your VM or MIG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initiate-your-vm">14.1.5. Initiate your VM</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#executing-experiments-in-remote-containers">14.2. Executing experiments in remote containers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#containers-permission-to-bucket-storage-output">14.2.1. Containers permission to bucket storage output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#visualize-remote-wandb-log-in-real-time">14.2.2. Visualize remote wandb log in real-time</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#google-cloud-alerts">14.3. Google Cloud Alerts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">15. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">16. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">17. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">18. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">19. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">20. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">21. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">23. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">24. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">14. </span>Sinergym with Google Cloud</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/gcloudAPI.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sinergym-with-google-cloud">
+<h1><span class="section-number">14. </span>Sinergym with Google Cloud<a class="headerlink" href="#sinergym-with-google-cloud" title="Link to this heading"></a></h1>
+<p>In this project, we’ve implemented functionality based on the gcloud API in <code class="docutils literal notranslate"><span class="pre">sinergym/utils/gcloud.py</span></code>.
+Our goal is to easily configure a Google Cloud account and integrate it with <em>Sinergym</em>.</p>
+<p>The primary objective is to create a <strong>virtual machine</strong> (VM) using <strong>Google Cloud Engine</strong> (GCE)
+to run our <strong>Sinergym container</strong>. This remote container can update the <strong>Weights and Biases
+tracking server</strong> with artifacts if the experiment is configured with these options.</p>
+<p>Once an instance completes its task, the container will <strong>auto-remove</strong> its host instance from
+the Google Cloud Platform if the experiment is configured with this option.</p>
+<section id="preparing-google-cloud">
+<h2><span class="section-number">14.1. </span>Preparing Google Cloud<a class="headerlink" href="#preparing-google-cloud" title="Link to this heading"></a></h2>
+<section id="first-steps-configuration">
+<h3><span class="section-number">14.1.1. </span>First steps (configuration)<a class="headerlink" href="#first-steps-configuration" title="Link to this heading"></a></h3>
+<p>Initially, you need a set up Google Cloud account and configured SDK (auth, invoicing, project ID,
+etc). If you don’t have this, check <a class="reference external" href="https://cloud.google.com/sdk/docs/install">their documentation</a>.</p>
+<p>Secondly, it’s important to have <a class="reference external" href="https://www.docker.com/">Docker</a> installed to manage these
+containers in Google Cloud.</p>
+<p>You can link <strong>gcloud</strong> with <strong>docker</strong> accounts using the next (see
+<a class="reference external" href="https://cloud.google.com/container-registry/docs/advanced-authentication">authentication methods</a>):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>auth<span class="w"> </span>configure-docker
+</pre></div>
+</div>
+<p>To avoid future issues with image build and Google Cloud functionality, we recommend
+<strong>allowing permissions for google cloud build</strong> at the start
+(see <a class="reference external" href="https://cloud.google.com/build/docs/securing-builds/configure-access-for-cloud-build-service-account">this documentation</a>).</p>
+<a class="reference internal image-reference" href="../_images/service-account-permissions.png"><img alt="Permissions required for cloud build." class="align-center" src="../_images/service-account-permissions.png" style="width: 500px;" /></a>
+<p>We also need to enable certain <strong>Google Cloud services</strong> in the <em>API library</em>.
+You can allow these services in your <strong>Google account</strong> using the <strong>gcloud client SDK</strong>
+or the <strong>Google Cloud Platform Console</strong>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Google Container Registry API.</p></li>
+<li><p>Artifact Registry API</p></li>
+<li><p>Cloud Run API</p></li>
+<li><p>Compute Engine API</p></li>
+<li><p>Cloud Logging API</p></li>
+<li><p>Cloud Monitoring API</p></li>
+<li><p>Cloud Functions API</p></li>
+<li><p>Cloud Pub/Sub API</p></li>
+<li><p>Cloud SQL Admin API</p></li>
+<li><p>Cloud Firestore API</p></li>
+<li><p>Cloud Datastore API</p></li>
+<li><p>Service Usage API</p></li>
+<li><p>Cloud storage</p></li>
+<li><p>Gmail API</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>services<span class="w"> </span>list
+$<span class="w"> </span>gcloud<span class="w"> </span>services<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>artifactregistry.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>cloudapis.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>cloudbuild.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>containerregistry.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>gmail.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>sql-component.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>sqladmin.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>storage-component.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>storage.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>cloudfunctions.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>pubsub.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>run.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>serviceusage.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>drive.googleapis.com<span class="w"> </span><span class="se">\</span>
+<span class="w">                         </span>appengine.googleapis.com
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/service-account-APIs.png"><img alt="API's required for cloud build." class="align-center" src="../_images/service-account-APIs.png" style="width: 800px;" /></a>
+<p>If you’ve installed <em>Sinergym</em> and <em>Sinergym extras</em>, the
+<strong>Google Cloud SDK must be linked with other python modules</strong>
+for some functionalities to work. Please, execute the following
+in your terminal:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>auth<span class="w"> </span>application-default<span class="w"> </span>login
+</pre></div>
+</div>
+</section>
+<section id="use-our-container-in-google-cloud-platform">
+<h3><span class="section-number">14.1.2. </span>Use our container in Google Cloud Platform<a class="headerlink" href="#use-our-container-in-google-cloud-platform" title="Link to this heading"></a></h3>
+<p>Our <em>Sinergym</em> container is currently uploaded in the <strong>Container Registry</strong> as a public one.
+You can use it <strong>locally</strong> or in a <strong>GCE VM</strong>.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>eu.gcr.io/sinergym/sinergym:latest
+</pre></div>
+</div>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>create-with-container<span class="w"> </span>sinergym<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container-image<span class="w"> </span>eu.gcr.io/sinergym/sinergym<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--zone<span class="w"> </span>europe-west1-b<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container-privileged<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container-restart-policy<span class="w"> </span>never<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container-stdin<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container-tty<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--boot-disk-size<span class="w"> </span>20GB<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--boot-disk-type<span class="w"> </span>pd-ssd<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--machine-type<span class="w"> </span>n2-highcpu-8
+</pre></div>
+</div>
+<p>We also have containers available in Docker Hub. Please, visit our
+<a class="reference external" href="https://hub.docker.com/repository/docker/sailugr/sinergym">repository</a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can change parameters to set up your own VM according to your preferences
+(see <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/compute/instances/create-with-container">create-with-container</a>).</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--boot-disk-size</span></code> is crucial. By default, the VM sets 10GB, which is insufficient for the <em>Sinergym</em>
+container. This results in a silent error for Google Cloud Build, and you would need to check the logs,
+which are not clear.</p>
+</div>
+</section>
+<section id="use-your-own-container">
+<h3><span class="section-number">14.1.3. </span>Use your Own Container<a class="headerlink" href="#use-your-own-container" title="Link to this heading"></a></h3>
+<p>If you have forked this repository and want to upload <strong>your own container on Google Cloud</strong> and use it, ç
+you can use <strong>cloudbuild.yaml</strong> with our <strong>Dockerfile</strong> for this purpose:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Write in cache for quick updates</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;eu.gcr.io/google.com/cloudsdktool/cloud-sdk&quot;</span>
+<span class="w">    </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bash&quot;</span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">[</span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;docker</span><span class="nv"> </span><span class="s">pull</span><span class="nv"> </span><span class="s">eu.gcr.io/${PROJECT_ID}/sinergym:latest</span><span class="nv"> </span><span class="s">||</span><span class="nv"> </span><span class="s">exit</span><span class="nv"> </span><span class="s">0&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="c1"># Build image (using cache if it&#39;s possible)</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;eu.gcr.io/google.com/cloudsdktool/cloud-sdk&quot;</span>
+<span class="w">    </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;docker&quot;</span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">[</span>
+<span class="w">        </span><span class="s">&quot;build&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;-t&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;eu.gcr.io/${PROJECT_ID}/sinergym:latest&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;--cache-from&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;eu.gcr.io/${PROJECT_ID}/sinergym:latest&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;--build-arg&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;SINERGYM_EXTRAS=[DRL,gcloud]&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;.&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="p p-Indicator">]</span>
+
+<span class="w">    </span><span class="c1"># Push image built to container registry</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;eu.gcr.io/google.com/cloudsdktool/cloud-sdk&quot;</span>
+<span class="w">    </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;docker&quot;</span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;push&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;eu.gcr.io/${PROJECT_ID}/sinergym:latest&quot;</span><span class="p p-Indicator">]</span>
+
+<span class="w">    </span><span class="c1"># This container is going to be public (Change command in other case)</span>
+<span class="w">  </span><span class="c1"># - name: &quot;gcr.io/cloud-builders/gsutil&quot;</span>
+<span class="w">  </span><span class="c1">#   args:</span>
+<span class="w">  </span><span class="c1">#     [</span>
+<span class="w">  </span><span class="c1">#       &quot;iam&quot;,</span>
+<span class="w">  </span><span class="c1">#       &quot;ch&quot;,</span>
+<span class="w">  </span><span class="c1">#       &quot;AllUsers:objectViewer&quot;,</span>
+<span class="w">  </span><span class="c1">#       &quot;gs://artifacts.${PROJECT_ID}.appspot.com&quot;,</span>
+<span class="w">  </span><span class="c1">#     ]</span>
+<span class="c1">#Other options for execute build (not container)</span>
+<span class="nt">options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">diskSizeGb</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10&quot;</span>
+<span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400s</span>
+<span class="nt">images</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;eu.gcr.io/${PROJECT_ID}/sinergym:latest&quot;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>This file performs the following:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Writes in <strong>cache</strong> for quick updates (if an older container was already uploaded).</p></li>
+<li><p><strong>Builds</strong> the image (using cache if available)</p></li>
+<li><p><strong>Pushes</strong> the built image to the Container Registry</p></li>
+<li><p>Makes the container public within the Container Registry.</p></li>
+</ol>
+</div></blockquote>
+<p>Don’t confuse the option section at the end of the file with the virtual machine configuration.
+Google Cloud uses a helper VM to build everything mentioned above. We use this <em>YAML</em> file to
+upgrade our container because the <code class="docutils literal notranslate"><span class="pre">PROJECT_ID</span></code> environment variable is defined by the Google
+Cloud SDK, so its value is your current project in the Google Cloud global configuration.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Just like the VM needs more memory, Google Cloud Build needs at least 10GB to work
+correctly. Otherwise, it may fail.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If your local computer doesn’t have enough free space, it might report the same error
+(there isn’t a difference by Google cloud error manager), so be careful.</p>
+</div>
+<p>To execute <strong>cloudbuild.yaml</strong>, do the following:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>builds<span class="w"> </span>submit<span class="w"> </span>--region<span class="w"> </span>europe-west1<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--config<span class="w"> </span>./cloudbuild.yaml<span class="w"> </span>.
+</pre></div>
+</div>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">--substitutions</span></code> to configure build parameters if needed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The “.” in <code class="docutils literal notranslate"><span class="pre">--config</span></code> refers to the <strong>Dockerfile</strong>, which is necessary to build the container
+image (see <a class="reference external" href="https://cloud.google.com/build/docs/build-config">build-config</a>).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In <strong>cloudbuild.yaml</strong>, there is a variable named <em>PROJECT_ID</em>. However, it is not defined
+in substitutions. This is because it’s a predetermined variable by Google Cloud. When the
+build begins, <em>“$PROJECT_ID”</em> is set to the current value in the gcloud configuration
+(see <a class="reference external" href="https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values">substitutions-variables</a>).</p>
+</div>
+</section>
+<section id="create-your-vm-or-mig">
+<h3><span class="section-number">14.1.4. </span>Create your VM or MIG<a class="headerlink" href="#create-your-vm-or-mig" title="Link to this heading"></a></h3>
+<p>To create a VM that uses this container, use the following command:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>create-with-container<span class="w"> </span>sinergym<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container-image<span class="w"> </span>eu.gcr.io/sinergym/sinergym<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--zone<span class="w"> </span>europe-west1-b<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container-privileged<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container-restart-policy<span class="w"> </span>never<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container-stdin<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container-tty<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--boot-disk-size<span class="w"> </span>20GB<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--boot-disk-type<span class="w"> </span>pd-ssd<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--machine-type<span class="w"> </span>n2-highcpu-8
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">--container-restart-policy</span> <span class="pre">never</span></code> it’s really important for a
+correct functionality.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you decide enter in VM after create it immediately, it is
+possible container hasn’t been created yet.
+You can think that is an error, Google cloud should notify this.
+If this issue happens, you should wait for a several minutes.</p>
+</div>
+<p>To create a MIG, first create a machine template:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>instance-templates<span class="w"> </span>create-with-container<span class="w"> </span>sinergym-template<span class="w"> </span><span class="se">\</span>
+--container-image<span class="w"> </span>eu.gcr.io/sinergym/sinergym<span class="w"> </span><span class="se">\</span>
+--container-privileged<span class="w"> </span><span class="se">\</span>
+--service-account<span class="w"> </span>storage-account@sinergym.iam.gserviceaccount.com<span class="w"> </span><span class="se">\</span>
+--scopes<span class="w"> </span>https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/devstorage.full_control<span class="w"> </span><span class="se">\</span>
+--container-env<span class="o">=</span><span class="nv">gce_zone</span><span class="o">=</span>europe-west1-b,gce_project_id<span class="o">=</span>sinergym<span class="w"> </span><span class="se">\</span>
+--container-restart-policy<span class="w"> </span>never<span class="w"> </span><span class="se">\</span>
+--container-stdin<span class="w"> </span><span class="se">\</span>
+--container-tty<span class="w"> </span><span class="se">\</span>
+--boot-disk-size<span class="w"> </span>20GB<span class="w"> </span><span class="se">\</span>
+--boot-disk-type<span class="w"> </span>pd-ssd<span class="w"> </span><span class="se">\</span>
+--machine-type<span class="w"> </span>n2-highcpu-8
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--service-account</span></code>, <code class="docutils literal notranslate"><span class="pre">--scopes</span></code>, and <code class="docutils literal notranslate"><span class="pre">--container-env</span></code> parameters will be explained
+in the <a class="reference internal" href="#containers-permission-to-bucket-storage-output"><span class="std std-ref">Containers permission to bucket storage output</span></a>. Please read that documentation
+before using these parameters, as they require prior configuration.</p>
+</div>
+<p>Then, create a managed instance group:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>instance-groups<span class="w"> </span>managed<span class="w"> </span>create<span class="w"> </span>example-group<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--base-instance-name<span class="w"> </span>sinergym-vm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--size<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--template<span class="w"> </span>sinergym-template
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you encounter issues with VM initialization, check your quotas
+<a class="reference external" href="https://console.cloud.google.com/iam-admin/quotas">here</a>.</p>
+</div>
+</section>
+<section id="initiate-your-vm">
+<h3><span class="section-number">14.1.5. </span>Initiate your VM<a class="headerlink" href="#initiate-your-vm" title="Link to this heading"></a></h3>
+<p>Your virtual machine is ready! To connect, you can use SSH
+(see <a class="reference external" href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh">gcloud-ssh</a>):</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>&lt;machine-name&gt;
+</pre></div>
+</div>
+<p>Google Cloud uses a <strong>Container-Optimized OS</strong> (see
+<a class="reference external" href="https://cloud.google.com/container-optimized-os/docs">documentation</a>)
+in the VM. This OS has Docker pre-installed with the <em>Sinergym</em> container.</p>
+<p>To use this container on your machine, simply run:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>attach<span class="w"> </span>&lt;container-name-or-ID&gt;
+</pre></div>
+</div>
+<p>Now you can execute your own experiments in Google Cloud! For example,
+you can enter the remote container with <em>gcloud ssh</em> and execute
+<em>train_agent.py</em> for the desired experiment.</p>
+</section>
+</section>
+<section id="executing-experiments-in-remote-containers">
+<h2><span class="section-number">14.2. </span>Executing experiments in remote containers<a class="headerlink" href="#executing-experiments-in-remote-containers" title="Link to this heading"></a></h2>
+<p>The <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/train_agent.py">train_agent.py</a> and
+<a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/scripts/load_agent.py">load_agent.py</a> scripts are
+used to execute experiments and evaluations in remote containers. These scripts can be combined with
+features such as Google Cloud Bucket, Weights and Biases, and auto-remove functionality.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <strong>train_agent.py</strong> script can also be used for local experiments and sending output data
+and artifacts to remote storage, such as wandb, without configuring cloud computing.</p>
+</div>
+<p>The JSON structure for configuring experiments or evaluations is explained in the <a class="reference internal" href="deep-reinforcement-learning.html#usage"><span class="std std-ref">Usage</span></a> section.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>To ensure correct auto_delete functionality, it is recommended to use Managed Instance Groups
+(MIGs) instead of individual instances.</p>
+</div>
+<section id="containers-permission-to-bucket-storage-output">
+<h3><span class="section-number">14.2.1. </span>Containers permission to bucket storage output<a class="headerlink" href="#containers-permission-to-bucket-storage-output" title="Link to this heading"></a></h3>
+<p>To enable the <em>remote_store</em> option in <em>train_agent.py</em> to work correctly, the <em>Sinergym</em>
+template in the <a class="reference internal" href="#create-your-vm-or-mig"><span class="std std-ref">Create your VM or MIG</span></a> section specifies the
+<code class="docutils literal notranslate"><span class="pre">--scope</span></code>, <code class="docutils literal notranslate"><span class="pre">--service-account</span></code>, and <code class="docutils literal notranslate"><span class="pre">--container-env</span></code> parameters.
+These parameters provide the necessary permissions for each container to write to the bucket
+and manage Google Cloud Platform.</p>
+<p>To set up the service account and grant the required privileges, follow the steps below:</p>
+<ol class="arabic simple">
+<li><p>Create a new service account named <strong>storage-account</strong>:</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>iam<span class="w"> </span>service-accounts<span class="w"> </span>create<span class="w"> </span>storage-account
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Grant the <em>roles/owner</em> permission to the service account:</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>projects<span class="w"> </span>add-iam-policy-binding<span class="w"> </span>PROJECT_ID<span class="w"> </span>--member<span class="o">=</span><span class="s2">&quot;serviceAccount:storage-account@PROJECT_ID.iam.gserviceaccount.com&quot;</span><span class="w"> </span>--role<span class="o">=</span><span class="s2">&quot;roles/owner&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Create a JSON key file named <strong>google-storage.json</strong> in the project root directory (this file should be ignored by git):</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcloud<span class="w"> </span>iam<span class="w"> </span>service-accounts<span class="w"> </span>keys<span class="w"> </span>create<span class="w"> </span>PROJECT_PATH/google-storage.json<span class="w"> </span>--iam-account<span class="o">=</span>storage-account@PROJECT_ID.iam.gserviceaccount.com
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Export the path to the JSON key file as the <strong>GOOGLE_CLOUD_CREDENTIALS</strong> environment variable on your local computer:</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">GOOGLE_CLOUD_CREDENTIALS</span><span class="o">=</span>PROJECT_PATH/google-storage.json
+</pre></div>
+</div>
+<p>These steps ensure that the gcloud SDK uses the specified token for authentication.</p>
+</section>
+<section id="visualize-remote-wandb-log-in-real-time">
+<h3><span class="section-number">14.2.2. </span>Visualize remote wandb log in real-time<a class="headerlink" href="#visualize-remote-wandb-log-in-real-time" title="Link to this heading"></a></h3>
+<p>You only have to enter in <a class="reference external" href="https://wandb.ai/site">Weights &amp; Biases</a> and log in with your GitHub account.</p>
+</section>
+</section>
+<section id="google-cloud-alerts">
+<h2><span class="section-number">14.3. </span>Google Cloud Alerts<a class="headerlink" href="#google-cloud-alerts" title="Link to this heading"></a></h2>
+<p><strong>Google Cloud Platform</strong> provides functionality to trigger events and generate alerts.
+We have created a trigger in our gcloud project to notify when an experiment is finished.
+This alert can be received through various channels such as Slack, SMS, or Email.
+To learn more about setting up alerts, refer to the Google Cloud Alerts documentation
+<a class="reference external" href="https://cloud.google.com/monitoring/alerts">here</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="deep-reinforcement-learning.html" class="btn btn-neutral float-left" title="13. Deep Reinforcement Learning Integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="github-actions.html" class="btn btn-neutral float-right" title="15. Github Actions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.3.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v1.4.0/pages/gcloudAPI.html">v1.4.0</a></dd>
+            <dd><a href="../../v1.6.0/pages/gcloudAPI.html">v1.6.0</a></dd>
+            <dd><a href="../../v1.7.0/pages/gcloudAPI.html">v1.7.0</a></dd>
+            <dd><a href="../../v2.0.0/pages/gcloudAPI.html">v2.0.0</a></dd>
+            <dd><a href="../../v2.1.0/pages/gcloudAPI.html">v2.1.0</a></dd>
+            <dd><a href="../../v2.2.0/pages/gcloudAPI.html">v2.2.0</a></dd>
+            <dd><a href="../../v2.3.0/pages/gcloudAPI.html">v2.3.0</a></dd>
+            <dd><a href="../../v2.5.0/pages/gcloudAPI.html">v2.5.0</a></dd>
+            <dd><a href="../../v3.1.0/pages/gcloudAPI.html">v3.1.0</a></dd>
+            <dd><a href="../../v3.2.0/pages/gcloudAPI.html">v3.2.0</a></dd>
+            <dd><a href="../../v3.2.10/pages/gcloudAPI.html">v3.2.10</a></dd>
+            <dd><a href="gcloudAPI.html">v3.3.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../main/pages/gcloudAPI.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>

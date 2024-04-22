@@ -120,6 +120,21 @@ It's based on the
 Initially, it may not be precise and the values might often be out of range, so use this wrapper 
 with caution.
 
+However, *Sinergym* enhances its functionality with some additional features:
+
+- It includes the last unnormalized observation as an attribute, which is very useful for logging.
+
+- It provides access to the means and variations used for normalization calibration, addressing the low-level 
+  issues found in the original wrapper.
+
+- Similarly, these calibration values can be set via a method. Refer to the :ref:`API reference` for more information.
+
+- The automatic calibration can be enabled or disabled as you interact with the environment, allowing the 
+  calibration to remain static instead of adaptive.
+
+These functionalities are crucial when evaluating models trained using this wrapper. 
+For more details, visit `#407 <https://github.com/ugr-sail/sinergym/issues/407>`__.
+
 ***********************
 LoggerWrapper
 ***********************

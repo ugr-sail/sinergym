@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5. Architecture &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=816ccb90" />
+
+  
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. Environments" href="environments.html" />
+    <link rel="prev" title="4. Weathers" href="weathers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">2. Usage Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weathers.html">4. Weathers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#additional-observation-information">5.1. Additional observation information</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">6. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">8. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">9. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">10. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">12. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">14. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">15. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">16. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">17. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">18. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">19. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">20. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">21. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">23. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">24. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5. </span>Architecture</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/architecture.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="architecture">
+<h1><span class="section-number">5. </span>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h1>
+<p>As outlined in the introduction, <em>Sinergym</em> is structured as follows:</p>
+<a class="reference internal image-reference" href="../_images/sinergym_diagram.png"><img alt="*Sinergym* backend" class="align-center" src="../_images/sinergym_diagram.png" style="width: 800px;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><em>Sinergym</em> consists of three primary components: the <em>agent</em>, the <em>communication</em> interface, and the <em>simulation</em>.
+The agent interacts with the environment by sending actions and receiving observations through the Gymnasium interface.
+Concurrently, the Gymnasium interface communicates with the simulation engine via the <em>EnergyPlus</em> Python API.
+This API provides the functionality to manage handlers such as actuators, meters, and variables, whose current values
+directly influence the simulation’s progression.</p>
+<p>The following image provides a more detailed view of this process:</p>
+<a class="reference internal image-reference" href="../_images/backend.png"><img alt="*Sinergym* backend" class="align-center" src="../_images/backend.png" style="width: 1600px;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Following the flow in figure, upon environment initialization (<em>__init__</em>),
+a building model is created using the specified epJSON file (<em>1</em>), and a
+simulator instance is instantiated (<em>2</em>), receiving necessary data for its
+construction. Handlers for different components are initialized, which will
+be used in subsequent steps to gather information and control the simulation
+using the EnergyPlus Python API.</p>
+<p>The next step is to initialize the first episode (<em>reset</em>), corresponding to the
+specified run period in the building. When starting a new episode, <em>Sinergym</em> uses
+its modeling class to adapt the specified building and weather to the environment (<em>3</em>)
+and start the simulation (<em>4</em>).</p>
+<p>Key modeling actions include updating the EPW file if multiple are present, selecting
+one randomly per episode (<em>3.1</em>), automatically introducing Output Variables and Output
+Meters specified in the environment into the building model (<em>3.2</em>), adapting any extra
+configuration present in the environment, such as simulation timesteps per hour or custom
+run period (<em>3.3</em>), adjusting certain building aspects to be compatible with the weather
+specified in the environment, such as altitude, latitude, and building orientation (<em>3.4</em>),
+and finally applying weather variability if present (<em>3.5</em>).</p>
+<p>Regarding the simulation, <em>Sinergym</em> stops the previous simulation if an episode was ongoing
+(<em>4.1</em>), generates the initial state (<em>4.2</em>), registers callbacks that interrupt the simulation
+to establish control flow (<em>4.3</em>), initiates the simulation process (<em>4.4</em>), and performs the
+warmup process (<em>4.5</em>).</p>
+<p>Finally, the agent begins to send control actions to the building (<em>5</em>). <em>Sinergym</em> overwrites
+the selected schedulers incorporated in the building model, interrupting the simulation,
+setting the values, and resuming the process, thus adapting continuous control. Meanwhile,
+the middleware waits for the actions to be applied and the simulation state to change (<em>5.1</em>).
+Once this occurs, it is returned to the agent via the Gymnasium interface (<em>5.2</em>).
+This process is repeated continuously until the episode concludes (<em>step</em>).</p>
+<p>This framework is highly abstract, as these components perform additional tasks such as managing the output’s
+folder structure, preparing handlers for use, initiating callbacks for data collection during simulation,
+among other functions.</p>
+<p>The architecture of <em>Sinergym</em> accomplishes the design objectives by offering many advantages.
+The framework is extensible since it facilitates the integration of custom reward functions,
+wrappers, controllers, and loggers, together with new EnergyPlus buildings and weathers.
+The use of EnergyPlus API as middleware allows access to all building sensors, metrics,
+actuators and other information during simulation. From the users’ perspective, the framework
+hides the complexities of the interaction with the simulator to let them focus on data generation,
+learning control strategies and validation.</p>
+<section id="additional-observation-information">
+<h2><span class="section-number">5.1. </span>Additional observation information<a class="headerlink" href="#additional-observation-information" title="Link to this heading"></a></h2>
+<p>Beyond the observations returned by the step and reset methods, as depicted in the preceding images,
+both methods also return a Python dictionary containing supplementary information:</p>
+<ul class="simple">
+<li><p><strong>Reset info:</strong> This dictionary has the next keys:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="s1">&#39;time_elapsed(hours)&#39;</span><span class="p">:</span> <span class="c1"># &lt;Simulation time elapsed in hours&gt;,</span>
+          <span class="s1">&#39;month&#39;</span><span class="p">:</span> <span class="c1"># &lt;Month in which the episode starts.&gt;,</span>
+          <span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="c1"># &lt;Day in which the episode starts.&gt;,</span>
+          <span class="s1">&#39;hour&#39;</span><span class="p">:</span> <span class="c1"># &lt;Hour in which the episode starts.&gt;,</span>
+          <span class="s1">&#39;is_raining&#39;</span><span class="p">:</span> <span class="c1"># &lt;True if it is raining in the simulation.&gt;,</span>
+          <span class="s1">&#39;timestep&#39;</span><span class="p">:</span> <span class="c1"># &lt;Timesteps count.&gt;,</span>
+      <span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>step info:</strong> This dictionary shares the same keys as the reset info, but additionally includes
+the action dispatched (to the simulation, not the environment), the reward, and reward terms. The
+reward terms are contingent on the reward function employed. For more details, refer to <a class="reference internal" href="rewards.html#reward-terms"><span class="std std-ref">Reward terms</span></a>.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="weathers.html" class="btn btn-neutral float-left" title="4. Weathers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="environments.html" class="btn btn-neutral float-right" title="6. Environments" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.3.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../v2.3.0/index.html">v2.3.0</a></dd>
+            <dd><a href="../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../v3.2.0/index.html">v3.2.0</a></dd>
+            <dd><a href="../../v3.2.10/index.html">v3.2.10</a></dd>
+            <dd><a href="architecture.html">v3.3.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../main/pages/architecture.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>

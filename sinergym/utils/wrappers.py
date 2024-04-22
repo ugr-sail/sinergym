@@ -63,23 +63,33 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
 
     def __init__(self,
                  env: EplusEnv,
-                 epsilon: float = 1e-8):
-        """This wrapper will normalize observations s.t. each coordinate is centered with unit variance.
+                 automatic_update: bool = True,
+                 epsilon: float = 1e-8,
+                 mean: np.float64 = None,
+                 var: np.float64 = None):
+        """Initializes the NormalizationWrapper. Mean and var values can be None andbeing updated during interaction with environment.
 
         Args:
-             env (Env): The environment to apply the wrapper
-             epsilon (float): A stability parameter that is used when scaling the observations. Defaults to 1e-8
+            env (EplusEnv): The environment to apply the wrapper.
+            automatic_update (bool, optional): Whether or not to update the mean and variance values automatically. Defaults to True.
+            epsilon (float, optional): A stability parameter used when scaling the observations. Defaults to 1e-8.
+            mean (np.float64, optional): The mean value used for normalization. Defaults to None.
+            var (np.float64, optional): The variance value used for normalization. Defaults to None.
         """
-        gym.utils.RecordConstructorArgs.__init__(self, epsilon=epsilon)
+        gym.utils.RecordConstructorArgs.__init__(
+            self, epsilon=epsilon, mean=mean, var=var)
         gym.Wrapper.__init__(self, env)
         self.num_envs = 1
         self.is_vector_env = False
+        self.automatic_update = automatic_update
 
         self.unwrapped_observation = None
         self.obs_rms = RunningMeanStd(shape=self.observation_space.shape)
+        self.obs_rms.mean = mean if mean is not None else self.obs_rms.mean
+        self.obs_rms.var = var if var is not None else self.obs_rms.var
         self.epsilon = epsilon
 
-        self.logger.info('wrapper initialized.')
+        self.logger.info('Wrapper initialized.')
 
     def step(self, action):
         """Steps through the environment and normalizes the observation."""
@@ -101,9 +111,55 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
 
         return self.normalize(np.array([obs]))[0], info
 
+    def deactivate_update(self):
+        """
+        Deactivates the automatic update of the normalization wrapper.
+        After calling this method, the normalization wrapper will not update its calibration automatically.
+        """
+        self.automatic_update = False
+
+    def activate_update(self):
+        """
+        Activates the automatic update of the normalization wrapper.
+        After calling this method, the normalization wrapper will update its calibration automatically.
+        """
+        self.automatic_update = True
+
+    @property
+    def mean(self):
+        """Returns the mean value of the observations."""
+        return self.obs_rms.mean
+
+    @property
+    def var(self):
+        """Returns the variance value of the observations."""
+        return self.obs_rms.var
+
+    def set_mean(self, mean: np.float64):
+        """Sets the mean value of the observations."""
+        try:
+            assert len(mean) == self.observation_space.shape[0]
+        except AssertionError as err:
+            self.logger.error(
+                'Mean values must have the same shape than environment observation space.')
+            raise err
+        self.obs_rms.mean = mean
+
+    def set_var(self, var: np.float64):
+        """Sets the variance value of the observations."""
+        try:
+            assert len(var) == self.observation_space.shape[0]
+        except AssertionError as err:
+            self.logger.error(
+                'Variance values must have the same shape than environment observation space.')
+            raise err
+        self.obs_rms.var = var
+
     def normalize(self, obs):
-        """Normalizes the observation using the running mean and variance of the observations."""
-        self.obs_rms.update(obs)
+        """Normalizes the observation using the running mean and variance of the observations.
+        If automatic_update is enabled, the running mean and variance will be updated too."""
+        if self.automatic_update:
+            self.obs_rms.update(obs)
         return (obs - self.obs_rms.mean) / \
             np.sqrt(self.obs_rms.var + self.epsilon)
 

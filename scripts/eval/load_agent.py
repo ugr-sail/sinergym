@@ -14,6 +14,7 @@ import sinergym.utils.gcloud as gcloud
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import *
+from sinergym.utils.common import is_wrapped
 
 # ---------------------------------------------------------------------------- #
 #                                  Parameters                                  #
@@ -101,7 +102,7 @@ try:
                 # parse str parameters to sinergym Callable or Objects if it is
                 # required
                 if isinstance(value, str):
-                    if 'sinergym.' in value:
+                    if '.' in value:
                         parameters[name] = eval(value)
             env = wrapper_class(env=env, ** parameters)
 
@@ -176,6 +177,13 @@ try:
             sum(rewards))
     env.close()
 
+    # Save normalization calibration if exists
+    if is_wrapped(env, NormalizeObservation) and conf.get('wandb'):
+        wandb.config.mean = env.get_wrapper_attr('mean')
+        wandb.config.var = env.get_wrapper_attr('var')
+        wandb.config.automatic_update = env.get_wrapper_attr(
+            'automatic_update')
+
     # ---------------------------------------------------------------------------- #
     #                                Wandb Artifacts                               #
     # ---------------------------------------------------------------------------- #
@@ -219,6 +227,30 @@ try:
 
 except Exception as err:
     print("Error in process detected")
+
+    # Save normalization calibration if exists
+    if is_wrapped(env, NormalizeObservation) and conf.get('wandb'):
+        wandb.config.mean = env.get_wrapper_attr('mean')
+        wandb.config.var = env.get_wrapper_attr('var')
+        wandb.config.automatic_update = env.get_wrapper_attr(
+            'automatic_update')
+
+    # Save current wandb artifacts state
+    if conf.get('wandb'):
+        if conf['wandb'].get('evaluation_registry'):
+            artifact = wandb.Artifact(
+                name=conf['wandb']['evaluation_registry']['artifact_name'],
+                type=conf['wandb']['evaluation_registry']['artifact_type'])
+            artifact.add_dir(
+                env.get_wrapper_attr('workspace_path'),
+                name='evaluation_output/')
+
+            run.log_artifact(artifact)
+
+        # wandb has finished
+        run.finish()
+
+    # Auto delete
     if conf.get('cloud'):
         if conf['cloud'].get('auto_delete'):
             print('Deleting remote container')
