@@ -166,6 +166,49 @@ def test_discretize_wrapper(env_wrapper_discretize):
     assert not hasattr(original_env, 'action_mapping')
 
 
+def test_normalize_observation_wrapper(env_wrapper_normalization):
+
+    # Spaces
+    env = env_wrapper_normalization
+    assert not env.is_discrete
+    assert hasattr(env, 'unwrapped_observation')
+
+    # Normalization calibration
+    assert hasattr(env, 'mean')
+    old_mean = env.get_wrapper_attr('mean').copy()
+    assert hasattr(env, 'var')
+    old_var = env.get_wrapper_attr('var').copy()
+    assert len(env.get_wrapper_attr('mean')) == env.observation_space.shape[0]
+    assert len(env.get_wrapper_attr('var')) == env.observation_space.shape[0]
+
+    # reset
+    obs, _ = env.reset()
+
+    # Spaces
+    assert (obs != env.get_wrapper_attr('unwrapped_observation')).any()
+    assert env.observation_space.contains(
+        env.get_wrapper_attr('unwrapped_observation'))
+
+    # Calibration
+    assert (old_mean != env.get_wrapper_attr('mean')).any()
+    assert (old_var != env.get_wrapper_attr('var')).any()
+    old_mean = env.get_wrapper_attr('mean').copy()
+    old_var = env.get_wrapper_attr('var').copy()
+    env.get_wrapper_attr('deactivate_update')()
+    a = env.action_space.sample()
+    env.step(a)
+    assert (old_mean == env.get_wrapper_attr('mean')).all()
+    assert (old_var == env.get_wrapper_attr('var')).all()
+    env.get_wrapper_attr('activate_update')()
+    env.step(a)
+    assert (old_mean != env.get_wrapper_attr('mean')).any()
+    assert (old_var != env.get_wrapper_attr('var')).any()
+    env.get_wrapper_attr('set_mean')(old_mean)
+    env.get_wrapper_attr('set_var')(old_var)
+    assert (old_mean == env.get_wrapper_attr('mean')).all()
+    assert (old_var == env.get_wrapper_attr('var')).all()
+
+
 def test_normalize_action_wrapper(env_normalize_action_wrapper):
 
     env = env_normalize_action_wrapper
