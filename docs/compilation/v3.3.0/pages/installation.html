@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. Installation &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=816ccb90" />
+
+  
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Usage Example" href="usage-example.html" />
+    <link rel="prev" title="Welcome to sinergym!" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#docker-container">1.1. Docker container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manual-installation">1.2. Manual installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configure-python-environment">1.2.1. Configure Python Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-energyplus-23-1-0">1.2.2. Install EnergyPlus 23.1.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#include-energyplus-python-api-in-python-path">1.2.3. Include Energyplus Python API in Python Path</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#about-sinergym-package">1.3. About Sinergym package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#verify-installation">1.4. Verify Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cloud-computing">1.5. Cloud Computing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">2. Usage Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">5. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">6. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">8. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">9. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">10. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">12. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">14. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">15. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">16. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">17. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">18. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">19. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">20. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">21. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">23. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">24. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">1. </span>Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1><span class="section-number">1. </span>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<p><em>Sinergym</em> relies on several dependencies, the specifics of which vary by version.
+The table below provides a summary of the versions supported by <em>Sinergym</em> across its various releases:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>Sinergym version</strong></p></td>
+<td><p><strong>Ubuntu version</strong></p></td>
+<td><p><strong>Python version</strong></p></td>
+<td><p><strong>EnergyPlus version</strong></p></td>
+<td><p><strong>Building model file</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>0.0</strong></p></td>
+<td><p>18.04 LTS</p></td>
+<td><p>3.6</p></td>
+<td><p>8.3.0</p></td>
+<td><p>IDF</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>1.1.0</strong></p></td>
+<td><p>18.04 LTS</p></td>
+<td><p>3.6</p></td>
+<td><p><strong>9.5.0</strong></p></td>
+<td><p>IDF</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>1.7.0</strong></p></td>
+<td><p>18.04 LTS</p></td>
+<td><p><strong>3.9</strong></p></td>
+<td><p>9.5.0</p></td>
+<td><p>IDF</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>1.9.5</strong></p></td>
+<td><p><strong>22.04 LTS</strong></p></td>
+<td><p><strong>3.10.6</strong></p></td>
+<td><p>9.5.0</p></td>
+<td><p>IDF</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>2.4.0</strong></p></td>
+<td><p>22.04 LTS</p></td>
+<td><p>3.10.6</p></td>
+<td><p>9.5.0</p></td>
+<td><p><strong>epJSON</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>2.5.0</strong></p></td>
+<td><p>22.04 LTS</p></td>
+<td><p>3.10.6</p></td>
+<td><p><strong>23.1.0</strong></p></td>
+<td><p>epJSON</p></td>
+</tr>
+</tbody>
+</table>
+<p>We recommend always using the latest version of <em>Sinergym</em> that is supported by the container.
+This approach helps you avoid the complexities of the installation process. However,
+if you prefer to manually install <em>Sinergym</em> on your computer, we provide the necessary
+documentation in the subsequent sections.</p>
+<section id="docker-container">
+<h2><span class="section-number">1.1. </span>Docker container<a class="headerlink" href="#docker-container" title="Link to this heading"></a></h2>
+<p>We provide a <strong>Dockerfile</strong> to install all dependencies and prepare the
+image for running <em>Sinergym</em>.</p>
+<p>By default, the <em>Dockerfile</em> executes <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.[extras]</span></code>. If you wish
+to install a different setup, you need to execute the following command in the
+<strong>root repository</strong>:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>&lt;tag_name&gt;<span class="w"> </span>--build-arg<span class="w"> </span><span class="nv">SINERGYM_EXTRAS</span><span class="o">=[</span>&lt;setup_tag<span class="o">(</span>s<span class="o">)</span>&gt;<span class="o">]</span><span class="w"> </span>.
+</pre></div>
+</div>
+<p>For instance, to create a container with only the documentation libraries
+and testing, use:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>example1/sinergym:latest<span class="w"> </span>--build-arg<span class="w"> </span><span class="nv">SINERGYM_EXTRAS</span><span class="o">=[</span>doc,test<span class="o">]</span><span class="w"> </span>.
+</pre></div>
+</div>
+<p>If you do not require any extra libraries, specify an empty value as follows:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>example1/sinergym:latest<span class="w"> </span>--build-arg<span class="w"> </span><span class="nv">SINERGYM_EXTRAS</span><span class="o">=</span><span class="w"> </span>.
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Our container can also be directly installed from the
+<a class="reference external" href="https://hub.docker.com/repository/docker/sailugr/sinergym">Docker Hub repository</a>.
+It contains all the project’s releases.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For <a class="reference external" href="https://code.visualstudio.com/">Visual Studio Code</a> users,
+simply open the root directory and click on the <em>Reopen in container</em> pop-up button.
+This action will automatically install all dependencies and enable you to run <em>Sinergym</em>
+in an isolated environment. For more details on this feature,
+refer to the <a class="reference external" href="https://code.visualstudio.com/docs/remote/containers">VSCode Containers extension documentation</a>.</p>
+</div>
+</section>
+<section id="manual-installation">
+<h2><span class="section-number">1.2. </span>Manual installation<a class="headerlink" href="#manual-installation" title="Link to this heading"></a></h2>
+<p>To manually install <em>Sinergym</em> (although using the container is <strong>recommended</strong>),
+follow these steps:</p>
+<section id="configure-python-environment">
+<h3><span class="section-number">1.2.1. </span>Configure Python Environment<a class="headerlink" href="#configure-python-environment" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Begin by cloning this repository:</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ugr-sail/sinergym.git
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>sinergym
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Next, we recommend creating a <strong>virtual environment</strong> as follows:</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>python-virtualenv<span class="w"> </span>virtualenv
+$<span class="w"> </span>virtualenv<span class="w"> </span>env_sinergym<span class="w"> </span>--python<span class="o">=</span>python3.10
+$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>env_sinergym/bin/activate
+$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>extras<span class="o">]</span>
+</pre></div>
+</div>
+<p>Alternatively, you can use <strong>conda environments</strong> (<em>recommended</em>).
+<em>Conda</em> is user-friendly and we provide a file for automatic configuration:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>sinergym
+$<span class="w"> </span>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>python_environment.yml
+$<span class="w"> </span>conda<span class="w"> </span>activate<span class="w"> </span>sinergym
+</pre></div>
+</div>
+<p>With this, you have the correct Python version and the necessary modules to run
+<em>Sinergym</em>. Let’s proceed with the installation of other required programs
+outside of Python to run the simulations:</p>
+</section>
+<section id="install-energyplus-23-1-0">
+<h3><span class="section-number">1.2.2. </span>Install EnergyPlus 23.1.0<a class="headerlink" href="#install-energyplus-23-1-0" title="Link to this heading"></a></h3>
+<p>You need to install <em>EnergyPlus</em>. We have tested and confirmed compatibility
+with version <code class="docutils literal notranslate"><span class="pre">23.1.0</span></code>. The code might work with other versions, but we
+have not tested them.</p>
+<p>Follow the instructions <a class="reference external" href="https://energyplus.net/downloads">here</a> to install
+it for Linux (we only support <strong>Ubuntu</strong>). You can choose any location for the
+installation. After installation, a folder named <code class="docutils literal notranslate"><span class="pre">Energyplus-23-1-0</span></code> should
+appear in the chosen location.</p>
+</section>
+<section id="include-energyplus-python-api-in-python-path">
+<h3><span class="section-number">1.2.3. </span>Include Energyplus Python API in Python Path<a class="headerlink" href="#include-energyplus-python-api-in-python-path" title="Link to this heading"></a></h3>
+<p><em>Sinergym</em> uses the <em>Energyplus</em> Python API as its backend. The modules of this
+API are located in the <em>Energyplus</em> folder that you installed in the previous
+step. You must add this installation path to the <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> environment
+variable so that the interpreter can access these modules.</p>
+</section>
+</section>
+<section id="about-sinergym-package">
+<h2><span class="section-number">1.3. </span>About Sinergym package<a class="headerlink" href="#about-sinergym-package" title="Link to this heading"></a></h2>
+<p>As we have told you in section <a class="reference internal" href="#manual-installation"><span class="std std-ref">Manual installation</span></a>, Python environment
+can be set up using <code class="docutils literal notranslate"><span class="pre">python_environment.yml</span></code> with <em>conda</em>. This will install
+the virtual environment with Python version required and all packages used
+<em>all-in-one</em>.
+However, we can make an installation using the Github repository in a python
+environment directly, like we have shown with <em>virtualenv</em>:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>env_sinergym/bin/activate
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>sinergym
+$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+<p>Extra libraries can be installed by typing <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.[extras]</span></code>.
+<em>extras</em> include all optional libraries which have been considered in this project such as
+testing, visualization, Deep Reinforcement Learning, monitoring , etc.
+It’s possible to select a subset of these libraries instead of ‘extras’ tag in which
+we select all optional libraries, for example:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>sinergym
+$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>test,doc<span class="o">]</span>
+</pre></div>
+</div>
+<p>In order to check all our tag list, visit <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/setup.py">setup.py</a>
+in <em>Sinergym</em> root repository. In any case, they are not a requirement of the package.</p>
+<p>You can also install from <a class="reference external" href="https://pypi.org/project/sinergym/">official PyPi repository</a>
+with last stable version by default:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>sinergym<span class="o">[</span>extras<span class="o">]</span>
+</pre></div>
+</div>
+</section>
+<section id="verify-installation">
+<h2><span class="section-number">1.4. </span>Verify Installation<a class="headerlink" href="#verify-installation" title="Link to this heading"></a></h2>
+<p>This project is automatically monitored using <strong>tests</strong> specifically developed for it.
+To verify that <em>Sinergym</em> has been installed correctly, execute <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">tests/</span> <span class="pre">-vv</span></code>
+in the <strong>repository root</strong>.</p>
+<p>Furthermore, each time the <em>Sinergym</em> repository is updated, the tests are automatically executed in a remote container
+built using the Dockerfile. This task is performed by <a class="reference external" href="https://docs.github.com/es/actions/">Github Action</a>
+(refer to the <a class="reference internal" href="github-actions.html#github-actions"><span class="std std-ref">Github Actions</span></a> section for more details).</p>
+</section>
+<section id="cloud-computing">
+<h2><span class="section-number">1.5. </span>Cloud Computing<a class="headerlink" href="#cloud-computing" title="Link to this heading"></a></h2>
+<p>You also have the option to run your experiments in the Cloud. We utilize <a class="reference external" href="https://cloud.google.com/">Google Cloud</a>
+for this purpose. Our team is working on setting up an account to run our <em>Sinergym</em> container
+with <strong>remote storage</strong> and <strong>Weights&amp;Biases tracking</strong>.
+For more information on installation and preparing the Google Cloud SDK to run your experiments,
+please visit our <a class="reference internal" href="gcloudAPI.html#preparing-google-cloud"><span class="std std-ref">Preparing Google Cloud</span></a> section.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to sinergym!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage-example.html" class="btn btn-neutral float-right" title="2. Usage Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.3.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v1.4.0/pages/installation.html">v1.4.0</a></dd>
+            <dd><a href="../../v1.6.0/pages/installation.html">v1.6.0</a></dd>
+            <dd><a href="../../v1.7.0/pages/installation.html">v1.7.0</a></dd>
+            <dd><a href="../../v2.0.0/pages/installation.html">v2.0.0</a></dd>
+            <dd><a href="../../v2.1.0/pages/installation.html">v2.1.0</a></dd>
+            <dd><a href="../../v2.2.0/pages/installation.html">v2.2.0</a></dd>
+            <dd><a href="../../v2.3.0/pages/installation.html">v2.3.0</a></dd>
+            <dd><a href="../../v2.5.0/pages/installation.html">v2.5.0</a></dd>
+            <dd><a href="../../v3.1.0/pages/installation.html">v3.1.0</a></dd>
+            <dd><a href="../../v3.2.0/pages/installation.html">v3.2.0</a></dd>
+            <dd><a href="../../v3.2.10/pages/installation.html">v3.2.10</a></dd>
+            <dd><a href="installation.html">v3.3.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../main/pages/installation.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>

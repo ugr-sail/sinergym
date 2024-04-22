@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.NormalizeObservation
+﻿sinergym.utils.wrappers.NormalizeObservation
 ============================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -16,12 +16,16 @@ sinergym.utils.wrappers.NormalizeObservation
    .. autosummary::
    
       ~NormalizeObservation.__init__
+      ~NormalizeObservation.activate_update
       ~NormalizeObservation.class_name
       ~NormalizeObservation.close
+      ~NormalizeObservation.deactivate_update
       ~NormalizeObservation.get_wrapper_attr
       ~NormalizeObservation.normalize
       ~NormalizeObservation.render
       ~NormalizeObservation.reset
+      ~NormalizeObservation.set_mean
+      ~NormalizeObservation.set_var
       ~NormalizeObservation.step
       ~NormalizeObservation.wrapper_spec
    
@@ -35,6 +39,7 @@ sinergym.utils.wrappers.NormalizeObservation
    
       ~NormalizeObservation.action_space
       ~NormalizeObservation.logger
+      ~NormalizeObservation.mean
       ~NormalizeObservation.metadata
       ~NormalizeObservation.np_random
       ~NormalizeObservation.observation_space
@@ -42,5 +47,6 @@ sinergym.utils.wrappers.NormalizeObservation
       ~NormalizeObservation.reward_range
       ~NormalizeObservation.spec
       ~NormalizeObservation.unwrapped
+      ~NormalizeObservation.var
    
    

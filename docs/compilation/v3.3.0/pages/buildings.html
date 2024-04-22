@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3. Buildings &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=816ccb90" />
+
+  
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Weathers" href="weathers.html" />
+    <link rel="prev" title="2. Usage Example" href="usage-example.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">2. Usage Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Buildings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#datacenter">3.1. Datacenter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#small-datacenter">3.2. Small Datacenter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#zone">3.3. 5Zone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#warehouse">3.4. Warehouse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#officemedium">3.5. OfficeMedium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shopwithvanbattery">3.6. ShopWithVanBattery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#officegridstoragesmoothing">3.7. OfficeGridStorageSmoothing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">5. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">6. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">8. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">9. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">10. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">12. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">14. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">15. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">16. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">17. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">18. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">19. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">20. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">21. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">23. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">24. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3. </span>Buildings</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/buildings.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="buildings">
+<h1><span class="section-number">3. </span>Buildings<a class="headerlink" href="#buildings" title="Link to this heading"></a></h1>
+<p>This section details the buildings incorporated in Sinergym, separate from the other
+components that constitute the environment for each experiment. It also provides
+the default <em>Sinergym</em> observation and action spaces for each building, though
+these spaces can be customized by the user. The observation variables names would
+be the base name with each key at the begginning.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>To add new buildings to this framework, please refer to the section
+<a class="reference internal" href="environments.html#adding-new-buildings-for-environments"><span class="std std-ref">Adding New Buildings for Environments</span></a>.</p>
+</div>
+<section id="datacenter">
+<h2><span class="section-number">3.1. </span>Datacenter<a class="headerlink" href="#datacenter" title="Link to this heading"></a></h2>
+<p><strong>2ZoneDataCenterHVAC_wEconomizer.epJSON:</strong>
+A 491.3 m2 building divided into two asymmetrical zones (west and east zone).
+Each zone has an HVAC system consisting of air economizers, evaporative coolers,
+DX cooling coil, chilled water coil, and VAV units. The main source of heat
+comes from the hosted servers. The heating and cooling setpoint values are
+applied simultaneously to both zones.</p>
+<a class="reference internal image-reference" href="../_images/datacenter.png"><img alt="Datacenter building" class="align-center" src="../_images/datacenter.png" style="width: 700px;" /></a>
+<p>The default actuators, output and meters variables are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Actuator</p></th>
+<th class="head"><p>Variable Name</p></th>
+<th class="head"><p>Element Type</p></th>
+<th class="head"><p>Value Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Heating Setpoints</p></td>
+<td><p>Heating_Setpoint_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cooling Setpoints</p></td>
+<td><p>Cooling_Setpoint_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Base Variable Name</p></th>
+<th class="head"><p>Keys</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Site Outdoor Air Drybulb Temperature</p></td>
+<td><p>outdoor_temperature</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Outdoor Air Relative Humidity</p></td>
+<td><p>outdoor_humidity</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Wind Speed</p></td>
+<td><p>wind_speed</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Wind Direction</p></td>
+<td><p>wind_direction</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Diffuse Solar Radiation Rate per Area</p></td>
+<td><p>diffuse_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Direct Solar Radiation Rate per Area</p></td>
+<td><p>direct_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Thermostat Heating Setpoint Temperature</p></td>
+<td><p>htg_setpoint</p></td>
+<td><p>West Zone, East Zone</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Thermostat Cooling Setpoint Temperature</p></td>
+<td><p>clg_setpoint</p></td>
+<td><p>West Zone, East Zone</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Air Temperature</p></td>
+<td><p>air_temperature</p></td>
+<td><p>West Zone, East Zone</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Air Relative Humidity</p></td>
+<td><p>air_humidity</p></td>
+<td><p>West Zone, East Zone</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Thermal Comfort Mean Radiant Temperature</p></td>
+<td><p>thermal_comfort_mean_radiant_temperature</p></td>
+<td><p>West Zone PEOPLE, East Zone PEOPLE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Thermal Comfort Clothing Value</p></td>
+<td><p>thermal_comfort_clothing_value</p></td>
+<td><p>West Zone PEOPLE, East Zone PEOPLE</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Thermal Comfort Fanger Model PPD</p></td>
+<td><p>thermal_comfort_fanger_model_ppd</p></td>
+<td><p>West Zone PEOPLE, East Zone PEOPLE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone People Occupant Count</p></td>
+<td><p>people_occupant</p></td>
+<td><p>West Zone, East Zone</p></td>
+</tr>
+<tr class="row-even"><td><p>People Air Temperature</p></td>
+<td><p>people_air_temperature</p></td>
+<td><p>West Zone PEOPLE, East Zone PEOPLE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Facility Total HVAC Electricity Demand Rate</p></td>
+<td><p>HVAC_electricity_demand_rate</p></td>
+<td><p>Whole Building</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="small-datacenter">
+<h2><span class="section-number">3.2. </span>Small Datacenter<a class="headerlink" href="#small-datacenter" title="Link to this heading"></a></h2>
+<p><strong>1ZoneDataCenterCRAC_wApproachTemp.epJSON</strong>:
+This file demonstrates a simple data center model with air-cooled IT equipment
+(ITE) served by a CRAC system. The air-cooled ITE illustrates the user of various schedules
+and curves to vary server power use. The CRAC system has been setup to represent a
+Lieber DSE 125 with pumped refrigerant economizer DX cooling coil system.Fictional
+1 zone building with resistive walls. No windows. Data Center server ITE object
+for internal gains.  No internal mass.  The building is oriented due north.</p>
+<a class="reference internal image-reference" href="../_images/small_datacenter.png"><img alt="Small Datacenter building" class="align-center" src="../_images/small_datacenter.png" style="width: 700px;" /></a>
+<p>The default actuators, output and meters variables are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Actuator</p></th>
+<th class="head"><p>Variable Name</p></th>
+<th class="head"><p>Element Type</p></th>
+<th class="head"><p>Value Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>COOLING RETURN AIR SETPOINT
+SCHEDULE</p></td>
+<td><p>Cooling_Setpoint_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+<tr class="row-odd"><td><p>SUPPLY AIR SETPOINT SCHEDULE</p></td>
+<td><p>Supply_Air_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Base Variable Name</p></th>
+<th class="head"><p>Key</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Site Outdoor Air Drybulb Temperature</p></td>
+<td><p>outdoor_temperature</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Outdoor Air Relative Humidity</p></td>
+<td><p>outdoor_humidity</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Wind Speed</p></td>
+<td><p>wind_speed</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Wind Direction</p></td>
+<td><p>wind_direction</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Diffuse Solar Radiation Rate per Area</p></td>
+<td><p>diffuse_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Direct Solar Radiation Rate per Area</p></td>
+<td><p>direct_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Thermostat Heating Setpoint Temperature</p></td>
+<td><p>htg_setpoint</p></td>
+<td><p>Main Zone</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Thermostat Cooling Setpoint Temperature</p></td>
+<td><p>clg_setpoint</p></td>
+<td><p>Main Zone</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Air Temperature</p></td>
+<td><p>air_temperature</p></td>
+<td><p>Main Zone</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Air Relative Humidity</p></td>
+<td><p>air_humidity</p></td>
+<td><p>Main Zone</p></td>
+</tr>
+<tr class="row-even"><td><p>Cooling Coil Electricity Rate</p></td>
+<td><p>cooling_coil_demand_rate</p></td>
+<td><p>MAIN COOLING COIL 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fan Electricity Rate</p></td>
+<td><p>fan_demand_rate</p></td>
+<td><p>EC PLUG FAN 1</p></td>
+</tr>
+<tr class="row-even"><td><p>ITE UPS Electricity Rate</p></td>
+<td><p>ups_demand_rate</p></td>
+<td><p>DATA CENTER SERVERS</p></td>
+</tr>
+<tr class="row-odd"><td><p>ITE Fan Electricity Rate</p></td>
+<td><p>ite_fan_demand_rate</p></td>
+<td><p>DATA CENTER SERVERS</p></td>
+</tr>
+<tr class="row-even"><td><p>ITE CPU Electricity Rate</p></td>
+<td><p>cpu_demand_rate</p></td>
+<td><p>DATA CENTER SERVERS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Facility Total HVAC Electricity Demand Rate</p></td>
+<td><p>HVAC_electricity_demand_rate</p></td>
+<td><p>Whole Building</p></td>
+</tr>
+<tr class="row-even"><td><p>Facility Total Building Electricity Demand Rate</p></td>
+<td><p>building_electricity_demand_rate</p></td>
+<td><p>Whole Building</p></td>
+</tr>
+<tr class="row-odd"><td><p>Facility Total Electricity Demand Rate</p></td>
+<td><p>total_electricity_demand_rate</p></td>
+<td><p>Whole Building</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="zone">
+<h2><span class="section-number">3.3. </span>5Zone<a class="headerlink" href="#zone" title="Link to this heading"></a></h2>
+<p><strong>5ZoneAutoDXVAV.epJSON:</strong>
+A single-story building divided
+into 5 zones (1 indoor and 4 outdoor). Its surface area is 463.6
+m2, and it is equipped with a VAV package (DX cooling coil
+and gas heating coils) with fully auto-sized input as the HVAC
+system to be controlled.</p>
+<a class="reference internal image-reference" href="../_images/5zone.png"><img alt="5Zone building" class="align-center" src="../_images/5zone.png" style="width: 700px;" /></a>
+<p>The default actuators, output and meters variables are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Actuator</p></th>
+<th class="head"><p>Variable Name</p></th>
+<th class="head"><p>Element Type</p></th>
+<th class="head"><p>Value Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HTG-SETP-SCH</p></td>
+<td><p>Heating_Setpoint_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+<tr class="row-odd"><td><p>CLG-SETP-SCH</p></td>
+<td><p>Cooling_Setpoint_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Base Variable Name</p></th>
+<th class="head"><p>Key</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Site Outdoor Air DryBulb Temperature</p></td>
+<td><p>outdoor_temperature</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Outdoor Air Relative Humidity</p></td>
+<td><p>outdoor_humidity</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Wind Speed</p></td>
+<td><p>wind_speed</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Wind Direction</p></td>
+<td><p>wind_direction</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Diffuse Solar Radiation Rate per Area</p></td>
+<td><p>diffuse_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Direct Solar Radiation Rate per Area</p></td>
+<td><p>direct_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Thermostat Heating Setpoint Temperature</p></td>
+<td><p>htg_setpoint</p></td>
+<td><p>SPACE5-1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Thermostat Cooling Setpoint Temperature</p></td>
+<td><p>clg_setpoint</p></td>
+<td><p>SPACE5-1</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Air Temperature</p></td>
+<td><p>air_temperature</p></td>
+<td><p>SPACE5-1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Air Relative Humidity</p></td>
+<td><p>air_humidity</p></td>
+<td><p>SPACE5-1</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone People Occupant Count</p></td>
+<td><p>people_occupant</p></td>
+<td><p>SPACE5-1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Environmental Impact Total CO2 Emissions Carbon
+Equivalent Mass</p></td>
+<td><p>co2_emission</p></td>
+<td><p>site</p></td>
+</tr>
+<tr class="row-even"><td><p>Facility Total HVAC Electricity Demand Rate</p></td>
+<td><p>HVAC_electricity_demand_rate</p></td>
+<td><p>Whole Building</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Meter</p></th>
+<th class="head"><p>Variable Name</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Electricity:HVAC</p></td>
+<td><p>total_electricity_HVAC</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="warehouse">
+<h2><span class="section-number">3.4. </span>Warehouse<a class="headerlink" href="#warehouse" title="Link to this heading"></a></h2>
+<p><strong>ASHRAE9012016_Warehouse.epJSON:</strong>
+It is a non-residential 4598 m2 floor building,
+divided into 3 zones: bulk storage, fine storage and an office.
+The Office zone is enclosed on two sides and at the top by the
+Fine Storage zone, and it is the unique zone with windows.
+Available fuel types are gas and electricity, and it is equipped
+with HVAC system.</p>
+<a class="reference internal image-reference" href="../_images/warehouse.png"><img alt="Warehouse building" class="align-center" src="../_images/warehouse.png" style="width: 700px;" /></a>
+<p>The default actuators, output and meters variables are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Actuator</p></th>
+<th class="head"><p>Variable Name</p></th>
+<th class="head"><p>Element Type</p></th>
+<th class="head"><p>Value Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Office Heating Schedule</p></td>
+<td><p>Office_Heating_RL</p></td>
+<td><p>Schedule:Year</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+<tr class="row-odd"><td><p>Office Cooling Schedule</p></td>
+<td><p>Office_Cooling_RL</p></td>
+<td><p>Schedule:Year</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Base Variable Name</p></th>
+<th class="head"><p>Key</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Site Outdoor Air DryBulb Temperature</p></td>
+<td><p>outdoor_temperature</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Outdoor Air Relative Humidity</p></td>
+<td><p>outdoor_humidity</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Wind Speed</p></td>
+<td><p>wind_speed</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Wind Direction</p></td>
+<td><p>wind_direction</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Diffuse Solar Radiation Rate per Area</p></td>
+<td><p>diffuse_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Direct Solar Radiation Rate per Area</p></td>
+<td><p>direct_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Thermostat Heating Setpoint Temperature</p></td>
+<td><p>htg_setpoint</p></td>
+<td><p>Zone1 Office, Zone2 Fine Storage,
+Zone3 Bulk Storage</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Thermostat Cooling Setpoint Temperature</p></td>
+<td><p>clg_setpoint</p></td>
+<td><p>Zone1 Office, Zone2 Fine Storage</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Air Temperature</p></td>
+<td><p>air_temperature</p></td>
+<td><p>Zone1 Office, Zone2 Fine Storage,
+Zone3 Bulk Storage</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Air Relative Humidity</p></td>
+<td><p>air_humidity</p></td>
+<td><p>Zone1 Office, Zone2 Fine Storage,
+Zone3 Bulk Storage</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone People Occupant Count</p></td>
+<td><p>people_occupant</p></td>
+<td><p>Zone1 Office</p></td>
+</tr>
+<tr class="row-odd"><td><p>Facility Total HVAC Electricity Demand Rate</p></td>
+<td><p>HVAC_electricity_demand_rate</p></td>
+<td><p>Whole Building</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="officemedium">
+<h2><span class="section-number">3.5. </span>OfficeMedium<a class="headerlink" href="#officemedium" title="Link to this heading"></a></h2>
+<p><strong>ASHRAE9012016_OfficeMedium.epJSON:</strong>
+It is a 4979.6 m2 building with 3 floors. Each floor has
+four perimeter zones and one core zone. Available fuel types
+are gas and electricity, and it is equipped with HVAC system.</p>
+<a class="reference internal image-reference" href="../_images/officeMedium.png"><img alt="OfficeMedium building" class="align-center" src="../_images/officeMedium.png" style="width: 700px;" /></a>
+<p>The default actuators, output and meters variables are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Actuator</p></th>
+<th class="head"><p>Variable Name</p></th>
+<th class="head"><p>Element Type</p></th>
+<th class="head"><p>Value Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HTGSETP_SCH_YES_OPTIMUM</p></td>
+<td><p>Office_Heating_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+<tr class="row-odd"><td><p>CLGSETP_SCH_YES_OPTIMUM</p></td>
+<td><p>Office_Cooling_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Base Variable Name</p></th>
+<th class="head"><p>Key</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Site Outdoor Air DryBulb Temperature</p></td>
+<td><p>outdoor_temperature</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Outdoor Air Relative Humidity</p></td>
+<td><p>outdoor_humidity</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Wind Speed</p></td>
+<td><p>wind_speed</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Wind Direction</p></td>
+<td><p>wind_direction</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Diffuse Solar Radiation Rate per Area</p></td>
+<td><p>diffuse_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Direct Solar Radiation Rate per Area</p></td>
+<td><p>direct_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Thermostat Heating Setpoint Temperature</p></td>
+<td><p>htg_setpoint</p></td>
+<td><p>Core_bottom</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Thermostat Cooling Setpoint Temperature</p></td>
+<td><p>clg_setpoint</p></td>
+<td><p>Core_bottom</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Air Temperature</p></td>
+<td><p>air_temperature</p></td>
+<td><p>Core_bottom, Core_mid, Core_top,
+FirstFloor_Plenum, MidFloor_Plenum, TopFloor_Plenum,
+Perimeter_bot_ZN_1, Perimeter_bot_ZN_2, Perimeter_bot_ZN_3, Perimeter_bot_ZN_4,
+Perimeter_mid_ZN_1, Perimeter_mid_ZN_2, Perimeter_mid_ZN_3, Perimeter_mid_ZN_4,
+Perimeter_top_ZN_1, Perimeter_top_ZN_2, Perimeter_top_ZN_3, Perimeter_top_ZN_4</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Air Relative Humidity</p></td>
+<td><p>air_humidity</p></td>
+<td><p>Core_bottom, Core_mid, Core_top,
+FirstFloor_Plenum, MidFloor_Plenum, TopFloor_Plenum,
+Perimeter_bot_ZN_1, Perimeter_bot_ZN_2, Perimeter_bot_ZN_3, Perimeter_bot_ZN_4,
+Perimeter_mid_ZN_1, Perimeter_mid_ZN_2, Perimeter_mid_ZN_3, Perimeter_mid_ZN_4,
+Perimeter_top_ZN_1, Perimeter_top_ZN_2, Perimeter_top_ZN_3, Perimeter_top_ZN_4</p></td>
+</tr>
+<tr class="row-even"><td><p>Facility Total HVAC Electricity Demand Rate</p></td>
+<td><p>HVAC_electricity_demand_rate</p></td>
+<td><p>Whole Building</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="shopwithvanbattery">
+<h2><span class="section-number">3.6. </span>ShopWithVanBattery<a class="headerlink" href="#shopwithvanbattery" title="Link to this heading"></a></h2>
+<p><strong>ShopWithVanBattery.epJSON:</strong>
+It is a 390.2 m2 building, with only one floor. It has five
+zones; four of them are perimeter zones and one in the center.
+This is a low-energy building with photovoltaic panel and
+electrical storage. It demonstrates the use of the battery
+model for electrical storage. It has a full HVAC model and
+water heating service.
+This is a small repair shop. Open Monday through Friday,
+45 hours per week.</p>
+<a class="reference internal image-reference" href="../_images/shop.png"><img alt="Shop building" class="align-center" src="../_images/shop.png" style="width: 700px;" /></a>
+<p>The default actuators, output and meters variables are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Actuator</p></th>
+<th class="head"><p>Variable Name</p></th>
+<th class="head"><p>Element Type</p></th>
+<th class="head"><p>Value Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HTGSETP_SCH</p></td>
+<td><p>Heating_Setpoint_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+<tr class="row-odd"><td><p>CLGSETP_SCH</p></td>
+<td><p>Cooling_Setpoint_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Base Variable Name</p></th>
+<th class="head"><p>Key</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Site Outdoor Air Drybulb Temperature</p></td>
+<td><p>outdoor_temperature</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Outdoor Air Relative Humidity</p></td>
+<td><p>outdoor_humidity</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Wind Speed</p></td>
+<td><p>wind_speed</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Wind Direction</p></td>
+<td><p>wind_direction</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Diffuse Solar Radiation Rate per Area</p></td>
+<td><p>diffuse_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Direct Solar Radiation Rate per Area</p></td>
+<td><p>direct_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Thermostat Heating Setpoint Temperature</p></td>
+<td><p>htg_setpoint</p></td>
+<td><p>ZN_1_FLR_1_SEC_5</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Thermostat Cooling Setpoint Temperature</p></td>
+<td><p>clg_setpoint</p></td>
+<td><p>ZN_1_FLR_1_SEC_5</p></td>
+</tr>
+<tr class="row-even"><td><p>Electric Storage Battery Charge State</p></td>
+<td><p>storage_battery_charge_state</p></td>
+<td><p>Kibam</p></td>
+</tr>
+<tr class="row-odd"><td><p>Electric Storage Charge Energy</p></td>
+<td><p>storage_charge_energy</p></td>
+<td><p>Kibam</p></td>
+</tr>
+<tr class="row-even"><td><p>Electric Storage Charge Power</p></td>
+<td><p>storage_charge_power</p></td>
+<td><p>Kibam</p></td>
+</tr>
+<tr class="row-odd"><td><p>Electric Storage Discharge Energy</p></td>
+<td><p>storage_discharge_energy</p></td>
+<td><p>Kibam</p></td>
+</tr>
+<tr class="row-even"><td><p>Electric Storage Discharge Power</p></td>
+<td><p>storage_discharge_power</p></td>
+<td><p>Kibam</p></td>
+</tr>
+<tr class="row-odd"><td><p>Electric Storage Thermal Loss Energy</p></td>
+<td><p>storage_thermal_loss_energy</p></td>
+<td><p>Kibam</p></td>
+</tr>
+<tr class="row-even"><td><p>Electric Storage Thermal Loss Rate</p></td>
+<td><p>storage_thermal_loss_rate</p></td>
+<td><p>Kibam</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Air Temperature</p></td>
+<td><p>air_temperature</p></td>
+<td><p>ZN_1_FLR_1_SEC_1, ZN_1_FLR_1_SEC_2, ZN_1_FLR_1_SEC_3,
+ZN_1_FLR_1_SEC_4, ZN_1_FLR_1_SEC_5</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Air Relative Humidity</p></td>
+<td><p>air_humidity</p></td>
+<td><p>ZN_1_FLR_1_SEC_1, ZN_1_FLR_1_SEC_2, ZN_1_FLR_1_SEC_3,
+ZN_1_FLR_1_SEC_4, ZN_1_FLR_1_SEC_5</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone People Occupant Count</p></td>
+<td><p>people_count</p></td>
+<td><p>ZN_1_FLR_1_SEC_1, ZN_1_FLR_1_SEC_2, ZN_1_FLR_1_SEC_3,
+ZN_1_FLR_1_SEC_4, ZN_1_FLR_1_SEC_5</p></td>
+</tr>
+<tr class="row-even"><td><p>Facility Total HVAC Electricity Demand Rate</p></td>
+<td><p>HVAC_electricity_demand_rate</p></td>
+<td><p>Whole Building</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="officegridstoragesmoothing">
+<h2><span class="section-number">3.7. </span>OfficeGridStorageSmoothing<a class="headerlink" href="#officegridstoragesmoothing" title="Link to this heading"></a></h2>
+<p><strong>OfficeGridStorageSmoothing.epJSON:</strong>
+It is a large office building with 12 floors and a basement, with a rectangular aspect and 46,320 m2.
+The building is organized in 19 zones: the basement, bot, mid and top level. Each level has a
+core zone and 4 perimeter zones. Floor zone is described for bot, mid and top level too.
+It has a battery control for charging and discharging from the grid.</p>
+<a class="reference internal image-reference" href="../_images/officeGrid.png"><img alt="Shop building" class="align-center" src="../_images/officeGrid.png" style="width: 700px;" /></a>
+<p>The default actuators, output and meters variables are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Actuator</p></th>
+<th class="head"><p>Variable Name</p></th>
+<th class="head"><p>Element Type</p></th>
+<th class="head"><p>Value Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HTGSETP_SCH</p></td>
+<td><p>Heating_Setpoint_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+<tr class="row-odd"><td><p>CLGSETP_SCH</p></td>
+<td><p>Cooling_Setpoint_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+<tr class="row-even"><td><p>Charge Schedule</p></td>
+<td><p>Charge_Rate_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+<tr class="row-odd"><td><p>Discharge Schedule</p></td>
+<td><p>Discharge_Rate_RL</p></td>
+<td><p>Schedule:Compact</p></td>
+<td><p>Schedule Value</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Base Variable Name</p></th>
+<th class="head"><p>Keys</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Site Outdoor Air DryBulb Temperature</p></td>
+<td><p>outdoor_temperature</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Outdoor Air Relative Humidity</p></td>
+<td><p>outdoor_humidity</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Wind Speed</p></td>
+<td><p>wind_speed</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Wind Direction</p></td>
+<td><p>wind_direction</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Site Diffuse Solar Radiation Rate per Area</p></td>
+<td><p>diffuse_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>Site Direct Solar Radiation Rate per Area</p></td>
+<td><p>direct_solar_radiation</p></td>
+<td><p>Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Thermostat Heating Setpoint Temperature</p></td>
+<td><p>htg_setpoint</p></td>
+<td><p>Basement</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Thermostat Cooling Setpoint Temperature</p></td>
+<td><p>clg_setpoint</p></td>
+<td><p>Basement</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone Air Temperature</p></td>
+<td><p>air_temperature</p></td>
+<td><p>Multiple Keys</p></td>
+</tr>
+<tr class="row-odd"><td><p>Zone Air Relative Humidity</p></td>
+<td><p>air_humidity</p></td>
+<td><p>Multiple Keys</p></td>
+</tr>
+<tr class="row-even"><td><p>Zone People Occupant Count</p></td>
+<td><p>people_count</p></td>
+<td><p>Multiple Keys</p></td>
+</tr>
+<tr class="row-odd"><td><p>Electric Storage Simple Charge State</p></td>
+<td><p>battery_charge_state</p></td>
+<td><p>Battery</p></td>
+</tr>
+<tr class="row-even"><td><p>Facility Total HVAC Electricity Demand Rate</p></td>
+<td><p>HVAC_electricity_demand_rate</p></td>
+<td><p>Whole Building</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage-example.html" class="btn btn-neutral float-left" title="2. Usage Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="weathers.html" class="btn btn-neutral float-right" title="4. Weathers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.3.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../v2.2.0/pages/buildings.html">v2.2.0</a></dd>
+            <dd><a href="../../v2.3.0/pages/buildings.html">v2.3.0</a></dd>
+            <dd><a href="../../v2.5.0/pages/buildings.html">v2.5.0</a></dd>
+            <dd><a href="../../v3.1.0/pages/buildings.html">v3.1.0</a></dd>
+            <dd><a href="../../v3.2.0/pages/buildings.html">v3.2.0</a></dd>
+            <dd><a href="../../v3.2.10/pages/buildings.html">v3.2.10</a></dd>
+            <dd><a href="buildings.html">v3.3.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../main/pages/buildings.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>

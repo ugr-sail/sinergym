@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4. Weathers &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=816ccb90" />
+
+  
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. Architecture" href="architecture.html" />
+    <link rel="prev" title="3. Buildings" href="buildings.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">2. Usage Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="buildings.html">3. Buildings</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">5. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">6. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">8. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">9. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">10. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">12. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">14. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">15. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">16. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">17. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">18. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">19. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">20. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">21. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">23. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">24. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4. </span>Weathers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/weathers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="weathers">
+<h1><span class="section-number">4. </span>Weathers<a class="headerlink" href="#weathers" title="Link to this heading"></a></h1>
+<p>Detailed climate data incorporated in <em>Sinergym</em> is presented below,
+independent of other environmental components utilized in each experiment.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If you are interested in including new weathers to this framework,
+please visit section <a class="reference internal" href="environments.html#adding-new-weathers-for-environments"><span class="std std-ref">Adding New Weathers for Environments</span></a>.</p>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Weather file</p></th>
+<th class="head"><p>Location</p></th>
+<th class="head"><p>Climate type</p></th>
+<th class="head"><p>M.A.T (ºC)</p></th>
+<th class="head"><p>M.A.H (%)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AUS_NSW.Sydney.947670_IWEC</p></td>
+<td><p>Sydney, Australia</p></td>
+<td><p>Humid subtropical (no dry seasons and hot summers)</p></td>
+<td><p>17.9</p></td>
+<td><p>68.83</p></td>
+</tr>
+<tr class="row-odd"><td><p>COL_Bogota.802220_IWEC</p></td>
+<td><p>Bogota, Colombia</p></td>
+<td><p>Mediterranean (dry, warm summers and mild winters).</p></td>
+<td><p>13.2</p></td>
+<td><p>80.3</p></td>
+</tr>
+<tr class="row-even"><td><p>ESP_Granada.084190_SWEC</p></td>
+<td><p>Granada, Spain</p></td>
+<td><p>Mid-latitude dry semiarid and hot dry periods in summer, but passive cooling is possible.</p></td>
+<td><p>14.84</p></td>
+<td><p>59.83</p></td>
+</tr>
+<tr class="row-odd"><td><p>FIN_Helsinki.029740_IWEC</p></td>
+<td><p>Helsinki, Finland</p></td>
+<td><p>Moist continental (warm summers, cold winters, no dry seasons).</p></td>
+<td><p>5.1</p></td>
+<td><p>79.25</p></td>
+</tr>
+<tr class="row-even"><td><p>JPN_Tokyo.Hyakuri.477150_IWEC</p></td>
+<td><p>Tokyo, Japan</p></td>
+<td><p>Humid subtropical (mild with no dry season, hot summer).</p></td>
+<td><p>8.9</p></td>
+<td><p>78.6</p></td>
+</tr>
+<tr class="row-odd"><td><p>MDG_Antananarivo.670830_IWEC</p></td>
+<td><p>Antananarivo, Madagascar</p></td>
+<td><p>Mediterranean climate (dry warm summer, mild winter).</p></td>
+<td><p>18.35</p></td>
+<td><p>75.91</p></td>
+</tr>
+<tr class="row-even"><td><p>PRT_Lisboa.085360_INETI</p></td>
+<td><p>Lisboa, Portugal</p></td>
+<td><p>Dry Summer Subtropical Mediterranean (Warm - Marine).</p></td>
+<td><p>16.3</p></td>
+<td><p>74.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>USA_AZ_Davis-Monthan.AFB.722745_TMY3</p></td>
+<td><p>Arizona, USA</p></td>
+<td><p>Subtropical hot desert (hot and dry).</p></td>
+<td><p>21.7</p></td>
+<td><p>34.9</p></td>
+</tr>
+<tr class="row-even"><td><p>USA_CO_Aurora-Buckley.Field.ANGB.724695_TMY3</p></td>
+<td><p>Colorado, USA</p></td>
+<td><p>Mid-latitude dry semiarid (cool and dry).</p></td>
+<td><p>9.95</p></td>
+<td><p>55.25</p></td>
+</tr>
+<tr class="row-odd"><td><p>USA_IL_Chicago-OHare.Intl.AP.725300_TMY3</p></td>
+<td><p>Illinois, USA</p></td>
+<td><p>Humid continental (mixed and humid).</p></td>
+<td><p>9.92</p></td>
+<td><p>70.3</p></td>
+</tr>
+<tr class="row-even"><td><p>USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3</p></td>
+<td><p>New York, USA</p></td>
+<td><p>Humid continental (mixed and humid).</p></td>
+<td><p>12.6</p></td>
+<td><p>68.5</p></td>
+</tr>
+<tr class="row-odd"><td><p>USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3</p></td>
+<td><p>Pennsylvania, USA</p></td>
+<td><p>Humid continental (cool and humid).</p></td>
+<td><p>10.5</p></td>
+<td><p>66.41</p></td>
+</tr>
+<tr class="row-even"><td><p>USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3</p></td>
+<td><p>Washington, USA</p></td>
+<td><p>Cool Marine west coastal (warm summer, mild winter, rain all year).</p></td>
+<td><p>9.3</p></td>
+<td><p>81.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>SWE_Stockholm.Arlanda.024600_IWEC</p></td>
+<td><p>Stockholm, Sweden</p></td>
+<td><p>Moist continental (warm summer, cold winter, no dry season).</p></td>
+<td><p>6.43</p></td>
+<td><p>78.42</p></td>
+</tr>
+</tbody>
+</table>
+<p><em>M.A.T: Mean Temperature</em>,
+<em>M.A.H: Mean Humidity</em></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Weather types according to <a class="reference external" href="https://www.energycodes.gov/development/commercial/prototype_models#TMY3">DOE’s
+classification</a>.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>It can be specified several weathers in the same experiment. <em>Sinergym</em> will sample one weather in each episode to use it. For more
+information, visit section <a class="reference internal" href="environments.html#weather-files"><span class="std std-ref">Weather files</span></a>.</p>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="buildings.html" class="btn btn-neutral float-left" title="3. Buildings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="architecture.html" class="btn btn-neutral float-right" title="5. Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.3.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../v2.2.0/pages/weathers.html">v2.2.0</a></dd>
+            <dd><a href="../../v2.3.0/pages/weathers.html">v2.3.0</a></dd>
+            <dd><a href="../../v2.5.0/pages/weathers.html">v2.5.0</a></dd>
+            <dd><a href="../../v3.1.0/pages/weathers.html">v3.1.0</a></dd>
+            <dd><a href="../../v3.2.0/pages/weathers.html">v3.2.0</a></dd>
+            <dd><a href="../../v3.2.10/pages/weathers.html">v3.2.10</a></dd>
+            <dd><a href="weathers.html">v3.3.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../main/pages/weathers.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6. Environments &mdash; sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=816ccb90" />
+
+  
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7. Environments Configuration and Registration" href="environments_registration.html" />
+    <link rel="prev" title="5. Architecture" href="architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">2. Usage Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">5. Architecture</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. Environments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#available-parameters">6.1. Available Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building-file">6.1.1. building file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#weather-files">6.1.2. Weather files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#weather-variability">6.1.3. Weather Variability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reward">6.1.4. Reward</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reward-kwargs">6.1.5. Reward Kwargs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#maximum-episode-data-stored-in-sinergym-output">6.1.6. Maximum Episode Data Stored in Sinergym Output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#time-variables">6.1.7. Time variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variables">6.1.8. Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#meters">6.1.9. Meters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#actuators">6.1.10. Actuators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#action-space">6.1.11. Action space</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#environment-name">6.1.12. Environment Name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extra-configuration">6.1.13. Extra Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-new-weathers-for-environments">6.1.14. Adding New Weathers for Environments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-new-buildings-for-environments">6.1.15. Adding New Buildings for Environments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">8. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">9. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">10. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">12. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">14. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">15. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">16. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">17. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">18. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">19. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">20. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">21. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">23. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">24. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6. </span>Environments</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/environments.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="environments">
+<h1><span class="section-number">6. </span>Environments<a class="headerlink" href="#environments" title="Link to this heading"></a></h1>
+<p><em>Sinergym</em> generates multiple environments for each building, each defined by a unique
+configuration that outlines the control problem to be solved. To view the list of available
+environment IDs, it is recommended to use the provided method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This script is available in scripts/consult_environments.py</span>
+<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.common</span> <span class="kn">import</span> <span class="n">get_ids</span>
+
+<span class="c1"># Get the list of available environments</span>
+<span class="n">sinergym_environment_ids</span> <span class="o">=</span> <span class="n">get_ids</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sinergym_environment_ids</span><span class="p">)</span>
+
+<span class="c1"># Make and consult some of the environments</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-stochastic-v1&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Environment names adhere to the pattern <code class="docutils literal notranslate"><span class="pre">Eplus-&lt;building-id&gt;-&lt;weather-id&gt;-&lt;control_type&gt;-&lt;stochastic</span> <span class="pre">(optional)&gt;-v1</span></code>.
+These IDs offer a general overview of the environment. For more detailed information about each environment,
+utilize the <code class="docutils literal notranslate"><span class="pre">info</span></code> method as demonstrated in the example code.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>As of <em>Sinergym</em> v3.0.9, environments are automatically generated
+using JSON configuration files for each building, eliminating the
+need for manual registration of each environment ID with parameters
+set directly in the environment constructor. Refer to
+<a class="reference internal" href="environments_registration.html#environments-configuration-and-registration"><span class="std std-ref">Environments Configuration and Registration</span></a> for more details.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Discrete environments are customizable. The default control for these
+environments is quite basic. You can employ a continuous environment
+and customize discretization using our dedicated wrapper. For more
+information, see <a class="reference internal" href="wrappers.html#discretizeenv"><span class="std std-ref">DiscretizeEnv</span></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For additional details on the buildings (epJSON) and weather conditions (EPW)
+used, please visit the <a class="reference internal" href="buildings.html#buildings"><span class="std std-ref">Buildings</span></a> and <a class="reference internal" href="weathers.html#weathers"><span class="std std-ref">Weathers</span></a> sections respectively.</p>
+</div>
+<section id="available-parameters">
+<h2><span class="section-number">6.1. </span>Available Parameters<a class="headerlink" href="#available-parameters" title="Link to this heading"></a></h2>
+<p>With the <strong>environment constructor</strong>, we can configure the complete <strong>context</strong>
+of our environment for experimentation, either starting from one predefined by
+<em>Sinergym</em> or creating a new one.</p>
+<p><em>Sinergym</em> initially provides <strong>non-configured</strong> buildings and weathers.
+Depending on these argument values, these files are updated to adapt to these
+new features, this will be done by Sinergym automatically. For example, using
+another weather file requires updating the building location and design days,
+using new observation variables requires updating the <code class="docutils literal notranslate"><span class="pre">Output:Variable</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Output:Meter</span></code> fields, the same occurs with extra configuration context
+concerned with simulation directly, if weather variability is set, then a weather
+with noise will be used. These new building and weather file versions are saved in
+the Sinergym output folder, leaving the original intact.</p>
+<p>The next subsections will show which <strong>parameters</strong> are available and what
+their functions are:</p>
+<section id="building-file">
+<h3><span class="section-number">6.1.1. </span>building file<a class="headerlink" href="#building-file" title="Link to this heading"></a></h3>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">building_file</span></code> is the <em>epJSON</em> file, a new
+<a class="reference external" href="https://energyplus.readthedocs.io/en/latest/schema.html">adaptation</a> of <em>IDF</em>
+(Intermediate Data Format) where <em>EnergyPlus</em> building model is defined. These
+files are not configured for a particular environment as we have mentioned.
+Sinergym does a previous building model preparation to the simulation, see the
+<em>Modeling</em> element in <em>Sinergym</em> backend diagram.</p>
+</section>
+<section id="weather-files">
+<h3><span class="section-number">6.1.2. </span>Weather files<a class="headerlink" href="#weather-files" title="Link to this heading"></a></h3>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">weather_file</span></code> is the <em>EPW</em> (<em>EnergyPlus</em> Weather) file name where
+<strong>climate conditions</strong> during a year is defined.</p>
+<p>This parameter can be either a weather file name (<code class="docutils literal notranslate"><span class="pre">str</span></code>) as mentioned, or a list
+of different weather files (<code class="docutils literal notranslate"><span class="pre">List[str]</span></code>). When a list of several files is defined,
+<em>Sinergym</em> will select an <em>EPW</em> file in each episode and re-adapt the building model
+randomly. This is done to increase the complexity in the environment if desired.</p>
+<p>The weather file used in each episode is stored in <em>Sinergym</em> episode output folder,
+if <strong>variability</strong> (section <a class="reference internal" href="#weather-variability"><span class="std std-ref">Weather Variability</span></a> is defined), the <em>EPW</em> stored
+will have that noise included.</p>
+</section>
+<section id="weather-variability">
+<h3><span class="section-number">6.1.3. </span>Weather Variability<a class="headerlink" href="#weather-variability" title="Link to this heading"></a></h3>
+<p><strong>Weather variability</strong> can be integrated into an environment using the
+<code class="docutils literal notranslate"><span class="pre">weather_variability</span></code> parameter.</p>
+<p>It implements the
+<a class="reference external" href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.4200&amp;rep=rep1&amp;type=pdf">Ornstein-Uhlenbeck process</a>
+to introduce <strong>noise</strong> to the weather data episode to episode. Then, the parameter
+established is a Python tuple of three variables (<em>sigma</em>, <em>mu</em>, and <em>tau</em>) whose
+values define the nature of that noise.</p>
+<a class="reference internal image-reference" href="../_images/ornstein_noise.png"><img alt="Ornstein-Uhlenbeck process noise with different hyperparameters." class="align-center" src="../_images/ornstein_noise.png" style="width: 1429.6000000000001px; height: 757.6px;" /></a>
+</section>
+<section id="reward">
+<h3><span class="section-number">6.1.4. </span>Reward<a class="headerlink" href="#reward" title="Link to this heading"></a></h3>
+<p>The parameter called <code class="docutils literal notranslate"><span class="pre">reward</span></code> is used to define the <strong>reward class</strong>
+(see section <a class="reference internal" href="rewards.html#rewards"><span class="std std-ref">Rewards</span></a>) that the environment is going to use to
+calculate and return scalar reward values each timestep.</p>
+</section>
+<section id="reward-kwargs">
+<h3><span class="section-number">6.1.5. </span>Reward Kwargs<a class="headerlink" href="#reward-kwargs" title="Link to this heading"></a></h3>
+<p>Depending on the reward class that is specified to the environment, it
+may have <strong>different arguments</strong> depending on its type. In addition,
+if a user creates a new custom reward, it can have new parameters as well.</p>
+<p>Moreover, depending on the building being used for the environment, the
+values of these reward parameters may need to be different, such as the
+comfort range or the energy and temperature variables of the simulation
+that will be used to calculate the reward.</p>
+<p>Then, the parameter called <code class="docutils literal notranslate"><span class="pre">reward_kwargs</span></code> is a Python dictionary where
+we can <strong>specify all reward class arguments</strong> that they are needed. For
+more information about rewards, visit section <a class="reference internal" href="rewards.html#rewards"><span class="std std-ref">Rewards</span></a>.</p>
+</section>
+<section id="maximum-episode-data-stored-in-sinergym-output">
+<h3><span class="section-number">6.1.6. </span>Maximum Episode Data Stored in Sinergym Output<a class="headerlink" href="#maximum-episode-data-stored-in-sinergym-output" title="Link to this heading"></a></h3>
+<p><em>Sinergym</em> stores all the output of an experiment in a folder organized in
+sub-folders for each episode (see section <a class="reference internal" href="output.html#output-format"><span class="std std-ref">Output format</span></a> for more
+information). Depending on the value of the parameter <code class="docutils literal notranslate"><span class="pre">max_ep_data_store_num</span></code>,
+the experiment will store the output data of the <strong>last n episodes</strong> set,
+where <strong>n</strong> is the value of the parameter.</p>
+<p>In any case, if <em>Sinergym Logger</em> (See <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a> section) is activated,
+<code class="docutils literal notranslate"><span class="pre">progress.csv</span></code> will be present with the summary data of each episode.</p>
+</section>
+<section id="time-variables">
+<h3><span class="section-number">6.1.7. </span>Time variables<a class="headerlink" href="#time-variables" title="Link to this heading"></a></h3>
+<p><em>EnergyPlus</em> Python API has several methods in order to extract information
+about simulation time in progress. The argument <code class="docutils literal notranslate"><span class="pre">time_variables</span></code> is a list
+in which we can specify the name of the
+<a class="reference external" href="https://energyplus.readthedocs.io/en/latest/datatransfer.html#datatransfer.DataExchange">API methods</a>
+whose values we want to include in our observation.</p>
+<p>By default, <em>Sinergym</em> environments will have the time variables
+<code class="docutils literal notranslate"><span class="pre">month</span></code>, <code class="docutils literal notranslate"><span class="pre">day_of_month</span></code> and <code class="docutils literal notranslate"><span class="pre">hour</span></code>.</p>
+</section>
+<section id="variables">
+<h3><span class="section-number">6.1.8. </span>Variables<a class="headerlink" href="#variables" title="Link to this heading"></a></h3>
+<p>The argument called <code class="docutils literal notranslate"><span class="pre">variables</span></code> is a dictionary in which it is specified
+the <code class="docutils literal notranslate"><span class="pre">Output:Variable</span></code>’s we want to include in the environment observation.
+The format of each element, in order for <em>Sinergym</em> to process it, is the next:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">variables</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1"># &lt;custom_variable_name&gt; : (&lt;&quot;Output:Variable&quot; original name&gt;,&lt;variable_key&gt;),</span>
+  <span class="c1"># ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information about the available variables in an environment, execute a default simulation with
+<em>EnergyPlus</em> engine and see RDD file generated in the output.</p>
+</div>
+</section>
+<section id="meters">
+<h3><span class="section-number">6.1.9. </span>Meters<a class="headerlink" href="#meters" title="Link to this heading"></a></h3>
+<p>In a similar way, the argument <code class="docutils literal notranslate"><span class="pre">meters</span></code> is a dictionary in which we can specify
+the <code class="docutils literal notranslate"><span class="pre">Output:Meter</span></code>’s we want to include in the environment observation.
+The format of each element must be the next:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">meters</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1"># &lt;custom_meter_name&gt; : &lt;&quot;Output:Meter&quot; original name&gt;,</span>
+  <span class="c1"># ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information about the available meters in an environment, execute a default simulation with
+<em>EnergyPlus</em> engine and see MDD and MTD files generated in the output.</p>
+</div>
+</section>
+<section id="actuators">
+<h3><span class="section-number">6.1.10. </span>Actuators<a class="headerlink" href="#actuators" title="Link to this heading"></a></h3>
+<p>The argument called <code class="docutils literal notranslate"><span class="pre">actuators</span></code> is a dictionary in which we specify the actuators we
+want to control with gymnasium interface, the format must be the next:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">actuators</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1"># &lt;custom_actuator_name&gt; : (&lt;actuator_type&gt;,&lt;actuator_value&gt;,&lt;actuator_original_name&gt;),</span>
+  <span class="c1"># ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Actuators that have not been specified will be controlled by the building’s default schedulers.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information about the available actuators in an environment, execute a default control with
+<em>Sinergym</em> directly (empty action space) and see <code class="docutils literal notranslate"><span class="pre">data_available.txt</span></code> generated.</p>
+</div>
+</section>
+<section id="action-space">
+<h3><span class="section-number">6.1.11. </span>Action space<a class="headerlink" href="#action-space" title="Link to this heading"></a></h3>
+<p>In <em>Sinergym</em>, the environment’s observation and action spaces are defined through the
+arguments <code class="docutils literal notranslate"><span class="pre">time_variables</span></code>, <code class="docutils literal notranslate"><span class="pre">variables</span></code>, <code class="docutils literal notranslate"><span class="pre">meters</span></code>, and <code class="docutils literal notranslate"><span class="pre">actuators</span></code>. The
+observation space, composed of <code class="docutils literal notranslate"><span class="pre">time_variables</span></code>, <code class="docutils literal notranslate"><span class="pre">variables</span></code>, and <code class="docutils literal notranslate"><span class="pre">meters</span></code>, is
+automatically generated. The action space, defined by the <code class="docutils literal notranslate"><span class="pre">actuators</span></code>, requires explicit
+definition to establish the range of values supported by the Gymnasium interface or the number
+of discrete values in a discrete environment.</p>
+<a class="reference internal image-reference" href="../_images/spaces_elements.png"><img alt="*EnergyPlus* API components that compose observation and action spaces in *Sinergym*." class="align-center" src="../_images/spaces_elements.png" style="width: 595.6999999999999px; height: 340.2px;" /></a>
+<p>The <code class="docutils literal notranslate"><span class="pre">action_space</span></code> argument adheres to the Gymnasium standard and must be a continuous
+space (<code class="docutils literal notranslate"><span class="pre">gym.spaces.Box</span></code>) due to the <em>EnergyPlus</em> simulator’s continuous value
+requirement. It’s crucial that this definition aligns with the previously defined actuators,
+with <em>Sinergym</em> highlighting any inconsistencies.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To adapt an environment to Gymnasium’s <code class="docutils literal notranslate"><span class="pre">Discrete</span></code>, <code class="docutils literal notranslate"><span class="pre">MultiDiscrete</span></code>, or <code class="docutils literal notranslate"><span class="pre">MultiBinary</span></code> spaces,
+akin to our predefined discrete environments, consult the section <a class="reference internal" href="wrappers.html#discretizeenv"><span class="std std-ref">DiscretizeEnv</span></a> and the
+example in <a class="reference internal" href="notebooks/wrappers_examples.html#Environment-Discretization-Wrapper"><span class="std std-ref">Environment Discretization Wrapper</span></a>.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>While <em>Sinergym</em>’s environments come with predefined observation and action variables (
+details available in <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/default_configuration">default_configuration</a>),
+users are encouraged to explore and experiment with these spaces. For guidance, refer to
+<a class="reference internal" href="notebooks/change_environment.html#Changing-observation-and-action-spaces"><span class="std std-ref">Changing observation and action spaces</span></a>.</p>
+</div>
+<p><em>Sinergym</em> also provides the option to create <strong>empty action interfaces</strong>, allowing users
+to leverage its benefits without directly using the <em>EnergyPlus</em> simulator. Control in
+this scenario is managed by the <strong>default building model schedulers</strong>. For further details,
+refer to the usage example <a class="reference internal" href="notebooks/default_building_control.html#Default-building-control-setting-up-an-empty-action-interface"><span class="std std-ref">Default building control setting up an empty action interface</span></a>.</p>
+</section>
+<section id="environment-name">
+<h3><span class="section-number">6.1.12. </span>Environment Name<a class="headerlink" href="#environment-name" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">env_name</span></code> parameter is utilized to generate the <strong>working directory name</strong>,
+facilitating differentiation between multiple experiments within the same environment.</p>
+</section>
+<section id="extra-configuration">
+<h3><span class="section-number">6.1.13. </span>Extra Configuration<a class="headerlink" href="#extra-configuration" title="Link to this heading"></a></h3>
+<p>Parameters related to the building model and simulator, such as <code class="docutils literal notranslate"><span class="pre">people</span> <span class="pre">occupant</span></code>, <code class="docutils literal notranslate"><span class="pre">timesteps</span> <span class="pre">per</span> <span class="pre">simulation</span> <span class="pre">hour</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">runperiod</span></code>, can be set as extra configurations. These configurations, which may expand in the future,
+are specified in the <code class="docutils literal notranslate"><span class="pre">config_params</span></code> argument, a Python Dictionary. For additional information
+on extra configurations in <em>Sinergym</em>, refer to <a class="reference internal" href="extra-configuration.html#extra-configuration-in-sinergym-simulations"><span class="std std-ref">Extra Configuration in Sinergym simulations</span></a>.</p>
+</section>
+<section id="adding-new-weathers-for-environments">
+<h3><span class="section-number">6.1.14. </span>Adding New Weathers for Environments<a class="headerlink" href="#adding-new-weathers-for-environments" title="Link to this heading"></a></h3>
+<p><em>Sinergym</em> provides a variety of weather files for diverse global climates to enhance experimental diversity.</p>
+<p>To incorporate a <strong>new weather</strong>:</p>
+<ol class="arabic simple">
+<li><p>Download an <strong>EPW</strong> and its corresponding <strong>DDY</strong> file from the <a class="reference external" href="https://energyplus.net/weather">EnergyPlus page</a>.
+The <em>DDY</em> file provides location and design day details.</p></li>
+<li><p>Ensure both files share the same name, differing only in their extensions, and place them
+in the <a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/weather">weathers</a> folder.</p></li>
+</ol>
+<p>Upon addition, <em>Sinergym</em> will automatically modify the <code class="docutils literal notranslate"><span class="pre">SizingPeriod:DesignDays</span></code> and <code class="docutils literal notranslate"><span class="pre">Site:Location</span></code>
+fields in the building model file using the <em>DDY</em> file.</p>
+</section>
+<section id="adding-new-buildings-for-environments">
+<h3><span class="section-number">6.1.15. </span>Adding New Buildings for Environments<a class="headerlink" href="#adding-new-buildings-for-environments" title="Link to this heading"></a></h3>
+<p>Users can either modify existing environments or create new ones, incorporating new climates,
+action, and observation spaces. They also have the option to use a different <strong>building model</strong>
+(epJSON file) than the ones currently supported.</p>
+<p>To add new buildings for use with <em>Sinergym</em>, follow these steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Add your building file</strong> (<em>epJSON</em>) to the
+<a class="reference external" href="https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings">buildings</a>
+directory. Ensure it’s compatible with the EnergyPlus version used in <em>Sinergym</em>.
+If you’re using an <em>IDF</em> file from an older version, update it with <strong>IDFVersionUpdater</strong>
+and convert it to <em>epJSON</em> format using <strong>ConvertInputFormat</strong>. Both tools are available
+in the EnergyPlus installation folder.</p></li>
+<li><p><strong>Adjust building objects</strong> like <code class="docutils literal notranslate"><span class="pre">RunPeriod</span></code> and <code class="docutils literal notranslate"><span class="pre">SimulationControl</span></code> to suit your needs
+in Sinergym. We recommend setting <code class="docutils literal notranslate"><span class="pre">run_simulation_for_sizing_periods</span></code> to <code class="docutils literal notranslate"><span class="pre">No</span></code> in
+<code class="docutils literal notranslate"><span class="pre">SimulationControl</span></code>. <code class="docutils literal notranslate"><span class="pre">RunPeriod</span></code> sets the episode length, which can be configured
+in the building file or Sinergym settings (see <a class="reference internal" href="extra-configuration.html#runperiod"><span class="std std-ref">runperiod</span></a>). Make these modifications
+in the <em>IDF</em> before step 1 or directly in the <em>epJSON</em> file.</p></li>
+<li><p><strong>Identify the components</strong> of the building that you want to observe and control. This is
+the most challenging part of the process. Typically, users are already familiar with the
+building and know the <em>name</em> and <em>key</em> of the elements in advance. If not, follow the process below:</p>
+<ol class="loweralpha simple">
+<li><p>Run a preliminary simulation with EnergyPlus directly, without any control flow, to view the
+different <code class="docutils literal notranslate"><span class="pre">OutputVariables</span></code> and <code class="docutils literal notranslate"><span class="pre">Meters</span></code>. Consult the output files, specifically the <em>RDD</em>
+extension file, to identify possible observable variables.</p></li>
+<li><p>The challenge is knowing the names but not the possible <em>Keys</em> (EnergyPlus doesn’t initially
+provide this information). Use these names to define the environment (see step 4). If the <em>Key</em>
+is incorrect, <em>Sinergym</em> will notify you of the error and provide a <strong>data_available.txt</strong>
+file in the output, as it has already connected with the EnergyPlus API. This file contains
+all the <strong>controllable schedulers</strong> for the actions and all the <strong>observable variables</strong>, now
+with their respective <em>Keys</em>, enabling the correct definition of the environment.</p></li>
+</ol>
+</li>
+<li><p>With this information, the next step is <strong>defining the environment</strong> using the building model.
+You have several options:</p></li>
+</ol>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li><p>Use the <em>Sinergym</em> environment constructor directly. The arguments for building observation
+and control are explained within the class and should be specified in the same format as the
+EnergyPlus API.</p></li>
+<li><p>Set up the configuration to register environment IDs directly. For more information, refer to
+the documentation <a class="reference internal" href="environments_registration.html#environments-configuration-and-registration"><span class="std std-ref">Environments Configuration and Registration</span></a>. <em>Sinergym</em> will verify
+that the established configuration is correct and notify you of any potential errors.</p></li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple" start="5">
+<li><p>If you’ve used <em>Sinergym</em>’s registry, you’ll have access to environment IDs associated with your building.
+Use them with <code class="docutils literal notranslate"><span class="pre">gym.make(&lt;environment_id&gt;)</span></code> as usual. If you’ve created an environment instance directly,
+use that instance to start interacting with the building.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To obtain information about the environment instance with the new building model, refer to
+<a class="reference internal" href="notebooks/getting_env_information.html#Getting-information-about-Sinergym-environments"><span class="std std-ref">Getting information about Sinergym environments</span></a>.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="architecture.html" class="btn btn-neutral float-left" title="5. Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="environments_registration.html" class="btn btn-neutral float-right" title="7. Environments Configuration and Registration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.3.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v1.4.0/pages/environments.html">v1.4.0</a></dd>
+            <dd><a href="../../v1.6.0/pages/environments.html">v1.6.0</a></dd>
+            <dd><a href="../../v1.7.0/pages/environments.html">v1.7.0</a></dd>
+            <dd><a href="../../v2.0.0/pages/environments.html">v2.0.0</a></dd>
+            <dd><a href="../../v2.1.0/pages/environments.html">v2.1.0</a></dd>
+            <dd><a href="../../v2.2.0/pages/environments.html">v2.2.0</a></dd>
+            <dd><a href="../../v2.3.0/pages/environments.html">v2.3.0</a></dd>
+            <dd><a href="../../v2.5.0/pages/environments.html">v2.5.0</a></dd>
+            <dd><a href="../../v3.1.0/pages/environments.html">v3.1.0</a></dd>
+            <dd><a href="../../v3.2.0/pages/environments.html">v3.2.0</a></dd>
+            <dd><a href="../../v3.2.10/pages/environments.html">v3.2.10</a></dd>
+            <dd><a href="environments.html">v3.3.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../main/pages/environments.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>

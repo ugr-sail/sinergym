@@ -18,7 +18,7 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -236,6 +236,13 @@ applied simultaneously to both zones.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Since the update to EnergyPlus version 23.1.0, it appears that temperature setpoints are not correctly
+applied in the East zone. The issue is currently under investigation. In the meantime, the default
+reward functions only apply to the control of the West zone to maintain result consistency. For more
+information about this issue, visit <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/395">#395</a>.</p>
+</div>
 </section>
 <section id="small-datacenter">
 <h2><span class="section-number">3.2. </span>Small Datacenter<a class="headerlink" href="#small-datacenter" title="Link to this heading"></a></h2>
@@ -920,6 +927,7 @@ It has a battery control for charging and discharging from the grid.</p>
             <dd><a href="../../v3.1.0/pages/buildings.html">v3.1.0</a></dd>
             <dd><a href="../../v3.2.0/pages/buildings.html">v3.2.0</a></dd>
             <dd><a href="../../v3.2.10/pages/buildings.html">v3.2.10</a></dd>
+            <dd><a href="../../v3.3.0/pages/buildings.html">v3.3.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
