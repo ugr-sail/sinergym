@@ -124,6 +124,37 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         After calling this method, the normalization wrapper will update its calibration automatically.
         """
         self.automatic_update = True
+
+    @property
+    def mean(self):
+        """Returns the mean value of the observations."""
+        return self.obs_rms.mean
+
+    @property
+    def var(self):
+        """Returns the variance value of the observations."""
+        return self.obs_rms.var
+
+    def set_mean(self, mean: np.float64):
+        """Sets the mean value of the observations."""
+        try:
+            assert len(mean) == self.observation_space.shape[0]
+        except AssertionError as err:
+            self.logger.error(
+                'Mean values must have the same shape than environment observation space.')
+            raise err
+        self.obs_rms.mean = mean
+
+    def set_var(self, var: np.float64):
+        """Sets the variance value of the observations."""
+        try:
+            assert len(var) == self.observation_space.shape[0]
+        except AssertionError as err:
+            self.logger.error(
+                'Variance values must have the same shape than environment observation space.')
+            raise err
+        self.obs_rms.var = var
+
     def normalize(self, obs):
         """Normalizes the observation using the running mean and variance of the observations.
         If automatic_update is enabled, the running mean and variance will be updated too."""
