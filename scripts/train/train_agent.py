@@ -21,6 +21,7 @@ from sinergym.utils.constants import *
 from sinergym.utils.logger import WandBOutputFormat
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import *
+from sinergym.utils.common import is_wrapped
 
 # ---------------------------------------------------------------------------- #
 #                       Function to process configuration                      #
@@ -172,7 +173,7 @@ try:
                 # parse str parameters to sinergym Callable or Objects if it is
                 # required
                 if isinstance(value, str):
-                    if 'sinergym.' in value:
+                    if '.' in value:
                         parameters[name] = eval(value)
             env = wrapper_class(env=env, ** parameters)
             if eval_env is not None:
@@ -321,6 +322,12 @@ try:
         callback=callback,
         log_interval=conf['algorithm']['log_interval'])
     model.save(env.get_wrapper_attr('workspace_path') + '/model')
+    # Save normalization calibration if exists
+    if is_wrapped(env, NormalizeObservation) and conf.get('wandb'):
+        wandb.config.mean = env.get_wrapper_attr('mean')
+        wandb.config.var = env.get_wrapper_attr('var')
+        wandb.config.automatic_update = env.get_wrapper_attr(
+            'automatic_update')
 
     # If the algorithm doesn't reset or close the environment, this script will do it in
     # order to correctly log all the simulation data (Energyplus + Sinergym
@@ -378,6 +385,35 @@ try:
 # If there is some error in the code, delete remote container if exists
 except Exception as err:
     print("Error in process detected")
+
+    # Current model state save
+    model.save(env.get_wrapper_attr('workspace_path') + '/model')
+
+    # Save normalization calibration if exists
+    if is_wrapped(env, NormalizeObservation) and conf.get('wandb'):
+        wandb.config.mean = env.get_wrapper_attr('mean')
+        wandb.config.var = env.get_wrapper_attr('var')
+        wandb.config.automatic_update = env.get_wrapper_attr(
+            'automatic_update')
+
+    # Save current wandb artifacts state
+    if conf.get('wandb'):
+        artifact = wandb.Artifact(
+            name=conf['wandb']['artifact_name'],
+            type=conf['wandb']['artifact_type'])
+        artifact.add_dir(
+            env.get_wrapper_attr('workspace_path'),
+            name='training_output/')
+        if conf.get('evaluation'):
+            artifact.add_dir(
+                eval_env.get_wrapper_attr('workspace_path'),
+                name='evaluation_output/')
+        run.log_artifact(artifact)
+
+        # wandb has finished
+        run.finish()
+
+    # Auto delete
     if conf.get('cloud'):
         if conf['cloud'].get('auto_delete'):
             print('Deleting remote container')

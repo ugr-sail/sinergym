@@ -12,8 +12,9 @@
     "model": "alex_ugr/sinergym/training:latest",
     "wrappers": {
         "NormalizeAction": {},
-        "NormalizeObservation": {},
-        "NormalizeReward": {},
+        "NormalizeObservation": {"mean": null,
+                                 "var": null,
+                                 "automatic_update": false},
         "LoggerWrapper": {
             "logger_class": "sinergym.utils.logger.CSVLogger",
             "flag": true
