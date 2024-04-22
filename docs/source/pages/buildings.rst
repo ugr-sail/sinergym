@@ -73,6 +73,11 @@ The default actuators, output and meters variables are:
 | Facility Total HVAC Electricity Demand Rate   | HVAC_electricity_demand_rate                  | Whole Building                    |
 +-----------------------------------------------+-----------------------------------------------+-----------------------------------+
 
+.. warning:: Since the update to EnergyPlus version 23.1.0, it appears that temperature setpoints are not correctly 
+             applied in the East zone. The issue is currently under investigation. In the meantime, the default 
+             reward functions only apply to the control of the West zone to maintain result consistency. For more
+             information about this issue, visit `#395 <https://github.com/ugr-sail/sinergym/issues/395>`__.
+
 **************************
 Small Datacenter
 **************************
