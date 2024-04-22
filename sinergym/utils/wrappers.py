@@ -111,9 +111,24 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
 
         return self.normalize(np.array([obs]))[0], info
 
+    def deactivate_update(self):
+        """
+        Deactivates the automatic update of the normalization wrapper.
+        After calling this method, the normalization wrapper will not update its calibration automatically.
+        """
+        self.automatic_update = False
+
+    def activate_update(self):
+        """
+        Activates the automatic update of the normalization wrapper.
+        After calling this method, the normalization wrapper will update its calibration automatically.
+        """
+        self.automatic_update = True
     def normalize(self, obs):
-        """Normalizes the observation using the running mean and variance of the observations."""
-        self.obs_rms.update(obs)
+        """Normalizes the observation using the running mean and variance of the observations.
+        If automatic_update is enabled, the running mean and variance will be updated too."""
+        if self.automatic_update:
+            self.obs_rms.update(obs)
         return (obs - self.obs_rms.mean) / \
             np.sqrt(self.obs_rms.var + self.epsilon)
 
