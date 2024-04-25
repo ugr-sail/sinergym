@@ -17,11 +17,11 @@ from stable_baselines3.common.noise import NormalActionNoise
 import sinergym
 import sinergym.utils.gcloud as gcloud
 from sinergym.utils.callbacks import *
+from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import *
 from sinergym.utils.logger import WandBOutputFormat
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import *
-from sinergym.utils.common import is_wrapped
 
 # ---------------------------------------------------------------------------- #
 #                       Function to process configuration                      #

@@ -11,10 +11,10 @@ from stable_baselines3.common.monitor import Monitor
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
+from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import *
-from sinergym.utils.common import is_wrapped
 
 # ---------------------------------------------------------------------------- #
 #                                  Parameters                                  #
