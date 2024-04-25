@@ -322,12 +322,6 @@ try:
         callback=callback,
         log_interval=conf['algorithm']['log_interval'])
     model.save(env.get_wrapper_attr('workspace_path') + '/model')
-    # Save normalization calibration if exists
-    if is_wrapped(env, NormalizeObservation) and conf.get('wandb'):
-        wandb.config.mean = env.get_wrapper_attr('mean')
-        wandb.config.var = env.get_wrapper_attr('var')
-        wandb.config.automatic_update = env.get_wrapper_attr(
-            'automatic_update')
 
     # If the algorithm doesn't reset or close the environment, this script will do it in
     # order to correctly log all the simulation data (Energyplus + Sinergym
@@ -388,13 +382,6 @@ except Exception as err:
 
     # Current model state save
     model.save(env.get_wrapper_attr('workspace_path') + '/model')
-
-    # Save normalization calibration if exists
-    if is_wrapped(env, NormalizeObservation) and conf.get('wandb'):
-        wandb.config.mean = env.get_wrapper_attr('mean')
-        wandb.config.var = env.get_wrapper_attr('var')
-        wandb.config.automatic_update = env.get_wrapper_attr(
-            'automatic_update')
 
     # Save current wandb artifacts state
     if conf.get('wandb'):

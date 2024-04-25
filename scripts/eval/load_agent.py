@@ -177,13 +177,6 @@ try:
             sum(rewards))
     env.close()
 
-    # Save normalization calibration if exists
-    if is_wrapped(env, NormalizeObservation) and conf.get('wandb'):
-        wandb.config.mean = env.get_wrapper_attr('mean')
-        wandb.config.var = env.get_wrapper_attr('var')
-        wandb.config.automatic_update = env.get_wrapper_attr(
-            'automatic_update')
-
     # ---------------------------------------------------------------------------- #
     #                                Wandb Artifacts                               #
     # ---------------------------------------------------------------------------- #
@@ -227,13 +220,6 @@ try:
 
 except Exception as err:
     print("Error in process detected")
-
-    # Save normalization calibration if exists
-    if is_wrapped(env, NormalizeObservation) and conf.get('wandb'):
-        wandb.config.mean = env.get_wrapper_attr('mean')
-        wandb.config.var = env.get_wrapper_attr('var')
-        wandb.config.automatic_update = env.get_wrapper_attr(
-            'automatic_update')
 
     # Save current wandb artifacts state
     if conf.get('wandb'):
