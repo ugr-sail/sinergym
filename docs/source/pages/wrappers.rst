@@ -132,6 +132,12 @@ However, *Sinergym* enhances its functionality with some additional features:
 - The automatic calibration can be enabled or disabled as you interact with the environment, allowing the 
   calibration to remain static instead of adaptive.
 
+In addition, this wrapper saves the values of mean and var in txt files in the 
+*Sinergym* output. This should be used in case of evaluating the model later. 
+An example of its use can be found in the use case :ref:`Loading a model`. It is
+also important that normalization calibration update is deactivated during evaluation
+processes.
+
 These functionalities are crucial when evaluating models trained using this wrapper. 
 For more details, visit `#407 <https://github.com/ugr-sail/sinergym/issues/407>`__.
 
