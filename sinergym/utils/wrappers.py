@@ -77,8 +77,8 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
             var (np.float64, optional): The variance value used for normalization. Defaults to None.
         """
         # Check mean and var format if it is defined
-        mean = np.array64(mean) if mean is not None else None
-        var = np.array64(var) if var is not None else None
+        mean = np.float64(mean) if mean is not None else None
+        var = np.float64(var) if var is not None else None
         # Save normalization configuration for whole python process
         gym.utils.RecordConstructorArgs.__init__(
             self, epsilon=epsilon, mean=mean, var=var)
