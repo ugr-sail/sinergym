@@ -129,7 +129,8 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
     # ----------------------- Wrappers extra functionality ----------------------- #
 
     def _save_normalization_calibration(self):
-
+        """Saves the normalization calibration data in the output folder as txt files.
+        """
         if hasattr(self, "mean") and hasattr(self, "var"):
             self.logger.info(
                 'Saving normalization calibration data... [{}]'.format(
@@ -155,14 +156,20 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         self.automatic_update = True
 
     @property
-    def mean(self):
+    def mean(self) -> Optional[np.float64]:
         """Returns the mean value of the observations."""
-        return self.obs_rms.mean
+        if hasattr(self, 'obs_rms'):
+            return self.obs_rms.mean
+        else:
+            return None
 
     @property
-    def var(self):
+    def var(self) -> Optional[np.float64]:
         """Returns the variance value of the observations."""
-        return self.obs_rms.var
+        if hasattr(self, 'obs_rms'):
+            return self.obs_rms.mean
+        else:
+            return None
 
     def set_mean(self, mean: np.float64):
         """Sets the mean value of the observations."""
