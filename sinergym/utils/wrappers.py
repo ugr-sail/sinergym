@@ -65,8 +65,8 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
                  env: EplusEnv,
                  automatic_update: bool = True,
                  epsilon: float = 1e-8,
-                 mean: np.float64 = None,
-                 var: np.float64 = None):
+                 mean: Union[list, np.float64] = None,
+                 var: Union[list, np.float64] = None):
         """Initializes the NormalizationWrapper. Mean and var values can be None andbeing updated during interaction with environment.
 
         Args:
@@ -76,14 +76,20 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
             mean (np.float64, optional): The mean value used for normalization. Defaults to None.
             var (np.float64, optional): The variance value used for normalization. Defaults to None.
         """
+        # Check mean and var format if it is defined
+        mean = np.array64(mean) if mean is not None else None
+        var = np.array64(var) if var is not None else None
+        # Save normalization configuration for whole python process
         gym.utils.RecordConstructorArgs.__init__(
             self, epsilon=epsilon, mean=mean, var=var)
         gym.Wrapper.__init__(self, env)
+
         self.num_envs = 1
         self.is_vector_env = False
         self.automatic_update = automatic_update
 
         self.unwrapped_observation = None
+        # Initialize normalization calibration
         self.obs_rms = RunningMeanStd(shape=self.observation_space.shape)
         self.obs_rms.mean = mean if mean is not None else self.obs_rms.mean
         self.obs_rms.var = var if var is not None else self.obs_rms.var
