@@ -115,7 +115,30 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         # Save original obs in class attribute
         self.unwrapped_observation = deepcopy(obs)
 
+        # Update normalization calibration if it is required
+        self._save_normalization_calibration()
+
         return self.normalize(np.array([obs]))[0], info
+
+    def close(self):
+        """Close the environment and save normalization calibration."""
+        self.env.close()
+        # Update normalization calibration if it is required
+        self._save_normalization_calibration()
+
+    # ----------------------- Wrappers extra functionality ----------------------- #
+
+    def _save_normalization_calibration(self):
+
+        if hasattr(self, "mean") and hasattr(self, "var"):
+            self.logger.info(
+                'Saving normalization calibration data... [{}]'.format(
+                    self.name))
+            # Save in txt in output folder
+            np.savetxt(fname=self.get_wrapper_attr(
+                'workspace_path') + '/mean.txt', X=self.mean)
+            np.savetxt(fname=self.get_wrapper_attr(
+                'workspace_path') + '/var.txt', X=self.var)
 
     def deactivate_update(self):
         """
