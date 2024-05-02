@@ -65,8 +65,8 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
                  env: EplusEnv,
                  automatic_update: bool = True,
                  epsilon: float = 1e-8,
-                 mean: np.float64 = None,
-                 var: np.float64 = None):
+                 mean: Union[list, np.float64] = None,
+                 var: Union[list, np.float64] = None):
         """Initializes the NormalizationWrapper. Mean and var values can be None andbeing updated during interaction with environment.
 
         Args:
@@ -76,14 +76,20 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
             mean (np.float64, optional): The mean value used for normalization. Defaults to None.
             var (np.float64, optional): The variance value used for normalization. Defaults to None.
         """
+        # Check mean and var format if it is defined
+        mean = np.float64(mean) if mean is not None else None
+        var = np.float64(var) if var is not None else None
+        # Save normalization configuration for whole python process
         gym.utils.RecordConstructorArgs.__init__(
             self, epsilon=epsilon, mean=mean, var=var)
         gym.Wrapper.__init__(self, env)
+
         self.num_envs = 1
         self.is_vector_env = False
         self.automatic_update = automatic_update
 
         self.unwrapped_observation = None
+        # Initialize normalization calibration
         self.obs_rms = RunningMeanStd(shape=self.observation_space.shape)
         self.obs_rms.mean = mean if mean is not None else self.obs_rms.mean
         self.obs_rms.var = var if var is not None else self.obs_rms.var
@@ -109,7 +115,31 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         # Save original obs in class attribute
         self.unwrapped_observation = deepcopy(obs)
 
+        # Update normalization calibration if it is required
+        self._save_normalization_calibration()
+
         return self.normalize(np.array([obs]))[0], info
+
+    def close(self):
+        """Close the environment and save normalization calibration."""
+        self.env.close()
+        # Update normalization calibration if it is required
+        self._save_normalization_calibration()
+
+    # ----------------------- Wrappers extra functionality ----------------------- #
+
+    def _save_normalization_calibration(self):
+        """Saves the normalization calibration data in the output folder as txt files.
+        """
+        if hasattr(self, "mean") and hasattr(self, "var"):
+            self.logger.info(
+                'Saving normalization calibration data... [{}]'.format(
+                    self.name))
+            # Save in txt in output folder
+            np.savetxt(fname=self.get_wrapper_attr(
+                'workspace_path') + '/mean.txt', X=self.mean)
+            np.savetxt(fname=self.get_wrapper_attr(
+                'workspace_path') + '/var.txt', X=self.var)
 
     def deactivate_update(self):
         """
@@ -126,14 +156,20 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         self.automatic_update = True
 
     @property
-    def mean(self):
+    def mean(self) -> Optional[np.float64]:
         """Returns the mean value of the observations."""
-        return self.obs_rms.mean
+        if hasattr(self, 'obs_rms'):
+            return self.obs_rms.mean
+        else:
+            return None
 
     @property
-    def var(self):
+    def var(self) -> Optional[np.float64]:
         """Returns the variance value of the observations."""
-        return self.obs_rms.var
+        if hasattr(self, 'obs_rms'):
+            return self.obs_rms.mean
+        else:
+            return None
 
     def set_mean(self, mean: np.float64):
         """Sets the mean value of the observations."""

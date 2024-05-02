@@ -208,6 +208,18 @@ def test_normalize_observation_wrapper(env_wrapper_normalization):
     assert (old_mean == env.get_wrapper_attr('mean')).all()
     assert (old_var == env.get_wrapper_attr('var')).all()
 
+    # Check calibration as been saved as txt
+    env.close()
+    assert os.path.isfile(env.get_wrapper_attr('workspace_path') + '/mean.txt')
+    assert os.path.isfile(env.get_wrapper_attr('workspace_path') + '/var.txt')
+    # Check that txt has the same lines than observation space shape
+    with open(env.get_wrapper_attr('workspace_path') + '/mean.txt', 'r') as f:
+        lines = f.readlines()
+        assert len(lines) == env.observation_space.shape[0]
+    with open(env.get_wrapper_attr('workspace_path') + '/var.txt', 'r') as f:
+        lines = f.readlines()
+        assert len(lines) == env.observation_space.shape[0]
+
 
 def test_normalize_action_wrapper(env_normalize_action_wrapper):
 

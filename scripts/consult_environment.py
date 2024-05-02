@@ -1,5 +1,6 @@
-import sinergym
 import gymnasium as gym
+
+import sinergym
 from sinergym.utils.common import get_ids
 
 # Get the list of available environments
