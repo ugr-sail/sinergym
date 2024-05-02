@@ -217,6 +217,11 @@ issues found in the original wrapper.</p></li>
 <li><p>The automatic calibration can be enabled or disabled as you interact with the environment, allowing the
 calibration to remain static instead of adaptive.</p></li>
 </ul>
+<p>In addition, this wrapper saves the values of mean and var in txt files in the
+<em>Sinergym</em> output. This should be used in case of evaluating the model later.
+An example of its use can be found in the use case <a class="reference internal" href="notebooks/drl.html#Loading-a-model"><span class="std std-ref">Loading a model</span></a>. It is
+also important that normalization calibration update is deactivated during evaluation
+processes.</p>
 <p>These functionalities are crucial when evaluating models trained using this wrapper.
 For more details, visit <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/407">#407</a>.</p>
 </section>
