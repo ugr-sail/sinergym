@@ -149,6 +149,21 @@ This is a wrapper for logging all interactions between the agent and the environ
 be selected in the constructor if a different type of logging is required. For more information about the 
 *Sinergym* Logger, refer to :ref:`Logger`.
 
+**************************
+ReduceObservationWrapper
+**************************
+
+This wrapper starts from the original observation space and reduces it by subtracting the variables 
+specified in a string list parameter. These removed variables are returned in the info dictionary 
+(under the key ``removed_variables``) and are not used in the agent optimization process.
+
+If combined with the :ref:`LoggerWrapper` in subsequent layers, the removed variables will be saved 
+in the output files, even if they are not "used". This makes it perfect for monitoring simulation 
+values that are not part of the problem to be solved.
+
+Similarly, any other wrapper applied in layers prior to this one will affect the removed variables, 
+which can be observed in the info dictionary.
+
 ***********************
 MultiObsWrapper
 ***********************

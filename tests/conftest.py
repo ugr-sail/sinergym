@@ -474,6 +474,16 @@ def env_wrapper_discretize(env_5zone, ACTION_SPACE_DISCRETE_5ZONE):
 
 
 @pytest.fixture(scope='function')
+def env_wrapper_reduce_observation(env_5zone):
+    return ReduceObservationWrapper(
+        env=env_5zone,
+        obs_reduction=[
+            'outdoor_temperature',
+            'outdoor_humidity',
+            'air_temperature'])
+
+
+@pytest.fixture(scope='function')
 def env_all_wrappers(env_5zone):
     env = MultiObjectiveReward(
         env=env_5zone,
@@ -491,6 +501,12 @@ def env_all_wrappers(env_5zone):
     env = NormalizeObservation(
         env=env)
     env = LoggerWrapper(env=env, flag=True)
+    env = ReduceObservationWrapper(
+        env=env,
+        obs_reduction=[
+            'outdoor_temperature',
+            'outdoor_humidity',
+            'air_temperature'])
     env = MultiObsWrapper(env=env, n=5, flatten=True)
     return env
 
