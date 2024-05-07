@@ -208,6 +208,18 @@ def test_normalize_observation_wrapper(env_wrapper_normalization):
     assert (old_mean == env.get_wrapper_attr('mean')).all()
     assert (old_var == env.get_wrapper_attr('var')).all()
 
+    # Check calibration as been saved as txt
+    env.close()
+    assert os.path.isfile(env.get_wrapper_attr('workspace_path') + '/mean.txt')
+    assert os.path.isfile(env.get_wrapper_attr('workspace_path') + '/var.txt')
+    # Check that txt has the same lines than observation space shape
+    with open(env.get_wrapper_attr('workspace_path') + '/mean.txt', 'r') as f:
+        lines = f.readlines()
+        assert len(lines) == env.observation_space.shape[0]
+    with open(env.get_wrapper_attr('workspace_path') + '/var.txt', 'r') as f:
+        lines = f.readlines()
+        assert len(lines) == env.observation_space.shape[0]
+
 
 def test_normalize_action_wrapper(env_normalize_action_wrapper):
 
@@ -329,6 +341,48 @@ def test_logger_activation(env_wrapper_logger):
     assert env_wrapper_logger.file_logger.flag
 
 
+def test_reduced_observation_wrapper(env_wrapper_reduce_observation):
+
+    env = env_wrapper_reduce_observation
+    # Check that the original variable names has the removed varibles
+    # but not in reduced variables
+    original_observation_variables = env.env.get_wrapper_attr(
+        'observation_variables')
+    reduced_observation_variables = env.get_wrapper_attr(
+        'observation_variables')
+    removed_observation_variables = env.get_wrapper_attr(
+        'removed_observation_variables')
+    for removed_variable in removed_observation_variables:
+        assert removed_variable in original_observation_variables
+        assert removed_variable not in reduced_observation_variables
+
+    # Check that the original observation space has a difference with the new
+    original_shape = env.env.observation_space.shape[0]
+    reduced_shape = env.observation_space.shape[0]
+    assert reduced_shape == original_shape - len(removed_observation_variables)
+
+    # Check reset return
+    obs1, info1 = env.reset()
+    assert len(obs1) == len(reduced_observation_variables)
+    assert info1.get('removed_observation', False)
+    assert len(info1['removed_observation']) == len(
+        removed_observation_variables)
+    for removed_variable_name, value in info1['removed_observation'].items():
+        assert removed_variable_name in removed_observation_variables
+        assert value is not None
+
+    # Check step return
+    action = env.action_space.sample()
+    obs2, _, _, _, info2 = env.step(action)
+    assert len(obs2) == len(reduced_observation_variables)
+    assert info2.get('removed_observation', False)
+    assert len(info2['removed_observation']) == len(
+        removed_observation_variables)
+    for removed_variable_name, value in info2['removed_observation'].items():
+        assert removed_variable_name in removed_observation_variables
+        assert value is not None
+
+
 def test_env_wrappers(env_all_wrappers):
     # CHECK ATTRIBUTES
     # MultiObjective
@@ -345,6 +399,8 @@ def test_env_wrappers(env_all_wrappers):
     assert hasattr(env_all_wrappers, 'monitor_header')
     assert hasattr(env_all_wrappers, 'progress_header')
     assert hasattr(env_all_wrappers, 'logger')
+    # ReduceObservation
+    assert hasattr(env_all_wrappers, 'removed_observation_variables')
     # Multiobs
     assert hasattr(env_all_wrappers, 'n')
     assert hasattr(env_all_wrappers, 'ind_flat')
@@ -358,9 +414,6 @@ def test_env_wrappers(env_all_wrappers):
     # Check history has obs and any more
     assert len(env_all_wrappers.history) == env_all_wrappers.n
     assert (env_all_wrappers._get_obs() == obs).all()
-
-    # obs should be normalized --> [0,1]
-    # ...
 
     # Execute a short episode in order to check logger
     logger = env_all_wrappers.file_logger

@@ -11,10 +11,10 @@ from stable_baselines3.common.monitor import Monitor
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
+from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import *
-from sinergym.utils.common import is_wrapped
 
 # ---------------------------------------------------------------------------- #
 #                                  Parameters                                  #
@@ -177,13 +177,6 @@ try:
             sum(rewards))
     env.close()
 
-    # Save normalization calibration if exists
-    if is_wrapped(env, NormalizeObservation) and conf.get('wandb'):
-        wandb.config.mean = env.get_wrapper_attr('mean')
-        wandb.config.var = env.get_wrapper_attr('var')
-        wandb.config.automatic_update = env.get_wrapper_attr(
-            'automatic_update')
-
     # ---------------------------------------------------------------------------- #
     #                                Wandb Artifacts                               #
     # ---------------------------------------------------------------------------- #
@@ -227,13 +220,6 @@ try:
 
 except Exception as err:
     print("Error in process detected")
-
-    # Save normalization calibration if exists
-    if is_wrapped(env, NormalizeObservation) and conf.get('wandb'):
-        wandb.config.mean = env.get_wrapper_attr('mean')
-        wandb.config.var = env.get_wrapper_attr('var')
-        wandb.config.automatic_update = env.get_wrapper_attr(
-            'automatic_update')
 
     # Save current wandb artifacts state
     if conf.get('wandb'):

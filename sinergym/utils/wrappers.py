@@ -65,8 +65,8 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
                  env: EplusEnv,
                  automatic_update: bool = True,
                  epsilon: float = 1e-8,
-                 mean: np.float64 = None,
-                 var: np.float64 = None):
+                 mean: Union[list, np.float64] = None,
+                 var: Union[list, np.float64] = None):
         """Initializes the NormalizationWrapper. Mean and var values can be None andbeing updated during interaction with environment.
 
         Args:
@@ -76,14 +76,20 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
             mean (np.float64, optional): The mean value used for normalization. Defaults to None.
             var (np.float64, optional): The variance value used for normalization. Defaults to None.
         """
+        # Check mean and var format if it is defined
+        mean = np.float64(mean) if mean is not None else None
+        var = np.float64(var) if var is not None else None
+        # Save normalization configuration for whole python process
         gym.utils.RecordConstructorArgs.__init__(
             self, epsilon=epsilon, mean=mean, var=var)
         gym.Wrapper.__init__(self, env)
+
         self.num_envs = 1
         self.is_vector_env = False
         self.automatic_update = automatic_update
 
         self.unwrapped_observation = None
+        # Initialize normalization calibration
         self.obs_rms = RunningMeanStd(shape=self.observation_space.shape)
         self.obs_rms.mean = mean if mean is not None else self.obs_rms.mean
         self.obs_rms.var = var if var is not None else self.obs_rms.var
@@ -109,7 +115,31 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         # Save original obs in class attribute
         self.unwrapped_observation = deepcopy(obs)
 
+        # Update normalization calibration if it is required
+        self._save_normalization_calibration()
+
         return self.normalize(np.array([obs]))[0], info
+
+    def close(self):
+        """Close the environment and save normalization calibration."""
+        self.env.close()
+        # Update normalization calibration if it is required
+        self._save_normalization_calibration()
+
+    # ----------------------- Wrappers extra functionality ----------------------- #
+
+    def _save_normalization_calibration(self):
+        """Saves the normalization calibration data in the output folder as txt files.
+        """
+        if hasattr(self, "mean") and hasattr(self, "var"):
+            self.logger.info(
+                'Saving normalization calibration data... [{}]'.format(
+                    self.name))
+            # Save in txt in output folder
+            np.savetxt(fname=self.get_wrapper_attr(
+                'workspace_path') + '/mean.txt', X=self.mean)
+            np.savetxt(fname=self.get_wrapper_attr(
+                'workspace_path') + '/var.txt', X=self.var)
 
     def deactivate_update(self):
         """
@@ -126,14 +156,20 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         self.automatic_update = True
 
     @property
-    def mean(self):
+    def mean(self) -> Optional[np.float64]:
         """Returns the mean value of the observations."""
-        return self.obs_rms.mean
+        if hasattr(self, 'obs_rms'):
+            return self.obs_rms.mean
+        else:
+            return None
 
     @property
-    def var(self):
+    def var(self) -> Optional[np.float64]:
         """Returns the variance value of the observations."""
-        return self.obs_rms.var
+        if hasattr(self, 'obs_rms'):
+            return self.obs_rms.mean
+        else:
+            return None
 
     def set_mean(self, mean: np.float64):
         """Sets the mean value of the observations."""
@@ -923,7 +959,98 @@ class NormalizeAction(gym.ActionWrapper):
         action_ = self.get_wrapper_attr('reverting_action')(action_)
         return action_
 
-# ---------------------- Specific environment wrappers ---------------------#
+
+class ReduceObservationWrapper(gym.Wrapper):
+
+    logger = Logger().getLogger(name='WRAPPER ReduceObservationWrapper',
+                                level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: EplusEnv,
+                 obs_reduction: List[str]):
+        """Wrapper to reduce the observation space of the environment. These variables removed from
+        the space are included in the info dictionary. This way they are recordable but not used in DRL process.
+
+        Args:
+            env (EplusEnv): Original environment.
+            obs_reduction (List[str]): List of observation variables to be removed.
+        """
+        super().__init__(env)
+
+        # Check if the variables to be removed are in the observation space
+        try:
+            assert all(
+                var in self.get_wrapper_attr('observation_variables')
+                for var in obs_reduction)
+        except AssertionError as err:
+            self.logger.error(
+                'Some observation variable to be removed is not defined in the original observation space.')
+            raise err
+
+        # Update observation space
+        self.observation_space = gym.spaces.Box(
+            low=-5e6,
+            high=5e6,
+            shape=(
+                self.env.observation_space.shape[0] -
+                len(obs_reduction),
+            ),
+            dtype=np.float32)
+
+        # Separate removed variables from observation variables
+        self.observation_variables = list(
+            filter(
+                lambda x: x not in obs_reduction, deepcopy(
+                    self.get_wrapper_attr('observation_variables'))))
+        self.removed_observation_variables = obs_reduction
+
+        self.logger.info('Wrapper initialized.')
+
+    def step(self, action: Union[int, np.ndarray]
+             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
+        """Sends action to the environment. Separating removed variables from observation values and adding it to info dict.
+
+        Args:
+            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
+
+        Returns:
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
+        """
+        obs, reward, terminated, truncated, info = self.env.step(action)
+
+        # Processig obs to delete removed variables and add them to info
+        obs_dict = dict(
+            zip(self.env.get_wrapper_attr('observation_variables'), obs))
+        reduced_obs_dict = {
+            key: obs_dict[key] for key in self.get_wrapper_attr('observation_variables')}
+        removed_obs_dict = {key: obs_dict[key] for key in self.get_wrapper_attr(
+            'removed_observation_variables')}
+        info['removed_observation'] = removed_obs_dict
+
+        return np.array(list(reduced_obs_dict.values())
+                        ), reward, terminated, truncated, info
+
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
+        """Sends action to the environment. Separating removed variables from observation values and adding it to info dict"""
+        obs, info = self.env.reset(seed=seed, options=options)
+
+        # Processig obs to delete removed variables and add them to info
+        obs_dict = dict(
+            zip(self.env.get_wrapper_attr('observation_variables'), obs))
+        reduced_obs_dict = {
+            key: obs_dict[key] for key in self.get_wrapper_attr('observation_variables')}
+        removed_obs_dict = {key: obs_dict[key] for key in self.get_wrapper_attr(
+            'removed_observation_variables')}
+        info['removed_observation'] = removed_obs_dict
+
+        return np.array(list(reduced_obs_dict.values())), info
+
+    # ---------------------- Specific environment wrappers ---------------------#
 
 
 class RoundActionWrapper(gym.ActionWrapper):

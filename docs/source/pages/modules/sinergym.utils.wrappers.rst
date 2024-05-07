@@ -30,6 +30,7 @@
       NormalizeObservation
       OfficeGridStorageSmoothingActionConstraintsWrapper
       PreviousObservationWrapper
+      ReduceObservationWrapper
    
    
 

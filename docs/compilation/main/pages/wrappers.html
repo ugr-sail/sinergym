@@ -72,7 +72,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#discreteincrementalwrapper">10.7. DiscreteIncrementalWrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#normalizeobservation">10.8. NormalizeObservation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#loggerwrapper">10.9. LoggerWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#multiobswrapper">10.10. MultiObsWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reduceobservationwrapper">10.10. ReduceObservationWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiobswrapper">10.11. MultiObsWrapper</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
@@ -90,8 +91,9 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">20. Default building control setting up an empty action interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">21. Wrappers example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">23. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">24. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/logging_unused_variables.html">23. Logging unusued variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">24. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">25. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -217,6 +219,11 @@ issues found in the original wrapper.</p></li>
 <li><p>The automatic calibration can be enabled or disabled as you interact with the environment, allowing the
 calibration to remain static instead of adaptive.</p></li>
 </ul>
+<p>In addition, this wrapper saves the values of mean and var in txt files in the
+<em>Sinergym</em> output. This should be used in case of evaluating the model later.
+An example of its use can be found in the use case <a class="reference internal" href="notebooks/drl.html#Loading-a-model"><span class="std std-ref">Loading a model</span></a>. It is
+also important that normalization calibration update is deactivated during evaluation
+processes.</p>
 <p>These functionalities are crucial when evaluating models trained using this wrapper.
 For more details, visit <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/407">#407</a>.</p>
 </section>
@@ -226,8 +233,19 @@ For more details, visit <a class="reference external" href="https://github.com/u
 be selected in the constructor if a different type of logging is required. For more information about the
 <em>Sinergym</em> Logger, refer to <a class="reference internal" href="output.html#logger"><span class="std std-ref">Logger</span></a>.</p>
 </section>
+<section id="reduceobservationwrapper">
+<h2><span class="section-number">10.10. </span>ReduceObservationWrapper<a class="headerlink" href="#reduceobservationwrapper" title="Link to this heading"></a></h2>
+<p>This wrapper starts from the original observation space and reduces it by subtracting the variables
+specified in a string list parameter. These removed variables are returned in the info dictionary
+(under the key <code class="docutils literal notranslate"><span class="pre">removed_variables</span></code>) and are not used in the agent optimization process.</p>
+<p>If combined with the <a class="reference internal" href="#loggerwrapper"><span class="std std-ref">LoggerWrapper</span></a> in subsequent layers, the removed variables will be saved
+in the output files, even if they are not “used”. This makes it perfect for monitoring simulation
+values that are not part of the problem to be solved.</p>
+<p>Similarly, any other wrapper applied in layers prior to this one will affect the removed variables,
+which can be observed in the info dictionary.</p>
+</section>
 <section id="multiobswrapper">
-<h2><span class="section-number">10.10. </span>MultiObsWrapper<a class="headerlink" href="#multiobswrapper" title="Link to this heading"></a></h2>
+<h2><span class="section-number">10.11. </span>MultiObsWrapper<a class="headerlink" href="#multiobswrapper" title="Link to this heading"></a></h2>
 <p>This stacks observations received in a history queue (the size can be customized).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

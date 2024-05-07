@@ -250,8 +250,9 @@ and ``runperiod``, can be set as extra configurations. These configurations, whi
 are specified in the ``config_params`` argument, a Python Dictionary. For additional information 
 on extra configurations in *Sinergym*, refer to :ref:`Extra Configuration in Sinergym simulations`.
 
+*************************************
 Adding New Weathers for Environments
-====================================
+*************************************
 
 *Sinergym* provides a variety of weather files for diverse global climates to enhance experimental diversity.
 
@@ -266,8 +267,9 @@ To incorporate a **new weather**:
 Upon addition, *Sinergym* will automatically modify the ``SizingPeriod:DesignDays`` and ``Site:Location`` 
 fields in the building model file using the *DDY* file.
 
+***************************************
 Adding New Buildings for Environments
-=====================================
+***************************************
 
 Users can either modify existing environments or create new ones, incorporating new climates, 
 action, and observation spaces. They also have the option to use a different **building model** 

@@ -132,6 +132,12 @@ However, *Sinergym* enhances its functionality with some additional features:
 - The automatic calibration can be enabled or disabled as you interact with the environment, allowing the 
   calibration to remain static instead of adaptive.
 
+In addition, this wrapper saves the values of mean and var in txt files in the 
+*Sinergym* output. This should be used in case of evaluating the model later. 
+An example of its use can be found in the use case :ref:`Loading a model`. It is
+also important that normalization calibration update is deactivated during evaluation
+processes.
+
 These functionalities are crucial when evaluating models trained using this wrapper. 
 For more details, visit `#407 <https://github.com/ugr-sail/sinergym/issues/407>`__.
 
@@ -142,6 +148,21 @@ LoggerWrapper
 This is a wrapper for logging all interactions between the agent and the environment. The Logger class can 
 be selected in the constructor if a different type of logging is required. For more information about the 
 *Sinergym* Logger, refer to :ref:`Logger`.
+
+**************************
+ReduceObservationWrapper
+**************************
+
+This wrapper starts from the original observation space and reduces it by subtracting the variables 
+specified in a string list parameter. These removed variables are returned in the info dictionary 
+(under the key ``removed_variables``) and are not used in the agent optimization process.
+
+If combined with the :ref:`LoggerWrapper` in subsequent layers, the removed variables will be saved 
+in the output files, even if they are not "used". This makes it perfect for monitoring simulation 
+values that are not part of the problem to be solved.
+
+Similarly, any other wrapper applied in layers prior to this one will affect the removed variables, 
+which can be observed in the info dictionary.
 
 ***********************
 MultiObsWrapper

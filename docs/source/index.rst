@@ -94,6 +94,7 @@ If you use *Sinergym* in your work, please cite our `paper <https://dl.acm.org/d
    pages/notebooks/default_building_control.nblink
    pages/notebooks/wrappers_examples.nblink
    pages/notebooks/personalize_loggerwrapper.nblink
+   pages/notebooks/logging_unused_variables.nblink
    pages/notebooks/rule_controller_example.nblink
    pages/notebooks/drl.nblink
    
