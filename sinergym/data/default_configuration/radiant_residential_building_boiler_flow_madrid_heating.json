@@ -1,15 +1,12 @@
 {
-    "id_base"               : "radiant_boiler_flow_setpoints",
+    "id_base"               : "radiant_boiler_flow_heating",
 
-    "building_file"         : "radiant_residential_building_boiler_water_flow.epJSON",
+    "building_file"         : "radiant_residential_building_boiler_flow_madrid_heating.epJSON",
 
     "weather_specification" : {
-        "weather_files" : ["USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw", 
-                           "USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw", 
-                           "USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw",
-                           "SWE_Stockholm.Arlanda.024600_IWEC.epw"
+        "weather_files" : ["ESP_Madrid.082210_IWEC.epw"
                         ],
-        "keys"          : ["hot", "mixed", "cool", "stockholm"]
+        "keys"          : ["madrid"]
     },
 
     "config_params"          : {
@@ -123,14 +120,6 @@
                                 "SecondFloor:Bedroom02 radiant surface", 
                                 "SecondFloor:Bedroom03 radiant surface"]           
         },
-        "Schedule Value"                                 : {
-            "variable_names" : "value",
-            "keys"           : ["Living Radiant Heating SP SCHED", 
-                                "Kitchen Radiant Heating SP SCHED", 
-                                "Bed1 Radiant Heating SP SCHED",
-                                "Bed2 Radiant Heating SP SCHED",
-                                "Bed3 Radiant Heating SP SCHED"]            
-        },
         "Boiler Part Load Ratio"                                          : {
             "variable_names" : "boiler_load_ratio",
             "keys"          : "Boiler"            
@@ -173,33 +162,6 @@
             "element_type"  : "Hydronic Low Temp Radiant", 
             "value_type"    : "Water Mass Flow Rate"
         },
-
-        "Living Radiant Heating SP SCHED"                           : {
-            "variable_name" : "sp_livroom",
-            "element_type"  : "Schedule:Compact", 
-            "value_type"    : "Schedule Value"
-        },
-        "Kitchen Radiant Heating SP SCHED"                          : {
-            "variable_name" : "sp_kitchen",
-            "element_type"  : "Schedule:Compact", 
-            "value_type"    : "Schedule Value"
-        },
-        "Bed1 Radiant Heating SP SCHED"                             : {
-            "variable_name" : "sp_bed1",
-            "element_type"  : "Schedule:Compact", 
-            "value_type"    : "Schedule Value"
-        },
-        "Bed2 Radiant Heating SP SCHED"                             : {
-            "variable_name" : "sp_bed2",
-            "element_type"  : "Schedule:Compact", 
-            "value_type"    : "Schedule Value"
-        },
-        "Bed3 Radiant Heating SP SCHED"                             : {
-            "variable_name" : "sp_bed3",
-            "element_type"  : "Schedule:Compact", 
-            "value_type"    : "Schedule Value"
-        },
-
         "HEATING HIGH WATER TEMPERATURE SCHEDULE: ALWAYS 65.00" : {
             "variable_name" : "water_temperature",
             "element_type"  : "Schedule:Compact", 
@@ -207,7 +169,7 @@
         }
     },
 
-    "action_space"          : "gym.spaces.Box(low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 19.0, 19.0, 19.0, 19.0, 19.0, 25.0], dtype=np.float32), high=np.array([0.0642111736148491, 0.101458821605256, 0.0260745613080282, 0.0527167485454115, 0.0416549441500946, 21.0, 21.0, 21.0, 21.0, 21.0, 45.0], dtype=np.float32), shape=(11,), dtype=np.float32)",
+    "action_space"          : "gym.spaces.Box(low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 25.0], dtype=np.float32), high=np.array([0.0532, 0.0731, 0.0285, 0.0496, 0.04306, 45.0], dtype=np.float32), shape=(6,), dtype=np.float32)",
 
     "only_discrete": false,
 

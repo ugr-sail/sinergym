@@ -1,7 +1,7 @@
 {
-    "id_base"               : "radiant_boiler_valve",
+    "id_base"               : "radiant_boiler_valve_heating",
 
-    "building_file"         : "radiant_residential_building_boiler_valve.epJSON",
+    "building_file"         : "radiant_residential_building_boiler_valve_heating.epJSON",
 
     "weather_specification" : {
         "weather_files" : ["USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw", 
