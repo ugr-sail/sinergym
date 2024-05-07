@@ -78,51 +78,6 @@
                                 "SecondFloor:Bedroom03"
                             ]            
         },
-        "Zone People Occupant Count"                                      : {
-            "variable_names" : "people_occupant",
-            "keys"           : ["FirstFloor:LivingRoom", 
-                                "FirstFloor:Kitchen", 
-                                "SecondFloor:Bedroom01", 
-                                "SecondFloor:Bedroom02", 
-                                "SecondFloor:Bedroom03"
-                            ]            
-        },
-        "Zone Thermal Comfort Mean Radiant Temperature"                   : {
-            "variable_names" : "thermal_comfort_mean_radiant_temperature",
-            "keys"           : ["People FirstFloor:LivingRoom", 
-                                "People FirstFloor:Kitchen", 
-                                "People SecondFloor:Bedroom01", 
-                                "People SecondFloor:Bedroom02", 
-                                "People SecondFloor:Bedroom03"
-                            ]            
-        },
-        "Zone Thermal Comfort Clothing Value"                             : {
-            "variable_names" : "thermal_comfort_clothing_value",
-            "keys"           : ["People FirstFloor:LivingRoom", 
-                                "People FirstFloor:Kitchen", 
-                                "People SecondFloor:Bedroom01", 
-                                "People SecondFloor:Bedroom02", 
-                                "People SecondFloor:Bedroom03"
-                            ]            
-        },
-        "Zone Thermal Comfort Fanger Model PPD"                           : {
-            "variable_names" : "thermal_comfort_fanger_model_ppd",
-            "keys"           : ["People FirstFloor:LivingRoom", 
-                                "People FirstFloor:Kitchen", 
-                                "People SecondFloor:Bedroom01", 
-                                "People SecondFloor:Bedroom02", 
-                                "People SecondFloor:Bedroom03"
-                            ]            
-        },
-        "People Air Temperature"                                          : {
-            "variable_names" : "people_air_temperature",
-            "keys"           : ["People FirstFloor:LivingRoom", 
-                                "People FirstFloor:Kitchen", 
-                                "People SecondFloor:Bedroom01", 
-                                "People SecondFloor:Bedroom02", 
-                                "People SecondFloor:Bedroom03"
-                            ]            
-        },
         "Zone Radiant HVAC Outlet Temperature"                            : {
             "variable_names" : "radiant_hvac_outlet_temperature",
             "keys"           : ["FirstFloor:LivingRoom radiant surface", 
