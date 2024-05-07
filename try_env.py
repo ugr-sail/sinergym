@@ -7,11 +7,14 @@ from sinergym.utils.wrappers import (
     NormalizeAction,
     NormalizeObservation,
     IncrementalWrapper,
-    RoundActionWrapper)
+    RoundActionWrapper,
+    ExtremeFlowControlWrapper)
 
 # Creating environment and applying wrappers for normalization and logging
-env = gym.make('Eplus-radiant-hot-continuous-stochastic-v1')
-env = RoundActionWrapper(env)
+env = gym.make(
+    'Eplus-radiant_boiler_flow-stockholm-continuous-stochastic-v1')
+# env = RoundActionWrapper(env)
+env = ExtremeFlowControlWrapper(env)
 env = IncrementalWrapper(env, incremental_variables_definition={
     'water_temperature': (2.0, 0.5)
 },
