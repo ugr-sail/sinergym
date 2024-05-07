@@ -12,7 +12,9 @@
         "keys"          : ["hot", "mixed", "cool", "stockholm"]
     },
 
-    "config_params"          : null,
+    "config_params"          : {
+        "timesteps_per_hour" : 4
+    },
 
     "variation"             : [1.0, 0.0, 0.001],
 
