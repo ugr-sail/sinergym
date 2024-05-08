@@ -45,7 +45,11 @@
             "keys"          : "Environment"            
         },
         "Zone Thermostat Heating Setpoint Temperature"                    : {
-            "variable_names" : "htg_setpoint",
+            "variable_names" : ["htg_setpoint_living",
+                                "htg_setpoint_kitchen",
+                                "htg_setpoint_bed1",
+                                "htg_setpoint_bed2",
+                                "htg_setpoint_bed3"],
             "keys"           : ["FirstFloor:LivingRoom", 
                                 "FirstFloor:Kitchen", 
                                 "SecondFloor:Bedroom01", 
@@ -54,7 +58,11 @@
                             ]            
         },
         "Zone Thermostat Cooling Setpoint Temperature"                    : {
-            "variable_names" : "clg_setpoint",
+            "variable_names" : ["clg_setpoint_living",
+                                "clg_setpoint_kitchen",
+                                "clg_setpoint_bed1",
+                                "clg_setpoint_bed2",
+                                "clg_setpoint_bed3"],
             "keys"           : ["FirstFloor:LivingRoom", 
                                 "FirstFloor:Kitchen", 
                                 "SecondFloor:Bedroom01", 
@@ -63,7 +71,11 @@
                             ]           
         },
         "Zone Air Temperature"                                            : {
-            "variable_names" : "air_temperature",
+            "variable_names" : ["air_temperature_living",
+                                "air_temperature_kitchen",
+                                "air_temperature_bed1",
+                                "air_temperature_bed2",
+                                "air_temperature_bed3"],
             "keys"           : ["FirstFloor:LivingRoom", 
                                 "FirstFloor:Kitchen", 
                                 "SecondFloor:Bedroom01", 
@@ -72,7 +84,11 @@
                             ]            
         },
         "Zone Air Relative Humidity"                                      : {
-            "variable_names" : "air_humidity",
+            "variable_names" : ["air_humidity_living",
+                                "air_humidity_kitchen",
+                                "air_humidity_bed1",
+                                "air_humidity_bed2",
+                                "air_humidity_bed3"],
             "keys"           : ["FirstFloor:LivingRoom", 
                                 "FirstFloor:Kitchen", 
                                 "SecondFloor:Bedroom01", 
@@ -81,7 +97,11 @@
                             ]            
         },
         "Zone Radiant HVAC Outlet Temperature"                            : {
-            "variable_names" : "radiant_hvac_outlet_temperature",
+            "variable_names" : ["radiant_hvac_outlet_temperature_living",
+                                "radiant_hvac_outlet_temperature_kitchen",
+                                "radiant_hvac_outlet_temperature_bed1",
+                                "radiant_hvac_outlet_temperature_bed2",
+                                "radiant_hvac_outlet_temperature_bed3"],
             "keys"           : ["FirstFloor:LivingRoom radiant surface", 
                                 "FirstFloor:Kitchen radiant surface", 
                                 "SecondFloor:Bedroom01 radiant surface", 
@@ -89,7 +109,11 @@
                                 "SecondFloor:Bedroom03 radiant surface"]            
         },
         "Zone Radiant HVAC Inlet Temperature"                             : {
-            "variable_names" : "radiant_hvac_inlet_temperature",
+            "variable_names" : ["radiant_hvac_inlet_temperature_living",
+                                "radiant_hvac_inlet_temperature_kitchen",
+                                "radiant_hvac_inlet_temperature_bed1",
+                                "radiant_hvac_inlet_temperature_bed2",
+                                "radiant_hvac_inlet_temperature_bed3"],
             "keys"           : ["FirstFloor:LivingRoom radiant surface", 
                                 "FirstFloor:Kitchen radiant surface", 
                                 "SecondFloor:Bedroom01 radiant surface", 
@@ -97,7 +121,11 @@
                                 "SecondFloor:Bedroom03 radiant surface"]            
         },
         "Surface Internal Source Location Temperature"                    : {
-            "variable_names" : "surface_internal_source_location_temperature",
+            "variable_names" : ["surface_internal_source_location_temperature_living",
+                                "surface_internal_source_location_temperature_kitchen",
+                                "surface_internal_source_location_temperature_bed1",
+                                "surface_internal_source_location_temperature_bed2",
+                                "surface_internal_source_location_temperature_bed3"],
             "keys"           : ["FirstFloor:LivingRoom_groundfloor_0_0_0", 
                                 "FirstFloor:Kitchen_groundfloor_0_0_0", 
                                 "SecondFloor:Bedroom01_floor_0_0_0", 
@@ -105,7 +133,11 @@
                                 "SecondFloor:Bedroom03_floor_0_0_0"]            
         },
         "Surface Internal User Specified Location Temperature"            : {
-            "variable_names" : "surface_internal_user_specified_location_temperature",
+            "variable_names" : ["surface_internal_user_specified_location_temperature_living",
+                                "surface_internal_user_specified_location_temperature_kitchen",
+                                "surface_internal_user_specified_location_temperature_bed1",
+                                "surface_internal_user_specified_location_temperature_bed2",
+                                "surface_internal_user_specified_location_temperature_bed3"],
             "keys"           : ["FirstFloor:LivingRoom_groundfloor_0_0_0", 
                                 "FirstFloor:Kitchen_groundfloor_0_0_0", 
                                 "SecondFloor:Bedroom01_floor_0_0_0", 
@@ -113,7 +145,11 @@
                                 "SecondFloor:Bedroom03_floor_0_0_0"]            
         },
         "Zone Radiant HVAC Mass Flow Rate"                                : {
-            "variable_names" : "flow_rate",
+            "variable_names" : ["flow_rate_living",
+                                "flow_rate_kitchen",
+                                "flow_rate_bed1",
+                                "flow_rate_bed2",
+                                "flow_rate_bed3"],
             "keys"           : ["FirstFloor:LivingRoom radiant surface", 
                                 "FirstFloor:Kitchen radiant surface", 
                                 "SecondFloor:Bedroom01 radiant surface", 
