@@ -1,0 +1,35 @@
+common:
+    'radiant_hvac_outlet_temperature_living',
+    'radiant_hvac_outlet_temperature_kitchen',
+    'radiant_hvac_outlet_temperature_bed1',
+    'radiant_hvac_outlet_temperature_bed2',
+    'radiant_hvac_outlet_temperature_bed3',
+    'surface_internal_source_location_temperature_living',
+    'surface_internal_source_location_temperature_kitchen',
+    'surface_internal_source_location_temperature_bed1',
+    'surface_internal_source_location_temperature_bed2',
+    'surface_internal_source_location_temperature_bed3',
+    'surface_internal_user_specified_location_temperature_living',
+    'surface_internal_user_specified_location_temperature_kitchen',
+    'surface_internal_user_specified_location_temperature_bed1',
+    'surface_internal_user_specified_location_temperature_bed2',
+    'surface_internal_user_specified_location_temperature_bed3',
+
+boiler:
+    'boiler_load_ratio'
+
+heat-pump:
+    'aquarea9kw_plr_performance_curve_output_value',
+    'eeraquarea9kw_performance_curve_output_value',
+    'coolcapaquarea9kw_performance_curve_output_value'
+
+    only cooling or heating case:
+        'heat_pump_load_side_heat_transfer_rate',
+        'heat_pump_load_side_mass_flow_rate',
+
+    dual case:
+        'heat_pump_load_side_heat_transfer_rate_cooling',
+        'heat_pump_load_side_heat_transfer_rate_heating',
+        'heat_pump_load_side_mass_flow_rate_cooling',
+        'heat_pump_load_side_mass_flow_rate_heating'
+
