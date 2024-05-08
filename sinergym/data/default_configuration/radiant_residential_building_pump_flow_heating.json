@@ -1,7 +1,7 @@
 {
-    "id_base"               : "radiant_boiler_flow_heating",
+    "id_base"               : "radiant_pump_flow_heating",
 
-    "building_file"         : "radiant_residential_building_boiler_flow_heating.epJSON",
+    "building_file"         : "radiant_residential_building_pump_flow_heating.epJSON",
 
     "weather_specification" : {
         "weather_files" : ["USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw", 
@@ -159,17 +159,31 @@
                                 "SecondFloor:Bedroom02 radiant surface", 
                                 "SecondFloor:Bedroom03 radiant surface"]           
         },
-        "Boiler Part Load Ratio"                                          : {
-            "variable_names" : "boiler_load_ratio",
-            "keys"          : "Boiler"            
+        "Heat Pump Electricity Rate"                                        : {
+            "variable_names" : "heat_pump_electricity_rate",
+            "keys"           : "HeatPump Heating Mode"            
         },
-        "Boiler Outlet Temperature"                                       : {
-            "variable_names" : "boiler_temperature",
-            "keys"           : "Boiler"    
+        "Heat Pump Load Side Outlet Temperature"                                        : {
+            "variable_names" : "heat_pump_load_side_outlet_temp",
+            "keys"           : "HeatPump Heating Mode"            
         },
-        "Boiler NaturalGas Rate"                                       : {
-            "variable_names" : "boiler_electricity_demand_rate",
-            "keys"           : "Boiler"    
+        "Heat Pump Load Side Inlet Temperature"                                        : {
+            "variable_names" : "heat_pump_load_side_inlet_temp",
+            "keys"           : "HeatPump Heating Mode"            
+        },
+        "Heat Pump Load Side Heat Transfer Rate"                                        : {
+            "variable_names" : "heat_pump_load_side_heat_transfer_rate",
+            "keys"           : "HeatPump Heating Mode"            
+        },
+        "Heat Pump Load Side Mass Flow Rate"                                        : {
+            "variable_names" : "heat_pump_load_side_mass_flow_rate",
+            "keys"           : "HeatPump Heating Mode"            
+        },
+        "Performance Curve Output Value"                                        : {
+            "variable_names" : "performance_curve_output_value",
+            "keys"           : ["Aquarea9kW_PLR",
+                                "EERAquarea9kW",
+                                "CoolCapAquarea9kW"]            
         }
     },
 
@@ -208,7 +222,7 @@
         }
     },
 
-    "action_space"          : "gym.spaces.Box(low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 25.0], dtype=np.float32), high=np.array([0.0642111736148491, 0.101458821605256, 0.0260745613080282, 0.0527167485454115, 0.0416549441500946, 45.0], dtype=np.float32), shape=(6,), dtype=np.float32)",
+    "action_space"          : "gym.spaces.Box(low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 25.0], dtype=np.float32), high=np.array([0.0266, 0.0381, 0.0156, 0.0315, 0.0249, 45.0], dtype=np.float32), shape=(6,), dtype=np.float32)",
 
     "only_discrete": false,
 
@@ -220,7 +234,7 @@
                                    "air_temperature_bed1", 
                                    "air_temperature_bed2", 
                                    "air_temperature_bed3"],
-        "energy_variables"      : ["boiler_electricity_demand_rate"],
+        "energy_variables"      : ["heat_pump_electricity_rate"],
         "range_comfort_winter"  : [19.0, 21.0],
         "range_comfort_summer"  : [19.0, 21.0],
         "summer_start"          : [6, 1],

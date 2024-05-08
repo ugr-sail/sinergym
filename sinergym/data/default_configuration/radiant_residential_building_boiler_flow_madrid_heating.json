@@ -212,11 +212,11 @@
     "reward"                : "ExpReward",
 
     "reward_kwargs"         : {
-        "temperature_variables" : ["firstfloor:livingroom_air_temperature", 
-                                   "firstfloor:kitchen_air_temperature", 
-                                   "secondfloor:bedroom01_air_temperature", 
-                                   "secondfloor:bedroom02_air_temperature", 
-                                   "secondfloor:bedroom03_air_temperature"],
+        "temperature_variables" : ["air_temperature_living", 
+                                   "air_temperature_kitchen", 
+                                   "air_temperature_bed1", 
+                                   "air_temperature_bed2", 
+                                   "air_temperature_bed3"],
         "energy_variables"      : ["boiler_electricity_demand_rate"],
         "range_comfort_winter"  : [19.0, 21.0],
         "range_comfort_summer"  : [19.0, 21.0],
