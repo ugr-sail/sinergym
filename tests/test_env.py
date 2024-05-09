@@ -15,29 +15,32 @@ from sinergym.utils.env_checker import check_env
 def test_reset(env_name, request):
     env = request.getfixturevalue(env_name)
     # Check state before reset
-    assert env.episode == 0
-    assert env.energyplus_simulator.energyplus_state is None
+    assert env.get_wrapper_attr('episode') == 0
+    assert env.get_wrapper_attr(
+        'energyplus_simulator').energyplus_state is None
     obs, info = env.reset()
     # Check after reset
-    assert env.episode == 1
-    assert env.energyplus_simulator.energyplus_state is not None
-    assert len(obs) == len(env.time_variables) + len(env.variables) + \
-        len(env.meters)  # year, month, day and hour
+    assert env.get_wrapper_attr('episode') == 1
+    assert env.get_wrapper_attr(
+        'energyplus_simulator').energyplus_state is not None
+    assert len(obs) == len(env.get_wrapper_attr('time_variables')) + len(env.get_wrapper_attr(
+        'variables')) + len(env.get_wrapper_attr('meters'))  # year, month, day and hour
     assert isinstance(info, dict)
     assert len(info) > 0
     # default_options check
     if 'stochastic' not in env_name:
-        assert not env.default_options.get('weather_variability', False)
+        assert not env.get_wrapper_attr('default_options').get(
+            'weather_variability', False)
     else:
-        assert isinstance(env.default_options['weather_variability'], tuple)
+        assert isinstance(env.get_wrapper_attr('default_options')[
+                          'weather_variability'], tuple)
 
 
 def test_reset_custom_options(env_5zone_stochastic):
-    assert isinstance(
-        env_5zone_stochastic.default_options['weather_variability'],
-        tuple)
-    assert len(
-        env_5zone_stochastic.default_options['weather_variability']) == 3
+    assert isinstance(env_5zone_stochastic.get_wrapper_attr(
+        'default_options')['weather_variability'], tuple)
+    assert len(env_5zone_stochastic.get_wrapper_attr(
+        'default_options')['weather_variability']) == 3
     custom_options = {'weather_variability': (1.1, 0.1, 0.002)}
     env_5zone_stochastic.reset(options=custom_options)
     # Check if epw with new variation is overwriting default options
