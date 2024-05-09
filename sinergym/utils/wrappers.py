@@ -131,6 +131,7 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
 
     def _check_and_update_metric(self, metric, metric_name):
         if metric is not None:
+            # Check type and conversions
             if isinstance(metric, str):
                 try:
                     metric = np.loadtxt(metric)
@@ -144,6 +145,14 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
                 self.logger.error(
                     '{} values must be a list, a numpy array or a path to a txt file.'.format(metric_name))
                 raise ValueError
+
+            # Check dimension of mean and var
+            try:
+                assert len(metric) == self.observation_space.shape[0]
+            except AssertionError as err:
+                self.logger.error(
+                    '{} values must have the same shape than environment observation space.'.format(metric_name))
+                raise err
 
         return metric
 
@@ -190,24 +199,14 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         else:
             return None
 
-    def set_mean(self, mean: np.float64):
+    def set_mean(self, mean: Union[list, np.float64, str]):
         """Sets the mean value of the observations."""
-        try:
-            assert len(mean) == self.observation_space.shape[0]
-        except AssertionError as err:
-            self.logger.error(
-                'Mean values must have the same shape than environment observation space.')
-            raise err
+        mean = self._check_and_update_metric(mean, 'mean')
         self.obs_rms.mean = mean
 
-    def set_var(self, var: np.float64):
+    def set_var(self, var: Union[list, np.float64, str]):
         """Sets the variance value of the observations."""
-        try:
-            assert len(var) == self.observation_space.shape[0]
-        except AssertionError as err:
-            self.logger.error(
-                'Variance values must have the same shape than environment observation space.')
-            raise err
+        var = self._check_and_update_metric(var, 'var')
         self.obs_rms.var = var
 
     def normalize(self, obs):
