@@ -65,20 +65,21 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
                  env: EplusEnv,
                  automatic_update: bool = True,
                  epsilon: float = 1e-8,
-                 mean: Union[list, np.float64] = None,
-                 var: Union[list, np.float64] = None):
+                 mean: Union[list, np.float64, str] = None,
+                 var: Union[list, np.float64, str] = None):
         """Initializes the NormalizationWrapper. Mean and var values can be None andbeing updated during interaction with environment.
 
         Args:
             env (EplusEnv): The environment to apply the wrapper.
             automatic_update (bool, optional): Whether or not to update the mean and variance values automatically. Defaults to True.
             epsilon (float, optional): A stability parameter used when scaling the observations. Defaults to 1e-8.
-            mean (np.float64, optional): The mean value used for normalization. Defaults to None.
-            var (np.float64, optional): The variance value used for normalization. Defaults to None.
+            mean (list, np.float64, str, optional): The mean value used for normalization. It can be a mean.txt path too. Defaults to None.
+            var (list, np.float64, str, optional): The variance value used for normalization. It can be a var.txt path too. Defaults to None.
         """
         # Check mean and var format if it is defined
-        mean = np.float64(mean) if mean is not None else None
-        var = np.float64(var) if var is not None else None
+        mean = self._check_and_update_metric(mean, 'mean')
+        var = self._check_and_update_metric(var, 'var')
+
         # Save normalization configuration for whole python process
         gym.utils.RecordConstructorArgs.__init__(
             self, epsilon=epsilon, mean=mean, var=var)
@@ -126,7 +127,34 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         # Update normalization calibration if it is required
         self._save_normalization_calibration()
 
-    # ----------------------- Wrappers extra functionality ----------------------- #
+    # ----------------------- Wrapper extra functionality ----------------------- #
+
+    def _check_and_update_metric(self, metric, metric_name):
+        if metric is not None:
+            # Check type and conversions
+            if isinstance(metric, str):
+                try:
+                    metric = np.loadtxt(metric)
+                except FileNotFoundError as err:
+                    self.logger.error(
+                        '{}.txt file not found. Please, check the path.'.format(metric_name))
+                    raise err
+            elif isinstance(metric, list) or isinstance(metric, np.ndarray):
+                metric = np.float64(metric)
+            else:
+                self.logger.error(
+                    '{} values must be a list, a numpy array or a path to a txt file.'.format(metric_name))
+                raise ValueError
+
+            # Check dimension of mean and var
+            try:
+                assert len(metric) == self.observation_space.shape[0]
+            except AssertionError as err:
+                self.logger.error(
+                    '{} values must have the same shape than environment observation space.'.format(metric_name))
+                raise err
+
+        return metric
 
     def _save_normalization_calibration(self):
         """Saves the normalization calibration data in the output folder as txt files.
@@ -171,24 +199,14 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         else:
             return None
 
-    def set_mean(self, mean: np.float64):
+    def set_mean(self, mean: Union[list, np.float64, str]):
         """Sets the mean value of the observations."""
-        try:
-            assert len(mean) == self.observation_space.shape[0]
-        except AssertionError as err:
-            self.logger.error(
-                'Mean values must have the same shape than environment observation space.')
-            raise err
+        mean = self._check_and_update_metric(mean, 'mean')
         self.obs_rms.mean = mean
 
-    def set_var(self, var: np.float64):
+    def set_var(self, var: Union[list, np.float64, str]):
         """Sets the variance value of the observations."""
-        try:
-            assert len(var) == self.observation_space.shape[0]
-        except AssertionError as err:
-            self.logger.error(
-                'Variance values must have the same shape than environment observation space.')
-            raise err
+        var = self._check_and_update_metric(var, 'var')
         self.obs_rms.var = var
 
     def normalize(self, obs):
@@ -1097,7 +1115,7 @@ class DiscreteSetpointControlWrapper(gym.ActionWrapper):
 class OfficeGridStorageSmoothingActionConstraintsWrapper(
         gym.ActionWrapper):  # pragma: no cover
     def __init__(self, env):
-        assert env.building_path.split(
+        assert env.get_wrapper_attr('building_path').split(
             '/')[-1] == 'OfficeGridStorageSmoothing.epJSON', 'OfficeGridStorageSmoothingActionConstraintsWrapper: This wrapper is not valid for this environment.'
         super().__init__(env)
 

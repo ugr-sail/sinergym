@@ -21,7 +21,7 @@ def test_normalization_wrapper(env_name, request):
     assert hasattr(env, 'unwrapped_observation')
 
     # Check initial values of that attributes
-    assert env.unwrapped_observation is None
+    assert env.get_wrapper_attr('unwrapped_observation') is None
 
     # Initialize env
     obs, _ = env.reset()
@@ -29,14 +29,14 @@ def test_normalization_wrapper(env_name, request):
     # Check observation normalization
     # ...
     # Check original observation recording
-    assert env.unwrapped_observation is not None
+    assert env.get_wrapper_attr('unwrapped_observation') is not None
 
     # Simulation random step
     a = env.action_space.sample()
     obs, _, _, _, _ = env.step(a)
 
     # ...
-    assert env.unwrapped_observation is not None
+    assert env.get_wrapper_attr('unwrapped_observation') is not None
 
 
 @pytest.mark.parametrize('env_name',
@@ -50,7 +50,7 @@ def test_multiobjective_wrapper(env_name, request):
     action = env.action_space.sample()
     _, reward, _, _, info = env.step(action)
     assert isinstance(reward, list)
-    assert len(reward) == len(env.reward_terms)
+    assert len(reward) == len(env.get_wrapper_attr('reward_terms'))
 
 
 @pytest.mark.parametrize('env_name',
@@ -91,14 +91,14 @@ def test_previous_observation_wrapper(env_name, request):
         var for var in env.observation_variables if '_previous' in var]
 
     # Check previous observation stored has the correct len and initial values
-    assert len(env.previous_observation) == 3
+    assert len(env.get_wrapper_attr('previous_observation')) == 3
     assert len(previous_variable_names) == len(
-        env.previous_observation)
+        env.get_wrapper_attr('previous_observation'))
     # Check reset and np.zeros is added in obs as previous variables
-    assert (env.previous_observation == 0.0).all()
+    assert (env.get_wrapper_attr('previous_observation') == 0.0).all()
     obs1, _ = env.reset()
     original_obs1 = []
-    for variable in env.previous_variables:
+    for variable in env.get_wrapper_attr('previous_variables'):
         original_obs1.append(
             obs1[env.observation_variables.index(variable)])
 
@@ -108,7 +108,7 @@ def test_previous_observation_wrapper(env_name, request):
 
     # Original obs1 values should be previous variables for obs 2
     assert np.array_equal(
-        original_obs1, obs2[-len(env.previous_variables):])
+        original_obs1, obs2[-len(env.get_wrapper_attr('previous_variables')):])
 
 
 def test_incremental_wrapper(env_wrapper_incremental):
@@ -140,16 +140,17 @@ def test_discrete_incremental_wrapper(env_name, request):
 
     env = request.getfixturevalue(env_name)
     # Check initial setpoints values is initialized
-    assert len(env.current_setpoints) > 0
+    assert len(env.get_wrapper_attr('current_setpoints')) > 0
     # Check if action selected is applied correctly
     env.reset()
     action = 16
     _, _, _, _, info = env.step(action)
-    assert (env.current_setpoints == info['action']).all()
+    assert (env.get_wrapper_attr('current_setpoints') == info['action']).all()
     # Check environment clip actions(
     for i in range(10):
         env.step(2)  # [1,0]
-    assert env.unwrapped.action_space.contains(list(env.current_setpoints))
+    assert env.unwrapped.action_space.contains(
+        list(env.get_wrapper_attr('current_setpoints')))
 
 
 def test_discretize_wrapper(env_wrapper_discretize):
@@ -157,12 +158,12 @@ def test_discretize_wrapper(env_wrapper_discretize):
     env = env_wrapper_discretize
     # Check is a discrete env and original env is continuous
     # Wrapped env
-    assert env.is_discrete
+    assert env.get_wrapper_attr('is_discrete')
     assert env.action_space.n == 10
     assert isinstance(env.action_mapping(0), list)
     # Original continuos env
     original_env = env.env
-    assert not original_env.is_discrete
+    assert not original_env.get_wrapper_attr('is_discrete')
     assert not hasattr(original_env, 'action_mapping')
 
 
@@ -170,7 +171,7 @@ def test_normalize_observation_wrapper(env_wrapper_normalization):
 
     # Spaces
     env = env_wrapper_normalization
-    assert not env.is_discrete
+    assert not env.get_wrapper_attr('is_discrete')
     assert hasattr(env, 'unwrapped_observation')
 
     # Normalization calibration
@@ -224,15 +225,16 @@ def test_normalize_observation_wrapper(env_wrapper_normalization):
 def test_normalize_action_wrapper(env_normalize_action_wrapper):
 
     env = env_normalize_action_wrapper
-    assert not env.is_discrete
+    assert not env.get_wrapper_attr('is_discrete')
     assert hasattr(env, 'real_space')
     assert hasattr(env, 'normalized_space')
-    assert env.normalized_space != env.real_space
-    assert env.normalized_space == env.action_space
-    assert env.real_space == env.unwrapped.action_space
+    assert env.get_wrapper_attr(
+        'normalized_space') != env.get_wrapper_attr('real_space')
+    assert env.get_wrapper_attr('normalized_space') == env.action_space
+    assert env.get_wrapper_attr('real_space') == env.unwrapped.action_space
     env.reset()
     action = env.action_space.sample()
-    assert env.normalized_space.contains(action)
+    assert env.get_wrapper_attr('normalized_space').contains(action)
     _, _, _, _, info = env.step(action)
     assert env.unwrapped.action_space.contains(info['action'])
 
@@ -254,33 +256,33 @@ def test_multiobs_wrapper(env_name, request):
         'history')
 
     # Check history
-    assert env.history == deque([])
+    assert env.get_wrapper_attr('history') == deque([])
 
     # Check observation space transformation
     original_shape = env.env.observation_space.shape[0]
     wrapped_shape = env.observation_space.shape[0]
-    assert wrapped_shape == original_shape * env.n
+    assert wrapped_shape == original_shape * env.get_wrapper_attr('n')
 
     # Check reset obs
     obs, _ = env.reset()
     assert len(obs) == wrapped_shape
-    for i in range(env.n - 1):
+    for i in range(env.get_wrapper_attr('n') - 1):
         # Check store same observation n times
         assert (obs[original_shape * i:original_shape *
                     (i + 1)] == obs[0:original_shape]).all()
         # Check history save same observation n times
-        assert (env.history[i] ==
-                env.history[i + 1]).all()
+        assert (env.get_wrapper_attr('history')[i] ==
+                env.get_wrapper_attr('history')[i + 1]).all()
 
     # Check step obs
     a = env.action_space.sample()
     obs, _, _, _, _ = env.step(a)
 
     # Last observation must be different of the rest of them
-    assert (obs[original_shape * (env.n - 1):]
+    assert (obs[original_shape * (env.get_wrapper_attr('n') - 1):]
             != obs[0:original_shape]).any()
-    assert (env.history[0] !=
-            env.history[-1]).any()
+    assert (env.get_wrapper_attr('history')[0] !=
+            env.get_wrapper_attr('history')[-1]).any()
 
 
 @ pytest.mark.parametrize('env_name',
@@ -288,13 +290,14 @@ def test_multiobs_wrapper(env_name, request):
 def test_logger_wrapper(env_name, request):
 
     env = request.getfixturevalue(env_name)
-    logger = env.file_logger
+    logger = env.get_wrapper_attr('file_logger')
     env.reset()
 
     # Check CSV's have been created and linked in simulator correctly
     assert logger.log_progress_file == env.get_wrapper_attr(
         'workspace_path') + '/progress.csv'
-    assert logger.log_file == env.episode_path + '/monitor.csv'
+    assert logger.log_file == env.get_wrapper_attr(
+        'episode_path') + '/monitor.csv'
 
     tmp_log_file = logger.log_file
 

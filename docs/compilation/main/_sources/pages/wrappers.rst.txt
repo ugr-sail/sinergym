@@ -127,7 +127,9 @@ However, *Sinergym* enhances its functionality with some additional features:
 - It provides access to the means and variations used for normalization calibration, addressing the low-level 
   issues found in the original wrapper.
 
-- Similarly, these calibration values can be set via a method. Refer to the :ref:`API reference` for more information.
+- Similarly, these calibration values can be set via a method or in the constructor. 
+  These values can be specified neither in list/numpy array format or writing the txt path 
+  previously generated. Refer to the :ref:`API reference` for more information.
 
 - The automatic calibration can be enabled or disabled as you interact with the environment, allowing the 
   calibration to remain static instead of adaptive.
