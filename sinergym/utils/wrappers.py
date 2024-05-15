@@ -8,9 +8,9 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
+from gymnasium import Env
 from gymnasium.wrappers.normalize import RunningMeanStd
 
-from sinergym.envs.eplus_env import EplusEnv
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 from sinergym.utils.logger import CSVLogger, Logger
@@ -21,11 +21,11 @@ class MultiObjectiveReward(gym.Wrapper):
     logger = Logger().getLogger(name='WRAPPER MultiObjectiveReward',
                                 level=LOG_WRAPPERS_LEVEL)
 
-    def __init__(self, env: EplusEnv, reward_terms: List[str]):
+    def __init__(self, env: Env, reward_terms: List[str]):
         """The environment will return a reward vector of each objective instead of a scalar value.
 
         Args:
-            env (EplusEnv): Original Sinergym environment.
+            env (Env): Original Sinergym environment.
             reward_terms (List[str]): List of keys in reward terms which will be included in reward vector.
         """
         super(MultiObjectiveReward, self).__init__(env)
@@ -62,7 +62,7 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
                                 level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
-                 env: EplusEnv,
+                 env: Env,
                  automatic_update: bool = True,
                  epsilon: float = 1e-8,
                  mean: Union[list, np.float64, str] = None,
@@ -70,7 +70,7 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         """Initializes the NormalizationWrapper. Mean and var values can be None andbeing updated during interaction with environment.
 
         Args:
-            env (EplusEnv): The environment to apply the wrapper.
+            env (Env): The environment to apply the wrapper.
             automatic_update (bool, optional): Whether or not to update the mean and variance values automatically. Defaults to True.
             epsilon (float, optional): A stability parameter used when scaling the observations. Defaults to 1e-8.
             mean (list, np.float64, str, optional): The mean value used for normalization. It can be a mean.txt path too. Defaults to None.
@@ -225,13 +225,13 @@ class MultiObsWrapper(gym.Wrapper):
 
     def __init__(
             self,
-            env: EplusEnv,
+            env: Env,
             n: int = 5,
             flatten: bool = True) -> None:
         """Stack of observations.
 
         Args:
-            env (EplusEnv): Original Gym environment.
+            env (Env): Original Gym environment.
             n (int, optional): Number of observations to be stacked. Defaults to 5.
             flatten (bool, optional): Whether or not flat the observation vector. Defaults to True.
         """
@@ -297,7 +297,7 @@ class LoggerWrapper(gym.Wrapper):
 
     def __init__(
         self,
-        env: EplusEnv,
+        env: Env,
         logger_class: Callable = CSVLogger,
         monitor_header: Optional[List[str]] = None,
         progress_header: Optional[List[str]] = None,
@@ -306,7 +306,7 @@ class LoggerWrapper(gym.Wrapper):
         """CSVLogger to log interactions with environment.
 
         Args:
-            env (EplusEnv): Original Gym environment in Sinergym.
+            env (Env): Original Gym environment in Sinergym.
             logger_class (CSVLogger): CSV Logger class to use to log all information.
             monitor_header: Header for monitor.csv in each episode. Default is None (default format).
             progress_header: Header for progress.csv in whole simulation. Default is None (default format).
@@ -497,7 +497,7 @@ class DatetimeWrapper(gym.ObservationWrapper):
                                 level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
-                 env: EplusEnv):
+                 env: Env):
         super(DatetimeWrapper, self).__init__(env)
 
         # Check datetime variables are defined in environment
@@ -572,7 +572,7 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
                                 level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
-                 env: EplusEnv,
+                 env: Env,
                  previous_variables: List[str]):
         super(PreviousObservationWrapper, self).__init__(env)
         # Check and apply previous variables to observation space and variables
@@ -848,7 +848,7 @@ class DiscretizeEnv(gym.ActionWrapper):
                                 level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
-                 env: EplusEnv,
+                 env: Env,
                  discrete_space: Union[gym.spaces.Discrete,
                                        gym.spaces.MultiDiscrete,
                                        gym.spaces.MultiBinary],
@@ -859,7 +859,7 @@ class DiscretizeEnv(gym.ActionWrapper):
         """Wrapper for Discretize action space.
 
         Args:
-            env (EplusEnv): Original environment.
+            env (Env): Original environment.
             discrete_space (Union[gym.spaces.Discrete, gym.spaces.MultiDiscrete, gym.spaces.MultiBinary]): Discrete Space.
             action_mapping (Callable[[Union[int, List[int]]], Union[float, List[float]]]): Function with action as argument, its output must match with original env action space, otherwise an error will be raised.
         """
@@ -902,12 +902,12 @@ class NormalizeAction(gym.ActionWrapper):
                                 level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
-                 env: EplusEnv,
+                 env: Env,
                  normalize_range: Tuple[float, float] = (-1.0, 1.0)):
         """Wrapper to normalize action space in default continuous environment (not to combine with discrete environments). The action will be parsed to real action space before to send to the simulator (very useful ion DRL algorithms)
 
         Args:
-            env (EplusEnv): Original environment.
+            env (Env): Original environment.
             normalize_range (Tuple[float,float]): Range to normalize action variable values. Defaults to values between [-1.0,1.0].
         """
         super().__init__(env)
@@ -984,13 +984,13 @@ class ReduceObservationWrapper(gym.Wrapper):
                                 level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
-                 env: EplusEnv,
+                 env: Env,
                  obs_reduction: List[str]):
         """Wrapper to reduce the observation space of the environment. These variables removed from
         the space are included in the info dictionary. This way they are recordable but not used in DRL process.
 
         Args:
-            env (EplusEnv): Original environment.
+            env (Env): Original environment.
             obs_reduction (List[str]): List of observation variables to be removed.
         """
         super().__init__(env)
