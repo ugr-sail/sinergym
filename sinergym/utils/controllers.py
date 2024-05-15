@@ -4,17 +4,17 @@ from typing import Any, List, Sequence
 
 import numpy as np
 
-from sinergym.envs.eplus_env import EplusEnv
+from gymnasium import Env
 from sinergym.utils.constants import YEAR
 
 
 class RandomController(object):
 
-    def __init__(self, env: EplusEnv):
+    def __init__(self, env: Env):
         """Random agent. It selects available actions randomly.
 
         Args:
-            env (EplusEnv): Simulation environment.
+            env (Env): Simulation environment.
         """
         self.env = env
 
@@ -30,12 +30,12 @@ class RandomController(object):
 
 class RBC5Zone(object):
 
-    def __init__(self, env: EplusEnv) -> None:
+    def __init__(self, env: Env) -> None:
         """Agent based on static rules for controlling 5ZoneAutoDXVAV setpoints.
         Based on ASHRAE Standard 55-2004: Thermal Environmental Conditions for Human Occupancy.
 
         Args:
-            env (EplusEnv): Simulation environment
+            env (Env): Simulation environment
         """
 
         self.env = env
@@ -77,12 +77,12 @@ class RBC5Zone(object):
 
 class RBCDatacenter(object):
 
-    def __init__(self, env: EplusEnv) -> None:
+    def __init__(self, env: Env) -> None:
         """Agent based on static rules for controlling 2ZoneDataCenterHVAC setpoints.
         Follows the ASHRAE recommended temperature ranges for data centers described in ASHRAE TC9.9 (2016).
 
         Args:
-            env (EplusEnv): Simulation environment
+            env (Env): Simulation environment
         """
 
         self.env = env
@@ -104,11 +104,11 @@ class RBCDatacenter(object):
 
 class RBCIncrementalDatacenter(object):
 
-    def __init__(self, env: EplusEnv) -> None:
+    def __init__(self, env: Env) -> None:
         """Agent based on rules for controlling 2ZoneDataCenterHVAC setpoints in a incremental way.
         Follows the ASHRAE recommended temperature ranges for data centers described in ASHRAE TC9.9 (2016).
         Args:
-            env (EplusEnv): Simulation environment
+            env (Env): Simulation environment
         """
 
         self.env = env
