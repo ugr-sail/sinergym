@@ -20,7 +20,7 @@
 
     "max_ep_data_store_num" : 10,
     
-    "time_variables"        : ["month", "day_of_month", "hour"],
+    "time_variables"        : ["month", "day_of_month", "hour", "minutes"],
 
     "variables"             : {
         "Site Outdoor Air DryBulb Temperature"                            : {

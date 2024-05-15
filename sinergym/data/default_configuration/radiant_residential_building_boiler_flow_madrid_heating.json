@@ -17,7 +17,7 @@
 
     "max_ep_data_store_num" : 10,
     
-    "time_variables"        : ["month", "day_of_month", "hour"],
+    "time_variables"        : ["month", "day_of_month", "hour", "minutes"],
 
     "variables"             : {
         "Site Outdoor Air DryBulb Temperature"                            : {
@@ -56,19 +56,6 @@
                                 "SecondFloor:Bedroom02", 
                                 "SecondFloor:Bedroom03"
                             ]            
-        },
-        "Zone Thermostat Cooling Setpoint Temperature"                    : {
-            "variable_names" : ["clg_setpoint_living",
-                                "clg_setpoint_kitchen",
-                                "clg_setpoint_bed1",
-                                "clg_setpoint_bed2",
-                                "clg_setpoint_bed3"],
-            "keys"           : ["FirstFloor:LivingRoom", 
-                                "FirstFloor:Kitchen", 
-                                "SecondFloor:Bedroom01", 
-                                "SecondFloor:Bedroom02", 
-                                "SecondFloor:Bedroom03"
-                            ]           
         },
         "Zone Air Temperature"                                            : {
             "variable_names" : ["air_temperature_living",

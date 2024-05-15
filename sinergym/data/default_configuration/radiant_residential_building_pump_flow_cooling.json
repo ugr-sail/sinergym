@@ -20,7 +20,7 @@
 
     "max_ep_data_store_num" : 10,
     
-    "time_variables"        : ["month", "day_of_month", "hour"],
+    "time_variables"        : ["month", "day_of_month", "hour", "minutes"],
 
     "variables"             : {
         "Site Outdoor Air DryBulb Temperature"                            : {
@@ -46,19 +46,6 @@
         "Site Direct Solar Radiation Rate per Area"                       : {
             "variable_names" : "direct_solar_radiation",
             "keys"          : "Environment"            
-        },
-        "Zone Thermostat Heating Setpoint Temperature"                    : {
-            "variable_names" : ["htg_setpoint_living",
-                                "htg_setpoint_kitchen",
-                                "htg_setpoint_bed1",
-                                "htg_setpoint_bed2",
-                                "htg_setpoint_bed3"],
-            "keys"           : ["FirstFloor:LivingRoom", 
-                                "FirstFloor:Kitchen", 
-                                "SecondFloor:Bedroom01", 
-                                "SecondFloor:Bedroom02", 
-                                "SecondFloor:Bedroom03"
-                            ]            
         },
         "Zone Thermostat Cooling Setpoint Temperature"                    : {
             "variable_names" : ["clg_setpoint_living",
