@@ -3,8 +3,8 @@ from datetime import datetime
 from typing import Any, List, Sequence
 
 import numpy as np
-
 from gymnasium import Env
+
 from sinergym.utils.constants import YEAR
 
 

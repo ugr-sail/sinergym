@@ -8,9 +8,9 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
+from gymnasium import Env
 from gymnasium.wrappers.normalize import RunningMeanStd
 
-from gymnasium import Env
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 from sinergym.utils.logger import CSVLogger, Logger
