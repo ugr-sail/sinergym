@@ -3906,7 +3906,7 @@
             "load_side_inlet_node_name": "HP Heating Water Inlet Node",
             "load_side_outlet_node_name": "HP Heating Water Outlet Node",
             "load_side_reference_flow_rate": "Autosize",
-            "reference_capacity": "Autosize",
+            "reference_capacity": 12000,
             "reference_coefficient_of_performance": 4.66,
             "sizing_factor": 1,
             "source_side_inlet_node_name": "Outdoor Air Inlet Node",
