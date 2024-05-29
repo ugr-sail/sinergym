@@ -3362,7 +3362,7 @@
     "SimulationControl": {
         "SimulationControl 1": {
             "do_hvac_sizing_simulation_for_sizing_periods": "No",
-            "do_plant_sizing_calculation": "Yes",
+            "do_plant_sizing_calculation": "No",
             "do_system_sizing_calculation": "Yes",
             "do_zone_sizing_calculation": "Yes",
             "maximum_number_of_hvac_sizing_simulation_passes": 1,

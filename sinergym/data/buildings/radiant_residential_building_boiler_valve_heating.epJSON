@@ -8833,7 +8833,7 @@
     },
     "SimulationControl": {
         "SimulationControl 1": {
-            "do_plant_sizing_calculation": "Yes",
+            "do_plant_sizing_calculation": "No",
             "do_system_sizing_calculation": "Yes",
             "do_zone_sizing_calculation": "Yes",
             "run_simulation_for_sizing_periods": "No",

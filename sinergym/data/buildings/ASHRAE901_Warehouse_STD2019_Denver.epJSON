@@ -6366,7 +6366,7 @@
             "do_system_sizing_calculation": "Yes",
             "do_zone_sizing_calculation": "Yes",
             "maximum_number_of_hvac_sizing_simulation_passes": 1,
-            "run_simulation_for_sizing_periods": "Yes",
+            "run_simulation_for_sizing_periods": "No",
             "run_simulation_for_weather_file_run_periods": "Yes"
         }
     },
