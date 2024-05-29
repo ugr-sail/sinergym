@@ -76,6 +76,8 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
             mean (list, np.float64, str, optional): The mean value used for normalization. It can be a mean.txt path too. Defaults to None.
             var (list, np.float64, str, optional): The variance value used for normalization. It can be a var.txt path too. Defaults to None.
         """
+        gym.Wrapper.__init__(self, env)
+
         # Check mean and var format if it is defined
         mean = self._check_and_update_metric(mean, 'mean')
         var = self._check_and_update_metric(var, 'var')
@@ -83,7 +85,6 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         # Save normalization configuration for whole python process
         gym.utils.RecordConstructorArgs.__init__(
             self, epsilon=epsilon, mean=mean, var=var)
-        gym.Wrapper.__init__(self, env)
 
         self.num_envs = 1
         self.is_vector_env = False
