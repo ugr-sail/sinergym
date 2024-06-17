@@ -5539,7 +5539,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 22
+                    "field": 42
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -10837,7 +10837,7 @@
             "cooling_design_capacity_method": "CoolingDesignCapacity",
             "fluid_to_radiant_surface_heat_transfer_model": "ConvectionOnly",
             "heating_control_temperature_schedule_name": "Heating SP SCHED",
-            "heating_control_throttling_range": 2,
+            "heating_control_throttling_range": 3,
             "heating_design_capacity_method": "HeatingDesignCapacity",
             "hydronic_tubing_conductivity": 0.35,
             "hydronic_tubing_inside_diameter": 0.012,
@@ -10853,7 +10853,7 @@
             "cooling_design_capacity_method": "CoolingDesignCapacity",
             "fluid_to_radiant_surface_heat_transfer_model": "ConvectionOnly",
             "heating_control_temperature_schedule_name": "Heating SP SCHED",
-            "heating_control_throttling_range": 2,
+            "heating_control_throttling_range": 3,
             "heating_design_capacity_method": "HeatingDesignCapacity",
             "hydronic_tubing_conductivity": 0.35,
             "hydronic_tubing_inside_diameter": 0.012,
@@ -10869,7 +10869,7 @@
             "cooling_design_capacity_method": "CoolingDesignCapacity",
             "fluid_to_radiant_surface_heat_transfer_model": "ConvectionOnly",
             "heating_control_temperature_schedule_name": "Heating SP SCHED",
-            "heating_control_throttling_range": 2,
+            "heating_control_throttling_range": 3,
             "heating_design_capacity_method": "HeatingDesignCapacity",
             "hydronic_tubing_conductivity": 0.35,
             "hydronic_tubing_inside_diameter": 0.012,
@@ -10885,7 +10885,7 @@
             "cooling_design_capacity_method": "CoolingDesignCapacity",
             "fluid_to_radiant_surface_heat_transfer_model": "ConvectionOnly",
             "heating_control_temperature_schedule_name": "Heating SP SCHED",
-            "heating_control_throttling_range": 2,
+            "heating_control_throttling_range": 3,
             "heating_design_capacity_method": "HeatingDesignCapacity",
             "hydronic_tubing_conductivity": 0.35,
             "hydronic_tubing_inside_diameter": 0.012,
@@ -10901,7 +10901,7 @@
             "cooling_design_capacity_method": "CoolingDesignCapacity",
             "fluid_to_radiant_surface_heat_transfer_model": "ConvectionOnly",
             "heating_control_temperature_schedule_name": "Heating SP SCHED",
-            "heating_control_throttling_range": 2,
+            "heating_control_throttling_range": 3,
             "heating_design_capacity_method": "HeatingDesignCapacity",
             "hydronic_tubing_conductivity": 0.35,
             "hydronic_tubing_inside_diameter": 0.012,
