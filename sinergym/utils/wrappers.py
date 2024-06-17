@@ -1101,6 +1101,146 @@ class ExtremeFlowControlWrapper(gym.ActionWrapper):
         return list(action_)
 
 
+class HeatPumpEnergyWrapper(gym.ObservationWrapper):
+
+    __CAP_COEFF = (0.76868258,  # Coefficent constant
+                   0.00457227036,  # Coefficient x --> Tsupply
+                   -8.82539704E-05,  # Coefficient x^2 --> Tsupply^2
+                   0.0136118879,  # Coefficient y --> Toutdoor
+                   -1.94804588E-04,  # Coefficient y^2 --> Toutdoor^2
+                   -4.71761459E-05)  # Coefficient x*y --> Tsupply * Toutdoor
+
+    __COP_COEFF = (1.20770737,  # Coefficent constant
+                   -0.0169188,  # Coefficient x --> Tsupply
+                   0.000571001473,  # Coefficient x^2 --> Tsupply^2
+                   -0.026622172,  # Coefficient y --> Toutdoor
+                   0.000168799556,  # Coefficient y^2 --> Toutdoor^2
+                   -2.47246995E-04)  # Coefficient x*y --> Tsupply * Toutdoor
+    __MAX_X = 45
+    __MIN_X = 25
+    __MAX_Y = 25
+    __MIN_Y = -15
+
+    __PLR_COEFF = (0.754419,
+                   -1.265814,
+                   1.552457)
+    __MAX_PLR = 1
+    __MIN_PLR = 0.2
+
+    __CRF_COEFF = (
+        0.4167,
+        0.5833
+    )
+
+    __CAP_NOM = 12000
+    __COP_NOM = 4
+
+    def __init__(self,
+                 env: Env):
+        super(HeatPumpEnergyWrapper, self).__init__(env)
+
+        # crf, heat_cap_mod, cop_plr_mod, cop_temp_mod, heat_cap, plr_current
+        # Update observation space
+        self.observation_space = gym.spaces.Box(
+            low=-5e6,
+            high=5e6,
+            shape=(
+                self.env.observation_space.shape[0] + 6,
+            ),
+            dtype=np.float32)
+        self.observation_variables = self.env.observation_variables + [
+            'crf',
+            'heat_cap_mod',
+            'cop_plr_mod',
+            'cop_temp_mod',
+            'heat_cap',
+            'plr_current']
+
+    def observation(self, obs: np.ndarray) -> np.ndarray:
+        # Get obs_dict with observation variables from original env
+        obs_dict = dict(
+            zip(self.env.get_wrapper_attr('observation_variables'), obs))
+
+        if obs_dict['heat_source_load_side_heat_transfer_rate'] > 0:
+            # Temperature and part load ratio limit values are checked before
+            # modifier factors are calculated
+            temp_values = (
+                self.__check_limit_values(
+                    obs_dict['heat_source_load_side_outlet_temp'],
+                    (self.__MIN_X,
+                     self.__MAX_X)),
+                self.__check_limit_values(
+                    obs_dict['outdoor_temperature'],
+                    (self.__MIN_Y,
+                     self.__MAX_Y)))
+
+            # This is the heating capacitity modified by the working
+            # temperatures
+            heat_cap_mod = self.__biquadratic_curve(
+                self.__CAP_COEFF,
+                temp_values)
+            heat_cap = heat_cap_mod * self.__CAP_NOM
+
+            plr_current = obs_dict['heat_source_load_side_heat_transfer_rate'] / heat_cap
+            plr_value = self.__check_limit_values(
+                plr_current, (self.__MIN_PLR, self.__MAX_PLR))
+
+            if plr_current >= self.__MIN_PLR:
+                crf = 1
+            else:
+                crf = self.__CRF_COEFF[0] + self.__CRF_COEFF[1] * \
+                    (plr_current / self.__MIN_PLR)
+            cop = self.__COP_NOM * crf
+
+            cop_plr_mod = self.__quadratic_curve(self.__PLR_COEFF, plr_value)
+            cop_temp_mod = self.__biquadratic_curve(
+                self.__COP_COEFF, temp_values)
+
+            obs_dict['heat_source_electricity_rate'] = (
+                obs_dict['heat_source_load_side_heat_transfer_rate'] / cop) * cop_plr_mod * cop_temp_mod
+        else:
+            heat_cap_mod = 0
+            crf = 0
+            cop_plr_mod = 0
+            cop_temp_mod = 0
+            heat_cap = 0
+            plr_current = 0
+            obs_dict['heat_source_electricity_rate'] = 0
+            obs_dict['heat_source_load_side_heat_transfer_rate'] = 0
+            obs_dict['heat_source_load_side_mass_flow_rate'] = 0
+
+        # Include new variables in observation
+        obs_dict['crf'] = crf
+        obs_dict['heat_cap_mod'] = heat_cap_mod
+        obs_dict['cop_plr_mod'] = cop_plr_mod
+        obs_dict['cop_temp_mod'] = cop_temp_mod
+        obs_dict['heat_cap'] = heat_cap
+        obs_dict['plr_current'] = plr_current
+
+        return np.array(list(obs_dict.values()))
+
+    def __check_limit_values(self, value: float, limits: tuple) -> float:
+        if value >= limits[1]:
+            value = limits[1]
+        elif value < limits[0]:
+            value = limits[0]
+        return value
+
+    def __quadratic_curve(self, coeff: tuple, values: float) -> float:
+        (a, b, c) = coeff
+        x1 = values
+        return a + b * x1 + c * x1**2
+
+    def __biquadratic_curve(self, coeff: tuple, values: tuple) -> float:
+        (a, b, c, d, e, f) = coeff
+        x1, x2 = values
+        return a + b * x1 + c * x1**2 + d * x2 + e * x2**2 + f * x1 * x2
+
+
+class BoilerEnergyWrapper(gym.ObservationWrapper):
+    pass
+
+
 class DiscreteSetpointControlWrapper(gym.ActionWrapper):
     def __init__(self, env):
         super().__init__(env)
