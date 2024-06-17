@@ -1,0 +1,293 @@
+{
+    "id_base"               : "radiant_free_heating",
+
+    "building_file"         : "radiant_residential_building_free_heating.epJSON",
+
+    "weather_specification" : {
+        "weather_files" : ["USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw", 
+                           "USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw", 
+                           "USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw",
+                           "SWE_Stockholm.Arlanda.024600_IWEC.epw"
+                        ],
+        "keys"          : ["hot", "mixed", "cool", "stockholm"]
+    },
+
+    "config_params"          : {
+        "timesteps_per_hour" : 4
+    },
+
+    "variation"             : [1.0, 0.0, 0.001],
+
+    "max_ep_data_store_num" : 10,
+    
+    "time_variables"        : ["month", "day_of_month", "hour", "minutes"],
+
+    "variables"             : {
+        "Site Outdoor Air DryBulb Temperature"                            : {
+            "variable_names" : "outdoor_temperature",
+            "keys"          : "Environment"           
+        },
+        "Site Outdoor Air Relative Humidity"                              : {
+            "variable_names" : "outdoor_humidity",
+            "keys"          : "Environment"         
+        },
+        "Site Wind Speed"                                                 : {
+            "variable_names" : "wind_speed",
+            "keys"          : "Environment"            
+        },
+        "Site Wind Direction"                                             : {
+            "variable_names" : "wind_direction",
+            "keys"          : "Environment"            
+        },
+        "Site Diffuse Solar Radiation Rate per Area"                      : {
+            "variable_names" : "diffuse_solar_radiation",
+            "keys"          : "Environment"         
+        },
+        "Site Direct Solar Radiation Rate per Area"                       : {
+            "variable_names" : "direct_solar_radiation",
+            "keys"          : "Environment"            
+        },
+        "Zone Thermostat Heating Setpoint Temperature"                    : {
+            "variable_names" : ["htg_setpoint_living",
+                                "htg_setpoint_kitchen",
+                                "htg_setpoint_bed1",
+                                "htg_setpoint_bed2",
+                                "htg_setpoint_bed3"],
+            "keys"           : ["FirstFloor:LivingRoom", 
+                                "FirstFloor:Kitchen", 
+                                "SecondFloor:Bedroom01", 
+                                "SecondFloor:Bedroom02", 
+                                "SecondFloor:Bedroom03"
+                            ]            
+        },
+        "Zone Air Temperature"                                            : {
+            "variable_names" : ["air_temperature_living",
+                                "air_temperature_kitchen",
+                                "air_temperature_bed1",
+                                "air_temperature_bed2",
+                                "air_temperature_bed3"],
+            "keys"           : ["FirstFloor:LivingRoom", 
+                                "FirstFloor:Kitchen", 
+                                "SecondFloor:Bedroom01", 
+                                "SecondFloor:Bedroom02", 
+                                "SecondFloor:Bedroom03"
+                            ]            
+        },
+        "Zone Air Relative Humidity"                                      : {
+            "variable_names" : ["air_humidity_living",
+                                "air_humidity_kitchen",
+                                "air_humidity_bed1",
+                                "air_humidity_bed2",
+                                "air_humidity_bed3"],
+            "keys"           : ["FirstFloor:LivingRoom", 
+                                "FirstFloor:Kitchen", 
+                                "SecondFloor:Bedroom01", 
+                                "SecondFloor:Bedroom02", 
+                                "SecondFloor:Bedroom03"
+                            ]            
+        },
+        "Zone Radiant HVAC Outlet Temperature"                            : {
+            "variable_names" : ["radiant_hvac_outlet_temperature_living",
+                                "radiant_hvac_outlet_temperature_kitchen",
+                                "radiant_hvac_outlet_temperature_bed1",
+                                "radiant_hvac_outlet_temperature_bed2",
+                                "radiant_hvac_outlet_temperature_bed3"],
+            "keys"           : ["FirstFloor:LivingRoom radiant surface", 
+                                "FirstFloor:Kitchen radiant surface", 
+                                "SecondFloor:Bedroom01 radiant surface", 
+                                "SecondFloor:Bedroom02 radiant surface", 
+                                "SecondFloor:Bedroom03 radiant surface"]            
+        },
+        "Zone Radiant HVAC Inlet Temperature"                             : {
+            "variable_names" : ["radiant_hvac_inlet_temperature_living",
+                                "radiant_hvac_inlet_temperature_kitchen",
+                                "radiant_hvac_inlet_temperature_bed1",
+                                "radiant_hvac_inlet_temperature_bed2",
+                                "radiant_hvac_inlet_temperature_bed3"],
+            "keys"           : ["FirstFloor:LivingRoom radiant surface", 
+                                "FirstFloor:Kitchen radiant surface", 
+                                "SecondFloor:Bedroom01 radiant surface", 
+                                "SecondFloor:Bedroom02 radiant surface", 
+                                "SecondFloor:Bedroom03 radiant surface"]            
+        },
+        "Surface Internal Source Location Temperature"                    : {
+            "variable_names" : ["surface_internal_source_location_temperature_living",
+                                "surface_internal_source_location_temperature_kitchen",
+                                "surface_internal_source_location_temperature_bed1",
+                                "surface_internal_source_location_temperature_bed2",
+                                "surface_internal_source_location_temperature_bed3"],
+            "keys"           : ["FirstFloor:LivingRoom_groundfloor_0_0_0", 
+                                "FirstFloor:Kitchen_groundfloor_0_0_0", 
+                                "SecondFloor:Bedroom01_floor_0_0_0", 
+                                "SecondFloor:Bedroom02_floor_0_0_0", 
+                                "SecondFloor:Bedroom03_floor_0_0_0"]            
+        },
+        "Surface Internal User Specified Location Temperature"            : {
+            "variable_names" : ["surface_internal_user_specified_location_temperature_living",
+                                "surface_internal_user_specified_location_temperature_kitchen",
+                                "surface_internal_user_specified_location_temperature_bed1",
+                                "surface_internal_user_specified_location_temperature_bed2",
+                                "surface_internal_user_specified_location_temperature_bed3"],
+            "keys"           : ["FirstFloor:LivingRoom_groundfloor_0_0_0", 
+                                "FirstFloor:Kitchen_groundfloor_0_0_0", 
+                                "SecondFloor:Bedroom01_floor_0_0_0", 
+                                "SecondFloor:Bedroom02_floor_0_0_0", 
+                                "SecondFloor:Bedroom03_floor_0_0_0"]            
+        },
+        "Zone People Occupant Count"                                      : {
+            "variable_names" : ["people_occupant_living",
+                                "people_occupant_kitchen",
+                                "people_occupant_bed1",
+                                "people_occupant_bed2",
+                                "people_occupant_bed3"],
+            "keys"           : ["FirstFloor:LivingRoom", 
+                                "FirstFloor:Kitchen", 
+                                "SecondFloor:Bedroom01", 
+                                "SecondFloor:Bedroom02", 
+                                "SecondFloor:Bedroom03"
+                            ]            
+        },
+        "Zone Thermal Comfort Mean Radiant Temperature"                   : {
+            "variable_names" : ["thermal_comfort_mean_radiant_temperature_living",
+                                "thermal_comfort_mean_radiant_temperature_kitchen",
+                                "thermal_comfort_mean_radiant_temperature_bed1",
+                                "thermal_comfort_mean_radiant_temperature_bed2",
+                                "thermal_comfort_mean_radiant_temperature_bed3"],
+            "keys"           : ["People FirstFloor:LivingRoom", 
+                                "People FirstFloor:Kitchen", 
+                                "People SecondFloor:Bedroom01", 
+                                "People SecondFloor:Bedroom02", 
+                                "People SecondFloor:Bedroom03"
+                            ]            
+        },
+        "Zone Thermal Comfort Clothing Value"                             : {
+            "variable_names" : ["thermal_comfort_clothing_value_living",
+                                "thermal_comfort_clothing_value_kitchen",
+                                "thermal_comfort_clothing_value_bed1",
+                                "thermal_comfort_clothing_value_bed2",
+                                "thermal_comfort_clothing_value_bed3"],
+            "keys"           : ["People FirstFloor:LivingRoom", 
+                                "People FirstFloor:Kitchen", 
+                                "People SecondFloor:Bedroom01", 
+                                "People SecondFloor:Bedroom02", 
+                                "People SecondFloor:Bedroom03"
+                            ]            
+        },
+        "Zone Thermal Comfort Fanger Model PPD"                           : {
+            "variable_names" : ["thermal_comfort_fanger_model_ppd_living",
+                                "thermal_comfort_fanger_model_ppd_kitchen",
+                                "thermal_comfort_fanger_model_ppd_bed1",
+                                "thermal_comfort_fanger_model_ppd_bed2",
+                                "thermal_comfort_fanger_model_ppd_bed3"],
+            "keys"           : ["People FirstFloor:LivingRoom", 
+                                "People FirstFloor:Kitchen", 
+                                "People SecondFloor:Bedroom01", 
+                                "People SecondFloor:Bedroom02", 
+                                "People SecondFloor:Bedroom03"
+                            ]            
+        },
+        "People Air Temperature"                                          : {
+            "variable_names" : ["people_air_temperature_living",
+                                "people_air_temperature_kitchen",
+                                "people_air_temperature_bed1",
+                                "people_air_temperature_bed2",
+                                "people_air_temperature_bed3"],
+            "keys"           : ["People FirstFloor:LivingRoom", 
+                                "People FirstFloor:Kitchen", 
+                                "People SecondFloor:Bedroom01", 
+                                "People SecondFloor:Bedroom02", 
+                                "People SecondFloor:Bedroom03"
+                            ]            
+        },
+        "System Node Mass Flow Rate"                                : {
+            "variable_names" : ["flow_rate_living",
+                                "flow_rate_kitchen",
+                                "flow_rate_bed1",
+                                "flow_rate_bed2",
+                                "flow_rate_bed3"],
+            "keys"           : ["FirstFloor:LivingRoom Radiant surface Hot Water Inlet Node", 
+                                "FirstFloor:Kitchen Radiant surface Hot Water Inlet Node", 
+                                "SecondFloor:Bedroom01 Radiant surface Hot Water Inlet Node", 
+                                "SecondFloor:Bedroom02 Radiant surface Hot Water Inlet Node", 
+                                "SecondFloor:Bedroom03 Radiant surface Hot Water Inlet Node"]           
+        },
+        "Plant Temperature Source Component Heat Transfer Energy"                                        : {
+            "variable_names" : "heat_source_electricity_rate",
+            "keys"           : "Plant Componet Heating"            
+        },
+        "Plant Temperature Source Component Outlet Temperature"                                        : {
+            "variable_names" : "heat_source_load_side_outlet_temp",
+            "keys"           : "Plant Componet Heating"            
+        },
+        "Plant Temperature Source Component Inlet Temperature"                                        : {
+            "variable_names" : "heat_source_load_side_inlet_temp",
+            "keys"           : "Plant Componet Heating"            
+        },
+        "Plant Temperature Source Component Heat Transfer Rate"                                        : {
+            "variable_names" : "heat_source_load_side_heat_transfer_rate",
+            "keys"           : "Plant Componet Heating"            
+        },
+        "Plant Temperature Source Component Mass Flow Rate"                                        : {
+            "variable_names" : "heat_source_load_side_mass_flow_rate",
+            "keys"           : "Plant Componet Heating"            
+        }
+    },
+
+    "meters"                : {},
+
+    "actuators"             : {
+        "FirstFloor:LivingRoom Radiant surface"                           : {
+            "variable_name" : "flow_livroom",
+            "element_type"  : "Hydronic Low Temp Radiant", 
+            "value_type"    : "Water Mass Flow Rate"
+        },
+        "FirstFloor:Kitchen Radiant surface"                          : {
+            "variable_name" : "flow_kitchen",
+            "element_type"  : "Hydronic Low Temp Radiant", 
+            "value_type"    : "Water Mass Flow Rate"
+        },
+        "SecondFloor:Bedroom01 Radiant surface"                             : {
+            "variable_name" : "flow_bed1",
+            "element_type"  : "Hydronic Low Temp Radiant", 
+            "value_type"    : "Water Mass Flow Rate"
+        },
+        "SecondFloor:Bedroom02 Radiant surface"                             : {
+            "variable_name" : "flow_bed2",
+            "element_type"  : "Hydronic Low Temp Radiant", 
+            "value_type"    : "Water Mass Flow Rate"
+        },
+        "SecondFloor:Bedroom03 Radiant surface"                             : {
+            "variable_name" : "flow_bed3",
+            "element_type"  : "Hydronic Low Temp Radiant", 
+            "value_type"    : "Water Mass Flow Rate"
+        },
+        "HEATING HIGH WATER TEMPERATURE SCHEDULE: ALWAYS 65.00" : {
+            "variable_name" : "water_temperature",
+            "element_type"  : "Schedule:Compact", 
+            "value_type"    : "Schedule Value"
+        }
+    },
+
+    "action_space"          : "gym.spaces.Box(low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 25.0], dtype=np.float32), high=np.array([0.0266, 0.0381, 0.0156, 0.0315, 0.0249, 45.0], dtype=np.float32), shape=(6,), dtype=np.float32)",
+
+    "only_discrete": false,
+
+    "reward"                : "ExpReward",
+
+    "reward_kwargs"         : {
+        "temperature_variables" : ["air_temperature_living", 
+                                   "air_temperature_kitchen", 
+                                   "air_temperature_bed1", 
+                                   "air_temperature_bed2", 
+                                   "air_temperature_bed3"],
+        "energy_variables"      : ["heat_source_electricity_rate"],
+        "range_comfort_winter"  : [19.0, 21.0],
+        "range_comfort_summer"  : [19.0, 21.0],
+        "summer_start"          : [6, 1],
+        "summer_final"          : [9, 30],
+        "energy_weight"         : 0.0,
+        "lambda_energy"         : 1.0,
+        "lambda_temperature"    : 1.0
+    }
+
+}
