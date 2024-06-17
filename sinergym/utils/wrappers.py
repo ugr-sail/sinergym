@@ -1156,6 +1156,28 @@ class HeatPumpEnergyWrapper(gym.ObservationWrapper):
             'heat_cap',
             'plr_current']
 
+    def step(self,
+             action: Union[int,
+                           float,
+                           np.integer,
+                           np.ndarray,
+                           List[Any],
+                           Tuple[Any]]
+             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
+        """Modifies the :attr:`env` after calling :meth:`step` using :meth:`self.observation` on the returned observations."""
+        observation, _, terminated, truncated, info = self.env.step(
+            action)
+        # Observation modified
+        new_obs = self.observation(observation)
+        # Recalculation of reward with this new info
+        obs_dict = dict(zip(self.get_wrapper_attr(
+            'observation_variables'), new_obs))
+        new_reward, new_terms = self.get_wrapper_attr('reward_fn')(obs_dict)
+        # info update
+        info.update({'reward': new_reward})
+        info.update(new_terms)
+        return new_obs, new_reward, terminated, truncated, info
+
     def observation(self, obs: np.ndarray) -> np.ndarray:
         # Get obs_dict with observation variables from original env
         obs_dict = dict(
