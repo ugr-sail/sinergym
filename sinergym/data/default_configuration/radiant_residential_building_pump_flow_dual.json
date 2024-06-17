@@ -123,18 +123,6 @@
                                 "SecondFloor:Bedroom02 radiant surface", 
                                 "SecondFloor:Bedroom03 radiant surface"]            
         },
-        "Surface Internal Source Location Temperature"                    : {
-            "variable_names" : ["surface_internal_source_location_temperature_living",
-                                "surface_internal_source_location_temperature_kitchen",
-                                "surface_internal_source_location_temperature_bed1",
-                                "surface_internal_source_location_temperature_bed2",
-                                "surface_internal_source_location_temperature_bed3"],
-            "keys"           : ["FirstFloor:LivingRoom_groundfloor_0_0_0", 
-                                "FirstFloor:Kitchen_groundfloor_0_0_0", 
-                                "SecondFloor:Bedroom01_floor_0_0_0", 
-                                "SecondFloor:Bedroom02_floor_0_0_0", 
-                                "SecondFloor:Bedroom03_floor_0_0_0"]            
-        },
         "Surface Internal User Specified Location Temperature"            : {
             "variable_names" : ["surface_internal_user_specified_location_temperature_living",
                                 "surface_internal_user_specified_location_temperature_kitchen",
@@ -158,58 +146,6 @@
                                 "SecondFloor:Bedroom01", 
                                 "SecondFloor:Bedroom02", 
                                 "SecondFloor:Bedroom03"
-                            ]            
-        },
-        "Zone Thermal Comfort Mean Radiant Temperature"                   : {
-            "variable_names" : ["thermal_comfort_mean_radiant_temperature_living",
-                                "thermal_comfort_mean_radiant_temperature_kitchen",
-                                "thermal_comfort_mean_radiant_temperature_bed1",
-                                "thermal_comfort_mean_radiant_temperature_bed2",
-                                "thermal_comfort_mean_radiant_temperature_bed3"],
-            "keys"           : ["People FirstFloor:LivingRoom", 
-                                "People FirstFloor:Kitchen", 
-                                "People SecondFloor:Bedroom01", 
-                                "People SecondFloor:Bedroom02", 
-                                "People SecondFloor:Bedroom03"
-                            ]            
-        },
-        "Zone Thermal Comfort Clothing Value"                             : {
-            "variable_names" : ["thermal_comfort_clothing_value_living",
-                                "thermal_comfort_clothing_value_kitchen",
-                                "thermal_comfort_clothing_value_bed1",
-                                "thermal_comfort_clothing_value_bed2",
-                                "thermal_comfort_clothing_value_bed3"],
-            "keys"           : ["People FirstFloor:LivingRoom", 
-                                "People FirstFloor:Kitchen", 
-                                "People SecondFloor:Bedroom01", 
-                                "People SecondFloor:Bedroom02", 
-                                "People SecondFloor:Bedroom03"
-                            ]            
-        },
-        "Zone Thermal Comfort Fanger Model PPD"                           : {
-            "variable_names" : ["thermal_comfort_fanger_model_ppd_living",
-                                "thermal_comfort_fanger_model_ppd_kitchen",
-                                "thermal_comfort_fanger_model_ppd_bed1",
-                                "thermal_comfort_fanger_model_ppd_bed2",
-                                "thermal_comfort_fanger_model_ppd_bed3"],
-            "keys"           : ["People FirstFloor:LivingRoom", 
-                                "People FirstFloor:Kitchen", 
-                                "People SecondFloor:Bedroom01", 
-                                "People SecondFloor:Bedroom02", 
-                                "People SecondFloor:Bedroom03"
-                            ]            
-        },
-        "People Air Temperature"                                          : {
-            "variable_names" : ["people_air_temperature_living",
-                                "people_air_temperature_kitchen",
-                                "people_air_temperature_bed1",
-                                "people_air_temperature_bed2",
-                                "people_air_temperature_bed3"],
-            "keys"           : ["People FirstFloor:LivingRoom", 
-                                "People FirstFloor:Kitchen", 
-                                "People SecondFloor:Bedroom01", 
-                                "People SecondFloor:Bedroom02", 
-                                "People SecondFloor:Bedroom03"
                             ]            
         },
         "System Node Mass Flow Rate"                                : {
