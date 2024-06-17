@@ -204,7 +204,7 @@
         }
     },
 
-    "action_space"          : "gym.spaces.Box(low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 25.0], dtype=np.float32), high=np.array([0.0266, 0.0381, 0.0156, 0.0315, 0.0249, 45.0], dtype=np.float32), shape=(6,), dtype=np.float32)",
+    "action_space"          : "gym.spaces.Box(low=np.array([0.0, 0.0, 0.0, 0.0, 0.0, 25.0], dtype=np.float32), high=np.array([0.045851, 0.0655248, 0.0195, 0.038512, 0.0307856, 45.0], dtype=np.float32), shape=(6,), dtype=np.float32)",
 
     "only_discrete": false,
 
