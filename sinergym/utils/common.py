@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import xlsxwriter
 from eppy.modeleditor import IDF
-from opyplus.epm.record import Record
+from opyplus.epgm.record import Record
 
 import sinergym
 from sinergym.utils.constants import YEAR
