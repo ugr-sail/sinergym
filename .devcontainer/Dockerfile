@@ -1,6 +1,6 @@
 # Base on nrel/energyplus from Nicholas Long but using 
 # Ubuntu, Python 3.10 and BCVTB
-ARG UBUNTU_VERSION=22.04
+ARG UBUNTU_VERSION=24.04
 FROM ubuntu:${UBUNTU_VERSION}
 
 # Arguments for EnergyPlus version (default values of version 8.6.0 if is not specified)
@@ -12,7 +12,8 @@ ARG ENERGYPLUS_SHA=87ed9199d4
 ARG SINERGYM_EXTRAS=[extras]
 
 # Argument for choosing Python version
-ARG PYTHON_VERSION=3.10
+ARG PYTHON_VERSION=3.12
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 # WANDB_API_KEY
 ARG WANDB_API_KEY
