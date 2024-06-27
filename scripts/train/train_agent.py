@@ -284,7 +284,8 @@ try:
     # Set up Evaluation and saving best model
     if conf.get('evaluation'):
         eval_callback = LoggerEvalCallback(
-            eval_env,
+            eval_env=eval_env,
+            train_env=env,
             best_model_save_path=eval_env.get_wrapper_attr('workspace_path') +
             '/best_model/',
             log_path=eval_env.get_wrapper_attr('workspace_path') +

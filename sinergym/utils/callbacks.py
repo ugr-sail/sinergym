@@ -241,6 +241,7 @@ class LoggerEvalCallback(EventCallback):
     def __init__(
         self,
         eval_env: Union[gym.Env, VecEnv],
+        train_env: Union[gym.Env, VecEnv],
         callback_on_new_best: Optional[BaseCallback] = None,
         callback_after_eval: Optional[BaseCallback] = None,
         n_eval_episodes: int = 5,
@@ -273,6 +274,7 @@ class LoggerEvalCallback(EventCallback):
         #     eval_env = DummyVecEnv([lambda: eval_env])
 
         self.eval_env = eval_env
+        self.train_env = train_env
         self.best_model_save_path = best_model_save_path
         # Logs will be written in ``evaluations.npz``
         if log_path is not None:
@@ -351,6 +353,7 @@ class LoggerEvalCallback(EventCallback):
                         "Training and eval env are not wrapped the same way, "
                         "see https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html#evalcallback "
                         "and warning above.") from e
+            self._sync_envs()
 
             # Reset success rate buffer
             self._is_success_buffer = []
@@ -489,3 +492,16 @@ class LoggerEvalCallback(EventCallback):
         """
         if self.callback:
             self.callback.update_locals(locals_)
+
+    def _sync_envs(self):
+        # normalization
+        if is_wrapped(
+                self.train_env,
+                NormalizeObservation) and is_wrapped(
+                self.eval_env,
+                NormalizeObservation):
+            self.eval_env.get_wrapper_attr('deactivate_update')()
+            self.eval_env.get_wrapper_attr('set_mean')(
+                self.train_env.get_wrapper_attr('mean'))
+            self.eval_env.get_wrapper_attr('set_var')(
+                self.train_env.get_wrapper_attr('var'))
