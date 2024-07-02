@@ -2,6 +2,7 @@
 
 import os
 import warnings
+from copy import deepcopy
 from typing import Any, Callable, Dict, List, Optional, Union
 
 import gymnasium as gym
@@ -13,7 +14,6 @@ from stable_baselines3.common.vec_env import (DummyVecEnv, VecEnv,
 
 from sinergym.utils.evaluation import evaluate_policy
 from sinergym.utils.wrappers import LoggerWrapper, NormalizeObservation
-from copy import deepcopy
 
 
 class LoggerCallback(BaseCallback):
@@ -443,9 +443,9 @@ class LoggerEvalCallback(EventCallback):
 
             if self.verbose >= 1:
                 print(f"Eval num_timesteps={self.num_timesteps}, " f"episode_reward={
-                    cumulative_reward:.2f} +/- {std_cumulative_reward:.2f}")
+                    cumulative_reward: .2f} + /- {std_cumulative_reward: .2f}")
                 print(f"Episode length: {
-                    mean_ep_length:.2f} +/- {std_ep_length:.2f}")
+                    mean_ep_length: .2f} + /- {std_ep_length: .2f}")
             # Add to current Logger (our custom metrics)
             for key, metric in self.evaluation_metrics.items():
                 self.logger.record('eval/' + key, metric)
