@@ -290,7 +290,7 @@ try:
             '/best_model/',
             log_path=eval_env.get_wrapper_attr('workspace_path') +
             '/best_model/',
-            eval_freq=(eval_env.get_wrapper_attr('timestep_per_episode')) *
+            eval_freq=eval_env.get_wrapper_attr('timestep_per_episode') *
             conf['evaluation']['eval_freq'],
             deterministic=True,
             render=False,
