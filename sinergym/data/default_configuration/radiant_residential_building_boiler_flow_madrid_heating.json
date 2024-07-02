@@ -10,7 +10,7 @@
     },
 
     "config_params"          : {
-        "timesteps_per_hour" : 4
+        "timesteps_per_hour" : 12
     },
 
     "variation"             : [1.0, 0.0, 0.001],
