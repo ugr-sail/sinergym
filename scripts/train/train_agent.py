@@ -291,7 +291,7 @@ try:
             log_path=eval_env.get_wrapper_attr('workspace_path') +
             '/best_model/',
             eval_freq=eval_env.get_wrapper_attr('timestep_per_episode') *
-            conf['evaluation']['eval_freq'],
+            conf['evaluation']['eval_freq'] - 2,
             deterministic=True,
             render=False,
             n_eval_episodes=conf['evaluation']['eval_length'])
