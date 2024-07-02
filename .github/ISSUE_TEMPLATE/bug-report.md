@@ -39,7 +39,7 @@ Describe the characteristic of your environment:
  * Describe how Sinergym was installed: e.g. pip, docker, source, ...
  * Sinergym Version: e.g. 2.3.0
  * OS: e.g. Ubuntu 22.04 LTS or Sinergym container image
- * Python version e.g. 3.10 or Sinergym container
+ * Python version e.g. 3.12 or Sinergym container
  * Gymnasium version:
  * Versions of any other relevant libraries:
 
