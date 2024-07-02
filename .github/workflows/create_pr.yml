@@ -33,19 +33,19 @@ jobs:
       #     message: ':warning: There are some formats error (autopep8 2 level agressive + isort) in pull request. A bot will fix this issue when pull request is merged. See workflow log to see future changes.'
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  type-check:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ vars.PYTHON_VERSION }}
-      - name: Install pytype
-        run: pip install pytype requests urllib3
-      - name: Check pytype
-        run: pytype -d import-error sinergym/
+  # type-check:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #     - name: Setup Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: ${{ vars.PYTHON_VERSION }}
+  #     - name: Install pytype
+  #       run: pip install pytype requests urllib3
+  #     - name: Check pytype
+  #       run: pytype -d import-error sinergym/
 
   documentation-check:
     runs-on: ubuntu-latest

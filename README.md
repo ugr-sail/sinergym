@@ -33,7 +33,7 @@
     <a href="https://github.com/ugr-sail/sinergym/blob/main/LICENSE">
       <img alt="Github License" src="https://img.shields.io/github/license/ugr-sail/sinergym" />
     </a>
-    <a href="https://www.python.org/downloads/release/python-3100/">
+    <a href="https://www.python.org/downloads/release/python-3120/">
       <img alt="Pypi Python version" src="https://img.shields.io/pypi/pyversions/sinergym" />
     </a>
     <br />
@@ -48,6 +48,8 @@
 <div align="center">
   <img src="images/general_blueprint.png" width=80%><br><br>
 </div>
+
+![Warning](./images/warning-icon.png) **Warning:** Pytype is disabled temporally because is not compatible with Python 3.12 yet.
 
 The goal of this project is to create an environment following *Gymnasium* interface for wrapping 
 simulation engines (*EnergyPlus*) for building control using **deep reinforcement learning** 
