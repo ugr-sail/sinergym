@@ -2,6 +2,7 @@
 
 import os
 import warnings
+from copy import deepcopy
 from typing import Any, Callable, Dict, List, Optional, Union
 
 import gymnasium as gym
@@ -345,21 +346,22 @@ class LoggerEvalCallback(EventCallback):
 
         if self.eval_freq > 0 and self.n_calls % self.eval_freq == 0:
             # Sync training and eval env if there is VecNormalize
-            if self.model.get_vec_normalize_env() is not None:
-                try:
-                    sync_envs_normalization(self.training_env, self.eval_env)
-                except AttributeError as e:
-                    raise AssertionError(
-                        "Training and eval env are not wrapped the same way, "
-                        "see https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html#evalcallback "
-                        "and warning above.") from e
-            self._sync_envs()
+            # if self.model.get_vec_normalize_env() is not None:
+            #     try:
+            #         sync_envs_normalization(self.training_env, self.eval_env)
+            #     except AttributeError as e:
+            #         raise AssertionError(
+            #             "Training and eval env are not wrapped the same way, "
+            #             "see https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html#evalcallback "
+            #             "and warning above.") from e
 
             # Reset success rate buffer
             self._is_success_buffer = []
 
             # We close training env before to start the evaluation
             self.training_env.close()
+
+            self._sync_envs()
 
             # GET evaluation episodes data:
             episodes_data = evaluate_policy(
@@ -440,11 +442,10 @@ class LoggerEvalCallback(EventCallback):
                 episodes_data['episodes_comfort_violation'])
 
             if self.verbose >= 1:
-                print(
-                    f"Eval num_timesteps={self.num_timesteps}, "
-                    f"episode_reward={cumulative_reward:.2f} +/- {std_cumulative_reward:.2f}")
-                print(
-                    f"Episode length: {mean_ep_length:.2f} +/- {std_ep_length:.2f}")
+                print(f"Eval num_timesteps={self.num_timesteps}, " f"episode_reward={
+                    cumulative_reward: .2f} + /- {std_cumulative_reward: .2f}")
+                print(f"Episode length: {
+                    mean_ep_length: .2f} + /- {std_ep_length: .2f}")
             # Add to current Logger (our custom metrics)
             for key, metric in self.evaluation_metrics.items():
                 self.logger.record('eval/' + key, metric)
@@ -501,7 +502,5 @@ class LoggerEvalCallback(EventCallback):
                 self.eval_env,
                 NormalizeObservation):
             self.eval_env.get_wrapper_attr('deactivate_update')()
-            self.eval_env.get_wrapper_attr('set_mean')(
-                self.train_env.get_wrapper_attr('mean'))
-            self.eval_env.get_wrapper_attr('set_var')(
-                self.train_env.get_wrapper_attr('var'))
+            self.eval_env.obs_rms = deepcopy(
+                self.train_env.get_wrapper_attr('obs_rms'))

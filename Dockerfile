@@ -1,5 +1,5 @@
 # Base on nrel/energyplus from Nicholas Long but using 
-# Ubuntu, Python 3.10 and BCVTB
+# Ubuntu, Python 3.12 and BCVTB
 ARG UBUNTU_VERSION=24.04
 FROM ubuntu:${UBUNTU_VERSION}
 

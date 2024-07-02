@@ -203,12 +203,12 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
     def set_mean(self, mean: Union[list, np.float64, str]):
         """Sets the mean value of the observations."""
         mean = self._check_and_update_metric(mean, 'mean')
-        self.obs_rms.mean = mean
+        self.obs_rms.mean = deepcopy(mean)
 
     def set_var(self, var: Union[list, np.float64, str]):
         """Sets the variance value of the observations."""
         var = self._check_and_update_metric(var, 'var')
-        self.obs_rms.var = var
+        self.obs_rms.var = deepcopy(var)
 
     def normalize(self, obs):
         """Normalizes the observation using the running mean and variance of the observations.

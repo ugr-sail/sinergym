@@ -68,7 +68,7 @@ Next, we recommend creating a **virtual environment** as follows:
 
 ```sh
 $ sudo apt-get install python-virtualenv virtualenv
-$ virtualenv env_sinergym --python=python3.10
+$ virtualenv env_sinergym --python=python3.12
 $ source env_sinergym/bin/activate
 $ pip install -e .[extras]
 ```
