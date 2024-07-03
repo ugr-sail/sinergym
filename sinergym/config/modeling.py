@@ -1,4 +1,5 @@
 """Class and utilities for backend modeling in Python with Sinergym (extra params, weather_variability, building model modification and files management)"""
+import fcntl
 import json
 import os
 import random
@@ -525,14 +526,23 @@ class ModelJSON(object):
         Returns:
             str: Experiment path for directory created.
         """
-        # Generate experiment dir path
-        experiment_path = self._get_working_folder(
-            directory_path=CWD,
-            base_name='-%s-res' %
-            (env_name))
-        # Create dir
-        os.makedirs(experiment_path)
-        # set path like config attribute
+        # CRITICAL SECTION for paralell execution
+        # In order to avoid several folders with the same name
+        with open(CWD + '/.lock', 'w') as f:
+            # Exclusive lock
+            fcntl.flock(f, fcntl.LOCK_EX)
+            try:
+                # Generate experiment dir path
+                experiment_path = self._get_working_folder(
+                    directory_path=CWD,
+                    base_name='-%s-res' %
+                    (env_name))
+                # Create dir
+                os.makedirs(experiment_path)
+            finally:
+                # Release lock
+                fcntl.flock(f, fcntl.LOCK_UN)
+        # Set path like config attribute
         self.experiment_path = experiment_path
 
         self.logger.info(
