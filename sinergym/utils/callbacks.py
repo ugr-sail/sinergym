@@ -359,7 +359,7 @@ class LoggerEvalCallback(EventCallback):
             self._is_success_buffer = []
 
             # We close training env before to start the evaluation
-            self.training_env.close()
+            self.train_env.close()
 
             self._sync_envs()
 
@@ -375,7 +375,7 @@ class LoggerEvalCallback(EventCallback):
 
             # We close evaluation env and starts training env again
             self.eval_env.close()
-            self.training_env.reset()
+            self.train_env.reset()
 
             if self.log_path is not None:
                 for key, value in episodes_data.items():
@@ -502,5 +502,7 @@ class LoggerEvalCallback(EventCallback):
                 self.eval_env,
                 NormalizeObservation):
             self.eval_env.get_wrapper_attr('deactivate_update')()
-            self.eval_env.obs_rms = deepcopy(
-                self.train_env.get_wrapper_attr('obs_rms'))
+            self.eval_env.get_wrapper_attr('set_mean')(
+                self.train_env.get_wrapper_attr('mean'))
+            self.eval_env.get_wrapper_attr('set_var')(
+                self.train_env.get_wrapper_attr('var'))
