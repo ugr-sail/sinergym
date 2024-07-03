@@ -56,7 +56,7 @@ class MultiObjectiveReward(gym.Wrapper):
         return obs, reward_vector, terminated, truncated, info
 
 
-class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
+class NormalizeObservation(gym.Wrapper):
 
     logger = Logger().getLogger(name='WRAPPER NormalizeObservation',
                                 level=LOG_WRAPPERS_LEVEL)
@@ -81,10 +81,6 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         # Check mean and var format if it is defined
         mean = self._check_and_update_metric(mean, 'mean')
         var = self._check_and_update_metric(var, 'var')
-
-        # Save normalization configuration for whole python process
-        gym.utils.RecordConstructorArgs.__init__(
-            self, epsilon=epsilon, mean=mean, var=var)
 
         self.num_envs = 1
         self.is_vector_env = False
@@ -196,7 +192,7 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
     def var(self) -> Optional[np.float64]:
         """Returns the variance value of the observations."""
         if hasattr(self, 'obs_rms'):
-            return self.obs_rms.mean
+            return self.obs_rms.var
         else:
             return None
 
