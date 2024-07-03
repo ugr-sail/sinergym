@@ -502,5 +502,7 @@ class LoggerEvalCallback(EventCallback):
                 self.eval_env,
                 NormalizeObservation):
             self.eval_env.get_wrapper_attr('deactivate_update')()
-            self.eval_env.obs_rms = deepcopy(
-                self.train_env.get_wrapper_attr('obs_rms'))
+            self.eval_env.get_wrapper_attr('set_mean')(
+                self.train_env.get_wrapper_attr('mean'))
+            self.eval_env.get_wrapper_attr('set_var')(
+                self.train_env.get_wrapper_attr('var'))
