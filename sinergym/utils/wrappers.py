@@ -192,7 +192,7 @@ class NormalizeObservation(gym.Wrapper):
     def var(self) -> Optional[np.float64]:
         """Returns the variance value of the observations."""
         if hasattr(self, 'obs_rms'):
-            return self.obs_rms.mean
+            return self.obs_rms.var
         else:
             return None
 
