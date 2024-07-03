@@ -56,7 +56,7 @@ class MultiObjectiveReward(gym.Wrapper):
         return obs, reward_vector, terminated, truncated, info
 
 
-class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
+class NormalizeObservation(gym.Wrapper):
 
     logger = Logger().getLogger(name='WRAPPER NormalizeObservation',
                                 level=LOG_WRAPPERS_LEVEL)
