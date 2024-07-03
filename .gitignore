@@ -50,3 +50,6 @@ coverage.xml
 
 #wandb
 wandb/
+
+#fcntl
+.lock
