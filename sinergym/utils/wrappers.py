@@ -82,10 +82,6 @@ class NormalizeObservation(gym.Wrapper, gym.utils.RecordConstructorArgs):
         mean = self._check_and_update_metric(mean, 'mean')
         var = self._check_and_update_metric(var, 'var')
 
-        # Save normalization configuration for whole python process
-        gym.utils.RecordConstructorArgs.__init__(
-            self, epsilon=epsilon, mean=mean, var=var)
-
         self.num_envs = 1
         self.is_vector_env = False
         self.automatic_update = automatic_update
