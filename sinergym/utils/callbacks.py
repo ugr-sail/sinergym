@@ -346,20 +346,20 @@ class LoggerEvalCallback(EventCallback):
 
         if self.eval_freq > 0 and self.n_calls % self.eval_freq == 0:
             # Sync training and eval env if there is VecNormalize
-            # if self.model.get_vec_normalize_env() is not None:
-            #     try:
-            #         sync_envs_normalization(self.training_env, self.eval_env)
-            #     except AttributeError as e:
-            #         raise AssertionError(
-            #             "Training and eval env are not wrapped the same way, "
-            #             "see https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html#evalcallback "
-            #             "and warning above.") from e
+            if self.model.get_vec_normalize_env() is not None:
+                try:
+                    sync_envs_normalization(self.training_env, self.eval_env)
+                except AttributeError as e:
+                    raise AssertionError(
+                        "Training and eval env are not wrapped the same way, "
+                        "see https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html#evalcallback "
+                        "and warning above.") from e
 
             # Reset success rate buffer
             self._is_success_buffer = []
 
             # We close training env before to start the evaluation
-            self.train_env.close()
+            self.training_env.close()
 
             self._sync_envs()
 
@@ -375,7 +375,7 @@ class LoggerEvalCallback(EventCallback):
 
             # We close evaluation env and starts training env again
             self.eval_env.close()
-            self.train_env.reset()
+            self.training_env.reset()
 
             if self.log_path is not None:
                 for key, value in episodes_data.items():
