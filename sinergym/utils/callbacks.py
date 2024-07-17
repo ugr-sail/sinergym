@@ -30,7 +30,7 @@ class LoggerCallback(BaseCallback):
         """Custom callback for plotting additional values in Stable Baselines 3 algorithms.
         Args:
             dump_frequency (int): This is the timestep frequency in which all data recorded is dumped, ignoring algorithm log interval. Defaults to 100.
-            sinergym_logger (boolean): Indicate if CSVLogger inner Sinergym will be activated or not.
+            sinergym_logger (boolean): Indicate if Logger inner Sinergym will be activated or not.
         """
         super(LoggerCallback, self).__init__(verbose)
 

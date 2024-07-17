@@ -13,7 +13,7 @@ from gymnasium.wrappers.normalize import RunningMeanStd
 
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
-from sinergym.utils.logger import CSVLogger, TerminalLogger
+from sinergym.utils.logger import Logger, TerminalLogger
 
 
 class MultiObjectiveReward(gym.Wrapper):
@@ -296,16 +296,16 @@ class LoggerWrapper(gym.Wrapper):
     def __init__(
         self,
         env: Env,
-        logger_class: Callable = CSVLogger,
+        logger_class: Callable = Logger,
         monitor_header: Optional[List[str]] = None,
         progress_header: Optional[List[str]] = None,
         flag: bool = True,
     ):
-        """CSVLogger to log interactions with environment.
+        """Logger to log interactions with environment.
 
         Args:
             env (Env): Original Gym environment in Sinergym.
-            logger_class (CSVLogger): CSV Logger class to use to log all information.
+            logger_class (Logger): CSV Logger class to use to log all information.
             monitor_header: Header for monitor.csv in each episode. Default is None (default format).
             progress_header: Header for progress.csv in whole simulation. Default is None (default format).
             flag (bool, optional): State of logger (activate or deactivate). Defaults to True.

@@ -71,8 +71,8 @@ class TerminalLogger():
         return logger
 
 
-class CSVLogger(object):
-    """CSV Logger for agent interaction with environment.
+class Logger(object):
+    """Logger for agent interaction with environment.
 
         :param monitor_header: CSV header for sub_run_N/monitor.csv which record interaction step by step.
         :param progress_header: CSV header for res_N/progress.csv which record main data episode by episode.
@@ -94,7 +94,7 @@ class CSVLogger(object):
             log_progress_file: str,
             log_file: Optional[str] = None,
             flag: bool = True):
-        """CSVLogger constructor
+        """Logger constructor
 
         Args:
             monitor_header (str): CSV header for sub_run_N/monitor.csv which record interaction step by step.
