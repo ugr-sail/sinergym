@@ -11,7 +11,7 @@ import numpy as np
 from sinergym.config import ModelJSON
 from sinergym.simulators import EnergyPlus
 from sinergym.utils.constants import LOG_ENV_LEVEL
-from sinergym.utils.logger import Logger
+from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.rewards import *
 
 
@@ -23,7 +23,7 @@ class EplusEnv(gym.Env):
     #                          Environment Terminal Logger                         #
     # ---------------------------------------------------------------------------- #
 
-    logger = Logger().getLogger(
+    logger = TerminalLogger().getLogger(
         name='ENVIRONMENT',
         level=LOG_ENV_LEVEL)
 

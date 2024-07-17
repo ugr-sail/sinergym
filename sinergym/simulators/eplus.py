@@ -11,7 +11,7 @@ from pyenergyplus.api import EnergyPlusAPI
 
 from sinergym.utils.common import *
 from sinergym.utils.constants import LOG_SIM_LEVEL
-from sinergym.utils.logger import Logger
+from sinergym.utils.logger import TerminalLogger
 
 
 class EnergyPlus(object):
@@ -20,7 +20,7 @@ class EnergyPlus(object):
     #                           Simulator Terminal Logger                          #
     # ---------------------------------------------------------------------------- #
 
-    logger = Logger().getLogger(
+    logger = TerminalLogger().getLogger(
         name='SIMULATOR',
         level=LOG_SIM_LEVEL)
 

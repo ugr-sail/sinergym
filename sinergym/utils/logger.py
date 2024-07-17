@@ -42,7 +42,7 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 
-class Logger():
+class TerminalLogger():
     """Sinergym terminal logger for simulation executions.
     """
 

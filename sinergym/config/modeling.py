@@ -14,7 +14,7 @@ from opyplus import WeatherData
 from sinergym.utils.common import eppy_element_to_dict, get_delta_seconds
 from sinergym.utils.constants import (CWD, LOG_MODEL_LEVEL, PKG_DATA_PATH,
                                       WEEKDAY_ENCODING, YEAR)
-from sinergym.utils.logger import Logger
+from sinergym.utils.logger import TerminalLogger
 
 
 class ModelJSON(object):
@@ -43,7 +43,7 @@ class ModelJSON(object):
         :param timestep_per_episode: Timestep in a runperiod (simulation episode).
     """
 
-    logger = Logger().getLogger(
+    logger = TerminalLogger().getLogger(
         name='MODELING',
         level=LOG_MODEL_LEVEL)
 

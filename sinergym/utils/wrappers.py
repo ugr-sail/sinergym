@@ -13,13 +13,13 @@ from gymnasium.wrappers.normalize import RunningMeanStd
 
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
-from sinergym.utils.logger import CSVLogger, Logger
+from sinergym.utils.logger import CSVLogger, TerminalLogger
 
 
 class MultiObjectiveReward(gym.Wrapper):
 
-    logger = Logger().getLogger(name='WRAPPER MultiObjectiveReward',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(name='WRAPPER MultiObjectiveReward',
+                                        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self, env: Env, reward_terms: List[str]):
         """The environment will return a reward vector of each objective instead of a scalar value.
@@ -58,8 +58,8 @@ class MultiObjectiveReward(gym.Wrapper):
 
 class NormalizeObservation(gym.Wrapper):
 
-    logger = Logger().getLogger(name='WRAPPER NormalizeObservation',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(name='WRAPPER NormalizeObservation',
+                                        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
                  env: Env,
@@ -95,7 +95,8 @@ class NormalizeObservation(gym.Wrapper):
 
         self.logger.info('Wrapper initialized.')
 
-    def step(self, action):
+    def step(self, action: Union[int, np.ndarray]) -> Tuple[
+            np.ndarray, float, bool, bool, Dict[str, Any]]:
         """Steps through the environment and normalizes the observation."""
         obs, reward, terminated, truncated, info = self.env.step(action)
 
@@ -217,8 +218,8 @@ class NormalizeObservation(gym.Wrapper):
 
 class MultiObsWrapper(gym.Wrapper):
 
-    logger = Logger().getLogger(name='WRAPPER MultiObsWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(name='WRAPPER MultiObsWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(
             self,
@@ -289,8 +290,8 @@ class MultiObsWrapper(gym.Wrapper):
 
 class LoggerWrapper(gym.Wrapper):
 
-    logger = Logger().getLogger(name='WRAPPER LoggerWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(name='WRAPPER LoggerWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(
         self,
@@ -490,8 +491,8 @@ class DatetimeWrapper(gym.ObservationWrapper):
     """Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
        Observation space is updated automatically."""
 
-    logger = Logger().getLogger(name='WRAPPER DatetimeWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(name='WRAPPER DatetimeWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
                  env: Env):
@@ -565,8 +566,9 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
     """Wrapper to add observation values from previous timestep to
     current environment observation"""
 
-    logger = Logger().getLogger(name='WRAPPER PreviousObservationWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER PreviousObservationWrapper',
+        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
                  env: Env,
@@ -620,8 +622,8 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
 class IncrementalWrapper(gym.ActionWrapper):
     """A wrapper for an incremental values of desired action variables"""
 
-    logger = Logger().getLogger(name='WRAPPER IncrementalWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(name='WRAPPER IncrementalWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(
         self,
@@ -735,8 +737,9 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
     WARNING: A environment with only temperature setpoints control must be used
     with this wrapper."""
 
-    logger = Logger().getLogger(name='WRAPPER DiscreteIncrementalWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER DiscreteIncrementalWrapper',
+        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(
         self,
@@ -841,8 +844,8 @@ class DiscretizeEnv(gym.ActionWrapper):
     """ Wrapper to discretize an action space.
     """
 
-    logger = Logger().getLogger(name='WRAPPER DiscretizeEnv',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(name='WRAPPER DiscretizeEnv',
+                                        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
                  env: Env,
@@ -895,8 +898,8 @@ class NormalizeAction(gym.ActionWrapper):
     """Wrapper to normalize action space.
     """
 
-    logger = Logger().getLogger(name='WRAPPER NormalizeAction',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(name='WRAPPER NormalizeAction',
+                                        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
                  env: Env,
@@ -977,8 +980,9 @@ class NormalizeAction(gym.ActionWrapper):
 
 class ReduceObservationWrapper(gym.Wrapper):
 
-    logger = Logger().getLogger(name='WRAPPER ReduceObservationWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER ReduceObservationWrapper',
+        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
                  env: Env,
