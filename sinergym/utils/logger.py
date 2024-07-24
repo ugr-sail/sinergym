@@ -117,12 +117,12 @@ class BaseLogger(ABC):
             truncated(bool): truncated flag in step.
             info(Dict[str, Any]): Extra info collected in step.
         """
-        if self.flag:
-            self.data.append(
-                self._create_row_content(
-                    obs, action, terminated, truncated, info))
-            # Store data information for summary
-            self._store_information_summary(info)
+
+        self.data.append(
+            self._create_row_content(
+                obs, action, terminated, truncated, info))
+        # Store data information for summary
+        self._store_information_summary(info)
 
     def log_step_normalize(
         self,
@@ -142,10 +142,10 @@ class BaseLogger(ABC):
             truncated(bool): truncated flag in step.
             info(Optional[Dict[str, Any]]): Extra info collected in step.
         """
-        if self.flag:
-            self.data_normalized.append(
-                self._create_row_content(
-                    obs, action, terminated, truncated, info))
+
+        self.data_normalized.append(
+            self._create_row_content(
+                obs, action, terminated, truncated, info))
 
     def return_episode_data(self, episode: int) -> None:
         """Return episode information.
@@ -154,7 +154,7 @@ class BaseLogger(ABC):
             episode (int): Current simulation episode number.
 
         """
-        progress_data = self._create_row_summary_content()
+        progress_data = self._create_row_summary_content(episode)
         monitor_data = self.data
         monitor_data_normalized = self.data_normalized
         # Reset episode data for next episode
@@ -209,8 +209,11 @@ class BaseLogger(ABC):
         pass
 
     @abstractmethod
-    def _create_row_summary_content(self) -> List:
+    def _create_row_summary_content(self, episode: int) -> List:
         """Create the row content for the episode summary.
+
+        Args:
+            episode (int): Current simulation episode number.
 
         Returns:
             List: Row content created in order to being logged.
@@ -290,8 +293,11 @@ class Logger(BaseLogger):
             self.summary_data['total_time_elapsed'] = info['time_elapsed(hours)']
             self.summary_data['total_timesteps'] = info['timestep']
 
-    def _create_row_summary_content(self) -> List:
+    def _create_row_summary_content(self, episode: int) -> List:
         """Create the row content for the episode summary.
+
+        Args:
+            episode (int): Current simulation episode number.
 
         Returns:
             List: Row content created in order to being logged.
@@ -304,24 +310,24 @@ class Logger(BaseLogger):
         except ZeroDivisionError:
             comfort_violation = np.nan
 
-        return [
-            np.sum(self.summary_data['rewards']),
-            np.mean(self.summary_data['rewards']),
-            np.sum(self.summary_data['reward_energy_terms']),
-            np.mean(self.summary_data['reward_energy_terms']),
-            np.sum(self.summary_data['reward_comfort_terms']),
-            np.mean(self.summary_data['reward_comfort_terms']),
-            np.sum(self.summary_data['abs_energy_penalties']),
-            np.mean(self.summary_data['abs_energy_penalties']),
-            np.sum(self.summary_data['abs_comfort_penalties']),
-            np.mean(self.summary_data['abs_comfort_penalties']),
-            np.sum(self.summary_data['total_power_demands']),
-            np.mean(self.summary_data['total_power_demands']),
-            np.sum(self.summary_data['total_temperature_violations']),
-            np.mean(self.summary_data['total_temperature_violations']),
-            comfort_violation,
-            self.summary_data['total_timesteps'],
-            self.summary_data['total_time_elapsed']]
+        return [episode,
+                np.sum(self.summary_data['rewards']),
+                np.mean(self.summary_data['rewards']),
+                np.sum(self.summary_data['reward_energy_terms']),
+                np.mean(self.summary_data['reward_energy_terms']),
+                np.sum(self.summary_data['reward_comfort_terms']),
+                np.mean(self.summary_data['reward_comfort_terms']),
+                np.sum(self.summary_data['abs_energy_penalties']),
+                np.mean(self.summary_data['abs_energy_penalties']),
+                np.sum(self.summary_data['abs_comfort_penalties']),
+                np.mean(self.summary_data['abs_comfort_penalties']),
+                np.sum(self.summary_data['total_power_demands']),
+                np.mean(self.summary_data['total_power_demands']),
+                np.sum(self.summary_data['total_temperature_violations']),
+                np.mean(self.summary_data['total_temperature_violations']),
+                comfort_violation,
+                self.summary_data['total_timesteps'],
+                self.summary_data['total_time_elapsed']]
 
 
 if not missing:
