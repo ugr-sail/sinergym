@@ -8,6 +8,7 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
+import wandb
 from gymnasium import Env
 from gymnasium.wrappers.normalize import RunningMeanStd
 
@@ -15,45 +16,219 @@ from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 from sinergym.utils.logger import Logger, TerminalLogger
 
+# ---------------------------------------------------------------------------- #
+#                             Observation wrappers                             #
+# ---------------------------------------------------------------------------- #
 
-class MultiObjectiveReward(gym.Wrapper):
 
-    logger = TerminalLogger().getLogger(name='WRAPPER MultiObjectiveReward',
+class DatetimeWrapper(gym.ObservationWrapper):
+    """Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
+       Observation space is updated automatically."""
+
+    logger = TerminalLogger().getLogger(name='WRAPPER DatetimeWrapper',
                                         level=LOG_WRAPPERS_LEVEL)
 
-    def __init__(self, env: Env, reward_terms: List[str]):
-        """The environment will return a reward vector of each objective instead of a scalar value.
+    def __init__(self,
+                 env: Env):
+        super(DatetimeWrapper, self).__init__(env)
+
+        # Check datetime variables are defined in environment
+        try:
+            assert all(time_variable in self.get_wrapper_attr('observation_variables')
+                       for time_variable in ['month', 'day_of_month', 'hour'])
+        except AssertionError as err:
+            self.logger.error(
+                'month, day_of_month and hour must be defined in observation space in environment previously.')
+            raise err
+
+        # Update new shape
+        new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 2
+        self.observation_space = gym.spaces.Box(
+            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+        # Update observation variables
+        new_observation_variables = deepcopy(
+            self.get_wrapper_attr('observation_variables'))
+
+        day_index = new_observation_variables.index('day_of_month')
+        new_observation_variables[day_index] = 'is_weekend'
+        hour_index = new_observation_variables.index('hour')
+        new_observation_variables[hour_index] = 'hour_cos'
+        new_observation_variables.insert(hour_index + 1, 'hour_sin')
+        month_index = new_observation_variables.index('month')
+        new_observation_variables[month_index] = 'month_cos'
+        new_observation_variables.insert(month_index + 1, 'month_sin')
+
+        self.observation_variables = new_observation_variables
+
+        self.logger.info('Wrapper initialized.')
+
+    def observation(self, obs: np.ndarray) -> np.ndarray:
+        """Applies calculation in is_weekend flag, and sen and cos in hour and month
 
         Args:
-            env (Env): Original Sinergym environment.
-            reward_terms (List[str]): List of keys in reward terms which will be included in reward vector.
+            obs (np.ndarray): Original observation.
+
+        Returns:
+            np.ndarray: Transformed observation.
         """
-        super(MultiObjectiveReward, self).__init__(env)
-        self.reward_terms = reward_terms
+        # Get obs_dict with observation variables from original env
+        obs_dict = dict(
+            zip(self.env.get_wrapper_attr('observation_variables'), obs))
 
-        self.logger.info('wrapper initialized.')
+        # New obs dict with same values than obs_dict but with new fields with
+        # None
+        new_obs = dict.fromkeys(self.get_wrapper_attr('observation_variables'))
+        for key, value in obs_dict.items():
+            if key in new_obs.keys():
+                new_obs[key] = value
+        dt = datetime(
+            int(obs_dict['year']) if obs_dict.get('year', False) else YEAR,
+            int(obs_dict['month']),
+            int(obs_dict['day_of_month']),
+            int(obs_dict['hour']))
+        # Update obs
+        new_obs['is_weekend'] = 1.0 if dt.isoweekday() in [6, 7] else 0.0
+        new_obs['hour_cos'] = np.cos(2 * np.pi * obs_dict['hour'] / 24)
+        new_obs['hour_sin'] = np.sin(2 * np.pi * obs_dict['hour'] / 24)
+        new_obs['month_cos'] = np.cos(2 * np.pi * (obs_dict['month'] - 1) / 12)
+        new_obs['month_sin'] = np.sin(2 * np.pi * (obs_dict['month'] - 1) / 12)
 
-    def step(self, action: Union[int, np.ndarray]) -> Tuple[
-            np.ndarray, List[float], bool, bool, Dict[str, Any]]:
-        """Perform the action and environment return reward vector.
+        return np.array(list(new_obs.values()))
+
+# ---------------------------------------------------------------------------- #
+
+
+class PreviousObservationWrapper(gym.ObservationWrapper):
+    """Wrapper to add observation values from previous timestep to
+    current environment observation"""
+
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER PreviousObservationWrapper',
+        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: Env,
+                 previous_variables: List[str]):
+        super(PreviousObservationWrapper, self).__init__(env)
+        # Check and apply previous variables to observation space and variables
+        # names
+        self.previous_variables = previous_variables
+        new_observation_variables = deepcopy(
+            self.get_wrapper_attr('observation_variables'))
+        for obs_var in previous_variables:
+            assert obs_var in self.get_wrapper_attr(
+                'observation_variables'), '{} variable is not defined in observation space, revise the name.'.format(obs_var)
+            new_observation_variables.append(obs_var + '_previous')
+        # Update observation variables
+        self.observation_variables = new_observation_variables
+        # Update new shape
+        new_shape = self.env.get_wrapper_attr(
+            'observation_space').shape[0] + len(previous_variables)
+        self.observation_space = gym.spaces.Box(
+            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+
+        # previous observation initialization
+        self.previous_observation = np.zeros(
+            shape=len(previous_variables), dtype=np.float32)
+
+        self.logger.info('Wrapper initialized.')
+
+    def observation(self, obs: np.ndarray) -> np.ndarray:
+        """Add previous observation to the current one
+
+        Args:
+            obs (np.ndarray): Original observation.
+
+        Returns:
+            np.ndarray: observation with
+        """
+        # Concatenate current obs with previous observation variables
+        new_obs = np.concatenate(
+            (obs, self.get_wrapper_attr('previous_observation')))
+        # Update previous observation to current observation
+        self.previous_observation = []
+        for variable in self.previous_variables:
+            index = self.env.get_wrapper_attr(
+                'observation_variables').index(variable)
+            self.previous_observation.append(obs[index])
+
+        return new_obs
+
+# ---------------------------------------------------------------------------- #
+
+
+class MultiObsWrapper(gym.Wrapper):
+
+    logger = TerminalLogger().getLogger(name='WRAPPER MultiObsWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(
+            self,
+            env: Env,
+            n: int = 5,
+            flatten: bool = True) -> None:
+        """Stack of observations.
+
+        Args:
+            env (Env): Original Gym environment.
+            n (int, optional): Number of observations to be stacked. Defaults to 5.
+            flatten (bool, optional): Whether or not flat the observation vector. Defaults to True.
+        """
+        super(MultiObsWrapper, self).__init__(env)
+        self.n = n
+        self.ind_flat = flatten
+        self.history = deque([], maxlen=n)
+        shape = self.get_wrapper_attr('observation_space').shape
+        new_shape = (shape[0] * n,) if flatten else ((n,) + shape)
+        self.observation_space = gym.spaces.Box(
+            low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
+
+        self.logger.info('Wrapper initialized.')
+
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
+        """Resets the environment.
+
+        Returns:
+            np.ndarray: Stacked previous observations.
+        """
+        obs, info = self.env.reset(seed=seed, options=options)
+        for _ in range(self.n):
+            self.history.append(obs)
+        return self._get_obs(), info
+
+    def step(self, action: Union[int, np.ndarray]
+             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
+        """Performs the action in the new environment.
 
         Args:
             action (Union[int, np.ndarray]): Action to be executed in environment.
 
         Returns:
-            Tuple[ np.ndarray, List[float], bool, bool, Dict[str, Any]]: observation, vector reward, terminated, truncated and info.
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated episode and dict with extra information.
         """
-        # Execute normal reward
-        obs, _, terminated, truncated, info = self.env.step(action)
-        reward_vector = [value for key, value in info.items(
-        ) if key in self.get_wrapper_attr('reward_terms')]
-        try:
-            assert len(reward_vector) == len(
-                self.get_wrapper_attr('reward_terms'))
-        except AssertionError as err:
-            self.logger.error('Some reward term is unknown')
-            raise err
-        return obs, reward_vector, terminated, truncated, info
+
+        observation, reward, terminated, truncated, info = self.env.step(
+            action)
+        self.history.append(observation)
+        return self._get_obs(), reward, terminated, truncated, info
+
+    def _get_obs(self) -> np.ndarray:
+        """Get observation history.
+
+        Returns:
+            np.array: Array of previous observations.
+        """
+        if self.get_wrapper_attr('ind_flat'):
+            return np.array(self.history).reshape(-1,)
+        else:
+            return np.array(self.history)
+
+# ---------------------------------------------------------------------------- #
 
 
 class NormalizeObservation(gym.Wrapper):
@@ -215,77 +390,422 @@ class NormalizeObservation(gym.Wrapper):
         return (obs - self.obs_rms.mean) / \
             np.sqrt(self.obs_rms.var + self.epsilon)
 
+# ---------------------------------------------------------------------------- #
+#                                Action wrappers                               #
+# ---------------------------------------------------------------------------- #
 
-class MultiObsWrapper(gym.Wrapper):
 
-    logger = TerminalLogger().getLogger(name='WRAPPER MultiObsWrapper',
+class IncrementalWrapper(gym.ActionWrapper):
+    """A wrapper for an incremental values of desired action variables"""
+
+    logger = TerminalLogger().getLogger(name='WRAPPER IncrementalWrapper',
                                         level=LOG_WRAPPERS_LEVEL)
 
     def __init__(
-            self,
-            env: Env,
-            n: int = 5,
-            flatten: bool = True) -> None:
-        """Stack of observations.
+        self,
+        env: gym.Env,
+        incremental_variables_definition: Dict[str, Tuple[float, float]],
+        initial_values: List[float],
+    ):
+        """
+        Args:
+            env (gym.Env): Original Sinergym environment.
+            incremental_variables_definition (Dict[str, Tuple[float, float]]): Dictionary defining incremental variables.
+                                                                           Key: variable name, Value: Tuple with delta and step values.
+                                                                           Delta: maximum range, Step: intermediate value jumps.
+            initial_values (List[float]): Initial values for incremental variables. Length of this list and dictionary must match.
+        """
+
+        super().__init__(env)
+
+        # Params
+        self.current_values = initial_values
+
+        # Check environment is valid
+        try:
+            assert not self.env.get_wrapper_attr('is_discrete')
+        except AssertionError as err:
+            self.logger.error(
+                'Env wrapped by this wrapper must be continuous.')
+            raise err
+        try:
+            assert all([variable in self.env.get_wrapper_attr('action_variables')
+                       for variable in list(incremental_variables_definition.keys())])
+        except AssertionError as err:
+            self.logger.error(
+                'Some of the incremental variables specified does not exist as action variable in environment.')
+            raise err
+        try:
+            assert len(initial_values) == len(
+                incremental_variables_definition)
+        except AssertionError as err:
+            self.logger.error(
+                'Number of incremental variables does not match with initial values')
+            raise err
+
+        # All posible incremental variations
+        self.values_definition = {}
+        # Original action space variables
+        action_space_low = deepcopy(self.env.action_space.low)
+        action_space_high = deepcopy(self.env.action_space.high)
+        # Calculating incremental variations and action space for each
+        # incremental variable
+        for variable, (delta_temp,
+                       step_temp) in incremental_variables_definition.items():
+
+            # Possible incrementations for each incremental variable.
+            values = np.arange(
+                step_temp,
+                delta_temp +
+                step_temp /
+                10,
+                step_temp)
+            values = [v for v in [*-np.flip(values), 0, *values]]
+
+            # Index of the action variable
+            index = self.env.get_wrapper_attr(
+                'action_variables').index(variable)
+
+            self.values_definition[index] = values
+            action_space_low[index] = min(values)
+            action_space_high[index] = max(values)
+
+        # New action space definition
+        self.action_space = gym.spaces.Box(
+            low=action_space_low,
+            high=action_space_high,
+            shape=self.env.action_space.shape,
+            dtype=np.float32)
+
+        self.logger.info(
+            'New incremental continuous action space: {}'.format(
+                self.action_space))
+        self.logger.info(
+            'Incremental variables configuration (variable: delta, step): {}'.format(
+                incremental_variables_definition))
+        self.logger.info('Wrapper initialized')
+
+    def action(self, action):
+        """Takes the continuous action and apply increment/decrement before to send to the next environment layer."""
+        action_ = deepcopy(action)
+
+        # Update current values with incremental values where required
+        for i, (index, values) in enumerate(self.values_definition.items()):
+            # Get increment value
+            increment_value = action[index]
+            # Round increment value to nearest value
+            increment_value = min(
+                values, key=lambda x: abs(
+                    x - increment_value))
+            # Update current_values
+            self.current_values[i] += increment_value
+            # Clip the value with original action space
+            self.current_values[i] = max(self.env.action_space.low[index], min(
+                self.current_values[i], self.env.action_space.high[index]))
+
+            action_[index] = self.current_values[i]
+
+        return list(action_)
+
+# ---------------------------------------------------------------------------- #
+
+
+class DiscreteIncrementalWrapper(gym.ActionWrapper):
+    """A wrapper for an incremental setpoint discrete action space environment.
+    WARNING: A environment with only temperature setpoints control must be used
+    with this wrapper."""
+
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER DiscreteIncrementalWrapper',
+        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(
+        self,
+        env: gym.Env,
+        initial_values: List[float],
+        delta_temp: float = 2.0,
+        step_temp: float = 0.5,
+    ):
+        """
+        Args:
+            env: The original Sinergym env.
+            action_names: Name of the action variables with the setpoint control you want to do incremental.
+            initial_values: Initial values of the setpoints.
+            delta_temp: Maximum temperature variation in the setpoints in one step.
+            step_temp: Minimum temperature variation in the setpoints in one step.
+        """
+
+        super().__init__(env)
+
+        # Params
+        self.current_setpoints = initial_values
+
+        # Check environment is valid
+        try:
+            assert not self.env.get_wrapper_attr('is_discrete')
+        except AssertionError as err:
+            self.logger.error(
+                'Env wrapped by this wrapper must be continuous.')
+            raise err
+        try:
+            assert len(
+                self.get_wrapper_attr('current_setpoints')) == len(
+                self.env.get_wrapper_attr('action_variables'))
+        except AssertionError as err:
+            self.logger.error(
+                'Number of variables is different from environment')
+            raise err
+
+        # Define all posible setpoint variations
+        values = np.arange(step_temp, delta_temp + step_temp / 10, step_temp)
+        values = [v for v in [*values, *-values]]
+
+        # Creating action_mapping function for the discrete environment
+        self.mapping = {}
+        do_nothing = [0.0 for _ in range(
+            len(self.env.get_wrapper_attr('action_variables')))]  # do nothing
+        self.mapping[0] = do_nothing
+        n = 1
+
+        # Generate all posible actions
+        for k in range(len(self.env.get_wrapper_attr('action_variables'))):
+            for v in values:
+                x = deepcopy(do_nothing)
+                x[k] = v
+                self.mapping[n] = x
+                n += 1
+
+        self.action_space = gym.spaces.Discrete(n)
+
+        self.logger.info('New incremental action mapping: {}'.format(n))
+        self.logger.info('{}'.format(self.get_wrapper_attr('mapping')))
+        self.logger.info('Wrapper initialized')
+
+    # Define action mapping method
+    def action_mapping(self, action: int) -> List[float]:
+        return self.mapping[action]
+
+    def action(self, action):
+        """Takes the discrete action and transforms it to setpoints tuple."""
+        action_ = deepcopy(action)
+        action_ = self.get_wrapper_attr('action_mapping')(action_)
+        # Update current setpoints values with incremental action
+        self.current_setpoints = [
+            sum(i) for i in zip(
+                self.get_wrapper_attr('current_setpoints'),
+                action_)]
+        # clip setpoints returned
+        self.current_setpoints = np.clip(
+            np.array(self.get_wrapper_attr('current_setpoints')),
+            self.env.action_space.low,
+            self.env.action_space.high
+        )
+
+        return list(self.current_setpoints)
+
+    # Updating property
+    @property
+    def is_discrete(self) -> bool:
+        if isinstance(self.action_space, gym.spaces.Box):
+            return False
+        elif isinstance(self.action_space, gym.spaces.Discrete) or \
+                isinstance(self.action_space, gym.spaces.MultiDiscrete) or \
+                isinstance(self.action_space, gym.spaces.MultiBinary):
+            return True
+        else:
+            self.logger.warning(
+                'Action space is not continuous or discrete?')
+            return False
+
+# ---------------------------------------------------------------------------- #
+
+
+class DiscretizeEnv(gym.ActionWrapper):
+    """ Wrapper to discretize an action space.
+    """
+
+    logger = TerminalLogger().getLogger(name='WRAPPER DiscretizeEnv',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: Env,
+                 discrete_space: Union[gym.spaces.Discrete,
+                                       gym.spaces.MultiDiscrete,
+                                       gym.spaces.MultiBinary],
+                 action_mapping: Callable[[Union[int,
+                                                 List[int]]],
+                                          Union[float,
+                                                List[float]]]):
+        """Wrapper for Discretize action space.
 
         Args:
-            env (Env): Original Gym environment.
-            n (int, optional): Number of observations to be stacked. Defaults to 5.
-            flatten (bool, optional): Whether or not flat the observation vector. Defaults to True.
+            env (Env): Original environment.
+            discrete_space (Union[gym.spaces.Discrete, gym.spaces.MultiDiscrete, gym.spaces.MultiBinary]): Discrete Space.
+            action_mapping (Callable[[Union[int, List[int]]], Union[float, List[float]]]): Function with action as argument, its output must match with original env action space, otherwise an error will be raised.
         """
-        super(MultiObsWrapper, self).__init__(env)
-        self.n = n
-        self.ind_flat = flatten
-        self.history = deque([], maxlen=n)
-        shape = self.get_wrapper_attr('observation_space').shape
-        new_shape = (shape[0] * n,) if flatten else ((n,) + shape)
-        self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
+        super().__init__(env)
+        self.action_space = discrete_space
+        self.action_mapping = action_mapping
 
-        self.logger.info('Wrapper initialized.')
+        self.logger.info(
+            'New Discrete Space and mapping: {}'.format(
+                self.action_space))
+        self.logger.info(
+            'Make sure that the action space is compatible and contained in the original environment.')
+        self.logger.info('Wrapper initialized')
 
-    def reset(self,
-              seed: Optional[int] = None,
-              options: Optional[Dict[str,
-                                     Any]] = None) -> Tuple[np.ndarray,
-                                                            Dict[str,
-                                                                 Any]]:
-        """Resets the environment.
+    def action(self, action: Union[int, List[int]]) -> List[int]:
+        action_ = deepcopy(action)
+        action_ = self.get_wrapper_attr('action_mapping')(action_)
+        return action_
+
+    # Updating property
+    @property
+    def is_discrete(self) -> bool:
+        if isinstance(self.action_space, gym.spaces.Box):
+            return False
+        elif isinstance(self.action_space, gym.spaces.Discrete) or \
+                isinstance(self.action_space, gym.spaces.MultiDiscrete) or \
+                isinstance(self.action_space, gym.spaces.MultiBinary):
+            return True
+        else:
+            self.logger.warning(
+                'Action space is not continuous or discrete?')
+            return False
+
+# ---------------------------------------------------------------------------- #
+
+
+class NormalizeAction(gym.ActionWrapper):
+    """Wrapper to normalize action space.
+    """
+
+    logger = TerminalLogger().getLogger(name='WRAPPER NormalizeAction',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: Env,
+                 normalize_range: Tuple[float, float] = (-1.0, 1.0)):
+        """Wrapper to normalize action space in default continuous environment (not to combine with discrete environments). The action will be parsed to real action space before to send to the simulator (very useful ion DRL algorithms)
+
+        Args:
+            env (Env): Original environment.
+            normalize_range (Tuple[float,float]): Range to normalize action variable values. Defaults to values between [-1.0,1.0].
+        """
+        super().__init__(env)
+
+        # Checks
+        try:
+            assert not self.get_wrapper_attr('is_discrete')
+        except AssertionError as err:
+            self.logger.critical(
+                'The original environment must be continuous')
+            raise err
+
+        # Define real space for simulator
+        self.real_space = deepcopy(self.action_space)
+        # Define normalize space
+        lower_norm_value, upper_norm_value = normalize_range
+        self.normalized_space = gym.spaces.Box(
+            low=np.array(
+                np.repeat(
+                    lower_norm_value,
+                    env.action_space.shape[0]),
+                dtype=np.float32),
+            high=np.array(
+                np.repeat(
+                    upper_norm_value,
+                    env.action_space.shape[0]),
+                dtype=np.float32),
+            dtype=env.action_space.dtype)
+        # Updated action space to normalized space
+        self.action_space = self.normalized_space
+
+        self.logger.info(
+            'New normalized action Space: {}'.format(
+                self.action_space))
+        self.logger.info('Wrapper initialized')
+
+    def reverting_action(self,
+                         action: Any) -> List[float]:
+        """ This method maps a normalized action in a real action space.
+
+        Args:
+            action (Any): Normalize action received in environment
 
         Returns:
-            np.ndarray: Stacked previous observations.
+            List[float]: Action transformed in simulator real action space.
         """
-        obs, info = self.env.reset(seed=seed, options=options)
-        for _ in range(self.n):
-            self.history.append(obs)
-        return self._get_obs(), info
+        action_ = []
 
-    def step(self, action: Union[int, np.ndarray]
-             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
-        """Performs the action in the new environment.
+        for i, value in enumerate(action):
+            a_max_min = self.normalized_space.high[i] - \
+                self.normalized_space.low[i]
+            sp_max_min = self.real_space.high[i] - \
+                self.real_space.low[i]
+
+            action_.append(
+                self.real_space.low[i] +
+                (
+                    value -
+                    self.normalized_space.low[i]) *
+                sp_max_min /
+                a_max_min)
+
+        return action_
+
+    def action(self, action: Any):
+        action_ = deepcopy(action)
+        action_ = self.get_wrapper_attr('reverting_action')(action_)
+        return action_
+
+# ---------------------------------------------------------------------------- #
+#                                Reward Wrappers                               #
+# ---------------------------------------------------------------------------- #
+
+
+class MultiObjectiveReward(gym.Wrapper):
+
+    logger = TerminalLogger().getLogger(name='WRAPPER MultiObjectiveReward',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self, env: Env, reward_terms: List[str]):
+        """The environment will return a reward vector of each objective instead of a scalar value.
+
+        Args:
+            env (Env): Original Sinergym environment.
+            reward_terms (List[str]): List of keys in reward terms which will be included in reward vector.
+        """
+        super(MultiObjectiveReward, self).__init__(env)
+        self.reward_terms = reward_terms
+
+        self.logger.info('wrapper initialized.')
+
+    def step(self, action: Union[int, np.ndarray]) -> Tuple[
+            np.ndarray, List[float], bool, bool, Dict[str, Any]]:
+        """Perform the action and environment return reward vector.
 
         Args:
             action (Union[int, np.ndarray]): Action to be executed in environment.
 
         Returns:
-            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated episode and dict with extra information.
+            Tuple[ np.ndarray, List[float], bool, bool, Dict[str, Any]]: observation, vector reward, terminated, truncated and info.
         """
+        # Execute normal reward
+        obs, _, terminated, truncated, info = self.env.step(action)
+        reward_vector = [value for key, value in info.items(
+        ) if key in self.get_wrapper_attr('reward_terms')]
+        try:
+            assert len(reward_vector) == len(
+                self.get_wrapper_attr('reward_terms'))
+        except AssertionError as err:
+            self.logger.error('Some reward term is unknown')
+            raise err
+        return obs, reward_vector, terminated, truncated, info
 
-        observation, reward, terminated, truncated, info = self.env.step(
-            action)
-        self.history.append(observation)
-        return self._get_obs(), reward, terminated, truncated, info
-
-    def _get_obs(self) -> np.ndarray:
-        """Get observation history.
-
-        Returns:
-            np.array: Array of previous observations.
-        """
-        if self.get_wrapper_attr('ind_flat'):
-            return np.array(self.history).reshape(-1,)
-        else:
-            return np.array(self.history)
+# ---------------------------------------------------------------------------- #
+#                                Others (Logger)                               #
+# ---------------------------------------------------------------------------- #
 
 
 class LoggerWrapper(gym.Wrapper):
@@ -305,28 +825,30 @@ class LoggerWrapper(gym.Wrapper):
 
         Args:
             env (Env): Original Gym environment in Sinergym.
-            logger_class (Logger): CSV Logger class to use to log all information.
-            monitor_header: Header for monitor.csv in each episode. Default is None (default format).
-            progress_header: Header for progress.csv in whole simulation. Default is None (default format).
+            logger_class (Logger): Logger class to process all interaction information.
+            monitor_header: Header for monitor.csv (information about steps interaction) in each episode. Default is None (default Sinergym format).
+            progress_header: Header for progress.csv (information about summary of episodes) in whole simulation. Default is None (default Sinergym format).
             flag (bool, optional): State of logger (activate or deactivate). Defaults to True.
         """
         super(LoggerWrapper, self).__init__(env)
         # Headers for csv logger
-        monitor_header_list = monitor_header if monitor_header is not None else ['timestep'] + self.get_wrapper_attr('observation_variables') + self.get_wrapper_attr('action_variables') + [
-            'time (hours)',
-            'reward',
-            'reward_energy_term',
-            'reward_comfort_term',
-            'absolute_energy_penalty',
-            'absolute_comfort_penalty',
-            'total_power_demand',
-            'total_temperature_violation',
-            'terminated',
-            'truncated']
-        self.monitor_header = ''
-        for element_header in monitor_header_list:
-            self.monitor_header += element_header + ','
-        self.monitor_header = self.monitor_header[:-1]
+        monitor_header_list = monitor_header if monitor_header is not None else \
+            ['timestep'] + \
+            self.get_wrapper_attr('observation_variables') + \
+            self.get_wrapper_attr('action_variables') + [
+                'time (hours)',
+                'reward',
+                'reward_energy_term',
+                'reward_comfort_term',
+                'absolute_energy_penalty',
+                'absolute_comfort_penalty',
+                'total_power_demand',
+                'total_temperature_violation',
+                'terminated',
+                'truncated']
+        # Transform list to string with comma separator
+        self.monitor_header = ','.join(monitor_header_list)
+
         progress_header_list = progress_header if progress_header is not None else [
             'episode_num',
             'cumulative_reward',
@@ -346,18 +868,11 @@ class LoggerWrapper(gym.Wrapper):
             'comfort_violation_time (%)',
             'length (timesteps)',
             'time_elapsed (hours)']
-        self.progress_header = ''
-        for element_header in progress_header_list:
-            self.progress_header += element_header + ','
-        self.progress_header = self.progress_header[:-1]
+        # Transform list to string with comma separator
+        self.progress_header = ','.join(progress_header_list)
 
         # Create simulation logger, by default is active (flag=True)
-        self.file_logger = logger_class(
-            monitor_header=self.get_wrapper_attr('monitor_header'),
-            progress_header=self.get_wrapper_attr('progress_header'),
-            log_progress_file=self.get_wrapper_attr('workspace_path') +
-            '/progress.csv',
-            flag=flag)
+        self.file_logger = logger_class()
 
         self.logger.info('Wrapper initialized.')
 
@@ -486,496 +1001,7 @@ class LoggerWrapper(gym.Wrapper):
         """
         self.file_logger.deactivate_flag()
 
-
-class DatetimeWrapper(gym.ObservationWrapper):
-    """Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
-       Observation space is updated automatically."""
-
-    logger = TerminalLogger().getLogger(name='WRAPPER DatetimeWrapper',
-                                        level=LOG_WRAPPERS_LEVEL)
-
-    def __init__(self,
-                 env: Env):
-        super(DatetimeWrapper, self).__init__(env)
-
-        # Check datetime variables are defined in environment
-        try:
-            assert all(time_variable in self.get_wrapper_attr('observation_variables')
-                       for time_variable in ['month', 'day_of_month', 'hour'])
-        except AssertionError as err:
-            self.logger.error(
-                'month, day_of_month and hour must be defined in observation space in environment previously.')
-            raise err
-
-        # Update new shape
-        new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 2
-        self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
-        # Update observation variables
-        new_observation_variables = deepcopy(
-            self.get_wrapper_attr('observation_variables'))
-
-        day_index = new_observation_variables.index('day_of_month')
-        new_observation_variables[day_index] = 'is_weekend'
-        hour_index = new_observation_variables.index('hour')
-        new_observation_variables[hour_index] = 'hour_cos'
-        new_observation_variables.insert(hour_index + 1, 'hour_sin')
-        month_index = new_observation_variables.index('month')
-        new_observation_variables[month_index] = 'month_cos'
-        new_observation_variables.insert(month_index + 1, 'month_sin')
-
-        self.observation_variables = new_observation_variables
-
-        self.logger.info('Wrapper initialized.')
-
-    def observation(self, obs: np.ndarray) -> np.ndarray:
-        """Applies calculation in is_weekend flag, and sen and cos in hour and month
-
-        Args:
-            obs (np.ndarray): Original observation.
-
-        Returns:
-            np.ndarray: Transformed observation.
-        """
-        # Get obs_dict with observation variables from original env
-        obs_dict = dict(
-            zip(self.env.get_wrapper_attr('observation_variables'), obs))
-
-        # New obs dict with same values than obs_dict but with new fields with
-        # None
-        new_obs = dict.fromkeys(self.get_wrapper_attr('observation_variables'))
-        for key, value in obs_dict.items():
-            if key in new_obs.keys():
-                new_obs[key] = value
-        dt = datetime(
-            int(obs_dict['year']) if obs_dict.get('year', False) else YEAR,
-            int(obs_dict['month']),
-            int(obs_dict['day_of_month']),
-            int(obs_dict['hour']))
-        # Update obs
-        new_obs['is_weekend'] = 1.0 if dt.isoweekday() in [6, 7] else 0.0
-        new_obs['hour_cos'] = np.cos(2 * np.pi * obs_dict['hour'] / 24)
-        new_obs['hour_sin'] = np.sin(2 * np.pi * obs_dict['hour'] / 24)
-        new_obs['month_cos'] = np.cos(2 * np.pi * (obs_dict['month'] - 1) / 12)
-        new_obs['month_sin'] = np.sin(2 * np.pi * (obs_dict['month'] - 1) / 12)
-
-        return np.array(list(new_obs.values()))
-
-
-class PreviousObservationWrapper(gym.ObservationWrapper):
-    """Wrapper to add observation values from previous timestep to
-    current environment observation"""
-
-    logger = TerminalLogger().getLogger(
-        name='WRAPPER PreviousObservationWrapper',
-        level=LOG_WRAPPERS_LEVEL)
-
-    def __init__(self,
-                 env: Env,
-                 previous_variables: List[str]):
-        super(PreviousObservationWrapper, self).__init__(env)
-        # Check and apply previous variables to observation space and variables
-        # names
-        self.previous_variables = previous_variables
-        new_observation_variables = deepcopy(
-            self.get_wrapper_attr('observation_variables'))
-        for obs_var in previous_variables:
-            assert obs_var in self.get_wrapper_attr(
-                'observation_variables'), '{} variable is not defined in observation space, revise the name.'.format(obs_var)
-            new_observation_variables.append(obs_var + '_previous')
-        # Update observation variables
-        self.observation_variables = new_observation_variables
-        # Update new shape
-        new_shape = self.env.get_wrapper_attr(
-            'observation_space').shape[0] + len(previous_variables)
-        self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
-
-        # previous observation initialization
-        self.previous_observation = np.zeros(
-            shape=len(previous_variables), dtype=np.float32)
-
-        self.logger.info('Wrapper initialized.')
-
-    def observation(self, obs: np.ndarray) -> np.ndarray:
-        """Add previous observation to the current one
-
-        Args:
-            obs (np.ndarray): Original observation.
-
-        Returns:
-            np.ndarray: observation with
-        """
-        # Concatenate current obs with previous observation variables
-        new_obs = np.concatenate(
-            (obs, self.get_wrapper_attr('previous_observation')))
-        # Update previous observation to current observation
-        self.previous_observation = []
-        for variable in self.previous_variables:
-            index = self.env.get_wrapper_attr(
-                'observation_variables').index(variable)
-            self.previous_observation.append(obs[index])
-
-        return new_obs
-
-
-class IncrementalWrapper(gym.ActionWrapper):
-    """A wrapper for an incremental values of desired action variables"""
-
-    logger = TerminalLogger().getLogger(name='WRAPPER IncrementalWrapper',
-                                        level=LOG_WRAPPERS_LEVEL)
-
-    def __init__(
-        self,
-        env: gym.Env,
-        incremental_variables_definition: Dict[str, Tuple[float, float]],
-        initial_values: List[float],
-    ):
-        """
-        Args:
-            env (gym.Env): Original Sinergym environment.
-            incremental_variables_definition (Dict[str, Tuple[float, float]]): Dictionary defining incremental variables.
-                                                                           Key: variable name, Value: Tuple with delta and step values.
-                                                                           Delta: maximum range, Step: intermediate value jumps.
-            initial_values (List[float]): Initial values for incremental variables. Length of this list and dictionary must match.
-        """
-
-        super().__init__(env)
-
-        # Params
-        self.current_values = initial_values
-
-        # Check environment is valid
-        try:
-            assert not self.env.get_wrapper_attr('is_discrete')
-        except AssertionError as err:
-            self.logger.error(
-                'Env wrapped by this wrapper must be continuous.')
-            raise err
-        try:
-            assert all([variable in self.env.get_wrapper_attr('action_variables')
-                       for variable in list(incremental_variables_definition.keys())])
-        except AssertionError as err:
-            self.logger.error(
-                'Some of the incremental variables specified does not exist as action variable in environment.')
-            raise err
-        try:
-            assert len(initial_values) == len(
-                incremental_variables_definition)
-        except AssertionError as err:
-            self.logger.error(
-                'Number of incremental variables does not match with initial values')
-            raise err
-
-        # All posible incremental variations
-        self.values_definition = {}
-        # Original action space variables
-        action_space_low = deepcopy(self.env.action_space.low)
-        action_space_high = deepcopy(self.env.action_space.high)
-        # Calculating incremental variations and action space for each
-        # incremental variable
-        for variable, (delta_temp,
-                       step_temp) in incremental_variables_definition.items():
-
-            # Possible incrementations for each incremental variable.
-            values = np.arange(
-                step_temp,
-                delta_temp +
-                step_temp /
-                10,
-                step_temp)
-            values = [v for v in [*-np.flip(values), 0, *values]]
-
-            # Index of the action variable
-            index = self.env.get_wrapper_attr(
-                'action_variables').index(variable)
-
-            self.values_definition[index] = values
-            action_space_low[index] = min(values)
-            action_space_high[index] = max(values)
-
-        # New action space definition
-        self.action_space = gym.spaces.Box(
-            low=action_space_low,
-            high=action_space_high,
-            shape=self.env.action_space.shape,
-            dtype=np.float32)
-
-        self.logger.info(
-            'New incremental continuous action space: {}'.format(
-                self.action_space))
-        self.logger.info(
-            'Incremental variables configuration (variable: delta, step): {}'.format(
-                incremental_variables_definition))
-        self.logger.info('Wrapper initialized')
-
-    def action(self, action):
-        """Takes the continuous action and apply increment/decrement before to send to the next environment layer."""
-        action_ = deepcopy(action)
-
-        # Update current values with incremental values where required
-        for i, (index, values) in enumerate(self.values_definition.items()):
-            # Get increment value
-            increment_value = action[index]
-            # Round increment value to nearest value
-            increment_value = min(
-                values, key=lambda x: abs(
-                    x - increment_value))
-            # Update current_values
-            self.current_values[i] += increment_value
-            # Clip the value with original action space
-            self.current_values[i] = max(self.env.action_space.low[index], min(
-                self.current_values[i], self.env.action_space.high[index]))
-
-            action_[index] = self.current_values[i]
-
-        return list(action_)
-
-
-class DiscreteIncrementalWrapper(gym.ActionWrapper):
-    """A wrapper for an incremental setpoint discrete action space environment.
-    WARNING: A environment with only temperature setpoints control must be used
-    with this wrapper."""
-
-    logger = TerminalLogger().getLogger(
-        name='WRAPPER DiscreteIncrementalWrapper',
-        level=LOG_WRAPPERS_LEVEL)
-
-    def __init__(
-        self,
-        env: gym.Env,
-        initial_values: List[float],
-        delta_temp: float = 2.0,
-        step_temp: float = 0.5,
-    ):
-        """
-        Args:
-            env: The original Sinergym env.
-            action_names: Name of the action variables with the setpoint control you want to do incremental.
-            initial_values: Initial values of the setpoints.
-            delta_temp: Maximum temperature variation in the setpoints in one step.
-            step_temp: Minimum temperature variation in the setpoints in one step.
-        """
-
-        super().__init__(env)
-
-        # Params
-        self.current_setpoints = initial_values
-
-        # Check environment is valid
-        try:
-            assert not self.env.get_wrapper_attr('is_discrete')
-        except AssertionError as err:
-            self.logger.error(
-                'Env wrapped by this wrapper must be continuous.')
-            raise err
-        try:
-            assert len(
-                self.get_wrapper_attr('current_setpoints')) == len(
-                self.env.get_wrapper_attr('action_variables'))
-        except AssertionError as err:
-            self.logger.error(
-                'Number of variables is different from environment')
-            raise err
-
-        # Define all posible setpoint variations
-        values = np.arange(step_temp, delta_temp + step_temp / 10, step_temp)
-        values = [v for v in [*values, *-values]]
-
-        # Creating action_mapping function for the discrete environment
-        self.mapping = {}
-        do_nothing = [0.0 for _ in range(
-            len(self.env.get_wrapper_attr('action_variables')))]  # do nothing
-        self.mapping[0] = do_nothing
-        n = 1
-
-        # Generate all posible actions
-        for k in range(len(self.env.get_wrapper_attr('action_variables'))):
-            for v in values:
-                x = deepcopy(do_nothing)
-                x[k] = v
-                self.mapping[n] = x
-                n += 1
-
-        self.action_space = gym.spaces.Discrete(n)
-
-        self.logger.info('New incremental action mapping: {}'.format(n))
-        self.logger.info('{}'.format(self.get_wrapper_attr('mapping')))
-        self.logger.info('Wrapper initialized')
-
-    # Define action mapping method
-    def action_mapping(self, action: int) -> List[float]:
-        return self.mapping[action]
-
-    def action(self, action):
-        """Takes the discrete action and transforms it to setpoints tuple."""
-        action_ = deepcopy(action)
-        action_ = self.get_wrapper_attr('action_mapping')(action_)
-        # Update current setpoints values with incremental action
-        self.current_setpoints = [
-            sum(i) for i in zip(
-                self.get_wrapper_attr('current_setpoints'),
-                action_)]
-        # clip setpoints returned
-        self.current_setpoints = np.clip(
-            np.array(self.get_wrapper_attr('current_setpoints')),
-            self.env.action_space.low,
-            self.env.action_space.high
-        )
-
-        return list(self.current_setpoints)
-
-    # Updating property
-    @property
-    def is_discrete(self) -> bool:
-        if isinstance(self.action_space, gym.spaces.Box):
-            return False
-        elif isinstance(self.action_space, gym.spaces.Discrete) or \
-                isinstance(self.action_space, gym.spaces.MultiDiscrete) or \
-                isinstance(self.action_space, gym.spaces.MultiBinary):
-            return True
-        else:
-            self.logger.warning(
-                'Action space is not continuous or discrete?')
-            return False
-
-
-class DiscretizeEnv(gym.ActionWrapper):
-    """ Wrapper to discretize an action space.
-    """
-
-    logger = TerminalLogger().getLogger(name='WRAPPER DiscretizeEnv',
-                                        level=LOG_WRAPPERS_LEVEL)
-
-    def __init__(self,
-                 env: Env,
-                 discrete_space: Union[gym.spaces.Discrete,
-                                       gym.spaces.MultiDiscrete,
-                                       gym.spaces.MultiBinary],
-                 action_mapping: Callable[[Union[int,
-                                                 List[int]]],
-                                          Union[float,
-                                                List[float]]]):
-        """Wrapper for Discretize action space.
-
-        Args:
-            env (Env): Original environment.
-            discrete_space (Union[gym.spaces.Discrete, gym.spaces.MultiDiscrete, gym.spaces.MultiBinary]): Discrete Space.
-            action_mapping (Callable[[Union[int, List[int]]], Union[float, List[float]]]): Function with action as argument, its output must match with original env action space, otherwise an error will be raised.
-        """
-        super().__init__(env)
-        self.action_space = discrete_space
-        self.action_mapping = action_mapping
-
-        self.logger.info(
-            'New Discrete Space and mapping: {}'.format(
-                self.action_space))
-        self.logger.info(
-            'Make sure that the action space is compatible and contained in the original environment.')
-        self.logger.info('Wrapper initialized')
-
-    def action(self, action: Union[int, List[int]]) -> List[int]:
-        action_ = deepcopy(action)
-        action_ = self.get_wrapper_attr('action_mapping')(action_)
-        return action_
-
-    # Updating property
-    @property
-    def is_discrete(self) -> bool:
-        if isinstance(self.action_space, gym.spaces.Box):
-            return False
-        elif isinstance(self.action_space, gym.spaces.Discrete) or \
-                isinstance(self.action_space, gym.spaces.MultiDiscrete) or \
-                isinstance(self.action_space, gym.spaces.MultiBinary):
-            return True
-        else:
-            self.logger.warning(
-                'Action space is not continuous or discrete?')
-            return False
-
-
-class NormalizeAction(gym.ActionWrapper):
-    """Wrapper to normalize action space.
-    """
-
-    logger = TerminalLogger().getLogger(name='WRAPPER NormalizeAction',
-                                        level=LOG_WRAPPERS_LEVEL)
-
-    def __init__(self,
-                 env: Env,
-                 normalize_range: Tuple[float, float] = (-1.0, 1.0)):
-        """Wrapper to normalize action space in default continuous environment (not to combine with discrete environments). The action will be parsed to real action space before to send to the simulator (very useful ion DRL algorithms)
-
-        Args:
-            env (Env): Original environment.
-            normalize_range (Tuple[float,float]): Range to normalize action variable values. Defaults to values between [-1.0,1.0].
-        """
-        super().__init__(env)
-
-        # Checks
-        try:
-            assert not self.get_wrapper_attr('is_discrete')
-        except AssertionError as err:
-            self.logger.critical(
-                'The original environment must be continuous')
-            raise err
-
-        # Define real space for simulator
-        self.real_space = deepcopy(self.action_space)
-        # Define normalize space
-        lower_norm_value, upper_norm_value = normalize_range
-        self.normalized_space = gym.spaces.Box(
-            low=np.array(
-                np.repeat(
-                    lower_norm_value,
-                    env.action_space.shape[0]),
-                dtype=np.float32),
-            high=np.array(
-                np.repeat(
-                    upper_norm_value,
-                    env.action_space.shape[0]),
-                dtype=np.float32),
-            dtype=env.action_space.dtype)
-        # Updated action space to normalized space
-        self.action_space = self.normalized_space
-
-        self.logger.info(
-            'New normalized action Space: {}'.format(
-                self.action_space))
-        self.logger.info('Wrapper initialized')
-
-    def reverting_action(self,
-                         action: Any) -> List[float]:
-        """ This method maps a normalized action in a real action space.
-
-        Args:
-            action (Any): Normalize action received in environment
-
-        Returns:
-            List[float]: Action transformed in simulator real action space.
-        """
-        action_ = []
-
-        for i, value in enumerate(action):
-            a_max_min = self.normalized_space.high[i] - \
-                self.normalized_space.low[i]
-            sp_max_min = self.real_space.high[i] - \
-                self.real_space.low[i]
-
-            action_.append(
-                self.real_space.low[i] +
-                (
-                    value -
-                    self.normalized_space.low[i]) *
-                sp_max_min /
-                a_max_min)
-
-        return action_
-
-    def action(self, action: Any):
-        action_ = deepcopy(action)
-        action_ = self.get_wrapper_attr('reverting_action')(action_)
-        return action_
+# ---------------------------------------------------------------------------- #
 
 
 class ReduceObservationWrapper(gym.Wrapper):
@@ -1069,7 +1095,9 @@ class ReduceObservationWrapper(gym.Wrapper):
 
         return np.array(list(reduced_obs_dict.values())), info
 
-    # ---------------------- Specific environment wrappers ---------------------#
+# ---------------------------------------------------------------------------- #
+#                         Specific environment wrappers                        #
+# ---------------------------------------------------------------------------- #
 
 
 class OfficeGridStorageSmoothingActionConstraintsWrapper(
