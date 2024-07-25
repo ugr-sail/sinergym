@@ -1,11 +1,8 @@
 """Sinergym Loggers"""
-
-import csv
 import logging
-import os
 import sys
-from typing import Any, Dict, List, Optional, Tuple, Union
 from abc import ABC, abstractmethod
+from typing import Any, Dict, List, Tuple, Union
 
 import numpy as np
 import pkg_resources
