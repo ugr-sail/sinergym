@@ -100,7 +100,7 @@ class BaseLogger(ABC):
             'comfort_violation_timesteps': 0
         }
 
-    def log_step(
+    def log_data(
         self,
         obs: List[Any],
         action: Union[int, np.ndarray, List[Any]],
@@ -124,7 +124,7 @@ class BaseLogger(ABC):
         # Store data information for summary
         self._store_information_summary(info)
 
-    def log_step_normalize(
+    def log_normalized_data(
         self,
         obs: List[Any],
         action: Union[int, np.ndarray, List[Any]],
@@ -148,17 +148,18 @@ class BaseLogger(ABC):
                 obs, action, terminated, truncated, info))
 
     def return_episode_data(self, episode: int) -> None:
-        """Return episode information.
+        """Return episode information and all data collected.
 
         Args:
             episode (int): Current simulation episode number.
+
+        Returns:
+            Tuple: Progress data (episode summary), monitor data(steps data), monitor data normalized.
 
         """
         progress_data = self._create_row_summary_content(episode)
         monitor_data = self.data
         monitor_data_normalized = self.data_normalized
-        # Reset episode data for next episode
-        self.reset_logger()
 
         return progress_data, monitor_data, monitor_data_normalized
 
