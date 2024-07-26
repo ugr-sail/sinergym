@@ -1078,7 +1078,7 @@ class WandBLogWrapper(gym.Wrapper):
                  env: Env,
                  entity: str,
                  project_name: str,
-                 run_name: str,
+                 run_name: Optional[str] = None,
                  group: Optional[str] = None,
                  tags: Optional[List[str]] = None,
                  save_code: bool = False,
@@ -1100,7 +1100,7 @@ class WandBLogWrapper(gym.Wrapper):
             env (Env): Original Sinergym environment.
             entity (str): The entity to which the project belongs.
             project_name (str): The project name.
-            run_name (str): The name of the run.
+            run_name (Optional[str]): The name of the run. Defaults to None (Sinergym env name + wandb unique identifier).
             tags (Optional[List[str]]): List of tags for the run. Defaults to None.
             save_code (bool): Whether to save the code in the run. Defaults to False.
             dump_frequency (int): Frequency to dump log in platform. Defaults to 1000.
@@ -1120,6 +1120,10 @@ class WandBLogWrapper(gym.Wrapper):
 
         # Add requirement for wandb core
         wandb.require("core")
+
+        # Define wandb run name
+        run_name = run_name if run_name is not None else self.env.get_wrapper_attr(
+            'name') + '_' + wandb.util.generate_id()
 
         # Init WandB session
         self.wandb_run = wandb.init(entity=entity,
