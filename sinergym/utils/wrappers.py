@@ -1067,6 +1067,241 @@ class LoggerWrapper(gym.Wrapper):
 
 # ---------------------------------------------------------------------------- #
 
+class WandBLogWrapper(gym.Wrapper):
+    """Wrapper to log data in WandB platform. It must be used after LoggerWrapper.
+    """
+
+    logger = TerminalLogger().getLogger(name='WRAPPER WandBLogWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: Env,
+                 entity: str,
+                 project_name: str,
+                 run_name: str,
+                 group: Optional[str] = None,
+                 tags: Optional[List[str]] = None,
+                 save_code: bool = False,
+                 dump_frequency: int = 1000,
+                 artifact_save: bool = True,
+                 artifact_type: str = 'output',
+                 excluded_info_keys: List[str] = ['reward',
+                                                  'action',
+                                                  'timestep',
+                                                  'month',
+                                                  'day',
+                                                  'hour',
+                                                  'time_elapsed(hours)',
+                                                  'reward_weight',
+                                                  'is_raining']):
+        """Wrapper to log data in WandB platform. It must be used after LoggerWrapper.
+
+        Args:
+            env (Env): Original Sinergym environment.
+            entity (str): The entity to which the project belongs.
+            project_name (str): The project name.
+            run_name (str): The name of the run.
+            tags (Optional[List[str]]): List of tags for the run. Defaults to None.
+            save_code (bool): Whether to save the code in the run. Defaults to False.
+            dump_frequency (int): Frequency to dump log in platform. Defaults to 1000.
+            artifact_save (bool): Whether to save artifacts in WandB. Defaults to True.
+            artifact_type (str): Type of artifact to save. Defaults to 'output'.
+            excluded_info_keys (List[str]): List of keys to exclude from info dictionary. Defaults to ['reward', 'action', 'timestep', 'month', 'day', 'hour', 'time_elapsed(hours)', 'reward_weight', 'is_raining'].
+        """
+        super(WandBLogWrapper, self).__init__(env)
+
+        # Check if logger is active
+        try:
+            assert is_wrapped(self, LoggerWrapper)
+        except AssertionError as err:
+            self.logger.error(
+                'WandbLogWrapper must be used after LoggerWrapper.')
+            raise err
+
+        # Add requirement for wandb core
+        wandb.require("core")
+
+        # Init WandB session
+        self.wandb_run = wandb.init(entity=entity,
+                                    project=project_name,
+                                    name=run_name,
+                                    group=group,
+                                    tags=tags,
+                                    save_code=save_code,
+                                    reinit=False)
+
+        # Define X-Axis for episodes summaries
+        self.wandb_run.define_metric(
+            'episode_summaries/*',
+            step_metric='episode_summaries/episode_num')
+
+        # Attributes
+        self.dump_frequency = dump_frequency
+        self.artifact_save = artifact_save
+        self.artifact_type = artifact_type
+        self.wandb_id = self.wandb_run.id
+        self.excluded_info_keys = excluded_info_keys
+        self.global_timestep = 0
+
+        # Define metrics for episode values
+        # wandb.define_metric()
+
+        self.logger.info('Wrapper initialized.')
+
+    def step(self, action: Union[int, np.ndarray]
+             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
+        """Sends action to the environment. Logging new interaction information in WandB platform.
+
+        Args:
+            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
+
+        Returns:
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
+        """
+        self.global_timestep += 1
+        # Execute step ion order to get new observation and reward back
+        obs, reward, terminated, truncated, info = self.env.step(action)
+
+        # Log step information if frequency is correct
+        if self.global_timestep % self.dump_frequency == 0:
+            self.logger.debug(
+                'Dump Frequency reached in timestep {}, dumping data in WandB.'.format(
+                    self.global_timestep))
+            self.wandb_log(action, obs, reward, info)
+
+        return obs, reward, terminated, truncated, info
+
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
+        """Reset the environment. Recording episode summary in WandB platform if it is not the first episode.
+
+        Args:
+            seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). if value is None, a seed will be chosen from some source of entropy. Defaults to None.
+            options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
+
+        Returns:
+            Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
+        """
+        self.global_timestep += 1
+        # It isn't the first episode simulation, so we can logger last episode
+        if self.get_wrapper_attr('is_running'):
+            # Log all episode information
+            self.wandb_log_summary()
+            self.logger.info(
+                'End of episode detected, dumping summary metrics in WandB Platform.')
+
+        # Then, reset environment
+        obs, info = self.env.reset(seed=seed, options=options)
+
+        return obs, info
+
+    def close(self) -> None:
+        """Recording last episode summary and close env.
+        """
+
+        # Log last episode summary
+        self.wandb_log_summary()
+        self.logger.info(
+            'Environment closed, dumping summary metrics in WandB Platform.')
+
+        # Save artifact if it is enabled
+        self.save_artifact()
+        # Finish WandB run
+        self.wandb_run.finish()
+
+        # Then, close env
+        self.env.close()
+
+    def wandb_log(self,
+                  action: Union[int, np.ndarray],
+                  obs: np.ndarray,
+                  reward: float,
+                  info: Dict[str, Any]) -> None:
+        """Log step information in WandB platform.
+
+        Args:
+            action ([type]): Action selected by the agent.
+            obs ([type]): Observation for next timestep.
+            reward ([type]): Reward obtained.
+            info ([type]): Dictionary with extra information.
+        """
+
+        # Interaction registration such as obs, action, reward...
+        # (organized in a nested dictionary)
+        log_dict = {}
+
+        # OBSERVATION
+        if is_wrapped(self, NormalizeObservation):
+            log_dict['Normalized_observations'] = dict(
+                zip(self.env.get_wrapper_attr('observation_variables'), obs))
+            log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
+                'observation_variables'), self.get_wrapper_attr('unwrapped_observation')))
+        else:
+            log_dict['Observations'] = dict(
+                zip(self.get_wrapper_attr('observation_variables'), obs))
+
+        # ACTION
+        # Original action sent
+        log_dict['Agent_actions'] = dict(
+            zip(self.get_wrapper_attr('action_variables'), action))
+        # Action values performed in simulation
+        log_dict['Simulation_actions'] = dict(
+            zip(self.get_wrapper_attr('action_variables'), info['action']))
+        # REWARD
+        log_dict['Reward'] = {'reward': reward}
+        # INFO
+        log_dict['Info'] = {
+            key: float(value) for key,
+            value in info.items() if key not in self.excluded_info_keys}
+
+        # Log in WandB
+        self._log_data(log_dict)
+
+    def wandb_log_summary(self) -> None:
+        """Log episode summary in WandB platform.
+        """
+        # Get information from logger of LoggerWrapper
+        episode_summary, _, _ = self.get_wrapper_attr(
+            'data_logger').return_episode_data(self.get_wrapper_attr('episode'))
+        episode_dict = dict(zip(self.get_wrapper_attr(
+            'progress_header'), episode_summary))
+        self._log_data({'episode_summaries': episode_dict})
+
+    def save_artifact(self) -> None:
+        """Save sinergym output as artifacts in WandB platform.
+        """
+        if self.artifact_save:
+            artifact = wandb.Artifact(
+                name=self.wandb_run.name,
+                type=self.artifact_type)
+            artifact.add_dir(
+                self.get_wrapper_attr('workspace_path'),
+                name='sinergym_output/')
+            self.wandb_run.log_artifact(artifact)
+
+    def _log_data(self, data: Dict[str, Any]) -> None:
+        """Log data in WandB platform. Nesting the dictionary correctly in different sections.
+
+        Args:
+            data (Dict[str, Any]): Dictionary with data to be logged.
+        """
+
+        for key, value in data.items():
+            if isinstance(value, dict):
+                for k, v in value.items():
+                    self.wandb_run.log({f'{key}/{k}': v},
+                                       step=self.global_timestep)
+            else:
+                self.wandb_run.log({key: value},
+                                   step=self.global_timestep)
+
+
+# ---------------------------------------------------------------------------- #
+
 
 class ReduceObservationWrapper(gym.Wrapper):
 
