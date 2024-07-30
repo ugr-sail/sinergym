@@ -943,6 +943,7 @@ class LoggerWrapper(gym.Wrapper):
             'episode_num',
             'cumulative_reward',
             'mean_reward',
+            'std_reward',
             'cumulative_reward_energy_term',
             'mean_reward_energy_term',
             'cumulative_reward_comfort_term',

@@ -311,6 +311,7 @@ class Logger(BaseLogger):
         return [episode,
                 np.sum(self.summary_data['rewards']),
                 np.mean(self.summary_data['rewards']),
+                np.std(self.summary_data['rewards']),
                 np.sum(self.summary_data['reward_energy_terms']),
                 np.mean(self.summary_data['reward_energy_terms']),
                 np.sum(self.summary_data['reward_comfort_terms']),
