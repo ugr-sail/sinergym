@@ -6,6 +6,8 @@ from collections import deque
 from copy import deepcopy
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from abc import ABC, abstractmethod
+import os
 
 import gymnasium as gym
 import numpy as np
@@ -809,68 +811,20 @@ class MultiObjectiveReward(gym.Wrapper):
 # ---------------------------------------------------------------------------- #
 
 
-class LoggerWrapper(gym.Wrapper):
-
-    logger = TerminalLogger().getLogger(name='WRAPPER LoggerWrapper',
-                                        level=LOG_WRAPPERS_LEVEL)
+class BaseLoggerWrapper(ABC, gym.Wrapper):
 
     def __init__(
         self,
         env: Env,
-        logger_class: Callable = Logger,
-        monitor_header: Optional[List[str]] = None,
-        progress_header: Optional[List[str]] = None
+        logger_class: Callable = Logger
     ):
-        """Logger to log interactions with environment.
 
-        Args:
-            env (Env): Original Gym environment in Sinergym.
-            logger_class (Logger): Logger class to process all interaction data.
-            monitor_header: Header for monitor.csv (information about steps interaction) in each episode. Default is None (default Sinergym format).
-            progress_header: Header for progress.csv (information about summary of episodes) in whole simulation. Default is None (default Sinergym format).
-        """
-        super(LoggerWrapper, self).__init__(env)
-
-        # Headers for csv genereted using loggers
-        self.logger.info('Initializing output logger files headers.')
-        self.initialize_headers(monitor_header, progress_header)
-
-        self.progress_file_path = self.get_wrapper_attr(
-            'workspace_path') + '/progress.csv'
-
-        # Create CSV file with header if it's required for episode summaries
-        # (progress.csv)
-        self.logger.info(
-            'Creating progress.csv file in {}.'.format(
-                self.progress_file_path))
-        with open(self.progress_file_path, 'a', newline='\n') as file_obj:
-            csv_writer = csv.writer(file_obj)
-            csv_writer.writerow(self.progress_header)
-
-        # Create simulation logger, by default is active (flag=True)
+        super(BaseLoggerWrapper, self).__init__(env)
         self.data_logger = logger_class()
-
-        self.logger.info('Wrapper initialized.')
-
-    def step(self, action: Union[int, np.ndarray]
-             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
-        """Sends action to the environment. Logging new interaction information in logger.
-
-        Args:
-            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
-
-        Returns:
-            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
-        """
-        # Execute step ion order to get new observation and reward back
-        obs, reward, terminated, truncated, info = self.env.step(action)
-        # Log step information
-        self.log_step(obs=obs,
-                      terminated=terminated,
-                      truncated=truncated,
-                      info=info)
-
-        return obs, reward, terminated, truncated, info
+        self.last_data = None
+        self.episode_summary = {}
+        # Overwrite in case you want more metrics
+        self.custom_variables = []
 
     def reset(self,
               seed: Optional[int] = None,
@@ -878,26 +832,245 @@ class LoggerWrapper(gym.Wrapper):
                                      Any]] = None) -> Tuple[np.ndarray,
                                                             Dict[str,
                                                                  Any]]:
-        """Reset the environment. Recording episode summary in logger
+        self.data_logger.reset_data()
 
-        Args:
-            seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). if value is None, a seed will be chosen from some source of entropy. Defaults to None.
-            options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
+        obs, info = self.env.reset(seed=seed, options=options)
+
+        # Log reset information
+        if is_wrapped(self, NormalizeObservation):
+            self.data_logger.log_norm_obs(obs)
+            self.data_logger.log_interaction(
+                obs=self.get_wrapper_attr('unwrapped_observation'),
+                action=[None for _ in range(
+                    len(self.get_wrapper_attr('action_variables')))],
+                reward=None,
+                info=info,
+                terminated=False,
+                truncated=False,
+                custom_metrics=[None for _ in range(len(self.get_wrapper_attr('custom_variables')))])
+        else:
+            self.data_logger.log_interaction(
+                obs=obs,
+                action=[None for _ in range(
+                    len(self.get_wrapper_attr('action_variables')))],
+                reward=None,
+                info=info,
+                terminated=False,
+                truncated=False,
+                custom_metrics=[None for _ in range(len(self.get_wrapper_attr('custom_variables')))])
+
+        return obs, info
+
+    def step(self, action: Union[int, np.ndarray]) -> Tuple[
+            np.ndarray, float, bool, bool, Dict[str, Any]]:
+
+        obs, reward, terminated, truncated, info = self.env.step(action)
+
+        # Process custom_metrics
+        custom_metrics = self.calculate_custom_metrics(obs,
+                                                       action,
+                                                       reward,
+                                                       info,
+                                                       terminated,
+                                                       truncated)
+
+        if is_wrapped(self.env, NormalizeObservation):
+            self.data_logger.log_norm_obs(obs)
+            self.data_logger.log_interaction(
+                obs=self.get_wrapper_attr('unwrapped_observation'),
+                action=action,
+                reward=reward,
+                info=info,
+                terminated=terminated,
+                truncated=truncated,
+                custom_metrics=custom_metrics)
+        else:
+            self.data_logger.log_interaction(
+                obs=obs,
+                action=action,
+                reward=reward,
+                info=info,
+                terminated=terminated,
+                truncated=truncated,
+                custom_metrics=custom_metrics)
+
+        return obs, reward, terminated, truncated, info
+
+    def close(self):
+        """Close the environment and save normalization calibration."""
+        # Log last episode and reset logger
+        self.episode_summary = self.get_episode_summary(
+            self.get_wrapper_attr('episode'))
+        self.data_logger.reset_data()
+        # Close the environment
+        self.env.close()
+
+    @abstractmethod
+    def calculate_custom_metrics(self,
+                                 obs: np.ndarray,
+                                 action: Union[int, np.ndarray],
+                                 reward: float,
+                                 info: Dict[str, Any],
+                                 terminated: bool,
+                                 truncated: bool):
+        """Calculate custom metrics from current interaction (or passed using self.data_logger attributes)
+
+            Args:
+                obs (np.ndarray): Observation from environment.
+                action (Union[int, np.ndarray]): Action taken in environment.
+                reward (float): Reward received from environment.
+                info (Dict[str, Any]): Information from environment.
+                terminated (bool): Flag to indicate if episode is terminated.
+                truncated (bool): Flag to indicate if episode is truncated.
+        """
+        pass
+
+    @abstractmethod
+    def get_episode_summary(self, episode: int) -> Dict[str, float]:
+        """Return data summary for the logger. This method should be implemented in the child classes.
+           This method determines the data summary of episodes in Sinergym environments.
+
+           Args:
+                episode (int): Episode number.
 
         Returns:
-            Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
+            Dict[str, float]: Data summary.
         """
-        # It isn't the first episode simulation, so we can logger last episode
+        pass
+
+
+class LoggerWrapper(BaseLoggerWrapper):
+
+    logger = TerminalLogger().getLogger(name='WRAPPER LoggerWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(
+        self,
+        env: Env,
+        logger_class: Callable = Logger
+    ):
+        super(LoggerWrapper, self).__init__(env, logger_class)
+        self.custom_variables = []
+        self.logger.info('Wrapper initialized.')
+
+    def calculate_custom_metrics(self,
+                                 obs: np.ndarray,
+                                 action: Union[int, np.ndarray],
+                                 reward: float,
+                                 info: Dict[str, Any],
+                                 terminated: bool,
+                                 truncated: bool):
+        return []
+
+    def get_episode_summary(self, episode: int) -> Dict[str, float]:
+        # Get information from logger
+        comfort_terms = [info['comfort_term']
+                         for info in self.data_logger.infos[1:]]
+        energy_terms = [info['energy_term']
+                        for info in self.data_logger.infos[1:]]
+        abs_comfort_penalties = [info['abs_comfort_penalty']
+                                 for info in self.data_logger.infos[1:]]
+        abs_energy_penalties = [info['abs_energy_penalty']
+                                for info in self.data_logger.infos[1:]]
+        temperature_violations = [info['total_temperature_violation']
+                                  for info in self.data_logger.infos[1:]]
+        power_demands = [info['total_power_demand']
+                         for info in self.data_logger.infos[1:]]
+        try:
+            comfort_violation_time = len(
+                [value for value in temperature_violations if value > 0]) / (self.get_wrapper_attr('timestep') - 1) * 100
+        except ZeroDivisionError:
+            comfort_violation_time = 0
+
+        # Data summary
+        data_summary = {
+            'episode_num': episode,
+            'mean_reward': np.mean(
+                self.data_logger.rewards[1:]),
+            'std_reward': np.std(
+                self.data_logger.rewards[1:]),
+            'mean_reward_comfort_term': np.mean(comfort_terms),
+            'std_reward_comfort_term': np.std(comfort_terms),
+            'mean_reward_energy_term': np.mean(energy_terms),
+            'std_reward_energy_term': np.std(energy_terms),
+            'mean_abs_comfort_penalty': np.mean(abs_comfort_penalties),
+            'std_abs_comfort_penalty': np.std(abs_comfort_penalties),
+            'mean_abs_energy_penalty': np.mean(abs_energy_penalties),
+            'std_abs_energy_penalty': np.std(abs_energy_penalties),
+            'mean_temperature_violation': np.mean(temperature_violations),
+            'std_temperature_violation': np.std(temperature_violations),
+            'mean_power_demand': np.mean(power_demands),
+            'std_power_demand': np.std(power_demands),
+            'cumulative_power_demand': np.sum(power_demands),
+            'comfort_violation_time(%)': comfort_violation_time,
+            'length(timesteps)': self.get_wrapper_attr('timestep'),
+            'time_elapsed(hours)': self.data_logger.infos[-1]['time_elapsed(hours)']}
+        return data_summary
+
+
+class CSVLogger(gym.Wrapper):
+
+    logger = TerminalLogger().getLogger(name='WRAPPER CSVLogger',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(
+        self,
+        env: Env,
+        info_excluded_keys: List[str] = ['reward',
+                                         'action',
+                                         'timestep',
+                                         'month',
+                                         'day',
+                                         'hour',
+                                         'time_elapsed(hours)',
+                                         'reward_weight',
+                                         'is_raining']
+    ):
+        """Logger to save logger data in CSV files while is running. It is required to be wrapped by a BaseLoggerWrapper child class previously.
+
+        Args:
+            env (Env): Original Gym environment in Sinergym.
+            info_excluded_keys (List[str], optional): List of keys in info dictionary to be excluded from CSV files. Defaults to [].
+
+        """
+        super(CSVLogger, self).__init__(env)
+        self.info_excluded_keys = info_excluded_keys
+
+        try:
+            assert is_wrapped(self.env, BaseLoggerWrapper)
+        except AssertionError as err:
+            self.logger.error(
+                'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
+            raise err
+
+        self.progress_file_path = self.get_wrapper_attr(
+            'workspace_path') + '/progress.csv'
+
+        self.logger.info('Wrapper initialized.')
+
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
+        """Reset the environment. Saving current logger episode summary and interaction in CSV files.
+
+        Args:
+        seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). If value is None, a seed will be chosen from some source of entropy. Defaults to None.
+        options (Optional[Dict[str, Any]]): Additional information to specify how the environment is reset. Defaults to None.
+
+        Returns:
+        Tuple[np.ndarray, Dict[str, Any]]: Current observation and info context with additional information.
+        """
+        # If it is not the first episode
         if self.get_wrapper_attr('is_running'):
             # Log all episode information
             self.dump_log_files()
             self.logger.info(
-                'End of episode detected, Data recorded in CSV files.')
-
-        # Then, reset environment
+                'End of episode detected, data updated in monitor and progress.csv.')
+        # reset environment
         obs, info = self.env.reset(seed=seed, options=options)
-
-        self.log_reset(obs, info)
 
         return obs, info
 
@@ -905,165 +1078,79 @@ class LoggerWrapper(gym.Wrapper):
         """Recording last episode summary and close env.
         """
 
-        # Log all episode information
+        # Log csv files
         self.dump_log_files()
-        # Record last episode summary before end simulation
         self.logger.info(
-            'Environment closed, Data recorded in CSV files.')
+            'Environment closed, data updated in monitor and progress.csv.')
 
-        # Then, close env
+        # Close env, updating the logger information
         self.env.close()
 
-    def initialize_headers(self,
-                           monitor_header: Optional[List[str]],
-                           progress_header: Optional[List[str]]):
-        """Initialize headers for monitor and progress csv files.
-
-        Args:
-            monitor_header (Optional[List[str]]): List of headers for monitor.csv file. None value will be replaced by default Sinergym values.
-            progress_header (Optional[List[str]]): List of headers for progress.csv file. None value will be replaced by default Sinergym values.
-        """
-
-        self.monitor_header = monitor_header if monitor_header is not None else \
-            ['timestep'] + \
-            self.get_wrapper_attr('observation_variables') + \
-            self.get_wrapper_attr('action_variables') + [
-                'time (hours)',
-                'reward',
-                'reward_energy_term',
-                'reward_comfort_term',
-                'absolute_energy_penalty',
-                'absolute_comfort_penalty',
-                'total_power_demand',
-                'total_temperature_violation',
-                'terminated',
-                'truncated']
-
-        self.progress_header = progress_header if progress_header is not None else [
-            'episode_num',
-            'cumulative_reward',
-            'mean_reward',
-            'std_reward',
-            'cumulative_reward_energy_term',
-            'mean_reward_energy_term',
-            'cumulative_reward_comfort_term',
-            'mean_reward_comfort_term',
-            'cumulative_abs_energy_penalty',
-            'mean_abs_energy_penalty',
-            'cumulative_abs_comfort_penalty',
-            'mean_abs_comfort_penalty',
-            'cumulative_power_demand',
-            'mean_power_demand',
-            'cumulative_temperature_violation',
-            'mean_temperature_violation',
-            'comfort_violation_time (%)',
-            'length (timesteps)',
-            'time_elapsed (hours)']
-
-    def log_reset(self, obs: np.ndarray, info: Dict[str, Any]) -> None:
-        """Log reset information using logger functionality.
-
-            Args:
-                obs (np.ndarray): Observation for next timestep.
-                info (Dict[str, Any]): Dictionary with extra information.
-        """
-
-        # Store initial state of simulation
-        if is_wrapped(self, NormalizeObservation):
-            self.data_logger.log_normalized_data(
-                obs=obs,
-                action=[
-                    None for _ in range(
-                        len(
-                            self.env.get_wrapper_attr('action_variables')))],
-                terminated=False,
-                truncated=False,
-                info=info)
-            # And store original obs
-            self.data_logger.log_data(
-                obs=self.env.get_wrapper_attr('unwrapped_observation'),
-                action=[
-                    None for _ in range(
-                        len(
-                            self.get_wrapper_attr('action_variables')))],
-                terminated=False,
-                truncated=False,
-                info=info)
-        else:
-            # Only store original step
-            self.data_logger.log_data(obs=obs,
-                                      action=[None for _ in range(
-                                          len(self.get_wrapper_attr('action_variables')))],
-                                      terminated=False,
-                                      truncated=False,
-                                      info=info)
-
-    def log_step(self,
-                 obs: np.ndarray,
-                 terminated: bool,
-                 truncated: bool,
-                 info: Dict[str,
-                            Any]) -> None:
-        """Log step information using logger functionality.
-
-        Args:
-            obs (np.ndarray): Observation for next timestep.
-            terminated (bool): Whether the episode has ended or not.
-            truncated (bool): Whether episode has been truncated or not.
-            info (Dict[str, Any]): Dictionary with extra information.
-        """
-        # Record action and new observation in simulator's csv
-        if is_wrapped(self, NormalizeObservation):
-            self.data_logger.log_normalized_data(
-                obs=obs,
-                action=info['action'],
-                terminated=terminated,
-                truncated=truncated,
-                info=info)
-            # Record original observation too
-            self.data_logger.log_data(
-                obs=self.env.get_wrapper_attr('unwrapped_observation'),
-                action=info['action'],
-                terminated=terminated,
-                truncated=truncated,
-                info=info)
-        else:
-            # Only record observation without normalization
-            self.data_logger.log_data(
-                obs=obs,
-                action=info['action'],
-                terminated=terminated,
-                truncated=truncated,
-                info=info)
-
     def dump_log_files(self) -> None:
-        """Dump all log files in the output folder (CSV files) and reset logger for the next episode cycle.
+        """Dump all logger data in CSV files.
         """
+        monitor_path = self.get_wrapper_attr('episode_path') + '/monitor'
+        os.makedirs(monitor_path, exist_ok=True)
+        episode_data = self.get_wrapper_attr('data_logger')
+        episode_summary = self.get_wrapper_attr(
+            'get_episode_summary')(self.get_wrapper_attr('episode'))
 
-        # Extract all information from logger
-        progress_row, monitor_data, monitor_data_normalized = self.data_logger.return_episode_data(
-            episode=self.env.get_wrapper_attr('episode'))
+        # Observations
+        with open(monitor_path + '/observations.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(self.get_wrapper_attr('observation_variables'))
+            writer.writerows(episode_data.observations)
 
-        # WRITE steps_info rows in monitor.csv
-        with open(self.get_wrapper_attr('episode_path') + '/monitor.csv', 'w', newline='') as file_obj:
-            csv_writer = csv.writer(file_obj)
-            csv_writer.writerow(self.monitor_header)
-            csv_writer.writerows(monitor_data)
+        # Normalized Observations
+        if len(episode_data.normalized_observations) > 0:
+            with open(monitor_path + '/normalized_observations.csv', 'w') as f:
+                writer = csv.writer(f)
+                writer.writerow(self.get_wrapper_attr('observation_variables'))
+                writer.writerows(episode_data.normalized_observations)
 
-        # WRITE normalize steps_info rows in monitor_normalized.csv
-        if len(monitor_data_normalized) > 1:
-            with open(self.get_wrapper_attr('episode_path') + '/monitor_normalized.csv', 'w', newline='') as file_obj:
-                csv_writer = csv.writer(file_obj)
-                csv_writer.writerow(self.monitor_header)
-                csv_writer.writerows(monitor_data_normalized)
+        # Agent Actions
+        with open(monitor_path + '/agent_actions.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(self.get_wrapper_attr('action_variables'))
+            writer.writerows(episode_data.actions)
 
-        # WRITE progress_row in the last progress.csv
-        with open(self.progress_file_path, 'a+', newline='') as file_obj:
-            csv_writer = csv.writer(file_obj)
-            csv_writer.writerow(progress_row)
+        # Simulated actions
+        with open(monitor_path + '/simulated_actions.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(self.get_wrapper_attr('action_variables'))
+            reset_action = [None for _ in range(
+                len(self.get_wrapper_attr('action_variables')))]
+            simulated_actions = [info['action']
+                                 for info in episode_data.infos[1:]]
+            writer.writerow(reset_action)
+            writer.writerows(simulated_actions)
 
-        # Reset logger for the next episode (deleting all data)
-        self.data_logger.reset_logger()
+        # Rewards
+        with open(monitor_path + '/rewards.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(['reward'])
+            writer.writerow([None])
+            for reward in episode_data.rewards[1:]:
+                writer.writerow([reward])
+
+        # Infos (except excluded keys)
+        with open(monitor_path + '/infos.csv', 'w') as f:
+            writer = csv.writer(f)
+            column_names = [key for key in episode_data.infos[-1].keys()
+                            if key not in self.get_wrapper_attr('info_excluded_keys')]
+            reset_values = [None for _ in column_names]
+            values = [[value for key, value in info.items() if key not in self.get_wrapper_attr(
+                'info_excluded_keys')] for info in episode_data.infos[1:]]
+            writer.writerow(column_names)
+            writer.writerow(reset_values)
+            writer.writerows(values)
+
+        # Update progress.csv
+        with open(self.get_wrapper_attr('progress_file_path'), 'a+') as f:
+            writer = csv.writer(f)
+            if self.get_wrapper_attr('episode') == 1:
+                writer.writerow(list(episode_summary.keys()))
+            writer.writerow(list(episode_summary.values()))
 
 
 # ---------------------------------------------------------------------------- #
