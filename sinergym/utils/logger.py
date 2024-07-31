@@ -69,264 +69,83 @@ class TerminalLogger():
         return logger
 
 
-class BaseLogger(ABC):
-    """Abstract Logger for agent interaction with environment. Save all interactions and episode summary in Dataframes as attributes.
+class Logger():
+    """Logger for agent interaction with environment. Save all interactions and episode summary in Dataframes as attributes.
 
     Attributes:
-        data (List[List[Any]]): List to store step data.
-        data_normalized (List[List[Any]]): List to store normalized step data.
-        summary_data (Dict[str,Any]): Dictionary to store episode summary data including rewards, penalties, power demands, and time information.
+        observations (List[List[float]]): List to store observations.
+        normalized_observations (List[List[float]]): List to store normalized observations (if exists).
+        actions (List[Union[int, np.ndarray, List[float]]]): List to store actions.
+        rewards (List[float]): List to store rewards.
+        infos (List[Dict[str, Any]]): List to store info data.
+        terminateds (List[bool]): List to store terminated flags.
+        truncateds (List[bool]): List to store truncated flags.
     """
 
     def __init__(self):
         """Logger constructor."""
 
-        # Steps and episode data initialization
-        self.data = []
-        self.data_normalized = []
-        self.summary_data = {
-            'rewards': [],
-            'reward_energy_terms': [],
-            'reward_comfort_terms': [],
-            'abs_energy_penalties': [],
-            'abs_comfort_penalties': [],
-            'total_power_demands': [],
-            'total_temperature_violations': [],
-            'total_timesteps': 0,
-            'total_time_elapsed': 0,
-            'comfort_violation_timesteps': 0
-        }
+        # Interaction data initialization
+        self.interactions = 0
+        self.observations = []
+        self.normalized_observations = []
+        self.actions = []
+        self.rewards = []
+        self.infos = []
+        self.terminateds = []
+        self.truncateds = []
+        self.custom_metrics = []
 
-    def log_data(
-        self,
-        obs: List[Any],
-        action: Union[int, np.ndarray, List[Any]],
-        terminated: bool,
-        truncated: bool,
-        info: Dict[str, Any]
-    ) -> None:
-        """Log step information and store it in data attribute.
+        self.episode_summaries = []
+
+    def log_interaction(self,
+                        obs: List[float],
+                        action: Union[int, np.ndarray, List[float]],
+                        reward: float,
+                        info: Dict[str, Any],
+                        terminated: bool,
+                        truncated: bool,
+                        custom_metrics: List[Any] = None) -> None:
+        """Log interaction data.
 
         Args:
-            obs(List[Any]): Observation from step.
-            action(Union[int, np.ndarray, List[Any]]): Action done in step.
-            terminated(bool): terminated flag in step.
-            truncated(bool): truncated flag in step.
-            info(Dict[str, Any]): Extra info collected in step.
+            obs (List[float]): Observation data.
+            action (Union[int, np.ndarray, List[float]]): Action data.
+            reward (float): Reward data.
+            info (Dict[str, Any]): Info data.
+            terminated (bool): Termination flag.
+            truncated (bool): Truncation flag.
+            custom_metrics (List[Any]): Custom metric data. Default is None.
         """
+        self.observations.append(obs)
+        self.actions.append(action)
+        self.rewards.append(reward)
+        self.infos.append(info)
+        self.terminateds.append(terminated)
+        self.truncateds.append(truncated)
+        if custom_metrics is not None:
+            self.custom_metrics.append(custom_metrics)
+        self.interactions += 1
 
-        self.data.append(
-            self._create_row_content(
-                obs, action, terminated, truncated, info))
-        # Store data information for summary
-        self._store_information_summary(info)
-
-    def log_normalized_data(
-        self,
-        obs: List[Any],
-        action: Union[int, np.ndarray, List[Any]],
-        terminated: bool,
-        truncated: bool,
-        info: Dict[str, Any]
-    ) -> None:
-        """Log step information and store it in data attribute.
+    def log_norm_obs(self, norm_obs: List[float]) -> None:
+        """Log normalized observation data.
 
         Args:
-            obs(List[Any]): Observation from step.
-            action(Union[int, np.ndarray, List[Any]]): Action done in step.
-            reward(Optional[float]): Reward returned in step.
-            terminated(bool): terminated flag in step.
-            truncated(bool): truncated flag in step.
-            info(Optional[Dict[str, Any]]): Extra info collected in step.
+            norm_obs (List[float]): Normalized observation data.
         """
+        self.normalized_observations.append(norm_obs)
 
-        self.data_normalized.append(
-            self._create_row_content(
-                obs, action, terminated, truncated, info))
-
-    def return_episode_data(self, episode: int) -> None:
-        """Return episode information and all data collected.
-
-        Args:
-            episode (int): Current simulation episode number.
-
-        Returns:
-            Tuple: Progress data (episode summary), monitor data(steps data), monitor data normalized.
-
-        """
-        progress_data = self._create_row_summary_content(episode)
-        monitor_data = self.data
-        monitor_data_normalized = self.data_normalized
-
-        return progress_data, monitor_data, monitor_data_normalized
-
-    def reset_logger(self) -> None:
-        """Reset relevant data to next episode summary.
-        """
-        self.data = []
-        self.data_normalized = []
-        for key, value in self.summary_data.items():
-            if isinstance(value, list):
-                self.summary_data[key] = []
-            else:
-                self.summary_data[key] = 0
-
-    @abstractmethod
-    def _create_row_content(
-        self,
-        obs: List[Any],
-        action: Union[int, np.ndarray, List[Any]],
-        terminated: bool,
-        truncated: bool,
-        info: Dict[str, Any]
-    ) -> List:
-        """Assemble the array data to log in the new row
-
-        Args:
-            obs(List[Any]): Observation from step.
-            action(Union[int, np.ndarray, List[Any]]): Action done in step.
-            terminated(bool): terminated flag in step.
-            truncated(bool): truncated flag in step.
-            info(Optional[Dict[str, Any]]): Extra info collected in step.
-
-        Returns:
-            List: Row content created in order to being logged.
-        """
-        pass
-
-    @abstractmethod
-    def _store_information_summary(
-        self,
-        info: Dict[str, Any]
-    ) -> None:
-        """Store relevant data to episode summary.
-
-        Args:
-            info(Optional[Dict[str, Any]]): Extra info collected in step.
-        """
-        pass
-
-    @abstractmethod
-    def _create_row_summary_content(self, episode: int) -> List:
-        """Create the row content for the episode summary.
-
-        Args:
-            episode (int): Current simulation episode number.
-
-        Returns:
-            List: Row content created in order to being logged.
-        """
-        pass
-
-
-class Logger(BaseLogger):
-    """Logger for agent interaction with environment. Save all interactions and episode summary in Dataframes as attributes.
-    """
-
-    def __init__(
-            self):
-        """Logger constructor."""
-
-        super().__init__()
-        # Note: Update self.summary_data with episode data if it is different
-
-    def _create_row_content(
-            self,
-            obs: List[Any],
-            action: Union[int, np.ndarray, List[Any]],
-            terminated: bool,
-            truncated: bool,
-            info: Dict[str, Any]) -> List:
-        """Assemble the array data to log in the new row
-
-        Args:
-            obs(List[Any]): Observation from step.
-            action(Union[int, np.ndarray, List[Any]]): Action done in step.
-            terminated(bool): terminated flag in step.
-            truncated(bool): truncated flag in step.
-            info(Optional[Dict[str, Any]]): Extra info collected in step.
-
-        Returns:
-            List: Row content created in order to being logged.
-        """
-        return [
-            info.get('timestep')] + list(obs) + list(action) + [
-            info.get('time_elapsed(hours)'),
-            info.get('reward'),
-            info.get('energy_term'),
-            info.get('comfort_term'),
-            info.get('abs_energy_penalty'),
-            info.get('abs_comfort_penalty'),
-            info.get('total_power_demand'),
-            info.get('total_temperature_violation'),
-            terminated,
-            truncated]
-
-    def _store_information_summary(
-            self,
-            info: Dict[str, Any]) -> None:
-        """Store relevant data to episode summary.
-
-        Args:
-            info(Optional[Dict[str, Any]]): Extra info collected in step.
-        """
-        # In reset (timestep=1), some keys are not available in info
-        if info['timestep'] > 1:
-
-            self.summary_data['rewards'].append(info['reward'])
-            self.summary_data['reward_energy_terms'].append(
-                info['energy_term'])
-            self.summary_data['reward_comfort_terms'].append(
-                info['comfort_term'])
-            self.summary_data['abs_energy_penalties'].append(
-                info['abs_energy_penalty'])
-            self.summary_data['abs_comfort_penalties'].append(
-                info['abs_comfort_penalty'])
-            self.summary_data['total_power_demands'].append(
-                info['total_power_demand'])
-            self.summary_data['total_temperature_violations'].append(
-                info['total_temperature_violation'])
-            if info['comfort_term'] < 0:
-                self.summary_data['comfort_violation_timesteps'] += 1
-            self.summary_data['total_time_elapsed'] = info['time_elapsed(hours)']
-            self.summary_data['total_timesteps'] = info['timestep']
-
-    def _create_row_summary_content(self, episode: int) -> List:
-        """Create the row content for the episode summary.
-
-        Args:
-            episode (int): Current simulation episode number.
-
-        Returns:
-            List: Row content created in order to being logged.
-        """
-        try:
-            comfort_violation = (
-                self.summary_data['comfort_violation_timesteps'] /
-                self.summary_data['total_timesteps'] *
-                100)
-        except ZeroDivisionError:
-            comfort_violation = np.nan
-
-        return [episode,
-                np.sum(self.summary_data['rewards']),
-                np.mean(self.summary_data['rewards']),
-                np.std(self.summary_data['rewards']),
-                np.sum(self.summary_data['reward_energy_terms']),
-                np.mean(self.summary_data['reward_energy_terms']),
-                np.sum(self.summary_data['reward_comfort_terms']),
-                np.mean(self.summary_data['reward_comfort_terms']),
-                np.sum(self.summary_data['abs_energy_penalties']),
-                np.mean(self.summary_data['abs_energy_penalties']),
-                np.sum(self.summary_data['abs_comfort_penalties']),
-                np.mean(self.summary_data['abs_comfort_penalties']),
-                np.sum(self.summary_data['total_power_demands']),
-                np.mean(self.summary_data['total_power_demands']),
-                np.sum(self.summary_data['total_temperature_violations']),
-                np.mean(self.summary_data['total_temperature_violations']),
-                comfort_violation,
-                self.summary_data['total_timesteps'],
-                self.summary_data['total_time_elapsed']]
+    def reset_data(self) -> None:
+        """Reset logger data, except episodes summaries"""
+        self.interactions = 0
+        self.observations = []
+        self.normalized_observations = []
+        self.actions = []
+        self.rewards = []
+        self.infos = []
+        self.terminateds = []
+        self.truncateds = []
+        self.custom_data = []
 
 
 if not missing:
