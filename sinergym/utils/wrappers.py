@@ -1004,7 +1004,10 @@ class LoggerWrapper(BaseLoggerWrapper):
             'cumulative_power_demand': np.sum(power_demands),
             'comfort_violation_time(%)': comfort_violation_time,
             'length(timesteps)': self.get_wrapper_attr('timestep'),
-            'time_elapsed(hours)': self.data_logger.infos[-1]['time_elapsed(hours)']}
+            'time_elapsed(hours)': self.data_logger.infos[-1]['time_elapsed(hours)'],
+            'terminated': self.data_logger.terminateds[-1],
+            'truncated': self.data_logger.truncateds[-1],
+        }
         return data_summary
 
 
@@ -1108,23 +1111,6 @@ class CSVLogger(gym.Wrapper):
                 writer.writerow(self.get_wrapper_attr('observation_variables'))
                 writer.writerows(episode_data.normalized_observations)
 
-        # Agent Actions
-        with open(monitor_path + '/agent_actions.csv', 'w') as f:
-            writer = csv.writer(f)
-            writer.writerow(self.get_wrapper_attr('action_variables'))
-            writer.writerows(episode_data.actions)
-
-        # Simulated actions
-        with open(monitor_path + '/simulated_actions.csv', 'w') as f:
-            writer = csv.writer(f)
-            writer.writerow(self.get_wrapper_attr('action_variables'))
-            reset_action = [None for _ in range(
-                len(self.get_wrapper_attr('action_variables')))]
-            simulated_actions = [info['action']
-                                 for info in episode_data.infos[1:]]
-            writer.writerow(reset_action)
-            writer.writerows(simulated_actions)
-
         # Rewards
         with open(monitor_path + '/rewards.csv', 'w') as f:
             writer = csv.writer(f)
@@ -1144,6 +1130,23 @@ class CSVLogger(gym.Wrapper):
             writer.writerow(column_names)
             writer.writerow(reset_values)
             writer.writerows(values)
+
+        # Agent Actions
+        with open(monitor_path + '/agent_actions.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(self.get_wrapper_attr('action_variables'))
+            writer.writerows(episode_data.actions)
+
+        # Simulated actions
+        with open(monitor_path + '/simulated_actions.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(self.get_wrapper_attr('action_variables'))
+            reset_action = [None for _ in range(
+                len(self.get_wrapper_attr('action_variables')))]
+            simulated_actions = [info['action']
+                                 for info in episode_data.infos[1:]]
+            writer.writerow(reset_action)
+            writer.writerows(simulated_actions)
 
         # Update progress.csv
         with open(self.get_wrapper_attr('progress_file_path'), 'a+') as f:
