@@ -818,11 +818,15 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         env: Env,
         logger_class: Callable = Logger
     ):
+        """Base class for LoggerWrapper and its children classes.
+
+        Args:
+            env (Env): Original Sinergym environment.
+            logger_class (Callable, optional): Logger class to be used. Defaults to Sinergym Logger class.
+        """
 
         super(BaseLoggerWrapper, self).__init__(env)
         self.data_logger = logger_class()
-        self.last_data = None
-        self.episode_summary = {}
         # Overwrite in case you want more metrics
         self.custom_variables = []
 
@@ -832,8 +836,11 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
                                      Any]] = None) -> Tuple[np.ndarray,
                                                             Dict[str,
                                                                  Any]]:
+        """Reset the environment and the information logged."""
+        # Reset logger data
         self.data_logger.reset_data()
 
+        # Environment reset
         obs, info = self.env.reset(seed=seed, options=options)
 
         # Log reset information
@@ -864,6 +871,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
     def step(self, action: Union[int, np.ndarray]) -> Tuple[
             np.ndarray, float, bool, bool, Dict[str, Any]]:
 
+        # Environment step
         obs, reward, terminated, truncated, info = self.env.step(action)
 
         # Process custom_metrics
@@ -874,6 +882,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
                                                        terminated,
                                                        truncated)
 
+        # Log interaction information of step
         if is_wrapped(self.env, NormalizeObservation):
             self.data_logger.log_norm_obs(obs)
             self.data_logger.log_interaction(
@@ -898,9 +907,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
 
     def close(self):
         """Close the environment and save normalization calibration."""
-        # Log last episode and reset logger
-        self.episode_summary = self.get_episode_summary(
-            self.get_wrapper_attr('episode'))
+        # Reset logger data
         self.data_logger.reset_data()
         # Close the environment
         self.env.close()
@@ -949,7 +956,14 @@ class LoggerWrapper(BaseLoggerWrapper):
         env: Env,
         logger_class: Callable = Logger
     ):
+        """Wrapper to log data from environment interaction.
+
+        Args:
+            env (Env): Original Sinergym environment.
+            logger_class (Callable, optional): Logger class to be used. Defaults to Sinergym Logger class.
+        """
         super(LoggerWrapper, self).__init__(env, logger_class)
+        # Overwrite in case you want more metrics
         self.custom_variables = []
         self.logger.info('Wrapper initialized.')
 
@@ -1033,7 +1047,7 @@ class CSVLogger(gym.Wrapper):
 
         Args:
             env (Env): Original Gym environment in Sinergym.
-            info_excluded_keys (List[str], optional): List of keys in info dictionary to be excluded from CSV files. Defaults to [].
+            info_excluded_keys (List[str], optional): List of keys in info dictionary to be excluded from CSV files. Defaults to ['reward', 'action', 'timestep', 'month', 'day', 'hour', 'time_elapsed(hours)', 'reward_weight', 'is_raining'].
 
         """
         super(CSVLogger, self).__init__(env)
@@ -1158,11 +1172,9 @@ class CSVLogger(gym.Wrapper):
 
 # ---------------------------------------------------------------------------- #
 
-class WandBLogWrapper(gym.Wrapper):
-    """Wrapper to log data in WandB platform. It must be used after LoggerWrapper.
-    """
+class WandBLogger(gym.Wrapper):
 
-    logger = TerminalLogger().getLogger(name='WRAPPER WandBLogWrapper',
+    logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
                                         level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
@@ -1184,8 +1196,10 @@ class WandBLogWrapper(gym.Wrapper):
                                                   'hour',
                                                   'time_elapsed(hours)',
                                                   'reward_weight',
-                                                  'is_raining']):
-        """Wrapper to log data in WandB platform. It must be used after LoggerWrapper.
+                                                  'is_raining'],
+                 excluded_episode_summary_keys: List[str] = ['terminated',
+                                                             'truncated']):
+        """Wrapper to log data in WandB platform. It is required to be wrapped by a BaseLoggerWrapper child class previously.
 
         Args:
             env (Env): Original Sinergym environment.
@@ -1198,21 +1212,22 @@ class WandBLogWrapper(gym.Wrapper):
             artifact_save (bool): Whether to save artifacts in WandB. Defaults to True.
             artifact_type (str): Type of artifact to save. Defaults to 'output'.
             excluded_info_keys (List[str]): List of keys to exclude from info dictionary. Defaults to ['reward', 'action', 'timestep', 'month', 'day', 'hour', 'time_elapsed(hours)', 'reward_weight', 'is_raining'].
+            excluded_episode_summary_keys (List[str]): List of keys to exclude from episode summary. Defaults to ['terminated', 'truncated'].
         """
-        super(WandBLogWrapper, self).__init__(env)
+        super(WandBLogger, self).__init__(env)
 
         # Check if logger is active
         try:
-            assert is_wrapped(self, LoggerWrapper)
+            assert is_wrapped(self, BaseLoggerWrapper)
         except AssertionError as err:
             self.logger.error(
-                'WandbLogWrapper must be used after LoggerWrapper.')
+                'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
             raise err
 
         # Add requirement for wandb core
         wandb.require("core")
 
-        # Define wandb run name
+        # Define wandb run name if is not specified
         run_name = run_name if run_name is not None else self.env.get_wrapper_attr(
             'name') + '_' + wandb.util.generate_id()
 
@@ -1225,7 +1240,7 @@ class WandBLogWrapper(gym.Wrapper):
                                     save_code=save_code,
                                     reinit=False)
 
-        # Define X-Axis for episodes summaries
+        # Define X-Axis for episode summaries
         self.wandb_run.define_metric(
             'episode_summaries/*',
             step_metric='episode_summaries/episode_num')
@@ -1236,10 +1251,8 @@ class WandBLogWrapper(gym.Wrapper):
         self.artifact_type = artifact_type
         self.wandb_id = self.wandb_run.id
         self.excluded_info_keys = excluded_info_keys
+        self.excluded_episode_summary_keys = excluded_episode_summary_keys
         self.global_timestep = 0
-
-        # Define metrics for episode values
-        # wandb.define_metric()
 
         self.logger.info('Wrapper initialized.')
 
@@ -1360,11 +1373,13 @@ class WandBLogWrapper(gym.Wrapper):
         """Log episode summary in WandB platform.
         """
         # Get information from logger of LoggerWrapper
-        episode_summary, _, _ = self.get_wrapper_attr(
-            'data_logger').return_episode_data(self.get_wrapper_attr('episode'))
-        episode_dict = dict(zip(self.get_wrapper_attr(
-            'progress_header'), episode_summary))
-        self._log_data({'episode_summaries': episode_dict})
+        episode_summary = self.get_wrapper_attr(
+            'get_episode_summary')(self.get_wrapper_attr('episode'))
+        # Deleting excluded keys
+        episode_summary = {key: value for key, value in episode_summary.items(
+        ) if key not in self.get_wrapper_attr('excluded_episode_summary_keys')}
+        # Log summary data in WandB
+        self._log_data({'episode_summaries': episode_summary})
 
     def save_artifact(self) -> None:
         """Save sinergym output as artifacts in WandB platform.

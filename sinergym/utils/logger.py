@@ -134,7 +134,7 @@ class Logger():
         self.normalized_observations.append(norm_obs)
 
     def reset_data(self) -> None:
-        """Reset logger data, except episodes summaries"""
+        """Reset logger interactions data"""
         self.interactions = 0
         self.observations = []
         self.normalized_observations = []
