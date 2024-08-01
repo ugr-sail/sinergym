@@ -1162,6 +1162,13 @@ class CSVLogger(gym.Wrapper):
             writer.writerow(reset_action)
             writer.writerows(simulated_actions)
 
+        # Custom metrics
+        if len(episode_data.custom_metrics) > 0:
+            with open(monitor_path + '/custom_metrics.csv', 'w') as f:
+                writer = csv.writer(f)
+                writer.writerow(self.get_wrapper_attr('custom_variables'))
+                writer.writerows(episode_data.custom_metrics)
+
         # Update progress.csv
         with open(self.get_wrapper_attr('progress_file_path'), 'a+') as f:
             writer = csv.writer(f)
@@ -1359,12 +1366,20 @@ class WandBLogger(gym.Wrapper):
         # Action values performed in simulation
         log_dict['Simulation_actions'] = dict(
             zip(self.get_wrapper_attr('action_variables'), info['action']))
+
         # REWARD
         log_dict['Reward'] = {'reward': reward}
+
         # INFO
         log_dict['Info'] = {
             key: float(value) for key,
             value in info.items() if key not in self.excluded_info_keys}
+
+        # CUSTOM METRICS
+        if len(self.get_wrapper_attr('custom_variables')) > 0:
+            custom_metrics = dict(zip(self.get_wrapper_attr(
+                'custom_variables'), self.get_wrapper_attr('data_logger').custom_metrics[-1]))
+            log_dict['Variables_custom'] = custom_metrics
 
         # Log in WandB
         self._log_data(log_dict)
