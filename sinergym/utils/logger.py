@@ -70,12 +70,12 @@ class TerminalLogger():
 
 
 class Logger():
-    """Logger for agent interaction with environment. Save all interactions and episode summary in Dataframes as attributes.
+    """Logger for agent interaction with environment. Save all interactions in list or list of lists as attributes.
 
     Attributes:
         observations (List[List[float]]): List to store observations.
         normalized_observations (List[List[float]]): List to store normalized observations (if exists).
-        actions (List[Union[int, np.ndarray, List[float]]]): List to store actions.
+        actions (List[Union[int, np.ndarray, List[float]]]): List to store agent actions.
         rewards (List[float]): List to store rewards.
         infos (List[Dict[str, Any]]): List to store info data.
         terminateds (List[bool]): List to store terminated flags.
@@ -95,8 +95,6 @@ class Logger():
         self.terminateds = []
         self.truncateds = []
         self.custom_metrics = []
-
-        self.episode_summaries = []
 
     def log_interaction(self,
                         obs: List[float],
@@ -123,7 +121,7 @@ class Logger():
         self.infos.append(info)
         self.terminateds.append(terminated)
         self.truncateds.append(truncated)
-        if custom_metrics is not None:
+        if custom_metrics is not None and len(custom_metrics) > 0:
             self.custom_metrics.append(custom_metrics)
         self.interactions += 1
 
