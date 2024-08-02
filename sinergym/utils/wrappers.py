@@ -829,6 +829,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         self.data_logger = logger_class()
         # Overwrite in case you want more metrics
         self.custom_variables = []
+        self.summary_metrics = []
 
     def reset(self,
               seed: Optional[int] = None,
@@ -965,6 +966,29 @@ class LoggerWrapper(BaseLoggerWrapper):
         super(LoggerWrapper, self).__init__(env, logger_class)
         # Overwrite in case you want more metrics
         self.custom_variables = []
+        # Overwite in case you have other summary metrics (same as
+        # self.get_episode_summary return)
+        self.summary_metrics = ['episode_num',
+                                'mean_reward',
+                                'std_reward',
+                                'mean_reward_comfort_term',
+                                'std_reward_comfort_term',
+                                'mean_reward_energy_term',
+                                'std_reward_energy_term',
+                                'mean_abs_comfort_penalty',
+                                'std_abs_comfort_penalty',
+                                'mean_abs_energy_penalty',
+                                'std_abs_energy_penalty',
+                                'mean_temperature_violation',
+                                'std_temperature_violation',
+                                'mean_power_demand',
+                                'std_power_demand',
+                                'cumulative_power_demand',
+                                'comfort_violation_time(%)',
+                                'length(timesteps)',
+                                'time_elapsed(hours)',
+                                'terminated',
+                                'truncated']
         self.logger.info('Wrapper initialized.')
 
     def calculate_custom_metrics(self,
