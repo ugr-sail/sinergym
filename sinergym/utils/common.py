@@ -1,7 +1,6 @@
 """Common utilities."""
 
 import os
-import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
 

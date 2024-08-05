@@ -4,13 +4,14 @@ import os
 from typing import Any, Dict, List, Union
 
 import gymnasium as gym
-import pandas as pd
 import numpy as np
+import pandas as pd
 from stable_baselines3.common.callbacks import EventCallback
 from stable_baselines3.common.env_util import is_wrapped
 from stable_baselines3.common.vec_env import VecEnv
 
-from sinergym.utils.wrappers import NormalizeObservation, WandBLogger, BaseLoggerWrapper
+from sinergym.utils.wrappers import (BaseLoggerWrapper, NormalizeObservation,
+                                     WandBLogger)
 
 
 class LoggerEvalCallback(EventCallback):
