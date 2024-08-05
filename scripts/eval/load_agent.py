@@ -89,14 +89,18 @@ try:
     # ---------------------------------------------------------------------------- #
     # ------------------------ Weights and Bias model path ----------------------- #
     if conf.get('wandb_model'):
+        # get wandb run or generate a new one
+        if is_wrapped(env, WandBLogger):
+            wandb_run = env.get_wrapper_attr('wandb_run')
+        else:
+            wandb_run = wandb.init()
         # get model path
         artifact_tag = conf['wandb_model'].get(
             'artifact_tag', 'latest')
         wandb_path = conf['wandb_model']['entity'] + '/' + conf['wandb_model']['project'] + \
             '/' + conf['wandb_model']['artifact_name'] + ':' + artifact_tag
         # Download artifact
-        artifact = env.get_wrapper_attr(
-            'wandb_run').use_artifact(wandb_path)
+        artifact = wandb_run.use_artifact(wandb_path)
         artifact.get_path(conf['wandb_model']
                           ['artifact_path']).download('.')
         # Set model path to local wandb file downloaded

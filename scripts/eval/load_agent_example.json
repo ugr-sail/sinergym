@@ -16,16 +16,16 @@
                                  "var": null,
                                  "automatic_update": false},
         "LoggerWrapper": {
-            "logger_class": "sinergym.utils.logger.Logger",
-            "flag": true
-        }
+            "logger_class": "sinergym.utils.logger.Logger"
+        },
+        "CSVLogger": {}
     },
     "wandb_model": {
-            "project": "sinergym",
-            "entity": "alex_ugr",
-            "artifact_name": "experiment1",
-            "artifact_type": "training",
-            "artifact_tag": "v0",
+            "project": "test-project",
+            "entity": "sail_ugr",
+            "artifact_name": "test1",
+            "artifact_type": "output",
+            "artifact_tag": "v3",
             "artifact_path": "Sinergym_output/evaluation/best_model.zip"
     }
     
