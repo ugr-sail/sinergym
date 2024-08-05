@@ -1338,8 +1338,11 @@ class WandBLogger(gym.Wrapper):
 
         return obs, info
 
-    def close(self) -> None:
+    def close(self, wandb_finish=True) -> None:
         """Recording last episode summary and close env.
+
+        Args:
+            wandb_finish (bool): Whether to finish WandB run. Defaults to True.
         """
 
         # Log last episode summary
@@ -1350,7 +1353,8 @@ class WandBLogger(gym.Wrapper):
         # Save artifact if it is enabled
         self.save_artifact()
         # Finish WandB run
-        self.wandb_run.finish()
+        if wandb_finish:
+            self.wandb_run.finish()
 
         # Then, close env
         self.env.close()
@@ -1421,16 +1425,15 @@ class WandBLogger(gym.Wrapper):
         self._log_data({'episode_summaries': episode_summary})
 
     def save_artifact(self) -> None:
-        """Save sinergym output as artifacts in WandB platform.
+        """Save sinergym output as artifact in WandB platform.
         """
-        if self.artifact_save:
-            artifact = wandb.Artifact(
-                name=self.wandb_run.name,
-                type=self.artifact_type)
-            artifact.add_dir(
-                self.get_wrapper_attr('workspace_path'),
-                name='sinergym_output/')
-            self.wandb_run.log_artifact(artifact)
+        artifact = wandb.Artifact(
+            name=self.wandb_run.name,
+            type=self.artifact_type)
+        artifact.add_dir(
+            local_path=self.get_wrapper_attr('workspace_path'),
+            name='Sinergym_output/')
+        self.wandb_run.log_artifact(artifact)
 
     def _log_data(self, data: Dict[str, Any]) -> None:
         """Log data in WandB platform. Nesting the dictionary correctly in different sections.
