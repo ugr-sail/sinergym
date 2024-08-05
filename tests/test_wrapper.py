@@ -286,8 +286,141 @@ def test_multiobs_wrapper(env_name, request):
 
 
 @ pytest.mark.parametrize('env_name',
-                          [('env_wrapper_logger'), ('env_all_wrappers'), ])
+                          [('env_logger'), ('env_all_wrappers'), ])
 def test_logger_wrapper(env_name, request):
+
+    env = request.getfixturevalue(env_name)
+    logger = env.get_wrapper_attr('data_logger')
+    # Check logger is empty
+    assert len(logger.observations) == 0
+    assert len(logger.actions) == 0
+    assert len(logger.rewards) == 0
+    assert len(logger.infos) == 0
+    assert len(logger.terminateds) == 0
+    assert len(logger.truncateds) == 0
+    assert len(logger.custom_metrics) == 0
+    assert logger.interactions == 0
+
+    env.reset()
+
+    # Check reset data is registered
+    assert len(logger.observations) == 1
+    assert len(logger.actions) == 1
+    assert len(logger.rewards) == 1
+    assert len(logger.infos) == 1
+    assert len(logger.terminateds) == 1
+    assert len(logger.truncateds) == 1
+    assert len(logger.custom_metrics) == 0
+    assert logger.interactions == 1
+
+    # Make 3 steps
+    for _ in range(3):
+        a = env.action_space.sample()
+        env.step(a)
+
+    # Check that the logger has stored the data
+    assert len(logger.observations) == 4
+    assert len(logger.actions) == 4
+    assert len(logger.rewards) == 4
+    assert len(logger.infos) == 4
+    assert len(logger.terminateds) == 4
+    assert len(logger.truncateds) == 4
+    assert len(logger.custom_metrics) == 0
+    assert logger.interactions == 4
+
+    # Check summary data is done
+    summary = env.get_wrapper_attr('get_episode_summary')(
+        env.get_wrapper_attr('episode'))
+    assert env.get_wrapper_attr('summary_metrics') == list(summary.keys())
+    assert isinstance(summary, dict)
+    assert len(summary) > 0
+    assert summary.get(
+        'mean_reward',
+        False) and summary.get(
+        'std_reward',
+        False)
+    assert summary['mean_reward'] == np.mean(logger.rewards[1:])
+    assert summary['std_reward'] == np.std(logger.rewards[1:])
+
+    # Check if reset method reset logger data too
+    env.reset()
+    assert len(logger.observations) == 1
+    assert len(logger.actions) == 1
+    assert len(logger.rewards) == 1
+    assert len(logger.infos) == 1
+    assert len(logger.terminateds) == 1
+    assert len(logger.truncateds) == 1
+    assert len(logger.custom_metrics) == 0
+    assert logger.interactions == 1
+
+    # Make 3 steps
+    for _ in range(3):
+        a = env.action_space.sample()
+        env.step(a)
+
+    # Check closing environment reset logger
+    env.close()
+
+    assert len(logger.observations) == 0
+    assert len(logger.actions) == 0
+    assert len(logger.rewards) == 0
+    assert len(logger.infos) == 0
+    assert len(logger.terminateds) == 0
+    assert len(logger.truncateds) == 0
+    assert len(logger.custom_metrics) == 0
+    assert logger.interactions == 0
+
+
+@ pytest.mark.parametrize('env_name',
+                          [('env_csv_logger'), ('env_all_wrappers'), ])
+def test_CSVlogger_wrapper(env_name, request):
+
+    env = request.getfixturevalue(env_name)
+    # Check progress CSV path
+    assert env.get_wrapper_attr('progress_file_path') == env.get_wrapper_attr(
+        'workspace_path') + '/progress.csv'
+
+    # First reset should not create new files
+    env.reset()
+
+    # Assert logger files are not created
+    assert not os.path.isfile(env.get_wrapper_attr('progress_file_path'))
+    assert not os.path.isdir(env.get_wrapper_attr('episode_path') + '/monitor')
+
+    # simulating short episode
+    for _ in range(10):
+        env.step(env.action_space.sample())
+    episode_path = env.get_wrapper_attr('episode_path')
+    env.reset()
+
+    # Now logger files about first episode should be created
+    assert os.path.isfile(env.get_wrapper_attr('progress_file_path'))
+    assert os.path.isdir(episode_path + '/monitor')
+    # Check csv files has been generated in monitor
+    assert len(os.listdir(episode_path + '/monitor')) > 0
+
+    # Read CSV files and check row nums
+    with open(env.get_wrapper_attr('progress_file_path'), mode='r', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        # Header row and episode summary
+        assert len(list(reader)) == 2
+    # Check csv in monitor is created correctly (only check with observations)
+    with open(episode_path + '/monitor/observations.csv', mode='r', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        # Header row, reset and 10 steps (12)
+        assert len(list(reader)) == 12
+
+    # If env is wrapped with normalize obs...
+    if is_wrapped(env, NormalizeObservation):
+        assert os.path.isfile(episode_path +
+                              '/monitor/normalized_observations.csv')
+
+    env.close()
+
+
+@ pytest.mark.parametrize('env_name',
+                          [('env_wrapper_logger'), ('env_all_wrappers'), ])
+def test_WandBLogger_wrapper(env_name, request):
 
     env = request.getfixturevalue(env_name)
     logger = env.get_wrapper_attr('file_logger')
@@ -334,14 +467,6 @@ def test_logger_wrapper(env_name, request):
                 break
 
     env.close()
-
-
-def test_logger_activation(env_wrapper_logger):
-    assert env_wrapper_logger.file_logger.flag
-    env_wrapper_logger.deactivate_logger()
-    assert not env_wrapper_logger.file_logger.flag
-    env_wrapper_logger.activate_logger()
-    assert env_wrapper_logger.file_logger.flag
 
 
 def test_reduced_observation_wrapper(env_wrapper_reduce_observation):
