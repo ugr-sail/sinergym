@@ -10,7 +10,7 @@ from stable_baselines3.common.callbacks import EventCallback
 from stable_baselines3.common.env_util import is_wrapped
 from stable_baselines3.common.vec_env import VecEnv
 
-from sinergym.utils.wrappers import NormalizeObservation, WandBLogger
+from sinergym.utils.wrappers import NormalizeObservation, WandBLogger, BaseLoggerWrapper
 
 
 class LoggerEvalCallback(EventCallback):
@@ -28,7 +28,7 @@ class LoggerEvalCallback(EventCallback):
             'time_elapsed (hours)'],
         verbose: int = 1,
     ):
-        """ Callback for evaluating an agent during training process logging all important data in WandB platform. It must be wrapped with WandbLogger.
+        """ Callback for evaluating an agent during training process logging all important data in WandB platform if is activated. It must be wrapped with BaseLoggerWrapper child class.
 
         Args:
             eval_env (Union[gym.Env, VecEnv]): Environment to evaluate the agent.
@@ -42,14 +42,14 @@ class LoggerEvalCallback(EventCallback):
         super().__init__(verbose=verbose)
 
         assert is_wrapped(
-            train_env, WandBLogger), "Training environment must be wrapped with WandBLogger Wrapper in order to be compatible with this callback."
+            train_env, BaseLoggerWrapper), "Training environment must be wrapped with BaseLoggerWrapper in order to be compatible with this callback."
 
         # Attributes
         self.eval_env = eval_env
         self.train_env = train_env
         self.n_eval_episodes = n_eval_episodes
         self.eval_freq = eval_freq_episodes * \
-            train_env.get_wrapper_attr('timestep_per_episode') - 2
+            train_env.get_wrapper_attr('timestep_per_episode') - 3
         self.save_path = self.train_env.get_wrapper_attr(
             'workspace_path') + '/evaluation'
         # Make dir if not exists
@@ -61,15 +61,19 @@ class LoggerEvalCallback(EventCallback):
         self.best_mean_reward = -np.inf
         self.last_mean_reward = -np.inf
 
+        # wandb flag
+        self.wandb_log = is_wrapped(self.train_env, WandBLogger)
+
         self.evaluation_columns = [col for col in eval_env.get_wrapper_attr(
             'summary_metrics') if col not in excluded_metrics]
         self.evaluation_metrics = pd.DataFrame(
             columns=self.evaluation_columns)
 
-        # Define metric for evaluation as X axis
-        self.train_env.get_wrapper_attr('wandb_run').define_metric(
-            'Evaluation/*',
-            step_metric='Evaluation/evaluation_num')
+        # Define metric for evaluation as X axis if WandB session is activated
+        if self.wandb_log:
+            self.train_env.get_wrapper_attr('wandb_run').define_metric(
+                'Evaluation/*',
+                step_metric='Evaluation/evaluation_num')
 
     def _on_step(self) -> bool:
 
@@ -85,8 +89,11 @@ class LoggerEvalCallback(EventCallback):
 
         # Increment evaluation index
         self.evaluation_num += 1
-
-        self.train_env.close(wandb_finish=False)
+        # Close current training environment to execute an evaluation
+        if self.wandb_log:
+            self.train_env.close(wandb_finish=False)
+        else:
+            self.train_env.close()
 
         # We sincronize the evaluation and training envs (for example, for
         # normalization calibration data)
@@ -114,9 +121,10 @@ class LoggerEvalCallback(EventCallback):
         self.evaluation_metrics.to_csv(
             self.save_path + '/evaluation_metrics.csv')
 
-        # Add evaluation metrics to wandb plots
-        self.train_env.get_wrapper_attr('_log_data')(
-            data={'Evaluation': evaluation_summary})
+        # Add evaluation metrics to wandb plots if enabled
+        if self.wandb_log:
+            self.train_env.get_wrapper_attr('_log_data')(
+                data={'Evaluation': evaluation_summary})
 
         # Terminal information when verbose is active
         if self.verbose >= 1:

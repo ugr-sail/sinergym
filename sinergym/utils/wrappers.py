@@ -1350,10 +1350,10 @@ class WandBLogger(gym.Wrapper):
         self.logger.info(
             'Environment closed, dumping summary metrics in WandB Platform.')
 
-        # Save artifact if it is enabled
-        self.save_artifact()
         # Finish WandB run
         if wandb_finish:
+            # Save artifact
+            self.save_artifact()
             self.wandb_run.finish()
 
         # Then, close env

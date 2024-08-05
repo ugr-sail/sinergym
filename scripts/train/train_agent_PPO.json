@@ -42,21 +42,22 @@
         "NormalizeAction": {},
         "NormalizeObservation": {},
         "LoggerWrapper": {
-            "logger_class": "sinergym.utils.logger.Logger",
-            "flag": true
+            "logger_class": "sinergym.utils.logger.Logger"
+        },
+        "CSVLogger": {},
+        "WandBLogger": {
+            "entity": "sail_ugr",
+            "project_name": "test-project",
+            "run_name": "test_evaluation_ultimate",
+            "group": "DRL",
+            "tags": ["DRL", "test"],
+            "save_code": true,
+            "dump_frequency": 1000,
+            "artifact_save": true
         }
     },
-    "evaluation": {
-        "eval_freq": 2,
-        "eval_length": 2
-    },
-    "wandb": {
-        "init_params": {
-            "project": "sinergym",
-            "entity": "alex_ugr"
-        },
-        "artifact_name": "experiment_PPO",
-        "artifact_type": "training",
-        "dump_frequency": 500
+    "evaluation":{
+        "eval_length": 1,
+        "eval_freq": 1
     }
 }
