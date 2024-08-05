@@ -25,7 +25,6 @@ setup(name='sinergym',
               'matplotlib',  # visualization
               # DRL with pytorch
               'stable-baselines3',
-              'wandb',
               'pytest',
               'pytest-cov',
               'pytest-xdist',  # Unit test repository
@@ -51,7 +50,6 @@ setup(name='sinergym',
           ],
           'DRL': [
               'stable-baselines3',
-              'wandb'
           ],
           'doc': [
               'sphinx',

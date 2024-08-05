@@ -9,3 +9,4 @@ pytype
 twine
 xlsxwriter
 pipdeptree
+wandb
