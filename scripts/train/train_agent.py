@@ -330,15 +330,15 @@ try:
                 conf['cloud']['group_name'], token)
 
 # If there is some error in the code, delete remote container if exists
-except Exception as err:
-    print("Error in process detected")
+# include KeyboardInterrupt
+
+except (Exception, KeyboardInterrupt) as err:
+    print("Error or interruption in process detected")
 
     # Current model state save
     model.save(env.get_wrapper_attr('workspace_path') + '/model')
 
-    # if wandb log is active, save  the current artifacts
-    if is_wrapped(env, WandBLogger):
-        env.get_wrapper_attr('save_artifact')()
+    env.close()
 
     # Auto delete
     if conf.get('cloud'):

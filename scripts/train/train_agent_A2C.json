@@ -40,21 +40,12 @@
         "NormalizeAction": {},
         "NormalizeObservation": {},
         "LoggerWrapper": {
-            "logger_class": "sinergym.utils.logger.Logger",
-            "flag": true
-        }
+            "logger_class": "sinergym.utils.logger.Logger"
+        },
+        "CSVLogger": {}
     },
     "evaluation": {
         "eval_freq": 2,
-        "eval_length": 2
-    },
-    "wandb": {
-        "init_params": {
-            "project": "sinergym",
-            "entity": "alex_ugr"
-        },
-        "artifact_name": "experiment_A2C",
-        "artifact_type": "training",
-        "dump_frequency": 500
+        "eval_length": 1
     }
 }
