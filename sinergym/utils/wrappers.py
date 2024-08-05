@@ -1133,72 +1133,83 @@ class CSVLogger(gym.Wrapper):
         monitor_path = self.get_wrapper_attr('episode_path') + '/monitor'
         os.makedirs(monitor_path, exist_ok=True)
         episode_data = self.get_wrapper_attr('data_logger')
-        episode_summary = self.get_wrapper_attr(
-            'get_episode_summary')(self.get_wrapper_attr('episode'))
 
-        # Observations
-        with open(monitor_path + '/observations.csv', 'w') as f:
-            writer = csv.writer(f)
-            writer.writerow(self.get_wrapper_attr('observation_variables'))
-            writer.writerows(episode_data.observations)
+        if len(episode_data.rewards) > 1:
 
-        # Normalized Observations
-        if len(episode_data.normalized_observations) > 0:
-            with open(monitor_path + '/normalized_observations.csv', 'w') as f:
+            # Observations
+            with open(monitor_path + '/observations.csv', 'w') as f:
                 writer = csv.writer(f)
                 writer.writerow(self.get_wrapper_attr('observation_variables'))
-                writer.writerows(episode_data.normalized_observations)
+                writer.writerows(episode_data.observations)
 
-        # Rewards
-        with open(monitor_path + '/rewards.csv', 'w') as f:
-            writer = csv.writer(f)
-            writer.writerow(['reward'])
-            writer.writerow([None])
-            for reward in episode_data.rewards[1:]:
-                writer.writerow([reward])
+            # Normalized Observations
+            if len(episode_data.normalized_observations) > 0:
+                with open(monitor_path + '/normalized_observations.csv', 'w') as f:
+                    writer = csv.writer(f)
+                    writer.writerow(
+                        self.get_wrapper_attr('observation_variables'))
+                    writer.writerows(episode_data.normalized_observations)
 
-        # Infos (except excluded keys)
-        with open(monitor_path + '/infos.csv', 'w') as f:
-            writer = csv.writer(f)
-            column_names = [key for key in episode_data.infos[-1].keys()
-                            if key not in self.get_wrapper_attr('info_excluded_keys')]
-            reset_values = [None for _ in column_names]
-            values = [[value for key, value in info.items() if key not in self.get_wrapper_attr(
-                'info_excluded_keys')] for info in episode_data.infos[1:]]
-            writer.writerow(column_names)
-            writer.writerow(reset_values)
-            writer.writerows(values)
-
-        # Agent Actions
-        with open(monitor_path + '/agent_actions.csv', 'w') as f:
-            writer = csv.writer(f)
-            writer.writerow(self.get_wrapper_attr('action_variables'))
-            writer.writerows(episode_data.actions)
-
-        # Simulated actions
-        with open(monitor_path + '/simulated_actions.csv', 'w') as f:
-            writer = csv.writer(f)
-            writer.writerow(self.get_wrapper_attr('action_variables'))
-            reset_action = [None for _ in range(
-                len(self.get_wrapper_attr('action_variables')))]
-            simulated_actions = [info['action']
-                                 for info in episode_data.infos[1:]]
-            writer.writerow(reset_action)
-            writer.writerows(simulated_actions)
-
-        # Custom metrics
-        if len(episode_data.custom_metrics) > 0:
-            with open(monitor_path + '/custom_metrics.csv', 'w') as f:
+            # Rewards
+            with open(monitor_path + '/rewards.csv', 'w') as f:
                 writer = csv.writer(f)
-                writer.writerow(self.get_wrapper_attr('custom_variables'))
-                writer.writerows(episode_data.custom_metrics)
+                writer.writerow(['reward'])
+                for reward in episode_data.rewards:
+                    writer.writerow([reward])
 
-        # Update progress.csv
-        with open(self.get_wrapper_attr('progress_file_path'), 'a+') as f:
-            writer = csv.writer(f)
-            if self.get_wrapper_attr('episode') == 1:
-                writer.writerow(list(episode_summary.keys()))
-            writer.writerow(list(episode_summary.values()))
+            # Infos (except excluded keys)
+            with open(monitor_path + '/infos.csv', 'w') as f:
+                writer = csv.writer(f)
+                column_names = [key for key in episode_data.infos[-1].keys()
+                                if key not in self.get_wrapper_attr('info_excluded_keys')]
+                reset_values = [None for _ in column_names]
+                values = [[value for key, value in info.items() if key not in self.get_wrapper_attr(
+                    'info_excluded_keys')] for info in episode_data.infos[1:]]
+                writer.writerow(column_names)
+                writer.writerow(reset_values)
+                writer.writerows(values)
+
+            # Agent Actions
+            with open(monitor_path + '/agent_actions.csv', 'w') as f:
+                writer = csv.writer(f)
+                writer.writerow(self.get_wrapper_attr('action_variables'))
+                if isinstance(episode_data.actions[-1], list):
+                    writer.writerows(episode_data.actions)
+                else:
+                    for action in episode_data.actions:
+                        writer.writerow([action])
+
+            # Simulated actions
+            with open(monitor_path + '/simulated_actions.csv', 'w') as f:
+                writer = csv.writer(f)
+                writer.writerow(self.get_wrapper_attr('action_variables'))
+                reset_action = [None for _ in range(
+                    len(self.get_wrapper_attr('action_variables')))]
+                simulated_actions = [info['action']
+                                     for info in episode_data.infos[1:]]
+                writer.writerow(reset_action)
+                if isinstance(simulated_actions[-1], list):
+                    writer.writerows(simulated_actions)
+                else:
+                    for action in simulated_actions:
+                        writer.writerow([action])
+
+            # Custom metrics
+            if len(episode_data.custom_metrics) > 0:
+                with open(monitor_path + '/custom_metrics.csv', 'w') as f:
+                    writer = csv.writer(f)
+                    writer.writerow(self.get_wrapper_attr('custom_variables'))
+                    writer.writerows(episode_data.custom_metrics)
+
+            # Update progress.csv
+            episode_summary = self.get_wrapper_attr(
+                'get_episode_summary')(self.get_wrapper_attr('episode'))
+
+            with open(self.get_wrapper_attr('progress_file_path'), 'a+') as f:
+                writer = csv.writer(f)
+                if self.get_wrapper_attr('episode') == 1:
+                    writer.writerow(list(episode_summary.keys()))
+                writer.writerow(list(episode_summary.values()))
 
 
 # ---------------------------------------------------------------------------- #
