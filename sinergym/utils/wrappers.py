@@ -338,7 +338,7 @@ class NormalizeObservation(gym.Wrapper):
         if hasattr(self, "mean") and hasattr(self, "var"):
             self.logger.info(
                 'Saving normalization calibration data... [{}]'.format(
-                    self.name))
+                    self.get_wrapper_attr('name')))
             # Save in txt in output folder
             np.savetxt(fname=self.get_wrapper_attr(
                 'workspace_path') + '/mean.txt', X=self.mean)
@@ -730,37 +730,24 @@ class NormalizeAction(gym.ActionWrapper):
         self.logger.info('Wrapper initialized')
 
     def reverting_action(self,
-                         action: Any) -> List[float]:
+                         action: Any) -> np.array:
         """ This method maps a normalized action in a real action space.
 
         Args:
             action (Any): Normalize action received in environment
 
         Returns:
-            List[float]: Action transformed in simulator real action space.
+            np.array: Action transformed in simulator real action space.
         """
-        action_ = []
 
-        for i, value in enumerate(action):
-            a_max_min = self.normalized_space.high[i] - \
-                self.normalized_space.low[i]
-            sp_max_min = self.real_space.high[i] - \
-                self.real_space.low[i]
-
-            action_.append(
-                self.real_space.low[i] +
-                (
-                    value -
-                    self.normalized_space.low[i]) *
-                sp_max_min /
-                a_max_min)
+        # Convert action to the original action space
+        action_ = (action - self.normalized_space.low) * (self.real_space.high - self.real_space.low) / \
+            (self.normalized_space.high - self.normalized_space.low) + self.real_space.low
 
         return action_
 
-    def action(self, action: Any):
-        action_ = deepcopy(action)
-        action_ = self.get_wrapper_attr('reverting_action')(action_)
-        return action_
+    def action(self, action: Any) -> np.array:
+        return self.get_wrapper_attr('reverting_action')(action)
 
 # ---------------------------------------------------------------------------- #
 #                                Reward Wrappers                               #
