@@ -215,6 +215,15 @@ try:
             raise RuntimeError(
                 F'Algorithm specified [{alg_name} ] is not registered.')
 
+        # Register hyperparameters in wandb if it is wrapped
+        if is_wrapped(env, WandBLogger):
+            experiment_params = {
+                'sinergym-version': sinergym.__version__,
+                'python-version': sys.version
+            }
+            experiment_params.update(conf)
+            env.get_wrapper_attr('wandb_run').config.update(conf)
+
     else:
         model_path = ''
         if 'gs://' in conf['model']:
