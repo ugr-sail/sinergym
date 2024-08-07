@@ -1304,7 +1304,7 @@ class WandBLogger(gym.Wrapper):
             self.logger.debug(
                 'Dump Frequency reached in timestep {}, dumping data in WandB.'.format(
                     self.global_timestep))
-            self.wandb_log(action, obs, reward, info)
+            self.wandb_log()
 
         return obs, reward, terminated, truncated, info
 
@@ -1357,54 +1357,45 @@ class WandBLogger(gym.Wrapper):
         # Then, close env
         self.env.close()
 
-    def wandb_log(self,
-                  action: Union[int, np.ndarray],
-                  obs: np.ndarray,
-                  reward: float,
-                  info: Dict[str, Any]) -> None:
-        """Log step information in WandB platform.
-
-        Args:
-            action ([type]): Action selected by the agent.
-            obs ([type]): Observation for next timestep.
-            reward ([type]): Reward obtained.
-            info ([type]): Dictionary with extra information.
+    def wandb_log(self) -> None:
+        """Log last step information in WandB platform.
         """
 
         # Interaction registration such as obs, action, reward...
         # (organized in a nested dictionary)
         log_dict = {}
+        data_logger = self.get_wrapper_attr('data_logger')
 
         # OBSERVATION
         if is_wrapped(self, NormalizeObservation):
-            log_dict['Normalized_observations'] = dict(
-                zip(self.env.get_wrapper_attr('observation_variables'), obs))
+            log_dict['Normalized_observations'] = dict(zip(self.get_wrapper_attr(
+                'observation_variables'), data_logger.normalized_observations[-1]))
             log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
-                'observation_variables'), self.get_wrapper_attr('unwrapped_observation')))
+                'observation_variables'), data_logger.observations[-1]))
         else:
-            log_dict['Observations'] = dict(
-                zip(self.get_wrapper_attr('observation_variables'), obs))
+            log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
+                'observation_variables'), data_logger.observations[-1]))
 
         # ACTION
         # Original action sent
         log_dict['Agent_actions'] = dict(
-            zip(self.get_wrapper_attr('action_variables'), action))
+            zip(self.get_wrapper_attr('action_variables'), data_logger.actions[-1]))
         # Action values performed in simulation
-        log_dict['Simulation_actions'] = dict(
-            zip(self.get_wrapper_attr('action_variables'), info['action']))
+        log_dict['Simulation_actions'] = dict(zip(self.get_wrapper_attr(
+            'action_variables'), data_logger.infos[-1]['action']))
 
         # REWARD
-        log_dict['Reward'] = {'reward': reward}
+        log_dict['Reward'] = {'reward': data_logger.rewards[-1]}
 
         # INFO
         log_dict['Info'] = {
             key: float(value) for key,
-            value in info.items() if key not in self.excluded_info_keys}
+            value in data_logger.infos[-1].items() if key not in self.excluded_info_keys}
 
         # CUSTOM METRICS
         if len(self.get_wrapper_attr('custom_variables')) > 0:
             custom_metrics = dict(zip(self.get_wrapper_attr(
-                'custom_variables'), self.get_wrapper_attr('data_logger').custom_metrics[-1]))
+                'custom_variables'), data_logger.custom_metrics[-1]))
             log_dict['Variables_custom'] = custom_metrics
 
         # Log in WandB
