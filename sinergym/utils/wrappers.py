@@ -832,27 +832,28 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         obs, info = self.env.reset(seed=seed, options=options)
 
         # Log reset information
-        if is_wrapped(self, NormalizeObservation):
-            self.data_logger.log_norm_obs(obs)
-            self.data_logger.log_interaction(
-                obs=self.get_wrapper_attr('unwrapped_observation'),
-                action=[None for _ in range(
-                    len(self.get_wrapper_attr('action_variables')))],
-                reward=None,
-                info=info,
-                terminated=False,
-                truncated=False,
-                custom_metrics=[None for _ in range(len(self.get_wrapper_attr('custom_variables')))])
-        else:
-            self.data_logger.log_interaction(
-                obs=obs,
-                action=[None for _ in range(
-                    len(self.get_wrapper_attr('action_variables')))],
-                reward=None,
-                info=info,
-                terminated=False,
-                truncated=False,
-                custom_metrics=[None for _ in range(len(self.get_wrapper_attr('custom_variables')))])
+        # if is_wrapped(self, NormalizeObservation):
+        #     self.data_logger.log_norm_obs(obs)
+        #     self.data_logger.log_interaction(
+        #         obs=self.get_wrapper_attr('unwrapped_observation'),
+        #         action=[None for _ in range(
+        #             len(self.get_wrapper_attr('action_variables')))],
+        #         reward=None,
+        #         info=info,
+        #         terminated=False,
+        #         truncated=False,
+        #         custom_metrics=[None for _ in range(len(self.get_wrapper_attr('custom_variables')))])
+        # else:
+        #     self.data_logger.log_interaction(
+        #         obs=obs,
+        #         action=[None for _ in range(
+        #             len(self.get_wrapper_attr('action_variables')))],
+        #         reward=None,
+        #         info=info,
+        #         terminated=False,
+        #         truncated=False,
+        # custom_metrics=[None for _ in
+        # range(len(self.get_wrapper_attr('custom_variables')))])
 
         return obs, info
 
@@ -990,17 +991,17 @@ class LoggerWrapper(BaseLoggerWrapper):
     def get_episode_summary(self, episode: int) -> Dict[str, float]:
         # Get information from logger
         comfort_terms = [info['comfort_term']
-                         for info in self.data_logger.infos[1:]]
+                         for info in self.data_logger.infos]
         energy_terms = [info['energy_term']
-                        for info in self.data_logger.infos[1:]]
+                        for info in self.data_logger.infos]
         abs_comfort_penalties = [info['abs_comfort_penalty']
-                                 for info in self.data_logger.infos[1:]]
+                                 for info in self.data_logger.infos]
         abs_energy_penalties = [info['abs_energy_penalty']
-                                for info in self.data_logger.infos[1:]]
+                                for info in self.data_logger.infos]
         temperature_violations = [info['total_temperature_violation']
-                                  for info in self.data_logger.infos[1:]]
+                                  for info in self.data_logger.infos]
         power_demands = [info['total_power_demand']
-                         for info in self.data_logger.infos[1:]]
+                         for info in self.data_logger.infos]
         try:
             comfort_violation_time = len(
                 [value for value in temperature_violations if value > 0]) / (self.get_wrapper_attr('timestep') - 1) * 100
@@ -1011,9 +1012,9 @@ class LoggerWrapper(BaseLoggerWrapper):
         data_summary = {
             'episode_num': episode,
             'mean_reward': np.mean(
-                self.data_logger.rewards[1:]),
+                self.data_logger.rewards),
             'std_reward': np.std(
-                self.data_logger.rewards[1:]),
+                self.data_logger.rewards),
             'mean_reward_comfort_term': np.mean(comfort_terms),
             'std_reward_comfort_term': np.std(comfort_terms),
             'mean_reward_energy_term': np.mean(energy_terms),
@@ -1121,7 +1122,7 @@ class CSVLogger(gym.Wrapper):
         os.makedirs(monitor_path, exist_ok=True)
         episode_data = self.get_wrapper_attr('data_logger')
 
-        if len(episode_data.rewards) > 1:
+        if len(episode_data.rewards) > 0:
 
             # Observations
             with open(monitor_path + '/observations.csv', 'w') as f:
@@ -1147,20 +1148,19 @@ class CSVLogger(gym.Wrapper):
             # Infos (except excluded keys)
             with open(monitor_path + '/infos.csv', 'w') as f:
                 writer = csv.writer(f)
-                column_names = [key for key in episode_data.infos[-1].keys()
-                                if key not in self.get_wrapper_attr('info_excluded_keys')]
-                reset_values = [None for _ in column_names]
-                values = [[value for key, value in info.items() if key not in self.get_wrapper_attr(
-                    'info_excluded_keys')] for info in episode_data.infos[1:]]
+                column_names = [key for key in episode_data.infos[1].keys(
+                ) if key not in self.get_wrapper_attr('info_excluded_keys')]
+                # reset_values = [None for _ in column_names]
+                rows = [[value for key, value in info.items() if key not in self.get_wrapper_attr(
+                    'info_excluded_keys')] for info in episode_data.infos]
                 writer.writerow(column_names)
-                writer.writerow(reset_values)
-                writer.writerows(values)
+                writer.writerows(rows)
 
             # Agent Actions
             with open(monitor_path + '/agent_actions.csv', 'w') as f:
                 writer = csv.writer(f)
                 writer.writerow(self.get_wrapper_attr('action_variables'))
-                if isinstance(episode_data.actions[-1], list):
+                if isinstance(episode_data.actions[1], list):
                     writer.writerows(episode_data.actions)
                 else:
                     for action in episode_data.actions:
@@ -1170,12 +1170,11 @@ class CSVLogger(gym.Wrapper):
             with open(monitor_path + '/simulated_actions.csv', 'w') as f:
                 writer = csv.writer(f)
                 writer.writerow(self.get_wrapper_attr('action_variables'))
-                reset_action = [None for _ in range(
-                    len(self.get_wrapper_attr('action_variables')))]
+                # reset_action = [None for _ in range(
+                #    len(self.get_wrapper_attr('action_variables')))]
                 simulated_actions = [info['action']
-                                     for info in episode_data.infos[1:]]
-                writer.writerow(reset_action)
-                if isinstance(simulated_actions[-1], list):
+                                     for info in episode_data.infos]
+                if isinstance(simulated_actions[1], list):
                     writer.writerows(simulated_actions)
                 else:
                     for action in simulated_actions:
@@ -1194,6 +1193,7 @@ class CSVLogger(gym.Wrapper):
 
             with open(self.get_wrapper_attr('progress_file_path'), 'a+') as f:
                 writer = csv.writer(f)
+                # If first episode, write header
                 if self.get_wrapper_attr('episode') == 1:
                     writer.writerow(list(episode_summary.keys()))
                 writer.writerow(list(episode_summary.values()))
