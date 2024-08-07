@@ -16,7 +16,9 @@ sinergym.utils.logger.Logger
    .. autosummary::
    
       ~Logger.__init__
-      ~Logger.getLogger
+      ~Logger.log_interaction
+      ~Logger.log_norm_obs
+      ~Logger.reset_data
    
    
 

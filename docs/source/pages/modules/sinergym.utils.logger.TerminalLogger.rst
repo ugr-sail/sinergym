@@ -1,9 +1,9 @@
-﻿sinergym.utils.callbacks.LoggerCallback
-=======================================
+sinergym.utils.logger.TerminalLogger
+====================================
 
-.. currentmodule:: sinergym.utils.callbacks
+.. currentmodule:: sinergym.utils.logger
 
-.. autoclass:: LoggerCallback
+.. autoclass:: TerminalLogger
    :members:                                                           
    :undoc-members:               
 
@@ -15,7 +15,8 @@
 
    .. autosummary::
    
-      ~LoggerCallback.__init__
+      ~TerminalLogger.__init__
+      ~TerminalLogger.getLogger
    
    
 

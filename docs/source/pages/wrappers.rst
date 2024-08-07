@@ -134,8 +134,8 @@ However, *Sinergym* enhances its functionality with some additional features:
 - The automatic calibration can be enabled or disabled as you interact with the environment, allowing the 
   calibration to remain static instead of adaptive.
 
-In addition, this wrapper saves the values of mean and var in txt files in the 
-*Sinergym* output. This should be used in case of evaluating the model later. 
+In addition, this wrapper saves the values of **mean and var in txt files in the 
+*Sinergym* output**. This should be used in case of evaluating the model later. 
 An example of its use can be found in the use case :ref:`Loading a model`. It is
 also important that normalization calibration update is deactivated during evaluation
 processes.
@@ -143,13 +143,64 @@ processes.
 These functionalities are crucial when evaluating models trained using this wrapper. 
 For more details, visit `#407 <https://github.com/ugr-sail/sinergym/issues/407>`__.
 
-***********************
-LoggerWrapper
-***********************
+*****************
+Logger Wrappers
+*****************
 
-This is a wrapper for logging all interactions between the agent and the environment. The Logger class can 
-be selected in the constructor if a different type of logging is required. For more information about the 
-*Sinergym* Logger, refer to :ref:`Logger`.
+These wrappers use the *Sinergym* **Logger** class functionalities to store information during environment 
+interactions. For more details, see :ref:`Logging System Overview`.
+
+The diagram below illustrates the relationship between the wrappers and the logger, with explanations 
+provided in the following subsections.
+
+.. image:: /_static/logger_structure.png
+  :scale: 50 %
+  :alt: Logger wrappers graph.
+  :align: center
+
+LoggerWrapper
+---------------
+
+**BaseLoggerWrapper** is the abstract class for logger wrappers. It stores all information during 
+environment interactions. The environment gains a new attribute, ``data_logger``, an instance of 
+**Logger** containing all the information. You can use a custom Logger class by passing it to the 
+constructor to change the logging backend, such as storing information in a different database.
+
+Inherit from this class to create a new logger wrapper and implement abstract methods to define 
+custom and episode summary metrics with the current data. Data is reset at the start of a new episode. 
+*Sinergym* uses this base class to implement **LoggerWrapper**, the default logger, but custom loggers 
+can be implemented easily following this abstract class (see :ref:`Logger Wrapper personalization/configuration`).
+
+The current summary metrics for this default Sinergym wrapper are: *episode_num*,*mean_reward*,*std_reward*,
+*mean_reward_comfort_term*,*std_reward_comfort_term*,*mean_reward_energy_term*,*std_reward_energy_term*,
+*mean_abs_comfort_penalty*,*std_abs_comfort_penalty*,*mean_abs_energy_penalty*,*std_abs_energy_penalty*,
+*mean_temperature_violation*,*std_temperature_violation*,*mean_power_demand*,*std_power_demand*,
+*cumulative_power_demand*,*comfort_violation_time(%)*,*length(timesteps)*,*time_elapsed(hours)*,
+*terminated*,*truncated*
+
+Although data is reset with each new episode, this wrapper can be combined with others to save all data 
+and summaries in different ways and platforms. *Sinergym* implements **CSVLogger** and **WandBLogger** by default.
+
+CSVLogger
+-----------
+
+This wrapper works with the **LoggerWrapper** ``data_logger`` instance to parse and save data in CSV files during 
+simulations. A **progress.csv** file is generated in the root output directory, containing general simulation results, 
+updated per episode. The structure of this file is defined by the **LoggerWrapper** class.
+
+Each episode directory includes a **monitor** folder with several CSV files for data such as observations, actions, 
+rewards, infos, and custom metrics. For more details, see :ref:`Output Format`.
+
+WandBLogger
+-------------
+
+This wrapper works with the **LoggerWrapper** ``data_logger`` instance to dump all information to the WandB platform in real-time. 
+It is useful for real-time training process monitoring and is combinable with Stable Baselines 3 callbacks. 
+The initialization allows definition of the project, entity, run groups, tags, and whether code or outputs are saved as platform 
+artifacts, as well as dump frequency, excluded info keys, and excluded summary metric keys.
+
+.. important:: A Weights and Biases account is required to use this wrapper, with an environment variable containing the API key for login. 
+          For more information, visit `Weights and Biases <https://wandb.ai/site>`__.
 
 **************************
 ReduceObservationWrapper
