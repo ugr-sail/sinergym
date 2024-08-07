@@ -46,7 +46,7 @@ environment.
 
 More episodes lead to more accurate averages of the reward-based indicators, providing a more realistic 
 assessment of the current model's performance. However, this increases the time required. To see an example,
-visit :ref:`Training a model`
+visit :ref:`Training a model`.
 
 ************
 Usage
