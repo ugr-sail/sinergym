@@ -922,12 +922,9 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         pass
 
     @abstractmethod
-    def get_episode_summary(self, episode: int) -> Dict[str, float]:
+    def get_episode_summary(self) -> Dict[str, float]:
         """Return data summary for the logger. This method should be implemented in the child classes.
            This method determines the data summary of episodes in Sinergym environments.
-
-           Args:
-                episode (int): Episode number.
 
         Returns:
             Dict[str, float]: Data summary.
@@ -988,7 +985,7 @@ class LoggerWrapper(BaseLoggerWrapper):
                                  truncated: bool):
         return []
 
-    def get_episode_summary(self, episode: int) -> Dict[str, float]:
+    def get_episode_summary(self) -> Dict[str, float]:
         # Get information from logger
         comfort_terms = [info['comfort_term']
                          for info in self.data_logger.infos]
@@ -1010,7 +1007,7 @@ class LoggerWrapper(BaseLoggerWrapper):
 
         # Data summary
         data_summary = {
-            'episode_num': episode,
+            'episode_num': self.get_wrapper_attr('episode'),
             'mean_reward': np.mean(
                 self.data_logger.rewards),
             'std_reward': np.std(
@@ -1188,8 +1185,7 @@ class CSVLogger(gym.Wrapper):
                     writer.writerows(episode_data.custom_metrics)
 
             # Update progress.csv
-            episode_summary = self.get_wrapper_attr(
-                'get_episode_summary')(self.get_wrapper_attr('episode'))
+            episode_summary = self.get_wrapper_attr('get_episode_summary')()
 
             with open(self.get_wrapper_attr('progress_file_path'), 'a+') as f:
                 writer = csv.writer(f)
@@ -1406,7 +1402,7 @@ class WandBLogger(gym.Wrapper):
         """
         # Get information from logger of LoggerWrapper
         episode_summary = self.get_wrapper_attr(
-            'get_episode_summary')(self.get_wrapper_attr('episode'))
+            'get_episode_summary')()
         # Deleting excluded keys
         episode_summary = {key: value for key, value in episode_summary.items(
         ) if key not in self.get_wrapper_attr('excluded_episode_summary_keys')}
