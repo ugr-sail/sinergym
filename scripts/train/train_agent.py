@@ -222,7 +222,7 @@ try:
                 'python-version': sys.version
             }
             experiment_params.update(conf)
-            env.get_wrapper_attr('wandb_run').config.update(conf)
+            env.get_wrapper_attr('wandb_run').config.update(experiment_params)
 
     else:
         model_path = ''
