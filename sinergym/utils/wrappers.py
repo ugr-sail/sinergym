@@ -1264,6 +1264,9 @@ class WandBLogger(gym.Wrapper):
                                     tags=tags,
                                     save_code=save_code,
                                     reinit=False)
+        
+        # Wandb finish with env.close flag
+        self.wandb_finish = True
 
         # Define X-Axis for episode summaries
         self.wandb_run.define_metric(
@@ -1332,7 +1335,7 @@ class WandBLogger(gym.Wrapper):
 
         return obs, info
 
-    def close(self, wandb_finish=True) -> None:
+    def close(self) -> None:
         """Recording last episode summary and close env.
 
         Args:
@@ -1345,9 +1348,10 @@ class WandBLogger(gym.Wrapper):
             'Environment closed, dumping summary metrics in WandB Platform.')
 
         # Finish WandB run
-        if wandb_finish:
+        if self.wandb_finish:
             # Save artifact
-            self.save_artifact()
+            if self.artifact_save:
+                self.save_artifact()
             self.wandb_run.finish()
 
         # Then, close env
@@ -1419,6 +1423,14 @@ class WandBLogger(gym.Wrapper):
             local_path=self.get_wrapper_attr('workspace_path'),
             name='Sinergym_output/')
         self.wandb_run.log_artifact(artifact)
+
+    def set_wandb_finish(self, wandb_finish: bool) -> None:
+        """Set if WandB run must be finished when environment is closed.
+
+        Args:
+            wandb_finish (bool): Whether to finish WandB run.
+        """
+        self.wandb_finish = wandb_finish
 
     def _log_data(self, data: Dict[str, Any]) -> None:
         """Log data in WandB platform. Nesting the dictionary correctly in different sections.

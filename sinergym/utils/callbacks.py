@@ -92,7 +92,9 @@ class LoggerEvalCallback(EventCallback):
         self.evaluation_num += 1
         # Close current training environment to execute an evaluation
         if self.wandb_log:
-            self.train_env.close(wandb_finish=False)
+            self.train_env.get_wrapper_attr('set_wandb_finish')(False)
+            self.train_env.close()
+            self.train_env.get_wrapper_attr('set_wandb_finish')(True)
         else:
             self.train_env.close()
 
@@ -197,8 +199,7 @@ class LoggerEvalCallback(EventCallback):
             # ---------------------------------------------------------------------------- #
             #                     Storing last episode in results dict                     #
             # ---------------------------------------------------------------------------- #
-            summary = self.eval_env.get_wrapper_attr("get_episode_summary")(
-                self.eval_env.get_wrapper_attr("episode"))
+            summary = self.eval_env.get_wrapper_attr("get_episode_summary")()
             # Append values to result dictionary
             for key in result.keys():
                 result[key].append(summary[key])
