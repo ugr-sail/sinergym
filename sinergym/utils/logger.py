@@ -68,8 +68,8 @@ class TerminalLogger():
         return logger
 
 
-class Logger():
-    """Logger for agent interaction with environment. Save all interactions in list or list of lists as attributes.
+class LoggerStorage():
+    """Logger storage for agent interaction with environment. Save all interactions in list or list of lists as attributes.
 
     Attributes:
         observations (List[List[float]]): List to store observations.

@@ -17,7 +17,7 @@ from gymnasium.wrappers.normalize import RunningMeanStd
 
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
-from sinergym.utils.logger import Logger, TerminalLogger
+from sinergym.utils.logger import LoggerStorage, TerminalLogger
 
 # ---------------------------------------------------------------------------- #
 #                             Observation wrappers                             #
@@ -803,17 +803,17 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
     def __init__(
         self,
         env: Env,
-        logger_class: Callable = Logger
+        storage_class: Callable = LoggerStorage
     ):
         """Base class for LoggerWrapper and its children classes.
 
         Args:
             env (Env): Original Sinergym environment.
-            logger_class (Callable, optional): Logger class to be used. Defaults to Sinergym Logger class.
+            storage_class (Callable, optional): Storage class to be used. Defaults to Sinergym LoggerStorage class.
         """
 
         super(BaseLoggerWrapper, self).__init__(env)
-        self.data_logger = logger_class()
+        self.data_logger = storage_class()
         # Overwrite in case you want more metrics
         self.custom_variables = []
         self.summary_metrics = []
@@ -940,15 +940,15 @@ class LoggerWrapper(BaseLoggerWrapper):
     def __init__(
         self,
         env: Env,
-        logger_class: Callable = Logger
+        storage_class: Callable = LoggerStorage
     ):
         """Wrapper to log data from environment interaction.
 
         Args:
             env (Env): Original Sinergym environment.
-            logger_class (Callable, optional): Logger class to be used. Defaults to Sinergym Logger class.
+            storage_class (Callable, optional): Storage class to be used. Defaults to Sinergym LoggerStorage class.
         """
-        super(LoggerWrapper, self).__init__(env, logger_class)
+        super(LoggerWrapper, self).__init__(env, storage_class)
         # Overwrite in case you want more metrics
         self.custom_variables = []
         # Overwite in case you have other summary metrics (same as
@@ -1264,7 +1264,7 @@ class WandBLogger(gym.Wrapper):
                                     tags=tags,
                                     save_code=save_code,
                                     reinit=False)
-        
+
         # Wandb finish with env.close flag
         self.wandb_finish = True
 

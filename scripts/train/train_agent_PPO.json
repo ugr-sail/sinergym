@@ -42,7 +42,7 @@
         "NormalizeAction": {},
         "NormalizeObservation": {},
         "LoggerWrapper": {
-            "logger_class": "sinergym.utils.logger.Logger"
+            "storage_class": "sinergym.utils.logger.LoggerStorage"
         },
         "CSVLogger": {}
     },

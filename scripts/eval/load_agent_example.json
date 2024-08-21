@@ -16,7 +16,7 @@
                                  "var": null,
                                  "automatic_update": false},
         "LoggerWrapper": {
-            "logger_class": "sinergym.utils.logger.Logger"
+            "storage_class": "sinergym.utils.logger.LoggerStorage"
         },
         "CSVLogger": {}
     },
