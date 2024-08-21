@@ -34,7 +34,7 @@ root output directory is the result of the simulation and includes:
           action variables names.
 
         * **simulated_actions.csv**: This file contains the actions executed in the simulation at each timestep. This values
-          do not have to be the same as the agent actions, for example, when the environment has been wrapped with normlization 
+          do not have to be the same as the agent actions, for example, when the environment has been wrapped with normalization 
           in its action space.The header is the action variables names.
 
         * **rewards.csv**: This file contains the rewards obtained by the agent at each timestep.

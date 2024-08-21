@@ -245,7 +245,7 @@ class NormalizeObservation(gym.Wrapper):
                  epsilon: float = 1e-8,
                  mean: Union[list, np.float64, str] = None,
                  var: Union[list, np.float64, str] = None):
-        """Initializes the NormalizationWrapper. Mean and var values can be None andbeing updated during interaction with environment.
+        """Initializes the NormalizationWrapper. Mean and var values can be None and being updated during interaction with environment.
 
         Args:
             env (Env): The environment to apply the wrapper.

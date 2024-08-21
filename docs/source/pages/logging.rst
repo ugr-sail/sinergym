@@ -54,7 +54,7 @@ WandB Logger
 WandBOutputFormat
 ******************
 
-* Integrates compability for the Stable Baselines 3 training logging system with Weights and Biases platform.
+* Integrates compatibility for the Stable Baselines 3 training logging system with Weights and Biases platform.
 
 * Then, can be used with *Sinergym* *WandBLogger* to consolidate information in a single Weights and Biases panel automatically.
   See example :ref:`Training a model` for more information.
