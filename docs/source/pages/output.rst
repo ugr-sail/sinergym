@@ -24,7 +24,7 @@ root output directory is the result of the simulation and includes:
       the original (when using variability).
 
     * **monitor/**: This records all Agent-Environment interactions during the episode, timestep by timestep.
-      This directory only exists when the environment has been wrapped with **LoggerWrapper** and **CSVLgger** (see :ref:`Wrappers` for more information).
+      This directory only exists when the environment has been wrapped with **LoggerWrapper** and **CSVLogger** (see :ref:`Logger Wrappers` for more information).
       This directory as several CSV files depending on the data:
         
         * **observations.csv**: This file contains the observations of the environment at each timestep. The header 
@@ -43,7 +43,7 @@ root output directory is the result of the simulation and includes:
           Some of the info keys can be ignored depending on the **CSVLogger** configuration.
 
         * **normalized_observations.csv**: This file is only generated when the environment is wrapped with **NormalizeObservation** 
-          (see :ref:`Wrappers`). The structure is the same as **observations.csv**, but the values are normalized.
+          (see :ref:`NormalizeObservation`). The structure is the same as **observations.csv**, but the values are normalized.
 
         * **custom_metrics.csv**: This file only appears when the logger wrapper has a definition of this custom metrics. The header
           is the custom metric list names specified.
@@ -54,7 +54,7 @@ root output directory is the result of the simulation and includes:
 * **progress.csv**: This file contains information about general simulation results. There is a **row per episode** 
   and it records important data such as mean power consumption, mean reward or mean comfort penalty, for example. This file 
   only exists when the environment has been wrapped with a **LoggerWrapper** and **CSVLogger**, same as monitor folder 
-  (see :ref:`Wrappers` for more information). The exact structure of this file is defined by the **LoggerWrapper** class.
+  (see :ref:`Logger Wrappers` for more information). The exact structure of this file is defined by the **LoggerWrapper** class.
 
 * **data_available.txt**: This file is generated when the *EnergyPlus* API initializes all callbacks and handlers 
   for the simulation. In this file, you can find all the available components of the building model, such as 

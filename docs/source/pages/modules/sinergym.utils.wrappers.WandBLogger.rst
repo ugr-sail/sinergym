@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.WandBLogger
+﻿sinergym.utils.wrappers.WandBLogger
 ===================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -22,6 +22,7 @@ sinergym.utils.wrappers.WandBLogger
       ~WandBLogger.render
       ~WandBLogger.reset
       ~WandBLogger.save_artifact
+      ~WandBLogger.set_wandb_finish
       ~WandBLogger.step
       ~WandBLogger.wandb_log
       ~WandBLogger.wandb_log_summary

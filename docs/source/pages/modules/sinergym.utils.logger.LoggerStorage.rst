@@ -1,9 +1,9 @@
-sinergym.utils.logger.Logger
-============================
+sinergym.utils.logger.LoggerStorage
+===================================
 
 .. currentmodule:: sinergym.utils.logger
 
-.. autoclass:: Logger
+.. autoclass:: LoggerStorage
    :members:                                                           
    :undoc-members:               
 
@@ -15,10 +15,10 @@ sinergym.utils.logger.Logger
 
    .. autosummary::
    
-      ~Logger.__init__
-      ~Logger.log_interaction
-      ~Logger.log_norm_obs
-      ~Logger.reset_data
+      ~LoggerStorage.__init__
+      ~LoggerStorage.log_interaction
+      ~LoggerStorage.log_norm_obs
+      ~LoggerStorage.reset_data
    
    
 

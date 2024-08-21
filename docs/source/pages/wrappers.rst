@@ -147,7 +147,7 @@ For more details, visit `#407 <https://github.com/ugr-sail/sinergym/issues/407>`
 Logger Wrappers
 *****************
 
-These wrappers use the *Sinergym* **Logger** class functionalities to store information during environment 
+These wrappers use the *Sinergym* **LoggerStorage** class functionalities to store information during environment 
 interactions. For more details, see :ref:`Logging System Overview`.
 
 The diagram below illustrates the relationship between the wrappers and the logger, with explanations 
@@ -163,7 +163,7 @@ LoggerWrapper
 
 **BaseLoggerWrapper** is the abstract class for logger wrappers. It stores all information during 
 environment interactions. The environment gains a new attribute, ``data_logger``, an instance of 
-**Logger** containing all the information. You can use a custom Logger class by passing it to the 
+**LoggerStorage** containing all the information. You can create a custom *LoggerStorage* class by passing it to the 
 constructor to change the logging backend, such as storing information in a different database.
 
 Inherit from this class to create a new logger wrapper and implement abstract methods to define 
