@@ -303,15 +303,14 @@ def test_logger_wrapper(env_name, request):
 
     env.reset()
 
-    # Check reset data is registered
-    assert len(logger.observations) == 1
-    assert len(logger.actions) == 1
-    assert len(logger.rewards) == 1
-    assert len(logger.infos) == 1
-    assert len(logger.terminateds) == 1
-    assert len(logger.truncateds) == 1
+    assert len(logger.observations) == 0
+    assert len(logger.actions) == 0
+    assert len(logger.rewards) == 0
+    assert len(logger.infos) == 0
+    assert len(logger.terminateds) == 0
+    assert len(logger.truncateds) == 0
     assert len(logger.custom_metrics) == 0
-    assert logger.interactions == 1
+    assert logger.interactions == 0
 
     # Make 3 steps
     for _ in range(3):
@@ -319,18 +318,17 @@ def test_logger_wrapper(env_name, request):
         env.step(a)
 
     # Check that the logger has stored the data
-    assert len(logger.observations) == 4
-    assert len(logger.actions) == 4
-    assert len(logger.rewards) == 4
-    assert len(logger.infos) == 4
-    assert len(logger.terminateds) == 4
-    assert len(logger.truncateds) == 4
+    assert len(logger.observations) == 3
+    assert len(logger.actions) == 3
+    assert len(logger.rewards) == 3
+    assert len(logger.infos) == 3
+    assert len(logger.terminateds) == 3
+    assert len(logger.truncateds) == 3
     assert len(logger.custom_metrics) == 0
-    assert logger.interactions == 4
+    assert logger.interactions == 3
 
     # Check summary data is done
-    summary = env.get_wrapper_attr('get_episode_summary')(
-        env.get_wrapper_attr('episode'))
+    summary = env.get_wrapper_attr('get_episode_summary')()
     assert env.get_wrapper_attr('summary_metrics') == list(summary.keys())
     assert isinstance(summary, dict)
     assert len(summary) > 0
@@ -339,19 +337,19 @@ def test_logger_wrapper(env_name, request):
         False) and summary.get(
         'std_reward',
         False)
-    assert summary['mean_reward'] == np.mean(logger.rewards[1:])
-    assert summary['std_reward'] == np.std(logger.rewards[1:])
+    assert summary['mean_reward'] == np.mean(logger.rewards)
+    assert summary['std_reward'] == np.std(logger.rewards)
 
     # Check if reset method reset logger data too
     env.reset()
-    assert len(logger.observations) == 1
-    assert len(logger.actions) == 1
-    assert len(logger.rewards) == 1
-    assert len(logger.infos) == 1
-    assert len(logger.terminateds) == 1
-    assert len(logger.truncateds) == 1
+    assert len(logger.observations) == 0
+    assert len(logger.actions) == 0
+    assert len(logger.rewards) == 0
+    assert len(logger.infos) == 0
+    assert len(logger.terminateds) == 0
+    assert len(logger.truncateds) == 0
     assert len(logger.custom_metrics) == 0
-    assert logger.interactions == 1
+    assert logger.interactions == 0
 
     # Make 3 steps
     for _ in range(3):
@@ -408,7 +406,7 @@ def test_CSVlogger_wrapper(env_name, request):
     with open(episode_path + '/monitor/observations.csv', mode='r', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
         # Header row, reset and 10 steps (12)
-        assert len(list(reader)) == 12
+        assert len(list(reader)) == 11
 
     # If env is wrapped with normalize obs...
     if is_wrapped(env, NormalizeObservation):
