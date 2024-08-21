@@ -412,22 +412,27 @@ def env_wrapper_multiobjective(env_5zone):
 
 
 @pytest.fixture(scope='function')
-def env_wrapper_logger(env_5zone):
-    return LoggerWrapper(env=env_5zone, flag=True)
+def env_logger(env_5zone):
+    return LoggerWrapper(env=env_5zone)
 
 
 @pytest.fixture(scope='function')
+def env_csv_logger(env_5zone):
+    return CSVLogger(LoggerWrapper(env=env_5zone))
+
+
+@ pytest.fixture(scope='function')
 def env_wrapper_multiobs(env_5zone):
     return MultiObsWrapper(env=env_5zone, n=5, flatten=True)
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def env_wrapper_datetime(env_5zone):
     return DatetimeWrapper(
         env=env_5zone)
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def env_wrapper_previousobs(env_5zone):
     return PreviousObservationWrapper(
         env=env_5zone,
@@ -437,7 +442,7 @@ def env_wrapper_previousobs(env_5zone):
             'air_temperature'])
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def env_wrapper_incremental(env_5zone):
     return IncrementalWrapper(
         env=env_5zone,
@@ -449,7 +454,7 @@ def env_wrapper_incremental(env_5zone):
     )
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def env_discrete_wrapper_incremental(env_5zone):
     return DiscreteIncrementalWrapper(
         env=env_5zone,
@@ -459,12 +464,12 @@ def env_discrete_wrapper_incremental(env_5zone):
     )
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def env_normalize_action_wrapper(env_5zone):
     return NormalizeAction(env=env_5zone)
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def env_wrapper_discretize(env_5zone, ACTION_SPACE_DISCRETE_5ZONE):
     return DiscretizeEnv(
         env=env_5zone,
@@ -473,7 +478,7 @@ def env_wrapper_discretize(env_5zone, ACTION_SPACE_DISCRETE_5ZONE):
     )
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def env_wrapper_reduce_observation(env_5zone):
     return ReduceObservationWrapper(
         env=env_5zone,
@@ -483,7 +488,7 @@ def env_wrapper_reduce_observation(env_5zone):
             'air_temperature'])
 
 
-@pytest.fixture(scope='function')
+@ pytest.fixture(scope='function')
 def env_all_wrappers(env_5zone):
     env = MultiObjectiveReward(
         env=env_5zone,
@@ -500,7 +505,8 @@ def env_all_wrappers(env_5zone):
             21.0, 25.0], delta_temp=2, step_temp=0.5)
     env = NormalizeObservation(
         env=env)
-    env = LoggerWrapper(env=env, flag=True)
+    env = LoggerWrapper(env=env)
+    env = CSVLogger(env=env)
     env = ReduceObservationWrapper(
         env=env,
         obs_reduction=[

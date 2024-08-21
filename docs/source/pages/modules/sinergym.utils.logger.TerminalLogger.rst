@@ -1,9 +1,9 @@
-sinergym.utils.logger.Logger
-============================
+sinergym.utils.logger.TerminalLogger
+====================================
 
 .. currentmodule:: sinergym.utils.logger
 
-.. autoclass:: Logger
+.. autoclass:: TerminalLogger
    :members:                                                           
    :undoc-members:               
 
@@ -15,8 +15,8 @@ sinergym.utils.logger.Logger
 
    .. autosummary::
    
-      ~Logger.__init__
-      ~Logger.getLogger
+      ~TerminalLogger.__init__
+      ~TerminalLogger.getLogger
    
    
 

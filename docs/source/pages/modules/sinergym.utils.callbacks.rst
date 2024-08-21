@@ -1,4 +1,4 @@
-sinergym.utils.callbacks
+﻿sinergym.utils.callbacks
 ========================
 
 .. automodule:: sinergym.utils.callbacks
@@ -19,7 +19,6 @@ sinergym.utils.callbacks
       :toctree:                                          
       :template: custom-class-template.rst               
    
-      LoggerCallback
       LoggerEvalCallback
    
    

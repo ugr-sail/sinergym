@@ -3,9 +3,10 @@ eppy
 gymnasium
 isort
 numpy
-opyplus
+opyplus @ git+https://github.com/AlejandroCN7/opyplus.git@master
 pandas
 pytype
 twine
 xlsxwriter
 pipdeptree
+wandb

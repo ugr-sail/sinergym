@@ -6,7 +6,7 @@ This section details the buildings incorporated in Sinergym, separate from the o
 components that constitute the environment for each experiment. It also provides 
 the default *Sinergym* observation and action spaces for each building, though 
 these spaces can be customized by the user. The observation variables names would
-be the base name with each key at the begginning.
+be the base name with each key at the beginning.
 
 .. important:: To add new buildings to this framework, please refer to the section 
                :ref:`Adding new buildings for environments`.

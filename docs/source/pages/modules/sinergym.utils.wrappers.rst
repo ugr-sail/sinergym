@@ -19,6 +19,8 @@
       :toctree:                                          
       :template: custom-class-template.rst               
    
+      BaseLoggerWrapper
+      CSVLogger
       DatetimeWrapper
       DiscreteIncrementalWrapper
       DiscretizeEnv
@@ -31,6 +33,7 @@
       OfficeGridStorageSmoothingActionConstraintsWrapper
       PreviousObservationWrapper
       ReduceObservationWrapper
+      WandBLogger
    
    
 

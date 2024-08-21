@@ -72,11 +72,12 @@ If you use *Sinergym* in your work, please cite our `paper <https://dl.acm.org/d
    pages/architecture.rst
    pages/environments.rst
    pages/environments_registration.rst
+   pages/logging.rst
+   pages/output.rst
    pages/rewards.rst
    pages/controllers.rst
    pages/wrappers.rst
    pages/extra-configuration.rst
-   pages/output.rst
    pages/deep-reinforcement-learning.rst
    pages/gcloudAPI.rst
    pages/github-actions.rst

@@ -1,497 +1,35 @@
 """Implementation of custom Gym environments."""
 
+import csv
+import os
 import random
+from abc import ABC, abstractmethod
 from collections import deque
 from copy import deepcopy
 from datetime import datetime
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
+import wandb
 from gymnasium import Env
 from gymnasium.wrappers.normalize import RunningMeanStd
 
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
-from sinergym.utils.logger import CSVLogger, Logger
-
-
-class MultiObjectiveReward(gym.Wrapper):
-
-    logger = Logger().getLogger(name='WRAPPER MultiObjectiveReward',
-                                level=LOG_WRAPPERS_LEVEL)
-
-    def __init__(self, env: Env, reward_terms: List[str]):
-        """The environment will return a reward vector of each objective instead of a scalar value.
-
-        Args:
-            env (Env): Original Sinergym environment.
-            reward_terms (List[str]): List of keys in reward terms which will be included in reward vector.
-        """
-        super(MultiObjectiveReward, self).__init__(env)
-        self.reward_terms = reward_terms
-
-        self.logger.info('wrapper initialized.')
-
-    def step(self, action: Union[int, np.ndarray]) -> Tuple[
-            np.ndarray, List[float], bool, bool, Dict[str, Any]]:
-        """Perform the action and environment return reward vector.
-
-        Args:
-            action (Union[int, np.ndarray]): Action to be executed in environment.
-
-        Returns:
-            Tuple[ np.ndarray, List[float], bool, bool, Dict[str, Any]]: observation, vector reward, terminated, truncated and info.
-        """
-        # Execute normal reward
-        obs, _, terminated, truncated, info = self.env.step(action)
-        reward_vector = [value for key, value in info.items(
-        ) if key in self.get_wrapper_attr('reward_terms')]
-        try:
-            assert len(reward_vector) == len(
-                self.get_wrapper_attr('reward_terms'))
-        except AssertionError as err:
-            self.logger.error('Some reward term is unknown')
-            raise err
-        return obs, reward_vector, terminated, truncated, info
-
-
-class NormalizeObservation(gym.Wrapper):
-
-    logger = Logger().getLogger(name='WRAPPER NormalizeObservation',
-                                level=LOG_WRAPPERS_LEVEL)
-
-    def __init__(self,
-                 env: Env,
-                 automatic_update: bool = True,
-                 epsilon: float = 1e-8,
-                 mean: Union[list, np.float64, str] = None,
-                 var: Union[list, np.float64, str] = None):
-        """Initializes the NormalizationWrapper. Mean and var values can be None andbeing updated during interaction with environment.
-
-        Args:
-            env (Env): The environment to apply the wrapper.
-            automatic_update (bool, optional): Whether or not to update the mean and variance values automatically. Defaults to True.
-            epsilon (float, optional): A stability parameter used when scaling the observations. Defaults to 1e-8.
-            mean (list, np.float64, str, optional): The mean value used for normalization. It can be a mean.txt path too. Defaults to None.
-            var (list, np.float64, str, optional): The variance value used for normalization. It can be a var.txt path too. Defaults to None.
-        """
-        gym.Wrapper.__init__(self, env)
-
-        # Check mean and var format if it is defined
-        mean = self._check_and_update_metric(mean, 'mean')
-        var = self._check_and_update_metric(var, 'var')
-
-        self.num_envs = 1
-        self.is_vector_env = False
-        self.automatic_update = automatic_update
-
-        self.unwrapped_observation = None
-        # Initialize normalization calibration
-        self.obs_rms = RunningMeanStd(shape=self.observation_space.shape)
-        self.obs_rms.mean = mean if mean is not None else self.obs_rms.mean
-        self.obs_rms.var = var if var is not None else self.obs_rms.var
-        self.epsilon = epsilon
-
-        self.logger.info('Wrapper initialized.')
-
-    def step(self, action):
-        """Steps through the environment and normalizes the observation."""
-        obs, reward, terminated, truncated, info = self.env.step(action)
-
-        # Save original obs in class attribute
-        self.unwrapped_observation = deepcopy(obs)
-
-        # Normalize observation and return
-        return self.normalize(np.array([obs]))[
-            0], reward, terminated, truncated, info
-
-    def reset(self, **kwargs):
-        """Resets the environment and normalizes the observation."""
-        obs, info = self.env.reset(**kwargs)
-
-        # Save original obs in class attribute
-        self.unwrapped_observation = deepcopy(obs)
-
-        # Update normalization calibration if it is required
-        self._save_normalization_calibration()
-
-        return self.normalize(np.array([obs]))[0], info
-
-    def close(self):
-        """Close the environment and save normalization calibration."""
-        self.env.close()
-        # Update normalization calibration if it is required
-        self._save_normalization_calibration()
-
-    # ----------------------- Wrapper extra functionality ----------------------- #
-
-    def _check_and_update_metric(self, metric, metric_name):
-        if metric is not None:
-            # Check type and conversions
-            if isinstance(metric, str):
-                try:
-                    metric = np.loadtxt(metric)
-                except FileNotFoundError as err:
-                    self.logger.error(
-                        '{}.txt file not found. Please, check the path.'.format(metric_name))
-                    raise err
-            elif isinstance(metric, list) or isinstance(metric, np.ndarray):
-                metric = np.float64(metric)
-            else:
-                self.logger.error(
-                    '{} values must be a list, a numpy array or a path to a txt file.'.format(metric_name))
-                raise ValueError
-
-            # Check dimension of mean and var
-            try:
-                assert len(metric) == self.observation_space.shape[0]
-            except AssertionError as err:
-                self.logger.error(
-                    '{} values must have the same shape than environment observation space.'.format(metric_name))
-                raise err
-
-        return metric
-
-    def _save_normalization_calibration(self):
-        """Saves the normalization calibration data in the output folder as txt files.
-        """
-        if hasattr(self, "mean") and hasattr(self, "var"):
-            self.logger.info(
-                'Saving normalization calibration data... [{}]'.format(
-                    self.name))
-            # Save in txt in output folder
-            np.savetxt(fname=self.get_wrapper_attr(
-                'workspace_path') + '/mean.txt', X=self.mean)
-            np.savetxt(fname=self.get_wrapper_attr(
-                'workspace_path') + '/var.txt', X=self.var)
-
-    def deactivate_update(self):
-        """
-        Deactivates the automatic update of the normalization wrapper.
-        After calling this method, the normalization wrapper will not update its calibration automatically.
-        """
-        self.automatic_update = False
-
-    def activate_update(self):
-        """
-        Activates the automatic update of the normalization wrapper.
-        After calling this method, the normalization wrapper will update its calibration automatically.
-        """
-        self.automatic_update = True
-
-    @property
-    def mean(self) -> Optional[np.float64]:
-        """Returns the mean value of the observations."""
-        if hasattr(self, 'obs_rms'):
-            return self.obs_rms.mean
-        else:
-            return None
-
-    @property
-    def var(self) -> Optional[np.float64]:
-        """Returns the variance value of the observations."""
-        if hasattr(self, 'obs_rms'):
-            return self.obs_rms.var
-        else:
-            return None
-
-    def set_mean(self, mean: Union[list, np.float64, str]):
-        """Sets the mean value of the observations."""
-        mean = self._check_and_update_metric(mean, 'mean')
-        self.obs_rms.mean = deepcopy(mean)
-
-    def set_var(self, var: Union[list, np.float64, str]):
-        """Sets the variance value of the observations."""
-        var = self._check_and_update_metric(var, 'var')
-        self.obs_rms.var = deepcopy(var)
-
-    def normalize(self, obs):
-        """Normalizes the observation using the running mean and variance of the observations.
-        If automatic_update is enabled, the running mean and variance will be updated too."""
-        if self.automatic_update:
-            self.obs_rms.update(obs)
-        return (obs - self.obs_rms.mean) / \
-            np.sqrt(self.obs_rms.var + self.epsilon)
-
-
-class MultiObsWrapper(gym.Wrapper):
-
-    logger = Logger().getLogger(name='WRAPPER MultiObsWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
-
-    def __init__(
-            self,
-            env: Env,
-            n: int = 5,
-            flatten: bool = True) -> None:
-        """Stack of observations.
-
-        Args:
-            env (Env): Original Gym environment.
-            n (int, optional): Number of observations to be stacked. Defaults to 5.
-            flatten (bool, optional): Whether or not flat the observation vector. Defaults to True.
-        """
-        super(MultiObsWrapper, self).__init__(env)
-        self.n = n
-        self.ind_flat = flatten
-        self.history = deque([], maxlen=n)
-        shape = self.get_wrapper_attr('observation_space').shape
-        new_shape = (shape[0] * n,) if flatten else ((n,) + shape)
-        self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
-
-        self.logger.info('Wrapper initialized.')
-
-    def reset(self,
-              seed: Optional[int] = None,
-              options: Optional[Dict[str,
-                                     Any]] = None) -> Tuple[np.ndarray,
-                                                            Dict[str,
-                                                                 Any]]:
-        """Resets the environment.
-
-        Returns:
-            np.ndarray: Stacked previous observations.
-        """
-        obs, info = self.env.reset(seed=seed, options=options)
-        for _ in range(self.n):
-            self.history.append(obs)
-        return self._get_obs(), info
-
-    def step(self, action: Union[int, np.ndarray]
-             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
-        """Performs the action in the new environment.
-
-        Args:
-            action (Union[int, np.ndarray]): Action to be executed in environment.
-
-        Returns:
-            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated episode and dict with extra information.
-        """
-
-        observation, reward, terminated, truncated, info = self.env.step(
-            action)
-        self.history.append(observation)
-        return self._get_obs(), reward, terminated, truncated, info
-
-    def _get_obs(self) -> np.ndarray:
-        """Get observation history.
-
-        Returns:
-            np.array: Array of previous observations.
-        """
-        if self.get_wrapper_attr('ind_flat'):
-            return np.array(self.history).reshape(-1,)
-        else:
-            return np.array(self.history)
-
-
-class LoggerWrapper(gym.Wrapper):
-
-    logger = Logger().getLogger(name='WRAPPER LoggerWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
-
-    def __init__(
-        self,
-        env: Env,
-        logger_class: Callable = CSVLogger,
-        monitor_header: Optional[List[str]] = None,
-        progress_header: Optional[List[str]] = None,
-        flag: bool = True,
-    ):
-        """CSVLogger to log interactions with environment.
-
-        Args:
-            env (Env): Original Gym environment in Sinergym.
-            logger_class (CSVLogger): CSV Logger class to use to log all information.
-            monitor_header: Header for monitor.csv in each episode. Default is None (default format).
-            progress_header: Header for progress.csv in whole simulation. Default is None (default format).
-            flag (bool, optional): State of logger (activate or deactivate). Defaults to True.
-        """
-        super(LoggerWrapper, self).__init__(env)
-        # Headers for csv logger
-        monitor_header_list = monitor_header if monitor_header is not None else ['timestep'] + self.get_wrapper_attr('observation_variables') + self.get_wrapper_attr('action_variables') + [
-            'time (hours)',
-            'reward',
-            'reward_energy_term',
-            'reward_comfort_term',
-            'absolute_energy_penalty',
-            'absolute_comfort_penalty',
-            'total_power_demand',
-            'total_temperature_violation',
-            'terminated',
-            'truncated']
-        self.monitor_header = ''
-        for element_header in monitor_header_list:
-            self.monitor_header += element_header + ','
-        self.monitor_header = self.monitor_header[:-1]
-        progress_header_list = progress_header if progress_header is not None else [
-            'episode_num',
-            'cumulative_reward',
-            'mean_reward',
-            'cumulative_reward_energy_term',
-            'mean_reward_energy_term',
-            'cumulative_reward_comfort_term',
-            'mean_reward_comfort_term',
-            'cumulative_abs_energy_penalty',
-            'mean_abs_energy_penalty',
-            'cumulative_abs_comfort_penalty',
-            'mean_abs_comfort_penalty',
-            'cumulative_power_demand',
-            'mean_power_demand',
-            'cumulative_temperature_violation',
-            'mean_temperature_violation',
-            'comfort_violation_time (%)',
-            'length (timesteps)',
-            'time_elapsed (hours)']
-        self.progress_header = ''
-        for element_header in progress_header_list:
-            self.progress_header += element_header + ','
-        self.progress_header = self.progress_header[:-1]
-
-        # Create simulation logger, by default is active (flag=True)
-        self.file_logger = logger_class(
-            monitor_header=self.get_wrapper_attr('monitor_header'),
-            progress_header=self.get_wrapper_attr('progress_header'),
-            log_progress_file=self.get_wrapper_attr('workspace_path') +
-            '/progress.csv',
-            flag=flag)
-
-        self.logger.info('Wrapper initialized.')
-
-    def step(self, action: Union[int, np.ndarray]
-             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
-        """Sends action to the environment. Logging new information in monitor.csv.
-
-        Args:
-            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
-
-        Returns:
-            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
-        """
-        obs, reward, terminated, truncated, info = self.env.step(action)
-        # We added some extra values (month,day,hour) manually in env, so we
-        # need to delete them.
-        if is_wrapped(self, NormalizeObservation):
-            # Record action and new observation in simulator's csv
-            self.file_logger.log_step_normalize(
-                obs=obs,
-                action=info['action'],
-                terminated=terminated,
-                truncated=truncated,
-                info=info)
-            # Record original observation too
-            self.file_logger.log_step(
-                obs=self.env.get_wrapper_attr('unwrapped_observation'),
-                action=info['action'],
-                terminated=terminated,
-                truncated=truncated,
-                info=info)
-        else:
-            # Only record observation without normalization
-            self.file_logger.log_step(
-                obs=obs,
-                action=info['action'],
-                terminated=terminated,
-                truncated=truncated,
-                info=info)
-
-        return obs, reward, terminated, truncated, info
-
-    def reset(self,
-              seed: Optional[int] = None,
-              options: Optional[Dict[str,
-                                     Any]] = None) -> Tuple[np.ndarray,
-                                                            Dict[str,
-                                                                 Any]]:
-        """Reset the environment. Recording episode summary in logger
-
-        Args:
-            seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). if value is None, a seed will be chosen from some source of entropy. Defaults to None.
-            options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
-
-        Returns:
-            Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
-        """
-        # It isn't first episode simulation, so we can logger last episode
-        if self.get_wrapper_attr('is_running'):
-            self.logger.info(
-                'End of episode detected, recording summary (progress.csv) if logger is active')
-            self.file_logger.log_episode(
-                episode=self.env.get_wrapper_attr('episode'))
-
-        # Then, reset environment
-        obs, info = self.env.reset(seed=seed, options=options)
-
-        # Create monitor.csv for information of this episode
-        self.logger.info(
-            'Creating monitor.csv for current episode (episode ' + str(
-                self.get_wrapper_attr('episode')) + ') if logger is active')
-        self.file_logger.set_log_file(
-            self.get_wrapper_attr('model').episode_path + '/monitor.csv')
-
-        if is_wrapped(self, NormalizeObservation):
-            # Store initial state of simulation (normalized)
-            self.file_logger.log_step_normalize(
-                obs=obs,
-                action=[
-                    None for _ in range(
-                        len(
-                            self.env.get_wrapper_attr('action_variables')))],
-                terminated=False,
-                truncated=False,
-                info=info)
-            # And store original obs
-            self.file_logger.log_step(
-                obs=self.env.get_wrapper_attr('unwrapped_observation'),
-                action=[
-                    None for _ in range(
-                        len(
-                            self.get_wrapper_attr('action_variables')))],
-                terminated=False,
-                truncated=False,
-                info=info)
-        else:
-            # Only store original step
-            self.file_logger.log_step(obs=obs,
-                                      action=[None for _ in range(
-                                          len(self.get_wrapper_attr('action_variables')))],
-                                      terminated=False,
-                                      truncated=False,
-                                      info=info)
-
-        return obs, info
-
-    def close(self) -> None:
-        """Recording last episode summary and close env.
-        """
-        # Record last episode summary before end simulation
-        self.logger.info(
-            'End of episode, recording summary (progress.csv) if logger is active')
-        self.file_logger.log_episode(
-            episode=self.env.get_wrapper_attr('episode'))
-
-        # Then, close env
-        self.env.close()
-
-    def activate_logger(self) -> None:
-        """Activate logger if its flag False.
-        """
-        self.file_logger.activate_flag()
-
-    def deactivate_logger(self) -> None:
-        """Deactivate logger if its flag True.
-        """
-        self.file_logger.deactivate_flag()
+from sinergym.utils.logger import LoggerStorage, TerminalLogger
+
+# ---------------------------------------------------------------------------- #
+#                             Observation wrappers                             #
+# ---------------------------------------------------------------------------- #
 
 
 class DatetimeWrapper(gym.ObservationWrapper):
     """Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.
        Observation space is updated automatically."""
 
-    logger = Logger().getLogger(name='WRAPPER DatetimeWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(name='WRAPPER DatetimeWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
                  env: Env):
@@ -560,13 +98,16 @@ class DatetimeWrapper(gym.ObservationWrapper):
 
         return np.array(list(new_obs.values()))
 
+# ---------------------------------------------------------------------------- #
+
 
 class PreviousObservationWrapper(gym.ObservationWrapper):
     """Wrapper to add observation values from previous timestep to
     current environment observation"""
 
-    logger = Logger().getLogger(name='WRAPPER PreviousObservationWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER PreviousObservationWrapper',
+        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
                  env: Env,
@@ -616,12 +157,252 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
 
         return new_obs
 
+# ---------------------------------------------------------------------------- #
+
+
+class MultiObsWrapper(gym.Wrapper):
+
+    logger = TerminalLogger().getLogger(name='WRAPPER MultiObsWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(
+            self,
+            env: Env,
+            n: int = 5,
+            flatten: bool = True) -> None:
+        """Stack of observations.
+
+        Args:
+            env (Env): Original Gym environment.
+            n (int, optional): Number of observations to be stacked. Defaults to 5.
+            flatten (bool, optional): Whether or not flat the observation vector. Defaults to True.
+        """
+        super(MultiObsWrapper, self).__init__(env)
+        self.n = n
+        self.ind_flat = flatten
+        self.history = deque([], maxlen=n)
+        shape = self.get_wrapper_attr('observation_space').shape
+        new_shape = (shape[0] * n,) if flatten else ((n,) + shape)
+        self.observation_space = gym.spaces.Box(
+            low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
+
+        self.logger.info('Wrapper initialized.')
+
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
+        """Resets the environment.
+
+        Returns:
+            np.ndarray: Stacked previous observations.
+        """
+        obs, info = self.env.reset(seed=seed, options=options)
+        for _ in range(self.n):
+            self.history.append(obs)
+        return self._get_obs(), info
+
+    def step(self, action: Union[int, np.ndarray]
+             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
+        """Performs the action in the new environment.
+
+        Args:
+            action (Union[int, np.ndarray]): Action to be executed in environment.
+
+        Returns:
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated episode and dict with extra information.
+        """
+
+        observation, reward, terminated, truncated, info = self.env.step(
+            action)
+        self.history.append(observation)
+        return self._get_obs(), reward, terminated, truncated, info
+
+    def _get_obs(self) -> np.ndarray:
+        """Get observation history.
+
+        Returns:
+            np.array: Array of previous observations.
+        """
+        if self.get_wrapper_attr('ind_flat'):
+            return np.array(self.history).reshape(-1,)
+        else:
+            return np.array(self.history)
+
+# ---------------------------------------------------------------------------- #
+
+
+class NormalizeObservation(gym.Wrapper):
+
+    logger = TerminalLogger().getLogger(name='WRAPPER NormalizeObservation',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: Env,
+                 automatic_update: bool = True,
+                 epsilon: float = 1e-8,
+                 mean: Union[list, np.float64, str] = None,
+                 var: Union[list, np.float64, str] = None):
+        """Initializes the NormalizationWrapper. Mean and var values can be None and being updated during interaction with environment.
+
+        Args:
+            env (Env): The environment to apply the wrapper.
+            automatic_update (bool, optional): Whether or not to update the mean and variance values automatically. Defaults to True.
+            epsilon (float, optional): A stability parameter used when scaling the observations. Defaults to 1e-8.
+            mean (list, np.float64, str, optional): The mean value used for normalization. It can be a mean.txt path too. Defaults to None.
+            var (list, np.float64, str, optional): The variance value used for normalization. It can be a var.txt path too. Defaults to None.
+        """
+        gym.Wrapper.__init__(self, env)
+
+        # Check mean and var format if it is defined
+        mean = self._check_and_update_metric(mean, 'mean')
+        var = self._check_and_update_metric(var, 'var')
+
+        self.num_envs = 1
+        self.is_vector_env = False
+        self.automatic_update = automatic_update
+
+        self.unwrapped_observation = None
+        # Initialize normalization calibration
+        self.obs_rms = RunningMeanStd(shape=self.observation_space.shape)
+        self.obs_rms.mean = mean if mean is not None else self.obs_rms.mean
+        self.obs_rms.var = var if var is not None else self.obs_rms.var
+        self.epsilon = epsilon
+
+        self.logger.info('Wrapper initialized.')
+
+    def step(self, action: Union[int, np.ndarray]) -> Tuple[
+            np.ndarray, float, bool, bool, Dict[str, Any]]:
+        """Steps through the environment and normalizes the observation."""
+        obs, reward, terminated, truncated, info = self.env.step(action)
+
+        # Save original obs in class attribute
+        self.unwrapped_observation = deepcopy(obs)
+
+        # Normalize observation and return
+        return self.normalize(np.array([obs]))[
+            0], reward, terminated, truncated, info
+
+    def reset(self, **kwargs):
+        """Resets the environment and normalizes the observation."""
+        obs, info = self.env.reset(**kwargs)
+
+        # Save original obs in class attribute
+        self.unwrapped_observation = deepcopy(obs)
+
+        # Update normalization calibration if it is required
+        self._save_normalization_calibration()
+
+        return self.normalize(np.array([obs]))[0], info
+
+    def close(self):
+        """Close the environment and save normalization calibration."""
+        self.env.close()
+        # Update normalization calibration if it is required
+        self._save_normalization_calibration()
+
+    # ----------------------- Wrapper extra functionality ----------------------- #
+
+    def _check_and_update_metric(self, metric, metric_name):
+        if metric is not None:
+            # Check type and conversions
+            if isinstance(metric, str):
+                try:
+                    metric = np.loadtxt(metric)
+                except FileNotFoundError as err:
+                    self.logger.error(
+                        '{}.txt file not found. Please, check the path.'.format(metric_name))
+                    raise err
+            elif isinstance(metric, list) or isinstance(metric, np.ndarray):
+                metric = np.float64(metric)
+            else:
+                self.logger.error(
+                    '{} values must be a list, a numpy array or a path to a txt file.'.format(metric_name))
+                raise ValueError
+
+            # Check dimension of mean and var
+            try:
+                assert len(metric) == self.observation_space.shape[0]
+            except AssertionError as err:
+                self.logger.error(
+                    '{} values must have the same shape than environment observation space.'.format(metric_name))
+                raise err
+
+        return metric
+
+    def _save_normalization_calibration(self):
+        """Saves the normalization calibration data in the output folder as txt files.
+        """
+        if hasattr(self, "mean") and hasattr(self, "var"):
+            self.logger.info(
+                'Saving normalization calibration data... [{}]'.format(
+                    self.get_wrapper_attr('name')))
+            # Save in txt in output folder
+            np.savetxt(fname=self.get_wrapper_attr(
+                'workspace_path') + '/mean.txt', X=self.mean)
+            np.savetxt(fname=self.get_wrapper_attr(
+                'workspace_path') + '/var.txt', X=self.var)
+
+    def deactivate_update(self):
+        """
+        Deactivates the automatic update of the normalization wrapper.
+        After calling this method, the normalization wrapper will not update its calibration automatically.
+        """
+        self.automatic_update = False
+
+    def activate_update(self):
+        """
+        Activates the automatic update of the normalization wrapper.
+        After calling this method, the normalization wrapper will update its calibration automatically.
+        """
+        self.automatic_update = True
+
+    @property
+    def mean(self) -> Optional[np.float64]:
+        """Returns the mean value of the observations."""
+        if hasattr(self, 'obs_rms'):
+            return self.obs_rms.mean
+        else:
+            return None
+
+    @property
+    def var(self) -> Optional[np.float64]:
+        """Returns the variance value of the observations."""
+        if hasattr(self, 'obs_rms'):
+            return self.obs_rms.var
+        else:
+            return None
+
+    def set_mean(self, mean: Union[list, np.float64, str]):
+        """Sets the mean value of the observations."""
+        mean = self._check_and_update_metric(mean, 'mean')
+        self.obs_rms.mean = deepcopy(mean)
+
+    def set_var(self, var: Union[list, np.float64, str]):
+        """Sets the variance value of the observations."""
+        var = self._check_and_update_metric(var, 'var')
+        self.obs_rms.var = deepcopy(var)
+
+    def normalize(self, obs):
+        """Normalizes the observation using the running mean and variance of the observations.
+        If automatic_update is enabled, the running mean and variance will be updated too."""
+        if self.automatic_update:
+            self.obs_rms.update(obs)
+        return (obs - self.obs_rms.mean) / \
+            np.sqrt(self.obs_rms.var + self.epsilon)
+
+# ---------------------------------------------------------------------------- #
+#                                Action wrappers                               #
+# ---------------------------------------------------------------------------- #
+
 
 class IncrementalWrapper(gym.ActionWrapper):
     """A wrapper for an incremental values of desired action variables"""
 
-    logger = Logger().getLogger(name='WRAPPER IncrementalWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(name='WRAPPER IncrementalWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(
         self,
@@ -729,14 +510,17 @@ class IncrementalWrapper(gym.ActionWrapper):
 
         return list(action_)
 
+# ---------------------------------------------------------------------------- #
+
 
 class DiscreteIncrementalWrapper(gym.ActionWrapper):
     """A wrapper for an incremental setpoint discrete action space environment.
     WARNING: A environment with only temperature setpoints control must be used
     with this wrapper."""
 
-    logger = Logger().getLogger(name='WRAPPER DiscreteIncrementalWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER DiscreteIncrementalWrapper',
+        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(
         self,
@@ -836,13 +620,15 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
                 'Action space is not continuous or discrete?')
             return False
 
+# ---------------------------------------------------------------------------- #
+
 
 class DiscretizeEnv(gym.ActionWrapper):
     """ Wrapper to discretize an action space.
     """
 
-    logger = Logger().getLogger(name='WRAPPER DiscretizeEnv',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(name='WRAPPER DiscretizeEnv',
+                                        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
                  env: Env,
@@ -890,13 +676,15 @@ class DiscretizeEnv(gym.ActionWrapper):
                 'Action space is not continuous or discrete?')
             return False
 
+# ---------------------------------------------------------------------------- #
+
 
 class NormalizeAction(gym.ActionWrapper):
     """Wrapper to normalize action space.
     """
 
-    logger = Logger().getLogger(name='WRAPPER NormalizeAction',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(name='WRAPPER NormalizeAction',
+                                        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
                  env: Env,
@@ -942,43 +730,733 @@ class NormalizeAction(gym.ActionWrapper):
         self.logger.info('Wrapper initialized')
 
     def reverting_action(self,
-                         action: Any) -> List[float]:
+                         action: Any) -> np.array:
         """ This method maps a normalized action in a real action space.
 
         Args:
             action (Any): Normalize action received in environment
 
         Returns:
-            List[float]: Action transformed in simulator real action space.
+            np.array: Action transformed in simulator real action space.
         """
-        action_ = []
 
-        for i, value in enumerate(action):
-            a_max_min = self.normalized_space.high[i] - \
-                self.normalized_space.low[i]
-            sp_max_min = self.real_space.high[i] - \
-                self.real_space.low[i]
-
-            action_.append(
-                self.real_space.low[i] +
-                (
-                    value -
-                    self.normalized_space.low[i]) *
-                sp_max_min /
-                a_max_min)
+        # Convert action to the original action space
+        action_ = (action - self.normalized_space.low) * (self.real_space.high - self.real_space.low) / \
+            (self.normalized_space.high - self.normalized_space.low) + self.real_space.low
 
         return action_
 
-    def action(self, action: Any):
-        action_ = deepcopy(action)
-        action_ = self.get_wrapper_attr('reverting_action')(action_)
-        return action_
+    def action(self, action: Any) -> np.array:
+        return self.get_wrapper_attr('reverting_action')(action)
+
+# ---------------------------------------------------------------------------- #
+#                                Reward Wrappers                               #
+# ---------------------------------------------------------------------------- #
+
+
+class MultiObjectiveReward(gym.Wrapper):
+
+    logger = TerminalLogger().getLogger(name='WRAPPER MultiObjectiveReward',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self, env: Env, reward_terms: List[str]):
+        """The environment will return a reward vector of each objective instead of a scalar value.
+
+        Args:
+            env (Env): Original Sinergym environment.
+            reward_terms (List[str]): List of keys in reward terms which will be included in reward vector.
+        """
+        super(MultiObjectiveReward, self).__init__(env)
+        self.reward_terms = reward_terms
+
+        self.logger.info('wrapper initialized.')
+
+    def step(self, action: Union[int, np.ndarray]) -> Tuple[
+            np.ndarray, List[float], bool, bool, Dict[str, Any]]:
+        """Perform the action and environment return reward vector.
+
+        Args:
+            action (Union[int, np.ndarray]): Action to be executed in environment.
+
+        Returns:
+            Tuple[ np.ndarray, List[float], bool, bool, Dict[str, Any]]: observation, vector reward, terminated, truncated and info.
+        """
+        # Execute normal reward
+        obs, _, terminated, truncated, info = self.env.step(action)
+        reward_vector = [value for key, value in info.items(
+        ) if key in self.get_wrapper_attr('reward_terms')]
+        try:
+            assert len(reward_vector) == len(
+                self.get_wrapper_attr('reward_terms'))
+        except AssertionError as err:
+            self.logger.error('Some reward term is unknown')
+            raise err
+        return obs, reward_vector, terminated, truncated, info
+
+# ---------------------------------------------------------------------------- #
+#                                Others (Logger)                               #
+# ---------------------------------------------------------------------------- #
+
+
+class BaseLoggerWrapper(ABC, gym.Wrapper):
+
+    def __init__(
+        self,
+        env: Env,
+        storage_class: Callable = LoggerStorage
+    ):
+        """Base class for LoggerWrapper and its children classes.
+
+        Args:
+            env (Env): Original Sinergym environment.
+            storage_class (Callable, optional): Storage class to be used. Defaults to Sinergym LoggerStorage class.
+        """
+
+        super(BaseLoggerWrapper, self).__init__(env)
+        self.data_logger = storage_class()
+        # Overwrite in case you want more metrics
+        self.custom_variables = []
+        self.summary_metrics = []
+
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
+        """Reset the environment and the information logged."""
+        # Reset logger data
+        self.data_logger.reset_data()
+
+        # Environment reset
+        obs, info = self.env.reset(seed=seed, options=options)
+
+        # Log reset information
+        # if is_wrapped(self, NormalizeObservation):
+        #     self.data_logger.log_norm_obs(obs)
+        #     self.data_logger.log_interaction(
+        #         obs=self.get_wrapper_attr('unwrapped_observation'),
+        #         action=[None for _ in range(
+        #             len(self.get_wrapper_attr('action_variables')))],
+        #         reward=None,
+        #         info=info,
+        #         terminated=False,
+        #         truncated=False,
+        #         custom_metrics=[None for _ in range(len(self.get_wrapper_attr('custom_variables')))])
+        # else:
+        #     self.data_logger.log_interaction(
+        #         obs=obs,
+        #         action=[None for _ in range(
+        #             len(self.get_wrapper_attr('action_variables')))],
+        #         reward=None,
+        #         info=info,
+        #         terminated=False,
+        #         truncated=False,
+        # custom_metrics=[None for _ in
+        # range(len(self.get_wrapper_attr('custom_variables')))])
+
+        return obs, info
+
+    def step(self, action: Union[int, np.ndarray]) -> Tuple[
+            np.ndarray, float, bool, bool, Dict[str, Any]]:
+
+        # Environment step
+        obs, reward, terminated, truncated, info = self.env.step(action)
+
+        # Process custom_metrics
+        custom_metrics = self.calculate_custom_metrics(obs,
+                                                       action,
+                                                       reward,
+                                                       info,
+                                                       terminated,
+                                                       truncated)
+
+        # Log interaction information of step
+        if is_wrapped(self.env, NormalizeObservation):
+            self.data_logger.log_norm_obs(obs)
+            self.data_logger.log_interaction(
+                obs=self.get_wrapper_attr('unwrapped_observation'),
+                action=action,
+                reward=reward,
+                info=info,
+                terminated=terminated,
+                truncated=truncated,
+                custom_metrics=custom_metrics)
+        else:
+            self.data_logger.log_interaction(
+                obs=obs,
+                action=action,
+                reward=reward,
+                info=info,
+                terminated=terminated,
+                truncated=truncated,
+                custom_metrics=custom_metrics)
+
+        return obs, reward, terminated, truncated, info
+
+    def close(self):
+        """Close the environment and save normalization calibration."""
+        # Reset logger data
+        self.data_logger.reset_data()
+        # Close the environment
+        self.env.close()
+
+    @abstractmethod
+    def calculate_custom_metrics(self,
+                                 obs: np.ndarray,
+                                 action: Union[int, np.ndarray],
+                                 reward: float,
+                                 info: Dict[str, Any],
+                                 terminated: bool,
+                                 truncated: bool):
+        """Calculate custom metrics from current interaction (or passed using self.data_logger attributes)
+
+            Args:
+                obs (np.ndarray): Observation from environment.
+                action (Union[int, np.ndarray]): Action taken in environment.
+                reward (float): Reward received from environment.
+                info (Dict[str, Any]): Information from environment.
+                terminated (bool): Flag to indicate if episode is terminated.
+                truncated (bool): Flag to indicate if episode is truncated.
+        """
+        pass
+
+    @abstractmethod
+    def get_episode_summary(self) -> Dict[str, float]:
+        """Return data summary for the logger. This method should be implemented in the child classes.
+           This method determines the data summary of episodes in Sinergym environments.
+
+        Returns:
+            Dict[str, float]: Data summary.
+        """
+        pass
+
+
+class LoggerWrapper(BaseLoggerWrapper):
+
+    logger = TerminalLogger().getLogger(name='WRAPPER LoggerWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(
+        self,
+        env: Env,
+        storage_class: Callable = LoggerStorage
+    ):
+        """Wrapper to log data from environment interaction.
+
+        Args:
+            env (Env): Original Sinergym environment.
+            storage_class (Callable, optional): Storage class to be used. Defaults to Sinergym LoggerStorage class.
+        """
+        super(LoggerWrapper, self).__init__(env, storage_class)
+        # Overwrite in case you want more metrics
+        self.custom_variables = []
+        # Overwite in case you have other summary metrics (same as
+        # self.get_episode_summary return)
+        self.summary_metrics = ['episode_num',
+                                'mean_reward',
+                                'std_reward',
+                                'mean_reward_comfort_term',
+                                'std_reward_comfort_term',
+                                'mean_reward_energy_term',
+                                'std_reward_energy_term',
+                                'mean_abs_comfort_penalty',
+                                'std_abs_comfort_penalty',
+                                'mean_abs_energy_penalty',
+                                'std_abs_energy_penalty',
+                                'mean_temperature_violation',
+                                'std_temperature_violation',
+                                'mean_power_demand',
+                                'std_power_demand',
+                                'cumulative_power_demand',
+                                'comfort_violation_time(%)',
+                                'length(timesteps)',
+                                'time_elapsed(hours)',
+                                'terminated',
+                                'truncated']
+        self.logger.info('Wrapper initialized.')
+
+    def calculate_custom_metrics(self,
+                                 obs: np.ndarray,
+                                 action: Union[int, np.ndarray],
+                                 reward: float,
+                                 info: Dict[str, Any],
+                                 terminated: bool,
+                                 truncated: bool):
+        return []
+
+    def get_episode_summary(self) -> Dict[str, float]:
+        # Get information from logger
+        comfort_terms = [info['comfort_term']
+                         for info in self.data_logger.infos]
+        energy_terms = [info['energy_term']
+                        for info in self.data_logger.infos]
+        abs_comfort_penalties = [info['abs_comfort_penalty']
+                                 for info in self.data_logger.infos]
+        abs_energy_penalties = [info['abs_energy_penalty']
+                                for info in self.data_logger.infos]
+        temperature_violations = [info['total_temperature_violation']
+                                  for info in self.data_logger.infos]
+        power_demands = [info['total_power_demand']
+                         for info in self.data_logger.infos]
+        try:
+            comfort_violation_time = len(
+                [value for value in temperature_violations if value > 0]) / (self.get_wrapper_attr('timestep') - 1) * 100
+        except ZeroDivisionError:
+            comfort_violation_time = 0
+
+        # Data summary
+        data_summary = {
+            'episode_num': self.get_wrapper_attr('episode'),
+            'mean_reward': np.mean(
+                self.data_logger.rewards),
+            'std_reward': np.std(
+                self.data_logger.rewards),
+            'mean_reward_comfort_term': np.mean(comfort_terms),
+            'std_reward_comfort_term': np.std(comfort_terms),
+            'mean_reward_energy_term': np.mean(energy_terms),
+            'std_reward_energy_term': np.std(energy_terms),
+            'mean_abs_comfort_penalty': np.mean(abs_comfort_penalties),
+            'std_abs_comfort_penalty': np.std(abs_comfort_penalties),
+            'mean_abs_energy_penalty': np.mean(abs_energy_penalties),
+            'std_abs_energy_penalty': np.std(abs_energy_penalties),
+            'mean_temperature_violation': np.mean(temperature_violations),
+            'std_temperature_violation': np.std(temperature_violations),
+            'mean_power_demand': np.mean(power_demands),
+            'std_power_demand': np.std(power_demands),
+            'cumulative_power_demand': np.sum(power_demands),
+            'comfort_violation_time(%)': comfort_violation_time,
+            'length(timesteps)': self.get_wrapper_attr('timestep'),
+            'time_elapsed(hours)': self.data_logger.infos[-1]['time_elapsed(hours)'],
+            'terminated': self.data_logger.terminateds[-1],
+            'truncated': self.data_logger.truncateds[-1],
+        }
+        return data_summary
+
+
+class CSVLogger(gym.Wrapper):
+
+    logger = TerminalLogger().getLogger(name='WRAPPER CSVLogger',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(
+        self,
+        env: Env,
+        info_excluded_keys: List[str] = ['reward',
+                                         'action',
+                                         'timestep',
+                                         'month',
+                                         'day',
+                                         'hour',
+                                         'time_elapsed(hours)',
+                                         'reward_weight',
+                                         'is_raining']
+    ):
+        """Logger to save logger data in CSV files while is running. It is required to be wrapped by a BaseLoggerWrapper child class previously.
+
+        Args:
+            env (Env): Original Gym environment in Sinergym.
+            info_excluded_keys (List[str], optional): List of keys in info dictionary to be excluded from CSV files. Defaults to ['reward', 'action', 'timestep', 'month', 'day', 'hour', 'time_elapsed(hours)', 'reward_weight', 'is_raining'].
+
+        """
+        super(CSVLogger, self).__init__(env)
+        self.info_excluded_keys = info_excluded_keys
+
+        try:
+            assert is_wrapped(self.env, BaseLoggerWrapper)
+        except AssertionError as err:
+            self.logger.error(
+                'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
+            raise err
+
+        self.progress_file_path = self.get_wrapper_attr(
+            'workspace_path') + '/progress.csv'
+
+        self.logger.info('Wrapper initialized.')
+
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
+        """Reset the environment. Saving current logger episode summary and interaction in CSV files.
+
+        Args:
+        seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). If value is None, a seed will be chosen from some source of entropy. Defaults to None.
+        options (Optional[Dict[str, Any]]): Additional information to specify how the environment is reset. Defaults to None.
+
+        Returns:
+        Tuple[np.ndarray, Dict[str, Any]]: Current observation and info context with additional information.
+        """
+        # If it is not the first episode
+        if self.get_wrapper_attr('is_running'):
+            # Log all episode information
+            self.dump_log_files()
+            self.logger.info(
+                'End of episode detected, data updated in monitor and progress.csv.')
+        # reset environment
+        obs, info = self.env.reset(seed=seed, options=options)
+
+        return obs, info
+
+    def close(self) -> None:
+        """Recording last episode summary and close env.
+        """
+
+        # Log csv files
+        self.dump_log_files()
+        self.logger.info(
+            'Environment closed, data updated in monitor and progress.csv.')
+
+        # Close env, updating the logger information
+        self.env.close()
+
+    def dump_log_files(self) -> None:
+        """Dump all logger data in CSV files.
+        """
+        monitor_path = self.get_wrapper_attr('episode_path') + '/monitor'
+        os.makedirs(monitor_path, exist_ok=True)
+        episode_data = self.get_wrapper_attr('data_logger')
+
+        if len(episode_data.rewards) > 0:
+
+            # Observations
+            with open(monitor_path + '/observations.csv', 'w') as f:
+                writer = csv.writer(f)
+                writer.writerow(self.get_wrapper_attr('observation_variables'))
+                writer.writerows(episode_data.observations)
+
+            # Normalized Observations
+            if len(episode_data.normalized_observations) > 0:
+                with open(monitor_path + '/normalized_observations.csv', 'w') as f:
+                    writer = csv.writer(f)
+                    writer.writerow(
+                        self.get_wrapper_attr('observation_variables'))
+                    writer.writerows(episode_data.normalized_observations)
+
+            # Rewards
+            with open(monitor_path + '/rewards.csv', 'w') as f:
+                writer = csv.writer(f)
+                writer.writerow(['reward'])
+                for reward in episode_data.rewards:
+                    writer.writerow([reward])
+
+            # Infos (except excluded keys)
+            with open(monitor_path + '/infos.csv', 'w') as f:
+                writer = csv.writer(f)
+                column_names = [key for key in episode_data.infos[1].keys(
+                ) if key not in self.get_wrapper_attr('info_excluded_keys')]
+                # reset_values = [None for _ in column_names]
+                rows = [[value for key, value in info.items() if key not in self.get_wrapper_attr(
+                    'info_excluded_keys')] for info in episode_data.infos]
+                writer.writerow(column_names)
+                writer.writerows(rows)
+
+            # Agent Actions
+            with open(monitor_path + '/agent_actions.csv', 'w') as f:
+                writer = csv.writer(f)
+                writer.writerow(self.get_wrapper_attr('action_variables'))
+                if isinstance(episode_data.actions[1], list):
+                    writer.writerows(episode_data.actions)
+                else:
+                    for action in episode_data.actions:
+                        writer.writerow([action])
+
+            # Simulated actions
+            with open(monitor_path + '/simulated_actions.csv', 'w') as f:
+                writer = csv.writer(f)
+                writer.writerow(self.get_wrapper_attr('action_variables'))
+                # reset_action = [None for _ in range(
+                #    len(self.get_wrapper_attr('action_variables')))]
+                simulated_actions = [info['action']
+                                     for info in episode_data.infos]
+                if isinstance(simulated_actions[1], list):
+                    writer.writerows(simulated_actions)
+                else:
+                    for action in simulated_actions:
+                        writer.writerow([action])
+
+            # Custom metrics
+            if len(episode_data.custom_metrics) > 0:
+                with open(monitor_path + '/custom_metrics.csv', 'w') as f:
+                    writer = csv.writer(f)
+                    writer.writerow(self.get_wrapper_attr('custom_variables'))
+                    writer.writerows(episode_data.custom_metrics)
+
+            # Update progress.csv
+            episode_summary = self.get_wrapper_attr('get_episode_summary')()
+
+            with open(self.get_wrapper_attr('progress_file_path'), 'a+') as f:
+                writer = csv.writer(f)
+                # If first episode, write header
+                if self.get_wrapper_attr('episode') == 1:
+                    writer.writerow(list(episode_summary.keys()))
+                writer.writerow(list(episode_summary.values()))
+
+
+# ---------------------------------------------------------------------------- #
+
+class WandBLogger(gym.Wrapper):
+
+    logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: Env,
+                 entity: str,
+                 project_name: str,
+                 run_name: Optional[str] = None,
+                 group: Optional[str] = None,
+                 tags: Optional[List[str]] = None,
+                 save_code: bool = False,
+                 dump_frequency: int = 1000,
+                 artifact_save: bool = True,
+                 artifact_type: str = 'output',
+                 excluded_info_keys: List[str] = ['reward',
+                                                  'action',
+                                                  'timestep',
+                                                  'month',
+                                                  'day',
+                                                  'hour',
+                                                  'time_elapsed(hours)',
+                                                  'reward_weight',
+                                                  'is_raining'],
+                 excluded_episode_summary_keys: List[str] = ['terminated',
+                                                             'truncated']):
+        """Wrapper to log data in WandB platform. It is required to be wrapped by a BaseLoggerWrapper child class previously.
+
+        Args:
+            env (Env): Original Sinergym environment.
+            entity (str): The entity to which the project belongs.
+            project_name (str): The project name.
+            run_name (Optional[str]): The name of the run. Defaults to None (Sinergym env name + wandb unique identifier).
+            tags (Optional[List[str]]): List of tags for the run. Defaults to None.
+            save_code (bool): Whether to save the code in the run. Defaults to False.
+            dump_frequency (int): Frequency to dump log in platform. Defaults to 1000.
+            artifact_save (bool): Whether to save artifacts in WandB. Defaults to True.
+            artifact_type (str): Type of artifact to save. Defaults to 'output'.
+            excluded_info_keys (List[str]): List of keys to exclude from info dictionary. Defaults to ['reward', 'action', 'timestep', 'month', 'day', 'hour', 'time_elapsed(hours)', 'reward_weight', 'is_raining'].
+            excluded_episode_summary_keys (List[str]): List of keys to exclude from episode summary. Defaults to ['terminated', 'truncated'].
+        """
+        super(WandBLogger, self).__init__(env)
+
+        # Check if logger is active
+        try:
+            assert is_wrapped(self, BaseLoggerWrapper)
+        except AssertionError as err:
+            self.logger.error(
+                'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
+            raise err
+
+        # Add requirement for wandb core
+        wandb.require("core")
+
+        # Define wandb run name if is not specified
+        run_name = run_name if run_name is not None else self.env.get_wrapper_attr(
+            'name') + '_' + wandb.util.generate_id()
+
+        # Init WandB session
+        self.wandb_run = wandb.init(entity=entity,
+                                    project=project_name,
+                                    name=run_name,
+                                    group=group,
+                                    tags=tags,
+                                    save_code=save_code,
+                                    reinit=False)
+
+        # Wandb finish with env.close flag
+        self.wandb_finish = True
+
+        # Define X-Axis for episode summaries
+        self.wandb_run.define_metric(
+            'episode_summaries/*',
+            step_metric='episode_summaries/episode_num')
+
+        # Attributes
+        self.dump_frequency = dump_frequency
+        self.artifact_save = artifact_save
+        self.artifact_type = artifact_type
+        self.wandb_id = self.wandb_run.id
+        self.excluded_info_keys = excluded_info_keys
+        self.excluded_episode_summary_keys = excluded_episode_summary_keys
+        self.global_timestep = 0
+
+        self.logger.info('Wrapper initialized.')
+
+    def step(self, action: Union[int, np.ndarray]
+             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
+        """Sends action to the environment. Logging new interaction information in WandB platform.
+
+        Args:
+            action (Union[int, float, np.integer, np.ndarray, List[Any], Tuple[Any]]): Action selected by the agent.
+
+        Returns:
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Observation for next timestep, reward obtained, Whether the episode has ended or not, Whether episode has been truncated or not, and a dictionary with extra information
+        """
+        self.global_timestep += 1
+        # Execute step ion order to get new observation and reward back
+        obs, reward, terminated, truncated, info = self.env.step(action)
+
+        # Log step information if frequency is correct
+        if self.global_timestep % self.dump_frequency == 0:
+            self.logger.debug(
+                'Dump Frequency reached in timestep {}, dumping data in WandB.'.format(
+                    self.global_timestep))
+            self.wandb_log()
+
+        return obs, reward, terminated, truncated, info
+
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
+        """Reset the environment. Recording episode summary in WandB platform if it is not the first episode.
+
+        Args:
+            seed (Optional[int]): The seed that is used to initialize the environment's episode (np_random). if value is None, a seed will be chosen from some source of entropy. Defaults to None.
+            options (Optional[Dict[str, Any]]):Additional information to specify how the environment is reset. Defaults to None.
+
+        Returns:
+            Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
+        """
+        self.global_timestep += 1
+        # It isn't the first episode simulation, so we can logger last episode
+        if self.get_wrapper_attr('is_running'):
+            # Log all episode information
+            self.wandb_log_summary()
+            self.logger.info(
+                'End of episode detected, dumping summary metrics in WandB Platform.')
+
+        # Then, reset environment
+        obs, info = self.env.reset(seed=seed, options=options)
+
+        return obs, info
+
+    def close(self) -> None:
+        """Recording last episode summary and close env.
+
+        Args:
+            wandb_finish (bool): Whether to finish WandB run. Defaults to True.
+        """
+
+        # Log last episode summary
+        self.wandb_log_summary()
+        self.logger.info(
+            'Environment closed, dumping summary metrics in WandB Platform.')
+
+        # Finish WandB run
+        if self.wandb_finish:
+            # Save artifact
+            if self.artifact_save:
+                self.save_artifact()
+            self.wandb_run.finish()
+
+        # Then, close env
+        self.env.close()
+
+    def wandb_log(self) -> None:
+        """Log last step information in WandB platform.
+        """
+
+        # Interaction registration such as obs, action, reward...
+        # (organized in a nested dictionary)
+        log_dict = {}
+        data_logger = self.get_wrapper_attr('data_logger')
+
+        # OBSERVATION
+        if is_wrapped(self, NormalizeObservation):
+            log_dict['Normalized_observations'] = dict(zip(self.get_wrapper_attr(
+                'observation_variables'), data_logger.normalized_observations[-1]))
+            log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
+                'observation_variables'), data_logger.observations[-1]))
+        else:
+            log_dict['Observations'] = dict(zip(self.get_wrapper_attr(
+                'observation_variables'), data_logger.observations[-1]))
+
+        # ACTION
+        # Original action sent
+        log_dict['Agent_actions'] = dict(
+            zip(self.get_wrapper_attr('action_variables'), data_logger.actions[-1]))
+        # Action values performed in simulation
+        log_dict['Simulation_actions'] = dict(zip(self.get_wrapper_attr(
+            'action_variables'), data_logger.infos[-1]['action']))
+
+        # REWARD
+        log_dict['Reward'] = {'reward': data_logger.rewards[-1]}
+
+        # INFO
+        log_dict['Info'] = {
+            key: float(value) for key,
+            value in data_logger.infos[-1].items() if key not in self.excluded_info_keys}
+
+        # CUSTOM METRICS
+        if len(self.get_wrapper_attr('custom_variables')) > 0:
+            custom_metrics = dict(zip(self.get_wrapper_attr(
+                'custom_variables'), data_logger.custom_metrics[-1]))
+            log_dict['Variables_custom'] = custom_metrics
+
+        # Log in WandB
+        self._log_data(log_dict)
+
+    def wandb_log_summary(self) -> None:
+        """Log episode summary in WandB platform.
+        """
+        # Get information from logger of LoggerWrapper
+        episode_summary = self.get_wrapper_attr(
+            'get_episode_summary')()
+        # Deleting excluded keys
+        episode_summary = {key: value for key, value in episode_summary.items(
+        ) if key not in self.get_wrapper_attr('excluded_episode_summary_keys')}
+        # Log summary data in WandB
+        self._log_data({'episode_summaries': episode_summary})
+
+    def save_artifact(self) -> None:
+        """Save sinergym output as artifact in WandB platform.
+        """
+        artifact = wandb.Artifact(
+            name=self.wandb_run.name,
+            type=self.artifact_type)
+        artifact.add_dir(
+            local_path=self.get_wrapper_attr('workspace_path'),
+            name='Sinergym_output/')
+        self.wandb_run.log_artifact(artifact)
+
+    def set_wandb_finish(self, wandb_finish: bool) -> None:
+        """Set if WandB run must be finished when environment is closed.
+
+        Args:
+            wandb_finish (bool): Whether to finish WandB run.
+        """
+        self.wandb_finish = wandb_finish
+
+    def _log_data(self, data: Dict[str, Any]) -> None:
+        """Log data in WandB platform. Nesting the dictionary correctly in different sections.
+
+        Args:
+            data (Dict[str, Any]): Dictionary with data to be logged.
+        """
+
+        for key, value in data.items():
+            if isinstance(value, dict):
+                for k, v in value.items():
+                    self.wandb_run.log({f'{key}/{k}': v},
+                                       step=self.global_timestep)
+            else:
+                self.wandb_run.log({key: value},
+                                   step=self.global_timestep)
+
+
+# ---------------------------------------------------------------------------- #
 
 
 class ReduceObservationWrapper(gym.Wrapper):
 
-    logger = Logger().getLogger(name='WRAPPER ReduceObservationWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER ReduceObservationWrapper',
+        level=LOG_WRAPPERS_LEVEL)
 
     def __init__(self,
                  env: Env,
@@ -1065,7 +1543,9 @@ class ReduceObservationWrapper(gym.Wrapper):
 
         return np.array(list(reduced_obs_dict.values())), info
 
-    # ---------------------- Specific environment wrappers ---------------------#
+# ---------------------------------------------------------------------------- #
+#                         Specific environment wrappers                        #
+# ---------------------------------------------------------------------------- #
 
 
 class OfficeGridStorageSmoothingActionConstraintsWrapper(

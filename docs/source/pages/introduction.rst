@@ -44,7 +44,7 @@ or any external control.
    from the environment interface.
 
 -  **Stable Baseline 3 Integration**: Customizes functionalities for easy testing of environments with SB3 algorithms, 
-   such as callbacks and cutomizable training real-time logging. However, *Sinergym* is agnostic to any DRL algorithm.
+   such as callbacks and customizable training real-time logging. However, *Sinergym* is agnostic to any DRL algorithm.
 
 -  **Google Cloud Integration**: Offers guidance on using *Sinergym* with Google Cloud infrastructure.
 

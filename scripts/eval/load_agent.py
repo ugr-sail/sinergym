@@ -49,27 +49,6 @@ try:
         evaluation_name += '-id-' + str(conf['id'])
     evaluation_name += '_' + evaluation_date
 
-    # ---------------------------------------------------------------------------- #
-    #                              WandB registration                              #
-    # ---------------------------------------------------------------------------- #
-
-    if conf.get('wandb'):
-        # Create wandb.config object in order to log all experiment params
-        experiment_params = {
-            'sinergym-version': sinergym.__version__,
-            'python-version': sys.version
-        }
-        experiment_params.update(conf)
-
-        # Get wandb init params
-        wandb_params = conf['wandb']['init_params']
-        # Init wandb entry
-        run = wandb.init(
-            name=evaluation_name + '_' + wandb.util.generate_id(),
-            config=experiment_params,
-            ** wandb_params
-        )
-
     # --------------------- Overwrite environment parameters --------------------- #
     env_params = {}
     # Transform required str's into Callables
@@ -89,7 +68,6 @@ try:
     env = gym.make(
         conf['environment'],
         ** env_params)
-    env = Monitor(env)
 
     # ---------------------------------------------------------------------------- #
     #                                   Wrappers                                   #
@@ -110,19 +88,23 @@ try:
     #                                  Load Agent                                  #
     # ---------------------------------------------------------------------------- #
     # ------------------------ Weights and Bias model path ----------------------- #
-    if conf.get('wandb'):
-        if conf['wandb'].get('load_model'):
-            # get model path
-            artifact_tag = conf['wandb']['load_model'].get(
-                'artifact_tag', 'latest')
-            wandb_path = conf['wandb']['load_model']['entity'] + '/' + conf['wandb']['load_model']['project'] + \
-                '/' + conf['wandb']['load_model']['artifact_name'] + ':' + artifact_tag
-            # Download artifact
-            artifact = run.use_artifact(wandb_path)
-            artifact.get_path(conf['wandb']['load_model']
-                              ['artifact_path']).download('.')
-            # Set model path to local wandb file downloaded
-            model_path = './' + conf['wandb']['load_model']['artifact_path']
+    if conf.get('wandb_model'):
+        # get wandb run or generate a new one
+        if is_wrapped(env, WandBLogger):
+            wandb_run = env.get_wrapper_attr('wandb_run')
+        else:
+            wandb_run = wandb.init()
+        # get model path
+        artifact_tag = conf['wandb_model'].get(
+            'artifact_tag', 'latest')
+        wandb_path = conf['wandb_model']['entity'] + '/' + conf['wandb_model']['project'] + \
+            '/' + conf['wandb_model']['artifact_name'] + ':' + artifact_tag
+        # Download artifact
+        artifact = wandb_run.use_artifact(wandb_path)
+        artifact.get_path(conf['wandb_model']
+                          ['artifact_path']).download('.')
+        # Set model path to local wandb file downloaded
+        model_path = './' + conf['wandb_model']['artifact_path']
 
     # -------------------------- Google cloud model path ------------------------- #
     elif 'gs://' in conf['model']:
@@ -178,24 +160,6 @@ try:
     env.close()
 
     # ---------------------------------------------------------------------------- #
-    #                                Wandb Artifacts                               #
-    # ---------------------------------------------------------------------------- #
-
-    if conf.get('wandb'):
-        if conf['wandb'].get('evaluation_registry'):
-            artifact = wandb.Artifact(
-                name=conf['wandb']['evaluation_registry']['artifact_name'],
-                type=conf['wandb']['evaluation_registry']['artifact_type'])
-            artifact.add_dir(
-                env.get_wrapper_attr('workspace_path'),
-                name='evaluation_output/')
-
-            run.log_artifact(artifact)
-
-        # wandb has finished
-        run.finish()
-
-    # ---------------------------------------------------------------------------- #
     #                                 Store results                                #
     # ---------------------------------------------------------------------------- #
     if conf.get('cloud'):
@@ -218,23 +182,10 @@ try:
             gcloud.delete_instance_MIG_from_container(
                 conf['cloud']['group_name'], token)
 
-except Exception as err:
-    print("Error in process detected")
+except (Exception, KeyboardInterrupt) as err:
+    print("Error or interruption in process detected")
 
-    # Save current wandb artifacts state
-    if conf.get('wandb'):
-        if conf['wandb'].get('evaluation_registry'):
-            artifact = wandb.Artifact(
-                name=conf['wandb']['evaluation_registry']['artifact_name'],
-                type=conf['wandb']['evaluation_registry']['artifact_type'])
-            artifact.add_dir(
-                env.get_wrapper_attr('workspace_path'),
-                name='evaluation_output/')
-
-            run.log_artifact(artifact)
-
-        # wandb has finished
-        run.finish()
+    env.close()
 
     # Auto delete
     if conf.get('cloud'):
