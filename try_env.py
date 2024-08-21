@@ -2,7 +2,7 @@ import gymnasium as gym
 import numpy as np
 
 import sinergym
-from sinergym.utils.wrappers import (LoggerWrapper, CSVLogger, NormalizeAction,
+from sinergym.utils.wrappers import (CSVLogger, LoggerWrapper, NormalizeAction,
                                      NormalizeObservation)
 
 # Creating environment and applying wrappers for normalization and logging
