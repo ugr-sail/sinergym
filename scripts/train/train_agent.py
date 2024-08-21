@@ -119,27 +119,6 @@ try:
         experiment_name += '-id-' + str(conf['id'])
     experiment_name += '_' + experiment_date
 
-    # ---------------------------------------------------------------------------- #
-    #                              WandB registration                              #
-    # ---------------------------------------------------------------------------- #
-
-    if conf.get('wandb'):
-        # Create wandb.config object in order to log all experiment params
-        experiment_params = {
-            'sinergym-version': sinergym.__version__,
-            'python-version': sys.version
-        }
-        experiment_params.update(conf)
-
-        # Get wandb init params
-        wandb_params = conf['wandb']['init_params']
-        # Init wandb entry
-        run = wandb.init(
-            name=experiment_name + '_' + wandb.util.generate_id(),
-            config=experiment_params,
-            ** wandb_params
-        )
-
     # --------------------- Overwrite environment parameters --------------------- #
     env_params = conf.get('env_params', {})
     env_params = process_environment_parameters(env_params)
@@ -177,7 +156,9 @@ try:
                         parameters[name] = eval(value)
             env = wrapper_class(env=env, ** parameters)
             if eval_env is not None:
-                eval_env = wrapper_class(env=eval_env, ** parameters)
+                # In evaluation, WandB Wrapper is not needed
+                if key != 'WandBLogger':
+                    eval_env = wrapper_class(env=eval_env, ** parameters)
 
     # ---------------------------------------------------------------------------- #
     #                           Defining model (algorithm)                         #
@@ -234,6 +215,15 @@ try:
             raise RuntimeError(
                 F'Algorithm specified [{alg_name} ] is not registered.')
 
+        # Register hyperparameters in wandb if it is wrapped
+        if is_wrapped(env, WandBLogger):
+            experiment_params = {
+                'sinergym-version': sinergym.__version__,
+                'python-version': sys.version
+            }
+            experiment_params.update(conf)
+            env.get_wrapper_attr('wandb_run').config.update(experiment_params)
+
     else:
         model_path = ''
         if 'gs://' in conf['model']:
@@ -274,7 +264,7 @@ try:
     #       Calculating total training timesteps based on number of episodes       #
     # ---------------------------------------------------------------------------- #
     timesteps = conf['episodes'] * \
-        (env.get_wrapper_attr('timestep_per_episode') - 1)
+        (env.get_wrapper_attr('timestep_per_episode'))
 
     # ---------------------------------------------------------------------------- #
     #                                   CALLBACKS                                  #
@@ -286,19 +276,14 @@ try:
         eval_callback = LoggerEvalCallback(
             eval_env=eval_env,
             train_env=env,
-            best_model_save_path=eval_env.get_wrapper_attr('workspace_path') +
-            '/best_model/',
-            log_path=eval_env.get_wrapper_attr('workspace_path') +
-            '/best_model/',
-            eval_freq=eval_env.get_wrapper_attr('timestep_per_episode') *
-            conf['evaluation']['eval_freq'] - 2,
-            deterministic=True,
-            render=False,
-            n_eval_episodes=conf['evaluation']['eval_length'])
+            n_eval_episodes=conf['evaluation']['eval_length'],
+            eval_freq_episodes=conf['evaluation']['eval_freq'],
+            deterministic=True)
+
         callbacks.append(eval_callback)
 
     # Set up wandb logger
-    if conf.get('wandb'):
+    if is_wrapped(env, WandBLogger):
         # wandb logger and setting in SB3
         logger = SB3Logger(
             folder=None,
@@ -308,10 +293,6 @@ try:
                     max_length=120),
                 WandBOutputFormat()])
         model.set_logger(logger)
-        # Append callback
-        dump_frequency = conf['wandb'].get('dump_frequency', 100)
-        log_callback = LoggerCallback(dump_frequency=dump_frequency)
-        callbacks.append(log_callback)
 
     callback = CallbackList(callbacks)
 
@@ -329,26 +310,6 @@ try:
     # logs)
     if env.get_wrapper_attr('is_running'):
         env.close()
-
-    # ---------------------------------------------------------------------------- #
-    #                              Wandb artifact log                              #
-    # ---------------------------------------------------------------------------- #
-
-    if conf.get('wandb'):
-        artifact = wandb.Artifact(
-            name=conf['wandb']['artifact_name'],
-            type=conf['wandb']['artifact_type'])
-        artifact.add_dir(
-            env.get_wrapper_attr('workspace_path'),
-            name='training_output/')
-        if conf.get('evaluation'):
-            artifact.add_dir(
-                eval_env.get_wrapper_attr('workspace_path'),
-                name='evaluation_output/')
-        run.log_artifact(artifact)
-
-        # wandb has finished
-        run.finish()
 
     # ---------------------------------------------------------------------------- #
     #                      Google Cloud Bucket Storage                             #
@@ -378,28 +339,15 @@ try:
                 conf['cloud']['group_name'], token)
 
 # If there is some error in the code, delete remote container if exists
-except Exception as err:
-    print("Error in process detected")
+# include KeyboardInterrupt
+
+except (Exception, KeyboardInterrupt) as err:
+    print("Error or interruption in process detected")
 
     # Current model state save
     model.save(env.get_wrapper_attr('workspace_path') + '/model')
 
-    # Save current wandb artifacts state
-    if conf.get('wandb'):
-        artifact = wandb.Artifact(
-            name=conf['wandb']['artifact_name'],
-            type=conf['wandb']['artifact_type'])
-        artifact.add_dir(
-            env.get_wrapper_attr('workspace_path'),
-            name='training_output/')
-        if conf.get('evaluation'):
-            artifact.add_dir(
-                eval_env.get_wrapper_attr('workspace_path'),
-                name='evaluation_output/')
-        run.log_artifact(artifact)
-
-        # wandb has finished
-        run.finish()
+    env.close()
 
     # Auto delete
     if conf.get('cloud'):

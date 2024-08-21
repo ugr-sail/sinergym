@@ -3,16 +3,16 @@
 
 from datetime import datetime
 from math import exp
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Tuple
 
 from sinergym.utils.constants import LOG_REWARD_LEVEL, YEAR
-from sinergym.utils.logger import Logger
+from sinergym.utils.logger import TerminalLogger
 
 
 class BaseReward(object):
 
-    logger = Logger().getLogger(name='REWARD',
-                                level=LOG_REWARD_LEVEL)
+    logger = TerminalLogger().getLogger(name='REWARD',
+                                        level=LOG_REWARD_LEVEL)
 
     def __init__(self):
         """

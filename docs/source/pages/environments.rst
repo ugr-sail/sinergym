@@ -135,7 +135,7 @@ information). Depending on the value of the parameter ``max_ep_data_store_num``,
 the experiment will store the output data of the **last n episodes** set, 
 where **n** is the value of the parameter.
 
-In any case, if *Sinergym Logger* (See :ref:`Logger` section) is activated, 
+In any case, if *Sinergym* CSV storage (See :ref:`CSVLogger` section) is activated, 
 ``progress.csv`` will be present with the summary data of each episode.
 
 Time variables

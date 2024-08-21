@@ -6,11 +6,10 @@ from sinergym.utils.wrappers import (
     LoggerWrapper,
     NormalizeAction,
     NormalizeObservation,
-    IncrementalWrapper,
-    RoundActionWrapper,
     ExtremeFlowControlWrapper,
     HeatPumpEnergyWrapper,
-    ReduceObservationWrapper)
+    ReduceObservationWrapper,
+    CSVLogger)
 
 # Creating environment and applying wrappers for normalization and logging
 env = gym.make(
@@ -21,6 +20,7 @@ env = NormalizeObservation(env)
 env = ExtremeFlowControlWrapper(env)
 env = NormalizeAction(env)
 env = LoggerWrapper(env)
+env = CSVLogger(env)
 env = ReduceObservationWrapper(
     env,
     obs_reduction=[

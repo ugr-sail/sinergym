@@ -14,6 +14,7 @@ AUTOBALANCE
 avconv
 backend
 backpropagate
+BaseLoggerWrapper
 BaseReward
 BaseSimulator
 bcvtb
@@ -23,11 +24,13 @@ boolean
 cancelled
 cartpole
 cfg
+clg
 Cloudpickle
 cnn
 Cº
 coef
 colab
+combinable
 Conda
 conda
 conf
@@ -43,6 +46,7 @@ CSVLogger
 cuda
 CustomFormatter
 customising
+customizable
 datacenter
 dataloader
 dataset
@@ -65,6 +69,7 @@ discretize
 DiscretizeEnv
 discretizes
 Dockerfile
+docstring
 docstring
 doesn
 DQN
@@ -91,6 +96,8 @@ epw
 eval
 evaporative
 ExpReward
+fanger
+Fanger
 feedforward
 ffmpeg
 Firestore
@@ -115,21 +122,26 @@ hasn
 haven
 Homebrew
 HourlyLinearReward
+htg
+HVAC
 hyperparameter
 hyperparameters
 idd
 idf
 IncrementalWrapper
+infos
 init
 initialise
 initialize
 isn
 isort
+ite
 iterable
 IWMullion
 json
 kfac
 Khee
+Kibam
 kwargs
 Lieber
 lifecycle
@@ -138,6 +150,7 @@ Lisboa
 localtime
 LoggerCallback
 LoggerEvalCallback
+LoggerStorage
 loggerwrapper
 LoggerWrapper
 logits
@@ -172,6 +185,7 @@ np
 npz
 num
 Numpy
+numpy
 nvidia
 ºC
 officegrid
@@ -189,6 +203,7 @@ personalization
 Piecewise
 Poh
 Popen
+ppd
 ppo
 pre
 prepend
@@ -208,6 +223,9 @@ RandomController
 RBC
 RBCDataCenter
 RBCDatacenter
+RBCIncrementalDatacenter
+recordable
+ReduceObservationWrapper
 repo
 reproducibility
 rescale
@@ -227,6 +245,7 @@ sinergym
 sklearn
 softmax
 src
+stackable
 stdout
 stepsize
 stochasticity
@@ -240,6 +259,7 @@ Tensorboard
 tensorboard
 TensorFlow
 tensorflow
+TerminalLogger
 tf
 th
 timestep
@@ -247,6 +267,7 @@ timesteps
 tm
 toolset
 Torchy
+txt
 Uhlenbeck
 unnormalized
 uri
@@ -258,7 +279,9 @@ vectorized
 vf
 WandB
 wandb
+WandBLogger
 WandBOutputFormat
+warmup
 wEconomizer
 winterday
 wouldn

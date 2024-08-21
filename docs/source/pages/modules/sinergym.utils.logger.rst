@@ -19,9 +19,9 @@
       :toctree:                                          
       :template: custom-class-template.rst               
    
-      CSVLogger
       CustomFormatter
-      Logger
+      LoggerStorage
+      TerminalLogger
       WandBOutputFormat
    
    

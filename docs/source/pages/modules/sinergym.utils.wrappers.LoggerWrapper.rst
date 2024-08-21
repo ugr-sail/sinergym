@@ -16,10 +16,10 @@ sinergym.utils.wrappers.LoggerWrapper
    .. autosummary::
    
       ~LoggerWrapper.__init__
-      ~LoggerWrapper.activate_logger
+      ~LoggerWrapper.calculate_custom_metrics
       ~LoggerWrapper.class_name
       ~LoggerWrapper.close
-      ~LoggerWrapper.deactivate_logger
+      ~LoggerWrapper.get_episode_summary
       ~LoggerWrapper.get_wrapper_attr
       ~LoggerWrapper.render
       ~LoggerWrapper.reset

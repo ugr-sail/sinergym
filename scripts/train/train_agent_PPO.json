@@ -42,21 +42,12 @@
         "NormalizeAction": {},
         "NormalizeObservation": {},
         "LoggerWrapper": {
-            "logger_class": "sinergym.utils.logger.CSVLogger",
-            "flag": true
-        }
+            "storage_class": "sinergym.utils.logger.LoggerStorage"
+        },
+        "CSVLogger": {}
     },
     "evaluation": {
         "eval_freq": 2,
-        "eval_length": 2
-    },
-    "wandb": {
-        "init_params": {
-            "project": "sinergym",
-            "entity": "alex_ugr"
-        },
-        "artifact_name": "experiment_PPO",
-        "artifact_type": "training",
-        "dump_frequency": 500
+        "eval_length": 1
     }
 }

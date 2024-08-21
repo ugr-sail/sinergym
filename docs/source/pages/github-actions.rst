@@ -26,7 +26,7 @@ Pull Request
 
 .. Warning:: Sphinx Warning messages are treated as errors.
 
-.. Note:: Sphinx Spelling also checks code docstrings.
+.. Note:: Sphinx Spelling also checks code docstring.
 
 - **Testing**: A remote container is built using *Dockerfile* and **Pytest** is executed within it.
 

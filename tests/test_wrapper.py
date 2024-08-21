@@ -286,62 +286,134 @@ def test_multiobs_wrapper(env_name, request):
 
 
 @ pytest.mark.parametrize('env_name',
-                          [('env_wrapper_logger'), ('env_all_wrappers'), ])
+                          [('env_logger'), ('env_all_wrappers'), ])
 def test_logger_wrapper(env_name, request):
 
     env = request.getfixturevalue(env_name)
-    logger = env.get_wrapper_attr('file_logger')
+    logger = env.get_wrapper_attr('data_logger')
+    # Check logger is empty
+    assert len(logger.observations) == 0
+    assert len(logger.actions) == 0
+    assert len(logger.rewards) == 0
+    assert len(logger.infos) == 0
+    assert len(logger.terminateds) == 0
+    assert len(logger.truncateds) == 0
+    assert len(logger.custom_metrics) == 0
+    assert logger.interactions == 0
+
     env.reset()
 
-    # Check CSV's have been created and linked in simulator correctly
-    assert logger.log_progress_file == env.get_wrapper_attr(
-        'workspace_path') + '/progress.csv'
-    assert logger.log_file == env.get_wrapper_attr(
-        'episode_path') + '/monitor.csv'
+    assert len(logger.observations) == 0
+    assert len(logger.actions) == 0
+    assert len(logger.rewards) == 0
+    assert len(logger.infos) == 0
+    assert len(logger.terminateds) == 0
+    assert len(logger.truncateds) == 0
+    assert len(logger.custom_metrics) == 0
+    assert logger.interactions == 0
 
-    tmp_log_file = logger.log_file
+    # Make 3 steps
+    for _ in range(3):
+        a = env.action_space.sample()
+        env.step(a)
+
+    # Check that the logger has stored the data
+    assert len(logger.observations) == 3
+    assert len(logger.actions) == 3
+    assert len(logger.rewards) == 3
+    assert len(logger.infos) == 3
+    assert len(logger.terminateds) == 3
+    assert len(logger.truncateds) == 3
+    assert len(logger.custom_metrics) == 0
+    assert logger.interactions == 3
+
+    # Check summary data is done
+    summary = env.get_wrapper_attr('get_episode_summary')()
+    assert env.get_wrapper_attr('summary_metrics') == list(summary.keys())
+    assert isinstance(summary, dict)
+    assert len(summary) > 0
+    assert summary.get(
+        'mean_reward',
+        False) and summary.get(
+        'std_reward',
+        False)
+    assert summary['mean_reward'] == np.mean(logger.rewards)
+    assert summary['std_reward'] == np.std(logger.rewards)
+
+    # Check if reset method reset logger data too
+    env.reset()
+    assert len(logger.observations) == 0
+    assert len(logger.actions) == 0
+    assert len(logger.rewards) == 0
+    assert len(logger.infos) == 0
+    assert len(logger.terminateds) == 0
+    assert len(logger.truncateds) == 0
+    assert len(logger.custom_metrics) == 0
+    assert logger.interactions == 0
+
+    # Make 3 steps
+    for _ in range(3):
+        a = env.action_space.sample()
+        env.step(a)
+
+    # Check closing environment reset logger
+    env.close()
+
+    assert len(logger.observations) == 0
+    assert len(logger.actions) == 0
+    assert len(logger.rewards) == 0
+    assert len(logger.infos) == 0
+    assert len(logger.terminateds) == 0
+    assert len(logger.truncateds) == 0
+    assert len(logger.custom_metrics) == 0
+    assert logger.interactions == 0
+
+
+@ pytest.mark.parametrize('env_name',
+                          [('env_csv_logger'), ('env_all_wrappers'), ])
+def test_CSVlogger_wrapper(env_name, request):
+
+    env = request.getfixturevalue(env_name)
+    # Check progress CSV path
+    assert env.get_wrapper_attr('progress_file_path') == env.get_wrapper_attr(
+        'workspace_path') + '/progress.csv'
+
+    # First reset should not create new files
+    env.reset()
+
+    # Assert logger files are not created
+    assert not os.path.isfile(env.get_wrapper_attr('progress_file_path'))
+    assert not os.path.isdir(env.get_wrapper_attr('episode_path') + '/monitor')
 
     # simulating short episode
     for _ in range(10):
         env.step(env.action_space.sample())
+    episode_path = env.get_wrapper_attr('episode_path')
     env.reset()
 
-    assert os.path.isfile(logger.log_progress_file)
-    assert os.path.isfile(tmp_log_file)
+    # Now logger files about first episode should be created
+    assert os.path.isfile(env.get_wrapper_attr('progress_file_path'))
+    assert os.path.isdir(episode_path + '/monitor')
+    # Check csv files has been generated in monitor
+    assert len(os.listdir(episode_path + '/monitor')) > 0
+
+    # Read CSV files and check row nums
+    with open(env.get_wrapper_attr('progress_file_path'), mode='r', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        # Header row and episode summary
+        assert len(list(reader)) == 2
+    # Check csv in monitor is created correctly (only check with observations)
+    with open(episode_path + '/monitor/observations.csv', mode='r', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        # Header row, reset and 10 steps (12)
+        assert len(list(reader)) == 11
 
     # If env is wrapped with normalize obs...
     if is_wrapped(env, NormalizeObservation):
-        assert os.path.isfile(tmp_log_file[:-4] + '_normalized.csv')
-    else:
-        assert not os.path.isfile(tmp_log_file[:-4] + '_normalized.csv')
-
-    # Check headers
-    with open(tmp_log_file, mode='r', newline='') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
-        for row in reader:
-            assert ','.join(row) == logger.monitor_header
-            break
-    with open(logger.log_progress_file, mode='r', newline='') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
-        for row in reader:
-            assert ','.join(row) + '\n' == logger.progress_header
-            break
-    if is_wrapped(env, NormalizeObservation):
-        with open(tmp_log_file[:-4] + '_normalized.csv', mode='r', newline='') as csvfile:
-            reader = csv.reader(csvfile, delimiter=',')
-            for row in reader:
-                assert ','.join(row) == logger.monitor_header
-                break
+        assert os.path.isfile(episode_path +
+                              '/monitor/normalized_observations.csv')
 
     env.close()
-
-
-def test_logger_activation(env_wrapper_logger):
-    assert env_wrapper_logger.file_logger.flag
-    env_wrapper_logger.deactivate_logger()
-    assert not env_wrapper_logger.file_logger.flag
-    env_wrapper_logger.activate_logger()
-    assert env_wrapper_logger.file_logger.flag
 
 
 def test_reduced_observation_wrapper(env_wrapper_reduce_observation):
@@ -399,9 +471,9 @@ def test_env_wrappers(env_all_wrappers):
     # Normalization
     assert hasattr(env_all_wrappers, 'unwrapped_observation')
     # Logger
-    assert hasattr(env_all_wrappers, 'monitor_header')
-    assert hasattr(env_all_wrappers, 'progress_header')
-    assert hasattr(env_all_wrappers, 'logger')
+    assert hasattr(env_all_wrappers, 'data_logger')
+    # CSVLogger
+    assert hasattr(env_all_wrappers, 'progress_file_path')
     # ReduceObservation
     assert hasattr(env_all_wrappers, 'removed_observation_variables')
     # Multiobs
@@ -419,8 +491,6 @@ def test_env_wrappers(env_all_wrappers):
     assert (env_all_wrappers._get_obs() == obs).all()
 
     # Execute a short episode in order to check logger
-    logger = env_all_wrappers.file_logger
-    tmp_log_file = logger.log_file
     for _ in range(10):
         _, reward, _, _, info = env_all_wrappers.step(
             env_all_wrappers.action_space.sample())
@@ -432,12 +502,5 @@ def test_env_wrappers(env_all_wrappers):
     assert len(env_all_wrappers.history) == env_all_wrappers.n
     assert isinstance(env_all_wrappers.history[0], np.ndarray)
 
-    # check logger
-    assert logger.log_progress_file == env_all_wrappers.get_wrapper_attr(
-        'workspace_path') + '/progress.csv'
-    assert logger.log_file == env_all_wrappers.episode_path + '/monitor.csv'
-    assert os.path.isfile(logger.log_progress_file)
-    assert os.path.isfile(tmp_log_file)
-    assert os.path.isfile(tmp_log_file[:-4] + '_normalized.csv')
     # Close env
     env_all_wrappers.close()
