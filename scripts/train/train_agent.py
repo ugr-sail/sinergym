@@ -110,7 +110,7 @@ try:
     # ---------------------------------------------------------------------------- #
     #                               Register run name                              #
     # ---------------------------------------------------------------------------- #
-    experiment_date = datetime.today().strftime('%Y-%m-%d_%H:%M')
+    experiment_date = datetime.today().strftime('%Y-%m-%d_%H-%M')
     experiment_name = conf['algorithm']['name'] + '-' + conf['environment'] + \
         '-episodes-' + str(conf['episodes'])
     if conf.get('seed'):
