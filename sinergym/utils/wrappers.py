@@ -1420,14 +1420,15 @@ class WandBLogger(gym.Wrapper):
     def wandb_log_summary(self) -> None:
         """Log episode summary in WandB platform.
         """
-        # Get information from logger of LoggerWrapper
-        episode_summary = self.get_wrapper_attr(
-            'get_episode_summary')()
-        # Deleting excluded keys
-        episode_summary = {key: value for key, value in episode_summary.items(
-        ) if key not in self.get_wrapper_attr('excluded_episode_summary_keys')}
-        # Log summary data in WandB
-        self._log_data({'episode_summaries': episode_summary})
+        if len(self.get_wrapper_attr('data_logger').rewards) > 0:
+            # Get information from logger of LoggerWrapper
+            episode_summary = self.get_wrapper_attr(
+                'get_episode_summary')()
+            # Deleting excluded keys
+            episode_summary = {key: value for key, value in episode_summary.items(
+            ) if key not in self.get_wrapper_attr('excluded_episode_summary_keys')}
+            # Log summary data in WandB
+            self._log_data({'episode_summaries': episode_summary})
 
     def save_artifact(self) -> None:
         """Save sinergym output as artifact in WandB platform.
