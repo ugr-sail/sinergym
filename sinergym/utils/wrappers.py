@@ -1204,10 +1204,11 @@ class WandBLogger(gym.Wrapper):
 
     def __init__(self,
                  env: Env,
-                 entity: str,
-                 project_name: str,
+                 entity: Optional[str] = None,
+                 project_name: Optional[str] = None,
                  run_name: Optional[str] = None,
                  group: Optional[str] = None,
+                 job_type: Optional[str] = None,
                  tags: Optional[List[str]] = None,
                  save_code: bool = False,
                  dump_frequency: int = 1000,
@@ -1228,9 +1229,11 @@ class WandBLogger(gym.Wrapper):
 
         Args:
             env (Env): Original Sinergym environment.
-            entity (str): The entity to which the project belongs.
-            project_name (str): The project name.
+            entity (Optional[str]): The entity to which the project belongs. If you are using a previous wandb run, it is not necessary to specify it. Defaults to None.
+            project_name (Optional[str]): The project name. If you are using a previous wandb run, it is not necessary to specify it. Defaults to None.
             run_name (Optional[str]): The name of the run. Defaults to None (Sinergym env name + wandb unique identifier).
+            group (Optional[str]): The name of the group to which the run belongs. Defaults to None.
+            job_type (Optional[str]): The type of job. Defaults to None.
             tags (Optional[List[str]]): List of tags for the run. Defaults to None.
             save_code (bool): Whether to save the code in the run. Defaults to False.
             dump_frequency (int): Frequency to dump log in platform. Defaults to 1000.
@@ -1257,13 +1260,26 @@ class WandBLogger(gym.Wrapper):
             'name') + '_' + wandb.util.generate_id()
 
         # Init WandB session
-        self.wandb_run = wandb.init(entity=entity,
-                                    project=project_name,
-                                    name=run_name,
-                                    group=group,
-                                    tags=tags,
-                                    save_code=save_code,
-                                    reinit=False)
+        # If there is no active run and entity and project has been specified,
+        # initialize a new one using the parameters
+        if wandb.run is None and (
+                entity is not None and project_name is not None):
+            self.wandb_run = wandb.init(entity=entity,
+                                        project=project_name,
+                                        name=run_name,
+                                        group=group,
+                                        job_type=job_type,
+                                        tags=tags,
+                                        save_code=save_code,
+                                        reinit=False)
+        # If there is an active run
+        elif wandb.run is not None:
+            # Use the active run
+            self.wandb_run = wandb.run
+        else:
+            self.logger.error(
+                'Error initializing WandB run, if project and entity are not specified, it should be a previous active wandb run, but it has not been found.')
+            raise RuntimeError
 
         # Wandb finish with env.close flag
         self.wandb_finish = True
