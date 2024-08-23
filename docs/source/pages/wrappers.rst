@@ -199,6 +199,10 @@ It is useful for real-time training process monitoring and is combinable with St
 The initialization allows definition of the project, entity, run groups, tags, and whether code or outputs are saved as platform 
 artifacts, as well as dump frequency, excluded info keys, and excluded summary metric keys.
 
+This wrapper can be used with a pre-existing WandB session, without the need to specify the entity or project 
+(which, if provided, will be ignored), such as when using sweeps. It still allows specifying other parameters during construction, 
+maintaining full functionality of the wrapper. If there is no pre-existing WandB session, the entity and project fields are required.
+
 .. important:: A Weights and Biases account is required to use this wrapper, with an environment variable containing the API key for login. 
           For more information, visit `Weights and Biases <https://wandb.ai/site>`__.
 
