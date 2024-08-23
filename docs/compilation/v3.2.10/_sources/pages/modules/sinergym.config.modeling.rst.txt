@@ -1,4 +1,4 @@
-﻿sinergym.config.modeling
+sinergym.config.modeling
 ========================
 
 .. automodule:: sinergym.config.modeling

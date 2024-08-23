@@ -175,14 +175,7 @@ class LoggerEvalCallback(EventCallback):
 
         result = {key: [] for key in self.evaluation_columns}
 
-        for i in range(self.n_eval_episodes):
-            # If is not the first episode, save last episode metrics
-            if i > 0:
-                summary = self.eval_env.get_wrapper_attr("get_episode_summary")(
-                    self.eval_env.get_wrapper_attr("episode"))
-                # Append values to result dictionary
-                for key in result.keys():
-                    result[key].append(summary[key])
+        for _ in range(self.n_eval_episodes):
 
             obs, _ = self.eval_env.reset()
             state = None

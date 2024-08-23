@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="sinergym.utils.rewards" href="sinergym.utils.rewards.html" />
-    <link rel="prev" title="sinergym.utils.logger.Logger" href="sinergym.utils.logger.Logger.html" /> 
+    <link rel="prev" title="sinergym.utils.logger.TerminalLogger" href="sinergym.utils.logger.TerminalLogger.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -60,27 +60,28 @@
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">5. Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">6. Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">7. Environments Configuration and Registration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rewards.html">8. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../controllers.html">9. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">10. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../output.html">12. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">14. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">15. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tests.html">16. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging.html">8. Logging System Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">9. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">10. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">11. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">12. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">13. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">14. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">15. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">16. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">17. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">17. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/getting_env_information.html">18. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">19. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">20. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">21. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/logging_unused_variables.html">23. Logging unusued variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">24. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">25. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">18. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/getting_env_information.html">19. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">20. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">21. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">22. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">23. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/logging_unused_variables.html">24. Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">25. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">26. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -91,12 +92,11 @@
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.constants.html">sinergym.utils.constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.controllers.html">sinergym.utils.controllers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.env_checker.html">sinergym.utils.env_checker</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sinergym.utils.evaluation.html">sinergym.utils.evaluation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sinergym.utils.gcloud.html">sinergym.utils.gcloud</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="sinergym.utils.logger.html">sinergym.utils.logger</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.logger.CSVLogger.html">sinergym.utils.logger.CSVLogger</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.logger.CustomFormatter.html">sinergym.utils.logger.CustomFormatter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.logger.Logger.html">sinergym.utils.logger.Logger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.logger.LoggerStorage.html">sinergym.utils.logger.LoggerStorage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.logger.TerminalLogger.html">sinergym.utils.logger.TerminalLogger</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">sinergym.utils.logger.WandBOutputFormat</a></li>
 </ul>
 </li>
@@ -143,7 +143,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sinergym.utils.logger.WandBOutputFormat">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sinergym.utils.logger.</span></span><span class="sig-name descname"><span class="pre">WandBOutputFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sinergym.utils.logger.WandBOutputFormat" title="Link to this definition"></a></dt>
-<dd><p>Dumps key/value pairs onto WandB. This class is based on SB3 used in logger callback</p>
+<dd><p>Dumps key / value pairs onto WandB. This class is based on SB3 used in logger callback</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.logger.WandBOutputFormat.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.logger.WandBOutputFormat.__init__" title="Link to this definition"></a></dt>
@@ -173,7 +173,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sinergym.utils.logger.Logger.html" class="btn btn-neutral float-left" title="sinergym.utils.logger.Logger" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sinergym.utils.logger.TerminalLogger.html" class="btn btn-neutral float-left" title="sinergym.utils.logger.TerminalLogger" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="sinergym.utils.rewards.html" class="btn btn-neutral float-right" title="sinergym.utils.rewards" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
@@ -215,6 +215,8 @@
             <dd><a href="../../../v3.2.0/pages/modules/sinergym.utils.logger.WandBOutputFormat.html">v3.2.0</a></dd>
             <dd><a href="../../../v3.2.10/pages/modules/sinergym.utils.logger.WandBOutputFormat.html">v3.2.10</a></dd>
             <dd><a href="../../../v3.3.0/pages/modules/sinergym.utils.logger.WandBOutputFormat.html">v3.3.0</a></dd>
+            <dd><a href="../../../v3.4.0/pages/modules/sinergym.utils.logger.WandBOutputFormat.html">v3.4.0</a></dd>
+            <dd><a href="../../../v3.5.0/pages/modules/sinergym.utils.logger.WandBOutputFormat.html">v3.5.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

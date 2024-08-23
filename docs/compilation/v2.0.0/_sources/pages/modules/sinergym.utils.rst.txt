@@ -28,15 +28,15 @@
    :template: custom-module-template.rst                
    :recursive:
 
-   sinergym.utils.callbacks
-   sinergym.utils.common
-   sinergym.utils.config
-   sinergym.utils.constants
-   sinergym.utils.controllers
-   sinergym.utils.env_checker
-   sinergym.utils.evaluation
-   sinergym.utils.gcloud
-   sinergym.utils.logger
-   sinergym.utils.rewards
-   sinergym.utils.wrappers
+   callbacks
+   common
+   config
+   constants
+   controllers
+   env_checker
+   evaluation
+   gcloud
+   logger
+   rewards
+   wrappers
 

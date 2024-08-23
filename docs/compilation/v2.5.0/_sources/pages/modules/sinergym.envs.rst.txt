@@ -28,5 +28,5 @@
    :template: custom-module-template.rst                
    :recursive:
 
-   sinergym.envs.eplus_env
+   eplus_env
 

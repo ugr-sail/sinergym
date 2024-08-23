@@ -1,4 +1,4 @@
-﻿sinergym.config.modeling.ModelJSON
+sinergym.config.modeling.ModelJSON
 ==================================
 
 .. currentmodule:: sinergym.config.modeling
