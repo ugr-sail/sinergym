@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>18. Getting information about Sinergym environments &mdash; sinergym  documentation</title>
+  <title>19. Getting information about Sinergym environments &mdash; sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -27,8 +27,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="19. Changing an environment registered in Sinergym" href="change_environment.html" />
-    <link rel="prev" title="17. Basic example" href="basic_example.html" /> 
+    <link rel="next" title="20. Changing an environment registered in Sinergym" href="change_environment.html" />
+    <link rel="prev" title="18. Basic example" href="basic_example.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -63,33 +63,34 @@
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">5. Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments.html">6. Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">7. Environments Configuration and Registration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rewards.html">8. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../controllers.html">9. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">10. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../output.html">12. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">14. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">15. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tests.html">16. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging.html">8. Logging System Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">9. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">10. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">11. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">12. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">13. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">14. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">15. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">16. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">17. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="basic_example.html">17. Basic example</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">18. Getting information about Sinergym environments</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Schedulers-information">18.1. Schedulers information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Environment-Properties">18.2. Environment Properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Handlers-information">18.3. Handlers information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Displaying-all-the-environment-information">18.4. Displaying all the environment information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">18. Basic example</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">19. Getting information about Sinergym environments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Schedulers-information">19.1. Schedulers information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Environment-Properties">19.2. Environment Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Handlers-information">19.3. Handlers information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Displaying-all-the-environment-information">19.4. Displaying all the environment information</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="change_environment.html">19. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">20. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">21. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="logging_unused_variables.html">23. Logging unusued variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">24. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="drl.html">25. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">20. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">21. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">22. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">23. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging_unused_variables.html">24. Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">25. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">26. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -110,7 +111,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">18. </span>Getting information about Sinergym environments</li>
+      <li class="breadcrumb-item active"><span class="section-number">19. </span>Getting information about Sinergym environments</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/notebooks/getting_env_information.nblink.txt" rel="nofollow"> View page source</a>
       </li>
@@ -121,7 +122,7 @@
            <div itemprop="articleBody">
              
   <section id="Getting-information-about-Sinergym-environments">
-<h1><span class="section-number">18. </span>Getting information about Sinergym environments<a class="headerlink" href="#Getting-information-about-Sinergym-environments" title="Link to this heading"></a></h1>
+<h1><span class="section-number">19. </span>Getting information about Sinergym environments<a class="headerlink" href="#Getting-information-about-Sinergym-environments" title="Link to this heading"></a></h1>
 <p>Sinergym environments have an extended backend to work with building and weather models, the EnergyPlus engine, Wrappers, etc.</p>
 <p>However, it’s crucial that users can access information about these background components from the environment interface. This section will show you how to do that.</p>
 <div class="nbinput nblast docutils container">
@@ -137,7 +138,7 @@
 </div>
 </div>
 <section id="Schedulers-information">
-<h2><span class="section-number">18.1. </span>Schedulers information<a class="headerlink" href="#Schedulers-information" title="Link to this heading"></a></h2>
+<h2><span class="section-number">19.1. </span>Schedulers information<a class="headerlink" href="#Schedulers-information" title="Link to this heading"></a></h2>
 <p>Buildings have a set of schedulers that control the building’s actuators according to predefined rules. In addition to the information available in the log files generated by EnergyPlus, you can consult Sinergym’s reading of the building to see how these schedulers affect the building. Schedulers information is extracted into a Python dictionary, and Sinergym can export that information to an Excel file. To do this, simply load the environment and follow the next steps:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -159,12 +160,18 @@
 #==============================================================================================#
 [ENVIRONMENT] (INFO) : Creating Gymnasium environment... [demo-v1]
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-demo-v1-res35041]
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
-[MODELING] (INFO) : Episode length (seconds): 31536000.0
-[MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35040
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-demo-v1-res1]
 [MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Updated building model with whole Output:Variable available names
+[MODELING] (INFO) : Updated building model with whole Output:Meter available names
+[MODELING] (INFO) : Extra config: runperiod updated to {&#39;apply_weekend_holiday_rule&#39;: &#39;No&#39;, &#39;begin_day_of_month&#39;: 1, &#39;begin_month&#39;: 1, &#39;begin_year&#39;: 1991, &#39;day_of_week_for_start_day&#39;: &#39;Monday&#39;, &#39;end_day_of_month&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;use_weather_file_daylight_saving_period&#39;: &#39;Yes&#39;, &#39;use_weather_file_holidays_and_special_days&#39;: &#39;Yes&#39;, &#39;use_weather_file_rain_indicators&#39;: &#39;Yes&#39;, &#39;use_weather_file_snow_indicators&#39;: &#39;Yes&#39;}
+[MODELING] (INFO) : Updated episode length (seconds): 5184000.0
+[MODELING] (INFO) : Updated timestep size (seconds): 3600.0
+[MODELING] (INFO) : Updated timesteps per episode: 1440
+[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 1}
+[MODELING] (INFO) : Episode length (seconds): 5184000.0
+[MODELING] (INFO) : timestep size (seconds): 3600.0
+[MODELING] (INFO) : timesteps per episode: 1441
 [REWARD] (INFO) : Reward function initialized.
 [ENVIRONMENT] (INFO) : Environment demo-v1 created successfully.
 {&#39;ActSchd&#39;: {&#39;SPACE1-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
@@ -178,6 +185,18 @@
              &#39;SPACE5-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
                                    &#39;table_name&#39;: &#39;People&#39;},
              &#39;Type&#39;: &#39;Any Number&#39;},
+ &#39;ActivitySch&#39;: {&#39;Type&#39;: &#39;Any Number&#39;},
+ &#39;AirVelocitySch&#39;: {&#39;SPACE1-1 People 1&#39;: {&#39;field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                          &#39;table_name&#39;: &#39;People&#39;},
+                    &#39;SPACE2-1 People 1&#39;: {&#39;field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                          &#39;table_name&#39;: &#39;People&#39;},
+                    &#39;SPACE3-1 People 1&#39;: {&#39;field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                          &#39;table_name&#39;: &#39;People&#39;},
+                    &#39;SPACE4-1 People 1&#39;: {&#39;field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                          &#39;table_name&#39;: &#39;People&#39;},
+                    &#39;SPACE5-1 People 1&#39;: {&#39;field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                          &#39;table_name&#39;: &#39;People&#39;},
+                    &#39;Type&#39;: &#39;Any Number&#39;},
  &#39;BasinHeaterSched&#39;: {&#39;Main Cooling Coil 1&#39;: {&#39;field_name&#39;: &#39;basin_heater_operating_schedule_name&#39;,
                                               &#39;table_name&#39;: &#39;Coil:Cooling:DX:TwoSpeed&#39;},
                       &#39;Type&#39;: &#39;On/Off&#39;},
@@ -186,6 +205,7 @@
                   &#39;DualSetPoint&#39;: {&#39;field_name&#39;: &#39;cooling_setpoint_temperature_schedule_name&#39;,
                                    &#39;table_name&#39;: &#39;ThermostatSetpoint:DualSetpoint&#39;},
                   &#39;Type&#39;: &#39;Temperature&#39;},
+ &#39;ClothingSch&#39;: {&#39;Type&#39;: &#39;Any Number&#39;},
  &#39;CoolingCoilAvailSched&#39;: {&#39;DX Cooling Coil System 1&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
                                                         &#39;table_name&#39;: &#39;CoilSystem:Cooling:DX&#39;},
                            &#39;Main Cooling Coil 1&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
@@ -258,36 +278,45 @@
                                                   &#39;table_name&#39;: &#39;ThermostatSetpoint:SingleHeating&#39;},
                         &#39;Type&#39;: &#39;Temperature&#39;},
  &#39;ReheatCoilAvailSched&#39;: {&#39;Main heating Coil 1&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
-                                                  &#39;table_name&#39;: &#39;Coil:Heating:Fuel&#39;},
+                                                  &#39;table_name&#39;: &#39;Coil:Heating:Electric&#39;},
                           &#39;SPACE1-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
                                                   &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
                           &#39;SPACE1-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
-                                                 &#39;table_name&#39;: &#39;Coil:Heating:Fuel&#39;},
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Electric&#39;},
                           &#39;SPACE2-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
                                                   &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
                           &#39;SPACE2-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
-                                                 &#39;table_name&#39;: &#39;Coil:Heating:Fuel&#39;},
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Electric&#39;},
                           &#39;SPACE3-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
                                                   &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
                           &#39;SPACE3-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
-                                                 &#39;table_name&#39;: &#39;Coil:Heating:Fuel&#39;},
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Electric&#39;},
                           &#39;SPACE4-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
                                                   &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
                           &#39;SPACE4-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
-                                                 &#39;table_name&#39;: &#39;Coil:Heating:Fuel&#39;},
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Electric&#39;},
                           &#39;SPACE5-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
                                                   &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
                           &#39;SPACE5-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
-                                                 &#39;table_name&#39;: &#39;Coil:Heating:Fuel&#39;},
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Electric&#39;},
                           &#39;Type&#39;: &#39;Fraction&#39;},
- &#39;Seasonal Reset Supply Air Temp Sch&#39;: {&#39;Supply Air Temp Manager 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
-                                                                      &#39;table_name&#39;: &#39;SetpointManager:Scheduled&#39;},
-                                        &#39;Type&#39;: &#39;Temperature&#39;},
+ &#39;Seasonal Reset Supply Air Temp Sch&#39;: {&#39;Type&#39;: &#39;Temperature&#39;},
  &#39;ShadeTransSch&#39;: {&#39;Main South Overhang&#39;: {&#39;field_name&#39;: &#39;transmittance_schedule_name&#39;,
                                            &#39;table_name&#39;: &#39;Shading:Zone:Detailed&#39;},
                    &#39;South Door Overhang&#39;: {&#39;field_name&#39;: &#39;transmittance_schedule_name&#39;,
                                            &#39;table_name&#39;: &#39;Shading:Zone:Detailed&#39;},
                    &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;WorkEffSch&#39;: {&#39;SPACE1-1 People 1&#39;: {&#39;field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;People&#39;},
+                &#39;SPACE2-1 People 1&#39;: {&#39;field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;People&#39;},
+                &#39;SPACE3-1 People 1&#39;: {&#39;field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;People&#39;},
+                &#39;SPACE4-1 People 1&#39;: {&#39;field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;People&#39;},
+                &#39;SPACE5-1 People 1&#39;: {&#39;field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;People&#39;},
+                &#39;Type&#39;: &#39;Fraction&#39;},
  &#39;Zone Control Type Sched&#39;: {&#39;SPACE1-1 Control&#39;: {&#39;field_name&#39;: &#39;control_type_schedule_name&#39;,
                                                   &#39;table_name&#39;: &#39;ZoneControl:Thermostat&#39;},
                              &#39;SPACE2-1 Control&#39;: {&#39;field_name&#39;: &#39;control_type_schedule_name&#39;,
@@ -312,7 +341,7 @@
 </div>
 </section>
 <section id="Environment-Properties">
-<h2><span class="section-number">18.2. </span>Environment Properties<a class="headerlink" href="#Environment-Properties" title="Link to this heading"></a></h2>
+<h2><span class="section-number">19.2. </span>Environment Properties<a class="headerlink" href="#Environment-Properties" title="Link to this heading"></a></h2>
 <p>As mentioned, some environment features are created in the gym interface layer, but more information is calculated in the backend. Therefore, Sinergym environments have several properties to consult this information. For more details, visit the documentation, but here are some examples:</p>
 <p>Note: We’re using the <code class="docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code> method from Gym to get information about the attributes, in line with the new Gymnasium protocol.</p>
 <div class="nbinput docutils container">
@@ -342,12 +371,12 @@
 What is all the variables names which conform my Gymnasium observation?: [&#39;month&#39;, &#39;day_of_month&#39;, &#39;hour&#39;, &#39;outdoor_temperature&#39;, &#39;htg_setpoint&#39;, &#39;clg_setpoint&#39;, &#39;air_temperature&#39;, &#39;air_humidity&#39;, &#39;HVAC_electricity_demand_rate&#39;]
 What is all the variables names which conform my Gymnasium action?: [&#39;Heating_Setpoint_RL&#39;, &#39;Cooling_Setpoint_RL&#39;]
 Is there an episode executing?: False
-What is the episode run period?: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
-Episode length in seconds?: 31536000.0
-How many steps have an episode?: 35040
-How often do steps changed?: 900.0
+What is the episode run period?: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 1}
+Episode length in seconds?: 5184000.0
+How many steps have an episode?: 1441
+How often do steps changed?: 3600.0
 What are the available zones?: [&#39;PLENUM-1&#39;, &#39;SPACE1-1&#39;, &#39;SPACE2-1&#39;, &#39;SPACE3-1&#39;, &#39;SPACE4-1&#39;, &#39;SPACE5-1&#39;]
-Where is the output path of Sinergym environment?: /workspaces/sinergym/examples/Eplus-env-demo-v1-res35041
+Where is the output path of Sinergym environment?: /workspaces/sinergym/examples/Eplus-env-demo-v1-res1
 Where is the building used?: /workspaces/sinergym/sinergym/data/buildings/5ZoneAutoDXVAV.epJSON
 Where is the weather used?: /workspaces/sinergym/sinergym/data/weather/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw
 Is the action space discrete?: False
@@ -355,7 +384,7 @@ Is the action space discrete?: False
 </div>
 </section>
 <section id="Handlers-information">
-<h2><span class="section-number">18.3. </span>Handlers information<a class="headerlink" href="#Handlers-information" title="Link to this heading"></a></h2>
+<h2><span class="section-number">19.3. </span>Handlers information<a class="headerlink" href="#Handlers-information" title="Link to this heading"></a></h2>
 <p>Similarly, we can consult the actuators, variables, and meters available in the environment, along with those we’re specifically controlling and observing with our environment.</p>
 <p>You can consult it as follows:</p>
 <div class="nbinput docutils container">
@@ -401,16 +430,10 @@ Observed meters: None
 #----------------------------------------------------------------------------------------------#
 [ENVIRONMENT] (INFO) : Starting a new episode... [demo-v1] [Episode 1]
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-demo-v1-res35041/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1]
 [MODELING] (INFO) : Weather file USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw used.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : Extra config: runperiod updated to {&#39;apply_weekend_holiday_rule&#39;: &#39;No&#39;, &#39;begin_day_of_month&#39;: 1, &#39;begin_month&#39;: 1, &#39;begin_year&#39;: 1991, &#39;day_of_week_for_start_day&#39;: &#39;Tuesday&#39;, &#39;end_day_of_month&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;use_weather_file_daylight_saving_period&#39;: &#39;Yes&#39;, &#39;use_weather_file_holidays_and_special_days&#39;: &#39;Yes&#39;, &#39;use_weather_file_rain_indicators&#39;: &#39;Yes&#39;, &#39;use_weather_file_snow_indicators&#39;: &#39;Yes&#39;}
-[MODELING] (INFO) : Updated episode length (seconds): 5184000.0
-[MODELING] (INFO) : Updated timestep size (seconds): 3600.0
-[MODELING] (INFO) : Updated timesteps per episode: 1440
 [MODELING] (INFO) : Adapting weather to building model. [USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-demo-v1-res35041/Eplus-env-sub_run1/output]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/output]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -418,8 +441,8 @@ Observed meters: None
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/usr/local/lib/python3.10/dist-packages/opyplus/weather_data/weather_data.py:493: FutureWarning: the &#39;line_terminator&#39;&#39; keyword is deprecated, use &#39;lineterminator&#39; instead.
-  epw_content = self._headers_to_epw(use_datetimes=use_datetimes) + df.to_csv(
+/usr/local/lib/python3.12/dist-packages/opyplus/weather_data/weather_data.py:485: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  df = df.replace(
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -427,15 +450,18 @@ Observed meters: None
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res35041/Eplus-env-sub_run1/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res35041/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res35041/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
 Available Handlers: **ACTUATORS**
 Actuator,Schedule:Compact,Schedule Value,ACTSCHD;
+Actuator,Schedule:Compact,Schedule Value,ACTIVITYSCH;
+Actuator,Schedule:Compact,Schedule Value,AIRVELOCITYSCH;
 Actuator,Schedule:Compact,Schedule Value,BASINHEATERSCHED;
 Actuator,Schedule:Compact,Schedule Value,CLG-SETP-SCH;
+Actuator,Schedule:Compact,Schedule Value,CLOTHINGSCH;
 Actuator,Schedule:Compact,Schedule Value,COOLINGCOILAVAILSCHED;
 Actuator,Schedule:Compact,Schedule Value,EQUIP-1;
 Actuator,Schedule:Compact,Schedule Value,FANAVAILSCHED;
@@ -450,6 +476,7 @@ Actuator,Schedule:Compact,Schedule Value,PLENUMHTG-SETP-SCH;
 Actuator,Schedule:Compact,Schedule Value,REHEATCOILAVAILSCHED;
 Actuator,Schedule:Compact,Schedule Value,SEASONAL RESET SUPPLY AIR TEMP SCH;
 Actuator,Schedule:Compact,Schedule Value,SHADETRANSSCH;
+Actuator,Schedule:Compact,Schedule Value,WORKEFFSCH;
 Actuator,Schedule:Compact,Schedule Value,ZONE CONTROL TYPE SCHED;
 Actuator,Weather Data,Outdoor Dry Bulb,Environment;
 Actuator,Weather Data,Outdoor Dew Point,Environment;
@@ -1400,10 +1427,6 @@ OutputMeter,Cogeneration:ElectricityNet
 OutputMeter,General:Cogeneration:ElectricityNet
 OutputMeter,EnergyTransfer:HVAC
 OutputMeter,HeatingCoils:EnergyTransfer
-OutputMeter,NaturalGas:Facility
-OutputMeter,NaturalGas:HVAC
-OutputMeter,Heating:NaturalGas
-OutputMeter,General:Heating:NaturalGas
 OutputMeter,Electricity:HVAC
 OutputMeter,Heating:Electricity
 OutputMeter,General:Heating:Electricity
@@ -1455,29 +1478,17 @@ OutputVariable,Facility Total Surplus Electricity Energy,WHOLE BUILDING
 OutputVariable,Facility Net Purchased Electricity Energy,WHOLE BUILDING
 OutputVariable,Facility Total HVAC Electricity Demand Rate,WHOLE BUILDING
 OutputVariable,Heating Coil Heating Energy,MAIN HEATING COIL 1
-OutputVariable,Heating Coil NaturalGas Energy,MAIN HEATING COIL 1
 OutputVariable,Heating Coil Electricity Energy,MAIN HEATING COIL 1
-OutputVariable,Heating Coil Ancillary NaturalGas Energy,MAIN HEATING COIL 1
 OutputVariable,Heating Coil Heating Energy,SPACE1-1 ZONE COIL
-OutputVariable,Heating Coil NaturalGas Energy,SPACE1-1 ZONE COIL
 OutputVariable,Heating Coil Electricity Energy,SPACE1-1 ZONE COIL
-OutputVariable,Heating Coil Ancillary NaturalGas Energy,SPACE1-1 ZONE COIL
 OutputVariable,Heating Coil Heating Energy,SPACE2-1 ZONE COIL
-OutputVariable,Heating Coil NaturalGas Energy,SPACE2-1 ZONE COIL
 OutputVariable,Heating Coil Electricity Energy,SPACE2-1 ZONE COIL
-OutputVariable,Heating Coil Ancillary NaturalGas Energy,SPACE2-1 ZONE COIL
 OutputVariable,Heating Coil Heating Energy,SPACE3-1 ZONE COIL
-OutputVariable,Heating Coil NaturalGas Energy,SPACE3-1 ZONE COIL
 OutputVariable,Heating Coil Electricity Energy,SPACE3-1 ZONE COIL
-OutputVariable,Heating Coil Ancillary NaturalGas Energy,SPACE3-1 ZONE COIL
 OutputVariable,Heating Coil Heating Energy,SPACE4-1 ZONE COIL
-OutputVariable,Heating Coil NaturalGas Energy,SPACE4-1 ZONE COIL
 OutputVariable,Heating Coil Electricity Energy,SPACE4-1 ZONE COIL
-OutputVariable,Heating Coil Ancillary NaturalGas Energy,SPACE4-1 ZONE COIL
 OutputVariable,Heating Coil Heating Energy,SPACE5-1 ZONE COIL
-OutputVariable,Heating Coil NaturalGas Energy,SPACE5-1 ZONE COIL
 OutputVariable,Heating Coil Electricity Energy,SPACE5-1 ZONE COIL
-OutputVariable,Heating Coil Ancillary NaturalGas Energy,SPACE5-1 ZONE COIL
 OutputVariable,Fan Electricity Energy,SUPPLY FAN 1
 OutputVariable,Cooling Coil Total Cooling Energy,MAIN COOLING COIL 1
 OutputVariable,Cooling Coil Electricity Energy,MAIN COOLING COIL 1
@@ -1489,14 +1500,14 @@ OutputVariable,Environmental Impact Total N2O Emissions Carbon Equivalent Mass,S
 OutputVariable,Environmental Impact Total CH4 Emissions Carbon Equivalent Mass,SITE
 OutputVariable,Environmental Impact Total CO2 Emissions Carbon Equivalent Mass,SITE
 
-Controlled actuators: {&#39;Heating_Setpoint_RL&#39;: 7, &#39;Cooling_Setpoint_RL&#39;: 3}
+Controlled actuators: {&#39;Heating_Setpoint_RL&#39;: 10, &#39;Cooling_Setpoint_RL&#39;: 5}
 Observed variables: {&#39;outdoor_temperature&#39;: 1, &#39;htg_setpoint&#39;: 26, &#39;clg_setpoint&#39;: 27, &#39;air_temperature&#39;: 22, &#39;air_humidity&#39;: 23, &#39;HVAC_electricity_demand_rate&#39;: 31}
 Observed meters: {}
 </pre></div></div>
 </div>
 </section>
 <section id="Displaying-all-the-environment-information">
-<h2><span class="section-number">18.4. </span>Displaying all the environment information<a class="headerlink" href="#Displaying-all-the-environment-information" title="Link to this heading"></a></h2>
+<h2><span class="section-number">19.4. </span>Displaying all the environment information<a class="headerlink" href="#Displaying-all-the-environment-information" title="Link to this heading"></a></h2>
 <p>You can also print all the environment information. Just remember to do <code class="docutils literal notranslate"><span class="pre">reset()</span></code> beforehand to have handlers information too:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -1523,12 +1534,12 @@ Observed meters: {}
     - Weather file(s): [&#39;USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw&#39;]
     - Current weather used: /workspaces/sinergym/sinergym/data/weather/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw
     - Episodes executed: 1
-    - Workspace directory: /workspaces/sinergym/examples/Eplus-env-demo-v1-res35041
-    - Reward function: &lt;sinergym.utils.rewards.LinearReward object at 0x7f80ad33c0a0&gt;
+    - Workspace directory: /workspaces/sinergym/examples/Eplus-env-demo-v1-res1
+    - Reward function: &lt;sinergym.utils.rewards.LinearReward object at 0x7ff7829e4860&gt;
     - Reset default options: {}
-    - Run period: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 1}
-    - Episode length: 5184000.0
-    - Number of timesteps in an episode: 1440
+    - Run period: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 1}
+    - Episode length (seconds): 5184000.0
+    - Number of timesteps in an episode: 1441
     - Timestep size (seconds): 3600.0
     - It is discrete?: False
     #----------------------------------------------------------------------------------#
@@ -1553,8 +1564,11 @@ Observed meters: {}
 
     **ACTUATORS**
 Actuator,Schedule:Compact,Schedule Value,ACTSCHD;
+Actuator,Schedule:Compact,Schedule Value,ACTIVITYSCH;
+Actuator,Schedule:Compact,Schedule Value,AIRVELOCITYSCH;
 Actuator,Schedule:Compact,Schedule Value,BASINHEATERSCHED;
 Actuator,Schedule:Compact,Schedule Value,CLG-SETP-SCH;
+Actuator,Schedule:Compact,Schedule Value,CLOTHINGSCH;
 Actuator,Schedule:Compact,Schedule Value,COOLINGCOILAVAILSCHED;
 Actuator,Schedule:Compact,Schedule Value,EQUIP-1;
 Actuator,Schedule:Compact,Schedule Value,FANAVAILSCHED;
@@ -1569,6 +1583,7 @@ Actuator,Schedule:Compact,Schedule Value,PLENUMHTG-SETP-SCH;
 Actuator,Schedule:Compact,Schedule Value,REHEATCOILAVAILSCHED;
 Actuator,Schedule:Compact,Schedule Value,SEASONAL RESET SUPPLY AIR TEMP SCH;
 Actuator,Schedule:Compact,Schedule Value,SHADETRANSSCH;
+Actuator,Schedule:Compact,Schedule Value,WORKEFFSCH;
 Actuator,Schedule:Compact,Schedule Value,ZONE CONTROL TYPE SCHED;
 Actuator,Weather Data,Outdoor Dry Bulb,Environment;
 Actuator,Weather Data,Outdoor Dew Point,Environment;
@@ -2519,10 +2534,6 @@ OutputMeter,Cogeneration:ElectricityNet
 OutputMeter,General:Cogeneration:ElectricityNet
 OutputMeter,EnergyTransfer:HVAC
 OutputMeter,HeatingCoils:EnergyTransfer
-OutputMeter,NaturalGas:Facility
-OutputMeter,NaturalGas:HVAC
-OutputMeter,Heating:NaturalGas
-OutputMeter,General:Heating:NaturalGas
 OutputMeter,Electricity:HVAC
 OutputMeter,Heating:Electricity
 OutputMeter,General:Heating:Electricity
@@ -2574,29 +2585,17 @@ OutputVariable,Facility Total Surplus Electricity Energy,WHOLE BUILDING
 OutputVariable,Facility Net Purchased Electricity Energy,WHOLE BUILDING
 OutputVariable,Facility Total HVAC Electricity Demand Rate,WHOLE BUILDING
 OutputVariable,Heating Coil Heating Energy,MAIN HEATING COIL 1
-OutputVariable,Heating Coil NaturalGas Energy,MAIN HEATING COIL 1
 OutputVariable,Heating Coil Electricity Energy,MAIN HEATING COIL 1
-OutputVariable,Heating Coil Ancillary NaturalGas Energy,MAIN HEATING COIL 1
 OutputVariable,Heating Coil Heating Energy,SPACE1-1 ZONE COIL
-OutputVariable,Heating Coil NaturalGas Energy,SPACE1-1 ZONE COIL
 OutputVariable,Heating Coil Electricity Energy,SPACE1-1 ZONE COIL
-OutputVariable,Heating Coil Ancillary NaturalGas Energy,SPACE1-1 ZONE COIL
 OutputVariable,Heating Coil Heating Energy,SPACE2-1 ZONE COIL
-OutputVariable,Heating Coil NaturalGas Energy,SPACE2-1 ZONE COIL
 OutputVariable,Heating Coil Electricity Energy,SPACE2-1 ZONE COIL
-OutputVariable,Heating Coil Ancillary NaturalGas Energy,SPACE2-1 ZONE COIL
 OutputVariable,Heating Coil Heating Energy,SPACE3-1 ZONE COIL
-OutputVariable,Heating Coil NaturalGas Energy,SPACE3-1 ZONE COIL
 OutputVariable,Heating Coil Electricity Energy,SPACE3-1 ZONE COIL
-OutputVariable,Heating Coil Ancillary NaturalGas Energy,SPACE3-1 ZONE COIL
 OutputVariable,Heating Coil Heating Energy,SPACE4-1 ZONE COIL
-OutputVariable,Heating Coil NaturalGas Energy,SPACE4-1 ZONE COIL
 OutputVariable,Heating Coil Electricity Energy,SPACE4-1 ZONE COIL
-OutputVariable,Heating Coil Ancillary NaturalGas Energy,SPACE4-1 ZONE COIL
 OutputVariable,Heating Coil Heating Energy,SPACE5-1 ZONE COIL
-OutputVariable,Heating Coil NaturalGas Energy,SPACE5-1 ZONE COIL
 OutputVariable,Heating Coil Electricity Energy,SPACE5-1 ZONE COIL
-OutputVariable,Heating Coil Ancillary NaturalGas Energy,SPACE5-1 ZONE COIL
 OutputVariable,Fan Electricity Energy,SUPPLY FAN 1
 OutputVariable,Cooling Coil Total Cooling Energy,MAIN COOLING COIL 1
 OutputVariable,Cooling Coil Electricity Energy,MAIN COOLING COIL 1
@@ -2611,7 +2610,7 @@ OutputVariable,Environmental Impact Total CO2 Emissions Carbon Equivalent Mass,S
     #----------------------------------------------------------------------------------#
                                 CONTROLLED ELEMENTS:
     #----------------------------------------------------------------------------------#
-    - Actuators: {&#39;Heating_Setpoint_RL&#39;: 7, &#39;Cooling_Setpoint_RL&#39;: 3}
+    - Actuators: {&#39;Heating_Setpoint_RL&#39;: 10, &#39;Cooling_Setpoint_RL&#39;: 5}
     - Variables: {&#39;outdoor_temperature&#39;: 1, &#39;htg_setpoint&#39;: 26, &#39;clg_setpoint&#39;: 27, &#39;air_temperature&#39;: 22, &#39;air_humidity&#39;: 23, &#39;HVAC_electricity_demand_rate&#39;: 31}
     - Meters: {}
     - Internal Variables: None
@@ -2624,7 +2623,7 @@ OutputVariable,Environmental Impact Total CO2 Emissions Carbon Equivalent Mass,S
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/usr/local/lib/python3.10/dist-packages/gymnasium/core.py:311: UserWarning: <span class="ansi-yellow-fg">WARN: env.info to get variables from other wrappers is deprecated and will be removed in v1.0, to get this variable you can do `env.unwrapped.info` for environment variables or `env.get_wrapper_attr(&#39;info&#39;)` that will search the reminding wrappers.</span>
+/usr/local/lib/python3.12/dist-packages/gymnasium/core.py:311: UserWarning: <span class="ansi-yellow-fg">WARN: env.info to get variables from other wrappers is deprecated and will be removed in v1.0, to get this variable you can do `env.unwrapped.info` for environment variables or `env.get_wrapper_attr(&#39;info&#39;)` that will search the reminding wrappers.</span>
   logger.warn(
 </pre></div></div>
 </div>
@@ -2635,8 +2634,8 @@ OutputVariable,Environmental Impact Total CO2 Emissions Carbon Equivalent Mass,S
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="basic_example.html" class="btn btn-neutral float-left" title="17. Basic example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="change_environment.html" class="btn btn-neutral float-right" title="19. Changing an environment registered in Sinergym" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="basic_example.html" class="btn btn-neutral float-left" title="18. Basic example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="change_environment.html" class="btn btn-neutral float-right" title="20. Changing an environment registered in Sinergym" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -2677,6 +2676,8 @@ OutputVariable,Environmental Impact Total CO2 Emissions Carbon Equivalent Mass,S
             <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
             <dd><a href="../../../v3.2.10/index.html">v3.2.10</a></dd>
             <dd><a href="../../../v3.3.0/index.html">v3.3.0</a></dd>
+            <dd><a href="../../../v3.4.0/index.html">v3.4.0</a></dd>
+            <dd><a href="../../../v3.5.0/index.html">v3.5.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

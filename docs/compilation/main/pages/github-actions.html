@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>15. Github Actions &mdash; sinergym  documentation</title>
+  <title>16. Github Actions &mdash; sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=816ccb90" />
@@ -24,8 +24,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="16. Tests" href="tests.html" />
-    <link rel="prev" title="14. Sinergym with Google Cloud" href="gcloudAPI.html" /> 
+    <link rel="next" title="17. Tests" href="tests.html" />
+    <link rel="prev" title="15. Sinergym with Google Cloud" href="gcloudAPI.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -60,32 +60,33 @@
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">5. Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environments.html">6. Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environments_registration.html">7. Environments Configuration and Registration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rewards.html">8. Rewards</a></li>
-<li class="toctree-l1"><a class="reference internal" href="controllers.html">9. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers.html">10. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="output.html">12. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">14. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">15. Github Actions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#pull-request">15.1. Pull Request</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#push-main-or-merge-a-pull-request">15.2. Push main (or merge a pull request)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#new-release-created-or-modified">15.3. New release created or modified</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">8. Logging System Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">9. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">10. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">11. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">12. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">13. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">14. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">15. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">16. Github Actions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pull-request">16.1. Pull Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#push-main-or-merge-a-pull-request">16.2. Push main (or merge a pull request)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#new-release-created-or-modified">16.3. New release created or modified</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">16. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">17. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">17. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">18. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">19. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">20. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">21. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/logging_unused_variables.html">23. Logging unusued variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">24. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">25. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">18. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">19. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">20. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">21. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">22. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">23. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/logging_unused_variables.html">24. Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">25. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">26. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -106,7 +107,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">15. </span>Github Actions</li>
+      <li class="breadcrumb-item active"><span class="section-number">16. </span>Github Actions</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/pages/github-actions.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -117,12 +118,12 @@
            <div itemprop="articleBody">
              
   <section id="github-actions">
-<h1><span class="section-number">15. </span>Github Actions<a class="headerlink" href="#github-actions" title="Link to this heading"></a></h1>
+<h1><span class="section-number">16. </span>Github Actions<a class="headerlink" href="#github-actions" title="Link to this heading"></a></h1>
 <p>This project leverages <a class="reference external" href="https://docs.github.com/en/actions/">Github Actions</a>,
 for continuous integration and deployment, eliminating the need for third-party platforms.</p>
 <p>The following procedures are implemented:</p>
 <section id="pull-request">
-<h2><span class="section-number">15.1. </span>Pull Request<a class="headerlink" href="#pull-request" title="Link to this heading"></a></h2>
+<h2><span class="section-number">16.1. </span>Pull Request<a class="headerlink" href="#pull-request" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><strong>Python Code format check</strong>: Each pull request is checked for <strong>Pep8</strong>
 <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">standard</a> compliance and
@@ -144,7 +145,7 @@ Add unrecognized but correct words to <code class="docutils literal notranslate"
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Sphinx Spelling also checks code docstrings.</p>
+<p>Sphinx Spelling also checks code docstring.</p>
 </div>
 <ul class="simple">
 <li><p><strong>Testing</strong>: A remote container is built using <em>Dockerfile</em> and <strong>Pytest</strong> is executed within it.</p></li>
@@ -158,7 +159,7 @@ See issue <a class="reference external" href="https://github.com/ugr-sail/sinerg
 </div>
 </section>
 <section id="push-main-or-merge-a-pull-request">
-<h2><span class="section-number">15.2. </span>Push main (or merge a pull request)<a class="headerlink" href="#push-main-or-merge-a-pull-request" title="Link to this heading"></a></h2>
+<h2><span class="section-number">16.2. </span>Push main (or merge a pull request)<a class="headerlink" href="#push-main-or-merge-a-pull-request" title="Link to this heading"></a></h2>
 <p>The following workflows are executed sequentially:</p>
 <ul class="simple">
 <li><p><strong>Apply format</strong>: A bot applies necessary format changes (<strong>autopep8</strong> level 2 aggressive and/or <strong>isort</strong> module)
@@ -173,7 +174,7 @@ and the coverage report is uploaded to CodeCov.</p></li>
 </ul>
 </section>
 <section id="new-release-created-or-modified">
-<h2><span class="section-number">15.3. </span>New release created or modified<a class="headerlink" href="#new-release-created-or-modified" title="Link to this heading"></a></h2>
+<h2><span class="section-number">16.3. </span>New release created or modified<a class="headerlink" href="#new-release-created-or-modified" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>When a <strong>release</strong> is <em>published</em> or <em>edited</em>, a container is built and updated on Docker Hub
 with the release tag version.</p></li>
@@ -195,8 +196,8 @@ with the release tag version.</p></li>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="gcloudAPI.html" class="btn btn-neutral float-left" title="14. Sinergym with Google Cloud" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="tests.html" class="btn btn-neutral float-right" title="16. Tests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="gcloudAPI.html" class="btn btn-neutral float-left" title="15. Sinergym with Google Cloud" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.html" class="btn btn-neutral float-right" title="17. Tests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -237,6 +238,8 @@ with the release tag version.</p></li>
             <dd><a href="../../v3.2.0/pages/github-actions.html">v3.2.0</a></dd>
             <dd><a href="../../v3.2.10/pages/github-actions.html">v3.2.10</a></dd>
             <dd><a href="../../v3.3.0/pages/github-actions.html">v3.3.0</a></dd>
+            <dd><a href="../../v3.4.0/pages/github-actions.html">v3.4.0</a></dd>
+            <dd><a href="../../v3.5.0/pages/github-actions.html">v3.5.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

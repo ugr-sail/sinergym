@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers.DiscreteIncrementalWrapper
+sinergym.utils.wrappers.DiscreteIncrementalWrapper
 ==================================================
 
 .. currentmodule:: sinergym.utils.wrappers

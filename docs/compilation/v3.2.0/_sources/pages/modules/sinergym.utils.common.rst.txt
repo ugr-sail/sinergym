@@ -1,4 +1,4 @@
-﻿sinergym.utils.common
+sinergym.utils.common
 =====================
 
 .. automodule:: sinergym.utils.common

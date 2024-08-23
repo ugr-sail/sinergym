@@ -28,5 +28,5 @@
    :template: custom-module-template.rst                
    :recursive:
 
-   sinergym.config.modeling
+   modeling
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>9. Controllers &mdash; sinergym  documentation</title>
+  <title>11. Controllers &mdash; sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=816ccb90" />
@@ -24,8 +24,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="10. Wrappers" href="wrappers.html" />
-    <link rel="prev" title="8. Rewards" href="rewards.html" /> 
+    <link rel="next" title="12. Wrappers" href="wrappers.html" />
+    <link rel="prev" title="10. Rewards" href="rewards.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -60,27 +60,28 @@
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">5. Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environments.html">6. Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environments_registration.html">7. Environments Configuration and Registration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rewards.html">8. Rewards</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">9. Controllers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers.html">10. Wrappers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">11. Extra Configuration in Sinergym simulations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="output.html">12. Output format</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">13. Deep Reinforcement Learning Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">14. Sinergym with Google Cloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="github-actions.html">15. Github Actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">16. Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">8. Logging System Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">9. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">10. Rewards</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">11. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">12. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">13. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">14. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">15. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">16. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">17. Tests</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">17. Basic example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">18. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">19. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">20. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">21. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">22. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/logging_unused_variables.html">23. Logging unusued variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">24. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">25. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">18. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">19. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">20. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">21. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">22. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">23. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/logging_unused_variables.html">24. Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">25. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">26. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -101,7 +102,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">9. </span>Controllers</li>
+      <li class="breadcrumb-item active"><span class="section-number">11. </span>Controllers</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/pages/controllers.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -112,7 +113,7 @@
            <div itemprop="articleBody">
              
   <section id="controllers">
-<h1><span class="section-number">9. </span>Controllers<a class="headerlink" href="#controllers" title="Link to this heading"></a></h1>
+<h1><span class="section-number">11. </span>Controllers<a class="headerlink" href="#controllers" title="Link to this heading"></a></h1>
 <p><em>Sinergym</em> includes a section for implementing your own <strong>controllers</strong>. At present,
 we’ve developed a <strong>random agent</strong> and a <strong>rule-based agent</strong> for <em>5Zone</em> and <em>Datacenter</em>
 buildings. You can locate this code in
@@ -132,8 +133,8 @@ are part of the observation space of the configured environment.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="rewards.html" class="btn btn-neutral float-left" title="8. Rewards" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="wrappers.html" class="btn btn-neutral float-right" title="10. Wrappers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="rewards.html" class="btn btn-neutral float-left" title="10. Rewards" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="wrappers.html" class="btn btn-neutral float-right" title="12. Wrappers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
@@ -174,6 +175,8 @@ are part of the observation space of the configured environment.</p>
             <dd><a href="../../v3.2.0/pages/controllers.html">v3.2.0</a></dd>
             <dd><a href="../../v3.2.10/pages/controllers.html">v3.2.10</a></dd>
             <dd><a href="../../v3.3.0/pages/controllers.html">v3.3.0</a></dd>
+            <dd><a href="../../v3.4.0/pages/controllers.html">v3.4.0</a></dd>
+            <dd><a href="../../v3.5.0/pages/controllers.html">v3.5.0</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>

@@ -1,4 +1,4 @@
-﻿sinergym.utils.logger
+sinergym.utils.logger
 =====================
 
 .. automodule:: sinergym.utils.logger

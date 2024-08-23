@@ -1,4 +1,4 @@
-﻿sinergym.utils.wrappers
+sinergym.utils.wrappers
 =======================
 
 .. automodule:: sinergym.utils.wrappers
