@@ -50,7 +50,7 @@ class LoggerEvalCallback(EventCallback):
         self.train_env = train_env
         self.n_eval_episodes = n_eval_episodes
         self.eval_freq = eval_freq_episodes * \
-            train_env.get_wrapper_attr('timestep_per_episode') - 3
+            train_env.get_wrapper_attr('timestep_per_episode') - 30
         self.save_path = self.train_env.get_wrapper_attr(
             'workspace_path') + '/evaluation'
         # Make dir if not exists
