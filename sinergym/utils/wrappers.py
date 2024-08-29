@@ -1171,7 +1171,7 @@ class CSVLogger(gym.Wrapper):
                 #    len(self.get_wrapper_attr('action_variables')))]
                 simulated_actions = [info['action']
                                      for info in episode_data.infos]
-                if isinstance(simulated_actions[1], list):
+                if isinstance(simulated_actions[0], list):
                     writer.writerows(simulated_actions)
                 else:
                     for action in simulated_actions:
