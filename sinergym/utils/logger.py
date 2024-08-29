@@ -167,4 +167,4 @@ if not missing:
 
                 if isinstance(value, np.ScalarType):
                     if not isinstance(value, str):
-                        wandb.log({key: value}, step=step)
+                        wandb.log({key: value}, commit=False)
