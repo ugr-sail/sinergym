@@ -43,7 +43,11 @@
         "LoggerWrapper": {
             "storage_class": "sinergym.utils.logger.LoggerStorage"
         },
-        "CSVLogger": {}
+        "CSVLogger": {},
+        "WandBLogger": {
+            "entity": "sail_ugr",
+            "project_name": "test_project"
+        }
     },
     "evaluation": {
         "eval_freq": 2,
