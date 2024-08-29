@@ -2,6 +2,7 @@ import argparse
 import json
 import sys
 from datetime import datetime
+import traceback
 
 import gymnasium as gym
 import numpy as np
@@ -343,6 +344,7 @@ try:
 
 except (Exception, KeyboardInterrupt) as err:
     print("Error or interruption in process detected")
+    print(traceback.print_exc(), file=sys.stderr)
 
     # Current model state save
     model.save(env.get_wrapper_attr('workspace_path') + '/model')
