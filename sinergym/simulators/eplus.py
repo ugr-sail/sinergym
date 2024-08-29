@@ -171,7 +171,7 @@ class EnergyPlus(object):
             daemon=True
         )
 
-        self.logger.debug('Energyplus thread started.')
+        self.logger.info('Energyplus thread started.')
         self.energyplus_thread.start()
 
     def stop(self) -> None:
