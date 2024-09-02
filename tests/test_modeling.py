@@ -149,6 +149,36 @@ def test_save_building_model(model_5zone):
 # ---------------------------------------------------------------------------- #
 
 
+def test_check_model_wrong_weather(model_5zone_several_weathers):
+    model_5zone_several_weathers._check_eplus_config()
+    # update weather paths with one which does not exist
+    model_5zone_several_weathers.weather_files.append('unkown_weather.epw')
+    with pytest.raises(AssertionError):
+        model_5zone_several_weathers._check_eplus_config()
+
+
+def test_check_model_wrong_config(model_5zone_several_weathers):
+    model_5zone_several_weathers._check_eplus_config()
+    # update config dictionary with wrong values
+    if model_5zone_several_weathers.config.get('timesteps_per_hour'):
+        model_5zone_several_weathers.config['timesteps_per_hour'] = -7
+        with pytest.raises(AssertionError):
+            model_5zone_several_weathers._check_eplus_config()
+        model_5zone_several_weathers.config['timesteps_per_hour'] = 2
+    if model_5zone_several_weathers.config.get('runperiod'):
+        model_5zone_several_weathers.config['runperiod'] = (1, 2, 3, 4)
+        with pytest.raises(AssertionError):
+            model_5zone_several_weathers._check_eplus_config()
+        model_5zone_several_weathers.config['runperiod'] = 2024
+        with pytest.raises(AssertionError):
+            model_5zone_several_weathers._check_eplus_config()
+        model_5zone_several_weathers.config['runperiod'] = (
+            1, 2, 1993, 2, 3, 1993)
+    model_5zone_several_weathers.config['Unknown_option'] = 100
+    # It will be ignored by sinergym
+    model_5zone_several_weathers._check_eplus_config()
+
+
 def test_update_weather_path(model_5zone_several_weathers):
     # Check that we have more than one weather file
     assert len(model_5zone_several_weathers.weather_files) > 1
