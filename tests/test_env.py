@@ -1,11 +1,15 @@
 import os
-from random import randint, sample
 
 import gymnasium as gym
+from gymnasium.spaces import Discrete, Dict
 import pytest
+from queue import Queue
+from random import sample
 
 from sinergym.utils.constants import *
 from sinergym.utils.env_checker import check_env
+from sinergym.utils.wrappers import DiscretizeEnv
+from sinergym.utils.constants import DEFAULT_5ZONE_DISCRETE_FUNCTION
 
 
 @pytest.mark.parametrize('env_name',
@@ -112,3 +116,89 @@ def test_all_environments():
                   env.get_wrapper_attr('workspace_path').split('/')[-1])
 
         env.close()
+
+# -------------------------- Exceptions or rare test cases ------------------------- #
+
+
+def test_empty_queue_reset(env_5zone):
+    # Forcing empty queues
+    env_5zone.obs_queue = Queue(maxsize=0)
+    env_5zone.info_queue = Queue(maxsize=0)
+    # Only warning is expected, so any event is raised
+    obs, info = env_5zone.reset()
+
+
+def test_step_without_reset(env_5zone):
+    # If step without reset, it should be raised an AssertionError
+    with pytest.raises(AssertionError):
+        env_5zone.step(env_5zone.action_space.sample())
+
+
+def test_energyplus_thread_error(env_5zone):
+    # Initialize EnergyPlus thread
+    env_5zone.reset()
+    # Forcing error in EnergyPlus thread
+    env_5zone.energyplus_simulator.sim_results['exit_code'] = 1
+    with pytest.raises(AssertionError):
+        env_5zone.step(env_5zone.action_space.sample())
+
+
+def test_step_in_completed_episode(env_demo):
+
+    env_demo.reset()
+
+    # Running episode until completion
+    truncated = terminated = False
+    while not terminated and not truncated:
+        obs, _, terminated, truncated, info = env_demo.step(
+            env_demo.action_space.sample())
+    # Save last values
+    last_obs = obs
+    last_info = info
+
+    # Terminted should be false and truncated true
+    assert not terminated
+    assert truncated
+
+    # Trying to step in a completed episode
+    for _ in range(2):
+
+        obs, _, terminated, truncated, info = env_demo.step(
+            env_demo.action_space.sample())
+        # It does not raise exception, but it should return a truncated True again
+        # and observation and info should be the same as last step
+        assert not terminated
+        assert truncated
+        assert all(obs == last_obs)
+        assert info == last_info
+
+
+def test_observation_contradiction(env_demo):
+    # Forcing observation variables and observation space error
+    env_demo.observation_variables.append('unknown_variable')
+    with pytest.raises(AssertionError):
+        env_demo._check_eplus_env()
+
+
+def test_action_contradiction(env_demo):
+    # Forcing action variables and action space error
+    env_demo.action_variables.append('unknown_variable')
+    with pytest.raises(AssertionError):
+        env_demo._check_eplus_env()
+
+
+def test_is_discrete_property(env_5zone):
+    assert isinstance(env_5zone.action_space, gym.spaces.Box)
+    assert env_5zone.is_discrete == False
+
+    env_5zone = DiscretizeEnv(
+        env=env_5zone,
+        discrete_space=gym.spaces.Discrete(10),
+        action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION)
+
+    assert isinstance(env_5zone.action_space, gym.spaces.Discrete)
+    assert env_5zone.is_discrete
+
+    env_5zone.action_space = Dict({})
+    assert isinstance(env_5zone.action_space, gym.spaces.Dict)
+    assert env_5zone.is_discrete == False
