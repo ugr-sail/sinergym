@@ -20,7 +20,7 @@ from sinergym.utils.wrappers import *
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def sinergym_path():
     return os.path.abspath(
         os.path.join(
@@ -34,17 +34,17 @@ def sinergym_path():
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def pkg_data_path():
     return PKG_DATA_PATH
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def json_path_5zone(pkg_data_path):
     return os.path.join(pkg_data_path, 'buildings', '5ZoneAutoDXVAV.epJSON')
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def weather_path_pittsburgh(pkg_data_path):
     return os.path.join(
         pkg_data_path,
@@ -52,7 +52,7 @@ def weather_path_pittsburgh(pkg_data_path):
         'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw')
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def configuration_path_5zone(pkg_data_path):
     return os.path.join(
         pkg_data_path,
@@ -64,12 +64,12 @@ def configuration_path_5zone(pkg_data_path):
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def TIME_VARIABLES():
     return ['month', 'day_of_month', 'hour']
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def ACTION_SPACE_5ZONE():
     return gym.spaces.Box(
         low=np.array([15.0, 22.5], dtype=np.float32),
@@ -79,9 +79,8 @@ def ACTION_SPACE_5ZONE():
     )
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def VARIABLES_5ZONE():
-    variables = {}
     return {
         'outdoor_temperature': (
             'Site Outdoor Air DryBulb Temperature',
@@ -125,12 +124,12 @@ def VARIABLES_5ZONE():
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def METERS_5ZONE():
     return {'total_electricity_HVAC': 'Electricity:HVAC'}
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def ACTUATORS_5ZONE():
     return {
         'Heating_Setpoint_RL': (
@@ -144,12 +143,12 @@ def ACTUATORS_5ZONE():
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def ACTION_SPACE_DISCRETE_5ZONE():
     return gym.spaces.Discrete(10)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def ACTION_SPACE_DATACENTER():
     return gym.spaces.Box(
         low=np.array([15.0, 22.5], dtype=np.float32),
@@ -159,7 +158,7 @@ def ACTION_SPACE_DATACENTER():
     )
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def VARIABLES_DATACENTER():
     return {
         'outdoor_temperature': ('Site Outdoor Air Drybulb Temperature', 'Environment'),
@@ -190,12 +189,12 @@ def VARIABLES_DATACENTER():
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def METERS_DATACENTER():
     return {}
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def ACTUATORS_DATACENTER():
     return {
         'Heating_Setpoint_RL': (
@@ -213,7 +212,7 @@ def ACTUATORS_DATACENTER():
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def conf_5zone(configuration_path_5zone):
     with open(configuration_path_5zone) as json_f:
         conf = json.load(json_f)
