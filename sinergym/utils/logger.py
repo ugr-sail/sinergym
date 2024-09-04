@@ -142,11 +142,11 @@ class LoggerStorage():
         self.infos = []
         self.terminateds = []
         self.truncateds = []
-        self.custom_data = []
+        self.custom_metrics = []
 
 
 if not missing:
-    class WandBOutputFormat(KVWriter):
+    class WandBOutputFormat(KVWriter):  # pragma: no cover
         """
         Dumps key / value pairs onto WandB. This class is based on SB3 used in logger callback
         """
