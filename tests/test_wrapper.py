@@ -8,14 +8,12 @@ import pytest
 
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.wrappers import *
+from sinergym.utils.constants import DEFAULT_5ZONE_DISCRETE_FUNCTION
 
 
-@pytest.mark.parametrize('env_name',
-                         [('env_wrapper_datetime'),
-                          ('env_all_wrappers'),
-                          ])
-def test_datetime_wrapper(env_name, request):
-    env = request.getfixturevalue(env_name)
+def test_datetime_wrapper(env_demo):
+
+    env = DatetimeWrapper(env=env_demo)
 
     observation_variables = env.observation_variables
     # Check observation varibles have been updated
@@ -35,13 +33,21 @@ def test_datetime_wrapper(env_name, request):
     assert obs_dict['is_weekend'] is not None and obs_dict['month_sin'] is not None and obs_dict[
         'month_cos'] is not None and obs_dict['hour_sin'] is not None and obs_dict['hour_cos'] is not None
 
+    # Check exceptions
+    # Delete hour variable from observation variables and observation space
+    env_demo.observation_variables.remove('hour')
+    with pytest.raises(AssertionError):
+        env_exception = DatetimeWrapper(env=env_demo)
 
-@pytest.mark.parametrize('env_name',
-                         [('env_wrapper_previousobs'),
-                          ])
-def test_previous_observation_wrapper(env_name, request):
 
-    env = request.getfixturevalue(env_name)
+def test_previous_observation_wrapper(env_demo):
+
+    env = PreviousObservationWrapper(
+        env=env_demo,
+        previous_variables=[
+            'htg_setpoint',
+            'clg_setpoint',
+            'air_temperature'])
     # Check that the original variable names with previous name added is
     # present
     previous_variable_names = [
@@ -68,13 +74,9 @@ def test_previous_observation_wrapper(env_name, request):
         original_obs1, obs2[-len(env.get_wrapper_attr('previous_variables')):])
 
 
-@pytest.mark.parametrize('env_name',
-                         [('env_wrapper_multiobs'),
-                          ('env_all_wrappers'),
-                          ])
-def test_multiobs_wrapper(env_name, request):
+def test_multiobs_wrapper(env_demo):
 
-    env = request.getfixturevalue(env_name)
+    env = MultiObsWrapper(env=env_demo, n=5, flatten=True)
     # Check attributes exist in wrapped env
     assert hasattr(
         env,
@@ -94,6 +96,7 @@ def test_multiobs_wrapper(env_name, request):
 
     # Check reset obs
     obs, _ = env.reset()
+    assert isinstance(obs, np.ndarray)
     assert len(obs) == wrapped_shape
     for i in range(env.get_wrapper_attr('n') - 1):
         # Check store same observation n times
@@ -113,13 +116,16 @@ def test_multiobs_wrapper(env_name, request):
     assert (env.get_wrapper_attr('history')[0] !=
             env.get_wrapper_attr('history')[-1]).any()
 
+    # Check with flatten=False
+    env = MultiObsWrapper(env=env_demo, n=5, flatten=False)
+    obs, _ = env.reset()
+    # Check obs shape
+    assert len(obs) == env.get_wrapper_attr('n')
+    assert len(obs[0]) == original_shape
 
-@pytest.mark.parametrize('env_name',
-                         [('env_wrapper_normalization'),
-                          ('env_all_wrappers'),
-                          ])
-def test_normalization_wrapper(env_name, request):
-    env = request.getfixturevalue(env_name)
+
+def test_normalize_observation_wrapper(env_demo):
+    env = NormalizeObservation(env=env_demo)
 
     # Check if new attributes have been created in environment
     assert hasattr(env, 'unwrapped_observation')
@@ -130,23 +136,41 @@ def test_normalization_wrapper(env_name, request):
     # Initialize env
     obs, _ = env.reset()
 
-    # Check observation normalization
-    # ...
     # Check original observation recording
     assert env.get_wrapper_attr('unwrapped_observation') is not None
+    # assert env.observation_space.contains(obs)
+    assert env.observation_space.contains(
+        env.get_wrapper_attr('unwrapped_observation'))
+
+    # Check observation normalization id done correctly
+    env.get_wrapper_attr('deactivate_update')()
+    norm_obs = env.get_wrapper_attr('normalize')(
+        env.get_wrapper_attr('unwrapped_observation'))
+    assert all(norm_obs == obs)
+    env.get_wrapper_attr('deactivate_update')()
 
     # Simulation random step
     a = env.action_space.sample()
     obs, _, _, _, _ = env.step(a)
 
-    # ...
+    # Check original observation recording
     assert env.get_wrapper_attr('unwrapped_observation') is not None
+    # assert env.observation_space.contains(obs)
+    assert env.observation_space.contains(
+        env.get_wrapper_attr('unwrapped_observation'))
+
+    # Check observation normalization id done correctly
+    env.get_wrapper_attr('deactivate_update')()
+    norm_obs = env.get_wrapper_attr('normalize')(
+        env.get_wrapper_attr('unwrapped_observation'))
+    assert all(norm_obs == obs)
+    env.get_wrapper_attr('deactivate_update')()
 
 
-def test_normalize_observation_wrapper(env_wrapper_normalization):
+def test_normalize_observation_calibration(env_demo):
 
     # Spaces
-    env = env_wrapper_normalization
+    env = NormalizeObservation(env=env_demo)
     assert not env.get_wrapper_attr('is_discrete')
     assert hasattr(env, 'unwrapped_observation')
 
@@ -198,34 +222,109 @@ def test_normalize_observation_wrapper(env_wrapper_normalization):
         assert len(lines) == env.observation_space.shape[0]
 
 
-def test_incremental_wrapper(env_wrapper_incremental):
+def test_normalize_observation_exceptions(env_demo):
+
+    # Specify an unknown path file
+    with pytest.raises(FileNotFoundError):
+        env = NormalizeObservation(env=env_demo, mean='unknown_path')
+    with pytest.raises(FileNotFoundError):
+        env = NormalizeObservation(env=env_demo, var='unknown_path')
+    # Specify an unknown value (nor str neither list)
+    with pytest.raises(ValueError):
+        env = NormalizeObservation(env=env_demo, mean=56)
+    with pytest.raises(ValueError):
+        env = NormalizeObservation(env=env_demo, var=56)
+    # Specify a list with wrong shape
+    with pytest.raises(AssertionError):
+        env = NormalizeObservation(env=env_demo, mean=[0.2, 0.1, 0.3])
+    with pytest.raises(AssertionError):
+        env = NormalizeObservation(env=env_demo, var=[0.2, 0.1, 0.3])
+
+
+def test_incremental_wrapper(env_demo):
+
+    env = IncrementalWrapper(
+        env=env_demo,
+        incremental_variables_definition={
+            'Heating_Setpoint_RL': (2.0, 0.5),
+            'Cooling_Setpoint_RL': (1.0, 0.25)
+        },
+        initial_values=[21.0, 25.0]
+    )
 
     # Check initial values are initialized
-    assert hasattr(env_wrapper_incremental, 'values_definition')
-    assert len(env_wrapper_incremental.get_wrapper_attr('current_values')) == 2
+    assert hasattr(env, 'values_definition')
+    assert len(env.get_wrapper_attr('current_values')) == 2
 
-    old_values = env_wrapper_incremental.get_wrapper_attr(
+    old_values = env.get_wrapper_attr(
         'current_values').copy()
     # Check if action selected is applied correctly
-    env_wrapper_incremental.reset()
+    env.reset()
     action = [-0.42, 0.3]
     rounded_action = [-0.5, 0.25]
-    _, _, _, _, info = env_wrapper_incremental.step(action)
-    assert env_wrapper_incremental.get_wrapper_attr(
-        'current_values') == [old_values[i] + rounded_action[i] for i in range(len(old_values))]
+    _, _, _, _, info = env.step(action)
+    assert env.get_wrapper_attr('current_values') == [
+        old_values[i] +
+        rounded_action[i] for i in range(
+            len(old_values))]
     for i, (index, values) in enumerate(
-            env_wrapper_incremental.get_wrapper_attr('values_definition').items()):
-        assert env_wrapper_incremental.get_wrapper_attr(
+            env.get_wrapper_attr('values_definition').items()):
+        assert env.get_wrapper_attr(
             'current_values')[i] == info['action'][index]
 
 
-@pytest.mark.parametrize('env_name',
-                         [('env_discrete_wrapper_incremental'),
-                          ('env_all_wrappers'),
-                          ])
-def test_discrete_incremental_wrapper(env_name, request):
+def test_incremental_exceptions(env_demo):
 
-    env = request.getfixturevalue(env_name)
+    # Discrete environment exception
+    env_discrete = DiscretizeEnv(
+        env_demo,
+        discrete_space=gym.spaces.Discrete(10),
+        action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION
+    )
+    with pytest.raises(AssertionError):
+        IncrementalWrapper(
+            env=env_discrete,
+            incremental_variables_definition={
+                'Heating_Setpoint_RL': (2.0, 0.5),
+                'Cooling_Setpoint_RL': (1.0, 0.25)
+            },
+            initial_values=[21.0, 25.0]
+        )
+
+    # Unknown variable exception
+    with pytest.raises(AssertionError):
+        IncrementalWrapper(
+            env=env_demo,
+            incremental_variables_definition={
+                'Heating_Setpoint_RL': (2.0, 0.5),
+                'Cooling_Setpoint_RL': (1.0, 0.25),
+                'Unknown_Variable': (1.0, 0.25)
+            },
+            initial_values=[21.0, 25.0, 3.0]
+        )
+
+    # Wrong initial values exception
+    with pytest.raises(AssertionError):
+        IncrementalWrapper(
+            env=env_demo,
+            incremental_variables_definition={
+                'Heating_Setpoint_RL': (2.0, 0.5),
+                'Cooling_Setpoint_RL': (1.0, 0.25)
+            },
+            initial_values=[21.0, 25.0, 3.0]
+        )
+
+
+def test_discrete_incremental_wrapper(env_demo):
+
+    # Check environment is continuous
+    assert not env_demo.is_discrete
+    env = DiscreteIncrementalWrapper(
+        env=env_demo,
+        initial_values=[21.0, 25.0],
+        delta_temp=2,
+        step_temp=0.5
+    )
     # Check initial setpoints values is initialized
     assert len(env.get_wrapper_attr('current_setpoints')) > 0
     # Check if action selected is applied correctly
@@ -238,11 +337,43 @@ def test_discrete_incremental_wrapper(env_name, request):
         env.step(2)  # [1,0]
     assert env.unwrapped.action_space.contains(
         list(env.get_wrapper_attr('current_setpoints')))
+    # Check environment is discrete now
+    assert env.is_discrete
 
 
-def test_discretize_wrapper(env_wrapper_discretize):
+def test_discrete_incremental_exceptions(env_demo):
 
-    env = env_wrapper_discretize
+    # Discrete environment exception
+    env_discrete = DiscretizeEnv(
+        env_demo,
+        discrete_space=gym.spaces.Discrete(10),
+        action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION
+    )
+    with pytest.raises(AssertionError):
+        DiscreteIncrementalWrapper(
+            env=env_discrete,
+            initial_values=[21.0, 25.0],
+            delta_temp=2,
+            step_temp=0.5
+        )
+    # Number of initial values different than number of action_variables
+    with pytest.raises(AssertionError):
+        DiscreteIncrementalWrapper(
+            env=env_demo,
+            initial_values=[21.0, 25.0, 3.0],
+            delta_temp=2,
+            step_temp=0.5
+        )
+
+
+def test_discretize_wrapper(env_demo):
+
+    assert not env_demo.is_discrete
+    env = DiscretizeEnv(
+        env=env_demo,
+        discrete_space=gym.spaces.Discrete(10),
+        action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION
+    )
     # Check is a discrete env and original env is continuous
     # Wrapped env
     assert env.get_wrapper_attr('is_discrete')
@@ -254,9 +385,10 @@ def test_discretize_wrapper(env_wrapper_discretize):
     assert not hasattr(original_env, 'action_mapping')
 
 
-def test_normalize_action_wrapper(env_normalize_action_wrapper):
+def test_normalize_action_wrapper(env_demo):
 
-    env = env_normalize_action_wrapper
+    env = NormalizeAction(env=env_demo)
+    # Check if new attributes have been created in environment
     assert not env.get_wrapper_attr('is_discrete')
     assert hasattr(env, 'real_space')
     assert hasattr(env, 'normalized_space')
@@ -271,12 +403,21 @@ def test_normalize_action_wrapper(env_normalize_action_wrapper):
     assert env.unwrapped.action_space.contains(info['action'])
 
 
-@pytest.mark.parametrize('env_name',
-                         [('env_wrapper_multiobjective'),
-                          ('env_all_wrappers'),
-                          ])
-def test_multiobjective_wrapper(env_name, request):
-    env = request.getfixturevalue(env_name)
+def test_normalize_action_exceptions(env_demo):
+    # Environment cannot be discrete
+    env_discrete = DiscretizeEnv(
+        env_demo,
+        discrete_space=gym.spaces.Discrete(10),
+        action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION
+    )
+    with pytest.raises(AssertionError):
+        NormalizeAction(env=env_discrete)
+
+
+def test_multiobjective_wrapper(env_demo):
+    env = MultiObjectiveReward(
+        env=env_demo, reward_terms=[
+            'energy_term', 'comfort_term'])
     assert hasattr(env, 'reward_terms')
     env.reset()
     action = env.action_space.sample()
@@ -285,11 +426,11 @@ def test_multiobjective_wrapper(env_name, request):
     assert len(reward) == len(env.get_wrapper_attr('reward_terms'))
 
 
-@ pytest.mark.parametrize('env_name',
-                          [('env_logger'), ('env_all_wrappers'), ])
-def test_logger_wrapper(env_name, request):
+def test_logger_wrapper(env_demo):
 
-    env = request.getfixturevalue(env_name)
+    assert not hasattr(env_demo, 'data_logger')
+    env = LoggerWrapper(env=env_demo)
+    assert hasattr(env, 'data_logger')
     logger = env.get_wrapper_attr('data_logger')
     # Check logger is empty
     assert len(logger.observations) == 0
@@ -302,7 +443,7 @@ def test_logger_wrapper(env_name, request):
     assert logger.interactions == 0
 
     env.reset()
-
+    # Reset is not logged
     assert len(logger.observations) == 0
     assert len(logger.actions) == 0
     assert len(logger.rewards) == 0
@@ -369,11 +510,69 @@ def test_logger_wrapper(env_name, request):
     assert logger.interactions == 0
 
 
-@ pytest.mark.parametrize('env_name',
-                          [('env_csv_logger'), ('env_all_wrappers'), ])
-def test_CSVlogger_wrapper(env_name, request):
+def test_custom_loggers(env_demo, custom_logger_wrapper):
 
-    env = request.getfixturevalue(env_name)
+    assert not hasattr(env_demo, 'data_logger')
+    env = custom_logger_wrapper(env=env_demo)
+    assert hasattr(env, 'data_logger')
+    assert hasattr(env, 'custom_variables')
+    assert len(env.get_wrapper_attr('custom_variables')) > 0
+    logger = env.get_wrapper_attr('data_logger')
+    env.reset()
+
+    # Make 3 steps
+    for _ in range(3):
+        a = env.action_space.sample()
+        env.step(a)
+
+    # Check that the logger has stored the data (custom metrics too)
+    assert len(logger.observations) == 3
+    assert len(logger.actions) == 3
+    assert len(logger.rewards) == 3
+    assert len(logger.infos) == 3
+    assert len(logger.terminateds) == 3
+    assert len(logger.truncateds) == 3
+    assert len(logger.custom_metrics) == 3
+    assert logger.interactions == 3
+
+    # Check summary data is done
+    summary = env.get_wrapper_attr('get_episode_summary')()
+    assert env.get_wrapper_attr('summary_variables') == list(summary.keys())
+    assert isinstance(summary, dict)
+    assert len(summary) > 0
+
+    # Check if reset method reset logger data too (custom_metrics too)
+    env.reset()
+    assert len(logger.observations) == 0
+    assert len(logger.actions) == 0
+    assert len(logger.rewards) == 0
+    assert len(logger.infos) == 0
+    assert len(logger.terminateds) == 0
+    assert len(logger.truncateds) == 0
+    assert len(logger.custom_metrics) == 0
+    assert logger.interactions == 0
+
+    # Make 3 steps
+    for _ in range(3):
+        a = env.action_space.sample()
+        env.step(a)
+
+    # Check closing environment reset logger
+    env.close()
+
+    assert len(logger.observations) == 0
+    assert len(logger.actions) == 0
+    assert len(logger.rewards) == 0
+    assert len(logger.infos) == 0
+    assert len(logger.terminateds) == 0
+    assert len(logger.truncateds) == 0
+    assert len(logger.custom_metrics) == 0
+    assert logger.interactions == 0
+
+
+def test_CSVlogger_wrapper(env_demo):
+
+    env = CSVLogger(env=LoggerWrapper(env=NormalizeObservation(env=env_demo)))
     # Check progress CSV path
     assert env.get_wrapper_attr('progress_file_path') == env.get_wrapper_attr(
         'workspace_path') + '/progress.csv'
@@ -412,13 +611,54 @@ def test_CSVlogger_wrapper(env_name, request):
     if is_wrapped(env, NormalizeObservation):
         assert os.path.isfile(episode_path +
                               '/monitor/normalized_observations.csv')
+    env.close()
+
+
+def test_CSVlogger_custom_logger(env_demo, custom_logger_wrapper):
+    env = CSVLogger(env=custom_logger_wrapper(env=env_demo))
+
+    # First reset should not create new files
+    env.reset()
+
+    # simulating short episode
+    for _ in range(10):
+        env.step(env.action_space.sample())
+    episode_path = env.get_wrapper_attr('episode_path')
+    env.reset()
+
+    # Read CSV files and check row nums
+    with open(env.get_wrapper_attr('progress_file_path'), mode='r', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        # Header row and episode summary (2)
+        assert len(list(reader)) == 2
+    # Check csv in monitor is created correctly (only check with observations)
+    with open(episode_path + '/monitor/custom_metrics.csv', mode='r', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        # Header row and 10 steps (11)
+        assert len(list(reader)) == 11
+
+    # Since we have not normalized observation, this file should not exist
+    assert not os.path.isfile(episode_path +
+                              '/monitor/normalized_observations.csv')
 
     env.close()
 
 
-def test_reduced_observation_wrapper(env_wrapper_reduce_observation):
+def test_logger_exceptions(env_demo):
+    # Use a Logger without previous BaseLoggerWrapper child class shloud raise
+    # exception
+    with pytest.raises(AssertionError):
+        env = CSVLogger(env=env_demo)
 
-    env = env_wrapper_reduce_observation
+
+def test_reduced_observation_wrapper(env_demo):
+
+    env = ReduceObservationWrapper(
+        env=env_demo,
+        obs_reduction=[
+            'outdoor_temperature',
+            'outdoor_humidity',
+            'air_temperature'])
     # Check that the original variable names has the removed varibles
     # but not in reduced variables
     original_observation_variables = env.env.get_wrapper_attr(
@@ -456,6 +696,20 @@ def test_reduced_observation_wrapper(env_wrapper_reduce_observation):
     for removed_variable_name, value in info2['removed_observation'].items():
         assert removed_variable_name in removed_observation_variables
         assert value is not None
+
+
+def test_reduced_observation_exceptions(env_demo):
+
+    # We force an unknown variable to be removed
+    with pytest.raises(AssertionError):
+        ReduceObservationWrapper(
+            env=env_demo,
+            obs_reduction=[
+                'outdoor_temperature',
+                'outdoor_humidity',
+                'air_temperature',
+                'unknown_variable'
+            ])
 
 
 def test_env_wrappers(env_all_wrappers):
