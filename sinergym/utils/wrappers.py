@@ -1185,7 +1185,7 @@ class CSVLogger(gym.Wrapper):
 
 # ---------------------------------------------------------------------------- #
 
-class WandBLogger(gym.Wrapper):
+class WandBLogger(gym.Wrapper): # pragma: no cover
 
     logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
                                         level=LOG_WRAPPERS_LEVEL)
