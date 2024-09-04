@@ -9,29 +9,11 @@ import numpy as np
 import pandas as pd
 import xlsxwriter
 from eppy.modeleditor import IDF
-from opyplus.epgm.record import Record
+# from opyplus.epgm.record import Record
 
 import sinergym
 from sinergym.utils.constants import YEAR
 from sinergym.utils.rewards import *
-
-# --------------------- Sinergym environment information --------------------- #
-
-
-def get_ids(start='Eplus') -> List[str]:
-    """
-    Returns a list of environment IDs created by Sinergym (starting by Eplus).
-
-    Parameters:
-        start (str): The prefix to filter the environment IDs. Defaults to 'Eplus'.
-
-    Returns:
-        List[str]: A list of Sinergym environment IDs.
-
-    """
-    envs_id = [env_id for env_id in gym.envs.registration.registry.keys()
-               if env_id.startswith(start)]
-    return envs_id
 
 # --------------------------------- Wrappers --------------------------------- #
 
@@ -50,7 +32,7 @@ def is_wrapped(env: Type[gym.Env], wrapper_class: Type[gym.Wrapper]) -> bool:
 def unwrap_wrapper(env: gym.Env,
                    wrapper_class: Type[gym.Wrapper]) -> Optional[gym.Wrapper]:
     """
-    Retrieve a ``VecEnvWrapper`` object by recursively searching.
+    Retrieve a wrapper object by recursively searching.
 
     :param env: Environment to unwrap
     :param wrapper_class: Wrapper to look for
@@ -93,66 +75,6 @@ def get_delta_seconds(
                        23, 0, 0) + timedelta(0, 3600)
     delta_sec = (endTime - startTime).total_seconds()
     return delta_sec
-
-
-def ranges_getter(output_path: str,
-                  last_result: Optional[Dict[str, List[float]]] = None
-                  ) -> Dict[str, List[float]]:  # pragma: no cover
-    """Given a path with simulations outputs, this function is used to extract max and min absolute values of all episodes in each variable. If a dict ranges is given, will be updated.
-
-    Args:
-        output_path (str): Path with simulation output (Eplus-env-<env_name>).
-        last_result (Optional[Dict[str, List[float]]], optional): Last ranges dict to be updated. This will be created if it is not given.
-
-    Returns:
-        Dict[str, List[float]]: list min,max of each variable as a key.
-
-    """
-
-    if last_result is not None:
-        result = last_result
-    else:
-        result = {}
-
-    content = os.listdir(output_path)
-    for episode_path in content:
-        if os.path.isdir(
-            output_path +
-            '/' +
-                episode_path) and episode_path.startswith('Eplus-env'):
-            simulation_content = os.listdir(output_path + '/' + episode_path)
-
-            if os.path.isdir(
-                output_path +
-                '/' +
-                    episode_path):
-                monitor_path = output_path + '/' + episode_path + '/monitor.csv'
-                print('Reading ' + monitor_path + ' limits.')
-                data = pd.read_csv(monitor_path)
-
-                if len(result) == 0:
-                    for column in data:
-                        # variable : [min,max]
-                        result[column] = [np.inf, -np.inf]
-
-                for column in data:
-                    if np.min(data[column]) < result[column][0]:
-                        result[column][0] = np.min(data[column])
-                    if np.max(data[column]) > result[column][1]:
-                        result[column][1] = np.max(data[column])
-    return result
-
-
-def get_record_keys(record: Record) -> List[str]:
-    """Given an opyplus Epm Record (one element from opyplus.epm object) this function returns list of keys (opyplus hasn't got this functionality explicitly)
-
-     Args:
-        record (opyplus.Epm.Record): Element from Epm object.
-
-     Returns:
-        List[str]: Key list from record.
-    """
-    return [field.ref for field in record._table._dev_descriptor._field_descriptors]
 
 
 def eppy_element_to_dict(element: IDF) -> Dict[str, Dict[str, str]]:
@@ -298,7 +220,8 @@ def json_to_variables(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
                 raise RuntimeError
 
             elif isinstance(specification['keys'], list):
-                assert len( specification['variable_names']) == len(
+                assert len(
+                    specification['variable_names']) == len(
                     specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
                 for variable_name, key_name in list(
                         zip(specification['variable_names'], specification['keys'])):
@@ -424,3 +347,66 @@ def convert_conf_to_env_parameters(
             configurations[id] = env_kwargs
 
     return configurations
+
+ # --------------------- Functions that are no longer used -------------------- #
+
+# def ranges_getter(output_path: str,
+#                   last_result: Optional[Dict[str, List[float]]] = None
+#                   ) -> Dict[str, List[float]]:  # pragma: no cover
+#     """Given a path with simulations outputs, this function is used to extract max and min absolute values of all episodes in each variable. If a dict ranges is given, will be updated.
+
+#     Args:
+#         output_path (str): Path with simulation output (Eplus-env-<env_name>).
+# last_result (Optional[Dict[str, List[float]]], optional): Last ranges
+# dict to be updated. This will be created if it is not given.
+
+#     Returns:
+#         Dict[str, List[float]]: list min,max of each variable as a key.
+
+#     """
+
+#     if last_result is not None:
+#         result = last_result
+#     else:
+#         result = {}
+
+#     content = os.listdir(output_path)
+#     for episode_path in content:
+#         if os.path.isdir(
+#             output_path +
+#             '/' +
+#                 episode_path) and episode_path.startswith('Eplus-env'):
+#             simulation_content = os.listdir(output_path + '/' + episode_path)
+
+#             if os.path.isdir(
+#                 output_path +
+#                 '/' +
+#                     episode_path):
+#                 monitor_path = output_path + '/' + episode_path + '/monitor.csv'
+#                 print('Reading ' + monitor_path + ' limits.')
+#                 data = pd.read_csv(monitor_path)
+
+#                 if len(result) == 0:
+#                     for column in data:
+#                         # variable : [min,max]
+#                         result[column] = [np.inf, -np.inf]
+
+#                 for column in data:
+#                     if np.min(data[column]) < result[column][0]:
+#                         result[column][0] = np.min(data[column])
+#                     if np.max(data[column]) > result[column][1]:
+#                         result[column][1] = np.max(data[column])
+#     return result
+
+
+# def get_record_keys(record: Record) -> List[str]:
+#     """Given an opyplus Epm Record (one element from opyplus.epm object) this function returns list of keys (opyplus hasn't got this functionality explicitly)
+
+#      Args:
+#         record (opyplus.Epm.Record): Element from Epm object.
+
+#      Returns:
+#         List[str]: Key list from record.
+#     """
+# return [field.ref for field in
+# record._table._dev_descriptor._field_descriptors]
