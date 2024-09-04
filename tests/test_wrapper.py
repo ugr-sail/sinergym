@@ -7,8 +7,8 @@ import numpy as np
 import pytest
 
 from sinergym.utils.common import is_wrapped
-from sinergym.utils.wrappers import *
 from sinergym.utils.constants import DEFAULT_5ZONE_DISCRETE_FUNCTION
+from sinergym.utils.wrappers import *
 
 
 def test_datetime_wrapper(env_demo):
