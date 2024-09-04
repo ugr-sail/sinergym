@@ -20,7 +20,7 @@ from sinergym.utils.wrappers import *
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def sinergym_path():
     return os.path.abspath(
         os.path.join(
@@ -34,42 +34,39 @@ def sinergym_path():
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def pkg_data_path():
     return PKG_DATA_PATH
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
+def pkg_mock_path():
+    return PKG_MOCK_PATH
+
+
+@pytest.fixture(scope='function')
 def json_path_5zone(pkg_data_path):
     return os.path.join(pkg_data_path, 'buildings', '5ZoneAutoDXVAV.epJSON')
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def weather_path_pittsburgh(pkg_data_path):
     return os.path.join(
         pkg_data_path,
         'weather',
         'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw')
 
-
-@pytest.fixture(scope='session')
-def configuration_path_5zone(pkg_data_path):
-    return os.path.join(
-        pkg_data_path,
-        'default_configuration',
-        '5ZoneAutoDXVAV.json')
-
 # ---------------------------------------------------------------------------- #
 #                         Default Environment Arguments                        #
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def TIME_VARIABLES():
     return ['month', 'day_of_month', 'hour']
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def ACTION_SPACE_5ZONE():
     return gym.spaces.Box(
         low=np.array([15.0, 22.5], dtype=np.float32),
@@ -79,9 +76,8 @@ def ACTION_SPACE_5ZONE():
     )
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def VARIABLES_5ZONE():
-    variables = {}
     return {
         'outdoor_temperature': (
             'Site Outdoor Air DryBulb Temperature',
@@ -125,12 +121,12 @@ def VARIABLES_5ZONE():
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def METERS_5ZONE():
     return {'total_electricity_HVAC': 'Electricity:HVAC'}
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def ACTUATORS_5ZONE():
     return {
         'Heating_Setpoint_RL': (
@@ -144,12 +140,12 @@ def ACTUATORS_5ZONE():
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def ACTION_SPACE_DISCRETE_5ZONE():
     return gym.spaces.Discrete(10)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def ACTION_SPACE_DATACENTER():
     return gym.spaces.Box(
         low=np.array([15.0, 22.5], dtype=np.float32),
@@ -159,7 +155,7 @@ def ACTION_SPACE_DATACENTER():
     )
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def VARIABLES_DATACENTER():
     return {
         'outdoor_temperature': ('Site Outdoor Air Drybulb Temperature', 'Environment'),
@@ -190,12 +186,12 @@ def VARIABLES_DATACENTER():
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def METERS_DATACENTER():
     return {}
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def ACTUATORS_DATACENTER():
     return {
         'Heating_Setpoint_RL': (
@@ -209,19 +205,102 @@ def ACTUATORS_DATACENTER():
     }
 
 # ---------------------------------------------------------------------------- #
-#                       Default environment configuration                      #
+#                       Default environment configurations                     #
 # ---------------------------------------------------------------------------- #
 
 
-@pytest.fixture(scope='session')
-def conf_5zone(configuration_path_5zone):
-    with open(configuration_path_5zone) as json_f:
+@pytest.fixture(scope='function')
+def conf_5zone(pkg_mock_path):
+    conf_path = os.path.join(
+        pkg_mock_path,
+        'environment_configurations',
+        '5ZoneAutoDXVAV.json')
+    with open(conf_path) as json_f:
         conf = json.load(json_f)
     return conf
+
+
+@pytest.fixture(scope='function')
+def conf_5zone_exceptions(pkg_mock_path):
+    conf_exceptions = []
+    for i in range(1, 6):
+        conf_path = os.path.join(pkg_mock_path,
+                                 'environment_configurations',
+                                 '5ZoneAutoDXVAV_exception{}.json'.format(i))
+        with open(conf_path) as json_f:
+            conf_exceptions.append(json.load(json_f))
+    return conf_exceptions
+
 
 # ---------------------------------------------------------------------------- #
 #                                 Environments                                 #
 # ---------------------------------------------------------------------------- #
+
+
+@pytest.fixture(scope='function')
+def env_demo(
+        ACTION_SPACE_5ZONE,
+        TIME_VARIABLES,
+        VARIABLES_5ZONE,
+        METERS_5ZONE,
+        ACTUATORS_5ZONE):
+    env = EplusEnv(
+        building_file='5ZoneAutoDXVAV.epJSON',
+        weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        action_space=ACTION_SPACE_5ZONE,
+        time_variables=TIME_VARIABLES,
+        variables=VARIABLES_5ZONE,
+        meters=METERS_5ZONE,
+        actuators=ACTUATORS_5ZONE,
+        reward=LinearReward,
+        reward_kwargs={
+            'temperature_variables': ['air_temperature'],
+            'energy_variables': ['HVAC_electricity_demand_rate'],
+            'range_comfort_winter': (
+                20.0,
+                23.5),
+            'range_comfort_summer': (
+                23.0,
+                26.0)},
+        env_name='TESTGYM',
+        config_params={
+            'runperiod': (1, 1, 1991, 31, 1, 1991)
+        }
+    )
+    return env
+
+
+@pytest.fixture(scope='function')
+def env_demo_summer(
+        ACTION_SPACE_5ZONE,
+        TIME_VARIABLES,
+        VARIABLES_5ZONE,
+        METERS_5ZONE,
+        ACTUATORS_5ZONE):
+    env = EplusEnv(
+        building_file='5ZoneAutoDXVAV.epJSON',
+        weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        action_space=ACTION_SPACE_5ZONE,
+        time_variables=TIME_VARIABLES,
+        variables=VARIABLES_5ZONE,
+        meters=METERS_5ZONE,
+        actuators=ACTUATORS_5ZONE,
+        reward=LinearReward,
+        reward_kwargs={
+            'temperature_variables': ['air_temperature'],
+            'energy_variables': ['HVAC_electricity_demand_rate'],
+            'range_comfort_winter': (
+                20.0,
+                23.5),
+            'range_comfort_summer': (
+                23.0,
+                26.0)},
+        env_name='TESTGYM',
+        config_params={
+            'runperiod': (7, 1, 1991, 31, 7, 1991)
+        }
+    )
+    return env
 
 
 @pytest.fixture(scope='function')
@@ -266,7 +345,7 @@ def env_5zone_stochastic(
         ACTUATORS_5ZONE):
     env = EplusEnv(
         building_file='5ZoneAutoDXVAV.epJSON',
-        weather_files='USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw',
+        weather_files=['USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw'],
         action_space=ACTION_SPACE_5ZONE,
         time_variables=TIME_VARIABLES,
         variables=VARIABLES_5ZONE,
@@ -400,98 +479,54 @@ def model_5zone_several_weathers(
 
 
 @pytest.fixture(scope='function')
-def env_wrapper_normalization(env_5zone):
-    return NormalizeObservation(env=env_5zone)
+def custom_logger_wrapper():
+    class CustomLoggerWrapper(BaseLoggerWrapper):
 
+        def __init__(
+                self,
+                env: gym.Env,
+                logger_class: Callable = LoggerStorage):
 
-@pytest.fixture(scope='function')
-def env_wrapper_multiobjective(env_5zone):
-    return MultiObjectiveReward(
-        env=env_5zone, reward_terms=[
-            'energy_term', 'comfort_term'])
+            super(CustomLoggerWrapper, self).__init__(env, logger_class)
+            # DEFINE CUSTOM VARIABLES AND SUMMARY VARIABLES
+            self.custom_variables = ['custom_variable1', 'custom_variable2']
+            self.summary_variables = [
+                'episode_num',
+                'double_mean_reward',
+                'half_power_demand']
 
+        # DEFINE ABSTRACT METHODS FOR METRICS CALCULATION
 
-@pytest.fixture(scope='function')
-def env_logger(env_5zone):
-    return LoggerWrapper(env=env_5zone)
+        def calculate_custom_metrics(self,
+                                     obs: np.ndarray,
+                                     action: Union[int, np.ndarray],
+                                     reward: float,
+                                     info: Dict[str, Any],
+                                     terminated: bool,
+                                     truncated: bool):
+            # Variables combining information
+            return [obs[0] * 2, obs[-1] + reward]
 
+        def get_episode_summary(self) -> Dict[str, float]:
+            # Get information from logger
+            power_demands = [info['total_power_demand']
+                             for info in self.data_logger.infos]
 
-@pytest.fixture(scope='function')
-def env_csv_logger(env_5zone):
-    return CSVLogger(LoggerWrapper(env=env_5zone))
+            # Data summary
+            data_summary = {
+                'episode_num': self.get_wrapper_attr('episode'),
+                'double_mean_reward': np.mean(self.data_logger.rewards) * 2,
+                'half_power_demand': np.mean(power_demands) / 2,
+            }
+            return data_summary
 
-
-@ pytest.fixture(scope='function')
-def env_wrapper_multiobs(env_5zone):
-    return MultiObsWrapper(env=env_5zone, n=5, flatten=True)
-
-
-@ pytest.fixture(scope='function')
-def env_wrapper_datetime(env_5zone):
-    return DatetimeWrapper(
-        env=env_5zone)
-
-
-@ pytest.fixture(scope='function')
-def env_wrapper_previousobs(env_5zone):
-    return PreviousObservationWrapper(
-        env=env_5zone,
-        previous_variables=[
-            'htg_setpoint',
-            'clg_setpoint',
-            'air_temperature'])
-
-
-@ pytest.fixture(scope='function')
-def env_wrapper_incremental(env_5zone):
-    return IncrementalWrapper(
-        env=env_5zone,
-        incremental_variables_definition={
-            'Heating_Setpoint_RL': (2.0, 0.5),
-            'Cooling_Setpoint_RL': (1.0, 0.25)
-        },
-        initial_values=[21.0, 25.0],
-    )
+    return CustomLoggerWrapper
 
 
 @ pytest.fixture(scope='function')
-def env_discrete_wrapper_incremental(env_5zone):
-    return DiscreteIncrementalWrapper(
-        env=env_5zone,
-        initial_values=[21.0, 25.0],
-        delta_temp=2,
-        step_temp=0.5
-    )
-
-
-@ pytest.fixture(scope='function')
-def env_normalize_action_wrapper(env_5zone):
-    return NormalizeAction(env=env_5zone)
-
-
-@ pytest.fixture(scope='function')
-def env_wrapper_discretize(env_5zone, ACTION_SPACE_DISCRETE_5ZONE):
-    return DiscretizeEnv(
-        env=env_5zone,
-        discrete_space=ACTION_SPACE_DISCRETE_5ZONE,
-        action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION
-    )
-
-
-@ pytest.fixture(scope='function')
-def env_wrapper_reduce_observation(env_5zone):
-    return ReduceObservationWrapper(
-        env=env_5zone,
-        obs_reduction=[
-            'outdoor_temperature',
-            'outdoor_humidity',
-            'air_temperature'])
-
-
-@ pytest.fixture(scope='function')
-def env_all_wrappers(env_5zone):
+def env_all_wrappers(env_demo):
     env = MultiObjectiveReward(
-        env=env_5zone,
+        env=env_demo,
         reward_terms=[
             'energy_term',
             'comfort_term'])
@@ -615,6 +650,25 @@ def hourly_linear_reward():
         range_comfort_summer=(
             23.0,
             26.0))
+
+
+@ pytest.fixture(scope='function')
+def normalized_linear_reward():
+    return NormalizedLinearReward(
+        temperature_variables=['air_temperature'],
+        energy_variables=['HVAC_electricity_demand_rate'],
+        range_comfort_winter=(
+            20.0,
+            23.5),
+        range_comfort_summer=(
+            23.0,
+            26.0),
+        summer_start=(6, 1),
+        summer_final=(9, 30),
+        energy_weight=0.5,
+        max_energy_penalty=8,
+        max_comfort_penalty=12,
+    )
 
 # ---------------------------------------------------------------------------- #
 #                         WHEN TESTS HAVE BEEN FINISHED                        #

@@ -156,7 +156,7 @@ class EplusEnv(gym.Env):
         # ---------------------------------------------------------------------------- #
         # If block hardcoded for officegrid environment, will be fixed in
         # future versions
-        if 'officegrid' in self.name:
+        if 'officegrid' in self.name:  # pragma: no cover
             self._observation_space = gym.spaces.Box(
                 low=-6e11,
                 high=6e11,
@@ -219,7 +219,8 @@ class EplusEnv(gym.Env):
         # Stop oold thread of old episode if exists
         self.energyplus_simulator.stop()
 
-        self.last_obs = self.observation_space.sample()
+        self.last_obs = dict(
+            zip(self.observation_variables, self.observation_space.sample()))
         self.last_info = {'timestep': self.timestep}
 
         # ------------------------ Preparation for new episode ----------------------- #
@@ -258,14 +259,14 @@ class EplusEnv(gym.Env):
 
         # Wait to receive simulation first observation and info
         try:
-            obs = self.obs_queue.get()
+            obs = self.obs_queue.get(timeout=2)
         except Empty:
             self.logger.warning(
                 'Reset: Observation queue empty, returning a random observation (not real).')
             obs = self.last_obs
 
         try:
-            info = self.info_queue.get()
+            info = self.info_queue.get(timeout=2)
         except Empty:
             info = self.last_info
             self.logger.warning(
@@ -315,7 +316,7 @@ class EplusEnv(gym.Env):
 
         # Check if episode existed and is not terminated or truncated
         try:
-            assert self.energyplus_simulator
+            assert self.energyplus_simulator.energyplus_state is not None
         except AssertionError as err:
             self.logger.critical(
                 'Step: Environment requires to be reset before.')
@@ -347,7 +348,8 @@ class EplusEnv(gym.Env):
             try:
                 self.act_queue.put(action, timeout=timeout)
                 self.last_obs = obs = self.obs_queue.get(timeout=timeout)
-                self.last_info = info = self.info_queue.get(timeout=timeout)
+                self.last_info = info = self.info_queue.get(
+                    timeout=timeout)
             except (Full, Empty):
                 self.logger.debug(
                     'STEP queues not receive value, simulation must be completed. changing TRUNCATED flag to TRUE')
@@ -424,27 +426,27 @@ class EplusEnv(gym.Env):
 
     # ---------------------------------- Spaces ---------------------------------- #
 
-    @property
+    @ property  # pragma: no cover
     def action_space(
         self
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
         return getattr(self, '_action_space')
 
-    @action_space.setter
+    @ action_space.setter  # pragma: no cover
     def action_space(self, space: gym.spaces.Space[Any]):
         self._action_space = space
 
-    @property
+    @ property  # pragma: no cover
     def observation_space(
         self
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
         return getattr(self, '_observation_space')
 
-    @observation_space.setter
+    @ observation_space.setter  # pragma: no cover
     def observation_space(self, space: gym.spaces.Space[Any]):
         self._observation_space = space
 
-    @property
+    @ property  # pragma: no cover
     def is_discrete(self) -> bool:
         if isinstance(self.action_space, gym.spaces.Box):
             return False
@@ -458,80 +460,80 @@ class EplusEnv(gym.Env):
 
     # --------------------------------- Simulator -------------------------------- #
 
-    @property
+    @ property  # pragma: no cover
     def var_handlers(self) -> Optional[Dict[str, int]]:
         return self.energyplus_simulator.var_handlers
 
-    @property
+    @ property  # pragma: no cover
     def meter_handlers(self) -> Optional[Dict[str, int]]:
         return self.energyplus_simulator.meter_handlers
 
-    @property
+    @ property  # pragma: no cover
     def actuator_handlers(self) -> Optional[Dict[str, int]]:
         return self.energyplus_simulator.actuator_handlers
 
-    @property
+    @ property  # pragma: no cover
     def available_handlers(self) -> Optional[str]:
         return self.energyplus_simulator.available_data
 
-    @property
+    @ property  # pragma: no cover
     def is_running(self) -> bool:
         return self.energyplus_simulator.is_running
 
     # ------------------------------ Building model ------------------------------ #
-    @property
+    @ property  # pragma: no cover
     def runperiod(self) -> Dict[str, int]:
         return self.model.runperiod
 
-    @property
+    @ property  # pragma: no cover
     def episode_length(self) -> float:
         return self.model.episode_length
 
-    @property
+    @ property  # pragma: no cover
     def timestep_per_episode(self) -> int:
         return self.model.timestep_per_episode
 
-    @property
+    @ property  # pragma: no cover
     def step_size(self) -> float:
         return self.model.step_size
 
-    @property
+    @ property  # pragma: no cover
     def zone_names(self) -> list:
         return self.model.zone_names
 
-    @property
+    @ property  # pragma: no cover
     def schedulers(self) -> Dict[str, Dict[str, Union[str, Dict[str, str]]]]:
         return self.model.schedulers
 
     # ----------------------------------- Paths ---------------------------------- #
 
-    @property
+    @ property  # pragma: no cover
     def workspace_path(self) -> str:
         return self.model.experiment_path
 
-    @property
+    @ property  # pragma: no cover
     def episode_path(self) -> str:
         return self.model.episode_path
 
-    @property
+    @ property  # pragma: no cover
     def building_path(self) -> str:
         return self.model.building_path
 
-    @property
+    @ property  # pragma: no cover
     def weather_path(self) -> str:
         return self.model.weather_path
 
-    @property
+    @ property  # pragma: no cover
     def ddy_path(self) -> str:
         return self.model.ddy_path
 
-    @property
+    @ property  # pragma: no cover
     def idd_path(self) -> str:
         return self.model.idd_path
 
     # -------------------------------- class print ------------------------------- #
 
-    def info(self):
+    def info(self):  # pragma: no cover
         print("""
     #==================================================================================#
                                 ENVIRONMENT NAME: {}

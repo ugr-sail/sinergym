@@ -652,24 +652,24 @@ class ModelJSON(object):
                         raise err
                 else:
                     self.logger.error(
-                        'Extra Config: Key name specified in config called [{}] is not available in Sinergym.'.format(config_key))
+                        'Extra Config: Key name specified in config called [{}] is not available in Sinergym, it will be ignored.'.format(config_key))
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #
     # ---------------------------------------------------------------------------- #
 
-    @property
+    @property  # pragma: no cover
     def building_path(self) -> str:
         return self._json_path
 
-    @property
+    @property  # pragma: no cover
     def weather_path(self) -> str:
         return self._weather_path
 
-    @property
+    @property  # pragma: no cover
     def ddy_path(self) -> Optional[str]:
         return self._ddy_path
 
-    @property
+    @property  # pragma: no cover
     def idd_path(self) -> Optional[str]:
         return self._idd

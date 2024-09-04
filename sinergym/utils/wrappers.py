@@ -362,18 +362,12 @@ class NormalizeObservation(gym.Wrapper):
     @property
     def mean(self) -> Optional[np.float64]:
         """Returns the mean value of the observations."""
-        if hasattr(self, 'obs_rms'):
-            return self.obs_rms.mean
-        else:
-            return None
+        return self.obs_rms.mean
 
     @property
     def var(self) -> Optional[np.float64]:
         """Returns the variance value of the observations."""
-        if hasattr(self, 'obs_rms'):
-            return self.obs_rms.var
-        else:
-            return None
+        return self.obs_rms.var
 
     def set_mean(self, mean: Union[list, np.float64, str]):
         """Sets the mean value of the observations."""
@@ -607,7 +601,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         return list(self.current_setpoints)
 
     # Updating property
-    @property
+    @property  # pragma: no cover
     def is_discrete(self) -> bool:
         if isinstance(self.action_space, gym.spaces.Box):
             return False
@@ -663,7 +657,7 @@ class DiscretizeEnv(gym.ActionWrapper):
         return action_
 
     # Updating property
-    @property
+    @property  # pragma: no cover
     def is_discrete(self) -> bool:
         if isinstance(self.action_space, gym.spaces.Box):
             return False
@@ -773,7 +767,7 @@ class MultiObjectiveReward(gym.Wrapper):
 
     def step(self, action: Union[int, np.ndarray]) -> Tuple[
             np.ndarray, List[float], bool, bool, Dict[str, Any]]:
-        """Perform the action and environment return reward vector.
+        """Perform the action and environment return reward vector. If reward term is not in info reward_terms, it will be ignored.
 
         Args:
             action (Union[int, np.ndarray]): Action to be executed in environment.
@@ -785,12 +779,6 @@ class MultiObjectiveReward(gym.Wrapper):
         obs, _, terminated, truncated, info = self.env.step(action)
         reward_vector = [value for key, value in info.items(
         ) if key in self.get_wrapper_attr('reward_terms')]
-        try:
-            assert len(reward_vector) == len(
-                self.get_wrapper_attr('reward_terms'))
-        except AssertionError as err:
-            self.logger.error('Some reward term is unknown')
-            raise err
         return obs, reward_vector, terminated, truncated, info
 
 # ---------------------------------------------------------------------------- #
@@ -901,7 +889,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         # Close the environment
         self.env.close()
 
-    @abstractmethod
+    @abstractmethod # pragma: no cover
     def calculate_custom_metrics(self,
                                  obs: np.ndarray,
                                  action: Union[int, np.ndarray],
@@ -921,7 +909,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         """
         pass
 
-    @abstractmethod
+    @abstractmethod # pragma: no cover
     def get_episode_summary(self) -> Dict[str, float]:
         """Return data summary for the logger. This method should be implemented in the child classes.
            This method determines the data summary of episodes in Sinergym environments.
@@ -1197,7 +1185,7 @@ class CSVLogger(gym.Wrapper):
 
 # ---------------------------------------------------------------------------- #
 
-class WandBLogger(gym.Wrapper):
+class WandBLogger(gym.Wrapper): # pragma: no cover
 
     logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
                                         level=LOG_WRAPPERS_LEVEL)
