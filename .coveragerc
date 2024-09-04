@@ -1,4 +1,5 @@
 [run]
 omit = sinergym/utils/gcloud.py,
+       sinergym/utils/constants.py,
        sinergym/utils/env_checker.py,
        sinergym/utils/callbacks.py,
