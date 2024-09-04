@@ -40,6 +40,11 @@ def pkg_data_path():
 
 
 @pytest.fixture(scope='function')
+def pkg_mock_path():
+    return PKG_MOCK_PATH
+
+
+@pytest.fixture(scope='function')
 def json_path_5zone(pkg_data_path):
     return os.path.join(pkg_data_path, 'buildings', '5ZoneAutoDXVAV.epJSON')
 

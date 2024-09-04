@@ -12,6 +12,9 @@ import pkg_resources
 # Sinergym Data path
 PKG_DATA_PATH = pkg_resources.resource_filename(
     'sinergym', 'data/')
+# Mock Data path
+PKG_MOCK_PATH = pkg_resources.resource_filename(
+    'tests', 'mock/')
 # Weekday encoding for simulations
 WEEKDAY_ENCODING = {'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
                     'friday': 4, 'saturday': 5, 'sunday': 6}
