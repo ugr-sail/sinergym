@@ -56,14 +56,6 @@ def weather_path_pittsburgh(pkg_data_path):
         'weather',
         'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw')
 
-
-@pytest.fixture(scope='function')
-def configuration_path_5zone(pkg_data_path):
-    return os.path.join(
-        pkg_data_path,
-        'default_configuration',
-        '5ZoneAutoDXVAV.json')
-
 # ---------------------------------------------------------------------------- #
 #                         Default Environment Arguments                        #
 # ---------------------------------------------------------------------------- #
@@ -213,15 +205,32 @@ def ACTUATORS_DATACENTER():
     }
 
 # ---------------------------------------------------------------------------- #
-#                       Default environment configuration                      #
+#                       Default environment configurations                     #
 # ---------------------------------------------------------------------------- #
 
 
 @pytest.fixture(scope='function')
-def conf_5zone(configuration_path_5zone):
-    with open(configuration_path_5zone) as json_f:
+def conf_5zone(pkg_mock_path):
+    conf_path = os.path.join(
+        pkg_mock_path,
+        'environment_configurations',
+        '5ZoneAutoDXVAV.json')
+    with open(conf_path) as json_f:
         conf = json.load(json_f)
     return conf
+
+
+@pytest.fixture(scope='function')
+def conf_5zone_exceptions(pkg_mock_path):
+    conf_exceptions = []
+    for i in range(1, 6):
+        conf_path = os.path.join(pkg_mock_path,
+                                 'environment_configurations',
+                                 '5ZoneAutoDXVAV_exception{}.json'.format(i))
+        with open(conf_path) as json_f:
+            conf_exceptions.append(json.load(json_f))
+    return conf_exceptions
+
 
 # ---------------------------------------------------------------------------- #
 #                                 Environments                                 #
