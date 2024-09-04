@@ -11,11 +11,9 @@ environment IDs, it is recommended to use the provided method:
   # This script is available in scripts/consult_environments.py
   import sinergym
   import gymnasium as gym
-  from sinergym.utils.common import get_ids
-
-  # Get the list of available environments
-  sinergym_environment_ids = get_ids()
-  print(sinergym_environment_ids)
+  
+  print(sinergym.__version__)
+  print(sinergym.__ids__)
 
   # Make and consult some of the environments
   env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1')
