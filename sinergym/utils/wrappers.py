@@ -889,7 +889,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         # Close the environment
         self.env.close()
 
-    @abstractmethod # pragma: no cover
+    @abstractmethod  # pragma: no cover
     def calculate_custom_metrics(self,
                                  obs: np.ndarray,
                                  action: Union[int, np.ndarray],
@@ -909,7 +909,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         """
         pass
 
-    @abstractmethod # pragma: no cover
+    @abstractmethod  # pragma: no cover
     def get_episode_summary(self) -> Dict[str, float]:
         """Return data summary for the logger. This method should be implemented in the child classes.
            This method determines the data summary of episodes in Sinergym environments.
@@ -1185,7 +1185,7 @@ class CSVLogger(gym.Wrapper):
 
 # ---------------------------------------------------------------------------- #
 
-class WandBLogger(gym.Wrapper): # pragma: no cover
+class WandBLogger(gym.Wrapper):  # pragma: no cover
 
     logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
                                         level=LOG_WRAPPERS_LEVEL)
