@@ -198,7 +198,7 @@ if not missing:
 
         env = request.getfixturevalue(env_name)
         # DDPG must fail in discrete environments
-        if env_name == 'env_wrapper_discretize':
+        if env_name == 'env_demo_discrete':
             with pytest.raises(IndexError):
                 env.action_space.shape[-1]
             with pytest.raises(AssertionError):
@@ -252,7 +252,7 @@ if not missing:
     def test_stable_SAC(env_name, request):
         env = request.getfixturevalue(env_name)
         # SAC must fail in discrete environments
-        if env_name == 'env_wrapper_discretize':
+        if env_name == 'env_demo_discrete':
             with pytest.raises(AssertionError):
                 model = stable_baselines3.SAC(
                     "MlpPolicy", env, verbose=1)
