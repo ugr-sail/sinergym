@@ -1174,6 +1174,7 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
                  group: Optional[str] = None,
                  job_type: Optional[str] = None,
                  tags: Optional[List[str]] = None,
+                 episode_percentage: float = 0.9,
                  save_code: bool = False,
                  dump_frequency: int = 1000,
                  artifact_save: bool = True,
@@ -1199,6 +1200,7 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
             group (Optional[str]): The name of the group to which the run belongs. Defaults to None.
             job_type (Optional[str]): The type of job. Defaults to None.
             tags (Optional[List[str]]): List of tags for the run. Defaults to None.
+            episode_percentage (float): Percentage of episode which must be completed to log episode summary. Defaults to 0.9.
             save_code (bool): Whether to save the code in the run. Defaults to False.
             dump_frequency (int): Frequency to dump log in platform. Defaults to 1000.
             artifact_save (bool): Whether to save artifacts in WandB. Defaults to True.
@@ -1257,6 +1259,7 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
         self.dump_frequency = dump_frequency
         self.artifact_save = artifact_save
         self.artifact_type = artifact_type
+        self.episode_percentage = episode_percentage
         self.wandb_id = self.wandb_run.id
         self.excluded_info_keys = excluded_info_keys
         self.excluded_episode_summary_keys = excluded_episode_summary_keys
@@ -1302,11 +1305,16 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
         Returns:
             Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
         """
-        self.global_timestep += 1
         # It isn't the first episode simulation, so we can logger last episode
         if self.get_wrapper_attr('is_running'):
             # Log all episode information
-            self.wandb_log_summary()
+            if self.get_wrapper_attr(
+                    'timestep') > self.episode_percentage * self.get_wrapper_attr('timestep_per_episode'):
+                self.wandb_log_summary()
+            else:
+                self.logger.warning(
+                    'Episode ignored for log summary in WandB Platform, it has not be completed in at least {}%.'.format(
+                        self.episode_percentage * 100))
             self.logger.info(
                 'End of episode detected, dumping summary metrics in WandB Platform.')
 
@@ -1323,7 +1331,14 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
         """
 
         # Log last episode summary
-        self.wandb_log_summary()
+        # Log all episode information
+        if self.get_wrapper_attr('timestep') > self.episode_percentage * \
+                self.get_wrapper_attr('timestep_per_episode'):
+            self.wandb_log_summary()
+        else:
+            self.logger.warning(
+                'Episode ignored for log summary in WandB Platform, it has not be completed in at least {}%.'.format(
+                    self.episode_percentage * 100))
         self.logger.info(
             'Environment closed, dumping summary metrics in WandB Platform.')
 
