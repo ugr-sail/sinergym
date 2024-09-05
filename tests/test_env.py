@@ -20,11 +20,13 @@ def test_reset(env_name, request):
     env = request.getfixturevalue(env_name)
     # Check state before reset
     assert env.get_wrapper_attr('episode') == 0
+    assert env.get_wrapper_attr('timestep') == 0
     assert env.get_wrapper_attr(
         'energyplus_simulator').energyplus_state is None
     obs, info = env.reset()
     # Check after reset
     assert env.get_wrapper_attr('episode') == 1
+    assert env.get_wrapper_attr('timestep') == 0
     assert env.get_wrapper_attr(
         'energyplus_simulator').energyplus_state is not None
     assert len(obs) == len(env.get_wrapper_attr('time_variables')) + len(env.get_wrapper_attr(
@@ -67,7 +69,7 @@ def test_step(env_5zone):
     assert not isinstance(reward, type(None))
     assert not terminated
     assert not truncated
-    assert info['timestep'] == 2
+    assert info['timestep'] == 1
     old_time_elapsed = info['time_elapsed(hours)']
     assert old_time_elapsed > 0
 
@@ -78,7 +80,7 @@ def test_step(env_5zone):
     assert not isinstance(reward, type(None))
     assert not terminated
     assert not truncated
-    assert info['timestep'] == 3
+    assert info['timestep'] == 2
     assert info['time_elapsed(hours)'] > old_time_elapsed
 
     # Not supported action
