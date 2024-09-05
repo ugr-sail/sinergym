@@ -819,30 +819,6 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         # Environment reset
         obs, info = self.env.reset(seed=seed, options=options)
 
-        # Log reset information
-        # if is_wrapped(self, NormalizeObservation):
-        #     self.data_logger.log_norm_obs(obs)
-        #     self.data_logger.log_interaction(
-        #         obs=self.get_wrapper_attr('unwrapped_observation'),
-        #         action=[None for _ in range(
-        #             len(self.get_wrapper_attr('action_variables')))],
-        #         reward=None,
-        #         info=info,
-        #         terminated=False,
-        #         truncated=False,
-        #         custom_metrics=[None for _ in range(len(self.get_wrapper_attr('custom_variables')))])
-        # else:
-        #     self.data_logger.log_interaction(
-        #         obs=obs,
-        #         action=[None for _ in range(
-        #             len(self.get_wrapper_attr('action_variables')))],
-        #         reward=None,
-        #         info=info,
-        #         terminated=False,
-        #         truncated=False,
-        # custom_metrics=[None for _ in
-        # range(len(self.get_wrapper_attr('custom_variables')))])
-
         return obs, info
 
     def step(self, action: Union[int, np.ndarray]) -> Tuple[
