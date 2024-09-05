@@ -125,3 +125,45 @@ def test_make_eplus_args(simulator_5zone):
         '-d',
         'expected_output',
         'expected_building']
+
+
+def test_unknown_handlers(simulator_5zone, pkg_data_path):
+    # Force adding unknown handlers in simulator
+    simulator_5zone.variables['false_variable'] = (
+        'false_variable_name', 'false_variable_key')
+    simulator_5zone.meters['false_meter'] = 'false_meter_name'
+    simulator_5zone.actuators['false_actuator'] = (
+        'false_actuator_type',
+        'false_actuator_type_name',
+        'false_actuator_name')
+    # Start simulation
+    simulator_5zone.start(
+        building_path=os.path.join(
+            pkg_data_path,
+            'buildings',
+            '5ZoneAutoDXVAV.epJSON'),
+        weather_path=os.path.join(
+            pkg_data_path,
+            'weather',
+            'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw'),
+        output_path='./Eplus-TESTSIMULATOR/')
+    # Until first observation received, system is not initialized
+    assert simulator_5zone.var_handlers is None
+    assert simulator_5zone.meter_handlers is None
+    assert simulator_5zone.actuator_handlers is None
+    assert simulator_5zone.available_data is None
+    # We have false handlers after observation
+    obs = simulator_5zone.obs_queue.get()
+    info = simulator_5zone.info_queue.get()
+    assert len(obs) > 0 and obs is not None
+    assert len(info) > 0 and info is not None
+    # Now system is initialized (and handlers)
+    # It shloud only a error message in logger but not exception raised
+    # There should be handlers with value > 0 and the false handlers should be
+    # <= 0
+    assert simulator_5zone.var_handlers is not None
+    assert simulator_5zone.meter_handlers is not None
+    assert simulator_5zone.actuator_handlers is not None
+    assert simulator_5zone.var_handlers['false_variable'] <= 0
+    assert simulator_5zone.meter_handlers['false_meter'] <= 0
+    assert simulator_5zone.actuator_handlers['false_actuator'] <= 0

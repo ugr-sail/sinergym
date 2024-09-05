@@ -49,8 +49,10 @@ class LoggerEvalCallback(EventCallback):
         self.eval_env = eval_env
         self.train_env = train_env
         self.n_eval_episodes = n_eval_episodes
+        # Last train model step generate a env.reset() automatically, we want
+        # to avoid this
         self.eval_freq = eval_freq_episodes * \
-            train_env.get_wrapper_attr('timestep_per_episode') - 30
+            train_env.get_wrapper_attr('timestep_per_episode') - 1
         self.save_path = self.train_env.get_wrapper_attr(
             'workspace_path') + '/evaluation'
         # Make dir if not exists

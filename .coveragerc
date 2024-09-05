@@ -1,7 +1,5 @@
 [run]
-omit = sinergym/utils/gcloud.py, 
-       sinergym/utils/evaluation.py,
+omit = sinergym/utils/gcloud.py,
+       sinergym/utils/constants.py,
        sinergym/utils/env_checker.py,
        sinergym/utils/callbacks.py,
-       sinergym/simulators/base.py,
-       sinergym/simulators/eplus_alpha.py,

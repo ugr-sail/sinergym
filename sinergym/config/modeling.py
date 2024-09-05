@@ -135,9 +135,8 @@ class ModelJSON(object):
         self.runperiod = self._get_eplus_runperiod()
         self.episode_length = self._get_runperiod_len()
         self.step_size = 3600 / self.runperiod['n_steps_per_hour']
-        # +1 for reset step
         self.timestep_per_episode = int(
-            self.episode_length / self.step_size) + 1
+            self.episode_length / self.step_size)
 
         self.logger.info('runperiod established: {}'.format(self.runperiod))
         self.logger.info(
@@ -652,24 +651,24 @@ class ModelJSON(object):
                         raise err
                 else:
                     self.logger.error(
-                        'Extra Config: Key name specified in config called [{}] is not available in Sinergym.'.format(config_key))
+                        'Extra Config: Key name specified in config called [{}] is not available in Sinergym, it will be ignored.'.format(config_key))
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #
     # ---------------------------------------------------------------------------- #
 
-    @property
+    @property  # pragma: no cover
     def building_path(self) -> str:
         return self._json_path
 
-    @property
+    @property  # pragma: no cover
     def weather_path(self) -> str:
         return self._weather_path
 
-    @property
+    @property  # pragma: no cover
     def ddy_path(self) -> Optional[str]:
         return self._ddy_path
 
-    @property
+    @property  # pragma: no cover
     def idd_path(self) -> Optional[str]:
         return self._idd

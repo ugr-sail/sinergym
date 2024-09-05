@@ -81,3 +81,5 @@ If you want to create new tests, you can append them to these modules or create 
 context is different.
 
 For more information about *Sinergym* tests, please refer to our repository README.
+
+.. warning:: Tests about :ref:`WandBLogger` are not included in the test suite, since a account is required to run them.

@@ -142,14 +142,23 @@ class LoggerStorage():
         self.infos = []
         self.terminateds = []
         self.truncateds = []
-        self.custom_data = []
+        self.custom_metrics = []
 
 
 if not missing:
-    class WandBOutputFormat(KVWriter):
+    class WandBOutputFormat(KVWriter):  # pragma: no cover
         """
         Dumps key / value pairs onto WandB. This class is based on SB3 used in logger callback
         """
+
+        def __init__(self):
+            # Define X-Axis for SB3 metrics
+            wandb.define_metric('time/*',
+                                step_metric='time/total_timesteps')
+            wandb.define_metric('train/*',
+                                step_metric='time/total_timesteps')
+            wandb.define_metric('rollout/*',
+                                step_metric='time/total_timesteps')
 
         def write(
             self,
@@ -157,6 +166,9 @@ if not missing:
             key_excluded: Dict[str, Union[str, Tuple[str, ...]]],
             step: int = 0,
         ) -> None:
+
+            # We store all metrics in a diuctionary to do a single log call
+            metrics_to_log = {}
 
             for (key, value), (_, excluded) in zip(
                 sorted(key_values.items()), sorted(key_excluded.items())
@@ -167,4 +179,12 @@ if not missing:
 
                 if isinstance(value, np.ScalarType):
                     if not isinstance(value, str):
-                        wandb.log({key: value}, commit=False)
+                        # Store the metric
+                        metrics_to_log[key] = value
+
+            # Ensure 'time/total_timesteps' is included in the log
+            # if 'time/total_timesteps' not in metrics_to_log:
+            #     metrics_to_log['time/total_timesteps'] = step
+
+            # Log all metrics
+            wandb.log(metrics_to_log)

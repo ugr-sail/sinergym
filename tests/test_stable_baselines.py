@@ -17,10 +17,10 @@ if not missing:
         'env_name',
         [
             (
-                'env_wrapper_discretize'
+                'env_demo'
             ),
             (
-                'env_5zone'
+                'env_demo_discrete'
             ),
         ]
     )
@@ -51,7 +51,7 @@ if not missing:
         # Check model works
 
         obs, info = env.reset()
-        assert info['timestep'] == 1
+        assert info['timestep'] == 0
         a, _ = model.predict(obs)
         obs, reward, terminated, truncated, info = env.step(a)
 
@@ -59,7 +59,7 @@ if not missing:
         assert a is not None
         assert isinstance(terminated, bool)
         assert isinstance(truncated, bool)
-        assert info['timestep'] == 2
+        assert info['timestep'] == 1
 
         env.close()
 
@@ -67,10 +67,10 @@ if not missing:
         'env_name',
         [
             (
-                'env_wrapper_discretize'
+                'env_demo'
             ),
             (
-                'env_5zone'
+                'env_demo_discrete'
             ),
         ]
     )
@@ -99,7 +99,7 @@ if not missing:
         # Check model works
 
         obs, info = env.reset()
-        assert info['timestep'] == 1
+        assert info['timestep'] == 0
         a, _ = model.predict(obs)
         obs, reward, terminated, truncated, info = env.step(a)
 
@@ -107,7 +107,7 @@ if not missing:
         assert a is not None
         assert isinstance(terminated, bool)
         assert isinstance(truncated, bool)
-        assert info['timestep'] == 2
+        assert info['timestep'] == 1
 
         env.close()
 
@@ -115,17 +115,17 @@ if not missing:
         'env_name',
         [
             (
-                'env_wrapper_discretize'
+                'env_demo'
             ),
             (
-                'env_5zone'
+                'env_demo_discrete'
             ),
         ]
     )
     def test_stable_DQN(env_name, request):
         env = request.getfixturevalue(env_name)
         # DQN must fail in continuous environments
-        if env_name == 'env_5zone':
+        if env_name == 'env_demo':
             with pytest.raises(AssertionError):
                 model = stable_baselines3.DQN('MlpPolicy', env, verbose=1,
                                               learning_rate=.0001,
@@ -171,7 +171,7 @@ if not missing:
             # Check model works
 
             obs, info = env.reset()
-            assert info['timestep'] == 1
+            assert info['timestep'] == 0
             a, _ = model.predict(obs)
             obs, reward, terminated, truncated, info = env.step(a)
 
@@ -179,7 +179,7 @@ if not missing:
             assert a is not None
             assert isinstance(terminated, bool)
             assert isinstance(truncated, bool)
-            assert info['timestep'] == 2
+            assert info['timestep'] == 1
 
             env.close()
 
@@ -187,10 +187,10 @@ if not missing:
         'env_name',
         [
             (
-                'env_wrapper_discretize'
+                'env_demo'
             ),
             (
-                'env_5zone'
+                'env_demo_discrete'
             ),
         ]
     )
@@ -198,7 +198,7 @@ if not missing:
 
         env = request.getfixturevalue(env_name)
         # DDPG must fail in discrete environments
-        if env_name == 'env_wrapper_discretize':
+        if env_name == 'env_demo_discrete':
             with pytest.raises(IndexError):
                 env.action_space.shape[-1]
             with pytest.raises(AssertionError):
@@ -226,7 +226,7 @@ if not missing:
             # Check model works
 
             obs, info = env.reset()
-            assert info['timestep'] == 1
+            assert info['timestep'] == 0
             a, _ = model.predict(obs)
             obs, reward, terminated, truncated, info = env.step(a)
 
@@ -234,7 +234,7 @@ if not missing:
             assert a is not None
             assert isinstance(terminated, bool)
             assert isinstance(truncated, bool)
-            assert info['timestep'] == 2
+            assert info['timestep'] == 1
 
             env.close()
 
@@ -242,17 +242,17 @@ if not missing:
         'env_name',
         [
             (
-                'env_wrapper_discretize'
+                'env_demo'
             ),
             (
-                'env_5zone'
+                'env_demo_discrete'
             ),
         ]
     )
     def test_stable_SAC(env_name, request):
         env = request.getfixturevalue(env_name)
         # SAC must fail in discrete environments
-        if env_name == 'env_wrapper_discretize':
+        if env_name == 'env_demo_discrete':
             with pytest.raises(AssertionError):
                 model = stable_baselines3.SAC(
                     "MlpPolicy", env, verbose=1)
@@ -275,7 +275,7 @@ if not missing:
             # Check model works
 
             obs, info = env.reset()
-            assert info['timestep'] == 1
+            assert info['timestep'] == 0
             a, _ = model.predict(obs)
             obs, reward, terminated, truncated, info = env.step(a)
 
@@ -283,6 +283,6 @@ if not missing:
             assert a is not None
             assert isinstance(terminated, bool)
             assert isinstance(truncated, bool)
-            assert info['timestep'] == 2
+            assert info['timestep'] == 1
 
             env.close()

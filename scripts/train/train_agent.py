@@ -1,8 +1,8 @@
 import argparse
 import json
 import sys
-from datetime import datetime
 import traceback
+from datetime import datetime
 
 import gymnasium as gym
 import numpy as np

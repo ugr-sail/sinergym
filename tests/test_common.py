@@ -33,25 +33,20 @@ def test_get_delta_seconds(
 
 def test_is_wrapped(
         env_5zone,
-        env_wrapper_normalization,
         env_all_wrappers):
     # Check returns
     assert not common.is_wrapped(env_5zone, NormalizeObservation)
-    assert common.is_wrapped(env_wrapper_normalization, NormalizeObservation)
     assert common.is_wrapped(env_all_wrappers, NormalizeObservation)
 
 
 def test_unwrap_wrapper(
         env_5zone,
-        env_wrapper_normalization,
         env_all_wrappers):
     # Check if env_wrapper_normalization unwrapped is env_5zone
     assert not hasattr(env_5zone, 'unwrapped_observation')
     assert hasattr(env_all_wrappers, 'unwrapped_observation')
-    assert hasattr(env_wrapper_normalization, 'unwrapped_observation')
-    assert hasattr(env_wrapper_normalization, 'env')
     env = common.unwrap_wrapper(
-        env_wrapper_normalization,
+        env_all_wrappers,
         NormalizeObservation)
     assert not hasattr(env, 'unwrapped_observation')
     # Check if trying unwrap a not wrapped environment the result is None
@@ -59,8 +54,6 @@ def test_unwrap_wrapper(
         env_5zone,
         NormalizeObservation)
     assert env is None
-    env = common.unwrap_wrapper(env_all_wrappers, NormalizeObservation)
-    assert not hasattr(env, 'unwrapped_observation')
 
 
 def test_json_to_variables(conf_5zone):
@@ -72,6 +65,15 @@ def test_json_to_variables(conf_5zone):
     assert isinstance(list(output.keys())[0], str)
     assert isinstance(list(output.values())[0], tuple)
     assert len(list(output.values())[0]) == 2
+
+
+def test_json_to_variables_exceptions(conf_5zone_exceptions):
+
+    assert isinstance(conf_5zone_exceptions, list)
+    for conf_5zone_exception in conf_5zone_exceptions:
+        assert isinstance(conf_5zone_exception['variables'], dict)
+        with pytest.raises((RuntimeError, AssertionError)):
+            common.json_to_variables(conf_5zone_exception['variables'])
 
 
 def test_json_to_meters(conf_5zone):

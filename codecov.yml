@@ -1,11 +1,17 @@
 ignore:
   - "sinergym/utils/gcloud.py"
-  - "sinergym/utils/evaluation.py"
+  - "sinergym/utils/constants.py"
   - "sinergym/utils/env_checker.py"
   - "sinergym/utils/callbacks.py"
-  - "sinergym/simulators/base.py"
-  - "sinergym/simulators/eplus_alpha.py"
 
 coverage:
+  precision: 2
+  round: nearest
+  range: 70...100
   status:
-    project: false
+    project:
+      default:
+        target: 90
+
+codecov:
+  require_ci_to_pass: true

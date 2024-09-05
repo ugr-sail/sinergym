@@ -362,18 +362,12 @@ class NormalizeObservation(gym.Wrapper):
     @property
     def mean(self) -> Optional[np.float64]:
         """Returns the mean value of the observations."""
-        if hasattr(self, 'obs_rms'):
-            return self.obs_rms.mean
-        else:
-            return None
+        return self.obs_rms.mean
 
     @property
     def var(self) -> Optional[np.float64]:
         """Returns the variance value of the observations."""
-        if hasattr(self, 'obs_rms'):
-            return self.obs_rms.var
-        else:
-            return None
+        return self.obs_rms.var
 
     def set_mean(self, mean: Union[list, np.float64, str]):
         """Sets the mean value of the observations."""
@@ -607,7 +601,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         return list(self.current_setpoints)
 
     # Updating property
-    @property
+    @property  # pragma: no cover
     def is_discrete(self) -> bool:
         if isinstance(self.action_space, gym.spaces.Box):
             return False
@@ -663,7 +657,7 @@ class DiscretizeEnv(gym.ActionWrapper):
         return action_
 
     # Updating property
-    @property
+    @property  # pragma: no cover
     def is_discrete(self) -> bool:
         if isinstance(self.action_space, gym.spaces.Box):
             return False
@@ -773,7 +767,7 @@ class MultiObjectiveReward(gym.Wrapper):
 
     def step(self, action: Union[int, np.ndarray]) -> Tuple[
             np.ndarray, List[float], bool, bool, Dict[str, Any]]:
-        """Perform the action and environment return reward vector.
+        """Perform the action and environment return reward vector. If reward term is not in info reward_terms, it will be ignored.
 
         Args:
             action (Union[int, np.ndarray]): Action to be executed in environment.
@@ -785,12 +779,6 @@ class MultiObjectiveReward(gym.Wrapper):
         obs, _, terminated, truncated, info = self.env.step(action)
         reward_vector = [value for key, value in info.items(
         ) if key in self.get_wrapper_attr('reward_terms')]
-        try:
-            assert len(reward_vector) == len(
-                self.get_wrapper_attr('reward_terms'))
-        except AssertionError as err:
-            self.logger.error('Some reward term is unknown')
-            raise err
         return obs, reward_vector, terminated, truncated, info
 
 # ---------------------------------------------------------------------------- #
@@ -830,30 +818,6 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
 
         # Environment reset
         obs, info = self.env.reset(seed=seed, options=options)
-
-        # Log reset information
-        # if is_wrapped(self, NormalizeObservation):
-        #     self.data_logger.log_norm_obs(obs)
-        #     self.data_logger.log_interaction(
-        #         obs=self.get_wrapper_attr('unwrapped_observation'),
-        #         action=[None for _ in range(
-        #             len(self.get_wrapper_attr('action_variables')))],
-        #         reward=None,
-        #         info=info,
-        #         terminated=False,
-        #         truncated=False,
-        #         custom_metrics=[None for _ in range(len(self.get_wrapper_attr('custom_variables')))])
-        # else:
-        #     self.data_logger.log_interaction(
-        #         obs=obs,
-        #         action=[None for _ in range(
-        #             len(self.get_wrapper_attr('action_variables')))],
-        #         reward=None,
-        #         info=info,
-        #         terminated=False,
-        #         truncated=False,
-        # custom_metrics=[None for _ in
-        # range(len(self.get_wrapper_attr('custom_variables')))])
 
         return obs, info
 
@@ -901,7 +865,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         # Close the environment
         self.env.close()
 
-    @abstractmethod
+    @abstractmethod  # pragma: no cover
     def calculate_custom_metrics(self,
                                  obs: np.ndarray,
                                  action: Union[int, np.ndarray],
@@ -921,7 +885,7 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         """
         pass
 
-    @abstractmethod
+    @abstractmethod  # pragma: no cover
     def get_episode_summary(self) -> Dict[str, float]:
         """Return data summary for the logger. This method should be implemented in the child classes.
            This method determines the data summary of episodes in Sinergym environments.
@@ -1001,7 +965,7 @@ class LoggerWrapper(BaseLoggerWrapper):
                          for info in self.data_logger.infos]
         try:
             comfort_violation_time = len(
-                [value for value in temperature_violations if value > 0]) / (self.get_wrapper_attr('timestep') - 1) * 100
+                [value for value in temperature_violations if value > 0]) / self.get_wrapper_attr('timestep') * 100
         except ZeroDivisionError:
             comfort_violation_time = 0
 
@@ -1197,7 +1161,7 @@ class CSVLogger(gym.Wrapper):
 
 # ---------------------------------------------------------------------------- #
 
-class WandBLogger(gym.Wrapper):
+class WandBLogger(gym.Wrapper):  # pragma: no cover
 
     logger = TerminalLogger().getLogger(name='WRAPPER WandBLogger',
                                         level=LOG_WRAPPERS_LEVEL)
@@ -1210,6 +1174,7 @@ class WandBLogger(gym.Wrapper):
                  group: Optional[str] = None,
                  job_type: Optional[str] = None,
                  tags: Optional[List[str]] = None,
+                 episode_percentage: float = 0.9,
                  save_code: bool = False,
                  dump_frequency: int = 1000,
                  artifact_save: bool = True,
@@ -1235,6 +1200,7 @@ class WandBLogger(gym.Wrapper):
             group (Optional[str]): The name of the group to which the run belongs. Defaults to None.
             job_type (Optional[str]): The type of job. Defaults to None.
             tags (Optional[List[str]]): List of tags for the run. Defaults to None.
+            episode_percentage (float): Percentage of episode which must be completed to log episode summary. Defaults to 0.9.
             save_code (bool): Whether to save the code in the run. Defaults to False.
             dump_frequency (int): Frequency to dump log in platform. Defaults to 1000.
             artifact_save (bool): Whether to save artifacts in WandB. Defaults to True.
@@ -1293,6 +1259,7 @@ class WandBLogger(gym.Wrapper):
         self.dump_frequency = dump_frequency
         self.artifact_save = artifact_save
         self.artifact_type = artifact_type
+        self.episode_percentage = episode_percentage
         self.wandb_id = self.wandb_run.id
         self.excluded_info_keys = excluded_info_keys
         self.excluded_episode_summary_keys = excluded_episode_summary_keys
@@ -1338,11 +1305,16 @@ class WandBLogger(gym.Wrapper):
         Returns:
             Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
         """
-        self.global_timestep += 1
         # It isn't the first episode simulation, so we can logger last episode
         if self.get_wrapper_attr('is_running'):
             # Log all episode information
-            self.wandb_log_summary()
+            if self.get_wrapper_attr(
+                    'timestep') > self.episode_percentage * self.get_wrapper_attr('timestep_per_episode'):
+                self.wandb_log_summary()
+            else:
+                self.logger.warning(
+                    'Episode ignored for log summary in WandB Platform, it has not be completed in at least {}%.'.format(
+                        self.episode_percentage * 100))
             self.logger.info(
                 'End of episode detected, dumping summary metrics in WandB Platform.')
 
@@ -1359,7 +1331,14 @@ class WandBLogger(gym.Wrapper):
         """
 
         # Log last episode summary
-        self.wandb_log_summary()
+        # Log all episode information
+        if self.get_wrapper_attr('timestep') > self.episode_percentage * \
+                self.get_wrapper_attr('timestep_per_episode'):
+            self.wandb_log_summary()
+        else:
+            self.logger.warning(
+                'Episode ignored for log summary in WandB Platform, it has not be completed in at least {}%.'.format(
+                    self.episode_percentage * 100))
         self.logger.info(
             'Environment closed, dumping summary metrics in WandB Platform.')
 

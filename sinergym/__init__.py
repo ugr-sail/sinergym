@@ -132,3 +132,7 @@ for conf_file in conf_files:
                 # disable_env_checker=True,
                 kwargs=env_kwargs_discrete
             )
+
+# --------------------------- Set __ids__ in module -------------------------- #
+__ids__ = [env_id for env_id in gym.envs.registration.registry.keys()
+           if env_id.startswith('Eplus')]

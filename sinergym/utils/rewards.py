@@ -426,10 +426,9 @@ class NormalizedLinearReward(LinearReward):
             range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
             summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
             summer_final (Tuple[int,int]): Summer session tuple with month and day end. defaults to (9,30).
-            default_energy_weight (float, optional): Default weight given to the energy term when thermal comfort is considered. Defaults to 0.5.
-            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1e-4.
-            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
-            range_comfort_hours (tuple, optional): Hours where thermal comfort is considered. Defaults to (9, 19).
+            energy_weight (float, optional): Default weight given to the energy term when thermal comfort is considered. Defaults to 0.5.
+            max_energy_penalty (float, optional): Maximum energy penalty value. Defaults to 8.
+            max_comfort_penalty (float, optional): Maximum comfort penalty value. Defaults to 12.
         """
 
         super(NormalizedLinearReward, self).__init__(
