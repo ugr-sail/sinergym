@@ -304,6 +304,12 @@ def env_demo_summer(
 
 
 @pytest.fixture(scope='function')
+def env_demo_discrete(env_demo):
+    return DiscretizeEnv(env=env_demo, discrete_space=gym.spaces.Discrete(
+        10), action_mapping=DEFAULT_5ZONE_DISCRETE_FUNCTION)
+
+
+@pytest.fixture(scope='function')
 def env_5zone(
         ACTION_SPACE_5ZONE,
         TIME_VARIABLES,

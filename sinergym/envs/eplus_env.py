@@ -214,7 +214,7 @@ class EplusEnv(gym.Env):
         reset_options = options if options is not None else self.default_options
 
         self.episode += 1
-        self.timestep = 1
+        self.timestep = 0
 
         # Stop oold thread of old episode if exists
         self.energyplus_simulator.stop()

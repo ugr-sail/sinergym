@@ -819,30 +819,6 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         # Environment reset
         obs, info = self.env.reset(seed=seed, options=options)
 
-        # Log reset information
-        # if is_wrapped(self, NormalizeObservation):
-        #     self.data_logger.log_norm_obs(obs)
-        #     self.data_logger.log_interaction(
-        #         obs=self.get_wrapper_attr('unwrapped_observation'),
-        #         action=[None for _ in range(
-        #             len(self.get_wrapper_attr('action_variables')))],
-        #         reward=None,
-        #         info=info,
-        #         terminated=False,
-        #         truncated=False,
-        #         custom_metrics=[None for _ in range(len(self.get_wrapper_attr('custom_variables')))])
-        # else:
-        #     self.data_logger.log_interaction(
-        #         obs=obs,
-        #         action=[None for _ in range(
-        #             len(self.get_wrapper_attr('action_variables')))],
-        #         reward=None,
-        #         info=info,
-        #         terminated=False,
-        #         truncated=False,
-        # custom_metrics=[None for _ in
-        # range(len(self.get_wrapper_attr('custom_variables')))])
-
         return obs, info
 
     def step(self, action: Union[int, np.ndarray]) -> Tuple[
@@ -989,7 +965,7 @@ class LoggerWrapper(BaseLoggerWrapper):
                          for info in self.data_logger.infos]
         try:
             comfort_violation_time = len(
-                [value for value in temperature_violations if value > 0]) / (self.get_wrapper_attr('timestep') - 1) * 100
+                [value for value in temperature_violations if value > 0]) / self.get_wrapper_attr('timestep') * 100
         except ZeroDivisionError:
             comfort_violation_time = 0
 
@@ -1133,7 +1109,7 @@ class CSVLogger(gym.Wrapper):
             # Infos (except excluded keys)
             with open(monitor_path + '/infos.csv', 'w') as f:
                 writer = csv.writer(f)
-                column_names = [key for key in episode_data.infos[1].keys(
+                column_names = [key for key in episode_data.infos[0].keys(
                 ) if key not in self.get_wrapper_attr('info_excluded_keys')]
                 # reset_values = [None for _ in column_names]
                 rows = [[value for key, value in info.items() if key not in self.get_wrapper_attr(
@@ -1145,7 +1121,7 @@ class CSVLogger(gym.Wrapper):
             with open(monitor_path + '/agent_actions.csv', 'w') as f:
                 writer = csv.writer(f)
                 writer.writerow(self.get_wrapper_attr('action_variables'))
-                if isinstance(episode_data.actions[1], list):
+                if isinstance(episode_data.actions[0], list):
                     writer.writerows(episode_data.actions)
                 else:
                     for action in episode_data.actions:
@@ -1159,7 +1135,7 @@ class CSVLogger(gym.Wrapper):
                 #    len(self.get_wrapper_attr('action_variables')))]
                 simulated_actions = [info['action']
                                      for info in episode_data.infos]
-                if isinstance(simulated_actions[1], list):
+                if isinstance(simulated_actions[0], list):
                     writer.writerows(simulated_actions)
                 else:
                     for action in simulated_actions:
@@ -1198,6 +1174,7 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
                  group: Optional[str] = None,
                  job_type: Optional[str] = None,
                  tags: Optional[List[str]] = None,
+                 episode_percentage: float = 0.9,
                  save_code: bool = False,
                  dump_frequency: int = 1000,
                  artifact_save: bool = True,
@@ -1223,6 +1200,7 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
             group (Optional[str]): The name of the group to which the run belongs. Defaults to None.
             job_type (Optional[str]): The type of job. Defaults to None.
             tags (Optional[List[str]]): List of tags for the run. Defaults to None.
+            episode_percentage (float): Percentage of episode which must be completed to log episode summary. Defaults to 0.9.
             save_code (bool): Whether to save the code in the run. Defaults to False.
             dump_frequency (int): Frequency to dump log in platform. Defaults to 1000.
             artifact_save (bool): Whether to save artifacts in WandB. Defaults to True.
@@ -1281,6 +1259,7 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
         self.dump_frequency = dump_frequency
         self.artifact_save = artifact_save
         self.artifact_type = artifact_type
+        self.episode_percentage = episode_percentage
         self.wandb_id = self.wandb_run.id
         self.excluded_info_keys = excluded_info_keys
         self.excluded_episode_summary_keys = excluded_episode_summary_keys
@@ -1326,11 +1305,16 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
         Returns:
             Tuple[np.ndarray,Dict[str,Any]]: Current observation and info context with additional information.
         """
-        self.global_timestep += 1
         # It isn't the first episode simulation, so we can logger last episode
         if self.get_wrapper_attr('is_running'):
             # Log all episode information
-            self.wandb_log_summary()
+            if self.get_wrapper_attr(
+                    'timestep') > self.episode_percentage * self.get_wrapper_attr('timestep_per_episode'):
+                self.wandb_log_summary()
+            else:
+                self.logger.warning(
+                    'Episode ignored for log summary in WandB Platform, it has not be completed in at least {}%.'.format(
+                        self.episode_percentage * 100))
             self.logger.info(
                 'End of episode detected, dumping summary metrics in WandB Platform.')
 
@@ -1347,7 +1331,14 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
         """
 
         # Log last episode summary
-        self.wandb_log_summary()
+        # Log all episode information
+        if self.get_wrapper_attr('timestep') > self.episode_percentage * \
+                self.get_wrapper_attr('timestep_per_episode'):
+            self.wandb_log_summary()
+        else:
+            self.logger.warning(
+                'Episode ignored for log summary in WandB Platform, it has not be completed in at least {}%.'.format(
+                    self.episode_percentage * 100))
         self.logger.info(
             'Environment closed, dumping summary metrics in WandB Platform.')
 

@@ -135,9 +135,8 @@ class ModelJSON(object):
         self.runperiod = self._get_eplus_runperiod()
         self.episode_length = self._get_runperiod_len()
         self.step_size = 3600 / self.runperiod['n_steps_per_hour']
-        # +1 for reset step
         self.timestep_per_episode = int(
-            self.episode_length / self.step_size) + 1
+            self.episode_length / self.step_size)
 
         self.logger.info('runperiod established: {}'.format(self.runperiod))
         self.logger.info(

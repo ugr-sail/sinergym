@@ -203,6 +203,8 @@ This wrapper can be used with a pre-existing WandB session, without the need to 
 (which, if provided, will be ignored), such as when using sweeps. It still allows specifying other parameters during construction, 
 maintaining full functionality of the wrapper. If there is no pre-existing WandB session, the entity and project fields are required.
 
+This wrapper only saves data on episode summaries when they are 90% complete or more. This can be modified when creating the wrapper.
+
 .. important:: A Weights and Biases account is required to use this wrapper, with an environment variable containing the API key for login. 
           For more information, visit `Weights and Biases <https://wandb.ai/site>`__.
 
