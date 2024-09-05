@@ -965,7 +965,7 @@ class LoggerWrapper(BaseLoggerWrapper):
                          for info in self.data_logger.infos]
         try:
             comfort_violation_time = len(
-                [value for value in temperature_violations if value > 0]) / (self.get_wrapper_attr('timestep') - 1) * 100
+                [value for value in temperature_violations if value > 0]) / self.get_wrapper_attr('timestep') * 100
         except ZeroDivisionError:
             comfort_violation_time = 0
 
@@ -1109,7 +1109,7 @@ class CSVLogger(gym.Wrapper):
             # Infos (except excluded keys)
             with open(monitor_path + '/infos.csv', 'w') as f:
                 writer = csv.writer(f)
-                column_names = [key for key in episode_data.infos[1].keys(
+                column_names = [key for key in episode_data.infos[0].keys(
                 ) if key not in self.get_wrapper_attr('info_excluded_keys')]
                 # reset_values = [None for _ in column_names]
                 rows = [[value for key, value in info.items() if key not in self.get_wrapper_attr(
@@ -1121,7 +1121,7 @@ class CSVLogger(gym.Wrapper):
             with open(monitor_path + '/agent_actions.csv', 'w') as f:
                 writer = csv.writer(f)
                 writer.writerow(self.get_wrapper_attr('action_variables'))
-                if isinstance(episode_data.actions[1], list):
+                if isinstance(episode_data.actions[0], list):
                     writer.writerows(episode_data.actions)
                 else:
                     for action in episode_data.actions:
@@ -1135,7 +1135,7 @@ class CSVLogger(gym.Wrapper):
                 #    len(self.get_wrapper_attr('action_variables')))]
                 simulated_actions = [info['action']
                                      for info in episode_data.infos]
-                if isinstance(simulated_actions[1], list):
+                if isinstance(simulated_actions[0], list):
                     writer.writerows(simulated_actions)
                 else:
                     for action in simulated_actions:
