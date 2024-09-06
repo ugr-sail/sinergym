@@ -67,7 +67,9 @@ class EplusEnv(gym.Env):
 
         print('#==============================================================================================#')
         self.logger.info(
-            'Creating Gymnasium environment... [{}]'.format(env_name))
+            'Creating Gymnasium environment.')
+        self.logger.info(
+            'Name: {}'.format(env_name))
         print('#==============================================================================================#')
 
         # ---------------------------------------------------------------------------- #
@@ -186,7 +188,7 @@ class EplusEnv(gym.Env):
         self._check_eplus_env()
 
         self.logger.info(
-            'Environment {} created successfully.'.format(env_name))
+            'Environment created successfully.')
 
     # ---------------------------------------------------------------------------- #
     #                                     RESET                                    #
@@ -226,8 +228,10 @@ class EplusEnv(gym.Env):
         # ------------------------ Preparation for new episode ----------------------- #
         print('#----------------------------------------------------------------------------------------------#')
         self.logger.info(
-            'Starting a new episode... [{}] [Episode {}]'.format(
-                self.name, self.episode))
+            'Starting a new episode.')
+        self.logger.info(
+            'Episode {}: {}'.format(
+                self.episode, self.name))
         print('#----------------------------------------------------------------------------------------------#')
         # Get new episode working dir
         self.episode_dir = self.model.set_episode_working_dir()
@@ -241,7 +245,10 @@ class EplusEnv(gym.Env):
             variation=reset_options.get('weather_variability'))
         eplus_working_out_path = (self.episode_dir + '/' + 'output')
         self.logger.info(
-            'Saving episode output path... [{}]'.format(
+            'Saving episode output path.'.format(
+                eplus_working_out_path))
+        self.logger.debug(
+            'Path: {}'.format(
                 eplus_working_out_path))
 
         self.energyplus_simulator.start(
@@ -367,11 +374,11 @@ class EplusEnv(gym.Env):
         info.update(rw_terms)
         self.last_info = info
 
-        self.logger.debug('STEP observation: {}'.format(obs))
-        self.logger.debug('STEP reward: {}'.format(reward))
-        self.logger.debug('STEP terminated: {}'.format(terminated))
-        self.logger.debug('STEP truncated: {}'.format(truncated))
-        self.logger.debug('STEP info: {}'.format(info))
+        # self.logger.debug('STEP observation: {}'.format(obs))
+        # self.logger.debug('STEP reward: {}'.format(reward))
+        # self.logger.debug('STEP terminated: {}'.format(terminated))
+        # self.logger.debug('STEP truncated: {}'.format(truncated))
+        # self.logger.debug('STEP info: {}'.format(info))
 
         return np.array(list(obs.values()), dtype=np.float32
                         ), reward, terminated, truncated, info

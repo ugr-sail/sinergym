@@ -150,13 +150,12 @@ class EnergyPlus(object):
 
         # run EnergyPlus in a non-blocking way
         def _run_energyplus(runtime, cmd_args, state, results):
-            self.logger.info(
+            self.logger.debug(
                 'Running EnergyPlus with args: {}'.format(cmd_args))
 
             # start simulation
             results["exit_code"] = runtime.run_energyplus(state, cmd_args)
             self.simulation_complete = True
-            print('')
 
         # Creating the thread and start execution
         self.energyplus_thread = threading.Thread(

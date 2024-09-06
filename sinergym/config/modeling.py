@@ -138,7 +138,8 @@ class ModelJSON(object):
         self.timestep_per_episode = int(
             self.episode_length / self.step_size)
 
-        self.logger.info('runperiod established: {}'.format(self.runperiod))
+        self.logger.info('Runperiod established.')
+        self.logger.debug('Runperiod: {}'.format(self.runperiod))
         self.logger.info(
             'Episode length (seconds): {}'.format(
                 self.episode_length))
@@ -187,7 +188,8 @@ class ModelJSON(object):
         self.building['Site:Location'] = new_location
         self.building['SizingPeriod:DesignDay'] = new_designdays
 
-        self.logger.info('Adapting weather to building model. [{}]'.format(
+        self.logger.info('Adapting weather to building model.')
+        self.logger.debug('Weather path: {}'.format(
             self._weather_path.split('/')[-1]))
 
     def adapt_building_to_variables(self) -> None:
@@ -203,7 +205,7 @@ class ModelJSON(object):
                                                              'reporting_frequency': 'Timestep'}
 
         self.logger.info(
-            'Updated building model with whole Output:Variable available names')
+            'Update building model Output:Variable with variable names.')
 
         # Delete default Output:Variables and added whole building variables to
         # Output:Variable field
@@ -221,7 +223,7 @@ class ModelJSON(object):
                           str(i)] = {'key_name': meter_name, 'reporting_frequency': 'Timestep'}
 
         self.logger.info(
-            'Updated building model with whole Output:Meter available names')
+            'Update building model Output:Meter with meter names.')
 
         # Delete default Output:Variables and added whole building variables to
         # Output:Variable field
@@ -513,7 +515,9 @@ class ModelJSON(object):
             self._rm_past_history_dir(episode_path, '-sub_run')
 
             self.logger.info(
-                'Episode directory created [{}]'.format(
+                'Episode directory created.')
+            self.logger.debug(
+                'Episode directory path: {}'.format(
                     episode_path))
 
             return episode_path
@@ -547,7 +551,9 @@ class ModelJSON(object):
         self.experiment_path = experiment_path
 
         self.logger.info(
-            'Experiment working directory created [{}]'.format(experiment_path))
+            'Experiment working directory created.')
+        self.logger.info(
+            'Working directory: {}'.format(experiment_path))
 
         return experiment_path
 

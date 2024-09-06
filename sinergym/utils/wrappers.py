@@ -337,7 +337,9 @@ class NormalizeObservation(gym.Wrapper):
         """
         if hasattr(self, "mean") and hasattr(self, "var"):
             self.logger.info(
-                'Saving normalization calibration data... [{}]'.format(
+                'Saving normalization calibration data.')
+            self.logger.info(
+                'Path: {}'.format(
                     self.get_wrapper_attr('name')))
             # Save in txt in output folder
             np.savetxt(fname=self.get_wrapper_attr(
