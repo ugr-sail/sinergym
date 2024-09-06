@@ -97,7 +97,8 @@ class EnergyPlus(object):
     def start(self,
               building_path: str,
               weather_path: str,
-              output_path: str) -> None:
+              output_path: str,
+              episode: int) -> None:
         """Initializes all callbacks and handlers using EnergyPlus API, prepare the simulation system
            and start running the simulation in a Python thread.
 
@@ -105,6 +106,7 @@ class EnergyPlus(object):
             building_path (str): EnergyPlus input description file path.
             weather_path (str): EnergyPlus weather path.
             output_path (str): Path where EnergyPlus process is going to allocate its output files.
+            episode (int): Number of the episode to run (useful to show in progress bar).
         """
 
         # Path attributes

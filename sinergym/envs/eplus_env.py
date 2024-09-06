@@ -254,7 +254,8 @@ class EplusEnv(gym.Env):
         self.energyplus_simulator.start(
             building_path=eplus_working_building_path,
             weather_path=eplus_working_weather_path,
-            output_path=eplus_working_out_path)
+            output_path=eplus_working_out_path,
+            episode=self.episode)
 
         self.logger.info('Episode {} started.'.format(self.episode))
 
