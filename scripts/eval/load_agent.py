@@ -8,6 +8,8 @@ import wandb
 from gymnasium.wrappers.normalize import NormalizeReward
 from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
 from stable_baselines3.common.monitor import Monitor
+from sinergym.utils.logger import TerminalLogger
+import logging
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
@@ -30,6 +32,15 @@ parser.add_argument(
     help='Path to experiment configuration (JSON file)'
 )
 args = parser.parse_args()
+
+# Optional: Terminal log in the same format as Sinergym.
+# Logger info can be replaced by print.
+terminal_logger = TerminalLogger()
+logger = terminal_logger.getLogger(
+    name='EVALUATION',
+    level=logging.INFO
+)
+
 
 # ---------------------------------------------------------------------------- #
 #                             Read json parameters                             #
@@ -139,24 +150,27 @@ try:
     #                             Execute loaded agent                             #
     # ---------------------------------------------------------------------------- #
     for i in range(conf['episodes']):
+        # Reset the environment to start a new episode
         obs, info = env.reset()
         rewards = []
         truncated = terminated = False
         current_month = 0
         while not (terminated or truncated):
-            a, _ = model.predict(obs, deterministic=True)
+            # Random action control
+            a = env.action_space.sample()
+            # Read observation and reward
             obs, reward, terminated, truncated, info = env.step(a)
             rewards.append(reward)
-            if info['month'] != current_month:
+            # If this timestep is a new month start
+            if info['month'] != current_month:  # display results every month
                 current_month = info['month']
-                print(info['month'], sum(rewards))
-        print(
-            'Episode ',
-            i,
-            'Mean reward: ',
-            np.mean(rewards),
-            'Cumulative reward: ',
-            sum(rewards))
+                # Print information
+                logger.info('Reward: {}'.format(sum(rewards)))
+                logger.info('Info: {}'.format(info))
+                # Final episode information print
+                logger.info(
+                    'Episode {} - Mean reward: {} - Cumulative Reward: {}'.format(
+                        i, np.mean(rewards), sum(rewards)))
     env.close()
 
     # ---------------------------------------------------------------------------- #
