@@ -1,9 +1,20 @@
+import logging
+
 import gymnasium as gym
 import numpy as np
 
 import sinergym
+from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.wrappers import (CSVLogger, LoggerWrapper, NormalizeAction,
                                      NormalizeObservation)
+
+# Optional: Terminal log in the same format as Sinergym.
+# Logger info can be replaced by print.
+terminal_logger = TerminalLogger()
+logger = terminal_logger.getLogger(
+    name='MAIN',
+    level=logging.INFO
+)
 
 # Creating environment and applying wrappers for normalization and logging
 env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1')
@@ -29,14 +40,10 @@ for i in range(3):
         if info['month'] != current_month:  # display results every month
             current_month = info['month']
             # Print information
-            print('Reward: ', sum(rewards), info)
+            logger.info('Reward: {}'.format(sum(rewards)))
+            logger.info('Info: {}'.format(info))
     # Final episode information print
-    print(
-        'Episode ',
-        i,
-        'Mean reward: ',
-        np.mean(rewards),
-        'Cumulative reward: ',
-        sum(rewards))
+    logger.info('Episode {} - Mean reward: {} - Cumulative Reward: {}'.format(i,
+                                                                              np.mean(rewards), sum(rewards)))
 # Close the environment
 env.close()

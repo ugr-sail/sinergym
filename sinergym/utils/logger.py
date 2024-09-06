@@ -5,6 +5,7 @@ from typing import Any, Dict, List, Tuple, Union
 
 import numpy as np
 import pkg_resources
+from tqdm import tqdm
 
 from sinergym.utils.constants import LOG_FORMAT
 
@@ -39,6 +40,18 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 
+class TqdmLoggingHandler(logging.StreamHandler):
+    """Logging handler that uses tqdm.write to avoid interfering with tqdm progress bars."""
+
+    def emit(self, record):
+        try:
+            msg = self.format(record)
+            tqdm.write(msg)  # Use tqdm.write to print the log message
+            self.flush()
+        except Exception:
+            self.handleError(record)
+
+
 class TerminalLogger():
     """Sinergym terminal logger for simulation executions.
     """
@@ -60,7 +73,8 @@ class TerminalLogger():
 
         """
         logger = logging.getLogger(name)
-        consoleHandler = logging.StreamHandler(stream=sys.stdout)
+        # consoleHandler = logging.StreamHandler(stream=sys.stdout)
+        consoleHandler = TqdmLoggingHandler(stream=sys.stdout)
         consoleHandler.setFormatter(formatter)
         logger.addHandler(consoleHandler)
         logger.setLevel(level)

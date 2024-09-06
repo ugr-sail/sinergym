@@ -267,7 +267,6 @@ if not missing:
             assert model.action_space == env.action_space
             assert model.env.action_space == env.action_space
 
-            print(type(model.policy))
             assert isinstance(
                 model.policy,
                 stable_baselines3.sac.policies.SACPolicy)

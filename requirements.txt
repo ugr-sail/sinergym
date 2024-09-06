@@ -10,3 +10,4 @@ twine
 xlsxwriter
 pipdeptree
 wandb
+tqdm

@@ -2,12 +2,14 @@
 Class for connecting EnergyPlus with Python using pyenergyplus API.
 """
 
+import sys
 import threading
 from pathlib import Path
 from queue import Queue
 from typing import Any, Dict, List, Optional, Tuple
 
 from pyenergyplus.api import EnergyPlusAPI
+from tqdm import tqdm
 
 from sinergym.utils.common import *
 from sinergym.utils.constants import LOG_SIM_LEVEL
@@ -97,7 +99,8 @@ class EnergyPlus(object):
     def start(self,
               building_path: str,
               weather_path: str,
-              output_path: str) -> None:
+              output_path: str,
+              episode: int) -> None:
         """Initializes all callbacks and handlers using EnergyPlus API, prepare the simulation system
            and start running the simulation in a Python thread.
 
@@ -105,6 +108,7 @@ class EnergyPlus(object):
             building_path (str): EnergyPlus input description file path.
             weather_path (str): EnergyPlus weather path.
             output_path (str): Path where EnergyPlus process is going to allocate its output files.
+            episode (int): Number of the episode to run (useful to show in progress bar).
         """
 
         # Path attributes
@@ -119,13 +123,30 @@ class EnergyPlus(object):
         self.api.runtime.set_console_output_status(
             self.energyplus_state, False)
 
+        # Progress bar for simulation
+        self.progress_bar = None
+
         # Register callback used to track simulation progress
         def _progress_update(percent: int) -> None:
-            bar_length = 100
-            filled_length = int(bar_length * (percent / 100.0))
-            bar = "*" * filled_length + '-' * (bar_length - filled_length - 1)
             if self.system_ready:
-                print(f'\rProgress: |{bar}| {percent}%', end="\r")
+
+                if self.progress_bar is None:
+                    # Progress bar for simulation
+                    self.progress_bar = tqdm(
+                        total=100,
+                        desc='Simulation Progress [Episode {}]'.format(episode),
+                        ncols=100,
+                        unit='%',
+                        leave=True,
+                        position=0,
+                        ascii=False,
+                        dynamic_ncols=True,
+                        file=sys.stdout)
+
+                percent = percent + 1 if percent < 100 else percent
+                self.progress_bar.update(percent - self.progress_bar.n)
+                self.progress_bar.set_postfix_str(f'{percent}% completed')
+                self.progress_bar.refresh()
 
         self.api.runtime.callback_progress(
             self.energyplus_state, _progress_update)
@@ -150,13 +171,12 @@ class EnergyPlus(object):
 
         # run EnergyPlus in a non-blocking way
         def _run_energyplus(runtime, cmd_args, state, results):
-            self.logger.info(
+            self.logger.debug(
                 'Running EnergyPlus with args: {}'.format(cmd_args))
 
             # start simulation
             results["exit_code"] = runtime.run_energyplus(state, cmd_args)
             self.simulation_complete = True
-            print('')
 
         # Creating the thread and start execution
         self.energyplus_thread = threading.Thread(
@@ -181,6 +201,10 @@ class EnergyPlus(object):
         if self.is_running:
             # Set simulation as complete and force thread to finish
             self.simulation_complete = True
+            # Kill progress bar
+            if self.progress_bar is not None:
+                self.progress_bar.close()
+            # Flush all queues and wait to thread to finish (without control)
             self._flush_queues()
             self.energyplus_thread.join()
             # Delete thread
