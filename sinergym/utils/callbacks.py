@@ -10,11 +10,17 @@ from stable_baselines3.common.callbacks import EventCallback
 from stable_baselines3.common.env_util import is_wrapped
 from stable_baselines3.common.vec_env import VecEnv
 
+from sinergym.utils.constants import LOG_CALLBACK_LEVEL
+from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.wrappers import (BaseLoggerWrapper, NormalizeObservation,
                                      WandBLogger)
 
 
 class LoggerEvalCallback(EventCallback):
+
+    logger = TerminalLogger().getLogger(
+        name='EVALUATION',
+        level=LOG_CALLBACK_LEVEL)
 
     def __init__(
         self,
@@ -52,7 +58,7 @@ class LoggerEvalCallback(EventCallback):
         # Last train model step generate a env.reset() automatically, we want
         # to avoid this
         self.eval_freq = eval_freq_episodes * \
-            train_env.get_wrapper_attr('timestep_per_episode') - 1
+            train_env.get_wrapper_attr('timestep_per_episode') - eval_freq_episodes
         self.save_path = self.train_env.get_wrapper_attr(
             'workspace_path') + '/evaluation'
         # Make dir if not exists
@@ -133,7 +139,7 @@ class LoggerEvalCallback(EventCallback):
 
         # Terminal information when verbose is active
         if self.verbose >= 1:
-            print(f"Eval num_timesteps={self.num_timesteps}, " f"episode_reward={
+            self.logger.info(f"Eval num_timesteps={self.num_timesteps}, " f"episode_reward={
                 evaluation_summary['mean_reward']: .2f} + /- {evaluation_summary['std_reward']: .2f}")
 
         # ------------------------ Save best model if required ----------------------- #
@@ -141,7 +147,7 @@ class LoggerEvalCallback(EventCallback):
         # Condition to determine when a modes is the best
         if evaluation_summary['mean_reward'] > self.best_mean_reward:
             if self.verbose >= 1:
-                print("New best mean reward!")
+                self.logger.info("New best mean reward!")
 
             # Save new best model
             self.model.save(

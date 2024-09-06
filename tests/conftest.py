@@ -41,7 +41,7 @@ def pkg_data_path():
 
 @pytest.fixture(scope='function')
 def pkg_mock_path():
-    return PKG_MOCK_PATH
+    return pkg_resources.resource_filename('tests', 'mock/')
 
 
 @pytest.fixture(scope='function')

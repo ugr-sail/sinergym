@@ -22,6 +22,7 @@ def test_simulator(simulator_5zone, pkg_data_path):
     assert simulator_5zone._building_path is None
     assert simulator_5zone._weather_path is None
     assert simulator_5zone._output_path is None
+    assert not hasattr(simulator_5zone, 'progress_bar')
 
     # simulation start
     simulator_5zone.start(
@@ -33,7 +34,8 @@ def test_simulator(simulator_5zone, pkg_data_path):
             pkg_data_path,
             'weather',
             'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw'),
-        output_path='./Eplus-TESTSIMULATOR/')
+        output_path='./Eplus-TESTSIMULATOR/',
+        episode=1)
 
     # Checks status after simulation start
     assert simulator_5zone.energyplus_state is not None
@@ -41,6 +43,7 @@ def test_simulator(simulator_5zone, pkg_data_path):
     assert simulator_5zone._building_path is not None
     assert simulator_5zone._weather_path is not None
     assert simulator_5zone._output_path is not None
+    assert simulator_5zone.progress_bar is None
 
     # Checks warmup process
     if not simulator_5zone.warmup_complete:
@@ -146,7 +149,8 @@ def test_unknown_handlers(simulator_5zone, pkg_data_path):
             pkg_data_path,
             'weather',
             'USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw'),
-        output_path='./Eplus-TESTSIMULATOR/')
+        output_path='./Eplus-TESTSIMULATOR/',
+        episode=1)
     # Until first observation received, system is not initialized
     assert simulator_5zone.var_handlers is None
     assert simulator_5zone.meter_handlers is None
