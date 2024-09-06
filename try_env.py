@@ -1,9 +1,10 @@
-import gymnasium as gym
-import numpy as np
-from sinergym.utils.logger import TerminalLogger
 import logging
 
+import gymnasium as gym
+import numpy as np
+
 import sinergym
+from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.wrappers import (CSVLogger, LoggerWrapper, NormalizeAction,
                                      NormalizeObservation)
 

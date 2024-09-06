@@ -2,14 +2,14 @@
 Class for connecting EnergyPlus with Python using pyenergyplus API.
 """
 
+import sys
 import threading
 from pathlib import Path
 from queue import Queue
 from typing import Any, Dict, List, Optional, Tuple
-from tqdm import tqdm
-import sys
 
 from pyenergyplus.api import EnergyPlusAPI
+from tqdm import tqdm
 
 from sinergym.utils.common import *
 from sinergym.utils.constants import LOG_SIM_LEVEL

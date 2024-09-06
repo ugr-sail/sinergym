@@ -9,9 +9,9 @@ import pandas as pd
 from stable_baselines3.common.callbacks import EventCallback
 from stable_baselines3.common.env_util import is_wrapped
 from stable_baselines3.common.vec_env import VecEnv
-from sinergym.utils.logger import TerminalLogger
-from sinergym.utils.constants import LOG_CALLBACK_LEVEL
 
+from sinergym.utils.constants import LOG_CALLBACK_LEVEL
+from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.wrappers import (BaseLoggerWrapper, NormalizeObservation,
                                      WandBLogger)
 

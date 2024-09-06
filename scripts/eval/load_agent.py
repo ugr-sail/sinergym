@@ -1,5 +1,6 @@
 import argparse
 import json
+import logging
 import sys
 
 import gymnasium as gym
@@ -8,13 +9,12 @@ import wandb
 from gymnasium.wrappers.normalize import NormalizeReward
 from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
 from stable_baselines3.common.monitor import Monitor
-from sinergym.utils.logger import TerminalLogger
-import logging
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import *
+from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.rewards import *
 from sinergym.utils.wrappers import *
 

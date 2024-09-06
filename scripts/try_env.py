@@ -1,10 +1,11 @@
+import logging
+
 import gymnasium as gym
 import numpy as np
 from gymnasium.wrappers.normalize import NormalizeReward
-from sinergym.utils.logger import TerminalLogger
-import logging
 
 import sinergym
+from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.wrappers import (LoggerWrapper, NormalizeAction,
                                      NormalizeObservation)
 

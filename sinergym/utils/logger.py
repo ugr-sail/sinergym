@@ -2,10 +2,10 @@
 import logging
 import sys
 from typing import Any, Dict, List, Tuple, Union
-from tqdm import tqdm
 
 import numpy as np
 import pkg_resources
+from tqdm import tqdm
 
 from sinergym.utils.constants import LOG_FORMAT
 
