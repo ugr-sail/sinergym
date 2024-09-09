@@ -13,7 +13,9 @@
 
     "config_params"          : null,
 
-    "variation"             : [1.0, 0.0, 0.001],
+    "weather_noise":{
+        "drybulb": [1.0, 0.0, 0.001]
+    },
 
     "max_ep_data_store_num" : 10,
 
