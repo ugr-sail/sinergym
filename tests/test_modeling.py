@@ -2,9 +2,9 @@ import json
 import os
 
 import pytest
+from opyplus import WeatherData
 
 from sinergym.utils.constants import WEEKDAY_ENCODING
-from opyplus import WeatherData
 
 # ---------------------------------------------------------------------------- #
 #                    Variables and Building model adaptation                   #

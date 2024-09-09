@@ -9,10 +9,10 @@ import numpy as np
 import pandas as pd
 import xlsxwriter
 from eppy.modeleditor import IDF
-from sinergym.utils.logger import TerminalLogger
 
 import sinergym
-from sinergym.utils.constants import YEAR, LOG_COMMON_LEVEL
+from sinergym.utils.constants import LOG_COMMON_LEVEL, YEAR
+from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.rewards import *
 
 # from opyplus.epgm.record import Record
