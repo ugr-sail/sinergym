@@ -357,7 +357,7 @@ def env_5zone_stochastic(
         variables=VARIABLES_5ZONE,
         meters=METERS_5ZONE,
         actuators=ACTUATORS_5ZONE,
-        weather_variability=(1.0, 0.0, 0.001),
+        weather_variability={'drybulb': (1.0, 0.0, 0.001)},
         reward=LinearReward,
         reward_kwargs={
             'temperature_variables': ['air_temperature'],
