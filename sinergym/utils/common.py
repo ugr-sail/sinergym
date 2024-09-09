@@ -9,13 +9,17 @@ import numpy as np
 import pandas as pd
 import xlsxwriter
 from eppy.modeleditor import IDF
+from sinergym.utils.logger import TerminalLogger
 
 import sinergym
-from sinergym.utils.constants import YEAR
+from sinergym.utils.constants import YEAR, LOG_COMMON_LEVEL
 from sinergym.utils.rewards import *
 
 # from opyplus.epgm.record import Record
 
+logger = TerminalLogger().getLogger(
+    name='COMMON',
+    level=LOG_COMMON_LEVEL)
 
 # --------------------------------- Wrappers --------------------------------- #
 
