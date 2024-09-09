@@ -305,7 +305,7 @@ def convert_conf_to_env_parameters(
     weather_info = list(zip(conf['weather_specification']['keys'],
                         conf['weather_specification']['weather_files']))
 
-    variation = conf.get('variation')
+    weather_variability = conf.get('weather_variability')
 
     for weather_id, weather_file in weather_info:
 
@@ -327,7 +327,11 @@ def convert_conf_to_env_parameters(
         }
         configurations[id] = env_kwargs
 
-        if variation:
+        if weather_variability:
+
+            # Cast weather variability variation from list to tuple
+            for variable, variation in weather_variability.items():
+                weather_variability[variable] = tuple(variation)
 
             id = 'Eplus-' + conf['id_base'] + '-' + \
                 weather_id + '-continuous-stochastic-v1'
@@ -339,7 +343,7 @@ def convert_conf_to_env_parameters(
                 'variables': variables,
                 'meters': meters,
                 'actuators': actuators,
-                'weather_variability': tuple(variation),
+                'weather_variability': weather_variability,
                 'reward': eval(conf['reward']),
                 'reward_kwargs': conf['reward_kwargs'],
                 'max_ep_data_store_num': conf['max_ep_data_store_num'],
