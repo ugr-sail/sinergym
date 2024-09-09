@@ -13,7 +13,7 @@
 
     "config_params"          : null,
 
-    "weather_noise":{
+    "weather_variability":{
         "drybulb": [1.0, 0.0, 0.001]
     },
 
