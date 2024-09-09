@@ -4,6 +4,7 @@ import os
 import pytest
 
 from sinergym.utils.constants import WEEKDAY_ENCODING
+from opyplus import WeatherData
 
 # ---------------------------------------------------------------------------- #
 #                    Variables and Building model adaptation                   #
@@ -194,21 +195,35 @@ def test_apply_weather_variability(model_5zone):
     model_5zone.set_episode_working_dir()
     assert model_5zone.episode_path is not None
     # Check apply None variation return original weather_path
-    path_result = model_5zone.apply_weather_variability(variation=None)
+    path_result = model_5zone.apply_weather_variability(
+        weather_variability=None)
     original_filename = model_5zone._weather_path.split('/')[-1]
     path_filename = path_result.split('/')[-1]
     assert original_filename == path_filename
     # Check with a variation
-    variation = (1.0, 0.0, 0.001)
-    path_result = model_5zone.apply_weather_variability(variation=variation)
+    weather_variability = {
+        'drybulb': (1.0, 0.0, 0.001),
+        'windspd': (3.0, 0.0, 0.01)
+    }
+    path_result = model_5zone.apply_weather_variability(
+        weather_variability=weather_variability)
     filename = model_5zone._weather_path.split('/')[-1]
     filename = filename.split('.epw')[0]
-    filename += '_Random_%s_%s_%s.epw' % (
-        str(variation[0]), str(variation[1]), str(variation[2]))
+    filename += '_OU_Noise.epw'
     path_expected = model_5zone.episode_path + '/' + filename
     assert path_result == path_expected
     # Check that path exists
     assert os.path.exists(path_result)
+    # Lets load the original weather file and the new one
+    df_original = WeatherData.from_epw(
+        model_5zone._weather_path).get_weather_series()
+    df_noise = WeatherData.from_epw(path_result).get_weather_series()
+    # Check that the noise is applied in drybulb and windspd columns and not
+    # in others
+    assert (df_original['drybulb'] != df_noise['drybulb']).any()
+    assert (df_original['windspd'] != df_noise['windspd']).any()
+    assert (df_original['relhum'] == df_noise['relhum']).all()
+    assert (df_original['winddir'] == df_noise['winddir']).all()
 
 # ---------------------------------------------------------------------------- #
 #                          Schedulers info extraction                          #
