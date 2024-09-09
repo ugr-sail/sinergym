@@ -67,15 +67,6 @@ def test_json_to_variables(conf_5zone):
     assert len(list(output.values())[0]) == 2
 
 
-def test_json_to_variables_exceptions(conf_5zone_exceptions):
-
-    assert isinstance(conf_5zone_exceptions, list)
-    for conf_5zone_exception in conf_5zone_exceptions:
-        assert isinstance(conf_5zone_exception['variables'], dict)
-        with pytest.raises((RuntimeError, AssertionError)):
-            common.json_to_variables(conf_5zone_exception['variables'])
-
-
 def test_json_to_meters(conf_5zone):
 
     assert isinstance(conf_5zone['meters'], dict)
@@ -108,3 +99,11 @@ def test_convert_conf_to_env_parameters(conf_5zone):
         env = gym.make(env_id, **env_kwargs)
         env.reset()
         env.close()
+
+
+def test_json_conf_exceptions(conf_5zone_exceptions):
+
+    assert isinstance(conf_5zone_exceptions, list)
+    for conf_5zone_exception in conf_5zone_exceptions:
+        with pytest.raises((RuntimeError, AssertionError)):
+            common.convert_conf_to_env_parameters(conf_5zone_exception)

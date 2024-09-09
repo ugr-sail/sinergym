@@ -223,7 +223,7 @@ def conf_5zone(pkg_mock_path):
 @pytest.fixture(scope='function')
 def conf_5zone_exceptions(pkg_mock_path):
     conf_exceptions = []
-    for i in range(1, 6):
+    for i in range(1, 7):
         conf_path = os.path.join(pkg_mock_path,
                                  'environment_configurations',
                                  '5ZoneAutoDXVAV_exception{}.json'.format(i))
