@@ -365,9 +365,10 @@ class ModelJSON(object):
             # Save new weather data
             weather_data_mod.set_weather_series(df)
 
-            self.logger.debug(
-                'OU noise applied.',
-                variation)
+            self.logger.info(
+                'Weather noise applied in columns: {}'.format(
+                    list(
+                        weather_variability.keys())))
 
             # Change name filename to specify variation nature in name
             filename = filename.split('.epw')[0]

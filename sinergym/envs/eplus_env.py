@@ -267,14 +267,14 @@ class EplusEnv(gym.Env):
 
         # Wait to receive simulation first observation and info
         try:
-            obs = self.obs_queue.get(timeout=2)
+            obs = self.obs_queue.get(timeout=60)
         except Empty:
             self.logger.warning(
                 'Reset: Observation queue empty, returning a random observation (not real).')
             obs = self.last_obs
 
         try:
-            info = self.info_queue.get(timeout=2)
+            info = self.info_queue.get(timeout=60)
         except Empty:
             info = self.last_info
             self.logger.warning(
