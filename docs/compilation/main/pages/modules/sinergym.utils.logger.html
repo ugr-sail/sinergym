@@ -97,6 +97,7 @@
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.logger.CustomFormatter.html">sinergym.utils.logger.CustomFormatter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.logger.LoggerStorage.html">sinergym.utils.logger.LoggerStorage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.logger.TerminalLogger.html">sinergym.utils.logger.TerminalLogger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.logger.TqdmLoggingHandler.html">sinergym.utils.logger.TqdmLoggingHandler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.logger.WandBOutputFormat.html">sinergym.utils.logger.WandBOutputFormat</a></li>
 </ul>
 </li>
@@ -152,7 +153,10 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.logger.TerminalLogger.html#sinergym.utils.logger.TerminalLogger" title="sinergym.utils.logger.TerminalLogger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TerminalLogger</span></code></a>()</p></td>
 <td><p>Sinergym terminal logger for simulation executions.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.logger.WandBOutputFormat.html#sinergym.utils.logger.WandBOutputFormat" title="sinergym.utils.logger.WandBOutputFormat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WandBOutputFormat</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.logger.TqdmLoggingHandler.html#sinergym.utils.logger.TqdmLoggingHandler" title="sinergym.utils.logger.TqdmLoggingHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TqdmLoggingHandler</span></code></a>([stream])</p></td>
+<td><p>Logging handler that uses tqdm.write to avoid interfering with tqdm progress bars.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.logger.WandBOutputFormat.html#sinergym.utils.logger.WandBOutputFormat" title="sinergym.utils.logger.WandBOutputFormat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WandBOutputFormat</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Dumps key / value pairs onto WandB.</p></td>
 </tr>
 </tbody>

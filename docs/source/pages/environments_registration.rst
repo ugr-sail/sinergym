@@ -30,7 +30,7 @@ automatically.
 +-----------------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | config_params         | Yes          | Extra parameters for the environments; it is optional.                                                                                                                    |
 +-----------------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| variation             | Yes          | Create additionally a version of all environments with stochasticity in weather.                                                                                          |
+| weather_variability   | Yes          | Create additionally a version of all environments with stochasticity in weather.                                                                                          |
 +-----------------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | max_ep_data_store_num | Yes          | Max storage in *Sinergym* episodes, by default 10.                                                                                                                        |
 +-----------------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -80,7 +80,7 @@ environments will be automatically configured ::
      'Eplus-5zone-cool-discrete-stochastic-v1'
     ]
 
-For example, if you don't define discrete space or variation, the discrete and stochastic versions will 
+For example, if you don't define discrete space or weather variability, the discrete and stochastic versions will 
 not appear in the list.
 
 .. warning:: For discrete environments, an action mapping must be defined in 

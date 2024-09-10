@@ -166,18 +166,20 @@
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-discrete-v1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-discrete-v1
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1]
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-hot-discrete-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 [WRAPPER DiscretizeEnv] (INFO) : New Discrete Space and mapping: Discrete(10)
 [WRAPPER DiscretizeEnv] (INFO) : Make sure that the action space is compatible and contained in the original environment.
 [WRAPPER DiscretizeEnv] (INFO) : Wrapper initialized
@@ -203,18 +205,17 @@
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 1]
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: 5zone-hot-discrete-v1
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created.
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
-Progress: |***------------------------------------------------------------------------------------------------| 3%
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -231,9 +232,8 @@ Progress: |***------------------------------------------------------------------
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Progress: |***************************************************************************************************| 99%
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-discrete-v1]
-[-0.00589738497079933, -0.09533249490526607]
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:06&lt;00:00, 21.85%/s, 100% completed][-0.00589738497079933, -0.09533249490526607]
 </pre></div></div>
 </div>
 </section>
@@ -258,21 +258,24 @@ Progress: |*********************************************************************
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-discrete-v1]
-#==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-discrete-v1
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:06&lt;00:00, 21.85%/s, 100% completed]#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-hot-discrete-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 [WRAPPER DiscretizeEnv] (INFO) : New Discrete Space and mapping: Discrete(10)
 [WRAPPER DiscretizeEnv] (INFO) : Make sure that the action space is compatible and contained in the original environment.
 [WRAPPER DiscretizeEnv] (INFO) : Wrapper initialized
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:06&lt;00:00, 16.44%/s, 100% completed]
 [WRAPPER PreviousObservationWrapper] (INFO) : Wrapper initialized.
 </pre></div></div>
 </div>
@@ -295,18 +298,17 @@ Progress: |*********************************************************************
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 1]
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: 5zone-hot-discrete-v1
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created.
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
-Progress: |****-----------------------------------------------------------------------------------------------| 4%
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -323,9 +325,8 @@ Progress: |****-----------------------------------------------------------------
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Progress: |***************************************************************************************************| 99%
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-discrete-v1]
-NEW OBSERVATION:  {&#39;month&#39;: np.float32(1.0), &#39;day_of_month&#39;: np.float32(1.0), &#39;hour&#39;: np.float32(0.0), &#39;outdoor_temperature&#39;: np.float32(4.8), &#39;outdoor_humidity&#39;: np.float32(61.0), &#39;wind_speed&#39;: np.float32(4.65), &#39;wind_direction&#39;: np.float32(160.0), &#39;diffuse_solar_radiation&#39;: np.float32(0.0), &#39;direct_solar_radiation&#39;: np.float32(0.0), &#39;htg_setpoint&#39;: np.float32(12.8), &#39;clg_setpoint&#39;: np.float32(40.0), &#39;air_temperature&#39;: np.float32(19.809336), &#39;air_humidity&#39;: np.float32(27.848707), &#39;people_occupant&#39;: np.float32(0.0), &#39;co2_emission&#39;: np.float32(0.0), &#39;HVAC_electricity_demand_rate&#39;: np.float32(117.9477), &#39;total_electricity_HVAC&#39;: np.float32(106152.93), &#39;htg_setpoint_previous&#39;: np.float32(12.8), &#39;clg_setpoint_previous&#39;: np.float32(40.0), &#39;air_temperature_previous&#39;: np.float32(19.95039)}
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 22.84%/s, 100% completed]NEW OBSERVATION:  {&#39;month&#39;: np.float32(1.0), &#39;day_of_month&#39;: np.float32(1.0), &#39;hour&#39;: np.float32(0.0), &#39;outdoor_temperature&#39;: np.float32(4.8), &#39;outdoor_humidity&#39;: np.float32(61.0), &#39;wind_speed&#39;: np.float32(4.65), &#39;wind_direction&#39;: np.float32(160.0), &#39;diffuse_solar_radiation&#39;: np.float32(0.0), &#39;direct_solar_radiation&#39;: np.float32(0.0), &#39;htg_setpoint&#39;: np.float32(12.8), &#39;clg_setpoint&#39;: np.float32(40.0), &#39;air_temperature&#39;: np.float32(19.809336), &#39;air_humidity&#39;: np.float32(27.848707), &#39;people_occupant&#39;: np.float32(0.0), &#39;co2_emission&#39;: np.float32(0.0), &#39;HVAC_electricity_demand_rate&#39;: np.float32(117.9477), &#39;total_electricity_HVAC&#39;: np.float32(106152.93), &#39;htg_setpoint_previous&#39;: np.float32(12.8), &#39;clg_setpoint_previous&#39;: np.float32(40.0), &#39;air_temperature_previous&#39;: np.float32(19.95039)}
 </pre></div></div>
 </div>
 </section>
@@ -347,21 +348,24 @@ NEW OBSERVATION:  {&#39;month&#39;: np.float32(1.0), &#39;day_of_month&#39;: np.
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-discrete-v1]
-#==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-discrete-v1
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 22.84%/s, 100% completed]#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res3
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-hot-discrete-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 [WRAPPER DiscretizeEnv] (INFO) : New Discrete Space and mapping: Discrete(10)
 [WRAPPER DiscretizeEnv] (INFO) : Make sure that the action space is compatible and contained in the original environment.
 [WRAPPER DiscretizeEnv] (INFO) : Wrapper initialized
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 18.53%/s, 100% completed]
 [WRAPPER DatetimeWrapper] (INFO) : Wrapper initialized.
 </pre></div></div>
 </div>
@@ -384,18 +388,17 @@ NEW OBSERVATION:  {&#39;month&#39;: np.float32(1.0), &#39;day_of_month&#39;: np.
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 1]
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: 5zone-hot-discrete-v1
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created.
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
-Progress: |***------------------------------------------------------------------------------------------------| 3%
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -412,9 +415,8 @@ Progress: |***------------------------------------------------------------------
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Progress: |***************************************************************************************************| 99%
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-discrete-v1]
-NEW OBSERVATION:  {&#39;month_cos&#39;: np.float64(1.0), &#39;month_sin&#39;: np.float64(0.0), &#39;is_weekend&#39;: np.float64(0.0), &#39;hour_cos&#39;: np.float64(1.0), &#39;hour_sin&#39;: np.float64(0.0), &#39;outdoor_temperature&#39;: np.float64(4.800000190734863), &#39;outdoor_humidity&#39;: np.float64(61.0), &#39;wind_speed&#39;: np.float64(4.650000095367432), &#39;wind_direction&#39;: np.float64(160.0), &#39;diffuse_solar_radiation&#39;: np.float64(0.0), &#39;direct_solar_radiation&#39;: np.float64(0.0), &#39;htg_setpoint&#39;: np.float64(12.800000190734863), &#39;clg_setpoint&#39;: np.float64(40.0), &#39;air_temperature&#39;: np.float64(19.809335708618164), &#39;air_humidity&#39;: np.float64(27.84870719909668), &#39;people_occupant&#39;: np.float64(0.0), &#39;co2_emission&#39;: np.float64(0.0), &#39;HVAC_electricity_demand_rate&#39;: np.float64(117.94770050048828), &#39;total_electricity_HVAC&#39;: np.float64(106152.9296875)}
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 23.21%/s, 100% completed]NEW OBSERVATION:  {&#39;month_cos&#39;: np.float64(1.0), &#39;month_sin&#39;: np.float64(0.0), &#39;is_weekend&#39;: np.float64(0.0), &#39;hour_cos&#39;: np.float64(1.0), &#39;hour_sin&#39;: np.float64(0.0), &#39;outdoor_temperature&#39;: np.float64(4.800000190734863), &#39;outdoor_humidity&#39;: np.float64(61.0), &#39;wind_speed&#39;: np.float64(4.650000095367432), &#39;wind_direction&#39;: np.float64(160.0), &#39;diffuse_solar_radiation&#39;: np.float64(0.0), &#39;direct_solar_radiation&#39;: np.float64(0.0), &#39;htg_setpoint&#39;: np.float64(12.800000190734863), &#39;clg_setpoint&#39;: np.float64(40.0), &#39;air_temperature&#39;: np.float64(19.809335708618164), &#39;air_humidity&#39;: np.float64(27.84870719909668), &#39;people_occupant&#39;: np.float64(0.0), &#39;co2_emission&#39;: np.float64(0.0), &#39;HVAC_electricity_demand_rate&#39;: np.float64(117.94770050048828), &#39;total_electricity_HVAC&#39;: np.float64(106152.9296875)}
 </pre></div></div>
 </div>
 </section>
@@ -448,46 +450,49 @@ NEW OBSERVATION:  {&#39;month_cos&#39;: np.float64(1.0), &#39;month_sin&#39;: np
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-continuous-v1]
-#==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-continuous-v1
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 23.21%/s, 100% completed]#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res2
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-hot-continuous-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 18.69%/s, 100% completed]
 ORIGINAL ACTION SPACE:  Box([12.   23.25], [23.25 30.  ], (2,), float32)
 [WRAPPER NormalizeAction] (INFO) : New normalized action Space: Box(-1.0, 1.0, (2,), float32)
 [WRAPPER NormalizeAction] (INFO) : Wrapper initialized
 WRAPPED ACTION SPACE:  Box(-1.0, 1.0, (2,), float32)
 #----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-continuous-v1] [Episode 1]
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: 5zone-hot-continuous-v1
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created.
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
-Normalized action:  [-0.46666247  0.72446996]
-Action done in simulator:  [15.000024 29.070086]
-Normalized action:  [-0.79799604 -0.04778594]
-Action done in simulator:  [13.136272 26.463722]
-Normalized action:  [-0.6806781   0.30527842]
-Action done in simulator:  [13.7961855 27.655315 ]
-Normalized action:  [0.36448804 0.61559314]
-Action done in simulator:  [19.675245 28.702627]
-Normalized action:  [ 0.4204188  -0.62286806]
-Action done in simulator:  [19.989855 24.52282 ]
-Progress: |***************************************************************************************************| 99%
+Normalized action:  [-0.01846057  0.9679283 ]
+Action done in simulator:  [17.52116  29.891758]
+Normalized action:  [-0.09003034  0.29940483]
+Action done in simulator:  [17.11858 27.63549]
+Normalized action:  [0.7780604  0.41575432]
+Action done in simulator:  [22.00159  28.028172]
+Normalized action:  [-0.33482978 -0.15819682]
+Action done in simulator:  [15.741583 26.091085]
+Normalized action:  [ 0.7994888 -0.8743588]
+Action done in simulator:  [22.122124 23.67404 ]
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-continuous-v1]
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 22.73%/s, 100% completed]
 </pre></div></div>
 </div>
 </section>
@@ -540,18 +545,21 @@ Progress: |*********************************************************************
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-continuous-v1]
-#==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-continuous-v1
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 22.73%/s, 100% completed]#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res3
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-hot-continuous-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 17.84%/s, 100% completed]
 ORIGINAL ACTION SPACE:  Box([12.   23.25], [23.25 30.  ], (2,), float32)
 IS DISCRETE?:  False
 [WRAPPER DiscretizeEnv] (INFO) : New Discrete Space and mapping: Discrete(10)
@@ -560,29 +568,24 @@ IS DISCRETE?:  False
 WRAPPED ACTION SPACE:  Discrete(10)
 IS DISCRETE?:  True
 #----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-continuous-v1] [Episode 1]
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: 5zone-hot-continuous-v1
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created.
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
+ACTION DISCRETE:  0
+Action done in simulator:  [15, 30]
+ACTION DISCRETE:  7
+<span class="ansi-yellow-fg">[ENVIRONMENT] (WARNING) : Step: The action [22, 23] is not correct for the Action Space Box([12.   23.25], [23.25 30.  ], (2,), float32)</span>
+Action done in simulator:  [22, 23]
 ACTION DISCRETE:  9
 <span class="ansi-yellow-fg">[ENVIRONMENT] (WARNING) : Step: The action [21, 22.5] is not correct for the Action Space Box([12.   23.25], [23.25 30.  ], (2,), float32)</span>
-Action done in simulator:  [21, 22.5]
-ACTION DISCRETE:  6
-Action done in simulator:  [21, 24]
-ACTION DISCRETE:  4
-Action done in simulator:  [19, 26]
-ACTION DISCRETE:  1
-Action done in simulator:  [16, 29]
-ACTION DISCRETE:  3
-Action done in simulator:  [18, 27]
-Progress: |***------------------------------------------------------------------------------------------------| 3%
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -599,8 +602,13 @@ Progress: |***------------------------------------------------------------------
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Progress: |***************************************************************************************************| 99%
+Action done in simulator:  [21, 22.5]
+ACTION DISCRETE:  6
+Action done in simulator:  [21, 24]
+ACTION DISCRETE:  4
+Action done in simulator:  [19, 26]
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-continuous-v1]
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 23.09%/s, 100% completed]
 </pre></div></div>
 </div>
 <p>As seen in the output, the input is an int, but a list with the original action space is created in the simulator.</p>
@@ -627,18 +635,21 @@ Progress: |*********************************************************************
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-continuous-v1]
-#==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-continuous-v1
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 23.09%/s, 100% completed]#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res4
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-hot-continuous-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 18.80%/s, 100% completed]
 ORIGINAL ACTION SPACE:  Box([12.   23.25], [23.25 30.  ], (2,), float32)
 [WRAPPER DiscreteIncrementalWrapper] (INFO) : New incremental action mapping: 17
 [WRAPPER DiscreteIncrementalWrapper] (INFO) : {0: [0.0, 0.0], 1: [np.float64(0.5), 0.0], 2: [np.float64(1.0), 0.0], 3: [np.float64(1.5), 0.0], 4: [np.float64(2.0), 0.0], 5: [np.float64(-0.5), 0.0], 6: [np.float64(-1.0), 0.0], 7: [np.float64(-1.5), 0.0], 8: [np.float64(-2.0), 0.0], 9: [0.0, np.float64(0.5)], 10: [0.0, np.float64(1.0)], 11: [0.0, np.float64(1.5)], 12: [0.0, np.float64(2.0)], 13: [0.0, np.float64(-0.5)], 14: [0.0, np.float64(-1.0)], 15: [0.0, np.float64(-1.5)], 16: [0.0, np.float64(-2.0)]}
@@ -669,29 +680,17 @@ WRAPPED ACTION MAPPING:  &lt;bound method DiscreteIncrementalWrapper.action_mapp
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-continuous-v1] [Episode 1]
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: 5zone-hot-continuous-v1
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created.
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
-CURRENT SETPOINTS VALUES:  [21.0, 25.0]
-Action number  0 :  [0.0, np.float64(-2.0)]
-Setpoints update:  [np.float64(21.0), np.float64(23.25)]
-Action number  1 :  [0.0, np.float64(0.5)]
-Setpoints update:  [np.float64(21.0), np.float64(23.75)]
-Action number  2 :  [0.0, np.float64(-1.0)]
-Setpoints update:  [np.float64(21.0), np.float64(23.25)]
-Action number  3 :  [0.0, 0.0]
-Setpoints update:  [np.float64(21.0), np.float64(23.25)]
-Action number  4 :  [0.0, np.float64(1.0)]
-Setpoints update:  [np.float64(21.0), np.float64(24.25)]
-Progress: |***------------------------------------------------------------------------------------------------| 3%
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -708,8 +707,19 @@ Progress: |***------------------------------------------------------------------
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Progress: |***************************************************************************************************| 99%
+CURRENT SETPOINTS VALUES:  [21.0, 25.0]
+Action number  0 :  [0.0, 0.0]
+Setpoints update:  [np.float64(21.0), np.float64(25.0)]
+Action number  1 :  [0.0, np.float64(0.5)]
+Setpoints update:  [np.float64(21.0), np.float64(25.5)]
+Action number  2 :  [0.0, 0.0]
+Setpoints update:  [np.float64(21.0), np.float64(25.5)]
+Action number  3 :  [0.0, np.float64(-2.0)]
+Setpoints update:  [np.float64(21.0), np.float64(23.5)]
+Action number  4 :  [np.float64(-0.5), 0.0]
+Setpoints update:  [np.float64(20.5), np.float64(23.5)]
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-continuous-v1]
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 21.37%/s, 100% completed]
 </pre></div></div>
 </div>
 </section>
@@ -733,21 +743,24 @@ Progress: |*********************************************************************
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-discrete-v1]
-#==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-discrete-v1
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 21.37%/s, 100% completed]#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res4
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-hot-discrete-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 [WRAPPER DiscretizeEnv] (INFO) : New Discrete Space and mapping: Discrete(10)
 [WRAPPER DiscretizeEnv] (INFO) : Make sure that the action space is compatible and contained in the original environment.
 [WRAPPER DiscretizeEnv] (INFO) : Wrapper initialized
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:05&lt;00:00, 17.29%/s, 100% completed]
 [WRAPPER NormalizeObservation] (INFO) : Wrapper initialized.
 </pre></div></div>
 </div>
@@ -770,19 +783,18 @@ Progress: |*********************************************************************
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 1]
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: 5zone-hot-discrete-v1
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created.
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
-[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [5zone-hot-discrete-v1]
-Progress: |***------------------------------------------------------------------------------------------------| 3%
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -799,10 +811,9 @@ Progress: |***------------------------------------------------------------------
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Progress: |***************************************************************************************************| 99%
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-discrete-v1]
-[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [5zone-hot-discrete-v1]
-OBSERVATION WITH NORMALIZATION:  {&#39;month&#39;: np.float64(0.00499968750430059), &#39;day_of_month&#39;: np.float64(0.00499968750430059), &#39;hour&#39;: np.float64(0.0), &#39;outdoor_temperature&#39;: np.float64(0.9875907976185373), &#39;outdoor_humidity&#39;: np.float64(-0.9745626607331893), &#39;wind_speed&#39;: np.float64(0.9973969815420386), &#39;wind_direction&#39;: np.float64(0.9908525387095581), &#39;diffuse_solar_radiation&#39;: np.float64(0.0), &#39;direct_solar_radiation&#39;: np.float64(0.0), &#39;htg_setpoint&#39;: np.float64(0.007049581561774207), &#39;clg_setpoint&#39;: np.float64(0.0070688585864955075), &#39;air_temperature&#39;: np.float64(-0.44169349819860654), &#39;air_humidity&#39;: np.float64(0.1687716004048815), &#39;people_occupant&#39;: np.float64(0.0), &#39;co2_emission&#39;: np.float64(0.0), &#39;HVAC_electricity_demand_rate&#39;: np.float64(0.007070813620268407), &#39;total_electricity_HVAC&#39;: np.float64(0.0070710678115464875)}
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:06&lt;00:00, 19.93%/s, 100% completed]OBSERVATION WITH NORMALIZATION:  {&#39;month&#39;: np.float64(0.00499968750430059), &#39;day_of_month&#39;: np.float64(0.00499968750430059), &#39;hour&#39;: np.float64(0.0), &#39;outdoor_temperature&#39;: np.float64(0.9875907976185373), &#39;outdoor_humidity&#39;: np.float64(-0.9745626607331893), &#39;wind_speed&#39;: np.float64(0.9973969815420386), &#39;wind_direction&#39;: np.float64(0.9908525387095581), &#39;diffuse_solar_radiation&#39;: np.float64(0.0), &#39;direct_solar_radiation&#39;: np.float64(0.0), &#39;htg_setpoint&#39;: np.float64(0.007049581561774207), &#39;clg_setpoint&#39;: np.float64(0.0070688585864955075), &#39;air_temperature&#39;: np.float64(-0.44169349819860654), &#39;air_humidity&#39;: np.float64(0.1687716004048815), &#39;people_occupant&#39;: np.float64(0.0), &#39;co2_emission&#39;: np.float64(0.0), &#39;HVAC_electricity_demand_rate&#39;: np.float64(0.007070813620268407), &#39;total_electricity_HVAC&#39;: np.float64(0.0070710678115464875)}
 </pre></div></div>
 </div>
 </section>
@@ -813,7 +824,7 @@ OBSERVATION WITH NORMALIZATION:  {&#39;month&#39;: np.float64(0.0049996875043005
 <p>This wrapper uses Sinergym’s logger storage class to capture the interaction flow with the environment (<strong>LoggerStorage</strong>), accumulating all the information. The class used by the wrapper can be replaced with a different back-end. It can then be combined with various wrappers to output the stored data, such as <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code> or <code class="docutils literal notranslate"><span class="pre">WandBLogger</span></code>. For more information about the <em>Sinergym</em> Logger, visit <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/logging.html#logging-system-overview">Logging System
 Overview</a>, <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/wrappers.html#logger-wrappers">Logger Wrappers</a> and <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/notebooks/personalize_loggerwrapper.html">an example about custom loggers</a>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-discrete-v1&#39;</span><span class="p">)</span>
@@ -827,21 +838,24 @@ Overview</a>, <a class="reference external" href="https://ugr-sail.github.io/sin
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-discrete-v1]
-#==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-discrete-v1
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:06&lt;00:00, 19.93%/s, 100% completed]#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res5
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-hot-discrete-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 [WRAPPER DiscretizeEnv] (INFO) : New Discrete Space and mapping: Discrete(10)
 [WRAPPER DiscretizeEnv] (INFO) : Make sure that the action space is compatible and contained in the original environment.
 [WRAPPER DiscretizeEnv] (INFO) : Wrapper initialized
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:06&lt;00:00, 15.43%/s, 100% completed]
 [WRAPPER LoggerWrapper] (INFO) : Wrapper initialized.
 </pre></div></div>
 </div>
@@ -850,7 +864,7 @@ Overview</a>, <a class="reference external" href="https://ugr-sail.github.io/sin
 <section id="LoggerCSV-layer">
 <h3><span class="section-number">22.8.2. </span>LoggerCSV layer<a class="headerlink" href="#LoggerCSV-layer" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">=</span><span class="n">CSVLogger</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
@@ -872,18 +886,17 @@ Overview</a>, <a class="reference external" href="https://ugr-sail.github.io/sin
 <div class="highlight"><pre>
 [WRAPPER CSVLogger] (INFO) : Wrapper initialized.
 #----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 1]
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: 5zone-hot-discrete-v1
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created.
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
-Progress: |**-------------------------------------------------------------------------------------------------| 2%
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -900,8 +913,8 @@ Progress: |**-------------------------------------------------------------------
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Progress: |***************************************************************************************************| 99%
 [WRAPPER CSVLogger] (INFO) : Environment closed, data updated in monitor and progress.csv.
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:17&lt;00:00,  5.58%/s, 100% completed]
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-discrete-v1]
 </pre></div></div>
 </div>
@@ -910,7 +923,7 @@ Progress: |*********************************************************************
 <section id="WandBLogger-layer">
 <h3><span class="section-number">22.8.3. </span>WandBLogger layer<a class="headerlink" href="#WandBLogger-layer" title="Link to this heading"></a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># env=WandBLogger(env = Env,</span>
@@ -952,7 +965,7 @@ Progress: |*********************************************************************
 <h2><span class="section-number">22.9. </span>Multi Observation Wrapper<a class="headerlink" href="#Multi-Observation-Wrapper" title="Link to this heading"></a></h2>
 <p>This wrapper stacks the observations received in a history queue (the size can be customized).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Original environment</span>
@@ -972,29 +985,31 @@ Progress: |*********************************************************************
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-discrete-v1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-discrete-v1
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2]
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res6
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-hot-discrete-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 [WRAPPER DiscretizeEnv] (INFO) : New Discrete Space and mapping: Discrete(10)
 [WRAPPER DiscretizeEnv] (INFO) : Make sure that the action space is compatible and contained in the original environment.
 [WRAPPER DiscretizeEnv] (INFO) : Wrapper initialized
 #----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 1]
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: 5zone-hot-discrete-v1
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created.
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
@@ -1004,23 +1019,20 @@ BEFORE MULTI OBSERVATION:  [1.0000000e+00 1.0000000e+00 0.0000000e+00 4.4000001e
  4.0000000e+01 1.9950390e+01 2.7784170e+01 0.0000000e+00 0.0000000e+00
  1.1794770e+02 1.0615293e+05]
 [WRAPPER MultiObsWrapper] (INFO) : Wrapper initialized.
-Progress: |***************************************************************************************************| 99%
-#----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-discrete-v1] [Episode 2]
-#----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run2]
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:06&lt;00:00, 21.29%/s, 100% completed]#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 2: 5zone-hot-discrete-v1
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:06&lt;00:00, 21.29%/s, 100% completed]#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run2/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run2/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run2/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-discrete-v1-res2/Eplus-env-sub_run2/5ZoneAutoDXVAV.epJSON&#39;]
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:06&lt;00:00, 15.82%/s, 100% completed]
 [ENVIRONMENT] (INFO) : Episode 2 started.
-[SIMULATOR] (INFO) : handlers are ready.
-[SIMULATOR] (INFO) : System is ready.
-Progress: |***************************************************************************************************| 99%
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;AFTER MULTI OBSERVATION: &#39;</span><span class="p">,</span><span class="n">obs</span><span class="p">)</span>
@@ -1060,7 +1072,7 @@ AFTER MULTI OBSERVATION:  [1.0000000e+00 1.0000000e+00 0.0000000e+00 5.1999998e+
 <p>For instance, activating the logger before normalizing differs from doing it in the reverse order. In the first case, the data will be logged without normalization, even though the agent will operate in a normalized environment. In the second case, the logger will capture the normalized values since it encapsulates the normalization applied by the previous layer.</p>
 <p>An example of how to nest wrappers is shown below:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">)</span>
@@ -1089,18 +1101,20 @@ AFTER MULTI OBSERVATION:  [1.0000000e+00 1.0000000e+00 0.0000000e+00 5.1999998e+
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-continuous-v1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-continuous-v1
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1]
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res5
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-hot-continuous-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 [WRAPPER MultiObjectiveReward] (INFO) : wrapper initialized.
 [WRAPPER PreviousObservationWrapper] (INFO) : Wrapper initialized.
 [WRAPPER DatetimeWrapper] (INFO) : Wrapper initialized.
@@ -1114,7 +1128,7 @@ AFTER MULTI OBSERVATION:  [1.0000000e+00 1.0000000e+00 0.0000000e+00 5.1999998e+
 </div>
 <p>Now we simply use the environment with the wrappers, for example:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
@@ -1137,20 +1151,19 @@ AFTER MULTI OBSERVATION:  [1.0000000e+00 1.0000000e+00 0.0000000e+00 5.1999998e+
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [5zone-hot-continuous-v1] [Episode 1]
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: 5zone-hot-continuous-v1
 #----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1]
+[MODELING] (INFO) : Episode directory created.
 [MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/output]
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
-[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [5zone-hot-continuous-v1]
-Reward:  [-0.00589738497079933, -0.09533249490526607] {&#39;time_elapsed(hours)&#39;: 0.5, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(21.0), np.float64(24.5)], &#39;timestep&#39;: 2, &#39;reward&#39;: -0.10122987987606541, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: -0.09533249490526607, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: -0.19066498981053215, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.19066498981053215}
-Progress: |*--------------------------------------------------------------------------------------------------| 1%
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+Reward:  [-0.00589738497079933, -0.09533249490526607] {&#39;time_elapsed(hours)&#39;: 0.5, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(21.0), np.float64(24.5)], &#39;timestep&#39;: 1, &#39;reward&#39;: -0.10122987987606541, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: -0.09533249490526607, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: -0.19066498981053215, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.19066498981053215}
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -1167,20 +1180,20 @@ Progress: |*--------------------------------------------------------------------
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Reward:  [-0.260786748513617, 0.0] {&#39;time_elapsed(hours)&#39;: 744.25, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(22.25), np.float64(27.5)], &#39;timestep&#39;: 2977, &#39;reward&#39;: -0.260786748513617, &#39;energy_term&#39;: -0.260786748513617, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -5215.7349702723395, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 5215.7349702723395, &#39;total_temperature_violation&#39;: 0.0}
-Reward:  [-0.00589738497079933, 0.0] {&#39;time_elapsed(hours)&#39;: 1416.25, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(20.5), np.float64(27.25)], &#39;timestep&#39;: 5665, &#39;reward&#39;: -0.00589738497079933, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.0}
-Reward:  [-0.00589738497079933, 0.0] {&#39;time_elapsed(hours)&#39;: 2160.25, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(19.0), np.float64(28.25)], &#39;timestep&#39;: 8641, &#39;reward&#39;: -0.00589738497079933, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.0}
-Reward:  [-0.009860130184571677, 0.0] {&#39;time_elapsed(hours)&#39;: 2880.25, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(19.5), np.float64(26.25)], &#39;timestep&#39;: 11521, &#39;reward&#39;: -0.009860130184571677, &#39;energy_term&#39;: -0.009860130184571677, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -197.20260369143355, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 197.20260369143355, &#39;total_temperature_violation&#39;: 0.0}
-Reward:  [-0.04169404624132932, 0.0] {&#39;time_elapsed(hours)&#39;: 3624.25, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(19.0), np.float64(26.0)], &#39;timestep&#39;: 14497, &#39;reward&#39;: -0.04169404624132932, &#39;energy_term&#39;: -0.04169404624132932, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -833.8809248265865, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 833.8809248265865, &#39;total_temperature_violation&#39;: 0.0}
-Reward:  [-0.03865736684181221, 0.0] {&#39;time_elapsed(hours)&#39;: 4344.25, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(23.25), np.float64(26.5)], &#39;timestep&#39;: 17377, &#39;reward&#39;: -0.03865736684181221, &#39;energy_term&#39;: -0.03865736684181221, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -773.1473368362441, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 773.1473368362441, &#39;total_temperature_violation&#39;: 0.0}
-Reward:  [-0.041642249905664626, -0.09052493785560145] {&#39;time_elapsed(hours)&#39;: 5088.25, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(23.25), np.float64(24.75)], &#39;timestep&#39;: 20353, &#39;reward&#39;: -0.13216718776126607, &#39;energy_term&#39;: -0.041642249905664626, &#39;comfort_term&#39;: -0.09052493785560145, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -832.8449981132925, &#39;abs_comfort_penalty&#39;: -0.1810498757112029, &#39;total_power_demand&#39;: 832.8449981132925, &#39;total_temperature_violation&#39;: 0.1810498757112029}
-Reward:  [-0.0446008401004661, 0.0] {&#39;time_elapsed(hours)&#39;: 5832.25, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(23.25), np.float64(30.0)], &#39;timestep&#39;: 23329, &#39;reward&#39;: -0.0446008401004661, &#39;energy_term&#39;: -0.0446008401004661, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -892.0168020093221, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 892.0168020093221, &#39;total_temperature_violation&#39;: 0.0}
-Reward:  [-0.03296858499533663, 0.0] {&#39;time_elapsed(hours)&#39;: 6552.25, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(20.25), np.float64(26.75)], &#39;timestep&#39;: 26209, &#39;reward&#39;: -0.03296858499533663, &#39;energy_term&#39;: -0.03296858499533663, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -659.3716999067325, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 659.3716999067325, &#39;total_temperature_violation&#39;: 0.0}
-Reward:  [-0.12172742321465858, 0.0] {&#39;time_elapsed(hours)&#39;: 7296.25, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(22.75), np.float64(30.0)], &#39;timestep&#39;: 29185, &#39;reward&#39;: -0.12172742321465858, &#39;energy_term&#39;: -0.12172742321465858, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -2434.5484642931715, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 2434.5484642931715, &#39;total_temperature_violation&#39;: 0.0}
-Reward:  [-0.00589738497079933, 0.0] {&#39;time_elapsed(hours)&#39;: 8016.25, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(12.5), np.float64(25.25)], &#39;timestep&#39;: 32065, &#39;reward&#39;: -0.00589738497079933, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.0}
-Progress: |***************************************************************************************************| 99%
+Simulation Progress [Episode 1]:  10%|█         | 10/100 [00:01&lt;00:18,  4.85%/s, 10% completed] Reward:  [-0.00589738497079933, 0.0] {&#39;time_elapsed(hours)&#39;: 744.375, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(18.25), np.float64(23.5)], &#39;timestep&#39;: 2976, &#39;reward&#39;: -0.00589738497079933, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.0}
+Simulation Progress [Episode 1]:  17%|█▋        | 17/100 [00:03&lt;00:14,  5.90%/s, 17% completed]Reward:  [-0.00589738497079933, 0.0] {&#39;time_elapsed(hours)&#39;: 1416.25, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(13.5), np.float64(23.25)], &#39;timestep&#39;: 5664, &#39;reward&#39;: -0.00589738497079933, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.0}
+Simulation Progress [Episode 1]:  26%|██▌       | 26/100 [00:04&lt;00:12,  6.13%/s, 26% completed]Reward:  [-0.1517230445551448, 0.0] {&#39;time_elapsed(hours)&#39;: 2160.25, &#39;month&#39;: 4, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(22.25), np.float64(23.75)], &#39;timestep&#39;: 8640, &#39;reward&#39;: -0.1517230445551448, &#39;energy_term&#39;: -0.1517230445551448, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -3034.460891102896, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 3034.460891102896, &#39;total_temperature_violation&#39;: 0.0}
+Simulation Progress [Episode 1]:  34%|███▍      | 34/100 [00:06&lt;00:12,  5.11%/s, 34% completed]Reward:  [-0.00986094443919355, 0.0] {&#39;time_elapsed(hours)&#39;: 2880.25, &#39;month&#39;: 5, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(17.0), np.float64(30.0)], &#39;timestep&#39;: 11520, &#39;reward&#39;: -0.00986094443919355, &#39;energy_term&#39;: -0.00986094443919355, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -197.218888783871, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 197.218888783871, &#39;total_temperature_violation&#39;: 0.0}
+Simulation Progress [Episode 1]:  42%|████▏     | 42/100 [00:07&lt;00:10,  5.49%/s, 42% completed]Reward:  [-0.041639635243045196, 0.0] {&#39;time_elapsed(hours)&#39;: 3624.25, &#39;month&#39;: 6, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(17.75), np.float64(29.0)], &#39;timestep&#39;: 14496, &#39;reward&#39;: -0.041639635243045196, &#39;energy_term&#39;: -0.041639635243045196, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -832.7927048609039, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 832.7927048609039, &#39;total_temperature_violation&#39;: 0.0}
+Simulation Progress [Episode 1]:  51%|█████     | 51/100 [00:09&lt;00:09,  5.03%/s, 51% completed]Reward:  [-0.03291880417306371, -0.05343972414400788] {&#39;time_elapsed(hours)&#39;: 4344.25, &#39;month&#39;: 7, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(12.0), np.float64(25.25)], &#39;timestep&#39;: 17376, &#39;reward&#39;: -0.0863585283170716, &#39;energy_term&#39;: -0.03291880417306371, &#39;comfort_term&#39;: -0.05343972414400788, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -658.3760834612742, &#39;abs_comfort_penalty&#39;: -0.10687944828801577, &#39;total_power_demand&#39;: 658.3760834612742, &#39;total_temperature_violation&#39;: 0.10687944828801577}
+Simulation Progress [Episode 1]:  59%|█████▉    | 59/100 [00:10&lt;00:07,  5.52%/s, 59% completed]Reward:  [-0.039679044554484136, -0.2110973093444386] {&#39;time_elapsed(hours)&#39;: 5088.25, &#39;month&#39;: 8, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(17.0), np.float64(24.75)], &#39;timestep&#39;: 20352, &#39;reward&#39;: -0.2507763538989227, &#39;energy_term&#39;: -0.039679044554484136, &#39;comfort_term&#39;: -0.2110973093444386, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -793.5808910896826, &#39;abs_comfort_penalty&#39;: -0.4221946186888772, &#39;total_power_demand&#39;: 793.5808910896826, &#39;total_temperature_violation&#39;: 0.4221946186888772}
+Simulation Progress [Episode 1]:  67%|██████▋   | 67/100 [00:12&lt;00:05,  5.62%/s, 67% completed]Reward:  [-0.031145555987538456, -0.10638397813522893] {&#39;time_elapsed(hours)&#39;: 5832.25, &#39;month&#39;: 9, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(14.5), np.float64(23.75)], &#39;timestep&#39;: 23328, &#39;reward&#39;: -0.1375295341227674, &#39;energy_term&#39;: -0.031145555987538456, &#39;comfort_term&#39;: -0.10638397813522893, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -622.9111197507691, &#39;abs_comfort_penalty&#39;: -0.21276795627045786, &#39;total_power_demand&#39;: 622.9111197507691, &#39;total_temperature_violation&#39;: 0.21276795627045786}
+Simulation Progress [Episode 1]:  76%|███████▌  | 76/100 [00:13&lt;00:04,  5.61%/s, 76% completed]Reward:  [-0.034473965270484005, 0.0] {&#39;time_elapsed(hours)&#39;: 6552.25, &#39;month&#39;: 10, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(14.25), np.float64(26.25)], &#39;timestep&#39;: 26208, &#39;reward&#39;: -0.034473965270484005, &#39;energy_term&#39;: -0.034473965270484005, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -689.4793054096801, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 689.4793054096801, &#39;total_temperature_violation&#39;: 0.0}
+Simulation Progress [Episode 1]:  84%|████████▍ | 84/100 [00:15&lt;00:02,  6.13%/s, 84% completed]Reward:  [-0.00589738497079933, 0.0] {&#39;time_elapsed(hours)&#39;: 7296.25, &#39;month&#39;: 11, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(17.0), np.float64(27.25)], &#39;timestep&#39;: 29184, &#39;reward&#39;: -0.00589738497079933, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.0}
+Simulation Progress [Episode 1]:  92%|█████████▏| 92/100 [00:16&lt;00:01,  5.72%/s, 92% completed]Reward:  [-0.00589738497079933, 0.0] {&#39;time_elapsed(hours)&#39;: 8016.25, &#39;month&#39;: 12, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: [np.float64(14.75), np.float64(23.5)], &#39;timestep&#39;: 32064, &#39;reward&#39;: -0.00589738497079933, &#39;energy_term&#39;: -0.00589738497079933, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -117.9476994159866, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 117.9476994159866, &#39;total_temperature_violation&#39;: 0.0}
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:20&lt;00:00,  4.94%/s, 100% completed]
 [ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-continuous-v1]
-[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [5zone-hot-continuous-v1]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
 </pre></div></div>
 </div>
 </section>

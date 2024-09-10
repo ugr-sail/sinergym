@@ -122,13 +122,24 @@ have a terminal ready with the appropriate Python version and <em>Sinergym</em>
 running correctly.</p>
 <p>We’ll begin with the most straightforward use case for the <em>Sinergym</em> tool.
 In the root repository, you’ll find the script <strong>try_env.py</strong>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">gymnasium.wrappers.normalize</span> <span class="kn">import</span> <span class="n">NormalizeReward</span>
 
 <span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.logger</span> <span class="kn">import</span> <span class="n">TerminalLogger</span>
 <span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">LoggerWrapper</span><span class="p">,</span> <span class="n">NormalizeAction</span><span class="p">,</span>
                                      <span class="n">NormalizeObservation</span><span class="p">)</span>
+
+<span class="c1"># Optional: Terminal log in the same format as Sinergym.</span>
+<span class="c1"># Logger info can be replaced by print.</span>
+<span class="n">terminal_logger</span> <span class="o">=</span> <span class="n">TerminalLogger</span><span class="p">()</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">terminal_logger</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;MAIN&#39;</span><span class="p">,</span>
+    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
+<span class="p">)</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeAction</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
@@ -136,25 +147,28 @@ In the root repository, you’ll find the script <strong>try_env.py</strong>:</p
 <span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeReward</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 
+<span class="c1"># Execute interactions during 1 episode</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+    <span class="c1"># Reset the environment to start a new episode</span>
     <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
     <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">truncated</span> <span class="o">=</span> <span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">):</span>
+        <span class="c1"># Random action control</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="c1"># Read observation and reward</span>
         <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
         <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+        <span class="c1"># If this timestep is a new month start</span>
         <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
             <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span>
-        <span class="s1">&#39;Episode &#39;</span><span class="p">,</span>
-        <span class="n">i</span><span class="p">,</span>
-        <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span>
-        <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span>
-        <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+            <span class="c1"># Print information</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Reward: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">)))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Info: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">info</span><span class="p">))</span>
+    <span class="c1"># Final episode information print</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Episode </span><span class="si">{}</span><span class="s1"> - Mean reward: </span><span class="si">{}</span><span class="s1"> - Cumulative Reward: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span>
+                                                                              <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">)))</span>
 <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>

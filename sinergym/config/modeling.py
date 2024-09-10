@@ -316,13 +316,11 @@ class ModelJSON(object):
 
     def apply_weather_variability(
             self,
-            columns: List[str] = ['drybulb'],
-            variation: Optional[Tuple[float, float, float]] = None) -> str:
-        """Modify weather data using Ornstein-Uhlenbeck process.
+            weather_variability: Optional[Dict[str, Tuple[float, float, float]]] = None) -> str:
+        """Modify weather data using Ornstein-Uhlenbeck process according to the variation specified in the weather_variability dictionary.
 
         Args:
-            columns (List[str], optional): List of columns to be affected. Defaults to ['drybulb'].
-            variation (Optional[Tuple[float, float, float]], optional): Tuple with the sigma, mean and tau for OU process. Defaults to None.
+            weather_variability (Optional[Dict[str, Tuple[float, float, float]]], optional): Dictionary with the variation for each column in the weather data. Defaults to None. The key is the column name and the value is a tuple with the sigma, mean and tau for OU process.
 
         Returns:
             str: New EPW file path generated in simulator working path in that episode or current EPW path if variation is not defined.
@@ -332,47 +330,48 @@ class ModelJSON(object):
         filename = self._weather_path.split('/')[-1]
 
         # Apply variation to EPW if exists
-        if variation is not None:
+        if weather_variability is not None:
 
             # Get dataframe with weather series
             df = weather_data_mod.get_weather_series()
 
-            sigma = variation[0]  # Standard deviation.
-            mu = variation[1]  # Mean.
-            tau = variation[2]  # Time constant.
-
             T = 1.  # Total time.
             # All the columns are going to have the same num of rows since they are
             # in the same dataframe
-            n = len(df[columns[0]])
+            # get first column of df
+            n = df.shape[0]
             dt = T / n
             # t = np.linspace(0., T, n)  # Vector of times.
 
-            sigma_bis = sigma * np.sqrt(2. / tau)
-            sqrtdt = np.sqrt(dt)
+            for variable, variation in weather_variability.items():
 
-            x = np.zeros(n)
+                sigma = variation[0]  # Standard deviation.
+                mu = variation[1]  # Mean.
+                tau = variation[2]  # Time constant.
 
-            # Create noise
-            for i in range(n - 1):
-                x[i + 1] = x[i] + dt * (-(x[i] - mu) / tau) + \
-                    sigma_bis * sqrtdt * np.random.randn()
+                sigma_bis = sigma * np.sqrt(2. / tau)
+                sqrtdt = np.sqrt(dt)
 
-            for column in columns:
+                # Create noise
+                noise = np.zeros(n)
+                for i in range(n - 1):
+                    noise[i + 1] = noise[i] + dt * (-(noise[i] - mu) / tau) + \
+                        sigma_bis * sqrtdt * np.random.randn()
+
                 # Add noise
-                df[column] += x
+                df[variable] += noise
 
             # Save new weather data
             weather_data_mod.set_weather_series(df)
 
+            self.logger.info(
+                'Weather noise applied in columns: {}'.format(
+                    list(
+                        weather_variability.keys())))
+
             # Change name filename to specify variation nature in name
             filename = filename.split('.epw')[0]
-            filename += '_Random_%s_%s_%s.epw' % (
-                str(sigma), str(mu), str(tau))
-
-            self.logger.debug(
-                'Variation {} applied.',
-                variation)
+            filename += '_OU_Noise.epw'
 
         episode_weather_path = self.episode_path + '/' + filename
         weather_data_mod.to_epw(episode_weather_path)

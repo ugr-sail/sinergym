@@ -22,6 +22,7 @@
       CustomFormatter
       LoggerStorage
       TerminalLogger
+      TqdmLoggingHandler
       WandBOutputFormat
    
    

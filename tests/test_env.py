@@ -30,7 +30,8 @@ def test_reset(env_name, request):
     assert env.get_wrapper_attr(
         'energyplus_simulator').energyplus_state is not None
     assert len(obs) == len(env.get_wrapper_attr('time_variables')) + len(env.get_wrapper_attr(
-        'variables')) + len(env.get_wrapper_attr('meters'))  # year, month, day and hour
+        # year, month, day and hour
+        'variables')) + len(env.get_wrapper_attr('meters'))
     assert isinstance(info, dict)
     assert len(info) > 0
     # default_options check
@@ -39,15 +40,15 @@ def test_reset(env_name, request):
             'weather_variability', False)
     else:
         assert isinstance(env.get_wrapper_attr('default_options')[
-                          'weather_variability'], tuple)
+                          'weather_variability'], dict)
 
 
 def test_reset_custom_options(env_5zone_stochastic):
     assert isinstance(env_5zone_stochastic.get_wrapper_attr(
-        'default_options')['weather_variability'], tuple)
+        'default_options')['weather_variability'], dict)
     assert len(env_5zone_stochastic.get_wrapper_attr(
-        'default_options')['weather_variability']) == 3
-    custom_options = {'weather_variability': (1.1, 0.1, 0.002)}
+        'default_options')['weather_variability']) == 1
+    custom_options = {'weather_variability': {'drybulb': (1.1, 0.1, 0.002)}}
     env_5zone_stochastic.reset(options=custom_options)
     # Check if epw with new variation is overwriting default options
     weather_path = env_5zone_stochastic.model._weather_path
@@ -56,7 +57,7 @@ def test_reset_custom_options(env_5zone_stochastic):
         env_5zone_stochastic.episode_path +
         '/' +
         weather_file +
-        '_Random_1.1_0.1_0.002.epw')
+        '_OU_Noise.epw')
 
 
 def test_step(env_5zone):

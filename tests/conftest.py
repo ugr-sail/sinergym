@@ -223,7 +223,7 @@ def conf_5zone(pkg_mock_path):
 @pytest.fixture(scope='function')
 def conf_5zone_exceptions(pkg_mock_path):
     conf_exceptions = []
-    for i in range(1, 6):
+    for i in range(1, 7):
         conf_path = os.path.join(pkg_mock_path,
                                  'environment_configurations',
                                  '5ZoneAutoDXVAV_exception{}.json'.format(i))
@@ -357,7 +357,7 @@ def env_5zone_stochastic(
         variables=VARIABLES_5ZONE,
         meters=METERS_5ZONE,
         actuators=ACTUATORS_5ZONE,
-        weather_variability=(1.0, 0.0, 0.001),
+        weather_variability={'drybulb': (1.0, 0.0, 0.001)},
         reward=LinearReward,
         reward_kwargs={
             'temperature_variables': ['air_temperature'],

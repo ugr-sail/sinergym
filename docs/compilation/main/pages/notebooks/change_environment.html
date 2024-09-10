@@ -125,7 +125,7 @@
 <h1><span class="section-number">20. </span>Changing an environment registered in Sinergym<a class="headerlink" href="#Changing-an-environment-registered-in-Sinergym" title="Link to this heading"></a></h1>
 <p>To use the available environments in Sinergym, simply import the Sinergym package and call <code class="docutils literal notranslate"><span class="pre">gym.make(&lt;environment_id&gt;)</span></code> in your Python script. The list of available environments can be found in the <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/environments.html">Sinergym documentation</a>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
@@ -142,18 +142,20 @@
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-continuous-stochastic-v1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-continuous-stochastic-v1
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-stochastic-v1-res1]
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-stochastic-v1-res1
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-hot-continuous-stochastic-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 </pre></div></div>
 </div>
 <p>Environment IDs in Sinergym encompass various components, including the building design (<em>epJSON</em>), reward function, action and observation spaces, variable definitions, meters, actuators, and more.</p>
@@ -167,7 +169,7 @@ the original untouched.</p>
 <h2><span class="section-number">20.1. </span>Adding a new reward<a class="headerlink" href="#Adding-a-new-reward" title="Link to this heading"></a></h2>
 <p>As mentioned above, simply add the appropriate parameters to <code class="docutils literal notranslate"><span class="pre">gym.make()</span></code> after specifying the environment ID.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="n">ExpReward</span>
@@ -187,18 +189,20 @@ the original untouched.</p>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-hot-continuous-v1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-continuous-v1
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1]
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-hot-continuous-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 </pre></div></div>
 </div>
 <p>You need to define the <strong>reward</strong> class for the environment. A reward function class has various user-specifiable parameters, such as temperature variables, weights, etc., depending on the chosen reward function. To define it, we use the <strong>reward_kwargs</strong> parameter. Refer to the <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/rewards.html">reward documentation</a> for more details on reward classes and how to create a new one.</p>
@@ -207,12 +211,15 @@ the original untouched.</p>
 <h2><span class="section-number">20.2. </span>Updating the weather used in environment<a class="headerlink" href="#Updating-the-weather-used-in-environment" title="Link to this heading"></a></h2>
 <p>You can replace the weather file (and weather variability for a stochastic environment) used in the environment with a new one. The approach is the same as the reward example:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
                 <span class="n">weather_files</span><span class="o">=</span><span class="s1">&#39;PRT_Lisboa.085360_INETI.epw&#39;</span><span class="p">,</span>
-                <span class="n">weather_variability</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.001</span><span class="p">))</span>
+                <span class="n">weather_variability</span><span class="o">=</span><span class="p">{</span>
+                                        <span class="s2">&quot;drybulb&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">),</span>
+                                        <span class="s2">&quot;windspd&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+                                    <span class="p">})</span>
 </pre></div>
 </div>
 </div>
@@ -222,23 +229,25 @@ the original untouched.</p>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-cool-continuous-stochastic-v1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-cool-continuous-stochastic-v1
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-cool-continuous-stochastic-v1-res1]
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-cool-continuous-stochastic-v1-res1
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-cool-continuous-stochastic-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 </pre></div></div>
 </div>
 <p>You can also <strong>add multiple weather</strong> files. In this scenario, Sinergym will randomly select one of the available weather files and adjust the building model to that location for each episode:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
@@ -252,18 +261,20 @@ the original untouched.</p>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [5zone-cool-continuous-stochastic-v1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-cool-continuous-stochastic-v1
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-5zone-cool-continuous-stochastic-v1-res2]
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-cool-continuous-stochastic-v1-res2
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment 5zone-cool-continuous-stochastic-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 </pre></div></div>
 </div>
 </section>
@@ -272,7 +283,7 @@ the original untouched.</p>
 <p>By default, the IDs of the predefined environments in <em>Sinergym</em> come with <strong>time variables</strong>, <strong>variables</strong>, <strong>meters</strong>, and <strong>actuators</strong> pre-configured, along with observation (time variables, variables, and meters) and action (actuators) spaces for these components.</p>
 <p>However, these can be overwritten with new definitions. We’ll need to define the names of the <strong>time variables</strong>, <strong>variables</strong>, <strong>meters</strong>, or <strong>actuators</strong>, as well as the <strong>action space</strong> definition (and an <strong>action mapping</strong> for discrete environments). Sinergym automatically calculates the observation space. It’s also possible to modify a subset of these components. For more details on the structure definitions shown below, refer to the documentation.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
@@ -352,56 +363,42 @@ the original untouched.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-#==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [datacenter-cool-continuous-stochastic-v1]
-#==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1]
-[MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
-[MODELING] (INFO) : Episode length (seconds): 31536000.0
-[MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
-[REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment datacenter-cool-continuous-stochastic-v1 created successfully.
-New environment observation varibles (time variables + variables + meters): [&#39;month&#39;, &#39;day_of_month&#39;, &#39;hour&#39;, &#39;outdoor_temperature&#39;, &#39;outdoor_humidity&#39;, &#39;wind_speed&#39;, &#39;wind_direction&#39;, &#39;diffuse_solar_radiation&#39;, &#39;direct_solar_radiation&#39;, &#39;west_zone_htg_setpoint&#39;, &#39;east_zone_htg_setpoint&#39;, &#39;west_zone_clg_setpoint&#39;, &#39;east_zone_clg_setpoint&#39;, &#39;west_zone_air_temperature&#39;, &#39;east_zone_air_temperature&#39;, &#39;west_zone_air_humidity&#39;, &#39;east_zone_air_humidity&#39;, &#39;HVAC_electricity_demand_rate&#39;, &#39;east_zone_electricity&#39;, &#39;west_zone_electricity&#39;]
-New environment action varibles (actuators): [&#39;Heating_Setpoint_RL&#39;, &#39;Cooling_Setpoint_RL&#39;]
-#----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [datacenter-cool-continuous-stochastic-v1] [Episode 1]
-#----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1/Eplus-env-sub_run1]
-[MODELING] (INFO) : Weather file USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1/Eplus-env-sub_run1/output]
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/usr/local/lib/python3.12/dist-packages/opyplus/weather_data/weather_data.py:485: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
-  df = df.replace(
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1/Eplus-env-sub_run1/USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3_Random_1.0_0.0_0.001.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1/Eplus-env-sub_run1/2ZoneDataCenterHVAC_wEconomizer.epJSON&#39;]
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: datacenter-cool-continuous-stochastic-v1
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35040
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+New environment observation varibles (time variables + variables + meters): [&#39;month&#39;, &#39;day_of_month&#39;, &#39;hour&#39;, &#39;outdoor_temperature&#39;, &#39;outdoor_humidity&#39;, &#39;wind_speed&#39;, &#39;wind_direction&#39;, &#39;diffuse_solar_radiation&#39;, &#39;direct_solar_radiation&#39;, &#39;west_zone_htg_setpoint&#39;, &#39;east_zone_htg_setpoint&#39;, &#39;west_zone_clg_setpoint&#39;, &#39;east_zone_clg_setpoint&#39;, &#39;west_zone_air_temperature&#39;, &#39;east_zone_air_temperature&#39;, &#39;west_zone_air_humidity&#39;, &#39;east_zone_air_humidity&#39;, &#39;HVAC_electricity_demand_rate&#39;, &#39;east_zone_electricity&#39;, &#39;west_zone_electricity&#39;]
+New environment action varibles (actuators): [&#39;Heating_Setpoint_RL&#39;, &#39;Cooling_Setpoint_RL&#39;]
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: datacenter-cool-continuous-stochastic-v1
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
-Progress: |***************************************************************************************************| 99%
-Episode  0 Mean reward:  -0.6578076096794568 Cumulative reward:  -23049.578643168166
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:26&lt;00:00,  4.07%/s, 100% completed]Episode  0 Mean reward:  -0.6645031249190511 Cumulative reward:  -23284.189497163552
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:28&lt;00:00,  3.47%/s, 100% completed]
 [ENVIRONMENT] (INFO) : Environment closed. [datacenter-cool-continuous-stochastic-v1]
 </pre></div></div>
 </div>
@@ -412,7 +409,7 @@ Episode  0 Mean reward:  -0.6578076096794568 Cumulative reward:  -23049.57864316
 <h2><span class="section-number">20.4. </span>Adding more extra configuration<a class="headerlink" href="#Adding-more-extra-configuration" title="Link to this heading"></a></h2>
 <p>In Sinergym, any argument of the environment constructor can be updated. This allows for modifications such as changing the environment name, adjusting the maximum number of episodes stored in its output, or altering the normalization in the gym actions interface.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-datacenter-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
@@ -428,23 +425,25 @@ Episode  0 Mean reward:  -0.6578076096794568 Cumulative reward:  -23049.57864316
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [new_env_name]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: new_env_name
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-new_env_name-res1]
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-new_env_name-res1
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment new_env_name created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 </pre></div></div>
 </div>
 <p>You can also include a dictionary with additional parameters to update the building model directly with new simulation-related context:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extra_conf</span><span class="o">=</span><span class="p">{</span>
@@ -461,58 +460,44 @@ Episode  0 Mean reward:  -0.6578076096794568 Cumulative reward:  -23049.57864316
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-#==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [datacenter-cool-continuous-stochastic-v1]
-#==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res2]
-[MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : Extra config: runperiod updated to {&#39;apply_weekend_holiday_rule&#39;: &#39;No&#39;, &#39;begin_day_of_month&#39;: 1, &#39;begin_month&#39;: 1, &#39;begin_year&#39;: 1991, &#39;day_of_week_for_start_day&#39;: &#39;Tuesday&#39;, &#39;end_day_of_month&#39;: 2, &#39;end_month&#39;: 1, &#39;end_year&#39;: 1991, &#39;use_weather_file_daylight_saving_period&#39;: &#39;Yes&#39;, &#39;use_weather_file_holidays_and_special_days&#39;: &#39;Yes&#39;, &#39;use_weather_file_rain_indicators&#39;: &#39;Yes&#39;, &#39;use_weather_file_snow_indicators&#39;: &#39;Yes&#39;}
-[MODELING] (INFO) : Updated episode length (seconds): 172800.0
-[MODELING] (INFO) : Updated timestep size (seconds): 600.0
-[MODELING] (INFO) : Updated timesteps per episode: 288
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 2, &#39;end_month&#39;: 1, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 1, &#39;n_steps_per_hour&#39;: 6}
-[MODELING] (INFO) : Episode length (seconds): 172800.0
-[MODELING] (INFO) : timestep size (seconds): 600.0
-[MODELING] (INFO) : timesteps per episode: 289
-[REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment datacenter-cool-continuous-stochastic-v1 created successfully.
-#----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [datacenter-cool-continuous-stochastic-v1] [Episode 1]
-#----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res2/Eplus-env-sub_run1]
-[MODELING] (INFO) : Weather file USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res2/Eplus-env-sub_run1/output]
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/usr/local/lib/python3.12/dist-packages/opyplus/weather_data/weather_data.py:485: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
-  df = df.replace(
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res2/Eplus-env-sub_run1/USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3_Random_1.0_0.0_0.001.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res2/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res2/Eplus-env-sub_run1/2ZoneDataCenterHVAC_wEconomizer.epJSON&#39;]
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: datacenter-cool-continuous-stochastic-v1
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res2
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Extra config: runperiod updated to {&#39;apply_weekend_holiday_rule&#39;: &#39;No&#39;, &#39;begin_day_of_month&#39;: 1, &#39;begin_month&#39;: 1, &#39;begin_year&#39;: 1991, &#39;day_of_week_for_start_day&#39;: &#39;Tuesday&#39;, &#39;end_day_of_month&#39;: 2, &#39;end_month&#39;: 1, &#39;end_year&#39;: 1991, &#39;use_weather_file_daylight_saving_period&#39;: &#39;Yes&#39;, &#39;use_weather_file_holidays_and_special_days&#39;: &#39;Yes&#39;, &#39;use_weather_file_rain_indicators&#39;: &#39;Yes&#39;, &#39;use_weather_file_snow_indicators&#39;: &#39;Yes&#39;}
+[MODELING] (INFO) : Updated episode length (seconds): 172800.0
+[MODELING] (INFO) : Updated timestep size (seconds): 600.0
+[MODELING] (INFO) : Updated timesteps per episode: 288
+[MODELING] (INFO) : Runperiod established.
+[MODELING] (INFO) : Episode length (seconds): 172800.0
+[MODELING] (INFO) : timestep size (seconds): 600.0
+[MODELING] (INFO) : timesteps per episode: 288
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: datacenter-cool-continuous-stochastic-v1
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
 [SIMULATOR] (INFO) : System is ready.
-Progress: |**************************************************-------------------------------------------------| 50%
 [ENVIRONMENT] (INFO) : Environment closed. [datacenter-cool-continuous-stochastic-v1]
+Simulation Progress [Episode 1]:  51%|█████     | 51/100 [00:00&lt;00:00, 1534.34%/s, 51% completed]
 </pre></div></div>
 </div>
 <p>For more information about extra configuration parameters, see our <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/html/pages/extra-configuration.html">Extra configuration documentation</a></p>

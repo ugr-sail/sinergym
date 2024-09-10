@@ -5,7 +5,7 @@ isort
 numpy
 opyplus @ git+https://github.com/AlejandroCN7/opyplus.git@master
 pandas
-pytype
+#pytype
 twine
 xlsxwriter
 pipdeptree
