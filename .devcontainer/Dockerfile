@@ -38,7 +38,7 @@ ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_F
 
 # Mandatory apt packages
 RUN apt update && apt upgrade -y
-RUN apt install -y ca-certificates curl libx11-6 libexpat1 git wget
+RUN apt install -y ca-certificates build-essential curl libx11-6 libexpat1 git wget python3
 
 #Energyplus installation
 RUN curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
@@ -51,7 +51,10 @@ RUN curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
     && cd /usr/local/bin find -L . -type l -delete
 
 # Install pip, and make python point to python3
-RUN apt install python3-pip -y \
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && python3 get-pip.py \
+    && rm get-pip.py \
+    && pip install --upgrade pip setuptools wheel \
     && ln -s /usr/bin/python3 /usr/bin/python \
     # Install some apt dependencies
     && echo "Y\r" | apt install python3-enchant -y \
