@@ -92,8 +92,12 @@ Weather Variability
 It implements the 
 `Ornstein-Uhlenbeck process <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.4200&rep=rep1&type=pdf>`__ 
 to introduce **noise** to the weather data episode to episode. Then, the parameter 
-established is a Python tuple of three variables (*sigma*, *mu*, and *tau*) whose 
-values define the nature of that noise.
+established is a Python dictionary with the EPW column name as key and tuple of three variables (*sigma*, *mu*, and *tau*) whose 
+as value, defining the nature of that noise. This allows to apply different noise in several aspects of the weather data.
+
+.. note:: The weather data columns or variables names is generated with opyplus WeatherData class, 
+          for more information about the available variables in an EPW file, visit 
+          `Opyplus documentation <https://opyplus.readthedocs.io/en/2.0.7/quickstart/index.html#weather-data-epw-file>`__. 
 
 .. image:: /_static/ornstein_noise.png
   :scale: 80 %

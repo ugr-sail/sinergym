@@ -40,7 +40,7 @@ class EplusEnv(gym.Env):
         variables: Dict[str, Tuple[str, str]] = {},
         meters: Dict[str, str] = {},
         actuators: Dict[str, Tuple[str, str, str]] = {},
-        weather_variability: Optional[Tuple[float, float, float]] = None,
+        weather_variability: Optional[Dict[str, Tuple[float, float, float]]] = None,
         reward: Any = LinearReward,
         reward_kwargs: Optional[Dict[str, Any]] = {},
         max_ep_data_store_num: int = 10,
@@ -57,7 +57,7 @@ class EplusEnv(gym.Env):
             variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.
             meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
             actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. Defaults to empty dict.
-            weather_variability (Optional[Tuple[float]], optional): Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process to be applied to weather data. Defaults to None.
+            weather_variability Optional[Dict[str, Tuple[float, float, float]]]: Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
             reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
             max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
@@ -242,7 +242,7 @@ class EplusEnv(gym.Env):
         # Getting building, weather and Energyplus output directory
         eplus_working_building_path = self.model.save_building_model()
         eplus_working_weather_path = self.model.apply_weather_variability(
-            variation=reset_options.get('weather_variability'))
+            weather_variability=reset_options.get('weather_variability'))
         eplus_working_out_path = (self.episode_dir + '/' + 'output')
         self.logger.info(
             'Saving episode output path.'.format(
@@ -267,14 +267,14 @@ class EplusEnv(gym.Env):
 
         # Wait to receive simulation first observation and info
         try:
-            obs = self.obs_queue.get(timeout=2)
+            obs = self.obs_queue.get(timeout=60)
         except Empty:
             self.logger.warning(
                 'Reset: Observation queue empty, returning a random observation (not real).')
             obs = self.last_obs
 
         try:
-            info = self.info_queue.get(timeout=2)
+            info = self.info_queue.get(timeout=60)
         except Empty:
             info = self.last_info
             self.logger.warning(
