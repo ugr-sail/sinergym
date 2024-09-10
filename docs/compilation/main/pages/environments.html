@@ -216,8 +216,14 @@ will have that noise included.</p>
 <p>It implements the
 <a class="reference external" href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.4200&amp;rep=rep1&amp;type=pdf">Ornstein-Uhlenbeck process</a>
 to introduce <strong>noise</strong> to the weather data episode to episode. Then, the parameter
-established is a Python tuple of three variables (<em>sigma</em>, <em>mu</em>, and <em>tau</em>) whose
-values define the nature of that noise.</p>
+established is a Python dictionary with the EPW column name as key and tuple of three variables (<em>sigma</em>, <em>mu</em>, and <em>tau</em>) whose
+as value, defining the nature of that noise. This allows to apply different noise in several aspects of the weather data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The weather data columns or variables names is generated with opyplus WeatherData class,
+for more information about the available variables in an EPW file, visit
+<a class="reference external" href="https://opyplus.readthedocs.io/en/2.0.7/quickstart/index.html#weather-data-epw-file">Opyplus documentation</a>.</p>
+</div>
 <a class="reference internal image-reference" href="../_images/ornstein_noise.png"><img alt="Ornstein-Uhlenbeck process noise with different hyperparameters." class="align-center" src="../_images/ornstein_noise.png" style="width: 1429.6000000000001px; height: 757.6px;" /></a>
 </section>
 <section id="reward">

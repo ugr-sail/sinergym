@@ -158,22 +158,24 @@
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [demo-v1]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: demo-v1
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-demo-v1-res1]
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-demo-v1-res1
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
 [MODELING] (INFO) : Extra config: runperiod updated to {&#39;apply_weekend_holiday_rule&#39;: &#39;No&#39;, &#39;begin_day_of_month&#39;: 1, &#39;begin_month&#39;: 1, &#39;begin_year&#39;: 1991, &#39;day_of_week_for_start_day&#39;: &#39;Monday&#39;, &#39;end_day_of_month&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;use_weather_file_daylight_saving_period&#39;: &#39;Yes&#39;, &#39;use_weather_file_holidays_and_special_days&#39;: &#39;Yes&#39;, &#39;use_weather_file_rain_indicators&#39;: &#39;Yes&#39;, &#39;use_weather_file_snow_indicators&#39;: &#39;Yes&#39;}
 [MODELING] (INFO) : Updated episode length (seconds): 5184000.0
 [MODELING] (INFO) : Updated timestep size (seconds): 3600.0
 [MODELING] (INFO) : Updated timesteps per episode: 1440
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 1}
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 5184000.0
 [MODELING] (INFO) : timestep size (seconds): 3600.0
-[MODELING] (INFO) : timesteps per episode: 1441
+[MODELING] (INFO) : timesteps per episode: 1440
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment demo-v1 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 {&#39;ActSchd&#39;: {&#39;SPACE1-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
                                    &#39;table_name&#39;: &#39;People&#39;},
              &#39;SPACE2-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
@@ -373,7 +375,7 @@ What is all the variables names which conform my Gymnasium action?: [&#39;Heatin
 Is there an episode executing?: False
 What is the episode run period?: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 1}
 Episode length in seconds?: 5184000.0
-How many steps have an episode?: 1441
+How many steps have an episode?: 1440
 How often do steps changed?: 3600.0
 What are the available zones?: [&#39;PLENUM-1&#39;, &#39;SPACE1-1&#39;, &#39;SPACE2-1&#39;, &#39;SPACE3-1&#39;, &#39;SPACE4-1&#39;, &#39;SPACE5-1&#39;]
 Where is the output path of Sinergym environment?: /workspaces/sinergym/examples/Eplus-env-demo-v1-res1
@@ -422,35 +424,19 @@ Observed meters: None
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-#----------------------------------------------------------------------------------------------#
-[ENVIRONMENT] (INFO) : Starting a new episode... [demo-v1] [Episode 1]
-#----------------------------------------------------------------------------------------------#
-[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1]
-[MODELING] (INFO) : Weather file USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw used.
-[MODELING] (INFO) : Adapting weather to building model. [USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw]
-[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/output]
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/usr/local/lib/python3.12/dist-packages/opyplus/weather_data/weather_data.py:485: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
-  df = df.replace(
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-demo-v1-res1/Eplus-env-sub_run1/5ZoneAutoDXVAV.epJSON&#39;]
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: demo-v1
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
 [ENVIRONMENT] (INFO) : Episode 1 started.
 [SIMULATOR] (INFO) : handlers initialized.
 [SIMULATOR] (INFO) : handlers are ready.
@@ -1535,11 +1521,11 @@ Observed meters: {}
     - Current weather used: /workspaces/sinergym/sinergym/data/weather/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw
     - Episodes executed: 1
     - Workspace directory: /workspaces/sinergym/examples/Eplus-env-demo-v1-res1
-    - Reward function: &lt;sinergym.utils.rewards.LinearReward object at 0x7ff7829e4860&gt;
+    - Reward function: &lt;sinergym.utils.rewards.LinearReward object at 0x7fef6b4dd130&gt;
     - Reset default options: {}
     - Run period: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 1}
     - Episode length (seconds): 5184000.0
-    - Number of timesteps in an episode: 1441
+    - Number of timesteps in an episode: 1440
     - Timestep size (seconds): 3600.0
     - It is discrete?: False
     #----------------------------------------------------------------------------------#

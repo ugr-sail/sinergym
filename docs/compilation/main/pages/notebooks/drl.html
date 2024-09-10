@@ -127,7 +127,7 @@
 <p>We’ll be using the <code class="docutils literal notranslate"><span class="pre">train_agent.py</span></code> script located in the repository root. This script leverages all the capabilities of Sinergym for working with deep reinforcement learning algorithms and sets parameters for everything, allowing us to easily define training options via a JSON file when executing the script.</p>
 <p>For more details on how to run <code class="docutils literal notranslate"><span class="pre">train_agent.py</span></code>, please refer to <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#model-training">Train a model</a>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
@@ -152,7 +152,7 @@
 </div>
 <p>First, let’s set some variables for the execution.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Environment ID</span>
@@ -169,7 +169,7 @@
 </div>
 <p>Now, we’re ready to create the Gym environment. We’ll use the previously defined environment name, but remember that you can <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/notebooks/change_environment.html#Changing-an-environment-registered-in-Sinergym">change the default environment configuration</a>. We’ll also create an eval_env for evaluation episodes. If desired, we can replace the env name with the experiment name.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="n">experiment_name</span><span class="p">)</span>
@@ -183,36 +183,40 @@
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-20_11:17]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-20_11:17-res1]
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57-res1
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-20_11:17 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-20_11:17_EVALUATION]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57_EVALUATION
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-20_11:17_EVALUATION-res1]
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57_EVALUATION-res1
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-20_11:17_EVALUATION created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 </pre></div></div>
 </div>
 <p>We can also add wrappers to the environment. We’ll use an action and observation normalization wrapper and <em>Sinergym</em> logger. Normalization is highly recommended for DRL algorithms with continuous action space, and the logger is used to monitor and log environment interactions and save the data, and then dump it into CSV files and/or wandb.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
@@ -221,14 +225,14 @@
 <span class="n">env</span> <span class="o">=</span> <span class="n">CSVLogger</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 <span class="c1"># Discomment the following line to log to WandB (remmeber to set the API key in a environment variable)</span>
 <span class="c1"># env = WandBLogger(env,</span>
-<span class="c1">#                  entity=&#39;sinergym&#39;,</span>
+<span class="c1">#                  entity=&#39;test-project&#39;,</span>
 <span class="c1">#                  project_name=&#39;sail_ugr&#39;,</span>
 <span class="c1">#                  run_name=experiment_name,</span>
 <span class="c1">#                  group=&#39;Train_example&#39;,</span>
 <span class="c1">#                  tags=[&#39;DRL&#39;, &#39;PPO&#39;, &#39;5zone&#39;, &#39;continuous&#39;, &#39;stochastic&#39;, &#39;v1&#39;],</span>
 <span class="c1">#                  save_code = True,</span>
 <span class="c1">#                  dump_frequency = 1000,</span>
-<span class="c1">#                  artifact_save = True)</span>
+<span class="c1">#                  artifact_save = False)</span>
 <span class="n">eval_env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">eval_env</span><span class="p">)</span>
 <span class="n">eval_env</span> <span class="o">=</span> <span class="n">NormalizeAction</span><span class="p">(</span><span class="n">eval_env</span><span class="p">)</span>
 <span class="n">eval_env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">eval_env</span><span class="p">)</span>
@@ -257,7 +261,7 @@
 </div>
 <p>At this point, the environment is set up and ready to use. We’ll create our learning model (Stable Baselines 3 PPO), but any other algorithm can be used.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this case, all the hyperparameters are the default ones</span>
@@ -277,7 +281,7 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <p>If <code class="docutils literal notranslate"><span class="pre">WandBLogger</span></code> is active, we can log all hyperparameters there:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Register hyperparameters in wandb if it is wrapped</span>
@@ -293,7 +297,7 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <p>Evaluation will run the current model for a set number of episodes to determine if it’s the best current version of the model at that training stage. The generated output will also be stored depending used logger wrappers. We’ll use the LoggerEval callback to print and save the best evaluated model during training, saving in local CSV files and WandB platform.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">callbacks</span> <span class="o">=</span> <span class="p">[]</span>
@@ -312,7 +316,7 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <p>To add the SB3 logging values in the same WandB session too, we need to create a compatible wandb output format (which calls the <em>wandb</em> log method in the learning algorithm process). <em>Sinergym</em> has implemented one called <code class="docutils literal notranslate"><span class="pre">WandBOutputFormat</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># wandb logger and setting in SB3</span>
@@ -331,7 +335,7 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <p>This is the total number of time steps for the training.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">timesteps</span> <span class="o">=</span> <span class="n">episodes</span> <span class="o">*</span> <span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;timestep_per_episode&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
@@ -339,8 +343,8 @@ Wrapping the env in a DummyVecEnv.
 </div>
 </div>
 <p>Now, it’s time to train the model with the previously defined callback. This may take a few minutes, depending on your computer.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span>
@@ -350,9 +354,175 @@ Wrapping the env in a DummyVecEnv.
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[MODELING] (INFO) : Weather noise applied in columns: [&#39;drybulb&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path.
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+[WRAPPER CSVLogger] (INFO) : End of episode detected, data updated in monitor and progress.csv.
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:38&lt;00:00,  2.59%/s, 100% completed]
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 2: SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[MODELING] (INFO) : Weather noise applied in columns: [&#39;drybulb&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path.
+[ENVIRONMENT] (INFO) : Episode 2 started.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+[WRAPPER CSVLogger] (INFO) : Environment closed, data updated in monitor and progress.csv.
+Simulation Progress [Episode 2]: 100%|██████████| 100/100 [00:35&lt;00:00,  2.83%/s, 100% completed]
+[ENVIRONMENT] (INFO) : Environment closed. [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57_EVALUATION
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[MODELING] (INFO) : Weather noise applied in columns: [&#39;drybulb&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path.
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+[EVALUATION] (INFO) : Eval num_timesteps=70078, episode_reward=-0.28 + /-  0.35
+[EVALUATION] (INFO) : New best mean reward!
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:14&lt;00:00,  8.43%/s, 100% completed]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/workspaces/sinergym/sinergym/utils/callbacks.py:130: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  self.evaluation_metrics = self.evaluation_metrics._append(
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[WRAPPER CSVLogger] (INFO) : Environment closed, data updated in monitor and progress.csv.
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:21&lt;00:00,  4.75%/s, 100% completed]
+[ENVIRONMENT] (INFO) : Environment closed. [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57_EVALUATION]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 3: SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[MODELING] (INFO) : Weather noise applied in columns: [&#39;drybulb&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path.
+[ENVIRONMENT] (INFO) : Episode 3 started.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+[WRAPPER CSVLogger] (INFO) : End of episode detected, data updated in monitor and progress.csv.
+Simulation Progress [Episode 3]: 100%|██████████| 100/100 [00:37&lt;00:00,  2.70%/s, 100% completed]
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 4: SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[MODELING] (INFO) : Weather noise applied in columns: [&#39;drybulb&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path.
+[ENVIRONMENT] (INFO) : Episode 4 started.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+[WRAPPER CSVLogger] (INFO) : Environment closed, data updated in monitor and progress.csv.
+Simulation Progress [Episode 4]: 100%|██████████| 100/100 [00:35&lt;00:00,  2.83%/s, 100% completed]
+[ENVIRONMENT] (INFO) : Environment closed. [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 2: SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57_EVALUATION
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[MODELING] (INFO) : Weather noise applied in columns: [&#39;drybulb&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path.
+[ENVIRONMENT] (INFO) : Episode 2 started.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+[EVALUATION] (INFO) : Eval num_timesteps=140156, episode_reward=-0.23 + /-  0.27
+[EVALUATION] (INFO) : New best mean reward!
+[WRAPPER CSVLogger] (INFO) : Environment closed, data updated in monitor and progress.csv.
+Simulation Progress [Episode 2]: 100%|██████████| 100/100 [00:20&lt;00:00,  4.79%/s, 100% completed]
+[ENVIRONMENT] (INFO) : Environment closed. [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57_EVALUATION]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 5: SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[MODELING] (INFO) : Weather noise applied in columns: [&#39;drybulb&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path.
+[ENVIRONMENT] (INFO) : Episode 5 started.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+[WRAPPER CSVLogger] (INFO) : End of episode detected, data updated in monitor and progress.csv.
+Simulation Progress [Episode 5]: 100%|██████████| 100/100 [00:36&lt;00:00,  2.72%/s, 100% completed]
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 6: SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[MODELING] (INFO) : Weather noise applied in columns: [&#39;drybulb&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path.
+[ENVIRONMENT] (INFO) : Episode 6 started.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+Simulation Progress [Episode 6]:   4%|▍         | 4/100 [00:00&lt;00:10,  9.14%/s, 4% completed]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;stable_baselines3.ppo.ppo.PPO at 0x7f7ec7eb7740&gt;
+</pre></div></div>
+</div>
 <p>Now, we save the current model (the model version when training has finished). We will save the mean and var normalization calibration in order to use it in model evaluation, although these values can be consulted later in a txt saved in Sinergym training output. Visit NormalizeObservation wrapper documentation for more information.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;workspace_path&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/model&#39;</span><span class="p">)</span>
@@ -361,7 +531,7 @@ Wrapping the env in a DummyVecEnv.
 </div>
 <p>And as always, remember to close the environment. If WandB is active with logger, this close will save artifacts with whole experiment output and evaluation executed.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -374,9 +544,9 @@ Wrapping the env in a DummyVecEnv.
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 [WRAPPER CSVLogger] (INFO) : Environment closed, data updated in monitor and progress.csv.
-[ENVIRONMENT] (INFO) : Environment closed. [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
-[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
-Progress: |***************************************************************************************************| 99%
+Simulation Progress [Episode 6]:   4%|▍         | 4/100 [00:01&lt;00:28,  3.39%/s, 4% completed]
+[ENVIRONMENT] (INFO) : Environment closed. [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_07:57]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
 </pre></div></div>
 </div>
 <p>All experiment results are stored locally, but you can also view the execution in <em>wandb</em>:</p>
@@ -403,7 +573,7 @@ Progress: |*********************************************************************
 <p>For more details on how to run <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code>, please refer to <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#model-loading">Load a trained model</a>.</p>
 <p>First, we’ll define the Sinergym environment ID where we want to test the loaded agent and the name of the evaluation experiment.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Environment ID</span>
@@ -422,7 +592,7 @@ Progress: |*********************************************************************
 <p><strong>Note</strong>: If you are loading a pre-trained model and using the observation space normalization wrapper, you should use the means and variations calibrated during the training process for a fair evaluation. The next code specifies this aspect, those mean and var values are written in Sinergym training output as txt file automatically if you want to consult it later. You can use the list/numpy array values or set the txt path directly in the field constructor. It is also important to deactivate
 calibration update during evaluations. Check the documentation on the wrapper for more information. This task is done automatically in <code class="docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">evaluation_env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="n">evaluation_name</span><span class="p">)</span>
@@ -440,18 +610,20 @@ calibration update during evaluations. Check the documentation on the wrapper fo
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #==============================================================================================#
-[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [SB3_PPO-EVAL-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:48]
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: SB3_PPO-EVAL-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_08:01
 #==============================================================================================#
-[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-EVAL-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:48-res1]
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-SB3_PPO-EVAL-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-09-10_08:01-res1
 [MODELING] (INFO) : Model Config is correct.
-[MODELING] (INFO) : Updated building model with whole Output:Variable available names
-[MODELING] (INFO) : Updated building model with whole Output:Meter available names
-[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
 [MODELING] (INFO) : Episode length (seconds): 31536000.0
 [MODELING] (INFO) : timestep size (seconds): 900.0
-[MODELING] (INFO) : timesteps per episode: 35041
+[MODELING] (INFO) : timesteps per episode: 35040
 [REWARD] (INFO) : Reward function initialized.
-[ENVIRONMENT] (INFO) : Environment SB3_PPO-EVAL-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:48 created successfully.
+[ENVIRONMENT] (INFO) : Environment created successfully.
 [WRAPPER NormalizeObservation] (INFO) : Wrapper initialized.
 [WRAPPER NormalizeAction] (INFO) : New normalized action Space: Box(-1.0, 1.0, (2,), float32)
 [WRAPPER NormalizeAction] (INFO) : Wrapper initialized
@@ -460,8 +632,8 @@ calibration update during evaluations. Check the documentation on the wrapper fo
 </pre></div></div>
 </div>
 <p>We’ll load the Stable Baselines 3 PPO model from our local computer, but we could also use a remote model stored in <em>wandb</em> from another training experiment.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get wandb artifact path (to load model)</span>
@@ -485,6 +657,167 @@ calibration update during evaluations. Check the documentation on the wrapper fo
 <span class="n">model</span> <span class="o">=</span> <span class="n">PPO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+<span class="ansi-blue-intense-fg ansi-bold">wandb</span>: Currently logged in as: <span class="ansi-yellow-fg">alex_ugr</span> (<span class="ansi-yellow-fg">sail_ugr</span>). Use <span class="ansi-bold">`wandb login --relogin`</span> to force relogin
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+Tracking run with wandb version 0.17.7</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+Run data is saved locally in <code>/workspaces/sinergym/examples/wandb/run-20240910_080136-00hy8l6g</code></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+Syncing run <strong><a href='https://wandb.ai/sail_ugr/sinergym-examples/runs/00hy8l6g' target="_blank">azure-violet-1</a></strong> to <a href='https://wandb.ai/sail_ugr/sinergym-examples' target="_blank">Weights & Biases</a> (<a href='https://wandb.me/run' target="_blank">docs</a>)<br/></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+View project at <a href='https://wandb.ai/sail_ugr/sinergym-examples' target="_blank">https://wandb.ai/sail_ugr/sinergym-examples</a></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+View run at <a href='https://wandb.ai/sail_ugr/sinergym-examples/runs/00hy8l6g' target="_blank">https://wandb.ai/sail_ugr/sinergym-examples/runs/00hy8l6g</a></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">HTTPError</span>                                 Traceback (most recent call last)
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/wandb/apis/normalize.py:41</span>, in <span class="ansi-cyan-fg">normalize_exceptions.&lt;locals&gt;.wrapper</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     40</span> <span class="ansi-bold" style="color: rgb(0,135,0)">try</span>:
+<span class="ansi-green-fg">---&gt; 41</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">func</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     42</span> <span class="ansi-bold" style="color: rgb(0,135,0)">except</span> requests<span style="color: rgb(98,98,98)">.</span>HTTPError <span class="ansi-bold" style="color: rgb(0,135,0)">as</span> error:
+
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/wandb/apis/public/api.py:1034</span>, in <span class="ansi-cyan-fg">Api.artifact</span><span class="ansi-blue-fg">(self, name, type)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1033</span> entity, project, artifact_name <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_parse_artifact_path(name)
+<span class="ansi-green-fg">-&gt; 1034</span> artifact <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">wandb</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">Artifact</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_from_name</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-intense-fg ansi-bold">   1035</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">entity</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">project</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">artifact_name</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">client</span>
+<span class="ansi-green-intense-fg ansi-bold">   1036</span> <span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1037</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">type</span> <span class="ansi-bold" style="color: rgb(175,0,255)">is</span> <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> <span class="ansi-bold" style="color: rgb(0,135,0)">None</span> <span class="ansi-bold" style="color: rgb(175,0,255)">and</span> artifact<span style="color: rgb(98,98,98)">.</span>type <span style="color: rgb(98,98,98)">!=</span> <span style="color: rgb(0,135,0)">type</span>:
+
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/wandb/sdk/artifacts/artifact.py:258</span>, in <span class="ansi-cyan-fg">Artifact._from_name</span><span class="ansi-blue-fg">(cls, entity, project, name, client)</span>
+<span class="ansi-green-intense-fg ansi-bold">    242</span> query <span style="color: rgb(98,98,98)">=</span> gql(
+<span class="ansi-green-intense-fg ansi-bold">    243</span> <span style="color: rgb(188,188,188)">    </span><span style="color: rgb(175,0,0)">&#34;&#34;&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">    244</span> <span style="color: rgb(175,0,0)">    query ArtifactByName(</span>
+<span class="ansi-green-fg">   (...)</span>
+<span class="ansi-green-intense-fg ansi-bold">    256</span>     <span style="color: rgb(98,98,98)">+</span> <span style="color: rgb(0,135,0)">cls</span><span style="color: rgb(98,98,98)">.</span>_get_gql_artifact_fragment()
+<span class="ansi-green-intense-fg ansi-bold">    257</span> )
+<span class="ansi-green-fg">--&gt; 258</span> response <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">client</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">execute</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-intense-fg ansi-bold">    259</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">query</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">    260</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">variable_values</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">{</span>
+<span class="ansi-green-intense-fg ansi-bold">    261</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#34;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">entityName</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#34;</span><span class="ansi-yellow-bg">:</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">entity</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">    262</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#34;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">projectName</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#34;</span><span class="ansi-yellow-bg">:</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">project</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">    263</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#34;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">name</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#34;</span><span class="ansi-yellow-bg">:</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">name</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">    264</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">}</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">    265</span> <span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    266</span> project_attrs <span style="color: rgb(98,98,98)">=</span> response<span style="color: rgb(98,98,98)">.</span>get(<span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">project</span><span style="color: rgb(175,0,0)">&#34;</span>)
+
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/wandb/sdk/lib/retry.py:212</span>, in <span class="ansi-cyan-fg">retriable.&lt;locals&gt;.decorator.&lt;locals&gt;.wrapped_fn</span><span class="ansi-blue-fg">(*args, **kargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    210</span> <span style="color: rgb(175,0,255)">@functools</span><span style="color: rgb(98,98,98)">.</span>wraps(fn)
+<span class="ansi-green-intense-fg ansi-bold">    211</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">wrapped_fn</span>(<span style="color: rgb(98,98,98)">*</span>args: Any, <span style="color: rgb(98,98,98)">*</span><span style="color: rgb(98,98,98)">*</span>kargs: Any) <span style="color: rgb(98,98,98)">-</span><span style="color: rgb(98,98,98)">&gt;</span> Any:
+<span class="ansi-green-fg">--&gt; 212</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">retrier</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kargs</span><span class="ansi-yellow-bg">)</span>
+
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/wandb/sdk/lib/retry.py:131</span>, in <span class="ansi-cyan-fg">Retry.__call__</span><span class="ansi-blue-fg">(self, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    130</span> <span class="ansi-bold" style="color: rgb(0,135,0)">try</span>:
+<span class="ansi-green-fg">--&gt; 131</span>     result <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_call_fn</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    132</span>     <span style="color: rgb(95,135,135)"># Only print resolved attempts once every minute</span>
+
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/wandb/apis/public/api.py:70</span>, in <span class="ansi-cyan-fg">RetryingClient.execute</span><span class="ansi-blue-fg">(self, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     69</span> <span class="ansi-bold" style="color: rgb(0,135,0)">try</span>:
+<span class="ansi-green-fg">---&gt; 70</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_client</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">execute</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     71</span> <span class="ansi-bold" style="color: rgb(0,135,0)">except</span> requests<span style="color: rgb(98,98,98)">.</span>exceptions<span style="color: rgb(98,98,98)">.</span>ReadTimeout:
+
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py:52</span>, in <span class="ansi-cyan-fg">Client.execute</span><span class="ansi-blue-fg">(self, document, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     50</span>     <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>validate(document)
+<span class="ansi-green-fg">---&gt; 52</span> result <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_get_result</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">document</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     53</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> result<span style="color: rgb(98,98,98)">.</span>errors:
+
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py:60</span>, in <span class="ansi-cyan-fg">Client._get_result</span><span class="ansi-blue-fg">(self, document, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     59</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>retries:
+<span class="ansi-green-fg">---&gt; 60</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">transport</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">execute</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">document</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     62</span> last_exception <span style="color: rgb(98,98,98)">=</span> <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>
+
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/wandb/sdk/lib/gql_request.py:59</span>, in <span class="ansi-cyan-fg">GraphQLSession.execute</span><span class="ansi-blue-fg">(self, document, variable_values, timeout)</span>
+<span class="ansi-green-intense-fg ansi-bold">     58</span> request <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>session<span style="color: rgb(98,98,98)">.</span>post(<span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>url, <span style="color: rgb(98,98,98)">*</span><span style="color: rgb(98,98,98)">*</span>post_args)
+<span class="ansi-green-fg">---&gt; 59</span> <span class="ansi-yellow-bg">request</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">raise_for_status</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     61</span> result <span style="color: rgb(98,98,98)">=</span> request<span style="color: rgb(98,98,98)">.</span>json()
+
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/requests/models.py:1024</span>, in <span class="ansi-cyan-fg">Response.raise_for_status</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1023</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> http_error_msg:
+<span class="ansi-green-fg">-&gt; 1024</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> HTTPError(http_error_msg, response<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(0,135,0)">self</span>)
+
+<span class="ansi-red-fg">HTTPError</span>: 400 Client Error: Bad Request for url: https://api.wandb.ai/graphql
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">CommError</span>                                 Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[20], line 15</span>
+<span class="ansi-green-intense-fg ansi-bold">     12</span> wandb_path <span style="color: rgb(98,98,98)">=</span> load_artifact_entity <span style="color: rgb(98,98,98)">+</span> <span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">/</span><span style="color: rgb(175,0,0)">&#39;</span> <span style="color: rgb(98,98,98)">+</span> load_artifact_project <span style="color: rgb(98,98,98)">+</span> \
+<span class="ansi-green-intense-fg ansi-bold">     13</span>     <span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">/</span><span style="color: rgb(175,0,0)">&#39;</span> <span style="color: rgb(98,98,98)">+</span> load_artifact_name <span style="color: rgb(98,98,98)">+</span> <span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">:</span><span style="color: rgb(175,0,0)">&#39;</span> <span style="color: rgb(98,98,98)">+</span> load_artifact_tag
+<span class="ansi-green-intense-fg ansi-bold">     14</span> <span style="color: rgb(95,135,135)"># Download artifact</span>
+<span class="ansi-green-fg">---&gt; 15</span> artifact <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">wandb_run</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">use_artifact</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">wandb_path</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     16</span> artifact<span style="color: rgb(98,98,98)">.</span>get_path(load_artifact_model_path)<span style="color: rgb(98,98,98)">.</span>download(<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">.</span><span style="color: rgb(175,0,0)">&#39;</span>)
+<span class="ansi-green-intense-fg ansi-bold">     17</span> <span style="color: rgb(95,135,135)"># Set model path to local wandb file downloaded</span>
+
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/wandb/sdk/wandb_run.py:401</span>, in <span class="ansi-cyan-fg">_run_decorator._noop_on_finish.&lt;locals&gt;.decorator_fn.&lt;locals&gt;.wrapper_fn</span><span class="ansi-blue-fg">(self, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    398</span> <span style="color: rgb(175,0,255)">@functools</span><span style="color: rgb(98,98,98)">.</span>wraps(func)
+<span class="ansi-green-intense-fg ansi-bold">    399</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">wrapper_fn</span>(<span style="color: rgb(0,135,0)">self</span>: Type[<span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">Run</span><span style="color: rgb(175,0,0)">&#34;</span>], <span style="color: rgb(98,98,98)">*</span>args: Any, <span style="color: rgb(98,98,98)">*</span><span style="color: rgb(98,98,98)">*</span>kwargs: Any) <span style="color: rgb(98,98,98)">-</span><span style="color: rgb(98,98,98)">&gt;</span> Any:
+<span class="ansi-green-intense-fg ansi-bold">    400</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> <span style="color: rgb(0,135,0)">getattr</span>(<span style="color: rgb(0,135,0)">self</span>, <span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">_is_finished</span><span style="color: rgb(175,0,0)">&#34;</span>, <span class="ansi-bold" style="color: rgb(0,135,0)">False</span>):
+<span class="ansi-green-fg">--&gt; 401</span>         <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">func</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    403</span>     default_message <span style="color: rgb(98,98,98)">=</span> (
+<span class="ansi-green-intense-fg ansi-bold">    404</span>         <span style="color: rgb(175,0,0)">f</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">Run (</span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span><span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>id<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span style="color: rgb(175,0,0)">) is finished. The call to `</span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span>func<span style="color: rgb(98,98,98)">.</span><span style="color: rgb(0,0,135)">__name__</span><span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span style="color: rgb(175,0,0)">` will be ignored. </span><span style="color: rgb(175,0,0)">&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">    405</span>         <span style="color: rgb(175,0,0)">f</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">Please make sure that you are using an active run.</span><span style="color: rgb(175,0,0)">&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">    406</span>     )
+<span class="ansi-green-intense-fg ansi-bold">    407</span>     resolved_message <span style="color: rgb(98,98,98)">=</span> message <span class="ansi-bold" style="color: rgb(175,0,255)">or</span> default_message
+
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/wandb/sdk/wandb_run.py:391</span>, in <span class="ansi-cyan-fg">_run_decorator._attach.&lt;locals&gt;.wrapper</span><span class="ansi-blue-fg">(self, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    389</span>         <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> e
+<span class="ansi-green-intense-fg ansi-bold">    390</span>     <span style="color: rgb(0,135,0)">cls</span><span style="color: rgb(98,98,98)">.</span>_is_attaching <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">&#34;</span>
+<span class="ansi-green-fg">--&gt; 391</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">func</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/wandb/sdk/wandb_run.py:3024</span>, in <span class="ansi-cyan-fg">Run.use_artifact</span><span class="ansi-blue-fg">(self, artifact_or_name, type, aliases, use_as)</span>
+<span class="ansi-green-intense-fg ansi-bold">   3022</span>     name <span style="color: rgb(98,98,98)">=</span> artifact_or_name
+<span class="ansi-green-intense-fg ansi-bold">   3023</span> public_api <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_public_api()
+<span class="ansi-green-fg">-&gt; 3024</span> artifact <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">public_api</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">artifact</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">type</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">type</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">name</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">name</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   3025</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">type</span> <span class="ansi-bold" style="color: rgb(175,0,255)">is</span> <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> <span class="ansi-bold" style="color: rgb(0,135,0)">None</span> <span class="ansi-bold" style="color: rgb(175,0,255)">and</span> <span style="color: rgb(0,135,0)">type</span> <span style="color: rgb(98,98,98)">!=</span> artifact<span style="color: rgb(98,98,98)">.</span>type:
+<span class="ansi-green-intense-fg ansi-bold">   3026</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> <span class="ansi-bold" style="color: rgb(215,95,95)">ValueError</span>(
+<span class="ansi-green-intense-fg ansi-bold">   3027</span>         <span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">Supplied type </span><span class="ansi-bold" style="color: rgb(175,95,135)">{}</span><span style="color: rgb(175,0,0)"> does not match type </span><span class="ansi-bold" style="color: rgb(175,95,135)">{}</span><span style="color: rgb(175,0,0)"> of artifact </span><span class="ansi-bold" style="color: rgb(175,95,135)">{}</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(98,98,98)">.</span>format(
+<span class="ansi-green-intense-fg ansi-bold">   3028</span>             <span style="color: rgb(0,135,0)">type</span>, artifact<span style="color: rgb(98,98,98)">.</span>type, artifact<span style="color: rgb(98,98,98)">.</span>name
+<span class="ansi-green-intense-fg ansi-bold">   3029</span>         )
+<span class="ansi-green-intense-fg ansi-bold">   3030</span>     )
+
+File <span class="ansi-green-fg">/usr/local/lib/python3.12/dist-packages/wandb/apis/normalize.py:51</span>, in <span class="ansi-cyan-fg">normalize_exceptions.&lt;locals&gt;.wrapper</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     49</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
+<span class="ansi-green-intense-fg ansi-bold">     50</span>         message <span style="color: rgb(98,98,98)">=</span> error<span style="color: rgb(98,98,98)">.</span>response
+<span class="ansi-green-fg">---&gt; 51</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> CommError(message, error)
+<span class="ansi-green-intense-fg ansi-bold">     52</span> <span class="ansi-bold" style="color: rgb(0,135,0)">except</span> RetryError <span class="ansi-bold" style="color: rgb(0,135,0)">as</span> err:
+<span class="ansi-green-intense-fg ansi-bold">     53</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> (
+<span class="ansi-green-intense-fg ansi-bold">     54</span>         <span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">response</span><span style="color: rgb(175,0,0)">&#34;</span> <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span style="color: rgb(0,135,0)">dir</span>(err<span style="color: rgb(98,98,98)">.</span>last_exception)
+<span class="ansi-green-intense-fg ansi-bold">     55</span>         <span class="ansi-bold" style="color: rgb(175,0,255)">and</span> err<span style="color: rgb(98,98,98)">.</span>last_exception<span style="color: rgb(98,98,98)">.</span>response <span class="ansi-bold" style="color: rgb(175,0,255)">is</span> <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>
+<span class="ansi-green-intense-fg ansi-bold">     56</span>     ):
+
+<span class="ansi-red-fg">CommError</span>: invalid alias. aliases must be specified as collectionName:alias (Error 400: Bad Request)
+</pre></div></div>
 </div>
 <p>As you can see, the <em>wandb</em> model we want to load can come from an artifact of a different entity or project than the one we’re using to register the evaluation of the loaded model, as long as it’s accessible. The next step is to use the model to predict actions and interact with the environment to collect data for model evaluation.</p>
 <div class="nbinput docutils container">
