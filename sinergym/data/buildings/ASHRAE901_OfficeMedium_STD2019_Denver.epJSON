@@ -4325,12 +4325,12 @@
                 {
                     "daylighting_reference_point_name": "Perimeter_bot_ZN_1_DaylRefPt1",
                     "fraction_of_lights_controlled_by_reference_point": 0.3835,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 },
                 {
                     "daylighting_reference_point_name": "Perimeter_bot_ZN_1_DaylRefPt2",
                     "fraction_of_lights_controlled_by_reference_point": 0.1395,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -4349,12 +4349,12 @@
                 {
                     "daylighting_reference_point_name": "Perimeter_bot_ZN_2_DaylRefPt1",
                     "fraction_of_lights_controlled_by_reference_point": 0.3835,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 },
                 {
                     "daylighting_reference_point_name": "Perimeter_bot_ZN_2_DaylRefPt2",
                     "fraction_of_lights_controlled_by_reference_point": 0.1395,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -4373,12 +4373,12 @@
                 {
                     "daylighting_reference_point_name": "Perimeter_bot_ZN_3_DaylRefPt1",
                     "fraction_of_lights_controlled_by_reference_point": 0.3835,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 },
                 {
                     "daylighting_reference_point_name": "Perimeter_bot_ZN_3_DaylRefPt2",
                     "fraction_of_lights_controlled_by_reference_point": 0.1395,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -4397,12 +4397,12 @@
                 {
                     "daylighting_reference_point_name": "Perimeter_bot_ZN_4_DaylRefPt1",
                     "fraction_of_lights_controlled_by_reference_point": 0.3835,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 },
                 {
                     "daylighting_reference_point_name": "Perimeter_bot_ZN_4_DaylRefPt2",
                     "fraction_of_lights_controlled_by_reference_point": 0.1395,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -4421,12 +4421,12 @@
                 {
                     "daylighting_reference_point_name": "Perimeter_mid_ZN_1_DaylRefPt1",
                     "fraction_of_lights_controlled_by_reference_point": 0.3835,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 },
                 {
                     "daylighting_reference_point_name": "Perimeter_mid_ZN_1_DaylRefPt2",
                     "fraction_of_lights_controlled_by_reference_point": 0.1395,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -4445,12 +4445,12 @@
                 {
                     "daylighting_reference_point_name": "Perimeter_mid_ZN_2_DaylRefPt1",
                     "fraction_of_lights_controlled_by_reference_point": 0.3835,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 },
                 {
                     "daylighting_reference_point_name": "Perimeter_mid_ZN_2_DaylRefPt2",
                     "fraction_of_lights_controlled_by_reference_point": 0.1395,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -4469,12 +4469,12 @@
                 {
                     "daylighting_reference_point_name": "Perimeter_mid_ZN_3_DaylRefPt1",
                     "fraction_of_lights_controlled_by_reference_point": 0.3835,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 },
                 {
                     "daylighting_reference_point_name": "Perimeter_mid_ZN_3_DaylRefPt2",
                     "fraction_of_lights_controlled_by_reference_point": 0.1395,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -4493,12 +4493,12 @@
                 {
                     "daylighting_reference_point_name": "Perimeter_mid_ZN_4_DaylRefPt1",
                     "fraction_of_lights_controlled_by_reference_point": 0.3835,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 },
                 {
                     "daylighting_reference_point_name": "Perimeter_mid_ZN_4_DaylRefPt2",
                     "fraction_of_lights_controlled_by_reference_point": 0.1395,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -4517,12 +4517,12 @@
                 {
                     "daylighting_reference_point_name": "Perimeter_top_ZN_1_DaylRefPt1",
                     "fraction_of_lights_controlled_by_reference_point": 0.3835,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 },
                 {
                     "daylighting_reference_point_name": "Perimeter_top_ZN_1_DaylRefPt2",
                     "fraction_of_lights_controlled_by_reference_point": 0.1395,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -4541,12 +4541,12 @@
                 {
                     "daylighting_reference_point_name": "Perimeter_top_ZN_2_DaylRefPt1",
                     "fraction_of_lights_controlled_by_reference_point": 0.3835,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 },
                 {
                     "daylighting_reference_point_name": "Perimeter_top_ZN_2_DaylRefPt2",
                     "fraction_of_lights_controlled_by_reference_point": 0.1395,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -4565,12 +4565,12 @@
                 {
                     "daylighting_reference_point_name": "Perimeter_top_ZN_3_DaylRefPt1",
                     "fraction_of_lights_controlled_by_reference_point": 0.3835,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 },
                 {
                     "daylighting_reference_point_name": "Perimeter_top_ZN_3_DaylRefPt2",
                     "fraction_of_lights_controlled_by_reference_point": 0.1395,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -4589,12 +4589,12 @@
                 {
                     "daylighting_reference_point_name": "Perimeter_top_ZN_4_DaylRefPt1",
                     "fraction_of_lights_controlled_by_reference_point": 0.3835,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 },
                 {
                     "daylighting_reference_point_name": "Perimeter_top_ZN_4_DaylRefPt2",
                     "fraction_of_lights_controlled_by_reference_point": 0.1395,
-                    "illuminance_setpoint_at_reference_point": 377
+                    "illuminance_setpoint_at_reference_point": 377.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -6703,7 +6703,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Core_bottom"
         },
         "Core_mid_Lights": {
@@ -6715,7 +6715,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Core_mid"
         },
         "Core_top_Lights": {
@@ -6727,7 +6727,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Core_top"
         },
         "Perimeter_bot_ZN_1_Lights": {
@@ -6739,7 +6739,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_1"
         },
         "Perimeter_bot_ZN_2_Lights": {
@@ -6751,7 +6751,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_2"
         },
         "Perimeter_bot_ZN_3_Lights": {
@@ -6763,7 +6763,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_3"
         },
         "Perimeter_bot_ZN_4_Lights": {
@@ -6775,7 +6775,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_bot_ZN_4"
         },
         "Perimeter_mid_ZN_1_Lights": {
@@ -6787,7 +6787,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_1"
         },
         "Perimeter_mid_ZN_2_Lights": {
@@ -6799,7 +6799,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_2"
         },
         "Perimeter_mid_ZN_3_Lights": {
@@ -6811,7 +6811,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_3"
         },
         "Perimeter_mid_ZN_4_Lights": {
@@ -6823,7 +6823,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_mid_ZN_4"
         },
         "Perimeter_top_ZN_1_Lights": {
@@ -6835,7 +6835,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_1"
         },
         "Perimeter_top_ZN_2_Lights": {
@@ -6847,7 +6847,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_2"
         },
         "Perimeter_top_ZN_3_Lights": {
@@ -6859,7 +6859,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_3"
         },
         "Perimeter_top_ZN_4_Lights": {
@@ -6871,7 +6871,7 @@
             "return_air_fraction": 0.0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Perimeter_top_ZN_4"
         }
     },
@@ -7485,7 +7485,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7501,7 +7501,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7517,7 +7517,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7533,7 +7533,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7549,7 +7549,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7565,7 +7565,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7581,7 +7581,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7597,7 +7597,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7613,7 +7613,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_w_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7629,7 +7629,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7645,7 +7645,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7661,7 +7661,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7677,7 +7677,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7693,7 +7693,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -7709,7 +7709,7 @@
             "enable_ashrae_55_comfort_warnings": "No",
             "floor_area_per_person": 18.5787942465724,
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "Area/Person",
             "number_of_people_schedule_name": "BLDG_OCC_SCH_wo_SB",
             "sensible_heat_fraction": "Autocalculate",
@@ -8361,7 +8361,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "For: Saturday"
@@ -8409,7 +8409,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Sunday Holidays AllOtherDays"
@@ -8602,37 +8602,37 @@
                     "field": "Until: 01:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 02:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 03:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 04:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 05:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 06:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 07:00"
@@ -8662,7 +8662,7 @@
                     "field": "Until: 11:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 12:00"
@@ -8674,7 +8674,7 @@
                     "field": "Until: 13:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 14:00"
@@ -8686,7 +8686,7 @@
                     "field": "Until: 15:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 16:00"
@@ -8749,37 +8749,37 @@
                     "field": "Until: 01:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 02:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 03:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 04:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 05:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 06:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 07:00"
@@ -8809,7 +8809,7 @@
                     "field": "Until: 11:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 12:00"
@@ -8821,7 +8821,7 @@
                     "field": "Until: 13:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 14:00"
@@ -8833,7 +8833,7 @@
                     "field": "Until: 15:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 16:00"
@@ -8863,31 +8863,31 @@
                     "field": "Until: 20:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 21:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: SummerDesignDay"
@@ -8955,37 +8955,37 @@
                     "field": "Until: 01:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 02:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 03:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 04:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 05:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 06:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 07:00"
@@ -9102,37 +9102,37 @@
                     "field": "Until: 01:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 02:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 03:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 04:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 05:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 06:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 07:00"
@@ -9216,31 +9216,31 @@
                     "field": "Until: 20:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 21:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: SummerDesignDay"
@@ -10500,25 +10500,25 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 25
+                    "field": 25.0
                 },
                 {
                     "field": "Until: 08:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 09:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 11:00"
@@ -10530,7 +10530,7 @@
                     "field": "Until: 12:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 13:00"
@@ -10542,7 +10542,7 @@
                     "field": "Until: 14:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 15:00"
@@ -10554,43 +10554,43 @@
                     "field": "Until: 16:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 17:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 18:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 20:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 21:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -10647,25 +10647,25 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 25
+                    "field": 25.0
                 },
                 {
                     "field": "Until: 08:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 09:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 11:00"
@@ -10677,7 +10677,7 @@
                     "field": "Until: 12:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 13:00"
@@ -10689,7 +10689,7 @@
                     "field": "Until: 14:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 15:00"
@@ -10701,13 +10701,13 @@
                     "field": "Until: 16:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 17:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 18:00"
@@ -10926,7 +10926,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -10977,7 +10977,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -11028,7 +11028,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -11045,7 +11045,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 4
+                    "field": 4.0
                 }
             ],
             "schedule_type_limits_name": "Control Type"
@@ -11062,7 +11062,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -11359,7 +11359,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -11376,13 +11376,13 @@
                     "field": "Until: 06:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "fraction"
@@ -11399,19 +11399,19 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For:Saturdays"
@@ -11420,19 +11420,19 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 18:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For:AllOtherDays"
@@ -11441,7 +11441,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "fraction"
@@ -11464,7 +11464,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "fraction"
@@ -11487,7 +11487,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "fraction"
@@ -11510,7 +11510,7 @@
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
@@ -12336,25 +12336,25 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 20
+                    "field": 20.0
                 },
                 {
                     "field": "Until: 08:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 09:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 11:00"
@@ -12366,7 +12366,7 @@
                     "field": "Until: 12:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 13:00"
@@ -12378,7 +12378,7 @@
                     "field": "Until: 14:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 15:00"
@@ -12390,43 +12390,43 @@
                     "field": "Until: 16:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 17:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 18:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 20:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 21:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -12483,25 +12483,25 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 20
+                    "field": 20.0
                 },
                 {
                     "field": "Until: 08:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 09:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 11:00"
@@ -12513,7 +12513,7 @@
                     "field": "Until: 12:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 13:00"
@@ -12525,7 +12525,7 @@
                     "field": "Until: 14:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 15:00"
@@ -12537,13 +12537,13 @@
                     "field": "Until: 16:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 17:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 18:00"
@@ -12788,7 +12788,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 50
+                    "field": 50.0
                 },
                 {
                     "field": "For: Saturday WinterDesignDay"
@@ -12797,7 +12797,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 50
+                    "field": 50.0
                 },
                 {
                     "field": "For:Sunday Holidays AllOtherDays"
@@ -12806,7 +12806,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 50
+                    "field": 50.0
                 }
             ],
             "schedule_type_limits_name": "Humidity"
@@ -13343,145 +13343,145 @@
                     "field": "Until: 01:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 02:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 03:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 04:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 05:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 06:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 08:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 09:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 11:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 12:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 13:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 14:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 15:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 16:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 17:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 18:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 20:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 21:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "For: Saturday"
@@ -13490,145 +13490,145 @@
                     "field": "Until: 01:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 02:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 03:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 04:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 05:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 06:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 08:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 09:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 11:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 12:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 13:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 14:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 15:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 16:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 17:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 18:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 20:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 21:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "For: AllOtherDays"
@@ -13637,7 +13637,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -13688,7 +13688,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -13739,7 +13739,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -13790,7 +13790,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -13841,7 +13841,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -13892,7 +13892,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -13943,7 +13943,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -13994,7 +13994,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -14045,7 +14045,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -14096,7 +14096,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -14147,7 +14147,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -14198,7 +14198,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -14249,7 +14249,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -15096,7 +15096,7 @@
     },
     "Version": {
         "Version 1": {
-            "version_identifier": "23.1"
+            "version_identifier": "24.1"
         }
     },
     "WaterHeater:Mixed": {

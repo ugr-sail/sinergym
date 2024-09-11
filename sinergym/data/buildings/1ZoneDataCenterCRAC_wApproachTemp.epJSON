@@ -189,23 +189,23 @@
             "surface_type": "Wall",
             "vertices": [
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 4.572
                 },
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 15.24,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 15.24,
-                    "vertex_y_coordinate": 0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 4.572
                 }
             ],
@@ -222,18 +222,18 @@
             "vertices": [
                 {
                     "vertex_x_coordinate": 15.24,
-                    "vertex_y_coordinate": 0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 4.572
                 },
                 {
                     "vertex_x_coordinate": 15.24,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 15.24,
                     "vertex_y_coordinate": 15.24,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 15.24,
@@ -260,15 +260,15 @@
                 {
                     "vertex_x_coordinate": 15.24,
                     "vertex_y_coordinate": 15.24,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 15.24,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 15.24,
                     "vertex_z_coordinate": 4.572
                 }
@@ -285,23 +285,23 @@
             "surface_type": "Wall",
             "vertices": [
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 15.24,
                     "vertex_z_coordinate": 4.572
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 15.24,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 4.572
                 }
             ],
@@ -1348,7 +1348,7 @@
                     "field": "UNTIL: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -1365,7 +1365,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 4
+                    "field": 4.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -1892,7 +1892,7 @@
     },
     "Version": {
         "Version 1": {
-            "version_identifier": "23.2"
+            "version_identifier": "24.1"
         }
     },
     "Zone": {
