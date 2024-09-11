@@ -113,6 +113,7 @@
             "maximum_supply_air_temperature": "Autosize",
             "minimum_supply_air_temperature": 2,
             "no_load_supply_air_flow_rate": "Autosize",
+            "no_load_supply_air_flow_rate_control_set_to_low_speed": "No",
             "no_load_supply_air_flow_rate_method": "SupplyAirFlowRate",
             "supply_air_fan_operating_mode_schedule_name": "FanSched",
             "supply_fan_name": "PSZ-Fine Storage_addAQ Supply Fan",
@@ -142,6 +143,7 @@
             "maximum_supply_air_temperature": "Autosize",
             "minimum_supply_air_temperature": 2,
             "no_load_supply_air_flow_rate": "Autosize",
+            "no_load_supply_air_flow_rate_control_set_to_low_speed": "No",
             "no_load_supply_air_flow_rate_method": "SupplyAirFlowRate",
             "supply_air_fan_operating_mode_schedule_name": "FanSched",
             "supply_fan_name": "PSZ-Office_addAQ Supply Fan",
@@ -307,22 +309,22 @@
                 {
                     "vertex_x_coordinate": 45.7177703814647,
                     "vertex_y_coordinate": 100.579094839222,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 45.7177703814647,
                     "vertex_y_coordinate": 30.4785135876431,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 30.4785135876431,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 100.579094839222,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 }
             ],
             "view_factor_to_ground": "Autocalculate",
@@ -338,7 +340,7 @@
             "surface_type": "Wall",
             "vertices": [
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 30.4785135876431,
                     "vertex_z_coordinate": 8.53398380454007
                 },
@@ -350,12 +352,12 @@
                 {
                     "vertex_x_coordinate": 45.7177703814647,
                     "vertex_y_coordinate": 30.4785135876431,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 30.4785135876431,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 }
             ],
             "view_factor_to_ground": "Autocalculate",
@@ -370,22 +372,22 @@
             "surface_type": "Wall",
             "vertices": [
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 100.579094839222,
                     "vertex_z_coordinate": 8.53398380454007
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 100.579094839222,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 30.4785135876431,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 30.4785135876431,
                     "vertex_z_coordinate": 8.53398380454007
                 }
@@ -409,15 +411,15 @@
                 {
                     "vertex_x_coordinate": 45.7177703814647,
                     "vertex_y_coordinate": 100.579094839222,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 100.579094839222,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 100.579094839222,
                     "vertex_z_coordinate": 8.53398380454007
                 }
@@ -441,12 +443,12 @@
                 {
                     "vertex_x_coordinate": 45.7177703814647,
                     "vertex_y_coordinate": 30.4785135876431,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 45.7177703814647,
                     "vertex_y_coordinate": 100.579094839222,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 45.7177703814647,
@@ -466,12 +468,12 @@
             "surface_type": "Roof",
             "vertices": [
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 100.579094839222,
                     "vertex_z_coordinate": 8.53398380454007
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 30.4785135876431,
                     "vertex_z_coordinate": 8.53398380454007
                 },
@@ -500,32 +502,32 @@
                 {
                     "vertex_x_coordinate": 45.7177703814647,
                     "vertex_y_coordinate": 30.4785135876431,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 45.7177703814647,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 25.9067365494966,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 25.9067365494966,
                     "vertex_y_coordinate": 9.14355407629293,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 9.14355407629293,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 30.4785135876431,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 }
             ],
             "view_factor_to_ground": "Autocalculate",
@@ -541,22 +543,22 @@
             "vertices": [
                 {
                     "vertex_x_coordinate": 25.9067365494966,
-                    "vertex_y_coordinate": 0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 8.53398380454007
                 },
                 {
                     "vertex_x_coordinate": 25.9067365494966,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 45.7177703814647,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 45.7177703814647,
-                    "vertex_y_coordinate": 0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 8.53398380454007
                 }
             ],
@@ -572,22 +574,22 @@
             "surface_type": "Wall",
             "vertices": [
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 30.4785135876431,
                     "vertex_z_coordinate": 8.53398380454007
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 30.4785135876431,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 9.14355407629293,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 9.14355407629293,
                     "vertex_z_coordinate": 8.53398380454007
                 }
@@ -604,23 +606,23 @@
             "surface_type": "Wall",
             "vertices": [
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 8.53398380454007
                 },
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 4.26699190227003
                 },
                 {
                     "vertex_x_coordinate": 25.9067365494966,
-                    "vertex_y_coordinate": 0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 4.26699190227003
                 },
                 {
                     "vertex_x_coordinate": 25.9067365494966,
-                    "vertex_y_coordinate": 0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 8.53398380454007
                 }
             ],
@@ -636,23 +638,23 @@
             "surface_type": "Wall",
             "vertices": [
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 9.14355407629293,
                     "vertex_z_coordinate": 8.53398380454007
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 9.14355407629293,
                     "vertex_z_coordinate": 4.26699190227003
                 },
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 4.26699190227003
                 },
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 8.53398380454007
                 }
             ],
@@ -669,18 +671,18 @@
             "vertices": [
                 {
                     "vertex_x_coordinate": 45.7177703814647,
-                    "vertex_y_coordinate": 0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 8.53398380454007
                 },
                 {
                     "vertex_x_coordinate": 45.7177703814647,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 45.7177703814647,
                     "vertex_y_coordinate": 30.4785135876431,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 45.7177703814647,
@@ -701,7 +703,7 @@
             "vertices": [
                 {
                     "vertex_x_coordinate": 45.7177703814647,
-                    "vertex_y_coordinate": 0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 8.53398380454007
                 },
                 {
@@ -710,13 +712,13 @@
                     "vertex_z_coordinate": 8.53398380454007
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 30.4785135876431,
                     "vertex_z_coordinate": 8.53398380454007
                 },
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 8.53398380454007
                 }
             ],
@@ -734,22 +736,22 @@
                 {
                     "vertex_x_coordinate": 25.9067365494966,
                     "vertex_y_coordinate": 9.14355407629293,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 25.9067365494966,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 9.14355407629293,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 }
             ],
             "view_factor_to_ground": "Autocalculate",
@@ -764,23 +766,23 @@
             "surface_type": "Wall",
             "vertices": [
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 4.26699190227003
                 },
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 25.9067365494966,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 25.9067365494966,
-                    "vertex_y_coordinate": 0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 4.26699190227003
                 }
             ],
@@ -796,23 +798,23 @@
             "surface_type": "Wall",
             "vertices": [
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 9.14355407629293,
                     "vertex_z_coordinate": 4.26699190227003
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 9.14355407629293,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 4.26699190227003
                 }
             ],
@@ -836,15 +838,15 @@
                 {
                     "vertex_x_coordinate": 25.9067365494966,
                     "vertex_y_coordinate": 9.14355407629293,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 9.14355407629293,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 9.14355407629293,
                     "vertex_z_coordinate": 4.26699190227003
                 }
@@ -863,18 +865,18 @@
             "vertices": [
                 {
                     "vertex_x_coordinate": 25.9067365494966,
-                    "vertex_y_coordinate": 0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 4.26699190227003
                 },
                 {
                     "vertex_x_coordinate": 25.9067365494966,
-                    "vertex_y_coordinate": 0,
-                    "vertex_z_coordinate": 0
+                    "vertex_y_coordinate": 0.0,
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 25.9067365494966,
                     "vertex_y_coordinate": 9.14355407629293,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 25.9067365494966,
@@ -896,7 +898,7 @@
             "vertices": [
                 {
                     "vertex_x_coordinate": 25.9067365494966,
-                    "vertex_y_coordinate": 0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 4.26699190227003
                 },
                 {
@@ -905,13 +907,13 @@
                     "vertex_z_coordinate": 4.26699190227003
                 },
                 {
-                    "vertex_x_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
                     "vertex_y_coordinate": 9.14355407629293,
                     "vertex_z_coordinate": 4.26699190227003
                 },
                 {
-                    "vertex_x_coordinate": 0,
-                    "vertex_y_coordinate": 0,
+                    "vertex_x_coordinate": 0.0,
+                    "vertex_y_coordinate": 0.0,
                     "vertex_z_coordinate": 4.26699190227003
                 }
             ],
@@ -1006,8 +1008,8 @@
             "burner_efficiency": 0.81,
             "fuel_type": "NaturalGas",
             "nominal_capacity": "Autosize",
-            "parasitic_electric_load": 0.0,
-            "parasitic_fuel_load": 0.0,
+            "off_cycle_parasitic_fuel_load": 0.0,
+            "on_cycle_parasitic_electric_load": 0.0,
             "part_load_fraction_correlation_curve_name": "PSZ-Fine Storage Heating Coil PLF-FPLR"
         },
         "PSZ-Office Heating Coil": {
@@ -1017,8 +1019,8 @@
             "burner_efficiency": 0.81,
             "fuel_type": "NaturalGas",
             "nominal_capacity": "Autosize",
-            "parasitic_electric_load": 0.0,
-            "parasitic_fuel_load": 0.0,
+            "off_cycle_parasitic_fuel_load": 0.0,
+            "on_cycle_parasitic_electric_load": 0.0,
             "part_load_fraction_correlation_curve_name": "PSZ-Office Heating Coil PLF-FPLR"
         },
         "Zone3UnitHeaterHeatingCoil": {
@@ -1028,8 +1030,8 @@
             "burner_efficiency": 0.8,
             "fuel_type": "NaturalGas",
             "nominal_capacity": "Autosize",
-            "parasitic_electric_load": 0.0,
-            "parasitic_fuel_load": 0
+            "off_cycle_parasitic_fuel_load": 0,
+            "on_cycle_parasitic_electric_load": 0.0
         }
     },
     "Construction": {
@@ -1363,12 +1365,12 @@
                 {
                     "daylighting_reference_point_name": "Zone3 Bulk Storage_DaylRefPt1",
                     "fraction_of_lights_controlled_by_reference_point": 0.25,
-                    "illuminance_setpoint_at_reference_point": 215
+                    "illuminance_setpoint_at_reference_point": 215.0
                 },
                 {
                     "daylighting_reference_point_name": "Zone3 Bulk Storage_DaylRefPt2",
                     "fraction_of_lights_controlled_by_reference_point": 0.25,
-                    "illuminance_setpoint_at_reference_point": 215
+                    "illuminance_setpoint_at_reference_point": 215.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -1655,8 +1657,8 @@
             "speed_control_method": "Discrete",
             "speed_fractions": [
                 {
-                    "speed_electric_power_fraction": 1,
-                    "speed_flow_fraction": 1
+                    "speed_electric_power_fraction": 1.0,
+                    "speed_flow_fraction": 1.0
                 }
             ]
         },
@@ -1678,8 +1680,8 @@
             "speed_control_method": "Discrete",
             "speed_fractions": [
                 {
-                    "speed_electric_power_fraction": 1,
-                    "speed_flow_fraction": 1
+                    "speed_electric_power_fraction": 1.0,
+                    "speed_flow_fraction": 1.0
                 }
             ]
         }
@@ -3205,7 +3207,7 @@
             "return_air_fraction": 0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_STORAGE_SCH",
-            "watts_per_zone_floor_area": 3.552090438,
+            "watts_per_floor_area": 3.552090438,
             "zone_or_zonelist_or_space_or_spacelist_name": "Zone3 Bulk Storage"
         },
         "Fine Storage Area Lights": {
@@ -3217,7 +3219,7 @@
             "return_air_fraction": 0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_STORAGE_SCH",
-            "watts_per_zone_floor_area": 7.427098188,
+            "watts_per_floor_area": 7.427098188,
             "zone_or_zonelist_or_space_or_spacelist_name": "Zone2 Fine Storage"
         },
         "Office Lights": {
@@ -3229,7 +3231,7 @@
             "return_air_fraction": 0,
             "return_air_fraction_calculated_from_plenum_temperature": "No",
             "schedule_name": "BLDG_LIGHT_OFFICE_SCH",
-            "watts_per_zone_floor_area": 6.888902667,
+            "watts_per_floor_area": 6.888902667,
             "zone_or_zonelist_or_space_or_spacelist_name": "Zone1 Office"
         }
     },
@@ -3755,7 +3757,7 @@
         "Office People": {
             "activity_level_schedule_name": "Office Activity Schedule",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people": 5,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "BLDG_OCC_SCH",
@@ -3850,7 +3852,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "On/Off"
@@ -3867,7 +3869,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "On/Off"
@@ -3884,7 +3886,7 @@
                     "field": "UNTIL: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -3901,7 +3903,7 @@
                     "field": "UNTIL: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -3969,7 +3971,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "For: WinterDesignDay"
@@ -3978,7 +3980,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Sunday Holidays AllOtherDays"
@@ -4049,7 +4051,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "For: WinterDesignDay"
@@ -4058,7 +4060,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Sunday Holidays AllOtherDays"
@@ -4220,7 +4222,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "COMPACT HVAC Any Number"
@@ -4237,7 +4239,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 4
+                    "field": 4.0
                 }
             ],
             "schedule_type_limits_name": "COMPACT HVAC Any Number"
@@ -4301,7 +4303,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -4347,13 +4349,13 @@
                     "field": "Until: 06:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "fraction"
@@ -4370,19 +4372,19 @@
                     "field": "Until: 08:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 18:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For:Saturdays"
@@ -4391,7 +4393,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For:AllOtherDays"
@@ -4400,7 +4402,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "fraction"
@@ -4423,7 +4425,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "fraction"
@@ -4446,7 +4448,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "fraction"
@@ -4469,7 +4471,7 @@
                     "field": "Until: 20:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
@@ -4746,7 +4748,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -4922,7 +4924,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Control Type"
@@ -6601,11 +6603,11 @@
             "flow_ratios": [
                 {
                     "cooling_speed_supply_air_flow_ratio": 1.0,
-                    "heating_speed_supply_air_flow_ratio": 1
+                    "heating_speed_supply_air_flow_ratio": 1.0
                 },
                 {
-                    "cooling_speed_supply_air_flow_ratio": 1,
-                    "heating_speed_supply_air_flow_ratio": 1
+                    "cooling_speed_supply_air_flow_ratio": 1.0,
+                    "heating_speed_supply_air_flow_ratio": 1.0
                 }
             ],
             "no_load_supply_air_flow_rate_ratio": 1.0,
@@ -6617,11 +6619,11 @@
             "flow_ratios": [
                 {
                     "cooling_speed_supply_air_flow_ratio": 1.0,
-                    "heating_speed_supply_air_flow_ratio": 1
+                    "heating_speed_supply_air_flow_ratio": 1.0
                 },
                 {
-                    "cooling_speed_supply_air_flow_ratio": 1,
-                    "heating_speed_supply_air_flow_ratio": 1
+                    "cooling_speed_supply_air_flow_ratio": 1.0,
+                    "heating_speed_supply_air_flow_ratio": 1.0
                 }
             ],
             "no_load_supply_air_flow_rate_ratio": 1.0,
@@ -6632,7 +6634,7 @@
     },
     "Version": {
         "Version 1": {
-            "version_identifier": "23.1"
+            "version_identifier": "24.1"
         }
     },
     "WaterHeater:Mixed": {

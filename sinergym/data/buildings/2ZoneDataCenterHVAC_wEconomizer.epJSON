@@ -1906,7 +1906,7 @@
             "return_temperature_difference": 0,
             "supply_air_node_name": "East Zone Inlet Node",
             "supply_temperature_difference": 2,
-            "watts_per_zone_floor_area": 200,
+            "watts_per_floor_area": 200,
             "zone_or_space_name": "East Zone"
         },
         "WestDataCenter_Equip": {
@@ -1931,7 +1931,7 @@
             "fraction_of_electric_power_supply_losses_to_zone": 1,
             "recirculation_function_of_loading_and_supply_temperature_curve_name": "Data Center Recirculation fLoadTemp",
             "supply_air_node_name": "West Zone Inlet Node",
-            "watts_per_zone_floor_area": 200,
+            "watts_per_floor_area": 200,
             "zone_or_space_name": "West Zone"
         }
     },
@@ -2407,7 +2407,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "Clothing Sch",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people": 0,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OFFICE OCCUPANCY",
@@ -2422,7 +2422,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "Clothing Sch",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people": 0,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OFFICE OCCUPANCY",
@@ -2791,7 +2791,7 @@
                     "field": "UNTIL: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "CW Loop On/Off"
@@ -3064,7 +3064,7 @@
                     "field": "UNTIL: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "CW Loop Any Number"
@@ -3184,7 +3184,7 @@
                     "field": "UNTIL: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Tower On/Off"
@@ -3264,7 +3264,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 4
+                    "field": 4.0
                 }
             ],
             "schedule_type_limits_name": "Control Type"
@@ -3694,7 +3694,7 @@
             "unit_type": "Dimensionless",
             "values": [
                 {
-                    "value": 0
+                    "value": 0.0
                 },
                 {
                     "value": 0.125
@@ -3718,7 +3718,7 @@
                     "value": 0.875
                 },
                 {
-                    "value": 1
+                    "value": 1.0
                 }
             ]
         },
@@ -3730,7 +3730,7 @@
             "unit_type": "Dimensionless",
             "values": [
                 {
-                    "value": 0
+                    "value": 0.0
                 },
                 {
                     "value": 0.125
@@ -3754,7 +3754,7 @@
                     "value": 0.875
                 },
                 {
-                    "value": 1
+                    "value": 1.0
                 }
             ]
         }
@@ -3906,7 +3906,7 @@
             "output_unit_type": "Dimensionless",
             "values": [
                 {
-                    "output_value": 0
+                    "output_value": 0.0
                 },
                 {
                     "output_value": 0.004487103
@@ -3930,7 +3930,7 @@
                     "output_value": 0.706676969
                 },
                 {
-                    "output_value": 1
+                    "output_value": 1.0
                 }
             ]
         },
@@ -3953,19 +3953,19 @@
                     "output_value": 0.4
                 },
                 {
-                    "output_value": 1
+                    "output_value": 1.0
                 },
                 {
-                    "output_value": 1
+                    "output_value": 1.0
                 },
                 {
-                    "output_value": 1
+                    "output_value": 1.0
                 },
                 {
-                    "output_value": 1
+                    "output_value": 1.0
                 },
                 {
-                    "output_value": 1
+                    "output_value": 1.0
                 }
             ]
         }
@@ -3983,7 +3983,7 @@
     },
     "Version": {
         "Version 1": {
-            "version_identifier": "23.1"
+            "version_identifier": "24.1"
         }
     },
     "Zone": {
