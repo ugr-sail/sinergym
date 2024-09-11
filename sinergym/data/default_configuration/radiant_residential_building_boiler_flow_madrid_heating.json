@@ -13,7 +13,9 @@
         "timesteps_per_hour" : 12
     },
 
-    "variation"             : [1.0, 0.0, 0.001],
+    "weather_variability":{
+        "drybulb": [1.0, 0.0, 0.001]
+    },
 
     "max_ep_data_store_num" : 10,
     
