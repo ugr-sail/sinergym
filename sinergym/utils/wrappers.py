@@ -818,6 +818,16 @@ class BaseLoggerWrapper(ABC, gym.Wrapper):
         # Environment reset
         obs, info = self.env.reset(seed=seed, options=options)
 
+        # Log reset observation
+        if is_wrapped(self.env, NormalizeObservation):
+            self.data_logger.log_norm_obs(obs)
+            self.data_logger.log_obs(
+                self.get_wrapper_attr('unwrapped_observation'))
+        else:
+            self.data_logger.log_obs(obs)
+
+        self.data_logger.log_info(info)
+
         return obs, info
 
     def step(self, action: Union[int, np.ndarray]) -> Tuple[
@@ -951,17 +961,17 @@ class LoggerWrapper(BaseLoggerWrapper):
     def get_episode_summary(self) -> Dict[str, float]:
         # Get information from logger
         comfort_terms = [info['comfort_term']
-                         for info in self.data_logger.infos]
+                         for info in self.data_logger.infos[1:]]
         energy_terms = [info['energy_term']
-                        for info in self.data_logger.infos]
+                        for info in self.data_logger.infos[1:]]
         abs_comfort_penalties = [info['abs_comfort_penalty']
-                                 for info in self.data_logger.infos]
+                                 for info in self.data_logger.infos[1:]]
         abs_energy_penalties = [info['abs_energy_penalty']
-                                for info in self.data_logger.infos]
+                                for info in self.data_logger.infos[1:]]
         temperature_violations = [info['total_temperature_violation']
-                                  for info in self.data_logger.infos]
+                                  for info in self.data_logger.infos[1:]]
         power_demands = [info['total_power_demand']
-                         for info in self.data_logger.infos]
+                         for info in self.data_logger.infos[1:]]
         try:
             comfort_violation_time = len(
                 [value for value in temperature_violations if value > 0]) / self.get_wrapper_attr('timestep') * 100
@@ -1108,12 +1118,15 @@ class CSVLogger(gym.Wrapper):
             # Infos (except excluded keys)
             with open(monitor_path + '/infos.csv', 'w') as f:
                 writer = csv.writer(f)
-                column_names = [key for key in episode_data.infos[0].keys(
+                column_names = [key for key in episode_data.infos[-1].keys(
                 ) if key not in self.get_wrapper_attr('info_excluded_keys')]
-                # reset_values = [None for _ in column_names]
+                print(column_names)
+                # Skip reset row
                 rows = [[value for key, value in info.items() if key not in self.get_wrapper_attr(
-                    'info_excluded_keys')] for info in episode_data.infos]
+                    'info_excluded_keys')] for info in episode_data.infos[1:]]
                 writer.writerow(column_names)
+                # write null row for reset
+                writer.writerow([None for _ in range(len(column_names))])
                 writer.writerows(rows)
 
             # Agent Actions
@@ -1133,7 +1146,7 @@ class CSVLogger(gym.Wrapper):
                 # reset_action = [None for _ in range(
                 #    len(self.get_wrapper_attr('action_variables')))]
                 simulated_actions = [info['action']
-                                     for info in episode_data.infos]
+                                     for info in episode_data.infos[1:]]
                 if isinstance(simulated_actions[0], list):
                     writer.writerows(simulated_actions)
                 else:
