@@ -146,6 +146,22 @@ class LoggerStorage():
         """
         self.normalized_observations.append(norm_obs)
 
+    def log_obs(self, obs: List[float]) -> None:
+        """Log observation data.
+
+        Args:
+            obs (List[float]): Observation data.
+        """
+        self.observations.append(obs)
+
+    def log_info(self, info: Dict[str, Any]) -> None:
+        """Log info data.
+
+        Args:
+            info (Dict[str, Any]): Info data.
+        """
+        self.infos.append(info)
+
     def reset_data(self) -> None:
         """Reset logger interactions data"""
         self.interactions = 0
