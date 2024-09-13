@@ -5,9 +5,9 @@
 	},
 	"build": {
 		"args": {
-			"ENERGYPLUS_VERSION": "23.1.0",
-			"ENERGYPLUS_INSTALL_VERSION": "23-1-0",
-			"ENERGYPLUS_SHA": "87ed9199d4",
+			"ENERGYPLUS_VERSION": "24.1.0",
+			"ENERGYPLUS_INSTALL_VERSION": "24-1-0",
+			"ENERGYPLUS_SHA": "9d7789a3ac",
 			"WANDB_API_KEY": "${localEnv:WANDB_API_KEY}"
 		}
 	},

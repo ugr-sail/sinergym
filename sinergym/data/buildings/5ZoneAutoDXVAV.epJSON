@@ -2353,7 +2353,7 @@
             "clothing_insulation_calculation_method": "DynamicClothingModelASHRAE55",
             "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people": 11,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OCCUPY-1",
@@ -2369,7 +2369,7 @@
             "clothing_insulation_calculation_method": "DynamicClothingModelASHRAE55",
             "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people": 5,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OCCUPY-1",
@@ -2385,7 +2385,7 @@
             "clothing_insulation_calculation_method": "DynamicClothingModelASHRAE55",
             "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people": 11,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OCCUPY-1",
@@ -2401,7 +2401,7 @@
             "clothing_insulation_calculation_method": "DynamicClothingModelASHRAE55",
             "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people": 5,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OCCUPY-1",
@@ -2417,7 +2417,7 @@
             "clothing_insulation_calculation_method": "DynamicClothingModelASHRAE55",
             "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people": 20,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "OCCUPY-1",
@@ -2473,7 +2473,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 117
+                    "field": 117.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -2613,7 +2613,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Through: 9/30"
@@ -2637,7 +2637,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -3227,7 +3227,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 2
+                    "field": 2.0
                 },
                 {
                     "field": "For: WinterDesignDay"
@@ -3236,7 +3236,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "For: AllOtherDays"
@@ -3245,7 +3245,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 4
+                    "field": 4.0
                 }
             ],
             "schedule_type_limits_name": "Control Type"
@@ -3627,7 +3627,7 @@
     },
     "Version": {
         "Version 1": {
-            "version_identifier": "23.1"
+            "version_identifier": "24.1"
         }
     },
     "WindowMaterial:Gas": {

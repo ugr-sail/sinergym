@@ -4,9 +4,9 @@ ARG UBUNTU_VERSION=24.04
 FROM ubuntu:${UBUNTU_VERSION}
 
 # Arguments for EnergyPlus version (default values of version 8.6.0 if is not specified)
-ARG ENERGYPLUS_VERSION=23.1.0
-ARG ENERGYPLUS_INSTALL_VERSION=23-1-0
-ARG ENERGYPLUS_SHA=87ed9199d4
+ARG ENERGYPLUS_VERSION=24.1.0
+ARG ENERGYPLUS_INSTALL_VERSION=24-1-0
+ARG ENERGYPLUS_SHA=9d7789a3ac
 
 # Argument for Sinergym extras libraries
 ARG SINERGYM_EXTRAS=[extras]
@@ -29,6 +29,7 @@ ENV ENERGYPLUS_SHA=$ENERGYPLUS_SHA
 # This should be x.y.z, but EnergyPlus convention is x-y-z
 ENV ENERGYPLUS_INSTALL_VERSION=$ENERGYPLUS_INSTALL_VERSION
 ENV EPLUS_PATH=/usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION
+
 
 # Downloading from Github
 # e.g. https://github.com/NREL/EnergyPlus/releases/download/v23.1.0/EnergyPlus-23.1.0-87ed9199d4-Linux-Ubuntu22.04-x86_64.sh

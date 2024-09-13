@@ -14,6 +14,8 @@ The table below provides a summary of the versions supported by *Sinergym* acros
 | **2.4.0**            | 22.04 LTS          | 3.10.6             | 9.5.0                  | **epJSON**                |
 | **2.5.0**            | 22.04 LTS          | 3.10.6             | **23.1.0**             | epJSON                    |
 | **3.3.6**            | **24.04 LTS**      | **3.12.3**         | 23.1.0                 | epJSON                    |
+| **3.5.8**            | 24.04 LTS          | 3.12.3             | **24.1.0**             | epJSON                    |
+
 
 We recommend always using the latest version of *Sinergym* that is supported by the container. 
 This approach helps you avoid the complexities of the installation process. However, 

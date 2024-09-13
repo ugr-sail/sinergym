@@ -3564,7 +3564,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people": 0.6039,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "BLDG_OCC_SCH",
@@ -3579,7 +3579,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people": 0.4696,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "BLDG_OCC_SCH",
@@ -3594,7 +3594,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people": 0.6039,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "BLDG_OCC_SCH",
@@ -3609,7 +3609,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people": 0.4696,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "BLDG_OCC_SCH",
@@ -3624,7 +3624,7 @@
             "clothing_insulation_calculation_method": "ClothingInsulationSchedule",
             "clothing_insulation_schedule_name": "CLOTHING_SCH",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people": 0.8531,
             "number_of_people_calculation_method": "People",
             "number_of_people_schedule_name": "BLDG_OCC_SCH",
@@ -3811,7 +3811,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 140
+                    "field": 140.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -3845,7 +3845,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "On/Off"
@@ -3900,7 +3900,7 @@
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 19:00"
@@ -3912,7 +3912,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: WeekEnds WinterDesignDay Holidays AllOtherDays"
@@ -3921,7 +3921,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -3938,7 +3938,7 @@
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 12:00"
@@ -3962,7 +3962,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: WeekEnds WinterDesignDay Holidays AllOtherDays"
@@ -3971,7 +3971,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -3988,7 +3988,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "For: WinterDesignDay"
@@ -3997,7 +3997,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 33
+                    "field": 33.0
                 },
                 {
                     "field": "For: WeekEnds"
@@ -4006,7 +4006,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 33
+                    "field": 33.0
                 },
                 {
                     "field": "For: Weekdays Holidays AllOtherDays"
@@ -4015,19 +4015,19 @@
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 33
+                    "field": 33.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 33
+                    "field": 33.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -4085,7 +4085,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 4
+                    "field": 4.0
                 }
             ],
             "schedule_type_limits_name": "Control Type"
@@ -4102,7 +4102,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 13
+                    "field": 13.0
                 },
                 {
                     "field": "For: WinterDesignDay"
@@ -4111,7 +4111,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "For: Weekdays"
@@ -4120,19 +4120,19 @@
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 13
+                    "field": 13.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 13
+                    "field": 13.0
                 },
                 {
                     "field": "For: WeekEnds Holidays AllOtherDays"
@@ -4141,7 +4141,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 13
+                    "field": 13.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -4158,19 +4158,19 @@
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: WeekEnds WinterDesignDay Holidays AllOtherDays"
@@ -4179,7 +4179,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "On/Off"
@@ -4196,19 +4196,19 @@
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: WeekEnds WinterDesignDay Holidays AllOtherDays"
@@ -4217,7 +4217,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "On/Off"
@@ -4234,7 +4234,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -4251,7 +4251,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "On/Off"
@@ -4268,7 +4268,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -4285,7 +4285,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Through: 10/31"
@@ -4297,7 +4297,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 3
+                    "field": 3.0
                 },
                 {
                     "field": "Through: 12/31"
@@ -4309,7 +4309,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "number"
@@ -4360,7 +4360,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -4377,7 +4377,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -4428,7 +4428,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 40
+                    "field": 40.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -4445,7 +4445,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -4496,7 +4496,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 40
+                    "field": 40.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -4513,7 +4513,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -4564,7 +4564,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 40
+                    "field": 40.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -4581,7 +4581,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -4632,7 +4632,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 40
+                    "field": 40.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -4649,7 +4649,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -4700,7 +4700,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 40
+                    "field": 40.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -4717,7 +4717,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Temperature"
@@ -5426,7 +5426,7 @@
     },
     "Version": {
         "Version 1": {
-            "version_identifier": "23.1"
+            "version_identifier": "24.1"
         }
     },
     "WaterHeater:Mixed": {
