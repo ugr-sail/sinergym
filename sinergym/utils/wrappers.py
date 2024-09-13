@@ -1120,7 +1120,6 @@ class CSVLogger(gym.Wrapper):
                 writer = csv.writer(f)
                 column_names = [key for key in episode_data.infos[-1].keys(
                 ) if key not in self.get_wrapper_attr('info_excluded_keys')]
-                print(column_names)
                 # Skip reset row
                 rows = [[value for key, value in info.items() if key not in self.get_wrapper_attr(
                     'info_excluded_keys')] for info in episode_data.infos[1:]]
