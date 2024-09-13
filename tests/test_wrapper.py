@@ -444,10 +444,10 @@ def test_logger_wrapper(env_demo):
 
     env.reset()
     # Reset is not logged
-    assert len(logger.observations) == 0
+    assert len(logger.observations) == 1
     assert len(logger.actions) == 0
     assert len(logger.rewards) == 0
-    assert len(logger.infos) == 0
+    assert len(logger.infos) == 1
     assert len(logger.terminateds) == 0
     assert len(logger.truncateds) == 0
     assert len(logger.custom_metrics) == 0
@@ -459,10 +459,10 @@ def test_logger_wrapper(env_demo):
         env.step(a)
 
     # Check that the logger has stored the data
-    assert len(logger.observations) == 3
+    assert len(logger.observations) == 4
     assert len(logger.actions) == 3
     assert len(logger.rewards) == 3
-    assert len(logger.infos) == 3
+    assert len(logger.infos) == 4
     assert len(logger.terminateds) == 3
     assert len(logger.truncateds) == 3
     assert len(logger.custom_metrics) == 0
@@ -483,10 +483,10 @@ def test_logger_wrapper(env_demo):
 
     # Check if reset method reset logger data too
     env.reset()
-    assert len(logger.observations) == 0
+    assert len(logger.observations) == 1
     assert len(logger.actions) == 0
     assert len(logger.rewards) == 0
-    assert len(logger.infos) == 0
+    assert len(logger.infos) == 1
     assert len(logger.terminateds) == 0
     assert len(logger.truncateds) == 0
     assert len(logger.custom_metrics) == 0
@@ -526,10 +526,10 @@ def test_custom_loggers(env_demo, custom_logger_wrapper):
         env.step(a)
 
     # Check that the logger has stored the data (custom metrics too)
-    assert len(logger.observations) == 3
+    assert len(logger.observations) == 4
     assert len(logger.actions) == 3
     assert len(logger.rewards) == 3
-    assert len(logger.infos) == 3
+    assert len(logger.infos) == 4
     assert len(logger.terminateds) == 3
     assert len(logger.truncateds) == 3
     assert len(logger.custom_metrics) == 3
@@ -543,10 +543,10 @@ def test_custom_loggers(env_demo, custom_logger_wrapper):
 
     # Check if reset method reset logger data too (custom_metrics too)
     env.reset()
-    assert len(logger.observations) == 0
+    assert len(logger.observations) == 1
     assert len(logger.actions) == 0
     assert len(logger.rewards) == 0
-    assert len(logger.infos) == 0
+    assert len(logger.infos) == 1
     assert len(logger.terminateds) == 0
     assert len(logger.truncateds) == 0
     assert len(logger.custom_metrics) == 0
@@ -605,7 +605,7 @@ def test_CSVlogger_wrapper(env_demo):
     with open(episode_path + '/monitor/observations.csv', mode='r', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
         # Header row, reset and 10 steps (12)
-        assert len(list(reader)) == 11
+        assert len(list(reader)) == 12
 
     # If env is wrapped with normalize obs...
     if is_wrapped(env, NormalizeObservation):
