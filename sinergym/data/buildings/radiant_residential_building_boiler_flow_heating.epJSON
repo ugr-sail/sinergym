@@ -9979,7 +9979,7 @@
             "heating_water_inlet_node_name": "FirstFloor:LivingRoom Radiant surface Hot Water Inlet Node",
             "heating_water_outlet_node_name": "FirstFloor:LivingRoom Radiant surface Hot Water Outlet Node",
             "hydronic_tubing_length": "Autosize",
-            "maximum_hot_water_flow": 0.0000770534083378189,
+            "maximum_hot_water_flow": 7.70534083378189e-05,
             "number_of_circuits": "CalculateFromCircuitLength",
             "surface_name_or_radiant_surface_group_name": "FirstFloor:LivingRoom Radiant surface list",
             "zone_name": "FirstFloor:LivingRoom"
@@ -9993,7 +9993,7 @@
             "heating_water_inlet_node_name": "SecondFloor:Bedroom01 Radiant surface Hot Water Inlet Node",
             "heating_water_outlet_node_name": "SecondFloor:Bedroom01 Radiant surface Hot Water Outlet Node",
             "hydronic_tubing_length": "Autosize",
-            "maximum_hot_water_flow": 0.0000312894735696339,
+            "maximum_hot_water_flow": 3.12894735696339e-05,
             "number_of_circuits": "CalculateFromCircuitLength",
             "surface_name_or_radiant_surface_group_name": "SecondFloor:Bedroom01 Radiant surface list",
             "zone_name": "SecondFloor:Bedroom01"
@@ -10007,7 +10007,7 @@
             "heating_water_inlet_node_name": "SecondFloor:Bedroom02 Radiant surface Hot Water Inlet Node",
             "heating_water_outlet_node_name": "SecondFloor:Bedroom02 Radiant surface Hot Water Outlet Node",
             "hydronic_tubing_length": "Autosize",
-            "maximum_hot_water_flow": 0.0000632600982544937,
+            "maximum_hot_water_flow": 6.32600982544937e-05,
             "number_of_circuits": "CalculateFromCircuitLength",
             "surface_name_or_radiant_surface_group_name": "SecondFloor:Bedroom02 Radiant surface list",
             "zone_name": "SecondFloor:Bedroom02"
@@ -10021,7 +10021,7 @@
             "heating_water_inlet_node_name": "SecondFloor:Bedroom03 Radiant surface Hot Water Inlet Node",
             "heating_water_outlet_node_name": "SecondFloor:Bedroom03 Radiant surface Hot Water Outlet Node",
             "hydronic_tubing_length": "Autosize",
-            "maximum_hot_water_flow": 0.0000499859329801135,
+            "maximum_hot_water_flow": 4.99859329801135e-05,
             "number_of_circuits": "CalculateFromCircuitLength",
             "surface_name_or_radiant_surface_group_name": "SecondFloor:Bedroom03 Radiant surface list",
             "zone_name": "SecondFloor:Bedroom03"

@@ -479,22 +479,22 @@
                 {
                     "vertex_x_coordinate": 12.3170587268,
                     "vertex_y_coordinate": -9.0993754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 8.4555297768,
                     "vertex_y_coordinate": -9.0993754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 8.4555297768,
                     "vertex_y_coordinate": -5.8093754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 12.3170587268,
                     "vertex_y_coordinate": -5.8093754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 }
             ],
             "view_factor_to_ground": "Autocalculate",
@@ -511,22 +511,22 @@
                 {
                     "vertex_x_coordinate": 12.3170587268,
                     "vertex_y_coordinate": -5.8093754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 6.1620587268,
                     "vertex_y_coordinate": -5.8093754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 6.1620587268,
                     "vertex_y_coordinate": 0.0004245236,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 12.3170587268,
                     "vertex_y_coordinate": 0.0004245236,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 }
             ],
             "view_factor_to_ground": "Autocalculate",
@@ -544,12 +544,12 @@
                 {
                     "vertex_x_coordinate": 6.1620587268,
                     "vertex_y_coordinate": 0.00042452,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 6.1620587268,
                     "vertex_y_coordinate": -5.80937548,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 6.1620587268,
@@ -577,12 +577,12 @@
                 {
                     "vertex_x_coordinate": 6.16205873,
                     "vertex_y_coordinate": -5.8093754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 8.45552978,
                     "vertex_y_coordinate": -5.8093754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 8.45552978,
@@ -610,12 +610,12 @@
                 {
                     "vertex_x_coordinate": 8.4555297804,
                     "vertex_y_coordinate": -5.80937548,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 8.4555297804,
                     "vertex_y_coordinate": -9.09937548,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 8.4555297804,
@@ -642,12 +642,12 @@
                 {
                     "vertex_x_coordinate": 12.3170587268,
                     "vertex_y_coordinate": -9.0993754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 12.3170587268,
                     "vertex_y_coordinate": 0.0004245236,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 12.3170587268,
@@ -674,12 +674,12 @@
                 {
                     "vertex_x_coordinate": 12.3170587268,
                     "vertex_y_coordinate": 0.0004245236,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 6.1620587268,
                     "vertex_y_coordinate": 0.0004245236,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 6.1620587268,
@@ -706,12 +706,12 @@
                 {
                     "vertex_x_coordinate": 8.4555297804,
                     "vertex_y_coordinate": -9.0993754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 12.3170587268,
                     "vertex_y_coordinate": -9.0993754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 12.3170587268,
@@ -837,22 +837,22 @@
                 {
                     "vertex_x_coordinate": 6.1620587268,
                     "vertex_y_coordinate": -5.8093754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 0.0070587268,
                     "vertex_y_coordinate": -5.8093754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 0.0070587268,
                     "vertex_y_coordinate": 0.0004245236,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 6.1620587268,
                     "vertex_y_coordinate": 0.0004245236,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 }
             ],
             "view_factor_to_ground": "Autocalculate",
@@ -870,12 +870,12 @@
                 {
                     "vertex_x_coordinate": 6.1620587268,
                     "vertex_y_coordinate": -5.80937548,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 6.1620587268,
                     "vertex_y_coordinate": 0.00042452,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 6.1620587268,
@@ -903,12 +903,12 @@
                 {
                     "vertex_x_coordinate": 0.00705873,
                     "vertex_y_coordinate": -5.8093754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 6.16205873,
                     "vertex_y_coordinate": -5.8093754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 6.16205873,
@@ -935,12 +935,12 @@
                 {
                     "vertex_x_coordinate": 6.1620587268,
                     "vertex_y_coordinate": 0.0004245236,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 0.0070587268,
                     "vertex_y_coordinate": 0.0004245236,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 0.0070587268,
@@ -967,12 +967,12 @@
                 {
                     "vertex_x_coordinate": 0.0070587268,
                     "vertex_y_coordinate": 0.0004245236,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 0.0070587268,
                     "vertex_y_coordinate": -5.8093754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 0.0070587268,
@@ -3274,8 +3274,8 @@
             "control_data": [
                 {
                     "daylighting_reference_point_name": "FirstFloor:Kitchen Ref Point 1",
-                    "fraction_of_lights_controlled_by_reference_point": 1,
-                    "illuminance_setpoint_at_reference_point": 300
+                    "fraction_of_lights_controlled_by_reference_point": 1.0,
+                    "illuminance_setpoint_at_reference_point": 300.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -3295,8 +3295,8 @@
             "control_data": [
                 {
                     "daylighting_reference_point_name": "FirstFloor:LivingRoom Ref Point 1",
-                    "fraction_of_lights_controlled_by_reference_point": 1,
-                    "illuminance_setpoint_at_reference_point": 150
+                    "fraction_of_lights_controlled_by_reference_point": 1.0,
+                    "illuminance_setpoint_at_reference_point": 150.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -3316,8 +3316,8 @@
             "control_data": [
                 {
                     "daylighting_reference_point_name": "SecondFloor:Bedroom01 Ref Point 1",
-                    "fraction_of_lights_controlled_by_reference_point": 1,
-                    "illuminance_setpoint_at_reference_point": 100
+                    "fraction_of_lights_controlled_by_reference_point": 1.0,
+                    "illuminance_setpoint_at_reference_point": 100.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -3337,8 +3337,8 @@
             "control_data": [
                 {
                     "daylighting_reference_point_name": "SecondFloor:Bedroom02 Ref Point 1",
-                    "fraction_of_lights_controlled_by_reference_point": 1,
-                    "illuminance_setpoint_at_reference_point": 100
+                    "fraction_of_lights_controlled_by_reference_point": 1.0,
+                    "illuminance_setpoint_at_reference_point": 100.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -3358,8 +3358,8 @@
             "control_data": [
                 {
                     "daylighting_reference_point_name": "SecondFloor:Bedroom03 Ref Point 1",
-                    "fraction_of_lights_controlled_by_reference_point": 1,
-                    "illuminance_setpoint_at_reference_point": 100
+                    "fraction_of_lights_controlled_by_reference_point": 1.0,
+                    "illuminance_setpoint_at_reference_point": 100.0
                 }
             ],
             "daylighting_method": "SplitFlux",
@@ -3518,8 +3518,8 @@
     "EnvironmentalImpactFactors": {
         "EnvironmentalImpactFactors 1": {
             "district_cooling_cop": 3.0,
-            "district_heating_efficiency": 0.3,
-            "steam_conversion_efficiency": 0.25,
+            "district_heating_steam_conversion_efficiency": 0.25,
+            "district_heating_water_efficiency": 0.3,
             "total_carbon_equivalent_emission_factor_from_ch4": 6.2727,
             "total_carbon_equivalent_emission_factor_from_co2": 0.2727,
             "total_carbon_equivalent_emission_factor_from_n2o": 80.7272
@@ -3923,7 +3923,7 @@
             "fraction_visible": 0.18,
             "return_air_fraction": 0,
             "schedule_name": "Dwell_DomKitchen_Light",
-            "watts_per_zone_floor_area": 3.4,
+            "watts_per_floor_area": 3.4,
             "zone_or_zonelist_or_space_or_spacelist_name": "FirstFloor:Kitchen"
         },
         "FirstFloor:LivingRoom General lighting": {
@@ -3934,7 +3934,7 @@
             "fraction_visible": 0.18,
             "return_air_fraction": 0,
             "schedule_name": "Dwell_DomLounge_Light",
-            "watts_per_zone_floor_area": 5.1,
+            "watts_per_floor_area": 5.1,
             "zone_or_zonelist_or_space_or_spacelist_name": "FirstFloor:LivingRoom"
         },
         "SecondFloor:Bath General lighting": {
@@ -3945,7 +3945,7 @@
             "fraction_visible": 0.18,
             "return_air_fraction": 0,
             "schedule_name": "Dwell_DomBath_Light",
-            "watts_per_zone_floor_area": 5.1,
+            "watts_per_floor_area": 5.1,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bath"
         },
         "SecondFloor:BathXBed02 General lighting": {
@@ -3956,7 +3956,7 @@
             "fraction_visible": 0.18,
             "return_air_fraction": 0,
             "schedule_name": "Dwell_DomBath_Light",
-            "watts_per_zone_floor_area": 5.1,
+            "watts_per_floor_area": 5.1,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:BathXBed02"
         },
         "SecondFloor:BathXBed03 General lighting": {
@@ -3967,7 +3967,7 @@
             "fraction_visible": 0.18,
             "return_air_fraction": 0,
             "schedule_name": "Dwell_DomBath_Light",
-            "watts_per_zone_floor_area": 5.1,
+            "watts_per_floor_area": 5.1,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:BathXBed03"
         },
         "SecondFloor:Bedroom01 General lighting": {
@@ -3978,7 +3978,7 @@
             "fraction_visible": 0.18,
             "return_air_fraction": 0,
             "schedule_name": "Dwell_DomBed_Light",
-            "watts_per_zone_floor_area": 3.4,
+            "watts_per_floor_area": 3.4,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom01"
         },
         "SecondFloor:Bedroom02 General lighting": {
@@ -3989,7 +3989,7 @@
             "fraction_visible": 0.18,
             "return_air_fraction": 0,
             "schedule_name": "Dwell_DomBed_Light",
-            "watts_per_zone_floor_area": 3.4,
+            "watts_per_floor_area": 3.4,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom02"
         },
         "SecondFloor:Bedroom03 General lighting": {
@@ -4000,7 +4000,7 @@
             "fraction_visible": 0.18,
             "return_air_fraction": 0,
             "schedule_name": "Dwell_DomBed_Light",
-            "watts_per_zone_floor_area": 3.4,
+            "watts_per_floor_area": 3.4,
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom03"
         }
     },
@@ -4237,7 +4237,7 @@
             "fraction_lost": 0,
             "fraction_radiant": 0.2,
             "fuel_type": "Electricity",
-            "power_per_zone_floor_area": 12,
+            "power_per_floor_area": 12,
             "schedule_name": "Dwell_DomKitchen_Equip",
             "zone_or_zonelist_or_space_or_spacelist_name": "FirstFloor:Kitchen"
         },
@@ -4249,7 +4249,7 @@
             "fraction_lost": 0,
             "fraction_radiant": 0.2,
             "fuel_type": "Electricity",
-            "power_per_zone_floor_area": 3.9,
+            "power_per_floor_area": 3.9,
             "schedule_name": "Dwell_DomLounge_Equip",
             "zone_or_zonelist_or_space_or_spacelist_name": "FirstFloor:LivingRoom"
         },
@@ -4261,7 +4261,7 @@
             "fraction_lost": 0,
             "fraction_radiant": 0.2,
             "fuel_type": "Electricity",
-            "power_per_zone_floor_area": 1.67,
+            "power_per_floor_area": 1.67,
             "schedule_name": "Dwell_DomBath_Equip",
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bath"
         },
@@ -4273,7 +4273,7 @@
             "fraction_lost": 0,
             "fraction_radiant": 0.2,
             "fuel_type": "Electricity",
-            "power_per_zone_floor_area": 1.67,
+            "power_per_floor_area": 1.67,
             "schedule_name": "Dwell_DomBath_Equip",
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:BathXBed02"
         },
@@ -4285,7 +4285,7 @@
             "fraction_lost": 0,
             "fraction_radiant": 0.2,
             "fuel_type": "Electricity",
-            "power_per_zone_floor_area": 1.67,
+            "power_per_floor_area": 1.67,
             "schedule_name": "Dwell_DomBath_Equip",
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:BathXBed03"
         },
@@ -4297,7 +4297,7 @@
             "fraction_lost": 0,
             "fraction_radiant": 0.2,
             "fuel_type": "Electricity",
-            "power_per_zone_floor_area": 3.58,
+            "power_per_floor_area": 3.58,
             "schedule_name": "Dwell_DomBed_Equip",
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom01"
         },
@@ -4309,7 +4309,7 @@
             "fraction_lost": 0,
             "fraction_radiant": 0.2,
             "fuel_type": "Electricity",
-            "power_per_zone_floor_area": 3.58,
+            "power_per_floor_area": 3.58,
             "schedule_name": "Dwell_DomBed_Equip",
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom02"
         },
@@ -4321,7 +4321,7 @@
             "fraction_lost": 0,
             "fraction_radiant": 0.2,
             "fuel_type": "Electricity",
-            "power_per_zone_floor_area": 3.58,
+            "power_per_floor_area": 3.58,
             "schedule_name": "Dwell_DomBed_Equip",
             "zone_or_zonelist_or_space_or_spacelist_name": "SecondFloor:Bedroom03"
         }
@@ -4629,7 +4629,7 @@
             "clothing_insulation_schedule_name": "Clothing Schedule 2035",
             "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "People/Area",
             "number_of_people_schedule_name": "Residential Occ_Edited",
             "people_per_floor_area": 0.018756303,
@@ -4646,7 +4646,7 @@
             "clothing_insulation_schedule_name": "Clothing Schedule 2044",
             "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "People/Area",
             "number_of_people_schedule_name": "Residential Occ_Edited",
             "people_per_floor_area": 0.018756303,
@@ -4663,7 +4663,7 @@
             "clothing_insulation_schedule_name": "Clothing Schedule 1688",
             "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "People/Area",
             "number_of_people_schedule_name": "Residential Occ_Edited",
             "people_per_floor_area": 0.018736842,
@@ -4680,7 +4680,7 @@
             "clothing_insulation_schedule_name": "Clothing Schedule 1671",
             "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "People/Area",
             "number_of_people_schedule_name": "Residential Occ_Edited",
             "people_per_floor_area": 0.018736842,
@@ -4697,7 +4697,7 @@
             "clothing_insulation_schedule_name": "Clothing Schedule 1664",
             "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "People/Area",
             "number_of_people_schedule_name": "Residential Occ_Edited",
             "people_per_floor_area": 0.018736842,
@@ -4714,7 +4714,7 @@
             "clothing_insulation_schedule_name": "Clothing Schedule 1704",
             "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "People/Area",
             "number_of_people_schedule_name": "Residential Occ_Edited",
             "people_per_floor_area": 0.022938776,
@@ -4731,7 +4731,7 @@
             "clothing_insulation_schedule_name": "Clothing Schedule 1678",
             "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "People/Area",
             "number_of_people_schedule_name": "Residential Occ_Edited",
             "people_per_floor_area": 0.022938776,
@@ -4748,7 +4748,7 @@
             "clothing_insulation_schedule_name": "Clothing Schedule 1656",
             "enable_ashrae_55_comfort_warnings": "No",
             "fraction_radiant": 0.3,
-            "mean_radiant_temperature_calculation_type": "ZoneAveraged",
+            "mean_radiant_temperature_calculation_type": "EnclosureAveraged",
             "number_of_people_calculation_method": "People/Area",
             "number_of_people_schedule_name": "Residential Occ_Edited",
             "people_per_floor_area": 0.022938776,
@@ -4966,7 +4966,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 81
+                    "field": 81.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -4983,7 +4983,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 108
+                    "field": 108.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5000,7 +5000,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 108
+                    "field": 108.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5017,7 +5017,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 81
+                    "field": 81.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5034,7 +5034,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 108
+                    "field": 108.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5051,7 +5051,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 81
+                    "field": 81.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5068,7 +5068,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 144
+                    "field": 144.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5085,7 +5085,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 99
+                    "field": 99.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5102,7 +5102,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5119,7 +5119,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Through: 9/30"
@@ -5143,7 +5143,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5160,7 +5160,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Through: 9/30"
@@ -5184,7 +5184,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5201,7 +5201,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Through: 9/30"
@@ -5225,7 +5225,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5242,7 +5242,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Through: 9/30"
@@ -5266,7 +5266,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5283,7 +5283,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Through: 9/30"
@@ -5307,7 +5307,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5324,7 +5324,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Through: 9/30"
@@ -5348,7 +5348,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5365,7 +5365,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Through: 9/30"
@@ -5389,7 +5389,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5406,7 +5406,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Through: 9/30"
@@ -5430,7 +5430,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5447,7 +5447,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 4
+                    "field": 4.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5464,7 +5464,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Through: 9/15"
@@ -5476,7 +5476,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 2
+                    "field": 2.0
                 },
                 {
                     "field": "Through: 12/31"
@@ -5488,7 +5488,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5522,7 +5522,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Through: 9/15"
@@ -5534,7 +5534,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Through: 12/31"
@@ -5546,7 +5546,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5563,7 +5563,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 22
+                    "field": 22.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5580,7 +5580,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -5597,7 +5597,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 26
+                    "field": 26.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5614,7 +5614,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 15
+                    "field": 15.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5631,7 +5631,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 22
+                    "field": 22.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5648,7 +5648,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 10
+                    "field": 10.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5665,7 +5665,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 14
+                    "field": 14.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5682,7 +5682,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 24
+                    "field": 24.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5716,7 +5716,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "For: AllOtherDays"
@@ -5725,7 +5725,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5742,7 +5742,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 50
+                    "field": 50.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5759,7 +5759,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 55
+                    "field": 55.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -5788,7 +5788,7 @@
                     "field": "Until: 09:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 10:00"
@@ -5812,7 +5812,7 @@
                     "field": "Until: 21:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 22:00"
@@ -5851,7 +5851,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -5868,31 +5868,31 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Weekends"
@@ -5901,31 +5901,31 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Holidays"
@@ -5934,31 +5934,31 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: WinterDesignDay AllOtherDays"
@@ -5967,7 +5967,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -5984,19 +5984,19 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6008,7 +6008,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Weekends"
@@ -6017,19 +6017,19 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6041,7 +6041,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Holidays"
@@ -6050,19 +6050,19 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6074,7 +6074,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: WinterDesignDay AllOtherDays"
@@ -6083,7 +6083,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -6112,7 +6112,7 @@
                     "field": "Until: 09:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 10:00"
@@ -6148,7 +6148,7 @@
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6181,7 +6181,7 @@
                     "field": "Until: 09:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 10:00"
@@ -6217,7 +6217,7 @@
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6250,7 +6250,7 @@
                     "field": "Until: 09:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 10:00"
@@ -6286,7 +6286,7 @@
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6307,7 +6307,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -6324,19 +6324,19 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6348,7 +6348,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Weekends"
@@ -6357,19 +6357,19 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6381,7 +6381,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Holidays"
@@ -6390,19 +6390,19 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6414,7 +6414,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: WinterDesignDay AllOtherDays"
@@ -6423,7 +6423,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -6440,7 +6440,7 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 08:00"
@@ -6458,7 +6458,7 @@
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6479,7 +6479,7 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 08:00"
@@ -6497,7 +6497,7 @@
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6518,7 +6518,7 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 08:00"
@@ -6536,7 +6536,7 @@
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6557,7 +6557,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -6673,7 +6673,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -6690,31 +6690,31 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Weekends"
@@ -6723,31 +6723,31 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Holidays"
@@ -6756,31 +6756,31 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: WinterDesignDay AllOtherDays"
@@ -6789,7 +6789,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -6806,19 +6806,19 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6830,7 +6830,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Weekends"
@@ -6839,19 +6839,19 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6863,7 +6863,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Holidays"
@@ -6872,19 +6872,19 @@
                     "field": "Until: 07:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 10:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 19:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6896,7 +6896,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: WinterDesignDay AllOtherDays"
@@ -6905,7 +6905,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -6934,7 +6934,7 @@
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -6961,7 +6961,7 @@
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
@@ -6982,7 +6982,7 @@
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
@@ -6997,7 +6997,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -7014,19 +7014,19 @@
                     "field": "Until: 16:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Weekends"
@@ -7035,19 +7035,19 @@
                     "field": "Until: 16:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Holidays"
@@ -7056,19 +7056,19 @@
                     "field": "Until: 16:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 23:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: WinterDesignDay AllOtherDays"
@@ -7077,7 +7077,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -7094,7 +7094,7 @@
                     "field": "Until: 16:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 18:00"
@@ -7106,7 +7106,7 @@
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -7118,7 +7118,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Weekends"
@@ -7127,7 +7127,7 @@
                     "field": "Until: 16:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 18:00"
@@ -7139,7 +7139,7 @@
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -7151,7 +7151,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: Holidays"
@@ -7160,7 +7160,7 @@
                     "field": "Until: 16:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Until: 18:00"
@@ -7172,7 +7172,7 @@
                     "field": "Until: 22:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Until: 23:00"
@@ -7184,7 +7184,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "For: WinterDesignDay AllOtherDays"
@@ -7193,7 +7193,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -7244,7 +7244,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "Through: 9/15"
@@ -7256,7 +7256,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 },
                 {
                     "field": "Through: 12/31"
@@ -7268,7 +7268,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7285,7 +7285,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 20
+                    "field": 20.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7302,7 +7302,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -7319,7 +7319,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 21
+                    "field": 21.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7336,7 +7336,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 50
+                    "field": 50.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7353,7 +7353,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 45
+                    "field": 45.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7370,7 +7370,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 15
+                    "field": 15.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7387,7 +7387,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 30
+                    "field": 30.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7404,7 +7404,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 45
+                    "field": 45.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7421,7 +7421,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 20
+                    "field": 20.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7438,7 +7438,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 80
+                    "field": 80.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7455,7 +7455,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 32
+                    "field": 32.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7472,7 +7472,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 15
+                    "field": 15.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7489,7 +7489,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 900
+                    "field": 900.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7506,7 +7506,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 600
+                    "field": 600.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7523,7 +7523,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7540,7 +7540,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7557,7 +7557,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7574,7 +7574,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7591,7 +7591,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "For: AllOtherDays"
@@ -7600,7 +7600,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7617,7 +7617,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "For: AllOtherDays"
@@ -7626,7 +7626,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7643,7 +7643,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7660,7 +7660,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7677,7 +7677,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 50
+                    "field": 50.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7847,7 +7847,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 1
+                    "field": 1.0
                 },
                 {
                     "field": "For: AllOtherDays"
@@ -7856,7 +7856,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Fraction"
@@ -7899,7 +7899,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 20
+                    "field": 20.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7916,7 +7916,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 0
+                    "field": 0.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7933,7 +7933,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 900
+                    "field": 900.0
                 }
             ],
             "schedule_type_limits_name": "Any Number"
@@ -7950,7 +7950,7 @@
                     "field": "Until: 24:00"
                 },
                 {
-                    "field": 4
+                    "field": 4.0
                 }
             ],
             "schedule_type_limits_name": "Control Type"
@@ -8428,12 +8428,12 @@
                 {
                     "vertex_x_coordinate": 0.0070587268,
                     "vertex_y_coordinate": -5.8093754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 0.0070587268,
                     "vertex_y_coordinate": -9.0993754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 0.0070587268,
@@ -8453,12 +8453,12 @@
                 {
                     "vertex_x_coordinate": 0.0070587268,
                     "vertex_y_coordinate": -9.0993754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 8.4555297804,
                     "vertex_y_coordinate": -9.0993754764,
-                    "vertex_z_coordinate": 0
+                    "vertex_z_coordinate": 0.0
                 },
                 {
                     "vertex_x_coordinate": 8.4555297804,
@@ -9043,7 +9043,7 @@
     },
     "Version": {
         "Version 1": {
-            "version_identifier": "23.1"
+            "version_identifier": "24.1"
         }
     },
     "WindowMaterial:Blind": {
@@ -10772,7 +10772,7 @@
         "FirstFloor:LivingRoom Radiant surface list": {
             "surface_fractions": [
                 {
-                    "flow_fraction_for_surface": 1,
+                    "flow_fraction_for_surface": 1.0,
                     "surface_name": "FirstFloor:LivingRoom_GroundFloor_0_0_0"
                 }
             ]
@@ -10780,7 +10780,7 @@
         "SecondFloor:Bedroom01 Radiant surface list": {
             "surface_fractions": [
                 {
-                    "flow_fraction_for_surface": 1,
+                    "flow_fraction_for_surface": 1.0,
                     "surface_name": "SecondFloor:Bedroom01_Floor_0_0_0"
                 }
             ]
@@ -10800,7 +10800,7 @@
         "SecondFloor:Bedroom03 Radiant surface list": {
             "surface_fractions": [
                 {
-                    "flow_fraction_for_surface": 1,
+                    "flow_fraction_for_surface": 1.0,
                     "surface_name": "SecondFloor:Bedroom03_Floor_0_0_0"
                 }
             ]

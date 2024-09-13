@@ -75,7 +75,7 @@ for i in range(3):
     obs, info = env.reset()
     truncated = terminated = False
     rewards = []
-
+    current_month = 11
     while not (terminated or truncated):
         # Random action control
         a = env.action_space.sample()
