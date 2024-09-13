@@ -204,8 +204,10 @@ class EnergyPlus(object):
             # Kill progress bar
             if self.progress_bar is not None:
                 self.progress_bar.close()
-            # Flush all queues and wait to thread to finish (without control)
+            # Flush all queues and unblock thread if needed
             self._flush_queues()
+            self.act_queue.put([0] * len(self.actuators))
+            # Wait to thread to finish (without control)
             self.energyplus_thread.join()
             # Delete thread
             self.energyplus_thread = None
@@ -319,25 +321,22 @@ class EnergyPlus(object):
         self._init_system(self.energyplus_state)
         if not self.system_ready:
             return
-        # If not value in action queue --> do nothing
-        if self.act_queue.empty():
-            return
         # Get next action from queue and check type
         next_action = self.act_queue.get()
         # self.logger.debug('ACTION get from queue: {}'.format(next_action))
+        if not self.simulation_complete:
+            # Set the action values obtained in actuator handlers
+            for i, (act_name, act_handle) in enumerate(
+                    self.actuator_handlers.items()):
+                self.exchange.set_actuator_value(
+                    state=state_argument,
+                    actuator_handle=act_handle,
+                    actuator_value=next_action[i]
+                )
 
-        # Set the action values obtained in actuator handlers
-        for i, (act_name, act_handle) in enumerate(
-                self.actuator_handlers.items()):
-            self.exchange.set_actuator_value(
-                state=state_argument,
-                actuator_handle=act_handle,
-                actuator_value=next_action[i]
-            )
-
-            # self.logger.debug(
-            #     'Set in actuator {} value {}.'.format(
-            #         act_name, next_action[i]))
+                # self.logger.debug(
+                #     'Set in actuator {} value {}.'.format(
+                #         act_name, next_action[i]))
 
     def _init_system(self, state_argument: int) -> None:
         """Indicate whether system are ready to work. After waiting to API data is available, handlers are initialized, and warmup flag is correct.
