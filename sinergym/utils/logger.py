@@ -128,6 +128,10 @@ class LoggerStorage():
             truncated (bool): Truncation flag.
             custom_metrics (List[Any]): Custom metric data. Default is None.
         """
+        if isinstance(action, np.ndarray):
+            action = action.tolist()
+        if isinstance(obs, np.ndarray):
+            obs = obs.tolist()
         self.observations.append(obs)
         self.actions.append(action)
         self.rewards.append(reward)
@@ -145,6 +149,22 @@ class LoggerStorage():
             norm_obs (List[float]): Normalized observation data.
         """
         self.normalized_observations.append(norm_obs)
+
+    def log_obs(self, obs: List[float]) -> None:
+        """Log observation data.
+
+        Args:
+            obs (List[float]): Observation data.
+        """
+        self.observations.append(obs)
+
+    def log_info(self, info: Dict[str, Any]) -> None:
+        """Log info data.
+
+        Args:
+            info (Dict[str, Any]): Info data.
+        """
+        self.infos.append(info)
 
     def reset_data(self) -> None:
         """Reset logger interactions data"""

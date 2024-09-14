@@ -516,7 +516,7 @@ def custom_logger_wrapper():
         def get_episode_summary(self) -> Dict[str, float]:
             # Get information from logger
             power_demands = [info['total_power_demand']
-                             for info in self.data_logger.infos]
+                             for info in self.data_logger.infos[1:]]
 
             # Data summary
             data_summary = {

@@ -191,6 +191,10 @@ updated per episode. The structure of this file is defined by the **LoggerWrappe
 Each episode directory includes a **monitor** folder with several CSV files for data such as observations, actions, 
 rewards, infos, and custom metrics. For more details, see :ref:`Output Format`.
 
+Observations and infos CSV has one row more than the rest of the files, as they are saved at the beginning 
+of the episode (reset). Then, for a given row with the same index, there would be the observation and info, 
+the action taken in that state and the reward obtained from that action in that state.
+
 WandBLogger
 -------------
 
