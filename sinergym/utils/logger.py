@@ -128,8 +128,12 @@ class LoggerStorage():
             truncated (bool): Truncation flag.
             custom_metrics (List[Any]): Custom metric data. Default is None.
         """
-        self.observations.append(list(obs))
-        self.actions.append(list(action))
+        if isinstance(action, np.ndarray):
+            action = action.tolist()
+        if isinstance(obs, np.ndarray):
+            obs = obs.tolist()
+        self.observations.append(obs)
+        self.actions.append(action)
         self.rewards.append(reward)
         self.infos.append(info)
         self.terminateds.append(terminated)
