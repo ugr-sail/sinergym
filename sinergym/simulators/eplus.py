@@ -206,9 +206,11 @@ class EnergyPlus(object):
                 self.progress_bar.close()
             # Flush all queues and unblock thread if needed
             self._flush_queues()
-            self.act_queue.put([0] * len(self.actuators))
+            if self.act_queue.empty():
+                self.act_queue.put([0] * len(self.actuators))
             # Wait to thread to finish (without control)
             self.energyplus_thread.join()
+            self._flush_queues()
             # Delete thread
             self.energyplus_thread = None
             # Clean runtime callbacks
