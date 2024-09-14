@@ -234,17 +234,34 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.logger.LoggerStorage.__init__" title="sinergym.utils.logger.LoggerStorage.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
 <td><p>Logger constructor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.logger.LoggerStorage.log_interaction" title="sinergym.utils.logger.LoggerStorage.log_interaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_interaction</span></code></a>(obs, action, reward, info, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.logger.LoggerStorage.log_info" title="sinergym.utils.logger.LoggerStorage.log_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_info</span></code></a>(info)</p></td>
+<td><p>Log info data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.logger.LoggerStorage.log_interaction" title="sinergym.utils.logger.LoggerStorage.log_interaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_interaction</span></code></a>(obs, action, reward, info, ...)</p></td>
 <td><p>Log interaction data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.logger.LoggerStorage.log_norm_obs" title="sinergym.utils.logger.LoggerStorage.log_norm_obs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_norm_obs</span></code></a>(norm_obs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.logger.LoggerStorage.log_norm_obs" title="sinergym.utils.logger.LoggerStorage.log_norm_obs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_norm_obs</span></code></a>(norm_obs)</p></td>
 <td><p>Log normalized observation data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.utils.logger.LoggerStorage.log_obs" title="sinergym.utils.logger.LoggerStorage.log_obs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_obs</span></code></a>(obs)</p></td>
+<td><p>Log observation data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sinergym.utils.logger.LoggerStorage.reset_data" title="sinergym.utils.logger.LoggerStorage.reset_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_data</span></code></a>()</p></td>
 <td><p>Reset logger interactions data</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.logger.LoggerStorage.log_info">
+<span class="sig-name descname"><span class="pre">log_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.logger.LoggerStorage.log_info" title="Link to this definition"></a></dt>
+<dd><p>Log info data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>info</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Info data.</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="sinergym.utils.logger.LoggerStorage.log_interaction">
 <span class="sig-name descname"><span class="pre">log_interaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terminated</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncated</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.logger.LoggerStorage.log_interaction" title="Link to this definition"></a></dt>
@@ -271,6 +288,17 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>norm_obs</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – Normalized observation data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sinergym.utils.logger.LoggerStorage.log_obs">
+<span class="sig-name descname"><span class="pre">log_obs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#sinergym.utils.logger.LoggerStorage.log_obs" title="Link to this definition"></a></dt>
+<dd><p>Log observation data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obs</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – Observation data.</p>
 </dd>
 </dl>
 </dd></dl>
