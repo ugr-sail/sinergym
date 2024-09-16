@@ -268,6 +268,9 @@ simulations. A <strong>progress.csv</strong> file is generated in the root outpu
 updated per episode. The structure of this file is defined by the <strong>LoggerWrapper</strong> class.</p>
 <p>Each episode directory includes a <strong>monitor</strong> folder with several CSV files for data such as observations, actions,
 rewards, infos, and custom metrics. For more details, see <a class="reference internal" href="output.html#output-format"><span class="std std-ref">Output format</span></a>.</p>
+<p>Observations and infos CSV has one row more than the rest of the files, as they are saved at the beginning
+of the episode (reset). Then, for a given row with the same index, there would be the observation and info,
+the action taken in that state and the reward obtained from that action in that state.</p>
 </section>
 <section id="wandblogger">
 <h3><span class="section-number">12.9.3. </span>WandBLogger<a class="headerlink" href="#wandblogger" title="Link to this heading"></a></h3>
