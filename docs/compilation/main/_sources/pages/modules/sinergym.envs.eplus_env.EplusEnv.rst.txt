@@ -50,6 +50,7 @@
       ~EplusEnv.reward_range
       ~EplusEnv.runperiod
       ~EplusEnv.schedulers
+      ~EplusEnv.simple_printer
       ~EplusEnv.spec
       ~EplusEnv.step_size
       ~EplusEnv.timestep_per_episode

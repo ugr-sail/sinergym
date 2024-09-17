@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>26. DRL usage example &mdash; sinergym  documentation</title>
+  <title>27. DRL usage example &mdash; sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -28,7 +28,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="API reference" href="../API-reference.html" />
-    <link rel="prev" title="25. Rule Controller example" href="rule_controller_example.html" /> 
+    <link rel="prev" title="26. Rule Controller example" href="rule_controller_example.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -78,15 +78,16 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="basic_example.html">18. Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">19. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="change_environment.html">20. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">21. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">22. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">23. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="logging_unused_variables.html">24. Logging unused variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">25. Rule Controller example</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">26. DRL usage example</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Training-a-model">26.1. Training a model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Loading-a-model">26.2. Loading a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sinergym_package.html">20. Sinergym package information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">21. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">22. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">23. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">24. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging_unused_variables.html">25. Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">26. Rule Controller example</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">27. DRL usage example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Training-a-model">27.1. Training a model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Loading-a-model">27.2. Loading a model</a></li>
 </ul>
 </li>
 </ul>
@@ -109,7 +110,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">26. </span>DRL usage example</li>
+      <li class="breadcrumb-item active"><span class="section-number">27. </span>DRL usage example</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/notebooks/drl.nblink.txt" rel="nofollow"> View page source</a>
       </li>
@@ -120,10 +121,10 @@
            <div itemprop="articleBody">
              
   <section id="DRL-usage-example">
-<h1><span class="section-number">26. </span>DRL usage example<a class="headerlink" href="#DRL-usage-example" title="Link to this heading"></a></h1>
+<h1><span class="section-number">27. </span>DRL usage example<a class="headerlink" href="#DRL-usage-example" title="Link to this heading"></a></h1>
 <p>In this notebook example, we’ve used Stable Baselines 3 to train and load an agent. However, Sinergym is entirely agnostic to any DRL algorithm (though it does have custom callbacks specifically for SB3) and can be used with any DRL library that interfaces with Gymnasium.</p>
 <section id="Training-a-model">
-<h2><span class="section-number">26.1. </span>Training a model<a class="headerlink" href="#Training-a-model" title="Link to this heading"></a></h2>
+<h2><span class="section-number">27.1. </span>Training a model<a class="headerlink" href="#Training-a-model" title="Link to this heading"></a></h2>
 <p>We’ll be using the <code class="docutils literal notranslate"><span class="pre">train_agent.py</span></code> script located in the repository root. This script leverages all the capabilities of Sinergym for working with deep reinforcement learning algorithms and sets parameters for everything, allowing us to easily define training options via a JSON file when executing the script.</p>
 <p>For more details on how to run <code class="docutils literal notranslate"><span class="pre">train_agent.py</span></code>, please refer to <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#model-training">Train a model</a>.</p>
 <div class="nbinput nblast docutils container">
@@ -568,7 +569,7 @@ Simulation Progress [Episode 6]:   4%|▍         | 4/100 [00:01&lt;00:28,  3.39
 <img alt="wandb_training_charts" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_training_charts.png?raw=true" />
 </section>
 <section id="Loading-a-model">
-<h2><span class="section-number">26.2. </span>Loading a model<a class="headerlink" href="#Loading-a-model" title="Link to this heading"></a></h2>
+<h2><span class="section-number">27.2. </span>Loading a model<a class="headerlink" href="#Loading-a-model" title="Link to this heading"></a></h2>
 <p>We’ll be using the <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code> script located in the repository root. This script leverages all the capabilities of Sinergym for working with loaded deep reinforcement learning models and sets parameters for everything, allowing us to easily define load options via a JSON file when executing the script.</p>
 <p>For more details on how to run <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code>, please refer to <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#model-loading">Load a trained model</a>.</p>
 <p>First, we’ll define the Sinergym environment ID where we want to test the loaded agent and the name of the evaluation experiment.</p>
@@ -1102,7 +1103,7 @@ Episode  4 Mean reward:  -0.770449260651564 Cumulative reward:  -26996.542093230
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="rule_controller_example.html" class="btn btn-neutral float-left" title="25. Rule Controller example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rule_controller_example.html" class="btn btn-neutral float-left" title="26. Rule Controller example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../API-reference.html" class="btn btn-neutral float-right" title="API reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

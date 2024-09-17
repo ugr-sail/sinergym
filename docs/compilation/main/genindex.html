@@ -72,13 +72,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pages/notebooks/basic_example.html">18. Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/notebooks/getting_env_information.html">19. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/change_environment.html">20. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/default_building_control.html">21. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/wrappers_examples.html">22. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/personalize_loggerwrapper.html">23. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/logging_unused_variables.html">24. Logging unused variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/rule_controller_example.html">25. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/drl.html">26. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/sinergym_package.html">20. Sinergym package information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/change_environment.html">21. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/default_building_control.html">22. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/wrappers_examples.html">23. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/personalize_loggerwrapper.html">24. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/logging_unused_variables.html">25. Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/rule_controller_example.html">26. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/notebooks/drl.html">27. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -161,6 +162,8 @@
         <li><a href="pages/modules/sinergym.utils.logger.CustomFormatter.html#sinergym.utils.logger.CustomFormatter.__init__">(sinergym.utils.logger.CustomFormatter method)</a>
 </li>
         <li><a href="pages/modules/sinergym.utils.logger.LoggerStorage.html#sinergym.utils.logger.LoggerStorage.__init__">(sinergym.utils.logger.LoggerStorage method)</a>
+</li>
+        <li><a href="pages/modules/sinergym.utils.logger.SimpleLogger.html#sinergym.utils.logger.SimpleLogger.__init__">(sinergym.utils.logger.SimpleLogger method)</a>
 </li>
         <li><a href="pages/modules/sinergym.utils.logger.TerminalLogger.html#sinergym.utils.logger.TerminalLogger.__init__">(sinergym.utils.logger.TerminalLogger method)</a>
 </li>
@@ -407,14 +410,18 @@
         <li><a href="pages/modules/sinergym.utils.wrappers.LoggerWrapper.html#sinergym.utils.wrappers.LoggerWrapper.get_episode_summary">(sinergym.utils.wrappers.LoggerWrapper method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.config.modeling.ModelJSON.html#sinergym.config.modeling.ModelJSON.get_schedulers">get_schedulers() (sinergym.config.modeling.ModelJSON method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/modules/sinergym.utils.gcloud.get_service_account_token.html#sinergym.utils.gcloud.get_service_account_token">get_service_account_token() (in module sinergym.utils.gcloud)</a>
 </li>
-      <li><a href="pages/modules/sinergym.utils.logger.TerminalLogger.html#sinergym.utils.logger.TerminalLogger.getLogger">getLogger() (sinergym.utils.logger.TerminalLogger method)</a>
+      <li><a href="pages/modules/sinergym.utils.logger.SimpleLogger.html#sinergym.utils.logger.SimpleLogger.getLogger">getLogger() (sinergym.utils.logger.SimpleLogger method)</a>
+
+      <ul>
+        <li><a href="pages/modules/sinergym.utils.logger.TerminalLogger.html#sinergym.utils.logger.TerminalLogger.getLogger">(sinergym.utils.logger.TerminalLogger method)</a>
 </li>
+      </ul></li>
       <li><a href="pages/modules/sinergym.utils.logger.CustomFormatter.html#sinergym.utils.logger.CustomFormatter.grey">grey (sinergym.utils.logger.CustomFormatter attribute)</a>
 </li>
   </ul></td>
@@ -714,6 +721,10 @@
 </li>
       <li><a href="pages/modules/sinergym.utils.wrappers.WandBLogger.html#sinergym.utils.wrappers.WandBLogger.set_wandb_finish">set_wandb_finish() (sinergym.utils.wrappers.WandBLogger method)</a>
 </li>
+      <li><a href="pages/modules/sinergym.envs.eplus_env.EplusEnv.html#sinergym.envs.eplus_env.EplusEnv.simple_printer">simple_printer (sinergym.envs.eplus_env.EplusEnv attribute)</a>
+</li>
+      <li><a href="pages/modules/sinergym.utils.logger.SimpleLogger.html#sinergym.utils.logger.SimpleLogger">SimpleLogger (class in sinergym.utils.logger)</a>
+</li>
       <li>
     sinergym.config
 
@@ -770,6 +781,8 @@
         <li><a href="pages/modules/sinergym.utils.callbacks.html#module-sinergym.utils.callbacks">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     sinergym.utils.common
 
@@ -777,8 +790,6 @@
         <li><a href="pages/modules/sinergym.utils.common.html#module-sinergym.utils.common">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     sinergym.utils.constants
 

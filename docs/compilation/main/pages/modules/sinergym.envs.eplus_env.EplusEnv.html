@@ -75,13 +75,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/basic_example.html">18. Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/getting_env_information.html">19. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">20. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">21. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">22. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">23. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/logging_unused_variables.html">24. Logging unused variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">25. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">26. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/sinergym_package.html">20. Sinergym package information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/change_environment.html">21. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/default_building_control.html">22. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/wrappers_examples.html">23. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/personalize_loggerwrapper.html">24. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/logging_unused_variables.html">25. Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/rule_controller_example.html">26. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/drl.html">27. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -246,28 +247,31 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.schedulers" title="sinergym.envs.eplus_env.EplusEnv.schedulers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedulers</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.simple_printer" title="sinergym.envs.eplus_env.EplusEnv.simple_printer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simple_printer</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.step_size" title="sinergym.envs.eplus_env.EplusEnv.step_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step_size</span></code></a></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.timestep_per_episode" title="sinergym.envs.eplus_env.EplusEnv.timestep_per_episode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timestep_per_episode</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.step_size" title="sinergym.envs.eplus_env.EplusEnv.step_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step_size</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.timestep_per_episode" title="sinergym.envs.eplus_env.EplusEnv.timestep_per_episode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timestep_per_episode</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></p></td>
 <td><p>Returns the base non-wrapped environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.var_handlers" title="sinergym.envs.eplus_env.EplusEnv.var_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var_handlers</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.var_handlers" title="sinergym.envs.eplus_env.EplusEnv.var_handlers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var_handlers</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.weather_path" title="sinergym.envs.eplus_env.EplusEnv.weather_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weather_path</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.weather_path" title="sinergym.envs.eplus_env.EplusEnv.weather_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weather_path</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.workspace_path" title="sinergym.envs.eplus_env.EplusEnv.workspace_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">workspace_path</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.workspace_path" title="sinergym.envs.eplus_env.EplusEnv.workspace_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">workspace_path</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.zone_names" title="sinergym.envs.eplus_env.EplusEnv.zone_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_names</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sinergym.envs.eplus_env.EplusEnv.zone_names" title="sinergym.envs.eplus_env.EplusEnv.zone_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_names</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -392,6 +396,11 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.schedulers">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schedulers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.schedulers" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sinergym.envs.eplus_env.EplusEnv.simple_printer">
+<span class="sig-name descname"><span class="pre">simple_printer</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Logger</span> <span class="pre">Printer</span> <span class="pre">(INFO)&gt;</span></em><a class="headerlink" href="#sinergym.envs.eplus_env.EplusEnv.simple_printer" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">

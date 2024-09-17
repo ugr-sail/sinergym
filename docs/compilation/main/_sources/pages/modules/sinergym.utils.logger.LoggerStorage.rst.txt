@@ -1,4 +1,4 @@
-﻿sinergym.utils.logger.LoggerStorage
+sinergym.utils.logger.LoggerStorage
 ===================================
 
 .. currentmodule:: sinergym.utils.logger

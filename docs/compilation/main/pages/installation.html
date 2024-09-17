@@ -54,7 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#docker-container">1.1. Docker container</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#manual-installation">1.2. Manual installation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#configure-python-environment">1.2.1. Configure Python Environment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#install-energyplus-23-1-0">1.2.2. Install EnergyPlus 23.1.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-energyplus-24-1-0">1.2.2. Install EnergyPlus 24.1.0</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#include-energyplus-python-api-in-python-path">1.2.3. Include Energyplus Python API in Python Path</a></li>
 </ul>
 </li>
@@ -87,13 +87,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">18. Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">19. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">20. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">21. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">22. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">23. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/logging_unused_variables.html">24. Logging unused variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">25. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">26. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/sinergym_package.html">20. Sinergym package information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">21. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">22. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">23. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">24. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/logging_unused_variables.html">25. Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">26. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">27. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -194,7 +195,7 @@ documentation in the subsequent sections.</p>
 <h2><span class="section-number">1.1. </span>Docker container<a class="headerlink" href="#docker-container" title="Link to this heading"></a></h2>
 <p>We provide a <strong>Dockerfile</strong> to install all dependencies and prepare the
 image for running <em>Sinergym</em>.</p>
-<p>By default, the <em>Dockerfile</em> executes <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.[extras]</span></code>. If you wish
+<p>By default, the <em>Dockerfile</em> executes pip installation of sinergym with all extras. If you wish
 to install a different setup, you need to execute the following command in the
 <strong>root repository</strong>:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>&lt;tag_name&gt;<span class="w"> </span>--build-arg<span class="w"> </span><span class="nv">SINERGYM_EXTRAS</span><span class="o">=[</span>&lt;setup_tag<span class="o">(</span>s<span class="o">)</span>&gt;<span class="o">]</span><span class="w"> </span>.
@@ -246,7 +247,7 @@ $<span class="w"> </span><span class="nb">source</span><span class="w"> </span>e
 $<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>extras<span class="o">]</span>
 </pre></div>
 </div>
-<p>Alternatively, you can use <strong>conda environments</strong> (<em>recommended</em>).
+<p>Alternatively, you can use <strong>conda environments</strong>.
 <em>Conda</em> is user-friendly and we provide a file for automatic configuration:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>sinergym
 $<span class="w"> </span>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>python_environment.yml
@@ -257,14 +258,14 @@ $<span class="w"> </span>conda<span class="w"> </span>activate<span class="w"> <
 <em>Sinergym</em>. Let’s proceed with the installation of other required programs
 outside of Python to run the simulations:</p>
 </section>
-<section id="install-energyplus-23-1-0">
-<h3><span class="section-number">1.2.2. </span>Install EnergyPlus 23.1.0<a class="headerlink" href="#install-energyplus-23-1-0" title="Link to this heading"></a></h3>
+<section id="install-energyplus-24-1-0">
+<h3><span class="section-number">1.2.2. </span>Install EnergyPlus 24.1.0<a class="headerlink" href="#install-energyplus-24-1-0" title="Link to this heading"></a></h3>
 <p>You need to install <em>EnergyPlus</em>. We have tested and confirmed compatibility
-with version <code class="docutils literal notranslate"><span class="pre">23.1.0</span></code>. The code might work with other versions, but we
+with version <code class="docutils literal notranslate"><span class="pre">24.1.0</span></code>. The code might work with other versions, but we
 have not tested them.</p>
 <p>Follow the instructions <a class="reference external" href="https://energyplus.net/downloads">here</a> to install
 it for Linux (we only support <strong>Ubuntu</strong>). You can choose any location for the
-installation. After installation, a folder named <code class="docutils literal notranslate"><span class="pre">Energyplus-23-1-0</span></code> should
+installation. After installation, a folder named <code class="docutils literal notranslate"><span class="pre">Energyplus-24-1-0</span></code> should
 appear in the chosen location.</p>
 </section>
 <section id="include-energyplus-python-api-in-python-path">

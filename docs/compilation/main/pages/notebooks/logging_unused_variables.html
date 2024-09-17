@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>24. Logging unused variables &mdash; sinergym  documentation</title>
+  <title>25. Logging unused variables &mdash; sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -27,8 +27,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="25. Rule Controller example" href="rule_controller_example.html" />
-    <link rel="prev" title="23. Logger Wrapper personalization/configuration" href="personalize_loggerwrapper.html" /> 
+    <link rel="next" title="26. Rule Controller example" href="rule_controller_example.html" />
+    <link rel="prev" title="24. Logger Wrapper personalization/configuration" href="personalize_loggerwrapper.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -78,13 +78,14 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="basic_example.html">18. Basic example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">19. Getting information about Sinergym environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="change_environment.html">20. Changing an environment registered in Sinergym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">21. Default building control setting up an empty action interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">22. Wrappers example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">23. Logger Wrapper personalization/configuration</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">24. Logging unused variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">25. Rule Controller example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="drl.html">26. DRL usage example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sinergym_package.html">20. Sinergym package information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">21. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">22. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">23. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">24. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">25. Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">26. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">27. DRL usage example</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -105,7 +106,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">24. </span>Logging unused variables</li>
+      <li class="breadcrumb-item active"><span class="section-number">25. </span>Logging unused variables</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/notebooks/logging_unused_variables.nblink.txt" rel="nofollow"> View page source</a>
       </li>
@@ -116,7 +117,7 @@
            <div itemprop="articleBody">
              
   <section id="Logging-unused-variables">
-<h1><span class="section-number">24. </span>Logging unused variables<a class="headerlink" href="#Logging-unused-variables" title="Link to this heading"></a></h1>
+<h1><span class="section-number">25. </span>Logging unused variables<a class="headerlink" href="#Logging-unused-variables" title="Link to this heading"></a></h1>
 <p>The system for creating a custom logger wrapper in Sinergym allows you to record custom metrics based on any interaction data with the environment (see <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/notebooks/personalize_loggerwrapper.html">example</a>). However, there may be cases where you want to monitor data directly from the simulator.</p>
 <p>Until version v3.3.2 of <em>Sinergym</em>, all variables monitored using the <em>LoggerWrapper</em> had to be present in the observation space. This presents a drawback when we want to monitor certain aspects of the simulation that are not used in the optimization process (in other words, that are not present in the environment’s observation space), it would be impossible.</p>
 <p>Including extra variables that are not directly part of the observation space requires certain internal changes that break the minimalist structure of the classes and EnergyPlus API usage that make up the tool.</p>
@@ -378,8 +379,8 @@ Simulation Progress [Episode 1]: 100%|██████████| 100/100 [0
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="personalize_loggerwrapper.html" class="btn btn-neutral float-left" title="23. Logger Wrapper personalization/configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rule_controller_example.html" class="btn btn-neutral float-right" title="25. Rule Controller example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="personalize_loggerwrapper.html" class="btn btn-neutral float-left" title="24. Logger Wrapper personalization/configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rule_controller_example.html" class="btn btn-neutral float-right" title="26. Rule Controller example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
