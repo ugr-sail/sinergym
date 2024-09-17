@@ -27,7 +27,7 @@ documentation in the subsequent sections.
 We provide a **Dockerfile** to install all dependencies and prepare the 
 image for running *Sinergym*. 
 
-By default, the *Dockerfile* executes `pip install -e .[extras]`. If you wish 
+By default, the *Dockerfile* executes pip installation of sinergym with all extras. If you wish 
 to install a different setup, you need to execute the following command in the 
 **root repository**:
 
@@ -75,7 +75,7 @@ $ source env_sinergym/bin/activate
 $ pip install -e .[extras]
 ```
 
-Alternatively, you can use **conda environments** (*recommended*). 
+Alternatively, you can use **conda environments**. 
 *Conda* is user-friendly and we provide a file for automatic configuration:
 
 ```sh
@@ -88,15 +88,15 @@ With this, you have the correct Python version and the necessary modules to run
 *Sinergym*. Let's proceed with the installation of other required programs 
 outside of Python to run the simulations:
 
-### Install EnergyPlus 23.1.0
+### Install EnergyPlus 24.1.0
 
 You need to install *EnergyPlus*. We have tested and confirmed compatibility 
-with version `23.1.0`. The code might work with other versions, but we 
+with version `24.1.0`. The code might work with other versions, but we 
 have not tested them.
 
 Follow the instructions [here](https://energyplus.net/downloads) to install 
 it for Linux (we only support **Ubuntu**). You can choose any location for the 
-installation. After installation, a folder named `Energyplus-23-1-0` should 
+installation. After installation, a folder named `Energyplus-24-1-0` should 
 appear in the chosen location.
 
 ### Include Energyplus Python API in Python Path

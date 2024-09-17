@@ -16,8 +16,10 @@ sinergym.utils.logger.LoggerStorage
    .. autosummary::
    
       ~LoggerStorage.__init__
+      ~LoggerStorage.log_info
       ~LoggerStorage.log_interaction
       ~LoggerStorage.log_norm_obs
+      ~LoggerStorage.log_obs
       ~LoggerStorage.reset_data
    
    

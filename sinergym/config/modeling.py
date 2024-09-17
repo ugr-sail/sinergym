@@ -44,7 +44,7 @@ class ModelJSON(object):
     """
 
     logger = TerminalLogger().getLogger(
-        name='MODELING',
+        name='MODEL',
         level=LOG_MODEL_LEVEL)
 
     def __init__(
