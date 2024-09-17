@@ -82,6 +82,33 @@ class TerminalLogger():
         return logger
 
 
+class SimpleLogger():
+    """Sinergym terminal logger for simulation executions.
+    """
+
+    def getLogger(
+        self
+    ):
+        """Return Sinergym logger for the progress output in terminal.
+
+            Args:
+                name (str): logger name
+                level (str): logger level
+                formatter (Callable): logger formatter class
+
+            Returns:
+                logging.logger
+
+            """
+        logger = logging.getLogger('Printer')
+        logger.setLevel(logging.INFO)
+        # consoleHandler = logging.StreamHandler(stream=sys.stdout)
+        simple_handler = TqdmLoggingHandler(stream=sys.stdout)
+        simple_handler.setFormatter(logging.Formatter('%(message)s'))
+        logger.addHandler(simple_handler)
+        return logger
+
+
 class LoggerStorage():
     """Logger storage for agent interaction with environment. Save all interactions in list or list of lists as attributes.
 
