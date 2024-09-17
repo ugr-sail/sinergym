@@ -11,7 +11,7 @@ import numpy as np
 from sinergym.config import ModelJSON
 from sinergym.simulators import EnergyPlus
 from sinergym.utils.constants import LOG_ENV_LEVEL
-from sinergym.utils.logger import TerminalLogger
+from sinergym.utils.logger import SimpleLogger, TerminalLogger
 from sinergym.utils.rewards import *
 
 
@@ -26,6 +26,8 @@ class EplusEnv(gym.Env):
     logger = TerminalLogger().getLogger(
         name='ENVIRONMENT',
         level=LOG_ENV_LEVEL)
+
+    simple_printer = SimpleLogger().getLogger()
 
     # ---------------------------------------------------------------------------- #
     #                            ENVIRONMENT CONSTRUCTOR                           #
@@ -65,12 +67,14 @@ class EplusEnv(gym.Env):
             config_params (Optional[Dict[str, Any]], optional): Dictionary with all extra configuration for simulator. Defaults to None.
         """
 
-        print('#==============================================================================================#')
+        self.simple_printer.info(
+            '#==============================================================================================#')
         self.logger.info(
             'Creating Gymnasium environment.')
         self.logger.info(
             'Name: {}'.format(env_name))
-        print('#==============================================================================================#')
+        self.simple_printer.info(
+            '#==============================================================================================#')
 
         # ---------------------------------------------------------------------------- #
         #                                     Paths                                    #
@@ -226,13 +230,15 @@ class EplusEnv(gym.Env):
         self.last_info = {'timestep': self.timestep}
 
         # ------------------------ Preparation for new episode ----------------------- #
-        print('#----------------------------------------------------------------------------------------------#')
+        self.simple_printer.info(
+            '#----------------------------------------------------------------------------------------------#')
         self.logger.info(
             'Starting a new episode.')
         self.logger.info(
             'Episode {}: {}'.format(
                 self.episode, self.name))
-        print('#----------------------------------------------------------------------------------------------#')
+        self.simple_printer.info(
+            '#----------------------------------------------------------------------------------------------#')
         # Get new episode working dir
         self.episode_dir = self.model.set_episode_working_dir()
         # get weather path
