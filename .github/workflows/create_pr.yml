@@ -57,7 +57,7 @@ jobs:
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
       - name: Verify documentation update
-        uses: dorny/paths-filter@v2
+        uses: dorny/paths-filter@v3
         id: verify-documentation-update
         with:
           filters: |
