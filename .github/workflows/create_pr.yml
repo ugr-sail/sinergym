@@ -65,7 +65,9 @@ jobs:
               - 'docs/source/**'
       - name: Install dependencies
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: pip install -e .[doc]
+        run: |
+          apt install pandoc
+          pip install -e .[doc]
       - name: Check build docs
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: sphinx-build -M html docs/source docs/build

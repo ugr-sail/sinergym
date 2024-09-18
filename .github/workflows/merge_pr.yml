@@ -63,7 +63,9 @@ jobs:
               - 'docs/source/**'
       - name: Install dependencies
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: pip install -e .[doc]
+        run: |
+          apt install pandoc
+          pip install -e .[doc]
       - name: Build multiversion docs
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: sphinx-multiversion docs/source docs/compilation
