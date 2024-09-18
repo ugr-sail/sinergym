@@ -64,15 +64,15 @@ jobs:
             doc:
               - 'docs/source/**'
       - name: Install dependencies
-        if: steps.verify-documentation-update.outputs.doc == 'true'
+        #if: steps.verify-documentation-update.outputs.doc == 'true'
         run: |
           apt install pandoc
           pip install -e .[doc]
       - name: Check build docs
-        if: steps.verify-documentation-update.outputs.doc == 'true'
+        #if: steps.verify-documentation-update.outputs.doc == 'true'
         run: sphinx-build -M html docs/source docs/build
       - name: Check sphinx spelling
-        if: steps.verify-documentation-update.outputs.doc == 'true'
+        #if: steps.verify-documentation-update.outputs.doc == 'true'
         run: sphinx-build -M spelling docs/source docs/build
 
   tests:
