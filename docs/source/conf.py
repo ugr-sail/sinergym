@@ -46,7 +46,12 @@ extensions = [
     'nbsphinx',
     'nbsphinx_link']
 
-autodoc_mock_imports = ['stable_baselines3', 'gym', 'opyplus', 'gcloud', 'google.cloud', 'pyenergyplus']
+autodoc_mock_imports = ['stable_baselines3', 
+                        'gym', 
+                        'opyplus', 
+                        'gcloud', 
+                        'google.cloud', 
+                        'pyenergyplus']
 
 nbsphinx_custom_formats = {}
 
