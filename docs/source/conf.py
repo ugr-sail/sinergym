@@ -13,18 +13,18 @@
 import os
 import sys
 from unittest.mock import MagicMock
-import sinergym.utils.logger
-sinergym.utils.logger.WandBOutputFormat = WandBOutputFormatMock
+
 sys.path.insert(0, os.path.abspath('../../sinergym'))
 class WandBOutputFormatMock(MagicMock):
     pass
 
-sys.path.insert(0, os.path.abspath('../../'))
+import sinergym.utils.logger
+sinergym.utils.logger.WandBOutputFormat = WandBOutputFormatMock
 
 # -- Project information -----------------------------------------------------
 
 project = 'sinergym'
-copyright = '2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy'
+copyright = '2024, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy'
 author = 'J. Jiménez, J. Gómez, M.l Molina, A. Manjavacas, A. Campoy'
 
 
