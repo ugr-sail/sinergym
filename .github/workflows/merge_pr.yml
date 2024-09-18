@@ -62,15 +62,15 @@ jobs:
             doc:
               - 'docs/source/**'
       - name: Install dependencies
-        #if: steps.verify-documentation-update.outputs.doc == 'true'
+        if: steps.verify-documentation-update.outputs.doc == 'true'
         run: |
           apt install pandoc
           pip install -e .[doc]
       - name: Build multiversion docs
-        #if: steps.verify-documentation-update.outputs.doc == 'true'
+        if: steps.verify-documentation-update.outputs.doc == 'true'
         run: sphinx-multiversion docs/source docs/compilation
       - name: Deploy to GitHub Pages
-        #if: steps.verify-documentation-update.outputs.doc == 'true'
+        if: steps.verify-documentation-update.outputs.doc == 'true'
         run: |
           git config --local user.name "GitHub Actions"
           git config --local user.email "actions@github.com"
