@@ -52,6 +52,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ vars.PYTHON_VERSION }}
       - name: Verify documentation update
         uses: dorny/paths-filter@v2
         id: verify-documentation-update
@@ -59,15 +63,15 @@ jobs:
           filters: |
             doc:
               - 'docs/source/**'
-      - name: Build the latest Docker image
+      - name: Install dependencies
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extras] --tag pullrequest/sinergym:latest
-      - name: Compile documentation
+        run: pip install -e .[doc]
+      - name: Check build docs
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'sphinx-build -M html docs/source docs/build'
+        run: sphinx-build -M html docs/source docs/build
       - name: Check sphinx spelling
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'sphinx-build -M spelling docs/source docs/build'
+        run: sphinx-build -M spelling docs/source docs/build
 
   tests:
     name: build container and execute pytest
