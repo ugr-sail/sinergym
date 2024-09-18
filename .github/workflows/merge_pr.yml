@@ -61,6 +61,8 @@ jobs:
           filters: |
             doc:
               - 'docs/source/**'
+              - '!docs/compilation/**'
+              - '!docs/build/**'
       - name: Install dependencies
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: |
