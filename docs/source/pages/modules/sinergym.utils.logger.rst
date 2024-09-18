@@ -24,7 +24,6 @@
       SimpleLogger
       TerminalLogger
       TqdmLoggingHandler
-      WandBOutputFormat
    
    
 
