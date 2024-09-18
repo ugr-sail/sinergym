@@ -12,13 +12,19 @@
 #
 import os
 import sys
+from unittest.mock import MagicMock
 
-sys.path.insert(0, os.path.abspath('../../'))
+sys.path.insert(0, os.path.abspath('../../sinergym'))
+class WandBOutputFormatMock(MagicMock):
+    pass
+
+import sinergym.utils.logger
+sinergym.utils.logger.WandBOutputFormat = WandBOutputFormatMock
 
 # -- Project information -----------------------------------------------------
 
 project = 'sinergym'
-copyright = '2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy'
+copyright = '2024, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy'
 author = 'J. Jiménez, J. Gómez, M.l Molina, A. Manjavacas, A. Campoy'
 
 
@@ -40,7 +46,14 @@ extensions = [
     'nbsphinx',
     'nbsphinx_link']
 
-autodoc_mock_imports = ['stable_baselines3', 'gym', 'opyplus']
+autodoc_mock_imports = ['stable_baselines3', 
+                        'gym', 
+                        'opyplus', 
+                        'gcloud', 
+                        'google.cloud', 
+                        'pyenergyplus']
+
+nbsphinx_custom_formats = {}
 
 autosummary_generate = True
 

@@ -1,3 +1,0 @@
-{
-    "path": "../../../../examples/rule_controller_example.ipynb"
-}

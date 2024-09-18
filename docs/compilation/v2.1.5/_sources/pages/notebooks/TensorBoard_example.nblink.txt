@@ -1,3 +1,0 @@
-{
-    "path": "../../../../examples/TensorBoard_example.ipynb"
-}

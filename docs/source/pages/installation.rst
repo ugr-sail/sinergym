@@ -35,7 +35,8 @@ Docker container
 ****************
 
 We provide a **Dockerfile** to install all dependencies and prepare the 
-image for running *Sinergym*. 
+image for running *Sinergym*. This is the **recommended** option, since it
+ensures that all dependencies and versions are correctly installed and configured.
 
 By default, the *Dockerfile* executes pip installation of sinergym with all extras. If you wish 
 to install a different setup, you need to execute the following command in the 

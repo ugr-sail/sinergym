@@ -1,3 +1,0 @@
-{
-    "path": "../../../../examples/default_building_control.ipynb"
-}
