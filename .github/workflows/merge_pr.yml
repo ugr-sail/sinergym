@@ -64,7 +64,7 @@ jobs:
       - name: Install dependencies
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: |
-          apt install pandoc
+          sudo apt install pandoc
           pip install -e .[doc]
       - name: Build multiversion docs
         if: steps.verify-documentation-update.outputs.doc == 'true'

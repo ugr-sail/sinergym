@@ -14,7 +14,7 @@ As outlined in the introduction, *Sinergym* is structured as follows:
 *Sinergym* consists of three primary components: the *agent*, the *communication* interface, and the *simulation*. 
 The agent interacts with the environment by sending actions and receiving observations through the Gymnasium interface.
 Concurrently, the Gymnasium interface communicates with the simulation engine via the *EnergyPlus* Python API. 
-This API provides the functionality to manage handlers such as actuators, meters, and variables, whose current values 
+This API provides the functionality to manage handlers such as variables, meters and actuators, whose current values 
 directly influence the simulation's progression.
 
 The following image provides a more detailed view of this process:
