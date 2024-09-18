@@ -12,6 +12,12 @@
 #
 import os
 import sys
+from unittest.mock import MagicMock
+import sinergym.utils.logger
+sinergym.utils.logger.WandBOutputFormat = WandBOutputFormatMock
+sys.path.insert(0, os.path.abspath('../../sinergym'))
+class WandBOutputFormatMock(MagicMock):
+    pass
 
 sys.path.insert(0, os.path.abspath('../../'))
 
