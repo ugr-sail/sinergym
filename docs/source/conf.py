@@ -10,15 +10,18 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import sinergym.utils.logger
 import os
 import sys
 from unittest.mock import MagicMock
 
 sys.path.insert(0, os.path.abspath('../../sinergym'))
+
+
 class WandBOutputFormatMock(MagicMock):
     pass
 
-import sinergym.utils.logger
+
 sinergym.utils.logger.WandBOutputFormat = WandBOutputFormatMock
 
 # -- Project information -----------------------------------------------------
@@ -46,11 +49,11 @@ extensions = [
     'nbsphinx',
     'nbsphinx_link']
 
-autodoc_mock_imports = ['stable_baselines3', 
-                        'gym', 
-                        'opyplus', 
-                        'gcloud', 
-                        'google.cloud', 
+autodoc_mock_imports = ['stable_baselines3',
+                        'gym',
+                        'opyplus',
+                        'gcloud',
+                        'google.cloud',
                         'pyenergyplus']
 
 nbsphinx_custom_formats = {}
