@@ -40,7 +40,9 @@ extensions = [
     'nbsphinx',
     'nbsphinx_link']
 
-autodoc_mock_imports = ['stable_baselines3', 'gym', 'opyplus']
+autodoc_mock_imports = ['stable_baselines3', 'gym', 'opyplus', 'gcloud', 'google.cloud']
+
+nbsphinx_custom_formats = {}
 
 autosummary_generate = True
 
