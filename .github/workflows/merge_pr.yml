@@ -76,6 +76,9 @@ jobs:
           personal_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs/compilation
           publish_branch: github-pages
+          destination_dir: docs/compilation
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
           keep_files: false
 
   tests:

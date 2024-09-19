@@ -116,7 +116,7 @@ html_theme_options = {'style_nav_header_background': '#a5beba',
 html_sidebars = {'**': ['globaltoc.html',
                         'relations.html',
                         'sourcelink.html',
-                        'searchbox.html']}
+                        'searchbox.html'],}
 
 # disable nbsphinx errors to suppres imports checks not working
 nbsphinx_allow_errors = True
