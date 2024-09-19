@@ -71,13 +71,12 @@ jobs:
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: sphinx-multiversion docs/source docs/compilation
       - name: Deploy to GitHub Pages
-        if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: |
-          git config --local user.name "GitHub Actions"
-          git config --local user.email "actions@github.com"
-          git add docs/compilation
-          git commit -m "Deploy documentation to GitHub Pages"
-          git push --force origin `git subtree split --prefix build main`:github-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/compilation
+          publish_branch: github-pages
+          keep_files: false
 
   tests:
     needs: [apply-autopep8]
