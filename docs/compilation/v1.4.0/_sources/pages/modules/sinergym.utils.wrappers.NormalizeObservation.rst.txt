@@ -1,0 +1,26 @@
+﻿sinergym.utils.wrappers.NormalizeObservation
+============================================
+
+.. currentmodule:: sinergym.utils.wrappers
+
+.. autoclass:: NormalizeObservation
+   :members:                                                           
+   :undoc-members:               
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~NormalizeObservation.__init__
+      ~NormalizeObservation.get_unwrapped_obs
+      ~NormalizeObservation.observation
+   
+   
+
+   
+   
+   

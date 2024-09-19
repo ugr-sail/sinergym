@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8. Logging System Overview &mdash; Sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/doc_theme.css?v=816ccb90" />
+
+  
+    <link rel="shortcut icon" href="../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="9. Output format" href="output.html" />
+    <link rel="prev" title="7. Environments Configuration and Registration" href="environments_registration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Sinergym
+              <img src="../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage-example.html">2. Usage Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">5. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments.html">6. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">8. Logging System Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#terminallogger">8.1. TerminalLogger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loggerstorage">8.2. LoggerStorage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#logger-wrapper">8.2.1. Logger Wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#csv-logger">8.2.2. CSV Logger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wandb-logger">8.2.3. WandB Logger</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#wandboutputformat">8.3. WandBOutputFormat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">9. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewards.html">10. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers.html">11. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">12. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">13. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-reinforcement-learning.html">14. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloudAPI.html">15. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="github-actions.html">16. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">17. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/basic_example.html">18. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_env_information.html">19. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/change_environment.html">20. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/default_building_control.html">21. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/wrappers_examples.html">22. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/personalize_loggerwrapper.html">23. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/logging_unused_variables.html">24. Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/rule_controller_example.html">25. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/drl.html">26. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8. </span>Logging System Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/logging.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="logging-system-overview">
+<h1><span class="section-number">8. </span>Logging System Overview<a class="headerlink" href="#logging-system-overview" title="Link to this heading"></a></h1>
+<p><em>Sinergym</em> implements several loggers to control all information flow during execution.</p>
+<section id="terminallogger">
+<h2><span class="section-number">8.1. </span>TerminalLogger<a class="headerlink" href="#terminallogger" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Prints information to the default output during processes.</p></li>
+<li><p>Messages are structured in layers (<code class="docutils literal notranslate"><span class="pre">ENVIRONMENT</span></code>, <code class="docutils literal notranslate"><span class="pre">MODELING</span></code>, <code class="docutils literal notranslate"><span class="pre">WRAPPER</span></code>, <code class="docutils literal notranslate"><span class="pre">SIMULATION</span></code>, <code class="docutils literal notranslate"><span class="pre">REWARD</span></code>) and levels
+(<code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>, <code class="docutils literal notranslate"><span class="pre">INFO</span></code>, <code class="docutils literal notranslate"><span class="pre">WARNING</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code>, <code class="docutils literal notranslate"><span class="pre">CRITICAL</span></code>).</p></li>
+</ul>
+</section>
+<section id="loggerstorage">
+<h2><span class="section-number">8.2. </span>LoggerStorage<a class="headerlink" href="#loggerstorage" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Efficiently stores interaction information as class attributes.</p></li>
+<li><p>Not included by default in Sinergym environments; it handles only data logic, storage, and management functionality.</p></li>
+<li><p>This class can be replaced by any other data storage system, such as a remote database if desired.</p></li>
+</ul>
+<p>To utilize <strong>LoggerStorage</strong> in environment interactions, apply the <strong>LoggerWrapper</strong> from <em>Sinergym</em>, by default uses this class to store data.
+The idea is to enable modular logging across different methods or platforms. In this section, we provide a brief description
+of the wrappers that use this logger storage module, but for a detailed explanation, visit the <a class="reference internal" href="wrappers.html#logger-wrappers"><span class="std std-ref">Logger Wrappers</span></a> section and we have an usage
+example in <a class="reference internal" href="notebooks/wrappers_examples.html#Logging-and-storing-data-with-logger-wrappers"><span class="std std-ref">Logging and storing data with logger wrappers</span></a>.</p>
+<section id="logger-wrapper">
+<h3><span class="section-number">8.2.1. </span>Logger Wrapper<a class="headerlink" href="#logger-wrapper" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Uses the <em>LoggerStorage</em> class to store all information during the environment interaction flow.</p></li>
+<li><p>The environment will have a new attribute called <code class="docutils literal notranslate"><span class="pre">data_logger</span></code>, an instance of <em>LoggerStorage</em> containing all the information.</p></li>
+<li><p>This wrapper also implements functionality to use the logger with custom metrics and
+episode summary metrics (customizable, see <a class="reference internal" href="notebooks/personalize_loggerwrapper.html#Logger-Wrapper-personalization/configuration"><span class="std std-ref">Logger Wrapper personalization/configuration</span></a>).</p></li>
+</ul>
+</section>
+<section id="csv-logger">
+<h3><span class="section-number">8.2.2. </span>CSV Logger<a class="headerlink" href="#csv-logger" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Works with the <strong>LoggerWrapper</strong> <code class="docutils literal notranslate"><span class="pre">data_logger</span></code> instance and calculated summary metrics implemented to parse
+and save data in CSV files during simulations (see <a class="reference internal" href="output.html#output-format"><span class="std std-ref">Output format</span></a>).</p></li>
+</ul>
+</section>
+<section id="wandb-logger">
+<h3><span class="section-number">8.2.3. </span>WandB Logger<a class="headerlink" href="#wandb-logger" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Works with the <strong>LoggerWrapper</strong> <code class="docutils literal notranslate"><span class="pre">data_logger</span></code> instance and calculated summary metrics to dump all information
+on the WandB platform in real-time.</p></li>
+</ul>
+</section>
+</section>
+<section id="wandboutputformat">
+<h2><span class="section-number">8.3. </span>WandBOutputFormat<a class="headerlink" href="#wandboutputformat" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Integrates compatibility for the Stable Baselines 3 training logging system with Weights and Biases platform.</p></li>
+<li><p>Then, can be used with <em>Sinergym</em> <em>WandBLogger</em> to consolidate information in a single Weights and Biases panel automatically.
+See example <a class="reference internal" href="notebooks/drl.html#Training-a-model"><span class="std std-ref">Training a model</span></a> for more information.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="environments_registration.html" class="btn btn-neutral float-left" title="7. Environments Configuration and Registration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="output.html" class="btn btn-neutral float-right" title="9. Output format" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.5.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../v2.3.0/index.html">v2.3.0</a></dd>
+            <dd><a href="../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../v3.2.0/index.html">v3.2.0</a></dd>
+            <dd><a href="../../v3.3.0/index.html">v3.3.0</a></dd>
+            <dd><a href="../../v3.4.0/index.html">v3.4.0</a></dd>
+            <dd><a href="logging.html">v3.5.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../main/pages/logging.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>
