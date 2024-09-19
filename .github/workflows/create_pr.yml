@@ -66,6 +66,7 @@ jobs:
       - name: Install dependencies
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: |
+          sudo apt install python3-enchant
           sudo apt install pandoc
           pip install -e .[doc]
       - name: Check build docs
