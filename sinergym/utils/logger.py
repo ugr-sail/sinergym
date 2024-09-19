@@ -4,17 +4,9 @@ import sys
 from typing import Any, Dict, List, Tuple, Union
 
 import numpy as np
-import pkg_resources
 from tqdm import tqdm
 
 from sinergym.utils.constants import LOG_FORMAT
-
-required = {'stable-baselines3', 'wandb'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-if not missing:
-    import wandb
-    from stable_baselines3.common.logger import KVWriter
 
 
 class CustomFormatter(logging.Formatter):
@@ -206,7 +198,9 @@ class LoggerStorage():
         self.custom_metrics = []
 
 
-if not missing:
+try:
+    import wandb
+    from stable_baselines3.common.logger import KVWriter
     class WandBOutputFormat(KVWriter):  # pragma: no cover
         """
         Dumps key / value pairs onto WandB. This class is based on SB3 used in logger callback
@@ -249,3 +243,9 @@ if not missing:
 
             # Log all metrics
             wandb.log(metrics_to_log)
+except ImportError:
+    class WandBOutputFormat():
+        """WandBOutputFormat class for logging in WandB from SB3 logger.
+        """
+        def __init__(self):
+            print('WandB or SB3 is not installed. Please install it to use WandBOutputFormat.')
