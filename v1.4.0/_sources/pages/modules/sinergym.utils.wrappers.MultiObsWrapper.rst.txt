@@ -1,0 +1,26 @@
+﻿sinergym.utils.wrappers.MultiObsWrapper
+=======================================
+
+.. currentmodule:: sinergym.utils.wrappers
+
+.. autoclass:: MultiObsWrapper
+   :members:                                                           
+   :undoc-members:               
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~MultiObsWrapper.__init__
+      ~MultiObsWrapper.reset
+      ~MultiObsWrapper.step
+   
+   
+
+   
+   
+   
