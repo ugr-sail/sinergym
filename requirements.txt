@@ -9,5 +9,4 @@ pandas
 twine
 xlsxwriter
 pipdeptree
-wandb
 tqdm

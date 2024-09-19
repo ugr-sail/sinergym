@@ -25,6 +25,7 @@ setup(name='sinergym',
               'matplotlib',  # visualization
               # DRL with pytorch
               'stable-baselines3',
+              'wandb',  # logging
               'pytest',
               'pytest-cov',
               'pytest-xdist',  # Unit test repository
