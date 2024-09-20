@@ -80,6 +80,7 @@ jobs:
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
           keep_files: false
+          enable_jekyll: true
 
   tests:
     needs: [apply-autopep8]
