@@ -3,6 +3,7 @@ ignore:
   - "sinergym/utils/constants.py"
   - "sinergym/utils/env_checker.py"
   - "sinergym/utils/callbacks.py"
+  - "sinergym/__init__.py"
 
 coverage:
   precision: 2
