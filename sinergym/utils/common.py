@@ -6,6 +6,7 @@ from typing import Any, Dict, Optional, Tuple, Type, Union
 import gymnasium as gym
 import xlsxwriter
 from eppy.modeleditor import IDF
+import numpy as np
 
 import sinergym
 from sinergym.utils.constants import LOG_COMMON_LEVEL, YEAR
