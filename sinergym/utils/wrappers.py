@@ -335,14 +335,13 @@ class NormalizeObservation(gym.Wrapper):
     def _save_normalization_calibration(self):
         """Saves the normalization calibration data in the output folder as txt files.
         """
-        if hasattr(self, "mean") and hasattr(self, "var"):
-            self.logger.info(
-                'Saving normalization calibration data.')
-            # Save in txt in output folder
-            np.savetxt(fname=self.get_wrapper_attr(
-                'workspace_path') + '/mean.txt', X=self.mean)
-            np.savetxt(fname=self.get_wrapper_attr(
-                'workspace_path') + '/var.txt', X=self.var)
+        self.logger.info(
+            'Saving normalization calibration data.')
+        # Save in txt in output folder
+        np.savetxt(fname=self.get_wrapper_attr(
+            'workspace_path') + '/mean.txt', X=self.mean)
+        np.savetxt(fname=self.get_wrapper_attr(
+            'workspace_path') + '/var.txt', X=self.var)
 
     def deactivate_update(self):
         """
@@ -359,12 +358,12 @@ class NormalizeObservation(gym.Wrapper):
         self.automatic_update = True
 
     @property
-    def mean(self) -> Optional[np.float64]:
+    def mean(self) -> np.float64:
         """Returns the mean value of the observations."""
         return self.obs_rms.mean
 
     @property
-    def var(self) -> Optional[np.float64]:
+    def var(self) -> np.float64:
         """Returns the variance value of the observations."""
         return self.obs_rms.var
 
@@ -723,7 +722,7 @@ class NormalizeAction(gym.ActionWrapper):
         self.logger.info('Wrapper initialized')
 
     def reverting_action(self,
-                         action: Any) -> np.array:
+                         action: Any):
         """ This method maps a normalized action in a real action space.
 
         Args:
@@ -739,7 +738,7 @@ class NormalizeAction(gym.ActionWrapper):
 
         return action_
 
-    def action(self, action: Any) -> np.array:
+    def action(self, action: Any):
         return self.get_wrapper_attr('reverting_action')(action)
 
 # ---------------------------------------------------------------------------- #

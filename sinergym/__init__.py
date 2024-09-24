@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+from typing import Union
 
 import gymnasium as gym
 from gymnasium.envs.registration import WrapperSpec, register
