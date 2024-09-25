@@ -49,7 +49,7 @@ class LoggerEvalCallback(EventCallback):
         super().__init__(verbose=verbose)
 
         assert is_wrapped(
-            train_env, BaseLoggerWrapper), "Training environment must be wrapped with BaseLoggerWrapper in order to be compatible with this callback."
+            train_env, BaseLoggerWrapper), 'Training environment must be wrapped with BaseLoggerWrapper in order to be compatible with this callback.'
 
         # Attributes
         self.eval_env = eval_env
@@ -139,21 +139,26 @@ class LoggerEvalCallback(EventCallback):
 
         # Terminal information when verbose is active
         if self.verbose >= 1:
-            self.logger.info(f"Eval num_timesteps={self.num_timesteps}, " f"episode_reward={
-                evaluation_summary['mean_reward']: .2f} + /- {evaluation_summary['std_reward']: .2f}")
+            self.logger.info(
+                'Evaluation num_timesteps={}, episode_reward={} +/- {}'.format(
+                    self.num_timesteps,
+                    evaluation_summary['mean_reward'],
+                    evaluation_summary['std_reward']
+                )
+            )
 
         # ------------------------ Save best model if required ----------------------- #
 
         # Condition to determine when a modes is the best
         if evaluation_summary['mean_reward'] > self.best_mean_reward:
             if self.verbose >= 1:
-                self.logger.info("New best mean reward!")
+                self.logger.info('New best mean reward!')
 
             # Save new best model
             self.model.save(
                 os.path.join(
                     self.save_path,
-                    "best_model.zip"))
+                    'best_model.zip'))
             self.best_mean_reward = evaluation_summary['mean_reward']
 
         # We close evaluation env and starts training env again
@@ -200,7 +205,7 @@ class LoggerEvalCallback(EventCallback):
             # ---------------------------------------------------------------------------- #
             #                     Storing last episode in results dict                     #
             # ---------------------------------------------------------------------------- #
-            summary = self.eval_env.get_wrapper_attr("get_episode_summary")()
+            summary = self.eval_env.get_wrapper_attr('get_episode_summary')()
             # Append values to result dictionary
             for key in result.keys():
                 result[key].append(summary[key])
