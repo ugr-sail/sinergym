@@ -17,7 +17,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
-          cache: 'poetry'
 
       - name: Apply isort
         id: isort-step
@@ -71,7 +70,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
-          cache: 'poetry'
       
       - name: Verify documentation update
         uses: dorny/paths-filter@v3

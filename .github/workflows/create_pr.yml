@@ -15,7 +15,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
-          cache: 'poetry'
 
       - name: autopep8 check
         id: autopep8
@@ -38,7 +37,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
-          cache: 'poetry'
 
       - name: isort check
         id: isort-step
@@ -65,7 +63,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
-          cache: 'poetry'
           
       - name: Install pytype
         run: poetry run pip install pytype requests urllib3
@@ -92,7 +89,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
-          cache: 'poetry'
       
       - name: Verify documentation update
         uses: dorny/paths-filter@v3
@@ -127,6 +123,6 @@ jobs:
 
       - name: Build the latest Docker image
         run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=test --tag pullrequest/sinergym:latest
-        
+
       - name: Execute tests from container
         run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym tests/'
