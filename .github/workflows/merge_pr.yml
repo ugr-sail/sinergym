@@ -5,27 +5,33 @@ on:
       - main
 
 jobs:
-  apply-autopep8:
-    name: Autopep8 auto-format by a bot
+  apply-autopep8-isort:
+    name: Autopep8 and isort auto-format by a bot
     runs-on: ubuntu-latest
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
+          cache: 'poetry'
+
       - name: Apply isort
         id: isort-step
         # default configuration use --check-only and --diff instead of --in-place options.
         uses: isort/isort-action@master
         with:
           configuration: --only-modified
+
       - name: autopep8 check and fix
         id: autopep8
         uses: peter-evans/autopep8@v2
         with:
           args: --exit-code --recursive --in-place --aggressive --aggressive .
+
       - name: Detect changes by isort
         uses: tj-actions/verify-changed-files@v18
         id: verify-isort-update
@@ -35,25 +41,38 @@ jobs:
             sinergym/
             examples/
             *.py
+
       - name: Commit format changes
         if: steps.autopep8.outputs.exit-code == 2 || steps.verify-isort-update.outputs.files_changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: Automated format fixes (autopep8 + isort)
+          commit_message: Automatic format fixes (autopep8 + isort)
 
   apply-documentation:
     name: Documentation compilation update by bot
-    needs: [apply-autopep8]
+    needs: [apply-autopep8-isort]
     runs-on: ubuntu-latest
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: false
+          virtualenvs-in-project: false
+          installer-parallel: true
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
+          cache: 'poetry'
+      
       - name: Verify documentation update
         uses: dorny/paths-filter@v3
         id: verify-documentation-update
@@ -61,15 +80,18 @@ jobs:
           filters: |
             doc:
               - 'docs/source/**'
+
       - name: Install dependencies
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: |
           sudo apt install python3-enchant
           sudo apt install pandoc
-          pip install -e .[doc]
+          poetry install --no-interaction --extras doc
+        
       - name: Build multiversion docs
         if: steps.verify-documentation-update.outputs.doc == 'true'
         run: sphinx-multiversion docs/source docs/compilation
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -87,14 +109,19 @@ jobs:
     name: tests execution and CodeCov upload
     runs-on: ubuntu-latest
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Build the latest Docker image
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[test] --tag pushmain/sinergym:latest
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=test --tag pushmain/sinergym:latest
+
       - name: Create a shared folder for coverage output
         run: mkdir shared
+
       - name: Execute tests from container
         run: docker run -v ${GITHUB_WORKSPACE}/shared:/shared -t pushmain/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym --cov-report=xml tests/ && mv coverage.xml /shared'
+
       - name: Upload to CodeCov
         uses: codecov/codecov-action@v4
         with:
@@ -112,21 +139,27 @@ jobs:
     name: Container build and upload in Docker Hub
     runs-on: ubuntu-latest
     steps:
+
       - name: Checkout code
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         uses: actions/checkout@v4
+
       - name: Build the latest Docker image
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extras] --tag $DOCKER_USER/sinergym:latest
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS="format test doc DRL gcloud" --tag $DOCKER_USER/sinergym:latest
+      
       - name: Build the latest lite Docker image
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[test] --tag $DOCKER_USER/sinergym:latest-lite
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=test --tag $DOCKER_USER/sinergym:latest-lite
+      
       - name: Login in Docker Hub account
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      
       - name: Push container with all extras
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         run: docker push $DOCKER_USER/sinergym:latest
+      
       - name: Push container used with test
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         run: docker push $DOCKER_USER/sinergym:latest-lite
