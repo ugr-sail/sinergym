@@ -5,7 +5,7 @@ on: pull_request
 
 jobs:
   autopep8-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
 
       - name: Checkout code
@@ -27,7 +27,7 @@ jobs:
         run: exit 1
 
   isort-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
 
       - name: Checkout code
@@ -45,7 +45,7 @@ jobs:
         continue-on-error: false
 
   type-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
 
       - name: Checkout code
@@ -65,13 +65,13 @@ jobs:
           python-version: ${{ vars.PYTHON_VERSION }}
           
       - name: Install pytype
-        run: poetry run pip install pytype requests urllib3
+        run: poetry run pip install pytype
 
       - name: Check pytype
         run: pytype -d import-error sinergym/
 
   documentation-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
 
       - name: Checkout code
@@ -115,7 +115,7 @@ jobs:
 
   tests:
     name: build container and execute pytest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
 
       - name: Checkout code

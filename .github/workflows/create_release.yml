@@ -9,7 +9,7 @@ jobs:
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     name: Upload Docker hub container with release tag
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       
       - name: Checkout code
@@ -56,7 +56,7 @@ jobs:
 
   pypi-publish:
     name: upload release to PyPI
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release
     permissions:

@@ -7,7 +7,7 @@ on:
 jobs:
   apply-autopep8-isort:
     name: Autopep8 and isort auto-format by a bot
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
 
       - name: Checkout code
@@ -50,7 +50,7 @@ jobs:
   apply-documentation:
     name: Documentation compilation update by bot
     needs: [apply-autopep8-isort]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
 
       - name: Checkout code
@@ -105,7 +105,7 @@ jobs:
   tests:
     needs: [apply-autopep8]
     name: tests execution and CodeCov upload
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
 
       - name: Checkout code
@@ -135,7 +135,7 @@ jobs:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     # If you don't have secrets configured with docker credential, this job will be skipped
     name: Container build and upload in Docker Hub
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
 
       - name: Checkout code
