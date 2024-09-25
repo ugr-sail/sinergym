@@ -46,7 +46,7 @@ ENV POETRY_CACHE_DIR=/tmp/poetry_cache
 
 # ------------------------- SINERGYM EXTRA LIBRERIES ------------------------- #
 
-ARG SINERGYM_EXTRAS="DRL platforms"
+ARG SINERGYM_EXTRAS=
 
 # ------------------------- WANDB API KEY (IF EXISTS) ------------------------ #
 
