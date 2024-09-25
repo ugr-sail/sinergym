@@ -44,7 +44,6 @@ classifiers = [
 
 # Include (equivalent to MANIFEST.in)
 include = [
-    "requirements.txt", 
     "sinergym/version.txt",
     "sinergym/data/**"]
 # Part of proyect you want to exclude in packaging
