@@ -109,6 +109,7 @@ COPY LICENSE /workspaces/sinergym/LICENSE
 COPY INSTALL.md /workspaces/sinergym/INSTALL.md
 COPY CODE_OF_CONDUCT.md /workspaces/sinergym/CODE_OF_CONDUCT.md
 COPY scripts /workspaces/sinergym/scripts
+COPY tests /workspaces/sinergym/tests
 COPY sinergym /workspaces/sinergym/sinergym
 COPY pyproject.toml /workspaces/sinergym/pyproject.toml
 COPY poetry.lock /workspaces/sinergym/poetry.lock
