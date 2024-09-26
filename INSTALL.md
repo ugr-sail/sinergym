@@ -46,8 +46,7 @@ $ docker build -t <tag_name> --build-arg SINERGYM_EXTRAS=format,test,doc,DRL,gcl
 These optional dependencies allow you to format code, run tests, generate documentation, 
 have pre-existing DRL algorithms available, etc. For more information, please refer to 
 the `pyproject.toml` file at the root of the repository. If you desire to install all optional
-packages, you can use `dev` directly in the `SINERGYM_EXTRAS` argument instead of a list with all
-sub-modules.
+packages, you can use `dev` directly in the `SINERGYM_EXTRAS` argument.
 
 > :memo: **Note:** Our container can also be directly installed from the [Docker Hub repository](https://hub.docker.com/repository/docker/sailugr/sinergym). It contains all the project's releases with secondary dependencies or lite versions.
 

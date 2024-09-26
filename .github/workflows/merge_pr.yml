@@ -102,7 +102,7 @@ jobs:
           enable_jekyll: true
 
   tests:
-    needs: [apply-autopep8]
+    needs: [apply-autopep8-isort]
     name: tests execution and CodeCov upload
     runs-on: ubuntu-24.04
     steps:
@@ -128,7 +128,7 @@ jobs:
           verbose: true
 
   update-dockerhub:
-    needs: [apply-autopep8]
+    needs: [apply-autopep8-isort]
     env:
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
