@@ -1,47 +1,68 @@
-# Base on nrel/energyplus from Nicholas Long but using 
-# Ubuntu, Python 3.10 and BCVTB
+# Container for Sinergym development
+# ---------------------------------------------------------------------------- #
+#                                  BASE IMAGE                                  #
+# ---------------------------------------------------------------------------- #
+
 ARG UBUNTU_VERSION=24.04
 FROM ubuntu:${UBUNTU_VERSION}
 
-# Arguments for EnergyPlus version (default values of version 8.6.0 if is not specified)
+# ---------------------------------------------------------------------------- #
+#                      CONTAINER ARGUMENTS AND ENV CONFIG                      #
+# ---------------------------------------------------------------------------- #
+
+# -------------------------------- ENERGYPLUS -------------------------------- #
+
+# VERSION ARGUMENTS
 ARG ENERGYPLUS_VERSION=24.1.0
 ARG ENERGYPLUS_INSTALL_VERSION=24-1-0
 ARG ENERGYPLUS_SHA=9d7789a3ac
 
-# Argument for Sinergym extras libraries
-ARG SINERGYM_EXTRAS=[extras]
+#ENV CONFIGURATION
+ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
+ENV EPLUS_PATH=/usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION
+# Downloading from Github
+# e.g. https://github.com/NREL/EnergyPlus/releases/download/v23.1.0/EnergyPlus-23.1.0-87ed9199d4-Linux-Ubuntu22.04-x86_64.sh
+ENV ENERGYPLUS_DOWNLOAD_BASE_URL https://github.com/NREL/EnergyPlus/releases/download/$ENERGYPLUS_TAG
+ENV ENERGYPLUS_DOWNLOAD_FILENAME EnergyPlus-$ENERGYPLUS_VERSION-$ENERGYPLUS_SHA-Linux-Ubuntu22.04-x86_64.sh 
+ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_FILENAME
+# Python add pyenergyplus path in order to detect API package
+ENV PYTHONPATH="/usr/local/EnergyPlus-${ENERGYPLUS_INSTALL_VERSION}"
 
-# Argument for choosing Python version
+# ---------------------------------- PYTHON ---------------------------------- #
+
+# VERSION ARGUMENT
 ARG PYTHON_VERSION=3.12
+
+# ENV CONFIGURATION
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
-# WANDB_API_KEY
+# ---------------------------------- POETRY ---------------------------------- #
+
+# ENV CONFIGURATION
+ENV POETRY_NO_INTERACTION=1 
+ENV POETRY_VIRTUALENVS_IN_PROJECT=0
+ENV POETRY_VIRTUALENVS_CREATE=0
+ENV POETRY_CACHE_DIR=/tmp/poetry_cache
+
+# ------------------------- WANDB API KEY (IF EXISTS) ------------------------ #
+
 ARG WANDB_API_KEY
 ENV WANDB_API_KEY=${WANDB_API_KEY}
 
 # LC_ALL for python locale error (https://bobbyhadz.com/blog/locale-error-unsupported-locale-setting-in-python)
 ENV LC_ALL=C
 
-ENV ENERGYPLUS_VERSION=$ENERGYPLUS_VERSION
-ENV ENERGYPLUS_TAG=v$ENERGYPLUS_VERSION
-ENV ENERGYPLUS_SHA=$ENERGYPLUS_SHA
+# ---------------------------------------------------------------------------- #
+#                        INSTALLATION AND CONFIGURATION                        #
+# ---------------------------------------------------------------------------- #
 
-# This should be x.y.z, but EnergyPlus convention is x-y-z
-ENV ENERGYPLUS_INSTALL_VERSION=$ENERGYPLUS_INSTALL_VERSION
-ENV EPLUS_PATH=/usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION
+# --------------------- APT UPDATE AND MANDATORY PACKAGES -------------------- #
 
-
-# Downloading from Github
-# e.g. https://github.com/NREL/EnergyPlus/releases/download/v23.1.0/EnergyPlus-23.1.0-87ed9199d4-Linux-Ubuntu22.04-x86_64.sh
-ENV ENERGYPLUS_DOWNLOAD_BASE_URL https://github.com/NREL/EnergyPlus/releases/download/$ENERGYPLUS_TAG
-ENV ENERGYPLUS_DOWNLOAD_FILENAME EnergyPlus-$ENERGYPLUS_VERSION-$ENERGYPLUS_SHA-Linux-Ubuntu22.04-x86_64.sh 
-ENV ENERGYPLUS_DOWNLOAD_URL $ENERGYPLUS_DOWNLOAD_BASE_URL/$ENERGYPLUS_DOWNLOAD_FILENAME
-
-# Mandatory apt packages
 RUN apt update && apt upgrade -y
 RUN apt install -y ca-certificates build-essential curl libx11-6 libexpat1 git wget python3
 
-#Energyplus installation
+# -------------------------- ENERGYPLUS INSTALLATION ------------------------- #
+
 RUN curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
     && chmod +x $ENERGYPLUS_DOWNLOAD_FILENAME \
     && echo "y\r" | ./$ENERGYPLUS_DOWNLOAD_FILENAME \
@@ -51,7 +72,8 @@ RUN curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
     # Remove the broken symlinks
     && cd /usr/local/bin find -L . -type l -delete
 
-# Install pip, and make python point to python3
+# ------------------------ PYTHON AND PIP CONFIGURTION ----------------------- #
+
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
     && python3 get-pip.py \
     && rm get-pip.py \
@@ -61,26 +83,32 @@ RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
     && echo "Y\r" | apt install python3-enchant -y \
     && echo "Y\r" | apt install pandoc -y 
 
-# clean files
+# ---------------------------- POETRY CONFIGURTION --------------------------- #
+
+# Install Poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
+# Add Poetry to PATH
+ENV PATH="/root/.local/bin:$PATH"
+
+# -------------------------------- CLEAN FILES ------------------------------- #
+
 RUN apt autoremove -y && apt autoclean -y \
     && rm -rf /var/lib/apt/lists/* 
-    
 
-# Python add pyenergyplus path in order to detect API package
-ENV PYTHONPATH="/usr/local/EnergyPlus-${ENERGYPLUS_INSTALL_VERSION}"
+# ---------------------------------------------------------------------------- #
+#                            WORKDIR AND COPY FILES                            #
+# ---------------------------------------------------------------------------- #
 
 WORKDIR /workspaces/sinergym
-COPY requirements.txt /workspaces/sinergym/requirements.txt
-COPY MANIFEST.in /workspaces/sinergym/MANIFEST.in
-COPY setup.py /workspaces/sinergym/setup.py
-COPY scripts /workspaces/sinergym/scripts
-COPY sinergym /workspaces/sinergym/sinergym
-COPY tests /workspaces/sinergym/tests
-COPY examples /workspaces/sinergym/examples
-COPY docs/source /workspaces/sinergym/docs/source
-COPY .git/ /workspaces/sinergym/.git
-RUN pip install -e .${SINERGYM_EXTRAS}
+# Only copy basic files for poetry installation
+COPY pyproject.toml poetry.lock README.md LICENSE INSTALL.md CODE_OF_CONDUCT.md ./
 
-#RUN pip install idna && pip install six
+# ---------------------------------------------------------------------------- #
+#                    SINERGYM PACKAGE INSTALLATION (POETRY)                    #
+# ---------------------------------------------------------------------------- #
+
+RUN poetry install --no-interaction --with dev
+
+# Execute the command
 CMD ["/bin/bash"]
 

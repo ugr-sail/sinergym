@@ -1,9 +1,0 @@
-name: sinergym
-channels:
-  - nodefaults
-dependencies:
-  - python=3.12   
-  - anaconda
-  - pip
-  - pip:
-    - sinergym[extras]

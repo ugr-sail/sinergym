@@ -1,7 +1,7 @@
 """Sinergym Loggers"""
 import logging
 import sys
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 from tqdm import tqdm
@@ -135,7 +135,7 @@ class LoggerStorage():
                         info: Dict[str, Any],
                         terminated: bool,
                         truncated: bool,
-                        custom_metrics: List[Any] = None) -> None:
+                        custom_metrics: Optional[List[Any]] = None) -> None:
         """Log interaction data.
 
         Args:

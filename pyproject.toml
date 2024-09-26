@@ -1,0 +1,187 @@
+# -------------------------------------------------------------------------- #
+#                          Sinergym package metadata                         #
+# -------------------------------------------------------------------------- #
+[tool.poetry]
+
+package-mode = true
+name = "sinergym"
+
+version = "3.6.0"
+description = "The goal of sinergym is to create an environment following OpenAI Gym interface for wrapping simulation engines for building control using deep reinforcement learning."
+license = "MIT"
+
+authors = [
+            "Alejandro Campoy Nieves <alejandroac79@gmail.com>", 
+            "Antonio Manjavacas",
+            "Javier Jiménez", 
+            "Juan Gómez",
+            "Miguel Molina"
+]
+# maintainers = [...
+
+# README file(s) are used as the package description
+readme = ["README.md", "INSTALL.md", "CODE_OF_CONDUCT.md", "LICENSE"]
+
+homepage = "https://github.com/ugr-sail/sinergym"
+repository = "https://github.com/ugr-sail/sinergym"
+documentation = "https://ugr-sail.github.io/sinergym"
+
+# Keywords (translated to tags on the package index)
+keywords = [
+            "reinforcement-learning", 
+            "buildings", 
+            "simulation", 
+            "Control", 
+            "reinforcement-learning-environments"
+]
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Ubuntu 24.04 LTS"
+]
+
+# Include (equivalent to MANIFEST.in)
+include = [
+    "sinergym/version.txt",
+    "sinergym/data/**"]
+# Part of proyect you want to exclude in packaging
+# exclude = []
+
+# -------------------------------------------------------------------------- #
+#                              Main dependencies                             #
+# -------------------------------------------------------------------------- #
+[tool.poetry.dependencies]
+
+# Compatible Python versions
+python = "^3.12"
+gymnasium = "^0.29.1"
+numpy = "^2.1.1"
+pandas = "^2.2.2"
+eppy = "^0.5.63"
+tqdm = "^4.66.5"
+xlsxwriter = "^3.2.0"
+# GitHub Repositories direct dependencies
+opyplus = {git = "https://github.com/AlejandroCN7/opyplus.git", branch = "master"}
+
+# -------------------------------------------------------------------------- #
+#                            Optional dependencies                           #
+# -------------------------------------------------------------------------- #
+
+# -------------------------- Groups configuration -------------------------- #
+
+# Develop (all extra libreries included)
+[tool.poetry.group.dev]
+optional=true
+
+# Modularized development dependencies
+[tool.poetry.group.format]
+optional=true
+
+[tool.poetry.group.test]
+optional=true
+
+[tool.poetry.group.doc]
+optional=true
+
+[tool.poetry.group.ipython]
+optional=true
+
+[tool.poetry.group.DRL]
+optional=true
+
+[tool.poetry.group.platforms]
+optional=true
+
+[tool.poetry.group.gcloud]
+optional=true
+
+# --------------------------- Groups dependencies -------------------------- #
+
+[tool.poetry.group.dev.dependencies]
+
+# Format and types
+autopep8 = "^2.3.1"
+isort = "^5.13.2"
+pytype = "^2024.9.13"
+
+# Dependencies info
+pipdeptree = "^2.23.4"
+
+# Tests
+pytest = "^8.3.3"
+pytest-cov = "^5.0.0"
+pytest-xdist = "^3.6.1"
+coverage = "^7.6.1"
+wandb = "^0.18.1"
+
+# Documentation
+sphinx = "^7.4.7"
+sphinx-rtd-theme = "^2.0.0"
+sphinxcontrib-spelling = "^8.0.0"
+sphinxcontrib-jquery = "^4.1"
+sphinx-multitoc-numbering = "^0.1.3"
+sphinx-multiversion = "^0.2.4"
+pyenchant = "^3.2.2"
+nbsphinx = "^0.9.5"
+nbsphinx_link = "^1.3.1"
+IPython = "^8.27.0"
+
+# DRL
+stable-baselines3 = "^2.3.2"
+
+# Google Cloud
+google-api-python-client = "^2.58.0"
+oauth2client = "^4.1.3"
+google-cloud-storage = "^2.5.0"
+
+[tool.poetry.group.format.dependencies]
+autopep8 = "^2.3.1"
+isort = "^5.13.2"
+pytype = "^2024.9.13"
+pipdeptree = "^2.23.4"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.3"
+pytest-cov = "^5.0.0"
+pytest-xdist = "^3.6.1"
+coverage = "^7.6.1"
+wandb = "^0.18.1"
+
+[tool.poetry.group.doc.dependencies]
+sphinx = "^7.4.7"
+sphinx-rtd-theme = "^2.0.0"
+sphinxcontrib-spelling = "^8.0.0"
+sphinxcontrib-jquery = "^4.1"
+sphinx-multitoc-numbering = "^0.1.3"
+sphinx-multiversion = "^0.2.4"
+pyenchant = "^3.2.2"
+nbsphinx = "^0.9.5"
+nbsphinx_link = "^1.3.1"
+IPython = "^8.27.0"
+
+[tool.poetry.group.ipython.dependencies]
+IPython = "^8.27.0"
+
+[tool.poetry.group.DRL.dependencies]
+stable-baselines3 = "^2.3.2"
+
+[tool.poetry.group.platforms.dependencies]
+wandb = "^0.18.1"
+
+[tool.poetry.group.gcloud.dependencies]
+google-api-python-client = "^2.58.0"
+oauth2client = "^4.1.3"
+google-cloud-storage = "^2.5.0"
+
+# Entry points 
+# [tool.poetry.scripts]
+# sinergym = "sinergym.cli:main"
+
+# -------------------------------------------------------------------------- #
+#                         Poetry build configuration                         #
+# -------------------------------------------------------------------------- #
+[build-system]
+requires = ["poetry-core>=1.9.0"]
+build-backend = "poetry.core.masonry.api"
