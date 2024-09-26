@@ -1,3 +1,0 @@
-{
-    "path": "../../../../examples/logging_unused_variables.ipynb"
-}
