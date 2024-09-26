@@ -24,7 +24,7 @@ class ModelJSON(object):
         :param weather_files: Available weather files for each episode.
         :param _weather_path: EPW path origin for apply weather to simulation in current episode.
         :param _ddy_path: DDY path origin for get DesignDays and weather Location.
-        :param _idd: IDD opyplus object to set up Epm.
+        :param _idd: IDD eppy object to set up Epm.
         :param _variables: Output:Variable(s) information about building model.
         :param _meters: Output:Meter(s) information about building model.
         :param _actuators: Actuators information about building model.
@@ -33,7 +33,7 @@ class ModelJSON(object):
         :param max_ep_store: Number of episodes directories will be stored in experiment_path.
         :param config: Dict config with extra configuration which is required to modify building model (may be None).
         :param building: Building model (Dictionary extracted from JSON).
-        :param ddy_model: opyplus Epm object with DDY model.
+        :param ddy_model: eppy object with DDY model.
         :param weather_data: opyplus WeatherData object with EPW data.
         :param zone_names: List of the zone names available in the building.
         :param schedulers: Information in Dict format about all building schedulers.

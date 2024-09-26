@@ -2245,24 +2245,20 @@ six = ">=1.6.1"
 
 [[package]]
 name = "opyplus"
-version = "2.0.6"
+version = "2.0.7"
 description = "Python package to work with Energyplus input and output"
 optional = false
 python-versions = "*"
-files = []
-develop = false
+files = [
+    {file = "opyplus-2.0.7-py3-none-any.whl", hash = "sha256:e2d56a63e4ab5b0cc7aff2efc2a41cd8a5b5a8650eb43502de3fdb8a99c18d00"},
+    {file = "opyplus-2.0.7.tar.gz", hash = "sha256:989fad25effa25aefdd9ed8ea1f8327e7801a5f316116721caca68b7f0e362e0"},
+]
 
 [package.dependencies]
 charset-normalizer = ">=3.2.0,<4.0"
 pandas = ">=1.5.0,<3.0.0"
 python-slugify = ">=3.0.2,<6.0"
 unidecode = ">=1.0.22,<2.0"
-
-[package.source]
-type = "git"
-url = "https://github.com/AlejandroCN7/opyplus.git"
-reference = "master"
-resolved_reference = "63446a21b0c1dcdffc704f7d37ff257509c2cd44"
 
 [[package]]
 name = "packaging"
@@ -4123,4 +4119,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "dd9f71cc768f073c1560ecf30255475053cf1546cc0040bd191bcac3d38e6370"
+content-hash = "3f16d1c3670e495f09dc82cd6d7efc95d67b9b680b47aa549e8a9b09bd02a6eb"

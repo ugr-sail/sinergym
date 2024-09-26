@@ -63,7 +63,7 @@ eppy = "^0.5.63"
 tqdm = "^4.66.5"
 xlsxwriter = "^3.2.0"
 # GitHub Repositories direct dependencies
-opyplus = {git = "https://github.com/AlejandroCN7/opyplus.git", branch = "master"}
+opyplus = "^2.0.7"
 
 # -------------------------------------------------------------------------- #
 #                            Optional dependencies                           #
