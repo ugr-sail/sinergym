@@ -48,7 +48,6 @@ jobs:
           commit_message: Automatic format fixes (autopep8 + isort)
 
   apply-documentation:
-    name: Documentation compilation update by bot
     needs: [apply-autopep8-isort]
     runs-on: ubuntu-24.04
     steps:
@@ -62,8 +61,8 @@ jobs:
         uses: snok/install-poetry@v1
         with:
           version: latest
-          virtualenvs-create: false
-          virtualenvs-in-project: false
+          virtualenvs-create: true
+          virtualenvs-in-project: true
           installer-parallel: true
 
       - name: Setup Python
@@ -84,11 +83,11 @@ jobs:
         run: |
           sudo apt install python3-enchant
           sudo apt install pandoc
-          poetry install --no-interaction --extras doc
+          poetry install --no-interaction --with doc
         
       - name: Build multiversion docs
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: sphinx-multiversion docs/source docs/compilation
+        run: poetry run sphinx-multiversion docs/source docs/compilation
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -144,7 +143,7 @@ jobs:
 
       - name: Build the latest Docker image
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS="format test doc DRL gcloud" --tag $DOCKER_USER/sinergym:latest
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=format,test,doc,DRL,gcloud --tag $DOCKER_USER/sinergym:latest
       
       - name: Build the latest lite Docker image
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"

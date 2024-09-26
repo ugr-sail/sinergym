@@ -29,7 +29,7 @@ jobs:
         env:
           TAG: ${{ steps.tag_version.outputs.latest_tag }}
           #TAG_DATE: ${{ steps.tag_version.outputs.latest_tag_published_at }}
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS="format test doc DRL gcloud" --tag $DOCKER_USER/sinergym:$TAG
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=format,test,doc,DRL,gcloud --tag $DOCKER_USER/sinergym:$TAG
       
       - name: Build container lite image with release tag
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"

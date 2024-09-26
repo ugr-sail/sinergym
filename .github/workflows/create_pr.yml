@@ -51,21 +51,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: latest
-          virtualenvs-create: false
-          virtualenvs-in-project: false
-          installer-parallel: true
-
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
           
       - name: Install pytype
-        run: poetry run pip install pytype
+        run: pip install pytype requests urllib3
 
       - name: Check pytype
         run: pytype -d import-error sinergym/
@@ -81,8 +73,8 @@ jobs:
         uses: snok/install-poetry@v1
         with:
           version: latest
-          virtualenvs-create: false
-          virtualenvs-in-project: false
+          virtualenvs-create: true
+          virtualenvs-in-project: true
           installer-parallel: true
 
       - name: Setup Python
@@ -103,15 +95,15 @@ jobs:
         run: |
           sudo apt install python3-enchant
           sudo apt install pandoc
-          poetry install --no-interaction --extras doc
+          poetry install --no-interaction --with doc
       
       - name: Check build docs
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: sphinx-build -M html docs/source docs/build
+        run: poetry run sphinx-build -M html docs/source docs/build
 
       - name: Check sphinx spelling
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: sphinx-build -M spelling docs/source docs/build
+        run: poetry run sphinx-build -M spelling docs/source docs/build
 
   tests:
     name: build container and execute pytest

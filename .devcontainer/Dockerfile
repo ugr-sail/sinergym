@@ -63,14 +63,14 @@ RUN apt install -y ca-certificates build-essential curl libx11-6 libexpat1 git w
 
 # -------------------------- ENERGYPLUS INSTALLATION ------------------------- #
 
-# RUN curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
-#     && chmod +x $ENERGYPLUS_DOWNLOAD_FILENAME \
-#     && echo "y\r" | ./$ENERGYPLUS_DOWNLOAD_FILENAME \
-#     && rm $ENERGYPLUS_DOWNLOAD_FILENAME \
-#     && cd /usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION \
-#     && rm -rf PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater \
-#     # Remove the broken symlinks
-#     && cd /usr/local/bin find -L . -type l -delete
+RUN curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
+    && chmod +x $ENERGYPLUS_DOWNLOAD_FILENAME \
+    && echo "y\r" | ./$ENERGYPLUS_DOWNLOAD_FILENAME \
+    && rm $ENERGYPLUS_DOWNLOAD_FILENAME \
+    && cd /usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION \
+    && rm -rf PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater \
+    # Remove the broken symlinks
+    && cd /usr/local/bin find -L . -type l -delete
 
 # ------------------------ PYTHON AND PIP CONFIGURTION ----------------------- #
 
