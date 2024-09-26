@@ -40,12 +40,13 @@ However, Sinergym has a set of optional dependencies that enhance the tool's usa
 dependencies can be installed in the following way when building the image:
 
 ```bash
-$ docker build -t <tag_name> --build-arg SINERGYM_EXTRAS="format test doc DRL gcloud" .
+$ docker build -t <tag_name> --build-arg SINERGYM_EXTRAS=format,test,doc,DRL,gcloud .
 ```
 
 These optional dependencies allow you to format code, run tests, generate documentation, 
 have pre-existing DRL algorithms available, etc. For more information, please refer to 
-the ``pyproject.toml`` file at the root of the repository.
+the `pyproject.toml` file at the root of the repository. If you desire to install all optional
+packages, you can use `dev` directly in the `SINERGYM_EXTRAS` argument.
 
 > :memo: **Note:** Our container can also be directly installed from the [Docker Hub repository](https://hub.docker.com/repository/docker/sailugr/sinergym). It contains all the project's releases with secondary dependencies or lite versions.
 
@@ -60,7 +61,7 @@ By default, the command executed is `python scripts/try_env.py`, which is a mini
 If you want to run a DRL experiment, for example, you can do it like this:
 
 ```bash
-$ docker build -t example/sinergym:latest --build-arg SINERGYM_EXTRAS="DRL platforms" .
+$ docker build -t example/sinergym:latest --build-arg SINERGYM_EXTRAS=DRL,platforms .
 $ docker run -e WANDB_API_KEY=$WANDB_API_KEY -it --rm example/sinergym:latest python scripts/train/train_agent.py -conf scripts/train/train_agent_PPO.json
 ```
 
@@ -98,14 +99,14 @@ $ pip install sinergym
 You can also install the optional packages from here, just like in the Docker container:
 
 ```sh
-$ pip install sinergym[format, test, doc, DRL, gcloud]
+$ pip install sinergym[format,test,doc,DRL,gcloud]
 ```
 
 If you want to install the cloned repository directly, you can do so by running the following 
 command in its root.
 
 ```sh
-$ poetry install --extras "format test doc DRL gcloud"
+$ poetry install --with format,test,doc,DRL,gcloud
 ```
 
 With this, you have the correct Python version and the necessary modules to run 
