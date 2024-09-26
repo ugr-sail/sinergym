@@ -44,11 +44,6 @@ ENV POETRY_VIRTUALENVS_IN_PROJECT=0
 ENV POETRY_VIRTUALENVS_CREATE=0
 ENV POETRY_CACHE_DIR=/tmp/poetry_cache
 
-
-# ------------------------- SINERGYM EXTRA LIBRERIES ------------------------- #
-
-ARG SINERGYM_EXTRAS=
-
 # ------------------------- WANDB API KEY (IF EXISTS) ------------------------ #
 
 ARG WANDB_API_KEY
@@ -68,14 +63,14 @@ RUN apt install -y ca-certificates build-essential curl libx11-6 libexpat1 git w
 
 # -------------------------- ENERGYPLUS INSTALLATION ------------------------- #
 
-RUN curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
-    && chmod +x $ENERGYPLUS_DOWNLOAD_FILENAME \
-    && echo "y\r" | ./$ENERGYPLUS_DOWNLOAD_FILENAME \
-    && rm $ENERGYPLUS_DOWNLOAD_FILENAME \
-    && cd /usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION \
-    && rm -rf PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater \
-    # Remove the broken symlinks
-    && cd /usr/local/bin find -L . -type l -delete
+# RUN curl -SLO $ENERGYPLUS_DOWNLOAD_URL \
+#     && chmod +x $ENERGYPLUS_DOWNLOAD_FILENAME \
+#     && echo "y\r" | ./$ENERGYPLUS_DOWNLOAD_FILENAME \
+#     && rm $ENERGYPLUS_DOWNLOAD_FILENAME \
+#     && cd /usr/local/EnergyPlus-$ENERGYPLUS_INSTALL_VERSION \
+#     && rm -rf PostProcess/EP-Compare PreProcess/FMUParser PreProcess/ParametricPreProcessor PreProcess/IDFVersionUpdater \
+#     # Remove the broken symlinks
+#     && cd /usr/local/bin find -L . -type l -delete
 
 # ------------------------ PYTHON AND PIP CONFIGURTION ----------------------- #
 
@@ -112,7 +107,7 @@ COPY pyproject.toml poetry.lock README.md LICENSE INSTALL.md CODE_OF_CONDUCT.md 
 #                    SINERGYM PACKAGE INSTALLATION (POETRY)                    #
 # ---------------------------------------------------------------------------- #
 
-RUN poetry install --no-interaction --extras "$SINERGYM_EXTRAS" --with dev
+RUN poetry install --no-interaction --with dev
 
 # Execute the command
 CMD ["/bin/bash"]
