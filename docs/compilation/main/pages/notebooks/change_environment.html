@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>21. Changing an environment registered in Sinergym &mdash; Sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=816ccb90" />
+
+  
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="22. Default building control setting up an empty action interface" href="default_building_control.html" />
+    <link rel="prev" title="20. Sinergym package information" href="sinergym_package.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">5. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">6. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging.html">8. Logging System Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">9. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">10. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">11. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">12. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">13. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">14. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">15. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">16. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">17. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">18. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">19. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sinergym_package.html">20. Sinergym package information</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">21. Changing an environment registered in Sinergym</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Adding-a-new-reward">21.1. Adding a new reward</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Updating-the-weather-used-in-environment">21.2. Updating the weather used in environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Changing-observation-and-action-spaces">21.3. Changing observation and action spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Adding-more-extra-configuration">21.4. Adding more extra configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">22. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">23. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">24. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging_unused_variables.html">25. Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">26. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">27. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">21. </span>Changing an environment registered in Sinergym</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/notebooks/change_environment.nblink.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Changing-an-environment-registered-in-Sinergym">
+<h1><span class="section-number">21. </span>Changing an environment registered in Sinergym<a class="headerlink" href="#Changing-an-environment-registered-in-Sinergym" title="Link to this heading"></a></h1>
+<p>To use the available environments in Sinergym, simply import the Sinergym package and call <code class="docutils literal notranslate"><span class="pre">gym.make(&lt;environment_id&gt;)</span></code> in your Python script. The list of available environments can be found in the <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/environments.html">Sinergym documentation</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-stochastic-v1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-continuous-stochastic-v1
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-stochastic-v1-res1
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35040
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+</pre></div></div>
+</div>
+<p>Environment IDs in Sinergym encompass various components, including the building design (<em>epJSON</em>), reward function, action and observation spaces, variable definitions, meters, actuators, and more.</p>
+<p>If you wish to create a new environment, you can define it from scratch in our <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/__init__.py">environment list</a> (use the env demo as an example) and run it locally.</p>
+<p>Alternatively (and recommended), you can start with one of our environment IDs and modify the components as needed. You can mix and match different components.</p>
+<p>To do this, add the parameters you want to overwrite in the <code class="docutils literal notranslate"><span class="pre">gym.make(&lt;environment_id&gt;)</span></code> constructor of the <em>Sinergym</em> environment.</p>
+<p>Many of these updates need changes to the building model to accommodate new features. Sinergym will automatically handle these changes. For instance, using a different weather file requires updating the building location and design days. Similarly, using new observation variables requires updating the <code class="docutils literal notranslate"><span class="pre">Output:Variable</span></code> fields. The same applies to any additional configuration context directly related to the simulation. Sinergym saves this new building file version in its output folder, leaving
+the original untouched.</p>
+<p>Let’s explore some of the elements we can update from any environment:</p>
+<section id="Adding-a-new-reward">
+<h2><span class="section-number">21.1. </span>Adding a new reward<a class="headerlink" href="#Adding-a-new-reward" title="Link to this heading"></a></h2>
+<p>As mentioned above, simply add the appropriate parameters to <code class="docutils literal notranslate"><span class="pre">gym.make()</span></code> after specifying the environment ID.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="n">ExpReward</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-v1&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">ExpReward</span><span class="p">,</span> <span class="n">reward_kwargs</span><span class="o">=</span><span class="p">{</span>
+                                                                    <span class="s1">&#39;temperature_variables&#39;</span><span class="p">:</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">,</span>
+                                                                    <span class="s1">&#39;energy_variables&#39;</span><span class="p">:</span> <span class="s1">&#39;HVAC_electricity_demand_rate&#39;</span><span class="p">,</span>
+                                                                    <span class="s1">&#39;range_comfort_winter&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">23.5</span><span class="p">),</span>
+                                                                    <span class="s1">&#39;range_comfort_summer&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">23.0</span><span class="p">,</span> <span class="mf">26.0</span><span class="p">),</span>
+                                                                    <span class="s1">&#39;energy_weight&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-continuous-v1
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-v1-res1
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35040
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+</pre></div></div>
+</div>
+<p>You need to define the <strong>reward</strong> class for the environment. A reward function class has various user-specifiable parameters, such as temperature variables, weights, etc., depending on the chosen reward function. To define it, we use the <strong>reward_kwargs</strong> parameter. Refer to the <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/rewards.html">reward documentation</a> for more details on reward classes and how to create a new one.</p>
+</section>
+<section id="Updating-the-weather-used-in-environment">
+<h2><span class="section-number">21.2. </span>Updating the weather used in environment<a class="headerlink" href="#Updating-the-weather-used-in-environment" title="Link to this heading"></a></h2>
+<p>You can replace the weather file (and weather variability for a stochastic environment) used in the environment with a new one. The approach is the same as the reward example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
+                <span class="n">weather_files</span><span class="o">=</span><span class="s1">&#39;PRT_Lisboa.085360_INETI.epw&#39;</span><span class="p">,</span>
+                <span class="n">weather_variability</span><span class="o">=</span><span class="p">{</span>
+                                        <span class="s2">&quot;drybulb&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">),</span>
+                                        <span class="s2">&quot;windspd&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+                                    <span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-cool-continuous-stochastic-v1
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-cool-continuous-stochastic-v1-res1
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35040
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+</pre></div></div>
+</div>
+<p>You can also <strong>add multiple weather</strong> files. In this scenario, Sinergym will randomly select one of the available weather files and adjust the building model to that location for each episode:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
+                <span class="n">weather_files</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ESP_Granada.084190_SWEC.epw&#39;</span><span class="p">,</span><span class="s1">&#39;FIN_Helsinki.029740_IWEC.epw&#39;</span><span class="p">,</span><span class="s1">&#39;PRT_Lisboa.085360_INETI.epw&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-cool-continuous-stochastic-v1
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-cool-continuous-stochastic-v1-res2
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35040
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+</pre></div></div>
+</div>
+</section>
+<section id="Changing-observation-and-action-spaces">
+<h2><span class="section-number">21.3. </span>Changing observation and action spaces<a class="headerlink" href="#Changing-observation-and-action-spaces" title="Link to this heading"></a></h2>
+<p>By default, the IDs of the predefined environments in <em>Sinergym</em> come with <strong>time variables</strong>, <strong>variables</strong>, <strong>meters</strong>, and <strong>actuators</strong> pre-configured, along with observation (time variables, variables, and meters) and action (actuators) spaces for these components.</p>
+<p>However, these can be overwritten with new definitions. We’ll need to define the names of the <strong>time variables</strong>, <strong>variables</strong>, <strong>meters</strong>, or <strong>actuators</strong>, as well as the <strong>action space</strong> definition (and an <strong>action mapping</strong> for discrete environments). Sinergym automatically calculates the observation space. It’s also possible to modify a subset of these components. For more details on the structure definitions shown below, refer to the documentation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">sinergym</span>
+
+<span class="n">new_time_variables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;day_of_month&#39;</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">]</span>
+
+<span class="n">new_variables</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;outdoor_temperature&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Site Outdoor Air Drybulb Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;Environment&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;outdoor_humidity&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Site Outdoor Air Relative Humidity&#39;</span><span class="p">,</span> <span class="s1">&#39;Environment&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;wind_speed&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Site Wind Speed&#39;</span><span class="p">,</span> <span class="s1">&#39;Environment&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;wind_direction&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Site Wind Direction&#39;</span><span class="p">,</span> <span class="s1">&#39;Environment&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;diffuse_solar_radiation&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Site Diffuse Solar Radiation Rate per Area&#39;</span><span class="p">,</span> <span class="s1">&#39;Environment&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;direct_solar_radiation&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Site Direct Solar Radiation Rate per Area&#39;</span><span class="p">,</span> <span class="s1">&#39;Environment&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;west_zone_htg_setpoint&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Thermostat Heating Setpoint Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;West Zone&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;east_zone_htg_setpoint&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Thermostat Heating Setpoint Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;East Zone&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;west_zone_clg_setpoint&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Thermostat Cooling Setpoint Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;West Zone&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;east_zone_clg_setpoint&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Thermostat Cooling Setpoint Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;East Zone&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;west_zone_air_temperature&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;West Zone&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;east_zone_air_temperature&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;East Zone&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;west_zone_air_humidity&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Relative Humidity&#39;</span><span class="p">,</span> <span class="s1">&#39;West Zone&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;east_zone_air_humidity&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Zone Air Relative Humidity&#39;</span><span class="p">,</span> <span class="s1">&#39;East Zone&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;HVAC_electricity_demand_rate&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;Facility Total HVAC Electricity Demand Rate&#39;</span><span class="p">,</span> <span class="s1">&#39;Whole Building&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">new_meters</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;east_zone_electricity&#39;</span><span class="p">:</span><span class="s1">&#39;Electricity:Zone:EAST ZONE&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;west_zone_electricity&#39;</span><span class="p">:</span><span class="s1">&#39;Electricity:Zone:WEST ZONE&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">new_actuators</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Heating_Setpoint_RL&#39;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s1">&#39;Schedule:Compact&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Schedule Value&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Heating Setpoints&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;Cooling_Setpoint_RL&#39;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s1">&#39;Schedule:Compact&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Schedule Value&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Cooling Setpoints&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">new_action_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+    <span class="n">low</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">14.0</span><span class="p">,</span> <span class="mf">22.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+    <span class="n">high</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">22.0</span><span class="p">,</span> <span class="mf">30.5</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,),</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-datacenter-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
+                <span class="n">time_variables</span><span class="o">=</span><span class="n">new_time_variables</span><span class="p">,</span>
+                <span class="n">variables</span><span class="o">=</span><span class="n">new_variables</span><span class="p">,</span>
+                <span class="n">meters</span><span class="o">=</span><span class="n">new_meters</span><span class="p">,</span>
+                <span class="n">actuators</span><span class="o">=</span><span class="n">new_actuators</span><span class="p">,</span>
+                <span class="n">action_space</span><span class="o">=</span><span class="n">new_action_space</span><span class="p">,</span>
+            <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;New environment observation varibles (time variables + variables + meters): </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;New environment action varibles (actuators): </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_variables&#39;</span><span class="p">)))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">truncated</span> <span class="o">=</span> <span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s1">&#39;Episode &#39;</span><span class="p">,</span>
+        <span class="n">i</span><span class="p">,</span>
+        <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span>
+        <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span>
+        <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: datacenter-cool-continuous-stochastic-v1
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res1
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35040
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+New environment observation varibles (time variables + variables + meters): [&#39;month&#39;, &#39;day_of_month&#39;, &#39;hour&#39;, &#39;outdoor_temperature&#39;, &#39;outdoor_humidity&#39;, &#39;wind_speed&#39;, &#39;wind_direction&#39;, &#39;diffuse_solar_radiation&#39;, &#39;direct_solar_radiation&#39;, &#39;west_zone_htg_setpoint&#39;, &#39;east_zone_htg_setpoint&#39;, &#39;west_zone_clg_setpoint&#39;, &#39;east_zone_clg_setpoint&#39;, &#39;west_zone_air_temperature&#39;, &#39;east_zone_air_temperature&#39;, &#39;west_zone_air_humidity&#39;, &#39;east_zone_air_humidity&#39;, &#39;HVAC_electricity_demand_rate&#39;, &#39;east_zone_electricity&#39;, &#39;west_zone_electricity&#39;]
+New environment action varibles (actuators): [&#39;Heating_Setpoint_RL&#39;, &#39;Cooling_Setpoint_RL&#39;]
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: datacenter-cool-continuous-stochastic-v1
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:26&lt;00:00,  4.07%/s, 100% completed]Episode  0 Mean reward:  -0.6645031249190511 Cumulative reward:  -23284.189497163552
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:28&lt;00:00,  3.47%/s, 100% completed]
+[ENVIRONMENT] (INFO) : Environment closed. [datacenter-cool-continuous-stochastic-v1]
+</pre></div></div>
+</div>
+<p>If the definition contains inconsistencies, such as mismatched spaces and variables, or non-existent observation variables, <em>Sinergym</em> will throw an error.</p>
+<p>The definitions for time variables, variables, meters, or actuators must be compatible with the EnergyPlus Engine. If not, Sinergym will display an error message. You can define the spaces using our <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/environments_registration.html">environment register</a> too. Refer to the documentation for more details.</p>
+</section>
+<section id="Adding-more-extra-configuration">
+<h2><span class="section-number">21.4. </span>Adding more extra configuration<a class="headerlink" href="#Adding-more-extra-configuration" title="Link to this heading"></a></h2>
+<p>In Sinergym, any argument of the environment constructor can be updated. This allows for modifications such as changing the environment name, adjusting the maximum number of episodes stored in its output, or altering the normalization in the gym actions interface.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-datacenter-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
+                <span class="n">env_name</span><span class="o">=</span><span class="s1">&#39;new_env_name&#39;</span><span class="p">,</span>
+                <span class="n">max_ep_data_store_num</span><span class="o">=</span><span class="mi">20</span>
+                <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: new_env_name
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-new_env_name-res1
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35040
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+</pre></div></div>
+</div>
+<p>You can also include a dictionary with additional parameters to update the building model directly with new simulation-related context:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extra_conf</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;timesteps_per_hour&#39;</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span>
+    <span class="s1">&#39;runperiod&#39;</span><span class="p">:(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1991</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1991</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-datacenter-cool-continuous-stochastic-v1&#39;</span><span class="p">,</span>
+                <span class="n">config_params</span><span class="o">=</span><span class="n">extra_conf</span>
+                <span class="p">)</span>
+
+<span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: datacenter-cool-continuous-stochastic-v1
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-datacenter-cool-continuous-stochastic-v1-res2
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Extra config: runperiod updated to {&#39;apply_weekend_holiday_rule&#39;: &#39;No&#39;, &#39;begin_day_of_month&#39;: 1, &#39;begin_month&#39;: 1, &#39;begin_year&#39;: 1991, &#39;day_of_week_for_start_day&#39;: &#39;Tuesday&#39;, &#39;end_day_of_month&#39;: 2, &#39;end_month&#39;: 1, &#39;end_year&#39;: 1991, &#39;use_weather_file_daylight_saving_period&#39;: &#39;Yes&#39;, &#39;use_weather_file_holidays_and_special_days&#39;: &#39;Yes&#39;, &#39;use_weather_file_rain_indicators&#39;: &#39;Yes&#39;, &#39;use_weather_file_snow_indicators&#39;: &#39;Yes&#39;}
+[MODELING] (INFO) : Updated episode length (seconds): 172800.0
+[MODELING] (INFO) : Updated timestep size (seconds): 600.0
+[MODELING] (INFO) : Updated timesteps per episode: 288
+[MODELING] (INFO) : Runperiod established.
+[MODELING] (INFO) : Episode length (seconds): 172800.0
+[MODELING] (INFO) : timestep size (seconds): 600.0
+[MODELING] (INFO) : timesteps per episode: 288
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: datacenter-cool-continuous-stochastic-v1
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[ENVIRONMENT] (INFO) : Environment closed. [datacenter-cool-continuous-stochastic-v1]
+Simulation Progress [Episode 1]:  51%|█████     | 51/100 [00:00&lt;00:00, 1534.34%/s, 51% completed]
+</pre></div></div>
+</div>
+<p>For more information about extra configuration parameters, see our <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/html/pages/extra-configuration.html">Extra configuration documentation</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sinergym_package.html" class="btn btn-neutral float-left" title="20. Sinergym package information" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="default_building_control.html" class="btn btn-neutral float-right" title="22. Default building control setting up an empty action interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: main
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
+            <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
+            <dd><a href="../../../v3.3.0/index.html">v3.3.0</a></dd>
+            <dd><a href="../../../v3.4.0/index.html">v3.4.0</a></dd>
+            <dd><a href="../../../v3.5.0/index.html">v3.5.0</a></dd>
+            <dd><a href="../../../v3.6.0/index.html">v3.6.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="change_environment.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>

@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>26. DRL usage example &mdash; Sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=816ccb90" />
+
+  
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="API reference" href="../API-reference.html" />
+    <link rel="prev" title="25. Rule Controller example" href="rule_controller_example.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">5. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">6. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging.html">8. Logging System Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">9. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">10. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">11. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">12. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">13. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">14. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">15. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">16. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">17. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">18. Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">19. Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">20. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">21. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">22. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">23. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging_unused_variables.html">24. Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">25. Rule Controller example</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">26. DRL usage example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Training-a-model">26.1. Training a model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Loading-a-model">26.2. Loading a model</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">26. </span>DRL usage example</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/notebooks/drl.nblink.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="DRL-usage-example">
+<h1><span class="section-number">26. </span>DRL usage example<a class="headerlink" href="#DRL-usage-example" title="Link to this heading"></a></h1>
+<p>In this notebook example, we’ve used Stable Baselines 3 to train and load an agent. However, Sinergym is entirely agnostic to any DRL algorithm (though it does have custom callbacks specifically for SB3) and can be used with any DRL library that interfaces with Gymnasium.</p>
+<section id="Training-a-model">
+<h2><span class="section-number">26.1. </span>Training a model<a class="headerlink" href="#Training-a-model" title="Link to this heading"></a></h2>
+<p>We’ll be using the <code class="docutils literal notranslate"><span class="pre">train_agent.py</span></code> script located in the repository root. This script leverages all the capabilities of Sinergym for working with deep reinforcement learning algorithms and sets parameters for everything, allowing us to easily define training options via a JSON file when executing the script.</p>
+<p>For more details on how to run <code class="docutils literal notranslate"><span class="pre">train_agent.py</span></code>, please refer to <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#model-training">Train a model</a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">wandb</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.callbacks</span> <span class="kn">import</span> <span class="n">CallbackList</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.logger</span> <span class="kn">import</span> <span class="n">HumanOutputFormat</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.logger</span> <span class="kn">import</span> <span class="n">Logger</span> <span class="k">as</span> <span class="n">SB3Logger</span>
+
+<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.callbacks</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.logger</span> <span class="kn">import</span> <span class="n">WandBOutputFormat</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.rewards</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+<p>First, let’s set some variables for the execution.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Environment ID</span>
+<span class="n">environment</span> <span class="o">=</span> <span class="s2">&quot;Eplus-5zone-mixed-continuous-stochastic-v1&quot;</span>
+<span class="c1"># Training episodes</span>
+<span class="n">episodes</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c1">#Name of the experiment</span>
+<span class="n">experiment_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">_%H:%M&#39;</span><span class="p">)</span>
+<span class="n">experiment_name</span> <span class="o">=</span> <span class="s1">&#39;SB3_PPO-&#39;</span> <span class="o">+</span> <span class="n">environment</span> <span class="o">+</span> \
+    <span class="s1">&#39;-episodes-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">episodes</span><span class="p">)</span>
+<span class="n">experiment_name</span> <span class="o">+=</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">experiment_date</span>
+</pre></div>
+</div>
+</div>
+<p>Now, we’re ready to create the Gym environment. We’ll use the previously defined environment name, but remember that you can <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/notebooks/change_environment.html#Changing-an-environment-registered-in-Sinergym">change the default environment configuration</a>. We’ll also create an eval_env for evaluation episodes. If desired, we can replace the env name with the experiment name.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="n">experiment_name</span><span class="p">)</span>
+<span class="n">eval_env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="n">experiment_name</span><span class="o">+</span><span class="s1">&#39;_EVALUATION&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-20_11:17]
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-20_11:17-res1]
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Updated building model with whole Output:Variable available names
+[MODELING] (INFO) : Updated building model with whole Output:Meter available names
+[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35041
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-20_11:17 created successfully.
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-20_11:17_EVALUATION]
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-20_11:17_EVALUATION-res1]
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Updated building model with whole Output:Variable available names
+[MODELING] (INFO) : Updated building model with whole Output:Meter available names
+[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35041
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-20_11:17_EVALUATION created successfully.
+</pre></div></div>
+</div>
+<p>We can also add wrappers to the environment. We’ll use an action and observation normalization wrapper and <em>Sinergym</em> logger. Normalization is highly recommended for DRL algorithms with continuous action space, and the logger is used to monitor and log environment interactions and save the data, and then dump it into CSV files and/or wandb.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeAction</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">CSVLogger</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="c1"># Discomment the following line to log to WandB (remmeber to set the API key in a environment variable)</span>
+<span class="c1"># env = WandBLogger(env,</span>
+<span class="c1">#                  entity=&#39;sinergym&#39;,</span>
+<span class="c1">#                  project_name=&#39;sail_ugr&#39;,</span>
+<span class="c1">#                  run_name=experiment_name,</span>
+<span class="c1">#                  group=&#39;Train_example&#39;,</span>
+<span class="c1">#                  tags=[&#39;DRL&#39;, &#39;PPO&#39;, &#39;5zone&#39;, &#39;continuous&#39;, &#39;stochastic&#39;, &#39;v1&#39;],</span>
+<span class="c1">#                  save_code = True,</span>
+<span class="c1">#                  dump_frequency = 1000,</span>
+<span class="c1">#                  artifact_save = True)</span>
+<span class="n">eval_env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">eval_env</span><span class="p">)</span>
+<span class="n">eval_env</span> <span class="o">=</span> <span class="n">NormalizeAction</span><span class="p">(</span><span class="n">eval_env</span><span class="p">)</span>
+<span class="n">eval_env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">eval_env</span><span class="p">)</span>
+<span class="n">eval_env</span> <span class="o">=</span> <span class="n">CSVLogger</span><span class="p">(</span><span class="n">eval_env</span><span class="p">)</span>
+<span class="c1"># Evaluation env is not required to wrapp with WandBLogger since the calculations are added in the same WandB session than the training env,</span>
+<span class="c1"># using the sinergym LoggerEvalCallback</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[WRAPPER NormalizeObservation] (INFO) : Wrapper initialized.
+[WRAPPER NormalizeAction] (INFO) : New normalized action Space: Box(-1.0, 1.0, (2,), float32)
+[WRAPPER NormalizeAction] (INFO) : Wrapper initialized
+[WRAPPER LoggerWrapper] (INFO) : Wrapper initialized.
+[WRAPPER CSVLogger] (INFO) : Wrapper initialized.
+[WRAPPER NormalizeObservation] (INFO) : Wrapper initialized.
+[WRAPPER NormalizeAction] (INFO) : New normalized action Space: Box(-1.0, 1.0, (2,), float32)
+[WRAPPER NormalizeAction] (INFO) : Wrapper initialized
+[WRAPPER LoggerWrapper] (INFO) : Wrapper initialized.
+[WRAPPER CSVLogger] (INFO) : Wrapper initialized.
+</pre></div></div>
+</div>
+<p>At this point, the environment is set up and ready to use. We’ll create our learning model (Stable Baselines 3 PPO), but any other algorithm can be used.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this case, all the hyperparameters are the default ones</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">PPO</span><span class="p">(</span><span class="s1">&#39;MlpPolicy&#39;</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Using cpu device
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+</pre></div></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">WandBLogger</span></code> is active, we can log all hyperparameters there:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Register hyperparameters in wandb if it is wrapped</span>
+<span class="k">if</span> <span class="n">is_wrapped</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">WandBLogger</span><span class="p">):</span>
+    <span class="n">experiment_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;sinergym-version&#39;</span><span class="p">:</span> <span class="n">sinergym</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+        <span class="s1">&#39;python-version&#39;</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span>
+    <span class="p">}</span>
+    <span class="c1"># experiment_params.update(conf)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;wandb_run&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">experiment_params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Evaluation will run the current model for a set number of episodes to determine if it’s the best current version of the model at that training stage. The generated output will also be stored depending used logger wrappers. We’ll use the LoggerEval callback to print and save the best evaluated model during training, saving in local CSV files and WandB platform.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">callbacks</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Set up Evaluation logging and saving best model</span>
+<span class="n">eval_callback</span> <span class="o">=</span> <span class="n">LoggerEvalCallback</span><span class="p">(</span>
+            <span class="n">eval_env</span><span class="o">=</span><span class="n">eval_env</span><span class="p">,</span>
+            <span class="n">train_env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+            <span class="n">n_eval_episodes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">eval_freq_episodes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eval_callback</span><span class="p">)</span>
+<span class="n">callback</span> <span class="o">=</span> <span class="n">CallbackList</span><span class="p">(</span><span class="n">callbacks</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>To add the SB3 logging values in the same WandB session too, we need to create a compatible wandb output format (which calls the <em>wandb</em> log method in the learning algorithm process). <em>Sinergym</em> has implemented one called <code class="docutils literal notranslate"><span class="pre">WandBOutputFormat</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># wandb logger and setting in SB3</span>
+<span class="k">if</span> <span class="n">is_wrapped</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">WandBLogger</span><span class="p">):</span>
+    <span class="c1"># wandb logger and setting in SB3</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">SB3Logger</span><span class="p">(</span>
+        <span class="n">folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_formats</span><span class="o">=</span><span class="p">[</span>
+            <span class="n">HumanOutputFormat</span><span class="p">(</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
+                <span class="n">max_length</span><span class="o">=</span><span class="mi">120</span><span class="p">),</span>
+            <span class="n">WandBOutputFormat</span><span class="p">()])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>This is the total number of time steps for the training.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">timesteps</span> <span class="o">=</span> <span class="n">episodes</span> <span class="o">*</span> <span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;timestep_per_episode&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Now, it’s time to train the model with the previously defined callback. This may take a few minutes, depending on your computer.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span>
+    <span class="n">total_timesteps</span><span class="o">=</span><span class="n">timesteps</span><span class="p">,</span>
+    <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
+    <span class="n">log_interval</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Now, we save the current model (the model version when training has finished). We will save the mean and var normalization calibration in order to use it in model evaluation, although these values can be consulted later in a txt saved in Sinergym training output. Visit NormalizeObservation wrapper documentation for more information.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;workspace_path&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/model&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>And as always, remember to close the environment. If WandB is active with logger, this close will save artifacts with whole experiment output and evaluation executed.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[WRAPPER CSVLogger] (INFO) : Environment closed, data updated in monitor and progress.csv.
+[ENVIRONMENT] (INFO) : Environment closed. [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+Progress: |***************************************************************************************************| 99%
+</pre></div></div>
+</div>
+<p>All experiment results are stored locally, but you can also view the execution in <em>wandb</em>:</p>
+<ul class="simple">
+<li><p>When you check your projects, you’ll see the execution allocated:</p></li>
+</ul>
+<img alt="wandb_projects1" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_projects1.png?raw=true" />
+<ul class="simple">
+<li><p>The training experiment’s tracked hyperparameters:</p></li>
+</ul>
+<img alt="wandb_training_hyperparameters" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_training_hyperparameters.png?raw=true" />
+<ul class="simple">
+<li><p>Registered artifacts (if evaluation is enabled, the best model is also registered):</p></li>
+</ul>
+<img alt="wandb_training_artifact" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_training_artifact.png?raw=true" />
+<ul class="simple">
+<li><p>Real-time visualization of metrics:</p></li>
+</ul>
+<img alt="wandb_training_charts" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_training_charts.png?raw=true" />
+</section>
+<section id="Loading-a-model">
+<h2><span class="section-number">26.2. </span>Loading a model<a class="headerlink" href="#Loading-a-model" title="Link to this heading"></a></h2>
+<p>We’ll be using the <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code> script located in the repository root. This script leverages all the capabilities of Sinergym for working with loaded deep reinforcement learning models and sets parameters for everything, allowing us to easily define load options via a JSON file when executing the script.</p>
+<p>For more details on how to run <code class="docutils literal notranslate"><span class="pre">load_agent.py</span></code>, please refer to <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/deep-reinforcement-learning.html#model-loading">Load a trained model</a>.</p>
+<p>First, we’ll define the Sinergym environment ID where we want to test the loaded agent and the name of the evaluation experiment.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Environment ID</span>
+<span class="n">environment</span> <span class="o">=</span> <span class="s2">&quot;Eplus-5zone-mixed-continuous-stochastic-v1&quot;</span>
+<span class="c1"># Episodes</span>
+<span class="n">episodes</span><span class="o">=</span><span class="mi">5</span>
+<span class="c1"># Evaluation name</span>
+<span class="n">evaluation_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">_%H:%M&#39;</span><span class="p">)</span>
+<span class="n">evaluation_name</span> <span class="o">=</span> <span class="s1">&#39;SB3_PPO-EVAL-&#39;</span> <span class="o">+</span> <span class="n">environment</span> <span class="o">+</span> \
+    <span class="s1">&#39;-episodes-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">episodes</span><span class="p">)</span>
+<span class="n">evaluation_name</span> <span class="o">+=</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">evaluation_date</span>
+</pre></div>
+</div>
+</div>
+<p>We’ll create the Gym environment, but it’s <strong>important to wrap the environment with the same wrappers, whose action and observation observation spaces were modified, used during training</strong>. We can use the evaluation experiment name to rename the environment.</p>
+<p><strong>Note</strong>: If you are loading a pre-trained model and using the observation space normalization wrapper, you should use the means and variations calibrated during the training process for a fair evaluation. The next code specifies this aspect, those mean and var values are written in Sinergym training output as txt file automatically if you want to consult it later. You can use the list/numpy array values or set the txt path directly in the field constructor. It is also important to deactivate
+calibration update during evaluations. Check the documentation on the wrapper for more information. This task is done automatically in <code class="docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">evaluation_env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">env_name</span><span class="o">=</span><span class="n">evaluation_name</span><span class="p">)</span>
+<span class="n">evaluation_env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">evaluation_env</span><span class="p">,</span> <span class="n">mean</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">),</span> <span class="n">var</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s2">&quot;var&quot;</span><span class="p">),</span> <span class="n">automatic_update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">evaluation_env</span> <span class="o">=</span> <span class="n">NormalizeAction</span><span class="p">(</span><span class="n">evaluation_env</span><span class="p">)</span>
+<span class="n">evaluation_env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">evaluation_env</span><span class="p">)</span>
+<span class="n">evaluation_env</span> <span class="o">=</span> <span class="n">CSVLogger</span><span class="p">(</span><span class="n">evaluation_env</span><span class="p">)</span>
+<span class="c1"># If you want to log the evaluation interactions to WandB, use WandBLogger too</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment... [SB3_PPO-EVAL-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:48]
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-EVAL-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:48-res1]
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Updated building model with whole Output:Variable available names
+[MODELING] (INFO) : Updated building model with whole Output:Meter available names
+[MODELING] (INFO) : runperiod established: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 31, &#39;end_month&#39;: 12, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 4}
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35041
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment SB3_PPO-EVAL-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:48 created successfully.
+[WRAPPER NormalizeObservation] (INFO) : Wrapper initialized.
+[WRAPPER NormalizeAction] (INFO) : New normalized action Space: Box(-1.0, 1.0, (2,), float32)
+[WRAPPER NormalizeAction] (INFO) : Wrapper initialized
+[WRAPPER LoggerWrapper] (INFO) : Wrapper initialized.
+[WRAPPER CSVLogger] (INFO) : Wrapper initialized.
+</pre></div></div>
+</div>
+<p>We’ll load the Stable Baselines 3 PPO model from our local computer, but we could also use a remote model stored in <em>wandb</em> from another training experiment.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get wandb artifact path (to load model)</span>
+<span class="k">if</span> <span class="n">is_wrapped</span><span class="p">(</span><span class="n">evaluation_env</span><span class="p">,</span> <span class="n">WandBLogger</span><span class="p">):</span>
+    <span class="n">wandb_run</span> <span class="o">=</span> <span class="n">evaluation_env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;wandb_run&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">wandb_run</span> <span class="o">=</span> <span class="n">wandb</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">entity</span> <span class="o">=</span> <span class="s1">&#39;sail_ugr&#39;</span><span class="p">)</span>
+
+<span class="n">load_artifact_entity</span> <span class="o">=</span> <span class="s1">&#39;sail_ugr&#39;</span>
+<span class="n">load_artifact_project</span> <span class="o">=</span> <span class="s1">&#39;sinergym&#39;</span>
+<span class="n">load_artifact_name</span> <span class="o">=</span> <span class="n">experiment_name</span>
+<span class="n">load_artifact_tag</span> <span class="o">=</span> <span class="s1">&#39;latest&#39;</span>
+<span class="n">load_artifact_model_path</span> <span class="o">=</span> <span class="s1">&#39;Sinergym_output/evaluation/best_model.zip&#39;</span>
+<span class="n">wandb_path</span> <span class="o">=</span> <span class="n">load_artifact_entity</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">load_artifact_project</span> <span class="o">+</span> \
+    <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">load_artifact_name</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">load_artifact_tag</span>
+<span class="c1"># Download artifact</span>
+<span class="n">artifact</span> <span class="o">=</span> <span class="n">wandb_run</span><span class="o">.</span><span class="n">use_artifact</span><span class="p">(</span><span class="n">wandb_path</span><span class="p">)</span>
+<span class="n">artifact</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="n">load_artifact_model_path</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="c1"># Set model path to local wandb file downloaded</span>
+<span class="n">model_path</span> <span class="o">=</span> <span class="s1">&#39;./&#39;</span> <span class="o">+</span> <span class="n">load_artifact_model_path</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">PPO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>As you can see, the <em>wandb</em> model we want to load can come from an artifact of a different entity or project than the one we’re using to register the evaluation of the loaded model, as long as it’s accessible. The next step is to use the model to predict actions and interact with the environment to collect data for model evaluation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">episodes</span><span class="p">):</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">evaluation_env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">truncated</span> <span class="o">=</span> <span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">):</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">evaluation_env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>
+            <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">],</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s1">&#39;Episode &#39;</span><span class="p">,</span>
+        <span class="n">i</span><span class="p">,</span>
+        <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span>
+        <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span>
+        <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+<span class="n">evaluation_env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40] [Episode 7]
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run7]
+[MODELING] (INFO) : Weather file USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model. [USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run7/output]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.12/dist-packages/opyplus/weather_data/weather_data.py:485: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  df = df.replace(
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run7/USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3_Random_1.0_0.0_0.001.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run7/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run7/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 7 started.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+1 -1.6446008069134792
+2 -2535.9359450953466-----------------------------------------------------------------------------------------| 9%
+3 -4823.4260633241665******-----------------------------------------------------------------------------------| 16%
+4 -7364.053050786045****************--------------------------------------------------------------------------| 25%
+5 -10181.732275386925***********************------------------------------------------------------------------| 33%
+6 -13215.13622884691********************************----------------------------------------------------------| 41%
+7 -14626.421671023001****************************************-------------------------------------------------| 50%
+8 -16211.2274234831*************************************************------------------------------------------| 58%
+9 -17762.154093987843********************************************************---------------------------------| 66%
+10 -19114.586326032266****************************************************************------------------------| 75%
+11 -22079.542120929047************************************************************************----------------| 83%
+12 -24505.240849155747********************************************************************************--------| 91%
+Progress: |***************************************************************************************************| 99%
+Episode  0 Mean reward:  -0.7698908037188604 Cumulative reward:  -26977.743653112586
+[WRAPPER CSVLogger] (INFO) : End of episode detected, data updated in monitor and progress.csv.
+[WRAPPER CSVLogger] (INFO) : End of episode detected, data updated in monitor and progress.csv.
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40] [Episode 8]
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run8]
+[MODELING] (INFO) : Weather file USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model. [USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run8/output]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.12/dist-packages/opyplus/weather_data/weather_data.py:485: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  df = df.replace(
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run8/USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3_Random_1.0_0.0_0.001.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run8/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run8/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 8 started.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+1 -1.7995207922238332
+2 -2525.907934259986------------------------------------------------------------------------------------------| 9%
+3 -4833.829075719896*******-----------------------------------------------------------------------------------| 16%
+4 -7383.058739944303****************--------------------------------------------------------------------------| 25%
+5 -10135.751693178638***********************------------------------------------------------------------------| 33%
+6 -13203.476618527327*******************************----------------------------------------------------------| 41%
+7 -14631.222012238866****************************************-------------------------------------------------| 50%
+8 -16232.522719327082***********************************************------------------------------------------| 58%
+9 -17753.958387954357********************************************************---------------------------------| 66%
+10 -19146.864311365585****************************************************************------------------------| 75%
+11 -22069.136934518898************************************************************************----------------| 83%
+12 -24526.976100128184********************************************************************************--------| 91%
+Progress: |***************************************************************************************************| 99%
+Episode  1 Mean reward:  -0.7699928837281512 Cumulative reward:  -26980.550645834417
+[WRAPPER CSVLogger] (INFO) : End of episode detected, data updated in monitor and progress.csv.
+[WRAPPER CSVLogger] (INFO) : End of episode detected, data updated in monitor and progress.csv.
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40] [Episode 9]
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run9]
+[MODELING] (INFO) : Weather file USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model. [USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run9/output]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.12/dist-packages/opyplus/weather_data/weather_data.py:485: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  df = df.replace(
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run9/USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3_Random_1.0_0.0_0.001.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run9/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run9/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 9 started.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+1 -1.7933100220830442
+2 -2538.445643551368------------------------------------------------------------------------------------------| 9%
+3 -4836.026266378525*******-----------------------------------------------------------------------------------| 16%
+4 -7398.170606903661****************--------------------------------------------------------------------------| 25%
+5 -10215.490911458011***********************------------------------------------------------------------------| 33%
+6 -13270.859682680994*******************************----------------------------------------------------------| 41%
+7 -14673.470077032065****************************************-------------------------------------------------| 50%
+8 -16277.010656826511***********************************************------------------------------------------| 58%
+9 -17859.96995901266*********************************************************---------------------------------| 66%
+10 -19229.724716059914****************************************************************------------------------| 75%
+11 -22190.489836264052************************************************************************----------------| 83%
+12 -24654.54683199728*********************************************************************************--------| 91%
+Progress: |***************************************************************************************************| 99%
+Episode  2 Mean reward:  -0.7740173991820579 Cumulative reward:  -27121.569667339314
+[WRAPPER CSVLogger] (INFO) : End of episode detected, data updated in monitor and progress.csv.
+[WRAPPER CSVLogger] (INFO) : End of episode detected, data updated in monitor and progress.csv.
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40] [Episode 10]
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run10]
+[MODELING] (INFO) : Weather file USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model. [USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run10/output]
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run10/USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3_Random_1.0_0.0_0.001.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run10/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run10/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 10 started.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.12/dist-packages/opyplus/weather_data/weather_data.py:485: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  df = df.replace(
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+1 -1.7162450174060817
+2 -2515.235832234475------------------------------------------------------------------------------------------| 9%
+3 -4835.124638771841*******-----------------------------------------------------------------------------------| 16%
+4 -7407.433874239768****************--------------------------------------------------------------------------| 25%
+5 -10197.88881457567************************------------------------------------------------------------------| 33%
+6 -13209.917010355572*******************************----------------------------------------------------------| 41%
+7 -14581.792369056018****************************************-------------------------------------------------| 50%
+8 -16196.423742594645***********************************************------------------------------------------| 58%
+9 -17691.01897293819*********************************************************---------------------------------| 66%
+10 -19067.20513247273*****************************************************************------------------------| 75%
+11 -22016.093939425933************************************************************************----------------| 83%
+12 -24454.153731838967********************************************************************************--------| 91%
+Progress: |***************************************************************************************************| 99%
+Episode  3 Mean reward:  -0.7670151345390938 Cumulative reward:  -26876.210314249845
+[WRAPPER CSVLogger] (INFO) : End of episode detected, data updated in monitor and progress.csv.
+[WRAPPER CSVLogger] (INFO) : End of episode detected, data updated in monitor and progress.csv.
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40] [Episode 11]
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run11]
+[MODELING] (INFO) : Weather file USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model. [USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3.epw]
+[ENVIRONMENT] (INFO) : Saving episode output path... [/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run11/output]
+[SIMULATOR] (INFO) : Running EnergyPlus with args: [&#39;-w&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run11/USA_NY_New.York-J.F.Kennedy.Intl.AP.744860_TMY3_Random_1.0_0.0_0.001.epw&#39;, &#39;-d&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run11/output&#39;, &#39;/workspaces/sinergym/examples/Eplus-env-SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40-res1/Eplus-env-sub_run11/5ZoneAutoDXVAV.epJSON&#39;]
+[ENVIRONMENT] (INFO) : Episode 11 started.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.12/dist-packages/opyplus/weather_data/weather_data.py:485: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  df = df.replace(
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+1 -1.9855085492179452
+2 -2525.9765795852795-----------------------------------------------------------------------------------------| 9%
+3 -4836.447992908011*******-----------------------------------------------------------------------------------| 16%
+4 -7415.106488666047****************--------------------------------------------------------------------------| 25%
+5 -10199.115705433655***********************------------------------------------------------------------------| 33%
+6 -13226.748838894438*******************************----------------------------------------------------------| 41%
+7 -14570.022002702428****************************************-------------------------------------------------| 50%
+8 -16163.73052129073************************************************------------------------------------------| 58%
+9 -17710.726350820067********************************************************---------------------------------| 66%
+10 -19090.64622045218*****************************************************************------------------------| 75%
+11 -22118.184102555933************************************************************************----------------| 83%
+12 -24523.10955600609*********************************************************************************--------| 91%
+Progress: |***************************************************************************************************| 99%
+Episode  4 Mean reward:  -0.770449260651564 Cumulative reward:  -26996.542093230804
+[WRAPPER CSVLogger] (INFO) : Environment closed, data updated in monitor and progress.csv.
+[WRAPPER CSVLogger] (INFO) : Environment closed, data updated in monitor and progress.csv.
+[ENVIRONMENT] (INFO) : Environment closed. [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data... [SB3_PPO-Eplus-5zone-mixed-continuous-stochastic-v1-episodes-5_2024-08-07_15:40]
+</pre></div></div>
+</div>
+<p>The results from the loaded model are stored locally, but you can also view the execution in <em>wandb</em> if WandBLogger were used:</p>
+<ul class="simple">
+<li><p>When you check the wandb project list, you’ll see that the sinergym_evaluations project has a new run:</p></li>
+</ul>
+<img alt="wandb_project2" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_project2.png?raw=true" />
+<ul class="simple">
+<li><p>The evaluation experiment’s tracked hyperparameters, and the previous training artifact used to load the model:</p></li>
+</ul>
+<img alt="wandb_evaluating_hyperparameters" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_evaluating_hyperparameters.png?raw=true" />
+<ul class="simple">
+<li><p>The registered artifact with Sinergym Output (and CSV files generated with the Logger Wrapper):</p></li>
+</ul>
+<img alt="wandb_evaluating_artifact" src="https://github.com/ugr-sail/sinergym/blob/main/images/wandb_evaluating_artifact.png?raw=true" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rule_controller_example.html" class="btn btn-neutral float-left" title="25. Rule Controller example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../API-reference.html" class="btn btn-neutral float-right" title="API reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v3.5.0
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
+            <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
+            <dd><a href="../../../v3.3.0/index.html">v3.3.0</a></dd>
+            <dd><a href="../../../v3.4.0/index.html">v3.4.0</a></dd>
+            <dd><a href="drl.html">v3.5.0</a></dd>
+            <dd><a href="../../../v3.6.0/index.html">v3.6.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../../main/index.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>
