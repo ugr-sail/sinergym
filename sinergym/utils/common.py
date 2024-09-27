@@ -13,8 +13,6 @@ from sinergym.utils.constants import LOG_COMMON_LEVEL, YEAR
 from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.rewards import *
 
-# from opyplus.epgm.record import Record
-
 logger = TerminalLogger().getLogger(
     name='COMMON',
     level=LOG_COMMON_LEVEL)
@@ -413,16 +411,3 @@ def convert_conf_to_env_parameters(
 #                     if np.max(data[column]) > result[column][1]:
 #                         result[column][1] = np.max(data[column])
 #     return result
-
-
-# def get_record_keys(record: Record) -> List[str]:
-#     """Given an opyplus Epm Record (one element from opyplus.epm object) this function returns list of keys (opyplus hasn't got this functionality explicitly)
-
-#      Args:
-#         record (opyplus.Epm.Record): Element from Epm object.
-
-#      Returns:
-#         List[str]: Key list from record.
-#     """
-# return [field.ref for field in
-# record._table._dev_descriptor._field_descriptors]
