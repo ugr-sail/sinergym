@@ -51,16 +51,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
           
       - name: Install pytype
-        run: pip install pytype requests urllib3
+        run: poetry install --no-interaction --only format
 
       - name: Check pytype
-        run: pytype -d import-error sinergym/
+        run: poetry run pytype -d import-error sinergym/
 
   documentation-check:
     runs-on: ubuntu-24.04
@@ -95,7 +103,7 @@ jobs:
         run: |
           sudo apt install python3-enchant
           sudo apt install pandoc
-          poetry install --no-interaction --with doc
+          poetry install --no-interaction --only doc
       
       - name: Check build docs
         if: steps.verify-documentation-update.outputs.doc == 'true'
@@ -114,7 +122,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build the latest Docker image
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=test --tag pullrequest/sinergym:latest
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS="test" --tag pullrequest/sinergym:latest
 
       - name: Execute tests from container
         run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym tests/'
