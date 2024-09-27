@@ -6,7 +6,7 @@
 package-mode = true
 name = "sinergym"
 
-version = "3.6.0"
+version = "3.6.1"
 description = "The goal of sinergym is to create an environment following OpenAI Gym interface for wrapping simulation engines for building control using deep reinforcement learning."
 license = "MIT"
 
