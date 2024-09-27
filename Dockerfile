@@ -46,7 +46,7 @@ ENV POETRY_CACHE_DIR=/tmp/poetry_cache
 
 # ------------------------- SINERGYM EXTRA LIBRERIES ------------------------- #
 
-ARG SINERGYM_EXTRAS=main
+ARG SINERGYM_EXTRAS=""
 
 # ------------------------- WANDB API KEY (IF EXISTS) ------------------------ #
 
@@ -118,7 +118,7 @@ COPY poetry.lock /workspaces/sinergym/poetry.lock
 #                    SINERGYM PACKAGE INSTALLATION (POETRY)                    #
 # ---------------------------------------------------------------------------- #
 
-RUN poetry install --no-interaction --with "$SINERGYM_EXTRAS"
+RUN poetry install --no-interaction --only main --extras "$SINERGYM_EXTRAS"
 
 # Execute the command
 CMD ["python", "scripts/try_env.py"]

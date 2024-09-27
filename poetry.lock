@@ -4116,7 +4116,14 @@ files = [
     {file = "XlsxWriter-3.2.0.tar.gz", hash = "sha256:9977d0c661a72866a61f9f7a809e25ebbb0fb7036baa3b9fe74afcfca6b3cb8c"},
 ]
 
+[extras]
+drl = ["stable-baselines3", "wandb"]
+extras = ["IPython", "coverage", "google-api-python-client", "google-cloud-storage", "oauth2client", "pytest", "pytest-cov", "pytest-xdist", "stable-baselines3", "wandb"]
+gcloud = ["google-api-python-client", "google-cloud-storage", "oauth2client"]
+notebooks = ["IPython"]
+test = ["coverage", "pytest", "pytest-cov", "pytest-xdist", "wandb"]
+
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "3f16d1c3670e495f09dc82cd6d7efc95d67b9b680b47aa549e8a9b09bd02a6eb"
+content-hash = "d18d12e759f463390fd5cea3aec52d53831188c574d2c94adfaa09376696455c"

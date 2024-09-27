@@ -107,7 +107,7 @@ COPY pyproject.toml poetry.lock README.md LICENSE INSTALL.md CODE_OF_CONDUCT.md 
 #                    SINERGYM PACKAGE INSTALLATION (POETRY)                    #
 # ---------------------------------------------------------------------------- #
 
-RUN poetry install --no-interaction --with dev
+RUN poetry install --no-interaction
 
 # Execute the command
 CMD ["/bin/bash"]

@@ -83,7 +83,7 @@ jobs:
         run: |
           sudo apt install python3-enchant
           sudo apt install pandoc
-          poetry install --no-interaction --with doc
+          poetry install --no-interaction --only main,doc
         
       - name: Build multiversion docs
         if: steps.verify-documentation-update.outputs.doc == 'true'
@@ -111,7 +111,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build the latest Docker image
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=test --tag pushmain/sinergym:latest
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS="test" --tag pushmain/sinergym:latest
 
       - name: Create a shared folder for coverage output
         run: mkdir shared
@@ -143,11 +143,11 @@ jobs:
 
       - name: Build the latest Docker image
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=format,test,doc,DRL,gcloud --tag $DOCKER_USER/sinergym:latest
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS="extras" --tag $DOCKER_USER/sinergym:latest
       
       - name: Build the latest lite Docker image
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=test --tag $DOCKER_USER/sinergym:latest-lite
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS="test" --tag $DOCKER_USER/sinergym:latest-lite
       
       - name: Login in Docker Hub account
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
