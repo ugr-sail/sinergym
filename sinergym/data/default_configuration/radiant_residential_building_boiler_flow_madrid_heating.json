@@ -14,7 +14,7 @@
     },
 
     "weather_variability":{
-        "drybulb": [1.0, 0.0, 0.001]
+        "Dry Bulb Temperature": [1.0, 0.0, 0.001]
     },
 
     "max_ep_data_store_num" : 10,
