@@ -82,8 +82,11 @@ google-cloud-storage = { version = "^2.5.0", optional = true}
 [tool.poetry.group.format.dependencies]
 autopep8 = "^2.3.1"
 isort = "^5.13.2"
-pytype = "^2024.9.13"
 pipdeptree = "^2.23.4"
+
+[tool.poetry.group.typing.dependencies]
+pytype = "^2024.9.13"
+urllib3 = "^2.2.3"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.3"

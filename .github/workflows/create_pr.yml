@@ -65,7 +65,7 @@ jobs:
           python-version: ${{ vars.PYTHON_VERSION }}
           
       - name: Install pytype
-        run: poetry install --no-interaction --only format
+        run: poetry install --no-interaction --only typing
 
       - name: Check pytype
         run: poetry run pytype -d import-error sinergym/
@@ -103,7 +103,7 @@ jobs:
         run: |
           sudo apt install python3-enchant
           sudo apt install pandoc
-          poetry install --no-interaction --only doc
+          poetry install --no-interaction --only main,doc
       
       - name: Check build docs
         if: steps.verify-documentation-update.outputs.doc == 'true'
