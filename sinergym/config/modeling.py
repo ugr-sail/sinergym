@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 from eppy.modeleditor import IDF
-from opyplus import WeatherData
+from epw.weather import Weather
 
 from sinergym.utils.common import eppy_element_to_dict, get_delta_seconds
 from sinergym.utils.constants import (CWD, LOG_MODEL_LEVEL, PKG_DATA_PATH,
@@ -24,7 +24,7 @@ class ModelJSON(object):
         :param weather_files: Available weather files for each episode.
         :param _weather_path: EPW path origin for apply weather to simulation in current episode.
         :param _ddy_path: DDY path origin for get DesignDays and weather Location.
-        :param _idd: IDD opyplus object to set up Epm.
+        :param _idd: IDD eppy object to set up Epm.
         :param _variables: Output:Variable(s) information about building model.
         :param _meters: Output:Meter(s) information about building model.
         :param _actuators: Actuators information about building model.
@@ -33,8 +33,8 @@ class ModelJSON(object):
         :param max_ep_store: Number of episodes directories will be stored in experiment_path.
         :param config: Dict config with extra configuration which is required to modify building model (may be None).
         :param building: Building model (Dictionary extracted from JSON).
-        :param ddy_model: opyplus Epm object with DDY model.
-        :param weather_data: opyplus WeatherData object with EPW data.
+        :param ddy_model: eppy object with DDY model.
+        :param weather_data: epw module Weather class instance with EPW data.
         :param zone_names: List of the zone names available in the building.
         :param schedulers: Information in Dict format about all building schedulers.
         :param runperiod: Information in Dict format about runperiod that determine an episode.
@@ -44,7 +44,7 @@ class ModelJSON(object):
     """
 
     logger = TerminalLogger().getLogger(
-        name='MODELING',
+        name='MODEL',
         level=LOG_MODEL_LEVEL)
 
     def __init__(
@@ -99,8 +99,9 @@ class ModelJSON(object):
         IDF.setiddname(self._idd)
         self.ddy_model = IDF(self._ddy_path)
 
-        # Weather data (opyplus object)
-        self.weather_data = WeatherData.from_epw(self._weather_path)
+        # Weather data (epw.weather object)
+        self.weather_data = Weather()
+        self.weather_data.read(self._weather_path)
 
         # ----------------------------- Other attributes ----------------------------- #
 
@@ -309,7 +310,7 @@ class ModelJSON(object):
             self.pkg_data_path, 'weather', random.choice(self.weather_files))
         self._ddy_path = self._weather_path.split('.epw')[0] + '.ddy'
         self.ddy_model = IDF(self._ddy_path)
-        self.weather_data = WeatherData.from_epw(self._weather_path)
+        self.weather_data.read(self._weather_path)
         self.logger.info(
             'Weather file {} used.'.format(
                 self._weather_path.split('/')[-1]))
@@ -332,14 +333,11 @@ class ModelJSON(object):
         # Apply variation to EPW if exists
         if weather_variability is not None:
 
-            # Get dataframe with weather series
-            df = weather_data_mod.get_weather_series()
-
             T = 1.  # Total time.
             # All the columns are going to have the same num of rows since they are
             # in the same dataframe
             # get first column of df
-            n = df.shape[0]
+            n = weather_data_mod.dataframe.shape[0]
             dt = T / n
             # t = np.linspace(0., T, n)  # Vector of times.
 
@@ -359,10 +357,7 @@ class ModelJSON(object):
                         sigma_bis * sqrtdt * np.random.randn()
 
                 # Add noise
-                df[variable] += noise
-
-            # Save new weather data
-            weather_data_mod.set_weather_series(df)
+                weather_data_mod.dataframe[variable] += noise
 
             self.logger.info(
                 'Weather noise applied in columns: {}'.format(
@@ -374,7 +369,7 @@ class ModelJSON(object):
             filename += '_OU_Noise.epw'
 
         episode_weather_path = self.episode_path + '/' + filename
-        weather_data_mod.to_epw(episode_weather_path)
+        weather_data_mod.write(episode_weather_path)
 
         self.logger.debug(
             'Saving episode weather path... [{}]'.format(episode_weather_path))

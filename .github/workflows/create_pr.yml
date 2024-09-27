@@ -4,78 +4,125 @@ on: pull_request
 # pwd: /home/runner/work/sinergym/sinergym
 
 jobs:
-  format-check:
-    runs-on: ubuntu-latest
+  autopep8-check:
+    runs-on: ubuntu-24.04
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
+
       - name: autopep8 check
         id: autopep8
         uses: peter-evans/autopep8@v2
         with:
           args: --exit-code --recursive --diff --aggressive --aggressive .
+
+      - name: Fail if autopep8 made changes
+        if: steps.autopep8.outputs.exit-code == 2
+        run: exit 1
+
+  isort-check:
+    runs-on: ubuntu-24.04
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ vars.PYTHON_VERSION }}
+
       - name: isort check
         id: isort-step
         # default configuration use --check-only and --diff instead of --in-place options.
         uses: isort/isort-action@master
-        continue-on-error: true
-      - name: warning format
-        if: steps.autopep8.outputs.exit-code == 2 || steps.isort-step.outcome != 'success'
-        run: echo "::warning ::There are some formats error (autopep8 2 level agressive + isort) in pull request. A bot will fix this issue when pull request is merged."
-      # - name: Comment PR warning
-      #   if: steps.autopep8.outputs.exit-code == 2 || steps.isort-step.outcome != 'success'
-      #   uses: thollander/actions-comment-pull-request@v1
-      #   with:
-      #     message: ':warning: There are some formats error (autopep8 2 level agressive + isort) in pull request. A bot will fix this issue when pull request is merged. See workflow log to see future changes.'
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: false
 
-  # type-check:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-  #     - name: Setup Python
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: ${{ vars.PYTHON_VERSION }}
-  #     - name: Install pytype
-  #       run: pip install pytype requests urllib3
-  #     - name: Check pytype
-  #       run: pytype -d import-error sinergym/
-
-  documentation-check:
-    runs-on: ubuntu-latest
+  type-check:
+    runs-on: ubuntu-24.04
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ vars.PYTHON_VERSION }}
+          
+      - name: Install pytype
+        run: poetry install --no-interaction --only typing
+
+      - name: Check pytype
+        run: poetry run pytype -d import-error sinergym/
+
+  documentation-check:
+    runs-on: ubuntu-24.04
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ vars.PYTHON_VERSION }}
+      
       - name: Verify documentation update
-        uses: dorny/paths-filter@v2
+        uses: dorny/paths-filter@v3
         id: verify-documentation-update
         with:
           filters: |
             doc:
               - 'docs/source/**'
-      - name: Build the latest Docker image
+
+      - name: Install dependencies
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extras] --tag pullrequest/sinergym:latest
-      - name: Compile documentation
+        run: |
+          sudo apt install python3-enchant
+          sudo apt install pandoc
+          poetry install --no-interaction --only main,doc
+      
+      - name: Check build docs
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'sphinx-build -M html docs/source docs/build'
+        run: poetry run sphinx-build -M html docs/source docs/build
+
       - name: Check sphinx spelling
         if: steps.verify-documentation-update.outputs.doc == 'true'
-        run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'sphinx-build -M spelling docs/source docs/build'
+        run: poetry run sphinx-build -M spelling docs/source docs/build
 
   tests:
     name: build container and execute pytest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Build the latest Docker image
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[test] --tag pullrequest/sinergym:latest
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS="test" --tag pullrequest/sinergym:latest
+
       - name: Execute tests from container
         run: docker run -t pullrequest/sinergym:latest /bin/bash -c 'pytest -vv --cov sinergym tests/'

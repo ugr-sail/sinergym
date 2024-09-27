@@ -148,6 +148,7 @@ lifecycle
 LinearReward
 Lisboa
 localtime
+loggable
 LoggerCallback
 LoggerEvalCallback
 LoggerStorage
@@ -173,6 +174,7 @@ Multiprocessed
 multithread
 namespace
 NaN
+natively
 ndarray
 ndarrays
 neglogp
@@ -240,12 +242,14 @@ scalable
 serializable
 setpoint
 setpoints
+SimpleLogger
 Sinergym
 sinergym
 sklearn
 softmax
 src
 stackable
+stderr
 stdout
 stepsize
 stochasticity
@@ -253,6 +257,7 @@ str
 subprocess
 subprocesses
 summerday
+sys
 tanh
 tao
 Tensorboard
@@ -267,6 +272,9 @@ timesteps
 tm
 toolset
 Torchy
+tqdm
+TqdmLoggingHandler
+traceback
 txt
 Uhlenbeck
 unnormalized

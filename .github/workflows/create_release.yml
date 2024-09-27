@@ -9,11 +9,13 @@ jobs:
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     name: Upload Docker hub container with release tag
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
+      
       - name: Checkout code
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         uses: actions/checkout@master
+      
       - name: Get tag Release
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         id: tag_version
@@ -21,26 +23,31 @@ jobs:
         with:
           owner: ugr-sail
           repo: sinergym
+      
       - name: Build container complete image with release tag
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         env:
           TAG: ${{ steps.tag_version.outputs.latest_tag }}
           #TAG_DATE: ${{ steps.tag_version.outputs.latest_tag_published_at }}
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[extras] --tag $DOCKER_USER/sinergym:$TAG
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS="extras" --tag $DOCKER_USER/sinergym:$TAG
+      
       - name: Build container lite image with release tag
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         env:
           TAG: ${{ steps.tag_version.outputs.latest_tag }}
           #TAG_DATE: ${{ steps.tag_version.outputs.latest_tag_published_at }}
-        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS=[test] --tag $DOCKER_USER/sinergym:$TAG-lite
+        run: docker build . --file Dockerfile --build-arg SINERGYM_EXTRAS="test" --tag $DOCKER_USER/sinergym:$TAG-lite
+      
       - name: Login Docker Hub
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      
       - name: Push complete container built with release tag
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         env:
           TAG: ${{ steps.tag_version.outputs.latest_tag }}
         run: docker push $DOCKER_USER/sinergym:$TAG
+      
       - name: Push lite container built with release tag
         if: "${{ env.DOCKER_USER != '' && env.DOCKER_PASSWORD != '' }}"
         env:
@@ -49,16 +56,32 @@ jobs:
 
   pypi-publish:
     name: upload release to PyPI
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release
     permissions:
       # IMPORTANT: this permission is mandatory for trusted publishing
       id-token: write
     steps:
+      
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Preparing dist directory
-        run: python setup.py sdist
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ vars.PYTHON_VERSION }}
+      
+      - name: Build the distribution files
+        run: poetry build
+
       - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1  
+        uses: pypa/gh-action-pypi-publish@release/v1

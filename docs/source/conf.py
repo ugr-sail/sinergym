@@ -13,12 +13,12 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('../../'))
+sys.path.insert(0, os.path.abspath('./../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'sinergym'
-copyright = '2023, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy'
+project = 'Sinergym'
+copyright = '2024, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy'
 author = 'J. Jiménez, J. Gómez, M.l Molina, A. Manjavacas, A. Campoy'
 
 
@@ -40,7 +40,18 @@ extensions = [
     'nbsphinx',
     'nbsphinx_link']
 
-autodoc_mock_imports = ['stable_baselines3', 'gym', 'opyplus']
+autodoc_mock_imports = ['stable_baselines3',
+                        'wandb',
+                        'gym',
+                        'opyplus',
+                        'gcloud',
+                        'googleapiclient',
+                        'oauth2client',
+                        'google',
+                        'google.cloud',
+                        'pyenergyplus']
+
+nbsphinx_custom_formats = {}
 
 autosummary_generate = True
 
@@ -49,7 +60,7 @@ templates_path = ['_templates']
 
 # VERSIONING configuration
 # Whitelist pattern for tags (set to None to ignore all tags)
-smv_tag_whitelist = r'^.*0$'
+smv_tag_whitelist = r'^v\d+\.\d+\.0$'
 # smv_tag_whitelist = None
 
 # Whitelist pattern for branches (set to None to ignore all branches)
@@ -60,7 +71,7 @@ smv_branch_whitelist = r'main'
 smv_remote_whitelist = None
 
 # Pattern for released versions
-smv_released_pattern = r'^tags/.+?0$'
+smv_released_pattern = r'^tags/v\d+\.\d+\.0$'
 
 # Format for versioned output directories inside the build directory
 smv_outputdir_format = '{ref.name}'
@@ -105,7 +116,7 @@ html_theme_options = {'style_nav_header_background': '#a5beba',
 html_sidebars = {'**': ['globaltoc.html',
                         'relations.html',
                         'sourcelink.html',
-                        'searchbox.html', ]}
+                        'searchbox.html'], }
 
 # disable nbsphinx errors to suppres imports checks not working
 nbsphinx_allow_errors = True

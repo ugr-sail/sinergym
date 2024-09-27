@@ -1,5 +1,7 @@
 import json
+import logging
 import os
+from typing import Union
 
 import gymnasium as gym
 from gymnasium.envs.registration import WrapperSpec, register
@@ -136,3 +138,19 @@ for conf_file in conf_files:
 # --------------------------- Set __ids__ in module -------------------------- #
 __ids__ = [env_id for env_id in gym.envs.registration.registry.keys()
            if env_id.startswith('Eplus')]
+
+
+# ----------------------------- Log level system ----------------------------- #
+def set_logger_level(name: str, level: Union[str, int]):
+    if name.upper() == 'WRAPPER' or name.upper() == 'WRAPPERS':
+        # Get all logger whose name contains 'WRAPPER'
+        for logger_name in logging.root.manager.loggerDict.keys():
+            if 'WRAPPER' in logger_name.upper():
+                logger = logging.getLogger(logger_name)
+                logger.setLevel(level)
+    else:
+        logger = logging.getLogger(name.upper())
+        logger.setLevel(level)
+        if name == 'ENVIRONMENT':
+            logger = logging.getLogger('Printer')
+            logger.setLevel(level)

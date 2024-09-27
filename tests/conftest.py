@@ -5,7 +5,7 @@ from glob import glob  # to find directories with patterns
 
 import pkg_resources
 import pytest
-from opyplus import WeatherData
+from epw.weather import Weather
 
 import sinergym
 from sinergym.config.modeling import ModelJSON
@@ -357,7 +357,11 @@ def env_5zone_stochastic(
         variables=VARIABLES_5ZONE,
         meters=METERS_5ZONE,
         actuators=ACTUATORS_5ZONE,
-        weather_variability={'drybulb': (1.0, 0.0, 0.001)},
+        weather_variability={
+            'Dry Bulb Temperature': (
+                1.0,
+                0.0,
+                0.001)},
         reward=LinearReward,
         reward_kwargs={
             'temperature_variables': ['air_temperature'],
@@ -370,9 +374,13 @@ def env_5zone_stochastic(
                 26.0)},
         env_name='TESTGYM',
         config_params={
-            'runperiod': (1, 1, 1991, 31, 3, 1991)
-        }
-    )
+            'runperiod': (
+                1,
+                1,
+                1991,
+                31,
+                3,
+                1991)})
     return env
 
 
@@ -595,7 +603,9 @@ def building(json_path_5zone):
 
 @ pytest.fixture(scope='function')
 def weather_data(weather_path_pittsburgh):
-    return WeatherData.from_epw(weather_path_pittsburgh)
+    weather_data = Weather()
+    weather_data.read(weather_path_pittsburgh)
+    return weather_data
 
 # ---------------------------------------------------------------------------- #
 #                                    Rewards                                   #

@@ -13,6 +13,9 @@ TerminalLogger
 * Messages are structured in layers (``ENVIRONMENT``, ``MODELING``, ``WRAPPER``, ``SIMULATION``, ``REWARD``) and levels 
   (``DEBUG``, ``INFO``, ``WARNING``, ``ERROR``, ``CRITICAL``).
 
+* The levels of each module can be updated in execution time using the set level method of *Sinergym*. For more information
+  about how to use it, see :ref:`Set terminal loggers' level`.
+
 ***************
 LoggerStorage
 ***************

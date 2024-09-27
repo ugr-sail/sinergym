@@ -1,3 +1,0 @@
-{
-    "path": "../../../../examples/wrappers_examples.ipynb"
-}

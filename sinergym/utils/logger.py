@@ -1,20 +1,12 @@
 """Sinergym Loggers"""
 import logging
 import sys
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
-import pkg_resources
 from tqdm import tqdm
 
 from sinergym.utils.constants import LOG_FORMAT
-
-required = {'stable-baselines3', 'wandb'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-if not missing:
-    import wandb
-    from stable_baselines3.common.logger import KVWriter
 
 
 class CustomFormatter(logging.Formatter):
@@ -82,6 +74,33 @@ class TerminalLogger():
         return logger
 
 
+class SimpleLogger():
+    """Sinergym terminal logger for simulation executions.
+    """
+
+    def getLogger(
+        self
+    ):
+        """Return Sinergym logger for the progress output in terminal.
+
+            Args:
+                name (str): logger name
+                level (str): logger level
+                formatter (Callable): logger formatter class
+
+            Returns:
+                logging.logger
+
+            """
+        logger = logging.getLogger('Printer')
+        logger.setLevel(logging.INFO)
+        # consoleHandler = logging.StreamHandler(stream=sys.stdout)
+        simple_handler = TqdmLoggingHandler(stream=sys.stdout)
+        simple_handler.setFormatter(logging.Formatter('%(message)s'))
+        logger.addHandler(simple_handler)
+        return logger
+
+
 class LoggerStorage():
     """Logger storage for agent interaction with environment. Save all interactions in list or list of lists as attributes.
 
@@ -116,7 +135,7 @@ class LoggerStorage():
                         info: Dict[str, Any],
                         terminated: bool,
                         truncated: bool,
-                        custom_metrics: List[Any] = None) -> None:
+                        custom_metrics: Optional[List[Any]] = None) -> None:
         """Log interaction data.
 
         Args:
@@ -179,7 +198,10 @@ class LoggerStorage():
         self.custom_metrics = []
 
 
-if not missing:
+try:
+    import wandb
+    from stable_baselines3.common.logger import KVWriter
+
     class WandBOutputFormat(KVWriter):  # pragma: no cover
         """
         Dumps key / value pairs onto WandB. This class is based on SB3 used in logger callback
@@ -222,3 +244,11 @@ if not missing:
 
             # Log all metrics
             wandb.log(metrics_to_log)
+except ImportError:
+    class WandBOutputFormat():
+        """WandBOutputFormat class for logging in WandB from SB3 logger.
+        """
+
+        def __init__(self):
+            print(
+                'WandB or SB3 is not installed. Please install it to use WandBOutputFormat.')
