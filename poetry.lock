@@ -4118,11 +4118,12 @@ files = [
 
 [extras]
 drl = ["stable-baselines3", "wandb"]
-extras = ["IPython", "google-api-python-client", "google-cloud-storage", "oauth2client", "stable-baselines3", "wandb"]
+extras = ["IPython", "coverage", "google-api-python-client", "google-cloud-storage", "oauth2client", "pytest", "pytest-cov", "pytest-xdist", "stable-baselines3", "wandb"]
 gcloud = ["google-api-python-client", "google-cloud-storage", "oauth2client"]
 notebooks = ["IPython"]
+test = ["coverage", "pytest", "pytest-cov", "pytest-xdist", "wandb"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "e074deb1bd3cc38fec77e6b092eaf1d34ecf77a80e75854545a9740984b1edbe"
+content-hash = "b557051e5fd4da0f5ab00ddd32eb6c781672d65822ce695a9345a41f53ce8fce"
