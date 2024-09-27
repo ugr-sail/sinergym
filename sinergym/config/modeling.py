@@ -99,7 +99,7 @@ class ModelJSON(object):
         IDF.setiddname(self._idd)
         self.ddy_model = IDF(self._ddy_path)
 
-        # Weather data (opyplus object)
+        # Weather data (epw.weather object)
         self.weather_data = Weather()
         self.weather_data.read(self._weather_path)
 
