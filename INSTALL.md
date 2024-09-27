@@ -40,13 +40,13 @@ However, Sinergym has a set of optional dependencies that enhance the tool's usa
 dependencies can be installed in the following way when building the image:
 
 ```bash
-$ docker build -t <tag_name> --build-arg SINERGYM_EXTRAS=format,test,doc,DRL,gcloud .
+$ docker build -t <tag_name> --build-arg SINERGYM_EXTRAS="drl notebooks gcloud" .
 ```
 
-These optional dependencies allow you to format code, run tests, generate documentation, 
-have pre-existing DRL algorithms available, etc. For more information, please refer to 
-the `pyproject.toml` file at the root of the repository. If you desire to install all optional
-packages, you can use `dev` directly in the `SINERGYM_EXTRAS` argument.
+These optional dependencies allow you to use stable-baselines3, wandb, notebooks or gcloud directly. 
+For more information, please refer to the `pyproject.toml` file at the root of the repository
+(``[tool.poetry.extras]`` section). If you desire to install all optional
+packages, you can use `extras` directly in the `SINERGYM_EXTRAS` argument.
 
 > :memo: **Note:** Our container can also be directly installed from the [Docker Hub repository](https://hub.docker.com/repository/docker/sailugr/sinergym). It contains all the project's releases with secondary dependencies or lite versions.
 
@@ -61,7 +61,7 @@ By default, the command executed is `python scripts/try_env.py`, which is a mini
 If you want to run a DRL experiment, for example, you can do it like this:
 
 ```bash
-$ docker build -t example/sinergym:latest --build-arg SINERGYM_EXTRAS=DRL,platforms .
+$ docker build -t example/sinergym:latest --build-arg SINERGYM_EXTRAS="drl" .
 $ docker run -e WANDB_API_KEY=$WANDB_API_KEY -it --rm example/sinergym:latest python scripts/train/train_agent.py -conf scripts/train/train_agent_PPO.json
 ```
 
@@ -99,14 +99,16 @@ $ pip install sinergym
 You can also install the optional packages from here, just like in the Docker container:
 
 ```sh
-$ pip install sinergym[format,test,doc,DRL,gcloud]
+$ pip install sinergym[extras]
 ```
 
 If you want to install the cloned repository directly, you can do so by running the following 
 command in its root.
 
 ```sh
-$ poetry install --with format,test,doc,DRL,gcloud
+$ poetry install --no-interaction --only main --extras <optional_extras>
+# or
+$ pip install .[<optional_extras>]
 ```
 
 With this, you have the correct Python version and the necessary modules to run 
@@ -131,12 +133,47 @@ API are located in the *Energyplus* folder that you installed in the previous
 step. You must add this installation path to the `PYTHONPATH` environment 
 variable so that the interpreter can access these modules.
 
+## Develop in Sinergym
+
+Whether you have chosen to use Docker or a manual installation, we offer 
+facilities for developing and extending Sinergym.
+
+If you've used a container, Visual Studio Code will set up a development environment with all 
+the necessary packages automatically, including documentation, tests, DRL, etc integrated in the 
+IDE. If you've opted to use a container without Visual Studio Code, you can use the Dockerfile available in the 
+`.devcontainer` folder instead of the one in the root of the repository. If you are creating your own 
+Dockerfile, make sure to perform the following installation so that all development modules 
+are available:
+
+```dockerfile
+RUN poetry install --no-interaction
+```
+
+The default installation includes all development packages. To avoid this, you should specify 
+`--only main` or `--without <develop_groups>`. The development groups can also be found 
+in `pyproject.toml`.
+
+If you have manually installed the project, you can install the development packages from 
+Poetry in the same way. Once the repository is cloned, run the same command we explained earlier, 
+adding the following:
+
+```sh
+$ poetry install --no-interaction
+```
+
+As you can see, the command is the same as the one shown in the manual installation section, but 
+without specifying groups or extras, so that all development packages are installed. In this case,
+it is not possible to use pip because it does not include information about development dependencies
+(except those listed in extras).
+
+> :memo: For more information on how Poetry dependencies work, visit the [official documentation](https://python-poetry.org/docs/dependency-specification/).
+
 
 ## Verify Installation
 
 This project is automatically monitored using **tests** specifically developed for it. 
 To verify that *Sinergym* has been installed correctly, execute `pytest tests/ -vv` 
-in the **repository root**.
+in the **repository root**. Remember to have installed test extra packaging to use it.
 
 Furthermore, each time the *Sinergym* repository is updated, the tests are automatically executed in a remote container 
 built using the Dockerfile. This task is performed by [Github Action](https://docs.github.com/es/actions/) 
