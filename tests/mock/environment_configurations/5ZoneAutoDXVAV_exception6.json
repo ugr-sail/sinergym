@@ -14,8 +14,8 @@
     "config_params"          : null,
 
     "weather_variability":{
-        "drybulb": [1.0, 0.0],
-        "windspd": [3.0, 0.0, 0.01]
+        "Dry Bulb Temperature": [1.0, 0.0],
+        "Wind Speed": [3.0, 0.0, 0.01]
     },
 
     "max_ep_data_store_num" : 10,

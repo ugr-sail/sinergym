@@ -95,9 +95,29 @@ to introduce **noise** to the weather data episode to episode. Then, the paramet
 established is a Python dictionary with the EPW column name as key and tuple of three variables (*sigma*, *mu*, and *tau*) whose 
 as value, defining the nature of that noise. This allows to apply different noise in several aspects of the weather data.
 
-.. note:: The weather data columns or variables names is generated with opyplus WeatherData class, 
-          for more information about the available variables in an EPW file, visit 
-          `Opyplus documentation <https://opyplus.readthedocs.io/en/2.0.7/quickstart/index.html#weather-data-epw-file>`__. 
+Since Sinergym v3.6.2, the weather data columns or variables names is generated with 
+`epw module Weather class <https://pypi.org/project/epw/>`__, the list of the
+available variable names is the next:
+
+- ``Year``, ``Month``, ``Day``, ``Hour``, ``Minute``,
+  ``Data Source and Uncertainty Flags``, ``Dry Bulb Temperature``,
+  ``Dew Point Temperature``, ``Relative Humidity``,
+  ``Atmospheric Station Pressure``, ``Extraterrestrial Horizontal Radiation``,
+  ``Extraterrestrial Direct Normal Radiation``,
+  ``Horizontal Infrared Radiation Intensity``,
+  ``Global Horizontal Radiation``, ``Direct Normal Radiation``,
+  ``Diffuse Horizontal Radiation``, ``Global Horizontal Illuminance``,
+  ``Direct Normal Illuminance``, ``Diffuse Horizontal Illuminance``,
+  ``Zenith Luminance``, ``Wind Direction``, ``Wind Speed``, ``Total Sky Cover``,
+  ``Opaque Sky Cover (used if Horizontal IR Intensity missing)``,
+  ``Visibility``, ``Ceiling Height``, ``Present Weather Observation``,
+  ``Present Weather Codes``, ``Precipitable Water``, ``Aerosol Optical Depth``,
+  ``Snow Depth``, ``Days Since Last Snowfall``, ``Albedo``,
+  ``Liquid Precipitation Depth``, ``Liquid Precipitation Quantity``
+
+If you are using an older version of Sinergym, the weather data columns or variables names is generated with 
+*opyplus WeatherData class*, for more information about the available variable names with opyplus, visit 
+`Opyplus documentation <https://opyplus.readthedocs.io/en/2.0.7/quickstart/index.html#weather-data-epw-file>`__.
 
 .. image:: /_static/ornstein_noise.png
   :scale: 80 %
