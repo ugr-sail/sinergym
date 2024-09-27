@@ -605,6 +605,17 @@ tinynumpy = ">=1.2.1"
 testing = ["pytest"]
 
 [[package]]
+name = "epw"
+version = "1.2.dev2"
+description = "EnergyPlus wrapper for Python"
+optional = false
+python-versions = "*"
+files = [
+    {file = "epw-1.2.dev2-py3-none-any.whl", hash = "sha256:bab66221fb46ea6cbc39b6cd8339e7193fe6fe336a60fbd5205c59f06a47ef5d"},
+    {file = "epw-1.2.dev2.tar.gz", hash = "sha256:a7a25fc6d565843e4b8d7a83e7998645a8adf5c512ed445493bb6d3642983966"},
+]
+
+[[package]]
 name = "execnet"
 version = "2.1.1"
 description = "execnet: rapid multi-Python deployment"
@@ -2244,23 +2255,6 @@ rsa = ">=3.1.4"
 six = ">=1.6.1"
 
 [[package]]
-name = "opyplus"
-version = "2.0.7"
-description = "Python package to work with Energyplus input and output"
-optional = false
-python-versions = "*"
-files = [
-    {file = "opyplus-2.0.7-py3-none-any.whl", hash = "sha256:e2d56a63e4ab5b0cc7aff2efc2a41cd8a5b5a8650eb43502de3fdb8a99c18d00"},
-    {file = "opyplus-2.0.7.tar.gz", hash = "sha256:989fad25effa25aefdd9ed8ea1f8327e7801a5f316116721caca68b7f0e362e0"},
-]
-
-[package.dependencies]
-charset-normalizer = ">=3.2.0,<4.0"
-pandas = ">=1.5.0,<3.0.0"
-python-slugify = ">=3.0.2,<6.0"
-unidecode = ">=1.0.22,<2.0"
-
-[[package]]
 name = "packaging"
 version = "24.1"
 description = "Core utilities for Python packages"
@@ -2859,23 +2853,6 @@ files = [
 
 [package.dependencies]
 six = ">=1.5"
-
-[[package]]
-name = "python-slugify"
-version = "5.0.2"
-description = "A Python Slugify application that handles Unicode"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "python-slugify-5.0.2.tar.gz", hash = "sha256:f13383a0b9fcbe649a1892b9c8eb4f8eab1d6d84b84bb7a624317afa98159cab"},
-    {file = "python_slugify-5.0.2-py2.py3-none-any.whl", hash = "sha256:6d8c5df75cd4a7c3a2d21e257633de53f52ab0265cd2d1dc62a730e8194a7380"},
-]
-
-[package.dependencies]
-text-unidecode = ">=1.3"
-
-[package.extras]
-unidecode = ["Unidecode (>=1.1.1)"]
 
 [[package]]
 name = "pytype"
@@ -3799,17 +3776,6 @@ files = [
 widechars = ["wcwidth"]
 
 [[package]]
-name = "text-unidecode"
-version = "1.3"
-description = "The most basic Text::Unidecode port"
-optional = false
-python-versions = "*"
-files = [
-    {file = "text-unidecode-1.3.tar.gz", hash = "sha256:bad6603bb14d279193107714b288be206cac565dfa49aa5b105294dd5c4aab93"},
-    {file = "text_unidecode-1.3-py2.py3-none-any.whl", hash = "sha256:1311f10e8b895935241623731c2ba64f4c455287888b18189350b67134a822e8"},
-]
-
-[[package]]
 name = "tinycss2"
 version = "1.3.0"
 description = "A tiny CSS parser"
@@ -4002,17 +3968,6 @@ files = [
 ]
 
 [[package]]
-name = "unidecode"
-version = "1.3.8"
-description = "ASCII transliterations of Unicode text"
-optional = false
-python-versions = ">=3.5"
-files = [
-    {file = "Unidecode-1.3.8-py3-none-any.whl", hash = "sha256:d130a61ce6696f8148a3bd8fe779c99adeb4b870584eeb9526584e9aa091fd39"},
-    {file = "Unidecode-1.3.8.tar.gz", hash = "sha256:cfdb349d46ed3873ece4586b96aa75258726e2fa8ec21d6f00a591d98806c2f4"},
-]
-
-[[package]]
 name = "uritemplate"
 version = "4.1.1"
 description = "Implementation of RFC 6570 URI Templates"
@@ -4126,4 +4081,4 @@ test = ["coverage", "pytest", "pytest-cov", "pytest-xdist", "wandb"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "d18d12e759f463390fd5cea3aec52d53831188c574d2c94adfaa09376696455c"
+content-hash = "2bc2cd32a5788aa4329d654956e469a383b43f249ffa6d6514e0c21d148ffac0"

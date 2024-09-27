@@ -62,7 +62,7 @@ pandas = "^2.2.2"
 eppy = "^0.5.63"
 tqdm = "^4.66.5"
 xlsxwriter = "^3.2.0"
-opyplus = "^2.0.7"
+epw = "^1.2.dev2"
 
 # Extra dependencies (optional)
 pytest = { version = "^8.3.3", optional = true }
