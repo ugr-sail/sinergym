@@ -219,12 +219,29 @@ will have that noise included.</p>
 to introduce <strong>noise</strong> to the weather data episode to episode. Then, the parameter
 established is a Python dictionary with the EPW column name as key and tuple of three variables (<em>sigma</em>, <em>mu</em>, and <em>tau</em>) whose
 as value, defining the nature of that noise. This allows to apply different noise in several aspects of the weather data.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The weather data columns or variables names is generated with opyplus WeatherData class,
-for more information about the available variables in an EPW file, visit
+<p>Since Sinergym v3.6.2, the weather data columns or variables names is generated with
+<a class="reference external" href="https://pypi.org/project/epw/">epw module Weather class</a>, the list of the
+available variable names is the next:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Year</span></code>, <code class="docutils literal notranslate"><span class="pre">Month</span></code>, <code class="docutils literal notranslate"><span class="pre">Day</span></code>, <code class="docutils literal notranslate"><span class="pre">Hour</span></code>, <code class="docutils literal notranslate"><span class="pre">Minute</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">Source</span> <span class="pre">and</span> <span class="pre">Uncertainty</span> <span class="pre">Flags</span></code>, <code class="docutils literal notranslate"><span class="pre">Dry</span> <span class="pre">Bulb</span> <span class="pre">Temperature</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Dew</span> <span class="pre">Point</span> <span class="pre">Temperature</span></code>, <code class="docutils literal notranslate"><span class="pre">Relative</span> <span class="pre">Humidity</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Atmospheric</span> <span class="pre">Station</span> <span class="pre">Pressure</span></code>, <code class="docutils literal notranslate"><span class="pre">Extraterrestrial</span> <span class="pre">Horizontal</span> <span class="pre">Radiation</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Extraterrestrial</span> <span class="pre">Direct</span> <span class="pre">Normal</span> <span class="pre">Radiation</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Horizontal</span> <span class="pre">Infrared</span> <span class="pre">Radiation</span> <span class="pre">Intensity</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Global</span> <span class="pre">Horizontal</span> <span class="pre">Radiation</span></code>, <code class="docutils literal notranslate"><span class="pre">Direct</span> <span class="pre">Normal</span> <span class="pre">Radiation</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Diffuse</span> <span class="pre">Horizontal</span> <span class="pre">Radiation</span></code>, <code class="docutils literal notranslate"><span class="pre">Global</span> <span class="pre">Horizontal</span> <span class="pre">Illuminance</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Direct</span> <span class="pre">Normal</span> <span class="pre">Illuminance</span></code>, <code class="docutils literal notranslate"><span class="pre">Diffuse</span> <span class="pre">Horizontal</span> <span class="pre">Illuminance</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Zenith</span> <span class="pre">Luminance</span></code>, <code class="docutils literal notranslate"><span class="pre">Wind</span> <span class="pre">Direction</span></code>, <code class="docutils literal notranslate"><span class="pre">Wind</span> <span class="pre">Speed</span></code>, <code class="docutils literal notranslate"><span class="pre">Total</span> <span class="pre">Sky</span> <span class="pre">Cover</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Opaque</span> <span class="pre">Sky</span> <span class="pre">Cover</span> <span class="pre">(used</span> <span class="pre">if</span> <span class="pre">Horizontal</span> <span class="pre">IR</span> <span class="pre">Intensity</span> <span class="pre">missing)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Visibility</span></code>, <code class="docutils literal notranslate"><span class="pre">Ceiling</span> <span class="pre">Height</span></code>, <code class="docutils literal notranslate"><span class="pre">Present</span> <span class="pre">Weather</span> <span class="pre">Observation</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Present</span> <span class="pre">Weather</span> <span class="pre">Codes</span></code>, <code class="docutils literal notranslate"><span class="pre">Precipitable</span> <span class="pre">Water</span></code>, <code class="docutils literal notranslate"><span class="pre">Aerosol</span> <span class="pre">Optical</span> <span class="pre">Depth</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Snow</span> <span class="pre">Depth</span></code>, <code class="docutils literal notranslate"><span class="pre">Days</span> <span class="pre">Since</span> <span class="pre">Last</span> <span class="pre">Snowfall</span></code>, <code class="docutils literal notranslate"><span class="pre">Albedo</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Liquid</span> <span class="pre">Precipitation</span> <span class="pre">Depth</span></code>, <code class="docutils literal notranslate"><span class="pre">Liquid</span> <span class="pre">Precipitation</span> <span class="pre">Quantity</span></code></p></li>
+</ul>
+<p>If you are using an older version of Sinergym, the weather data columns or variables names is generated with
+<em>opyplus WeatherData class</em>, for more information about the available variable names with opyplus, visit
 <a class="reference external" href="https://opyplus.readthedocs.io/en/2.0.7/quickstart/index.html#weather-data-epw-file">Opyplus documentation</a>.</p>
-</div>
 <a class="reference internal image-reference" href="../_images/ornstein_noise.png"><img alt="Ornstein-Uhlenbeck process noise with different hyperparameters." class="align-center" src="../_images/ornstein_noise.png" style="width: 1429.6000000000001px; height: 757.6px;" /></a>
 </section>
 <section id="reward">
