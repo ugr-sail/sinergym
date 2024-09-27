@@ -2,7 +2,7 @@ import json
 import os
 
 import pytest
-from opyplus import WeatherData
+from epw.weather import Weather
 
 from sinergym.utils.constants import WEEKDAY_ENCODING
 
@@ -202,8 +202,8 @@ def test_apply_weather_variability(model_5zone):
     assert original_filename == path_filename
     # Check with a variation
     weather_variability = {
-        'drybulb': (1.0, 0.0, 0.001),
-        'windspd': (3.0, 0.0, 0.01)
+        'Dry Bulb Temperature': (1.0, 0.0, 0.001),
+        'Wind Speed': (3.0, 0.0, 0.01)
     }
     path_result = model_5zone.apply_weather_variability(
         weather_variability=weather_variability)
@@ -215,15 +215,20 @@ def test_apply_weather_variability(model_5zone):
     # Check that path exists
     assert os.path.exists(path_result)
     # Lets load the original weather file and the new one
-    df_original = WeatherData.from_epw(
-        model_5zone._weather_path).get_weather_series()
-    df_noise = WeatherData.from_epw(path_result).get_weather_series()
+    original = Weather()
+    original.read(model_5zone._weather_path)
+    noise = Weather()
+    noise.read(path_result)
     # Check that the noise is applied in drybulb and windspd columns and not
     # in others
-    assert (df_original['drybulb'] != df_noise['drybulb']).any()
-    assert (df_original['windspd'] != df_noise['windspd']).any()
-    assert (df_original['relhum'] == df_noise['relhum']).all()
-    assert (df_original['winddir'] == df_noise['winddir']).all()
+    assert (original.dataframe['Dry Bulb Temperature']
+            != noise.dataframe['Dry Bulb Temperature']).any()
+    assert (original.dataframe['Wind Speed'] !=
+            noise.dataframe['Wind Speed']).any()
+    assert (original.dataframe['Relative Humidity']
+            == noise.dataframe['Relative Humidity']).all()
+    assert (original.dataframe['Wind Direction'] ==
+            noise.dataframe['Wind Direction']).all()
 
 # ---------------------------------------------------------------------------- #
 #                          Schedulers info extraction                          #
