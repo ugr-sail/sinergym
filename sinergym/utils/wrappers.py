@@ -287,21 +287,25 @@ class NormalizeObservation(gym.Wrapper):
 
     def reset(self, **kwargs):
         """Resets the environment and normalizes the observation."""
+
+        # Update normalization calibration if it is required
+        if self.get_wrapper_attr('episode') > 0:
+            self._save_normalization_calibration()
+
         obs, info = self.env.reset(**kwargs)
 
         # Save original obs in class attribute
         self.unwrapped_observation = deepcopy(obs)
 
-        # Update normalization calibration if it is required
-        self._save_normalization_calibration()
-
         return self.normalize(np.array([obs]))[0], info
 
     def close(self):
-        """Close the environment and save normalization calibration."""
-        self.env.close()
+        """save normalization calibration and close the environment."""
         # Update normalization calibration if it is required
-        self._save_normalization_calibration()
+        if self.get_wrapper_attr('episode') > 0:
+            self._save_normalization_calibration()
+
+        self.env.close()
 
     # ----------------------- Wrapper extra functionality ----------------------- #
 
@@ -337,7 +341,12 @@ class NormalizeObservation(gym.Wrapper):
         """
         self.logger.info(
             'Saving normalization calibration data.')
-        # Save in txt in output folder
+        # Save in txt in episode output folder
+        np.savetxt(fname=self.get_wrapper_attr(
+            'episode_path') + '/mean.txt', X=self.mean)
+        np.savetxt(fname=self.get_wrapper_attr(
+            'episode_path') + '/var.txt', X=self.var)
+        # Overwrite output root folder mean and var as latest calibration
         np.savetxt(fname=self.get_wrapper_attr(
             'workspace_path') + '/mean.txt', X=self.mean)
         np.savetxt(fname=self.get_wrapper_attr(

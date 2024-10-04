@@ -91,7 +91,7 @@ try:
                 # parse str parameters to sinergym Callable or Objects if it is
                 # required
                 if isinstance(value, str):
-                    if '.' in value:
+                    if '.' in value and '.txt' not in value:
                         parameters[name] = eval(value)
             env = wrapper_class(env=env, ** parameters)
 
@@ -152,25 +152,13 @@ try:
     for i in range(conf['episodes']):
         # Reset the environment to start a new episode
         obs, info = env.reset()
-        rewards = []
         truncated = terminated = False
-        current_month = 0
         while not (terminated or truncated):
-            # Random action control
-            a = env.action_space.sample()
+            # Use the agent to predict the next action
+            a, _ = model.predict(obs, deterministic=True)
             # Read observation and reward
             obs, reward, terminated, truncated, info = env.step(a)
-            rewards.append(reward)
-            # If this timestep is a new month start
-            if info['month'] != current_month:  # display results every month
-                current_month = info['month']
-                # Print information
-                logger.info('Reward: {}'.format(sum(rewards)))
-                logger.info('Info: {}'.format(info))
-                # Final episode information print
-                logger.info(
-                    'Episode {} - Mean reward: {} - Cumulative Reward: {}'.format(
-                        i, np.mean(rewards), sum(rewards)))
+
     env.close()
 
     # ---------------------------------------------------------------------------- #
