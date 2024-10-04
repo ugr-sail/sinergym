@@ -219,20 +219,23 @@ Initially, it may not be precise and the values might often be out of range, so 
 with caution.</p>
 <p>However, <em>Sinergym</em> enhances its functionality with some additional features:</p>
 <ul class="simple">
-<li><p>It includes the last unnormalized observation as an attribute, which is very useful for logging.</p></li>
+<li><p>It includes the last unnormalized observation as an environment attribute, which is very useful for logging.</p></li>
 <li><p>It provides access to the means and variations used for normalization calibration, addressing the low-level
 issues found in the original wrapper.</p></li>
-<li><p>Similarly, these calibration values can be set via a method or in the constructor.
-These values can be specified neither in list/numpy array format or writing the txt path
+<li><p>Similarly, these calibration values can be set via a method or in the wrapper constructor.
+These values can be specified neither in list/numpy array format or writing the txt file path
 previously generated. Refer to the <a class="reference internal" href="API-reference.html#api-reference"><span class="std std-ref">API reference</span></a> for more information.</p></li>
 <li><p>The automatic calibration can be enabled or disabled as you interact with the environment, allowing the
-calibration to remain static instead of adaptive.</p></li>
+calibration to remain static instead of adaptive (useful for model evaluations).</p></li>
 </ul>
 <p>In addition, this wrapper saves the values of <strong>mean and var in txt files in the
 *Sinergym* output</strong>. This should be used in case of evaluating the model later.
 An example of its use can be found in the use case <a class="reference internal" href="notebooks/drl.html#Loading-a-model"><span class="std std-ref">Loading a model</span></a>. It is
 also important that normalization calibration update is deactivated during evaluation
 processes.</p>
+<p>Sinergym with this wrapper will save the mean and variance files in the root output directory as last
+calibration values. However, it also will save the intermediate values as files in episode directories, and in the
+best model found if <a class="reference internal" href="deep-reinforcement-learning.html#evaluation-callback"><span class="std std-ref">Evaluation Callback</span></a> is active in a DRL training process.</p>
 <p>These functionalities are crucial when evaluating models trained using this wrapper.
 For more details, visit <a class="reference external" href="https://github.com/ugr-sail/sinergym/issues/407">#407</a>.</p>
 </section>
