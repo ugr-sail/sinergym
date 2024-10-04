@@ -160,6 +160,18 @@ class LoggerEvalCallback(EventCallback):
                     self.save_path,
                     'best_model.zip'))
             self.best_mean_reward = evaluation_summary['mean_reward']
+            # Save normalization calibration if exists
+            if is_wrapped(self.eval_env, NormalizeObservation):
+                self.logger.info(
+                    'Save normalization calibration in evaluation folder')
+                np.savetxt(
+                    fname=self.save_path +
+                    '/mean.txt',
+                    X=self.eval_env.mean)
+                np.savetxt(
+                    fname=self.save_path +
+                    '/var.txt',
+                    X=self.eval_env.var)
 
         # We close evaluation env and starts training env again
         self.eval_env.close()
