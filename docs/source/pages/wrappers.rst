@@ -122,23 +122,27 @@ with caution.
 
 However, *Sinergym* enhances its functionality with some additional features:
 
-- It includes the last unnormalized observation as an attribute, which is very useful for logging.
+- It includes the last unnormalized observation as an environment attribute, which is very useful for logging.
 
 - It provides access to the means and variations used for normalization calibration, addressing the low-level 
   issues found in the original wrapper.
 
-- Similarly, these calibration values can be set via a method or in the constructor. 
-  These values can be specified neither in list/numpy array format or writing the txt path 
+- Similarly, these calibration values can be set via a method or in the wrapper constructor. 
+  These values can be specified neither in list/numpy array format or writing the txt file path 
   previously generated. Refer to the :ref:`API reference` for more information.
 
 - The automatic calibration can be enabled or disabled as you interact with the environment, allowing the 
-  calibration to remain static instead of adaptive.
+  calibration to remain static instead of adaptive (useful for model evaluations).
 
 In addition, this wrapper saves the values of **mean and var in txt files in the 
 *Sinergym* output**. This should be used in case of evaluating the model later. 
 An example of its use can be found in the use case :ref:`Loading a model`. It is
 also important that normalization calibration update is deactivated during evaluation
 processes.
+
+Sinergym with this wrapper will save the mean and variance files in the root output directory as last
+calibration values. However, it also will save the intermediate values as files in episode directories, and in the
+best model found if :ref:`Evaluation Callback` is active in a DRL training process.
 
 These functionalities are crucial when evaluating models trained using this wrapper. 
 For more details, visit `#407 <https://github.com/ugr-sail/sinergym/issues/407>`__.
