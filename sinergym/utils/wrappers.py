@@ -322,7 +322,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
         delta: int = 1, 
         columns: List[str] = ['Dry Bulb Temperature', 'Relative Humidity', 'Wind Direction', 'Wind Speed', 
                             'Direct Normal Radiation', 'Diffuse Horizontal Radiation'], 
-        weather_variability: Optional[Dict[str, Tuple[float, float, float]]] = None) -> str:
+        weather_variability: Optional[Dict[str, Tuple[float, float, float]]] = None):
         """Adds weather forecast information to the current observation.
 
         Args:
