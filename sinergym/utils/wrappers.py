@@ -8,11 +8,11 @@ from collections import deque
 from copy import deepcopy
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
-from epw.weather import Weather
 
 import gymnasium as gym
 import numpy as np
 import wandb
+from epw.weather import Weather
 from gymnasium import Env
 from gymnasium.wrappers.normalize import RunningMeanStd
 
