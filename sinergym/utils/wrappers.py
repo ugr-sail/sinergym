@@ -308,7 +308,92 @@ class NormalizeObservation(gym.Wrapper):
 
         self.env.close()
 
-# ---------------------------------------------------------------------------- #
+# ----------------------- Wrapper extra functionality ----------------------- #
+
+    def _check_and_update_metric(self, metric, metric_name):
+        if metric is not None:
+            # Check type and conversions
+            if isinstance(metric, str):
+                try:
+                    metric = np.loadtxt(metric)
+                except FileNotFoundError as err:
+                    self.logger.error(
+                        '{}.txt file not found. Please, check the path.'.format(metric_name))
+                    raise err
+            elif isinstance(metric, list) or isinstance(metric, np.ndarray):
+                metric = np.float64(metric)
+            else:
+                self.logger.error(
+                    '{} values must be a list, a numpy array or a path to a txt file.'.format(metric_name))
+                raise ValueError
+
+            # Check dimension of mean and var
+            try:
+                assert len(metric) == self.observation_space.shape[0]
+            except AssertionError as err:
+                self.logger.error(
+                    '{} values must have the same shape than environment observation space.'.format(metric_name))
+                raise err
+
+        return metric
+
+    def _save_normalization_calibration(self):
+        """Saves the normalization calibration data in the output folder as txt files.
+        """
+        self.logger.info(
+            'Saving normalization calibration data.')
+        # Save in txt in episode output folder
+        np.savetxt(fname=self.get_wrapper_attr(
+            'episode_path') + '/mean.txt', X=self.mean)
+        np.savetxt(fname=self.get_wrapper_attr(
+            'episode_path') + '/var.txt', X=self.var)
+        # Overwrite output root folder mean and var as latest calibration
+        np.savetxt(fname=self.get_wrapper_attr(
+            'workspace_path') + '/mean.txt', X=self.mean)
+        np.savetxt(fname=self.get_wrapper_attr(
+            'workspace_path') + '/var.txt', X=self.var)
+
+    def deactivate_update(self):
+        """
+        Deactivates the automatic update of the normalization wrapper.
+        After calling this method, the normalization wrapper will not update its calibration automatically.
+        """
+        self.automatic_update = False
+
+    def activate_update(self):
+        """
+        Activates the automatic update of the normalization wrapper.
+        After calling this method, the normalization wrapper will update its calibration automatically.
+        """
+        self.automatic_update = True
+
+    @property
+    def mean(self) -> np.float64:
+        """Returns the mean value of the observations."""
+        return self.obs_rms.mean
+
+    @property
+    def var(self) -> np.float64:
+        """Returns the variance value of the observations."""
+        return self.obs_rms.var
+
+    def set_mean(self, mean: Union[list, np.float64, str]):
+        """Sets the mean value of the observations."""
+        mean = self._check_and_update_metric(mean, 'mean')
+        self.obs_rms.mean = deepcopy(mean)
+
+    def set_var(self, var: Union[list, np.float64, str]):
+        """Sets the variance value of the observations."""
+        var = self._check_and_update_metric(var, 'var')
+        self.obs_rms.var = deepcopy(var)
+
+    def normalize(self, obs):
+        """Normalizes the observation using the running mean and variance of the observations.
+        If automatic_update is enabled, the running mean and variance will be updated too."""
+        if self.automatic_update:
+            self.obs_rms.update(obs)
+        return (obs - self.obs_rms.mean) / \
+            np.sqrt(self.obs_rms.var + self.epsilon)
 
 
 class WeatherForecastingWrapper(gym.Wrapper):
@@ -493,93 +578,6 @@ class WeatherForecastingWrapper(gym.Wrapper):
         obs = np.concatenate((obs, info_forecasting))
 
         return obs
-
-    # ----------------------- Wrapper extra functionality ----------------------- #
-
-    def _check_and_update_metric(self, metric, metric_name):
-        if metric is not None:
-            # Check type and conversions
-            if isinstance(metric, str):
-                try:
-                    metric = np.loadtxt(metric)
-                except FileNotFoundError as err:
-                    self.logger.error(
-                        '{}.txt file not found. Please, check the path.'.format(metric_name))
-                    raise err
-            elif isinstance(metric, list) or isinstance(metric, np.ndarray):
-                metric = np.float64(metric)
-            else:
-                self.logger.error(
-                    '{} values must be a list, a numpy array or a path to a txt file.'.format(metric_name))
-                raise ValueError
-
-            # Check dimension of mean and var
-            try:
-                assert len(metric) == self.observation_space.shape[0]
-            except AssertionError as err:
-                self.logger.error(
-                    '{} values must have the same shape than environment observation space.'.format(metric_name))
-                raise err
-
-        return metric
-
-    def _save_normalization_calibration(self):
-        """Saves the normalization calibration data in the output folder as txt files.
-        """
-        self.logger.info(
-            'Saving normalization calibration data.')
-        # Save in txt in episode output folder
-        np.savetxt(fname=self.get_wrapper_attr(
-            'episode_path') + '/mean.txt', X=self.mean)
-        np.savetxt(fname=self.get_wrapper_attr(
-            'episode_path') + '/var.txt', X=self.var)
-        # Overwrite output root folder mean and var as latest calibration
-        np.savetxt(fname=self.get_wrapper_attr(
-            'workspace_path') + '/mean.txt', X=self.mean)
-        np.savetxt(fname=self.get_wrapper_attr(
-            'workspace_path') + '/var.txt', X=self.var)
-
-    def deactivate_update(self):
-        """
-        Deactivates the automatic update of the normalization wrapper.
-        After calling this method, the normalization wrapper will not update its calibration automatically.
-        """
-        self.automatic_update = False
-
-    def activate_update(self):
-        """
-        Activates the automatic update of the normalization wrapper.
-        After calling this method, the normalization wrapper will update its calibration automatically.
-        """
-        self.automatic_update = True
-
-    @property
-    def mean(self) -> np.float64:
-        """Returns the mean value of the observations."""
-        return self.obs_rms.mean
-
-    @property
-    def var(self) -> np.float64:
-        """Returns the variance value of the observations."""
-        return self.obs_rms.var
-
-    def set_mean(self, mean: Union[list, np.float64, str]):
-        """Sets the mean value of the observations."""
-        mean = self._check_and_update_metric(mean, 'mean')
-        self.obs_rms.mean = deepcopy(mean)
-
-    def set_var(self, var: Union[list, np.float64, str]):
-        """Sets the variance value of the observations."""
-        var = self._check_and_update_metric(var, 'var')
-        self.obs_rms.var = deepcopy(var)
-
-    def normalize(self, obs):
-        """Normalizes the observation using the running mean and variance of the observations.
-        If automatic_update is enabled, the running mean and variance will be updated too."""
-        if self.automatic_update:
-            self.obs_rms.update(obs)
-        return (obs - self.obs_rms.mean) / \
-            np.sqrt(self.obs_rms.var + self.epsilon)
 
 # ---------------------------------------------------------------------------- #
 #                                Action wrappers                               #
