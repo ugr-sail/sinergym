@@ -263,7 +263,9 @@ def test_weatherforecasting_wrapper(env_demo):
     # Check observation space transformation
     original_shape = env.env.observation_space.shape[0]
     wrapped_shape = env.observation_space.shape[0]
-    assert wrapped_shape == (original_shape + (len(env.get_wrapper_attr('columns')) * env.get_wrapper_attr('n')))
+    assert wrapped_shape == (original_shape +
+                             (len(env.get_wrapper_attr('columns')) *
+                              env.get_wrapper_attr('n')))
 
     # Check reset obs
     obs, _ = env.reset()
@@ -279,38 +281,42 @@ def test_weatherforecasting_wrapper(env_demo):
 
 
 def test_weatherforecasting_wrapper_weatherdata(env_demo):
-    env = WeatherForecastingWrapper(env_demo, 
-        n=3, 
-        delta=1,
-        weather_variability={
-            'Dry Bulb Temperature': (1.0, 0.0, 0.001),
-            'Wind Speed': (3.0, 0.0, 0.01)
-        }
-    )
+    env = WeatherForecastingWrapper(
+        env_demo, n=3, delta=1, weather_variability={
+            'Dry Bulb Temperature': (
+                1.0, 0.0, 0.001), 'Wind Speed': (
+                3.0, 0.0, 0.01)})
 
     # Checks weather data has correct info
     original_weather_data = Weather()
     original_weather_data.read(env.get_wrapper_attr('weather_path'))
-    original_weather_data = original_weather_data.dataframe.loc[:, ['Month', 'Day', 'Hour'] + env.get_wrapper_attr('columns')]
+    original_weather_data = original_weather_data.dataframe.loc[:, [
+        'Month', 'Day', 'Hour'] + env.get_wrapper_attr('columns')]
     noised_weather_data = env.get_wrapper_attr('weather_data')
 
     assert original_weather_data.columns.equals(noised_weather_data.columns)
 
     # Checks noise is applied correctly in weather data
-    assert not original_weather_data['Dry Bulb Temperature'].equals(noised_weather_data['Dry Bulb Temperature'])
-    assert not original_weather_data['Wind Speed'].equals(noised_weather_data['Wind Speed'])
+    assert not original_weather_data['Dry Bulb Temperature'].equals(
+        noised_weather_data['Dry Bulb Temperature'])
+    assert not original_weather_data['Wind Speed'].equals(
+        noised_weather_data['Wind Speed'])
 
-    columns_to_be_same = [col for col in original_weather_data.columns if col not in ['Dry Bulb Temperature', 'Wind Speed']]
+    columns_to_be_same = [
+        col for col in original_weather_data.columns if col not in [
+            'Dry Bulb Temperature', 'Wind Speed']]
     original_columns_same = original_weather_data[columns_to_be_same]
     noised_columns_same = noised_weather_data[columns_to_be_same]
     assert original_columns_same.equals(noised_columns_same)
 
-    # Check that after the reset the weather data is recreated. 
+    # Check that after the reset the weather data is recreated.
     env.reset()
     weather_data_after_reset = env.get_wrapper_attr('weather_data')
 
-    assert not noised_weather_data['Dry Bulb Temperature'].equals(weather_data_after_reset['Dry Bulb Temperature'])
-    assert not noised_weather_data['Wind Speed'].equals(weather_data_after_reset['Wind Speed'])
+    assert not noised_weather_data['Dry Bulb Temperature'].equals(
+        weather_data_after_reset['Dry Bulb Temperature'])
+    assert not noised_weather_data['Wind Speed'].equals(
+        weather_data_after_reset['Wind Speed'])
 
     noised_columns_same = noised_weather_data[columns_to_be_same]
     after_reset_columns_same = weather_data_after_reset[columns_to_be_same]
@@ -320,28 +326,40 @@ def test_weatherforecasting_wrapper_weatherdata(env_demo):
 def test_weatherforecasting_wrapper_exceptions(env_demo):
     # Specify a tuple with wrong shape (must be 3)
     with pytest.raises(IndexError):
-        env = WeatherForecastingWrapper(env_demo, 
-            n=3, 
-            delta=1,
-            weather_variability={
-                'Dry Bulb Temperature': (1.0, 0.0),
-                'Wind Speed': (3.0, 0.0)}
-        )
+        env = WeatherForecastingWrapper(env_demo,
+                                        n=3,
+                                        delta=1,
+                                        weather_variability={
+                                            'Dry Bulb Temperature': (1.0, 0.0),
+                                            'Wind Speed': (3.0, 0.0)}
+                                        )
 
     # Specify a key that it isn't in `columns`
     with pytest.raises(ValueError):
         env = WeatherForecastingWrapper(
-            env_demo, 
-            n=3, 
-            delta=1, 
-            columns=['Dry Bulb Temperature', 'Relative Humidity', 'Wind Direction', 'Wind Speed', 
-                     'Direct Normal Radiation', 'Diffuse Horizontal Radiation'],
+            env_demo,
+            n=3,
+            delta=1,
+            columns=[
+                'Dry Bulb Temperature',
+                'Relative Humidity',
+                'Wind Direction',
+                'Wind Speed',
+                'Direct Normal Radiation',
+                'Diffuse Horizontal Radiation'],
             weather_variability={
-                'Dry Bulb Temperature': (1.0, 0.0, 0.001),
-                'Wind Speed': (3.0, 0.0, 0.01),
-                'Not in columns': (3.0, 0.0, 0.01)
-            }
-        )
+                'Dry Bulb Temperature': (
+                    1.0,
+                    0.0,
+                    0.001),
+                'Wind Speed': (
+                    3.0,
+                    0.0,
+                    0.01),
+                'Not in columns': (
+                    3.0,
+                    0.0,
+                    0.01)})
 
 
 def test_incremental_wrapper(env_demo):
