@@ -237,6 +237,11 @@ MultiObsWrapper
 
 This stacks observations received in a history queue (the size can be customized).
 
+**************************
+WeatherForecastingWrapper
+**************************
+
+This wrapper adds weather forecast information to the current observation.
 
 .. note:: For examples about how to use these wrappers, visit :ref:`Wrappers example`.
 
