@@ -290,6 +290,7 @@ wandb
 WandBLogger
 WandBOutputFormat
 warmup
+WeatherForecastingWrapper
 wEconomizer
 winterday
 wouldn
