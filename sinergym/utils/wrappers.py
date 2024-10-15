@@ -312,17 +312,25 @@ class NormalizeObservation(gym.Wrapper):
 
 
 class WeatherForecastingWrapper(gym.Wrapper):
-    
-    logger = TerminalLogger().getLogger(name='WRAPPER WeatherForecastingWrapper',
-                                level=LOG_WRAPPERS_LEVEL)
 
-    def __init__(
-        self, env: Env, 
-        n: int = 5, 
-        delta: int = 1, 
-        columns: List[str] = ['Dry Bulb Temperature', 'Relative Humidity', 'Wind Direction', 'Wind Speed', 
-                            'Direct Normal Radiation', 'Diffuse Horizontal Radiation'], 
-        weather_variability: Optional[Dict[str, Tuple[float, float, float]]] = None):
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER WeatherForecastingWrapper',
+        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: Env,
+                 n: int = 5,
+                 delta: int = 1,
+                 columns: List[str] = ['Dry Bulb Temperature',
+                                       'Relative Humidity',
+                                       'Wind Direction',
+                                       'Wind Speed',
+                                       'Direct Normal Radiation',
+                                       'Diffuse Horizontal Radiation'],
+                 weather_variability: Optional[Dict[str,
+                                                    Tuple[float,
+                                                          float,
+                                                          float]]] = None):
         """Adds weather forecast information to the current observation.
 
         Args:
@@ -330,7 +338,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
             n (int, optional): Number of observations to be added. Default to 5.
             delta (int, optional): Time interval between observations. Defaults to 1.
             columns (List[str], optional): List of the names of the meteorological variables that will make up the weather forecast observation.
-            weather_variability (Dict[str, Tuple[float, float, float]], optional): Dictionary with the variation for each column in the weather data. Defaults to None. 
+            weather_variability (Dict[str, Tuple[float, float, float]], optional): Dictionary with the variation for each column in the weather data. Defaults to None.
             The key is the column name and the value is a tuple with the sigma, mean and tau for OU process. If not provided, it assumes no variability.
         Raises:
             ValueError: If any key in `weather_variability` is not present in the `columns` list.
@@ -338,7 +346,8 @@ class WeatherForecastingWrapper(gym.Wrapper):
         if weather_variability is not None:
             for variable in weather_variability.keys():
                 if variable not in columns:
-                    raise ValueError(f"The variable '{variable}' in weather_variability is not in columns.")
+                    raise ValueError(
+                        f"The variable '{variable}' in weather_variability is not in columns.")
 
         super(WeatherForecastingWrapper, self).__init__(env)
         self.n = n
@@ -380,7 +389,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
             action (Union[int, np.ndarray]): Action to be executed in environment.
 
         Returns:
-            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated 
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated
             episode and dict with Information about the enviroment.
         """
 
@@ -420,47 +429,66 @@ class WeatherForecastingWrapper(gym.Wrapper):
                 self.weather_data[variable] += noise
 
     def set_weather_data(self):
-        """Set the weather data used to build de state observation. 
+        """Set the weather data used to build de state observation.
         """
         data = Weather()
         data.read(self.weather_path)
-        self.weather_data = data.dataframe.loc[:, ['Month', 'Day', 'Hour'] + self.columns]
-        
+        self.weather_data = data.dataframe.loc[:, [
+            'Month', 'Day', 'Hour'] + self.columns]
+
         if self.weather_variability:
             self.apply_ou_variability()
 
-    def observation(self, obs:np.ndarray, info:Dict[str, Any]) -> np.ndarray:
+    def observation(self, obs: np.ndarray, info: Dict[str, Any]) -> np.ndarray:
         """Build the state observation by adding weather forecast information.
 
         Args:
             obs (np.ndarray): Original observation.
             info (Dict[str, Any]): Information about the enviroment.
         Returns:
-            np.ndarray: Transformed observation. 
+            np.ndarray: Transformed observation.
         """
-        # Search for the index corresponding to the time of the current observation.
-        filter = (self.weather_data['Month'] == info['month']) & (self.weather_data['Day'] == info['day']) & (self.weather_data['Hour'] == (info['hour'] + 1))
+        # Search for the index corresponding to the time of the current
+        # observation.
+        filter = (
+            self.weather_data['Month'] == info['month']) & (
+            self.weather_data['Day'] == info['day']) & (
+            self.weather_data['Hour'] == (
+                info['hour'] +
+                1))
         i = self.weather_data[filter].index[0]
 
-        # Create a list of indexes corresponding to the weather forecasts to be added
-        indexes = list(range(i + self.delta, i + self.delta * self.n + 1, self.delta))
-        indexes = [idx for idx in indexes if idx < len(self.weather_data)] # Ensure that DataFrame limits are not exceeded.
-        
-        # Exceptional case 1: no weather forecast remains. In this case we fill in by repeating 
-        # the information from the weather forecast observation of current time until the required size is reached.
+        # Create a list of indexes corresponding to the weather forecasts to be
+        # added
+        indexes = list(
+            range(
+                i +
+                self.delta,
+                i +
+                self.delta *
+                self.n +
+                1,
+                self.delta))
+        # Ensure that DataFrame limits are not exceeded.
+        indexes = [idx for idx in indexes if idx < len(self.weather_data)]
+
+        # Exceptional case 1: no weather forecast remains. In this case we fill in by repeating
+        # the information from the weather forecast observation of current time
+        # until the required size is reached.
         if len(indexes) == 0:
             indexes = [i]
-        
+
         # Obtain weather forecast observations
         selected_rows = self.weather_data.loc[indexes, self.columns].values
-        
-        # Exceptional case 2: If there are not enough weather forecasts, repeat the last weather forecast observation 
+
+        # Exceptional case 2: If there are not enough weather forecasts, repeat the last weather forecast observation
         # until the required size is reached.
         if len(selected_rows) < self.n:
             last_row = selected_rows[-1]
             needed_rows = self.n - len(selected_rows)
-            selected_rows = np.vstack([selected_rows, np.tile(last_row, (needed_rows, 1))])
-        
+            selected_rows = np.vstack(
+                [selected_rows, np.tile(last_row, (needed_rows, 1))])
+
         info_forecasting = selected_rows.flatten()
         obs = np.concatenate((obs, info_forecasting))
 
