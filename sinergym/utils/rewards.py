@@ -3,7 +3,7 @@
 
 from datetime import datetime
 from math import exp
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from sinergym.utils.constants import LOG_REWARD_LEVEL, YEAR
 from sinergym.utils.logger import TerminalLogger
@@ -236,6 +236,190 @@ class LinearReward(BaseReward):
             (1 - self.W_energy) * comfort_penalty
         reward = energy_term + comfort_term
         return reward, energy_term, comfort_term
+
+
+class EnergyCostLinearReward(LinearReward):
+
+    def __init__(
+        self,
+        temperature_variables: List[str],
+        energy_variables: List[str],
+        range_comfort_winter: Tuple[int, int],
+        range_comfort_summer: Tuple[int, int],
+        energy_cost_variables: List[str],
+        summer_start: Tuple[int, int] = (6, 1),
+        summer_final: Tuple[int, int] = (9, 30),
+        energy_weight: float = 0.4,
+        temperature_weight: float = 0.4,
+        lambda_energy: float = 1.0,
+        lambda_temperature: float = 1.0,
+        lambda_energy_cost: float = 1.0
+    ):
+        """
+        Linear reward function with the addition of the energy cost term.
+
+        Considers energy consumption, absolute difference to thermal comfort and energy cost.
+
+        .. math::
+            R = - W_E * lambda_E * power - W_T * lambda_T * (max(T - T_{low}, 0) + max(T_{up} - T, 0)) - (1 - W_P - W_T) * lambda_EC * power_cost
+
+        Args:
+            temperature_variables (List[str]): Name(s) of the temperature variable(s).
+            energy_variables (List[str]): Name(s) of the energy/power variable(s).
+            range_comfort_winter (Tuple[int,int]): Temperature comfort range for cold season. Depends on environment you are using.
+            range_comfort_summer (Tuple[int,int]): Temperature comfort range for hot season. Depends on environment you are using.
+            summer_start (Tuple[int,int]): Summer session tuple with month and day start. Defaults to (6,1).
+            summer_final (Tuple[int,int]): Summer session tuple with month and day end. defaults to (9,30).
+            energy_weight (float, optional): Weight given to the energy term. Defaults to 0.4.
+            temperature_weight (float, optional): Weight given to the temperature term. Defaults to 0.4.
+            lambda_energy (float, optional): Constant for removing dimensions from power(1/W). Defaults to 1.0.
+            lambda_temperature (float, optional): Constant for removing dimensions from temperature(1/C). Defaults to 1.0.
+            lambda_energy_cost (flota, optional): Constant for removing dimensions from temperature(1/E). Defaults to 1.0.
+        """
+
+        super(EnergyCostLinearReward, self).__init__(
+            temperature_variables,
+            energy_variables,
+            range_comfort_winter,
+            range_comfort_summer,
+            summer_start,
+            summer_final,
+            energy_weight,
+            lambda_energy,
+            lambda_temperature
+        )
+
+        self.energy_cost_names = energy_cost_variables
+        self.W_temperature = temperature_weight
+        self.lambda_energy_cost = lambda_energy_cost
+
+        if (self.W_energy + self.W_temperature) > 1.0:
+            raise ValueError(
+                "The sum of the energy and temperature weights cannot be greater than 1.")
+
+        self.logger.info('Reward function initialized.')
+
+    def __call__(self, obs_dict: Dict[str, Any]
+                 ) -> Tuple[float, Dict[str, Any]]:
+        """Calculate the reward function.
+
+        Args:
+            obs_dict (Dict[str, Any]): Dict with observation variable name (key) and observation variable value (value)
+
+        Returns:
+            Tuple[float, Dict[str, Any]]: Reward value and dictionary with their individual components.
+        """
+        # Check variables to calculate reward are available
+        try:
+            assert all(temp_name in list(obs_dict.keys())
+                       for temp_name in self.temp_names)
+        except AssertionError as err:
+            self.logger.error(
+                'Some of the temperature variables specified are not present in observation.')
+            raise err
+        try:
+            assert all(energy_name in list(obs_dict.keys())
+                       for energy_name in self.energy_names)
+        except AssertionError as err:
+            self.logger.error(
+                'Some of the energy variables specified are not present in observation.')
+            raise err
+        try:
+            assert all(energy_cost_name in list(obs_dict.keys())
+                       for energy_cost_name in self.energy_cost_names)
+        except AssertionError as err:
+            self.logger.error(
+                'Some of the energy cost variables specified are not present in observation.')
+            raise err
+
+        # Energy calculation
+        energy_consumed, energy_values = self._get_energy_consumed(obs_dict)
+        energy_penalty = self._get_energy_penalty(energy_values)
+
+        # Comfort violation calculation
+        total_temp_violation, temp_violations = self._get_temperature_violation(
+            obs_dict)
+        comfort_penalty = self._get_comfort_penalty(temp_violations)
+
+        # Energy cost calculation
+        money_spent, energy_cost_values = self._get_money_spent(obs_dict)
+        energy_cost_penalty = self._get_energy_cost_penalty(energy_cost_values)
+
+        # Weighted sum of terms
+        reward, energy_term, comfort_term, energy_cost_term = self._get_reward_custom(
+            energy_penalty, comfort_penalty, energy_cost_penalty)
+
+        reward_terms = {
+            'energy_term': energy_term,
+            'comfort_term': comfort_term,
+            'energy_cost_term': energy_cost_term,
+            'reward_energy_weight': self.W_energy,
+            'reward_temperature_weight': self.W_temperature,
+            'abs_energy_penalty': energy_penalty,
+            'abs_comfort_penalty': comfort_penalty,
+            'abs_energy_cost_penalty': energy_cost_penalty,
+            'total_power_demand': energy_consumed,
+            'total_temperature_violation': total_temp_violation,
+            'money_spent': money_spent
+        }
+
+        return reward, reward_terms
+
+    def _get_money_spent(self, obs_dict: Dict[str,
+                                              Any]) -> Tuple[float,
+                                                             List[float]]:
+        """Calculate the total money spent in the current observation.
+
+        Args:
+            obs_dict (Dict[str, Any]): Environment observation.
+
+        Returns:
+            Tuple[float, List[float]]: Total money spent (sum of variables) and List with money spent in each energy cost variable.
+        """
+        energy_cost_values = [
+            v for k, v in obs_dict.items() if k in self.energy_cost_names]
+        total_energy_cost = sum(energy_cost_values)
+
+        return total_energy_cost, energy_cost_values
+
+    def _get_energy_cost_penalty(
+            self, energy_cost_values: List[float]) -> float:
+        """Calculate the negative absolute energy cost penalty based on energy cost values
+
+        Args:
+            energy_cost_values (List[float]): Energy cost values
+
+        Returns:
+            float: Negative absolute energy cost penalty value
+        """
+        energy_cost_penalty = -sum(energy_cost_values)
+        return energy_cost_penalty
+
+    def _get_reward_custom(self,
+                    energy_penalty: float,
+                    comfort_penalty: float,
+                    energy_cost_penalty: float) -> Tuple[float,
+                                                         float,
+                                                         float,
+                                                         float]:
+        """It calculates reward value using the negative absolute comfort, energy penalty and energy cost penalty calculates previously.
+
+        Args:
+            energy_penalty (float): Negative absolute energy penalty value.
+            comfort_penalty (float): Negative absolute comfort penalty value.
+            energy_cost_penalty (float): Negative obsolute energy cost penalty value.
+
+        Returns:
+            Tuple[float,float,float,float]: total reward calculated, reward term for energy, reward term for comfort and reward term for energy cost.
+        """
+        energy_term = self.lambda_energy * self.W_energy * energy_penalty
+        comfort_term = self.lambda_temp * \
+            self.W_temperature * comfort_penalty
+        energy_cost_term = self.lambda_energy_cost * \
+            (1 - self.W_energy - self.W_temperature) * energy_cost_penalty
+
+        reward = energy_term + comfort_term + energy_cost_term
+        return reward, energy_term, comfort_term, energy_cost_term
 
 
 class ExpReward(LinearReward):
