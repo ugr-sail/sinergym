@@ -610,8 +610,8 @@ class EnergyCostWrapper(gym.Wrapper):
 
         Args:
             env (Env): Original Gym environment.
-            energy_cost_data_file (str):
-            energy_cost_variability (Tuple[float,float,float], optional):
+            energy_cost_data_file (str): file from which the energy cost data is obtained 
+            energy_cost_variability (Tuple[float,float,float], optional): variation for energy cost data
             reward_kwargs (Dict[str, Any], optional): Parameters for customizing the reward function.
 
         """
@@ -700,7 +700,7 @@ class EnergyCostWrapper(gym.Wrapper):
         return new_obs.reshape(-1,), new_reward, terminated, truncated, info
 
     def apply_ou_variability(self):
-        """Modify energy cost data using Ornstein-Uhlenbeck process according to the variation specified in the energy_cost_variability dictionary.
+        """Modify energy cost data using Ornstein-Uhlenbeck process according to the variation specified in the energy_cost_variability variable.
         """
 
         if self.energy_cost_variability is not None:
