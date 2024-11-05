@@ -38,6 +38,7 @@ def test_rewards(reward_name, env_name, request):
         obs_dict = dict(zip(env.observation_variables, obs))
         R, terms = reward(obs_dict)
 
+
 @pytest.mark.parametrize('reward_name,env_name',
                          [('linear_reward', 'env_demo'),
                           ('energy_cost_linear_reward', 'env_demo_energy_cost'),

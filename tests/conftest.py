@@ -605,7 +605,7 @@ def custom_logger_wrapper():
     return CustomLoggerWrapper
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def env_all_wrappers(env_demo):
     env = MultiObjectiveReward(
         env=env_demo,
@@ -638,22 +638,22 @@ def env_all_wrappers(env_demo):
 # ---------------------------------------------------------------------------- #
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def random_controller(env_5zone):
     return RandomController(env=env_5zone)
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def zone5_controller(env_5zone):
     return RBC5Zone(env=env_5zone)
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def datacenter_controller(env_datacenter):
     return RBCDatacenter(env=env_datacenter)
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def datacenter_incremental_controller(env_datacenter):
     return RBCIncrementalDatacenter(env=env_datacenter)
 
@@ -662,14 +662,14 @@ def datacenter_incremental_controller(env_datacenter):
 # ---------------------------------------------------------------------------- #
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def building(json_path_5zone):
     with open(json_path_5zone) as json_f:
         building_model = json.load(json_f)
     return building_model
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def weather_data(weather_path_pittsburgh):
     weather_data = Weather()
     weather_data.read(weather_path_pittsburgh)
@@ -680,12 +680,12 @@ def weather_data(weather_path_pittsburgh):
 # ---------------------------------------------------------------------------- #
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def base_reward():
     return BaseReward()
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def custom_reward():
     class CustomReward(BaseReward):
         def __init__(self):
@@ -697,7 +697,7 @@ def custom_reward():
     return CustomReward()
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def linear_reward():
     return LinearReward(
         temperature_variables=['air_temperature'],
@@ -710,21 +710,26 @@ def linear_reward():
             26.0))
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def energy_cost_linear_reward():
-    return EnergyCostLinearReward(temperature_variables=['air_temperature'],
-                                energy_variables=['HVAC_electricity_demand_rate'],
-                                energy_cost_variables=['energy_cost'],
-                                range_comfort_winter=[20.0,23.5],
-                                range_comfort_summer=[23.0,26.0],
-                                temperature_weight=0.4,
-                                energy_weight=0.4,
-                                lambda_energy=1e-4,
-                                lambda_temperature=1.0,
-                                lambda_energy_cost=1.0)
+    return EnergyCostLinearReward(
+        temperature_variables=['air_temperature'],
+        energy_variables=['HVAC_electricity_demand_rate'],
+        energy_cost_variables=['energy_cost'],
+        range_comfort_winter=[
+            20.0,
+            23.5],
+        range_comfort_summer=[
+            23.0,
+            26.0],
+        temperature_weight=0.4,
+        energy_weight=0.4,
+        lambda_energy=1e-4,
+        lambda_temperature=1.0,
+        lambda_energy_cost=1.0)
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def exponential_reward():
     return ExpReward(
         temperature_variables=['air_temperature'],
@@ -737,7 +742,7 @@ def exponential_reward():
             26.0))
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def hourly_linear_reward():
     return HourlyLinearReward(
         temperature_variables=['air_temperature'],
@@ -750,7 +755,7 @@ def hourly_linear_reward():
             26.0))
 
 
-@ pytest.fixture(scope='function')
+@pytest.fixture(scope='function')
 def normalized_linear_reward():
     return NormalizedLinearReward(
         temperature_variables=['air_temperature'],
