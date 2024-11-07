@@ -396,12 +396,12 @@ class EnergyCostLinearReward(LinearReward):
         return energy_cost_penalty
 
     def _get_reward_custom(self,
-                    energy_penalty: float,
-                    comfort_penalty: float,
-                    energy_cost_penalty: float) -> Tuple[float,
-                                                         float,
-                                                         float,
-                                                         float]:
+                           energy_penalty: float,
+                           comfort_penalty: float,
+                           energy_cost_penalty: float) -> Tuple[float,
+                                                                float,
+                                                                float,
+                                                                float]:
         """It calculates reward value using the negative absolute comfort, energy penalty and energy cost penalty calculates previously.
 
         Args:

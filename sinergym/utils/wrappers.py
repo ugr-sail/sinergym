@@ -664,7 +664,7 @@ class EnergyCostWrapper(gym.Wrapper):
         obs, info = self.env.reset(seed=seed, options=options)
         obs = self.observation(obs, info)
 
-        return obs.reshape(-1,), info
+        return obs, info
 
     def step(self, action: Union[int, np.ndarray]
 
@@ -697,7 +697,7 @@ class EnergyCostWrapper(gym.Wrapper):
         info.update({'reward': new_reward})
         info.update(new_terms)
 
-        return new_obs.reshape(-1,), new_reward, terminated, truncated, info
+        return new_obs, new_reward, terminated, truncated, info
 
     def apply_ou_variability(self):
         """Modify energy cost data using Ornstein-Uhlenbeck process according to the variation specified in the energy_cost_variability variable.

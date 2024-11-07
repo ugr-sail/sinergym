@@ -363,7 +363,7 @@ def test_weatherforecasting_wrapper_exceptions(env_demo):
 
 
 def test_energycost_wrapper(env_demo):
-    env = EnergyCostWrapper(env_demo, energy_cost_data_file='example')
+    env = EnergyCostWrapper(env_demo, energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023')
 
     # Check attributes exist in wrapped env
     assert hasattr(
@@ -398,7 +398,7 @@ def test_energycost_wrapper(env_demo):
 
 def test_energycost_wrapper_energycostdata(env_demo):
     env = EnergyCostWrapper(env_demo,
-                            energy_cost_data_file='example',
+                            energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023',
                             energy_cost_variability=(1.0, 0.0, 0.001))
 
     # Checks weather data has correct info
@@ -445,7 +445,7 @@ def test_energycost_wrapper_exceptions(env_demo):
     # Specify a tuple with wrong shape (must be 3)
     with pytest.raises(IndexError):
         env = EnergyCostWrapper(env_demo,
-                                energy_cost_data_file='example',
+                                energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023',
                                 energy_cost_variability=(1.0, 0.0))
 
     # Specify a energy cost file that doesn't exist

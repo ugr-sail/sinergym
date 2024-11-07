@@ -55,6 +55,8 @@ Different types of reward functions are designed based on specific details:
 
    .. math:: r_t = - \omega_P \ \lambda_P \ P_t - \omega_T \ \lambda_T \ (|T_t - T_{up}| + |T_t - T_{low}|) - (1 - \omega_P - \omega_T) \ \lambda_{EC} \ EC_t
 
+   .. warning:: This function is used internally by the EnergyCostWrapper and it is not intended to be used otherwise.
+
 These reward functions have parameters in their constructors, the values of which may vary based on the building 
 used or other factors. By default, all environments use the ``LinearReward`` with default parameters for each 
 building. To change this, refer to the example in :ref:`Adding a new reward`.

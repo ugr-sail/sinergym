@@ -300,7 +300,7 @@ def env_demo_energy_cost(
             'runperiod': (1, 1, 1991, 31, 1, 1991)
         }
     )
-    env = EnergyCostWrapper(env, energy_cost_data_file='example')
+    env = EnergyCostWrapper(env, energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023')
     return env
 
 
@@ -367,7 +367,7 @@ def env_demo_summer_energy_cost(
             'runperiod': (7, 1, 1991, 31, 7, 1991)
         }
     )
-    env = EnergyCostWrapper(env, energy_cost_data_file='example')
+    env = EnergyCostWrapper(env, energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023')
     return env
 
 
