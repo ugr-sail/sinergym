@@ -610,7 +610,7 @@ class EnergyCostWrapper(gym.Wrapper):
 
         Args:
             env (Env): Original Gym environment.
-            energy_cost_data_file (str): file from which the energy cost data is obtained 
+            energy_cost_data_file (str): file from which the energy cost data is obtained
             energy_cost_variability (Tuple[float,float,float], optional): variation for energy cost data
             reward_kwargs (Dict[str, Any], optional): Parameters for customizing the reward function.
 
