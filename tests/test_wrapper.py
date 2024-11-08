@@ -362,6 +362,107 @@ def test_weatherforecasting_wrapper_exceptions(env_demo):
                     0.01)})
 
 
+def test_energycost_wrapper(env_demo):
+    env = EnergyCostWrapper(
+        env_demo,
+        energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023')
+
+    # Check attributes exist in wrapped env
+    assert hasattr(
+        env,
+        'energy_cost_variability') and hasattr(
+        env,
+        'energy_cost_data_file') and hasattr(
+        env,
+        'observation_space') and hasattr(
+        env,
+        'energy_cost_data') and hasattr(
+        env,
+        'reward_fn')
+
+    # Check observation space transformation
+    original_shape = env.env.observation_space.shape[0]
+    wrapped_shape = env.observation_space.shape[0]
+    assert wrapped_shape == (original_shape + 1)
+
+    # Check reset obs
+    obs, _ = env.reset()
+    assert isinstance(obs, np.ndarray)
+    assert len(obs) == wrapped_shape
+
+    # Checks step obs
+    a = env.action_space.sample()
+    obs, _, _, _, _ = env.step(a)
+
+    assert isinstance(obs, np.ndarray)
+    assert len(obs) == wrapped_shape
+
+
+def test_energycost_wrapper_energycostdata(env_demo):
+    env = EnergyCostWrapper(
+        env_demo,
+        energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023',
+        energy_cost_variability=(
+            1.0,
+            0.0,
+            0.001))
+
+    # Checks weather data has correct info
+    original_energy_cost_data = pd.read_csv(env.energy_cost_data_file, sep=';')
+    original_energy_cost_data['datetime'] = pd.to_datetime(
+        original_energy_cost_data['datetime'], utc=True)
+    original_energy_cost_data['datetime'] += pd.DateOffset(hours=1)
+
+    original_energy_cost_data['Month'] = original_energy_cost_data['datetime'].dt.month
+    original_energy_cost_data['Day'] = original_energy_cost_data['datetime'].dt.day
+    original_energy_cost_data['Hour'] = original_energy_cost_data['datetime'].dt.hour
+    original_energy_cost_data = original_energy_cost_data[[
+        'Month', 'Day', 'Hour', 'value']]
+
+    noised_energy_cost_data = env.get_wrapper_attr('energy_cost_data')
+
+    assert original_energy_cost_data.columns.equals(
+        noised_energy_cost_data.columns)
+
+    # Checks noise is applied correctly in energy cost data
+    assert not original_energy_cost_data['value'].equals(
+        noised_energy_cost_data['value'])
+
+    columns_to_be_same = [
+        col for col in original_energy_cost_data.columns if col not in [
+            'value']]
+    original_columns_same = original_energy_cost_data[columns_to_be_same]
+    noised_columns_same = noised_energy_cost_data[columns_to_be_same]
+    assert original_columns_same.equals(noised_columns_same)
+
+    # Check that after the reset the energy cost data is recreated.
+    env.reset()
+    energy_cost_data_after_reset = env.get_wrapper_attr('energy_cost_data')
+
+    assert not noised_energy_cost_data['value'].equals(
+        energy_cost_data_after_reset['value'])
+
+    noised_columns_same = noised_energy_cost_data[columns_to_be_same]
+    after_reset_columns_same = energy_cost_data_after_reset[columns_to_be_same]
+    assert noised_columns_same.equals(after_reset_columns_same)
+
+
+def test_energycost_wrapper_exceptions(env_demo):
+    # Specify a tuple with wrong shape (must be 3)
+    with pytest.raises(IndexError):
+        env = EnergyCostWrapper(
+            env_demo,
+            energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023',
+            energy_cost_variability=(
+                1.0,
+                0.0))
+
+    # Specify a energy cost file that doesn't exist
+    with pytest.raises(FileNotFoundError):
+        env = EnergyCostWrapper(env_demo,
+                                energy_cost_data_file='non-existent-file')
+
+
 def test_incremental_wrapper(env_demo):
 
     env = IncrementalWrapper(

@@ -11,6 +11,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
+import pandas as pd
 import wandb
 from epw.weather import Weather
 from gymnasium import Env
@@ -19,6 +20,7 @@ from gymnasium.wrappers.normalize import RunningMeanStd
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 from sinergym.utils.logger import LoggerStorage, TerminalLogger
+from sinergym.utils.rewards import EnergyCostLinearReward
 
 # ---------------------------------------------------------------------------- #
 #                             Observation wrappers                             #
@@ -576,6 +578,196 @@ class WeatherForecastingWrapper(gym.Wrapper):
 
         info_forecasting = selected_rows.flatten()
         obs = np.concatenate((obs, info_forecasting))
+
+        return obs
+
+
+class EnergyCostWrapper(gym.Wrapper):
+    logger = TerminalLogger().getLogger(name='WRAPPER EnergyCostWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: Env,
+                 energy_cost_data_file: str,
+                 reward_kwargs: Optional[Dict[str,
+                                              Any]] = {'temperature_variables': ['air_temperature'],
+                                                       'energy_variables': ['HVAC_electricity_demand_rate'],
+                                                       'energy_cost_variables': ['energy_cost'],
+                                                       'range_comfort_winter': [20.0,
+                                                                                23.5],
+                                                       'range_comfort_summer': [23.0,
+                                                                                26.0],
+                                                       'temperature_weight': 0.4,
+                                                       'energy_weight': 0.4,
+                                                       'lambda_energy': 1e-4,
+                                                       'lambda_temperature': 1.0,
+                                                       'lambda_energy_cost': 1.0},
+                 energy_cost_variability: Optional[Tuple[float,
+                                                         float,
+                                                         float]] = None):
+        """
+        Adds energy cost information to the current observation.
+
+        Args:
+            env (Env): Original Gym environment.
+            energy_cost_data_file (str): file from which the energy cost data is obtained
+            energy_cost_variability (Tuple[float,float,float], optional): variation for energy cost data
+            reward_kwargs (Dict[str, Any], optional): Parameters for customizing the reward function.
+
+        """
+        allowed_keys = {
+            'temperature_variables',
+            'energy_variables',
+            'energy_cost_variables',
+            'range_comfort_winter',
+            'range_comfort_summer',
+            'temperature_weight',
+            'energy_weight',
+            'lambda_energy',
+            'lambda_temperature',
+            'lambda_energy_cost'
+        }
+
+        if reward_kwargs:
+            for key in reward_kwargs.keys():
+                if key not in allowed_keys:
+                    raise ValueError(
+                        f"The key '{key}' in reward_kwargs is not recognized.")
+
+        super(EnergyCostWrapper, self).__init__(env)
+        self.get_wrapper_attr('observation_variables').append("energy_cost")
+        self.energy_cost_variability = {
+            'value': energy_cost_variability} if energy_cost_variability is not None else None
+        self.energy_cost_data_file = 'sinergym/data/energy_cost/' + \
+            energy_cost_data_file + '.csv'
+        new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 1
+        self.observation_space = gym.spaces.Box(
+            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+        self.energy_cost_data = None
+        self.set_energy_cost_data()
+        self.reward_fn = EnergyCostLinearReward(**reward_kwargs)
+        self.logger.info('Wrapper initialized.')
+
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
+        """Resets the environment.
+
+        Returns:
+            Tuple[np.ndarray,Dict[str,Any]]: Tuple with next observation, and dict with information about the enviroment.
+        """
+        self.set_energy_cost_data()
+
+        obs, info = self.env.reset(seed=seed, options=options)
+        obs = self.observation(obs, info)
+
+        return obs, info
+
+    def step(self, action: Union[int, np.ndarray]
+
+             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
+        """Performs the action in the new environment.
+
+        Args:
+            action (Union[int, np.ndarray]): Action to be executed in environment.
+
+        Returns:
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated
+            episode and dict with Information about the enviroment.
+        """
+
+        obs, _, terminated, truncated, info = self.env.step(action)
+        new_obs = self.observation(obs, info)
+
+        obs_dict = dict(zip(self.get_wrapper_attr('observation_variables'), np.concatenate(
+            (new_obs[:len(self.get_wrapper_attr('observation_variables')) - 1], [new_obs[-1]]))))
+
+        # Recalculation of reward with new info
+        new_reward, new_terms = self.reward_fn(obs_dict)
+        info = {
+            key: info[key] for key in list(
+                info.keys())[
+                :list(
+                    info.keys()).index('reward') +
+                1]}
+
+        info.update({'reward': new_reward})
+        info.update(new_terms)
+
+        return new_obs, new_reward, terminated, truncated, info
+
+    def apply_ou_variability(self):
+        """Modify energy cost data using Ornstein-Uhlenbeck process according to the variation specified in the energy_cost_variability variable.
+        """
+
+        if self.energy_cost_variability is not None:
+
+            T = 1.  # Total time.
+            # All the columns are going to have the same num of rows since they are
+            # in the same dataframe
+            n = self.energy_cost_data.shape[0]
+            dt = T / n
+
+            for variable, variation in self.energy_cost_variability.items():
+
+                sigma = variation[0]  # Standard deviation.
+                mu = variation[1]  # Mean.
+                tau = variation[2]  # Time constant.
+
+                sigma_bis = sigma * np.sqrt(2. / tau)
+                sqrtdt = np.sqrt(dt)
+
+                # Create noise
+                noise = np.zeros(n)
+                for i in range(n - 1):
+                    noise[i + 1] = noise[i] + dt * (-(noise[i] - mu) / tau) + \
+                        sigma_bis * sqrtdt * np.random.randn()
+
+                self.energy_cost_data[variable] += noise
+
+    def set_energy_cost_data(self):
+        """Sets the cost of energy data used to construct the state observation.
+        """
+
+        df = pd.read_csv(self.energy_cost_data_file, sep=';')
+        df['datetime'] = pd.to_datetime(df['datetime'], utc=True)
+        df['datetime'] += pd.DateOffset(hours=1)
+
+        df['Month'] = df['datetime'].dt.month
+        df['Day'] = df['datetime'].dt.day
+        df['Hour'] = df['datetime'].dt.hour
+
+        self.energy_cost_data = df[['Month', 'Day', 'Hour', 'value']]
+
+        if self.energy_cost_variability:
+            self.apply_ou_variability()
+
+    def observation(self, obs, info):
+        """Build the state observation by adding energy cost information.
+
+        Args:
+            obs (np.ndarray): Original observation.
+            info (Dict[str, Any]): Information about the enviroment.
+        Returns:
+            np.ndarray: Transformed observation.
+        """
+        # Search for the index corresponding to the time of the current
+        # observation.
+        filter = (
+            self.energy_cost_data['Month'] == info['month']) & (
+            self.energy_cost_data['Day'] == info['day']) & (
+            self.energy_cost_data['Hour'] == (
+                info['hour']))
+        i = self.energy_cost_data[filter].index[0]
+
+        # Obtain energy cost observation
+        selected_row = self.energy_cost_data.loc[i, ['value']].values
+
+        info_energy_cost = selected_row.flatten()
+        obs = np.concatenate((obs, info_energy_cost))
 
         return obs
 
