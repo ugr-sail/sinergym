@@ -243,6 +243,14 @@ WeatherForecastingWrapper
 
 This wrapper adds weather forecast information to the current observation.
 
+******************
+EnergyCostWrapper
+******************
+
+This wrapper adds energy cost information to the current observation.
+
+.. warning:: This wrapper internally uses the EnergyCostLinearReward reward function independently of the reward function set when creating the environment.
+
 .. note:: For examples about how to use these wrappers, visit :ref:`Wrappers example`.
 
 .. important:: You have to be careful if you are going to use several nested wrappers.

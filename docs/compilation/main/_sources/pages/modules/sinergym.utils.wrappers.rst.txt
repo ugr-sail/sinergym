@@ -24,6 +24,7 @@
       DatetimeWrapper
       DiscreteIncrementalWrapper
       DiscretizeEnv
+      EnergyCostWrapper
       IncrementalWrapper
       LoggerWrapper
       MultiObjectiveReward

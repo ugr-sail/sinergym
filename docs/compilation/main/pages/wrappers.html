@@ -82,6 +82,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#reduceobservationwrapper">12.10. ReduceObservationWrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#multiobswrapper">12.11. MultiObsWrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#weatherforecastingwrapper">12.12. WeatherForecastingWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#energycostwrapper">12.13. EnergyCostWrapper</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">13. Extra Configuration in Sinergym simulations</a></li>
@@ -312,6 +313,14 @@ which can be observed in the info dictionary.</p>
 <section id="weatherforecastingwrapper">
 <h2><span class="section-number">12.12. </span>WeatherForecastingWrapper<a class="headerlink" href="#weatherforecastingwrapper" title="Link to this heading"></a></h2>
 <p>This wrapper adds weather forecast information to the current observation.</p>
+</section>
+<section id="energycostwrapper">
+<h2><span class="section-number">12.13. </span>EnergyCostWrapper<a class="headerlink" href="#energycostwrapper" title="Link to this heading"></a></h2>
+<p>This wrapper adds energy cost information to the current observation.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This wrapper internally uses the EnergyCostLinearReward reward function independently of the reward function set when creating the environment.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For examples about how to use these wrappers, visit <a class="reference internal" href="notebooks/wrappers_examples.html#Wrappers-example"><span class="std std-ref">Wrappers example</span></a>.</p>

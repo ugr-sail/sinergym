@@ -165,6 +165,18 @@ the <span class="math notranslate nohighlight">\(\lambda_P\)</span> and <span cl
 <p>This reward function is not very precise at the beginning of the simulation, be careful with that.</p>
 </div>
 </div></blockquote>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EnergyCostLinearReward</span></code> is the linear reward function with the addition of the energy cost term, giving the formula as follows:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[r_t = - \omega_P \ \lambda_P \ P_t - \omega_T \ \lambda_T \ (|T_t - T_{up}| + |T_t - T_{low}|) - (1 - \omega_P - \omega_T) \ \lambda_{EC} \ EC_t\]</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function is used internally by the <a class="reference internal" href="wrappers.html#energycostwrapper"><span class="std std-ref">EnergyCostWrapper</span></a> and it is not intended to be used otherwise.</p>
+</div>
+</div></blockquote>
+</li>
+</ul>
 <p>These reward functions have parameters in their constructors, the values of which may vary based on the building
 used or other factors. By default, all environments use the <code class="docutils literal notranslate"><span class="pre">LinearReward</span></code> with default parameters for each
 building. To change this, refer to the example in <a class="reference internal" href="notebooks/change_environment.html#Adding-a-new-reward"><span class="std std-ref">Adding a new reward</span></a>.</p>
