@@ -625,6 +625,81 @@ def test_normalize_action_wrapper(env_demo):
     assert env.unwrapped.action_space.contains(info['action'])
 
 
+def test_deltatemp_wrapper(env_datacenter):
+
+    old_observation_space = deepcopy(
+        env_datacenter.get_wrapper_attr('observation_space'))
+    old_observation_variables = deepcopy(
+        env_datacenter.get_wrapper_attr('observation_variables'))
+
+    assert not hasattr(env_datacenter, 'delta_temperatures')
+    assert not hasattr(env_datacenter, 'delta_setpoints')
+
+    # Same setpoint values than temperature values
+    env = DeltaTempWrapper(env_datacenter,
+                           temperature_variables=[
+                               'west_zone_air_temperature',
+                               'east_zone_air_temperature'],
+                           setpoint_variables=[
+                               'west_zone_htg_setpoint',
+                               'east_zone_htg_setpoint'])
+
+    # Check attributes exist in wrapped env
+    assert hasattr(env, 'delta_temperatures')
+    assert hasattr(env, 'delta_setpoints')
+    # Check new space
+    assert env.observation_space.shape[0] == old_observation_space.shape[0] + 2
+    assert len(env.get_wrapper_attr('observation_variables')
+               ) == len(old_observation_variables) + 2
+    assert env.get_wrapper_attr('observation_variables')[-2:] == [
+        'delta_' + env.delta_temperatures[0], 'delta_' + env.delta_temperatures[1]]
+
+    # Check observation values
+    obs, _ = env.reset()
+    obs_dict = dict(zip(env.get_wrapper_attr('observation_variables'), obs))
+    assert len(obs) == len(env.get_wrapper_attr('observation_variables'))
+    assert obs_dict['delta_west_zone_air_temperature'] == obs_dict['west_zone_air_temperature'] - \
+        obs_dict['west_zone_htg_setpoint']
+    assert obs_dict['delta_east_zone_air_temperature'] == obs_dict['east_zone_air_temperature'] - \
+        obs_dict['east_zone_htg_setpoint']
+
+    a = env.action_space.sample()
+    obs, _, _, _, _ = env.step(a)
+    obs_dict = dict(zip(env.get_wrapper_attr('observation_variables'), obs))
+    assert obs_dict['delta_west_zone_air_temperature'] == obs_dict['west_zone_air_temperature'] - \
+        obs_dict['west_zone_htg_setpoint']
+    assert obs_dict['delta_east_zone_air_temperature'] == obs_dict['east_zone_air_temperature'] - \
+        obs_dict['east_zone_htg_setpoint']
+
+    env.close()
+
+    # Unique setpoint value for all temperature values
+    env = DeltaTempWrapper(env_datacenter,
+                           temperature_variables=[
+                               'west_zone_air_temperature',
+                               'east_zone_air_temperature'],
+                           setpoint_variables=['west_zone_htg_setpoint'])
+
+    # Check observation values
+    obs, _ = env.reset()
+    obs_dict = dict(zip(env.get_wrapper_attr('observation_variables'), obs))
+    assert len(obs) == len(env.get_wrapper_attr('observation_variables'))
+    assert obs_dict['delta_west_zone_air_temperature'] == obs_dict['west_zone_air_temperature'] - \
+        obs_dict['west_zone_htg_setpoint']
+    assert obs_dict['delta_east_zone_air_temperature'] == obs_dict['east_zone_air_temperature'] - \
+        obs_dict['east_zone_htg_setpoint']
+
+    a = env.action_space.sample()
+    obs, _, _, _, _ = env.step(a)
+    obs_dict = dict(zip(env.get_wrapper_attr('observation_variables'), obs))
+    assert obs_dict['delta_west_zone_air_temperature'] == obs_dict['west_zone_air_temperature'] - \
+        obs_dict['west_zone_htg_setpoint']
+    assert obs_dict['delta_east_zone_air_temperature'] == obs_dict['east_zone_air_temperature'] - \
+        obs_dict['west_zone_htg_setpoint']
+
+    env.close()
+
+
 def test_normalize_action_exceptions(env_demo):
     # Environment cannot be discrete
     env_discrete = DiscretizeEnv(
