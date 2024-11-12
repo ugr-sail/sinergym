@@ -771,6 +771,87 @@ class EnergyCostWrapper(gym.Wrapper):
 
         return obs
 
+
+class DeltaTempWrapper(gym.ObservationWrapper):
+    """Wrapper to add delta temperature information to the current observation. If setpoint variables
+    has only one element, it will be considered as a unique setpoint for all temperature variables.
+    IMPORTANT: temperature variables and setpoint of each zone must be defined in the same order."""
+
+    logger = TerminalLogger().getLogger(name='WRAPPER DeltaTempWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: Env,
+                 temperature_variables: List[str],
+                 setpoint_variables: List[str]):
+        """
+        Args:
+            env (Env): Original Gym environment.
+            temperature_variables (List[str]): List of temperature variables.
+            setpoint_variables (List[str]): List of setpoint variables. If the length is 1, it will be considered as a unique setpoint for all temperature variables.
+        """
+        super(DeltaTempWrapper, self).__init__(env)
+
+        # Check variables definition
+        assert len(setpoint_variables) == 1 or len(setpoint_variables) == len(
+            temperature_variables), 'Setpoint variables must have one element length or the same length than temperature variables.'
+
+        # Check all temperature and setpoint variables are in environment
+        # observation variables
+        assert all([variable in self.get_wrapper_attr('observation_variables')
+                    for variable in temperature_variables]), 'Some temperature variables are not defined in observation space.'
+        assert all([variable in self.get_wrapper_attr('observation_variables')
+                    for variable in setpoint_variables]), 'Some setpoint variables are not defined in observation space.'
+
+        # Define wrappers attributes
+        self.delta_temperatures = temperature_variables
+        self.delta_setpoints = setpoint_variables
+
+        # Add delta temperature variables to observation variables
+        new_observation_variables = deepcopy(
+            self.get_wrapper_attr('observation_variables'))
+        for temp_var in temperature_variables:
+            new_observation_variables.append('delta_' + temp_var)
+        self.observation_variables = new_observation_variables
+
+        # Update observation space shape
+        new_shape = self.env.get_wrapper_attr(
+            'observation_space').shape[0] + len(temperature_variables)
+        self.observation_space = gym.spaces.Box(
+            low=self.env.observation_space.low[0],
+            high=self.env.observation_space.high[0],
+            shape=(
+                new_shape,
+            ),
+            dtype=self.env.observation_space.dtype)
+
+        self.logger.info('Wrapper initialized.')
+
+    def observation(self, obs: np.ndarray) -> np.ndarray:
+        """Add delta temperature information to the current observation.
+        """
+        # Get obs dictionary
+        obs_dict = dict(
+            zip(self.env.get_wrapper_attr('observation_variables'), obs))
+
+        # Get temperature values and setpoint(s) values
+        temperatures = [obs_dict[variable]
+                        for variable in self.delta_temperatures]
+        setpoints = [obs_dict[variable] for variable in self.delta_setpoints]
+
+        # Calculate delta values
+        if len(setpoints) == 1:
+            delta_temps = [temp - setpoints[0] for temp in temperatures]
+        else:
+            delta_temps = [temp - setpoint for temp, setpoint in zip(
+                temperatures, setpoints)]
+
+        # Update observation array appending delta values
+        new_obs = np.concatenate((obs, delta_temps))
+
+        return new_obs
+
+
 # ---------------------------------------------------------------------------- #
 #                                Action wrappers                               #
 # ---------------------------------------------------------------------------- #
