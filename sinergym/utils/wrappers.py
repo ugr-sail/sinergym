@@ -15,7 +15,7 @@ import pandas as pd
 import wandb
 from epw.weather import Weather
 from gymnasium import Env
-from gymnasium.wrappers.normalize import RunningMeanStd
+from gymnasium.wrappers.utils import RunningMeanStd
 
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
