@@ -1,9 +1,10 @@
 import numpy as np
-import pkg_resources
+from importlib import metadata
 import pytest
 
 required = {'stable-baselines3'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
+installed = {dist.metadata['Name'].lower()
+             for dist in metadata.distributions()}
 missing = required - installed
 if not missing:
     import stable_baselines3
