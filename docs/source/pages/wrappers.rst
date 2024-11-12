@@ -255,3 +255,16 @@ This wrapper adds energy cost information to the current observation.
 
 .. important:: You have to be careful if you are going to use several nested wrappers.
                A wrapper works on top of the previous one. The order is flexible since *Sinergym* v3.0.5.
+
+**************************
+DeltaTempWrapper
+**************************
+
+This wrapper adds to the observation space the delta values about specified zone air temperatures. 
+That its, the difference between the zone air temperature and the fixed setpoint value.
+Thus, it requires that the air temperature and setpoints variables are defined in the wrapper constructor.
+If the environment has a unique setpoint variable for all zones, you can specify only one variable in 
+setpoints field. Otherwise, you can specify a list of variables, one for each zone.
+
+.. important:: The air temperature variables and setpoints variables should be specified in the same order.
+  The length of these lists should be the same, in case you are not using the same setpoint for all zones.
