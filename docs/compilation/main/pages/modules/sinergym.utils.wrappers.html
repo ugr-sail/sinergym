@@ -100,6 +100,7 @@
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.BaseLoggerWrapper.html">sinergym.utils.wrappers.BaseLoggerWrapper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.CSVLogger.html">sinergym.utils.wrappers.CSVLogger</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.DatetimeWrapper.html">sinergym.utils.wrappers.DatetimeWrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.DeltaTempWrapper.html">sinergym.utils.wrappers.DeltaTempWrapper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.DiscreteIncrementalWrapper.html">sinergym.utils.wrappers.DiscreteIncrementalWrapper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.DiscretizeEnv.html">sinergym.utils.wrappers.DiscretizeEnv</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sinergym.utils.wrappers.EnergyCostWrapper.html">sinergym.utils.wrappers.EnergyCostWrapper</a></li>
@@ -166,46 +167,49 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.DatetimeWrapper.html#sinergym.utils.wrappers.DatetimeWrapper" title="sinergym.utils.wrappers.DatetimeWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatetimeWrapper</span></code></a>(env)</p></td>
 <td><p>Wrapper to substitute day value by is_weekend flag, and hour and month by sin and cos values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.DiscreteIncrementalWrapper.html#sinergym.utils.wrappers.DiscreteIncrementalWrapper" title="sinergym.utils.wrappers.DiscreteIncrementalWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscreteIncrementalWrapper</span></code></a>(env, initial_values)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.DeltaTempWrapper.html#sinergym.utils.wrappers.DeltaTempWrapper" title="sinergym.utils.wrappers.DeltaTempWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeltaTempWrapper</span></code></a>(env, temperature_variables, ...)</p></td>
+<td><p>Wrapper to add delta temperature information to the current observation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.DiscreteIncrementalWrapper.html#sinergym.utils.wrappers.DiscreteIncrementalWrapper" title="sinergym.utils.wrappers.DiscreteIncrementalWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscreteIncrementalWrapper</span></code></a>(env, initial_values)</p></td>
 <td><p>A wrapper for an incremental setpoint discrete action space environment.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.DiscretizeEnv.html#sinergym.utils.wrappers.DiscretizeEnv" title="sinergym.utils.wrappers.DiscretizeEnv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscretizeEnv</span></code></a>(env, discrete_space, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.DiscretizeEnv.html#sinergym.utils.wrappers.DiscretizeEnv" title="sinergym.utils.wrappers.DiscretizeEnv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscretizeEnv</span></code></a>(env, discrete_space, ...)</p></td>
 <td><p>Wrapper to discretize an action space.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.EnergyCostWrapper.html#sinergym.utils.wrappers.EnergyCostWrapper" title="sinergym.utils.wrappers.EnergyCostWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EnergyCostWrapper</span></code></a>(env, energy_cost_data_file)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.EnergyCostWrapper.html#sinergym.utils.wrappers.EnergyCostWrapper" title="sinergym.utils.wrappers.EnergyCostWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EnergyCostWrapper</span></code></a>(env, energy_cost_data_file)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.IncrementalWrapper.html#sinergym.utils.wrappers.IncrementalWrapper" title="sinergym.utils.wrappers.IncrementalWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IncrementalWrapper</span></code></a>(env, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.IncrementalWrapper.html#sinergym.utils.wrappers.IncrementalWrapper" title="sinergym.utils.wrappers.IncrementalWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IncrementalWrapper</span></code></a>(env, ...)</p></td>
 <td><p>A wrapper for an incremental values of desired action variables</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.LoggerWrapper.html#sinergym.utils.wrappers.LoggerWrapper" title="sinergym.utils.wrappers.LoggerWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LoggerWrapper</span></code></a>(env, storage_class)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.LoggerWrapper.html#sinergym.utils.wrappers.LoggerWrapper" title="sinergym.utils.wrappers.LoggerWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LoggerWrapper</span></code></a>(env, storage_class)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.MultiObjectiveReward.html#sinergym.utils.wrappers.MultiObjectiveReward" title="sinergym.utils.wrappers.MultiObjectiveReward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultiObjectiveReward</span></code></a>(env, reward_terms)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.MultiObjectiveReward.html#sinergym.utils.wrappers.MultiObjectiveReward" title="sinergym.utils.wrappers.MultiObjectiveReward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultiObjectiveReward</span></code></a>(env, reward_terms)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.MultiObsWrapper.html#sinergym.utils.wrappers.MultiObsWrapper" title="sinergym.utils.wrappers.MultiObsWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultiObsWrapper</span></code></a>(env[, n, flatten])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.MultiObsWrapper.html#sinergym.utils.wrappers.MultiObsWrapper" title="sinergym.utils.wrappers.MultiObsWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultiObsWrapper</span></code></a>(env[, n, flatten])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.NormalizeAction.html#sinergym.utils.wrappers.NormalizeAction" title="sinergym.utils.wrappers.NormalizeAction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NormalizeAction</span></code></a>(env[, normalize_range])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.NormalizeAction.html#sinergym.utils.wrappers.NormalizeAction" title="sinergym.utils.wrappers.NormalizeAction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NormalizeAction</span></code></a>(env[, normalize_range])</p></td>
 <td><p>Wrapper to normalize action space.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.NormalizeObservation.html#sinergym.utils.wrappers.NormalizeObservation" title="sinergym.utils.wrappers.NormalizeObservation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NormalizeObservation</span></code></a>(env[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.NormalizeObservation.html#sinergym.utils.wrappers.NormalizeObservation" title="sinergym.utils.wrappers.NormalizeObservation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NormalizeObservation</span></code></a>(env[, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.html#sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper" title="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OfficeGridStorageSmoothingActionConstraintsWrapper</span></code></a>(env)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper.html#sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper" title="sinergym.utils.wrappers.OfficeGridStorageSmoothingActionConstraintsWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OfficeGridStorageSmoothingActionConstraintsWrapper</span></code></a>(env)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.PreviousObservationWrapper.html#sinergym.utils.wrappers.PreviousObservationWrapper" title="sinergym.utils.wrappers.PreviousObservationWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PreviousObservationWrapper</span></code></a>(env, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.PreviousObservationWrapper.html#sinergym.utils.wrappers.PreviousObservationWrapper" title="sinergym.utils.wrappers.PreviousObservationWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PreviousObservationWrapper</span></code></a>(env, ...)</p></td>
 <td><p>Wrapper to add observation values from previous timestep to current environment observation</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.ReduceObservationWrapper.html#sinergym.utils.wrappers.ReduceObservationWrapper" title="sinergym.utils.wrappers.ReduceObservationWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReduceObservationWrapper</span></code></a>(env, obs_reduction)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.ReduceObservationWrapper.html#sinergym.utils.wrappers.ReduceObservationWrapper" title="sinergym.utils.wrappers.ReduceObservationWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReduceObservationWrapper</span></code></a>(env, obs_reduction)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.WandBLogger.html#sinergym.utils.wrappers.WandBLogger" title="sinergym.utils.wrappers.WandBLogger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WandBLogger</span></code></a>(env[, entity, project_name, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.WandBLogger.html#sinergym.utils.wrappers.WandBLogger" title="sinergym.utils.wrappers.WandBLogger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WandBLogger</span></code></a>(env[, entity, project_name, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="sinergym.utils.wrappers.WeatherForecastingWrapper.html#sinergym.utils.wrappers.WeatherForecastingWrapper" title="sinergym.utils.wrappers.WeatherForecastingWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WeatherForecastingWrapper</span></code></a>(env[, n, delta, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="sinergym.utils.wrappers.WeatherForecastingWrapper.html#sinergym.utils.wrappers.WeatherForecastingWrapper" title="sinergym.utils.wrappers.WeatherForecastingWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WeatherForecastingWrapper</span></code></a>(env[, n, delta, ...])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>

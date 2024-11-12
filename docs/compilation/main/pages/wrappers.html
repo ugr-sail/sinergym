@@ -83,6 +83,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#multiobswrapper">12.11. MultiObsWrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#weatherforecastingwrapper">12.12. WeatherForecastingWrapper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#energycostwrapper">12.13. EnergyCostWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deltatempwrapper">12.14. DeltaTempWrapper</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="extra-configuration.html">13. Extra Configuration in Sinergym simulations</a></li>
@@ -329,6 +330,19 @@ which can be observed in the info dictionary.</p>
 <p class="admonition-title">Important</p>
 <p>You have to be careful if you are going to use several nested wrappers.
 A wrapper works on top of the previous one. The order is flexible since <em>Sinergym</em> v3.0.5.</p>
+</div>
+</section>
+<section id="deltatempwrapper">
+<h2><span class="section-number">12.14. </span>DeltaTempWrapper<a class="headerlink" href="#deltatempwrapper" title="Link to this heading"></a></h2>
+<p>This wrapper adds to the observation space the delta values about specified zone air temperatures.
+That its, the difference between the zone air temperature and the fixed setpoint value.
+Thus, it requires that the air temperature and setpoints variables are defined in the wrapper constructor.
+If the environment has a unique setpoint variable for all zones, you can specify only one variable in
+setpoints field. Otherwise, you can specify a list of variables, one for each zone.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The air temperature variables and setpoints variables should be specified in the same order.
+The length of these lists should be the same, in case you are not using the same setpoint for all zones.</p>
 </div>
 </section>
 </section>
