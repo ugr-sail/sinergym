@@ -15,7 +15,7 @@ import pandas as pd
 import wandb
 from epw.weather import Weather
 from gymnasium import Env
-from gymnasium.wrappers.normalize import RunningMeanStd
+from gymnasium.wrappers.utils import RunningMeanStd
 
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
@@ -726,7 +726,7 @@ class EnergyCostWrapper(gym.Wrapper):
                     noise[i + 1] = noise[i] + dt * (-(noise[i] - mu) / tau) + \
                         sigma_bis * sqrtdt * np.random.randn()
 
-                self.energy_cost_data[variable] += noise
+                self.energy_cost_data.loc[:, variable] += noise
 
     def set_energy_cost_data(self):
         """Sets the cost of energy data used to construct the state observation.
@@ -818,12 +818,12 @@ class DeltaTempWrapper(gym.ObservationWrapper):
         new_shape = self.env.get_wrapper_attr(
             'observation_space').shape[0] + len(temperature_variables)
         self.observation_space = gym.spaces.Box(
-            low=self.env.observation_space.low[0],
-            high=self.env.observation_space.high[0],
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
             shape=(
                 new_shape,
             ),
-            dtype=self.env.observation_space.dtype)
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
 
         self.logger.info('Wrapper initialized.')
 
@@ -881,7 +881,7 @@ class IncrementalWrapper(gym.ActionWrapper):
         super().__init__(env)
 
         # Params
-        self.current_values = initial_values
+        self.current_values = np.array(initial_values, dtype=np.float32)
 
         # Check environment is valid
         try:
@@ -908,8 +908,10 @@ class IncrementalWrapper(gym.ActionWrapper):
         # All posible incremental variations
         self.values_definition = {}
         # Original action space variables
-        action_space_low = deepcopy(self.env.action_space.low)
-        action_space_high = deepcopy(self.env.action_space.high)
+        action_space_low = deepcopy(
+            self.env.get_wrapper_attr('action_space').low)
+        action_space_high = deepcopy(
+            self.env.get_wrapper_attr('action_space').high)
         # Calculating incremental variations and action space for each
         # incremental variable
         for variable, (delta_temp,
@@ -936,7 +938,7 @@ class IncrementalWrapper(gym.ActionWrapper):
         self.action_space = gym.spaces.Box(
             low=action_space_low,
             high=action_space_high,
-            shape=self.env.action_space.shape,
+            shape=self.env.get_wrapper_attr('action_space').shape,
             dtype=np.float32)
 
         self.logger.info(
@@ -962,12 +964,13 @@ class IncrementalWrapper(gym.ActionWrapper):
             # Update current_values
             self.current_values[i] += increment_value
             # Clip the value with original action space
-            self.current_values[i] = max(self.env.action_space.low[index], min(
-                self.current_values[i], self.env.action_space.high[index]))
+            self.current_values[i] = max(
+                self.env.get_wrapper_attr('action_space').low[index], min(
+                    self.current_values[i], self.env.get_wrapper_attr('action_space').high[index]))
 
             action_[index] = self.current_values[i]
 
-        return list(action_)
+        return action_
 
 # ---------------------------------------------------------------------------- #
 
@@ -1000,7 +1003,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         super().__init__(env)
 
         # Params
-        self.current_setpoints = initial_values
+        self.current_setpoints = np.array(initial_values, dtype=np.float32)
 
         # Check environment is valid
         try:
@@ -1044,26 +1047,25 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         self.logger.info('Wrapper initialized')
 
     # Define action mapping method
-    def action_mapping(self, action: int) -> List[float]:
-        return self.mapping[action]
+    def action_mapping(self, action: int) -> np.ndarray:
+        return np.array(self.mapping[action], dtype=np.float32)
 
     def action(self, action):
         """Takes the discrete action and transforms it to setpoints tuple."""
         action_ = deepcopy(action)
         action_ = self.get_wrapper_attr('action_mapping')(action_)
         # Update current setpoints values with incremental action
-        self.current_setpoints = [
+        self.current_setpoints = np.array([
             sum(i) for i in zip(
                 self.get_wrapper_attr('current_setpoints'),
-                action_)]
+                action_)], dtype=np.float32)
         # clip setpoints returned
         self.current_setpoints = np.clip(
-            np.array(self.get_wrapper_attr('current_setpoints')),
-            self.env.action_space.low,
-            self.env.action_space.high
-        )
+            self.get_wrapper_attr('current_setpoints'),
+            self.env.get_wrapper_attr('action_space').low,
+            self.env.get_wrapper_attr('action_space').high)
 
-        return list(self.current_setpoints)
+        return self.current_setpoints
 
     # Updating property
     @property  # pragma: no cover
@@ -1116,9 +1118,10 @@ class DiscretizeEnv(gym.ActionWrapper):
             'Make sure that the action space is compatible and contained in the original environment.')
         self.logger.info('Wrapper initialized')
 
-    def action(self, action: Union[int, List[int]]) -> List[int]:
+    def action(self, action: Union[int, List[int]]) -> np.ndarray:
         action_ = deepcopy(action)
-        action_ = self.get_wrapper_attr('action_mapping')(action_)
+        action_ = np.array(self.get_wrapper_attr(
+            'action_mapping')(action_), dtype=np.float32)
         return action_
 
     # Updating property
@@ -1172,14 +1175,14 @@ class NormalizeAction(gym.ActionWrapper):
             low=np.array(
                 np.repeat(
                     lower_norm_value,
-                    env.action_space.shape[0]),
+                    env.get_wrapper_attr('action_space').shape[0]),
                 dtype=np.float32),
             high=np.array(
                 np.repeat(
                     upper_norm_value,
-                    env.action_space.shape[0]),
+                    env.get_wrapper_attr('action_space').shape[0]),
                 dtype=np.float32),
-            dtype=env.action_space.dtype)
+            dtype=env.get_wrapper_attr('action_space').dtype)
         # Updated action space to normalized space
         self.action_space = self.normalized_space
 
@@ -1695,9 +1698,6 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
                 'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
             raise err
 
-        # Add requirement for wandb core
-        wandb.require("core")
-
         # Define wandb run name if is not specified
         run_name = run_name if run_name is not None else self.env.get_wrapper_attr(
             'name') + '_' + wandb.util.generate_id()
@@ -1724,7 +1724,7 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
                 'Error initializing WandB run, if project and entity are not specified, it should be a previous active wandb run, but it has not been found.')
             raise RuntimeError
 
-        # Wandb finish with env.close flag
+        # Flag to Wandb finish with env close
         self.wandb_finish = True
 
         # Define X-Axis for episode summaries
@@ -1958,7 +1958,7 @@ class ReduceObservationWrapper(gym.Wrapper):
             low=-5e6,
             high=5e6,
             shape=(
-                self.env.observation_space.shape[0] -
+                self.env.get_wrapper_attr('observation_space').shape[0] -
                 len(obs_reduction),
             ),
             dtype=np.float32)

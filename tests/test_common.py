@@ -43,12 +43,12 @@ def test_unwrap_wrapper(
         env_5zone,
         env_all_wrappers):
     # Check if env_wrapper_normalization unwrapped is env_5zone
-    assert not hasattr(env_5zone, 'unwrapped_observation')
-    assert hasattr(env_all_wrappers, 'unwrapped_observation')
+    assert not env_5zone.has_wrapper_attr('unwrapped_observation')
+    assert env_all_wrappers.has_wrapper_attr('unwrapped_observation')
     env = common.unwrap_wrapper(
         env_all_wrappers,
         NormalizeObservation)
-    assert not hasattr(env, 'unwrapped_observation')
+    assert not env.has_wrapper_attr('unwrapped_observation')
     # Check if trying unwrap a not wrapped environment the result is None
     env = common.unwrap_wrapper(
         env_5zone,

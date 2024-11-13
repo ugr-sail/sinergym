@@ -44,8 +44,8 @@ class RBC5Zone(object):
             'observation_variables')
         self.action_variables = env.get_wrapper_attr('action_variables')
 
-        self.setpoints_summer = (23.0, 26.0)
-        self.setpoints_winter = (20.0, 23.5)
+        self.setpoints_summer = np.array((23.0, 26.0), dtype=np.float32)
+        self.setpoints_winter = np.array((20.0, 23.5), dtype=np.float32)
 
     def act(self, observation: List[Any]) -> Sequence[Any]:
         """Select action based on indoor temperature.
@@ -72,7 +72,7 @@ class RBC5Zone(object):
         else:  # pragma: no cover
             season_range = self.setpoints_winter
 
-        return (season_range[0], season_range[1])
+        return season_range
 
 
 class RBCDatacenter(object):
@@ -91,7 +91,7 @@ class RBCDatacenter(object):
         self.action_variables = env.get_wrapper_attr('action_variables')
 
         # ASHRAE recommended temperature range = [18, 27] Celsius
-        self.range_datacenter = (18, 27)
+        self.range_datacenter = np.array((18, 27), dtype=np.float32)
 
     def act(self) -> Sequence[Any]:
         """Select same action always, corresponding with comfort range.
@@ -147,6 +147,7 @@ class RBCIncrementalDatacenter(object):
             new_cool_setpoint = current_cool_setpoint - 1
             new_heat_setpoint = current_heat_setpoint - 1
 
-        return (
-            new_heat_setpoint,
-            new_cool_setpoint)
+        return np.array(
+            (new_heat_setpoint,
+             new_cool_setpoint),
+            dtype=np.float32)

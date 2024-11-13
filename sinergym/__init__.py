@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import warnings
 from typing import Union
 
 import gymnasium as gym
@@ -9,6 +10,11 @@ from gymnasium.envs.registration import WrapperSpec, register
 from sinergym.utils.common import convert_conf_to_env_parameters
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
+
+# Ignore epw module warning (epw module mistake)
+warnings.filterwarnings(
+    "ignore",
+    module='epw')
 
 # ------------------------- Set __version__ in module ------------------------ #
 version_file = os.path.join(os.path.dirname(__file__), 'version.txt')

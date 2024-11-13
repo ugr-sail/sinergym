@@ -167,11 +167,11 @@ class LoggerEvalCallback(EventCallback):
                 np.savetxt(
                     fname=self.save_path +
                     '/mean.txt',
-                    X=self.eval_env.mean)
+                    X=self.eval_env.get_wrapper_attr('mean'))
                 np.savetxt(
                     fname=self.save_path +
                     '/var.txt',
-                    X=self.eval_env.var)
+                    X=self.eval_env.get_wrapper_attr('var'))
 
         # We close evaluation env and starts training env again
         self.eval_env.close()

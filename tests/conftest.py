@@ -2,8 +2,8 @@ import json
 import os
 import shutil
 from glob import glob  # to find directories with patterns
+from importlib import resources
 
-import pkg_resources
 import pytest
 from epw.weather import Weather
 
@@ -22,12 +22,8 @@ from sinergym.utils.wrappers import *
 
 @pytest.fixture(scope='function')
 def sinergym_path():
-    return os.path.abspath(
-        os.path.join(
-            pkg_resources.resource_filename(
-                'sinergym',
-                ''),
-            os.pardir))
+    sinergym_resource = resources.files('sinergym')
+    return os.path.abspath(os.path.join(str(sinergym_resource), os.pardir))
 
 # ---------------------------------------------------------------------------- #
 #                                     Paths                                    #
@@ -41,7 +37,8 @@ def pkg_data_path():
 
 @pytest.fixture(scope='function')
 def pkg_mock_path():
-    return pkg_resources.resource_filename('tests', 'mock/')
+    mock_resource = resources.files('tests') / 'mock'
+    return str(mock_resource)
 
 
 @pytest.fixture(scope='function')
