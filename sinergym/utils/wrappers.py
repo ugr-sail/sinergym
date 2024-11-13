@@ -881,7 +881,7 @@ class IncrementalWrapper(gym.ActionWrapper):
         super().__init__(env)
 
         # Params
-        self.current_values = initial_values
+        self.current_values = np.array(initial_values, dtype=np.float32)
 
         # Check environment is valid
         try:
@@ -967,7 +967,7 @@ class IncrementalWrapper(gym.ActionWrapper):
 
             action_[index] = self.current_values[i]
 
-        return list(action_)
+        return action_
 
 # ---------------------------------------------------------------------------- #
 
@@ -1000,7 +1000,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         super().__init__(env)
 
         # Params
-        self.current_setpoints = initial_values
+        self.current_setpoints = np.array(initial_values, dtype=np.float32)
 
         # Check environment is valid
         try:
@@ -1045,25 +1045,24 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
 
     # Define action mapping method
     def action_mapping(self, action: int) -> List[float]:
-        return self.mapping[action]
+        return np.array(self.mapping[action], dtype=np.float32)
 
     def action(self, action):
         """Takes the discrete action and transforms it to setpoints tuple."""
         action_ = deepcopy(action)
         action_ = self.get_wrapper_attr('action_mapping')(action_)
         # Update current setpoints values with incremental action
-        self.current_setpoints = [
+        self.current_setpoints = np.array([
             sum(i) for i in zip(
                 self.get_wrapper_attr('current_setpoints'),
-                action_)]
+                action_)], dtype=np.float32)
         # clip setpoints returned
         self.current_setpoints = np.clip(
-            np.array(self.get_wrapper_attr('current_setpoints')),
+            self.get_wrapper_attr('current_setpoints'),
             self.env.action_space.low,
-            self.env.action_space.high
-        )
+            self.env.action_space.high)
 
-        return list(self.current_setpoints)
+        return self.current_setpoints
 
     # Updating property
     @property  # pragma: no cover
@@ -1118,7 +1117,8 @@ class DiscretizeEnv(gym.ActionWrapper):
 
     def action(self, action: Union[int, List[int]]) -> List[int]:
         action_ = deepcopy(action)
-        action_ = self.get_wrapper_attr('action_mapping')(action_)
+        action_ = np.array(self.get_wrapper_attr(
+            'action_mapping')(action_), dtype=np.float32)
         return action_
 
     # Updating property

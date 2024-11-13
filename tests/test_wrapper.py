@@ -457,13 +457,13 @@ def test_incremental_wrapper(env_demo):
         'current_values').copy()
     # Check if action selected is applied correctly
     env.reset()
-    action = [-0.42, 0.3]
+    action = np.array([-0.42, 0.3], dtype=np.float32)
     rounded_action = [-0.5, 0.25]
     _, _, _, _, info = env.step(action)
-    assert env.get_wrapper_attr('current_values') == [
+    assert (env.get_wrapper_attr('current_values') == [
         old_values[i] +
         rounded_action[i] for i in range(
-            len(old_values))]
+            len(old_values))]).all()
     for i, (index, values) in enumerate(
             env.get_wrapper_attr('values_definition').items()):
         assert env.get_wrapper_attr(
@@ -533,7 +533,7 @@ def test_discrete_incremental_wrapper(env_demo):
     for i in range(10):
         env.step(2)  # [1,0]
     assert env.unwrapped.action_space.contains(
-        list(env.get_wrapper_attr('current_setpoints')))
+        env.get_wrapper_attr('current_setpoints'))
     # Check environment is discrete now
     assert env.is_discrete
 
