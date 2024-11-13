@@ -78,13 +78,8 @@ def test_multiobs_wrapper(env_demo):
 
     env = MultiObsWrapper(env=env_demo, n=5, flatten=True)
     # Check attributes exist in wrapped env
-    assert hasattr(
-        env,
-        'n') and hasattr(
-        env,
-        'ind_flat') and hasattr(
-            env,
-        'history')
+    assert env.has_wrapper_attr('n') and env.has_wrapper_attr(
+        'ind_flat') and env.has_wrapper_attr('history')
 
     # Check history
     assert env.get_wrapper_attr('history') == deque([])
@@ -128,7 +123,7 @@ def test_normalize_observation_wrapper(env_demo):
     env = NormalizeObservation(env=env_demo)
 
     # Check if new attributes have been created in environment
-    assert hasattr(env, 'unwrapped_observation')
+    assert env.has_wrapper_attr('unwrapped_observation')
 
     # Check initial values of that attributes
     assert env.get_wrapper_attr('unwrapped_observation') is None
@@ -172,12 +167,12 @@ def test_normalize_observation_calibration(env_demo):
     # Spaces
     env = NormalizeObservation(env=env_demo)
     assert not env.get_wrapper_attr('is_discrete')
-    assert hasattr(env, 'unwrapped_observation')
+    assert env.has_wrapper_attr('unwrapped_observation')
 
     # Normalization calibration
-    assert hasattr(env, 'mean')
+    assert env.has_wrapper_attr('mean')
     old_mean = env.get_wrapper_attr('mean').copy()
-    assert hasattr(env, 'var')
+    assert env.has_wrapper_attr('var')
     old_var = env.get_wrapper_attr('var').copy()
     assert len(env.get_wrapper_attr('mean')) == env.observation_space.shape[0]
     assert len(env.get_wrapper_attr('var')) == env.observation_space.shape[0]
@@ -244,20 +239,9 @@ def test_normalize_observation_exceptions(env_demo):
 def test_weatherforecasting_wrapper(env_demo):
     env = WeatherForecastingWrapper(env_demo, n=3, delta=1)
     # Check attributes exist in wrapped env
-    assert hasattr(
-        env,
-        'n') and hasattr(
-        env,
-        'delta') and hasattr(
-        env,
-        'columns') and hasattr(
-        env,
-        'weather_variability') and hasattr(
-        env,
-        'weather_path') and hasattr(
-        env,
-        'observation_space') and hasattr(
-        env,
+    assert env.has_wrapper_attr('n') and env.has_wrapper_attr(
+        'delta') and env.has_wrapper_attr(
+        'columns') and env.has_wrapper_attr(
         'weather_data')
 
     # Check observation space transformation
@@ -368,17 +352,8 @@ def test_energycost_wrapper(env_demo):
         energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023')
 
     # Check attributes exist in wrapped env
-    assert hasattr(
-        env,
-        'energy_cost_variability') and hasattr(
-        env,
-        'energy_cost_data_file') and hasattr(
-        env,
-        'observation_space') and hasattr(
-        env,
-        'energy_cost_data') and hasattr(
-        env,
-        'reward_fn')
+    assert env.has_wrapper_attr('energy_cost_variability') and env.has_wrapper_attr(
+        'energy_cost_data_file') and env.has_wrapper_attr('energy_cost_data')
 
     # Check observation space transformation
     original_shape = env.env.observation_space.shape[0]
@@ -475,7 +450,7 @@ def test_incremental_wrapper(env_demo):
     )
 
     # Check initial values are initialized
-    assert hasattr(env, 'values_definition')
+    assert env.has_wrapper_attr('values_definition')
     assert len(env.get_wrapper_attr('current_values')) == 2
 
     old_values = env.get_wrapper_attr(
@@ -604,7 +579,7 @@ def test_discretize_wrapper(env_demo):
     # Original continuos env
     original_env = env.env
     assert not original_env.get_wrapper_attr('is_discrete')
-    assert not hasattr(original_env, 'action_mapping')
+    assert not original_env.has_wrapper_attr('action_mapping')
 
 
 def test_normalize_action_wrapper(env_demo):
@@ -612,8 +587,8 @@ def test_normalize_action_wrapper(env_demo):
     env = NormalizeAction(env=env_demo)
     # Check if new attributes have been created in environment
     assert not env.get_wrapper_attr('is_discrete')
-    assert hasattr(env, 'real_space')
-    assert hasattr(env, 'normalized_space')
+    assert env.has_wrapper_attr('real_space')
+    assert env.has_wrapper_attr('normalized_space')
     assert env.get_wrapper_attr(
         'normalized_space') != env.get_wrapper_attr('real_space')
     assert env.get_wrapper_attr('normalized_space') == env.action_space
@@ -632,8 +607,8 @@ def test_deltatemp_wrapper(env_datacenter):
     old_observation_variables = deepcopy(
         env_datacenter.get_wrapper_attr('observation_variables'))
 
-    assert not hasattr(env_datacenter, 'delta_temperatures')
-    assert not hasattr(env_datacenter, 'delta_setpoints')
+    assert not env_datacenter.has_wrapper_attr('delta_temperatures')
+    assert not env_datacenter.has_wrapper_attr('delta_setpoints')
 
     # Same setpoint values than temperature values
     env = DeltaTempWrapper(env_datacenter,
@@ -645,8 +620,8 @@ def test_deltatemp_wrapper(env_datacenter):
                                'east_zone_htg_setpoint'])
 
     # Check attributes exist in wrapped env
-    assert hasattr(env, 'delta_temperatures')
-    assert hasattr(env, 'delta_setpoints')
+    assert env.has_wrapper_attr('delta_temperatures')
+    assert env.has_wrapper_attr('delta_setpoints')
     # Check new space
     assert env.observation_space.shape[0] == old_observation_space.shape[0] + 2
     assert len(env.get_wrapper_attr('observation_variables')
@@ -715,7 +690,7 @@ def test_multiobjective_wrapper(env_demo):
     env = MultiObjectiveReward(
         env=env_demo, reward_terms=[
             'energy_term', 'comfort_term'])
-    assert hasattr(env, 'reward_terms')
+    assert env.has_wrapper_attr('reward_terms')
     env.reset()
     action = env.action_space.sample()
     _, reward, _, _, info = env.step(action)
@@ -725,9 +700,9 @@ def test_multiobjective_wrapper(env_demo):
 
 def test_logger_wrapper(env_demo):
 
-    assert not hasattr(env_demo, 'data_logger')
+    assert not env_demo.has_wrapper_attr('data_logger')
     env = LoggerWrapper(env=env_demo)
-    assert hasattr(env, 'data_logger')
+    assert env.has_wrapper_attr('data_logger')
     logger = env.get_wrapper_attr('data_logger')
     # Check logger is empty
     assert len(logger.observations) == 0
@@ -809,10 +784,10 @@ def test_logger_wrapper(env_demo):
 
 def test_custom_loggers(env_demo, custom_logger_wrapper):
 
-    assert not hasattr(env_demo, 'data_logger')
+    assert not env_demo.has_wrapper_attr('data_logger')
     env = custom_logger_wrapper(env=env_demo)
-    assert hasattr(env, 'data_logger')
-    assert hasattr(env, 'custom_variables')
+    assert env.has_wrapper_attr('data_logger')
+    assert env.has_wrapper_attr('custom_variables')
     assert len(env.get_wrapper_attr('custom_variables')) > 0
     logger = env.get_wrapper_attr('data_logger')
     env.reset()
@@ -1012,25 +987,25 @@ def test_reduced_observation_exceptions(env_demo):
 def test_env_wrappers(env_all_wrappers):
     # CHECK ATTRIBUTES
     # MultiObjective
-    assert hasattr(env_all_wrappers, 'reward_terms')
+    assert env_all_wrappers.has_wrapper_attr('reward_terms')
     # PreviousObservation
-    assert hasattr(env_all_wrappers, 'previous_observation')
-    assert hasattr(env_all_wrappers, 'previous_variables')
+    assert env_all_wrappers.has_wrapper_attr('previous_observation')
+    assert env_all_wrappers.has_wrapper_attr('previous_variables')
     # Datetime
     # IncrementalDiscrete
-    assert hasattr(env_all_wrappers, 'current_setpoints')
+    assert env_all_wrappers.has_wrapper_attr('current_setpoints')
     # Normalization
-    assert hasattr(env_all_wrappers, 'unwrapped_observation')
+    assert env_all_wrappers.has_wrapper_attr('unwrapped_observation')
     # Logger
-    assert hasattr(env_all_wrappers, 'data_logger')
+    assert env_all_wrappers.has_wrapper_attr('data_logger')
     # CSVLogger
-    assert hasattr(env_all_wrappers, 'progress_file_path')
+    assert env_all_wrappers.has_wrapper_attr('progress_file_path')
     # ReduceObservation
-    assert hasattr(env_all_wrappers, 'removed_observation_variables')
+    assert env_all_wrappers.has_wrapper_attr('removed_observation_variables')
     # Multiobs
-    assert hasattr(env_all_wrappers, 'n')
-    assert hasattr(env_all_wrappers, 'ind_flat')
-    assert hasattr(env_all_wrappers, 'history')
+    assert env_all_wrappers.has_wrapper_attr('n')
+    assert env_all_wrappers.has_wrapper_attr('ind_flat')
+    assert env_all_wrappers.has_wrapper_attr('history')
 
     # GENERAL CHECKS
     # Check history multiobs is empty
