@@ -1695,9 +1695,6 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
                 'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
             raise err
 
-        # Add requirement for wandb core
-        wandb.require("core")
-
         # Define wandb run name if is not specified
         run_name = run_name if run_name is not None else self.env.get_wrapper_attr(
             'name') + '_' + wandb.util.generate_id()
