@@ -12,11 +12,11 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import gymnasium as gym
 import numpy as np
 import pandas as pd
+import wandb
 from epw.weather import Weather
 from gymnasium import Env
 from gymnasium.wrappers.utils import RunningMeanStd
 
-import wandb
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 from sinergym.utils.logger import LoggerStorage, TerminalLogger
@@ -1047,7 +1047,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         self.logger.info('Wrapper initialized')
 
     # Define action mapping method
-    def action_mapping(self, action: int) -> List[float]:
+    def action_mapping(self, action: int) -> np.ndarray:
         return np.array(self.mapping[action], dtype=np.float32)
 
     def action(self, action):
@@ -1118,7 +1118,7 @@ class DiscretizeEnv(gym.ActionWrapper):
             'Make sure that the action space is compatible and contained in the original environment.')
         self.logger.info('Wrapper initialized')
 
-    def action(self, action: Union[int, List[int]]) -> List[int]:
+    def action(self, action: Union[int, List[int]]) -> np.ndarray:
         action_ = deepcopy(action)
         action_ = np.array(self.get_wrapper_attr(
             'action_mapping')(action_), dtype=np.float32)
