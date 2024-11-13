@@ -726,7 +726,7 @@ class EnergyCostWrapper(gym.Wrapper):
                     noise[i + 1] = noise[i] + dt * (-(noise[i] - mu) / tau) + \
                         sigma_bis * sqrtdt * np.random.randn()
 
-                self.energy_cost_data[variable] += noise
+                self.energy_cost_data.loc[:, variable] += noise
 
     def set_energy_cost_data(self):
         """Sets the cost of energy data used to construct the state observation.
