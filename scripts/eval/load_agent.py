@@ -5,13 +5,12 @@ import sys
 
 import gymnasium as gym
 import numpy as np
-import wandb
-from gymnasium.wrappers.normalize import NormalizeReward
 from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
 from stable_baselines3.common.monitor import Monitor
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
+import wandb
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import *
 from sinergym.utils.logger import TerminalLogger
