@@ -1,5 +1,6 @@
-import numpy as np
 from importlib import metadata
+
+import numpy as np
 import pytest
 
 required = {'stable-baselines3'}

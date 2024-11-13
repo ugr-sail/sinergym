@@ -1,10 +1,10 @@
 """Constants used in whole project."""
 
 import os
+from importlib import resources
 from typing import List, Union
 
 import numpy as np
-from importlib import resources
 
 # ---------------------------------------------------------------------------- #
 #                               Generic constants                              #

@@ -2,8 +2,8 @@ import json
 import os
 import shutil
 from glob import glob  # to find directories with patterns
-
 from importlib import resources
+
 import pytest
 from epw.weather import Weather
 
