@@ -50,7 +50,12 @@ class DatetimeWrapper(gym.ObservationWrapper):
         # Update new shape
         new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 2
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=(
+                new_shape,
+            ),
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
         # Update observation variables
         new_observation_variables = deepcopy(
             self.get_wrapper_attr('observation_variables'))
@@ -131,7 +136,12 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         new_shape = self.env.get_wrapper_attr(
             'observation_space').shape[0] + len(previous_variables)
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=(
+                new_shape,
+            ),
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
 
         # previous observation initialization
         self.previous_observation = np.zeros(
@@ -187,7 +197,12 @@ class MultiObsWrapper(gym.Wrapper):
         shape = self.get_wrapper_attr('observation_space').shape
         new_shape = (shape[0] * n,) if flatten else ((n,) + shape)
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=(
+                new_shape,
+            ),
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
 
         self.logger.info('Wrapper initialized.')
 
@@ -451,7 +466,12 @@ class WeatherForecastingWrapper(gym.Wrapper):
         new_shape = (self.get_wrapper_attr(
             'observation_space').shape[0] + (len(columns) * n),)
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=(
+                new_shape,
+            ),
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
         self.forecast_data = None
         self.logger.info('Wrapper initialized.')
 
@@ -619,7 +639,12 @@ class EnergyCostWrapper(gym.Wrapper):
             'observation_variables') + ['energy_cost']
         new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 1
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=(
+                new_shape,
+            ),
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
         self.energy_cost_data = None
         self.reward_fn = EnergyCostLinearReward(**reward_kwargs)
         self.logger.info('Wrapper initialized.')
@@ -1903,13 +1928,13 @@ class ReduceObservationWrapper(gym.Wrapper):
 
         # Update observation space
         self.observation_space = gym.spaces.Box(
-            low=-5e6,
-            high=5e6,
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
             shape=(
                 self.env.get_wrapper_attr('observation_space').shape[0] -
                 len(obs_reduction),
             ),
-            dtype=np.float32)
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
 
         # Separate removed variables from observation variables
         self.observation_variables = list(
