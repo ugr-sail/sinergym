@@ -17,7 +17,7 @@ from epw.weather import Weather
 from gymnasium import Env
 from gymnasium.wrappers.utils import RunningMeanStd
 
-from sinergym.utils.common import is_wrapped
+from sinergym.utils.common import is_wrapped, ornstein_uhlenbeck_process
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 from sinergym.utils.logger import LoggerStorage, TerminalLogger
 from sinergym.utils.rewards import EnergyCostLinearReward
@@ -414,10 +414,10 @@ class WeatherForecastingWrapper(gym.Wrapper):
                                        'Wind Speed',
                                        'Direct Normal Radiation',
                                        'Diffuse Horizontal Radiation'],
-                 weather_variability: Optional[Dict[str,
-                                                    Tuple[float,
-                                                          float,
-                                                          float]]] = None):
+                 forecast_variability: Optional[Dict[str,
+                                                     Tuple[float,
+                                                           float,
+                                                           float]]] = None):
         """Adds weather forecast information to the current observation.
 
         Args:
@@ -425,29 +425,37 @@ class WeatherForecastingWrapper(gym.Wrapper):
             n (int, optional): Number of observations to be added. Default to 5.
             delta (int, optional): Time interval between observations. Defaults to 1.
             columns (List[str], optional): List of the names of the meteorological variables that will make up the weather forecast observation.
-            weather_variability (Dict[str, Tuple[float, float, float]], optional): Dictionary with the variation for each column in the weather data. Defaults to None.
+            forecast_variability (Dict[str, Tuple[float, float, float]], optional): Dictionary with the variation for each column in the weather data. Defaults to None.
             The key is the column name and the value is a tuple with the sigma, mean and tau for OU process. If not provided, it assumes no variability.
         Raises:
-            ValueError: If any key in `weather_variability` is not present in the `columns` list.
+            ValueError: If any key in `forecast_variability` is not present in the `columns` list.
         """
-        if weather_variability is not None:
-            for variable in weather_variability.keys():
+        if forecast_variability is not None:
+            for variable in forecast_variability.keys():
                 if variable not in columns:
                     raise ValueError(
-                        f"The variable '{variable}' in weather_variability is not in columns.")
+                        f"The variable '{variable}' in forecast_variability is not in columns.")
+                if len(forecast_variability[variable]) != 3:
+                    raise ValueError(f"The variable '{
+                        variable}' in forecast_variability must have 3 values: sigma, mean and tau.")
 
         super(WeatherForecastingWrapper, self).__init__(env)
         self.n = n
         self.delta = delta
         self.columns = columns
-        self.weather_variability = weather_variability
-        self.weather_path = env.get_wrapper_attr('weather_path')
-        shape = self.get_wrapper_attr('observation_space').shape
-        new_shape = (shape[0] + (len(columns) * n),)
+        self.forecast_variability = forecast_variability
+        new_observation_variables = []
+        for i in range(1, n + 1):
+            for column in columns:
+                new_observation_variables.append(
+                    'forecast_' + str(i) + '_' + column)
+        self.observation_variables = self.env.get_wrapper_attr(
+            'observation_variables') + new_observation_variables
+        new_shape = (self.get_wrapper_attr(
+            'observation_space').shape[0] + (len(columns) * n),)
         self.observation_space = gym.spaces.Box(
             low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
-        self.weather_data = None
-        self.set_weather_data()
+        self.forecast_data = None
         self.logger.info('Wrapper initialized.')
 
     def reset(self,
@@ -461,12 +469,12 @@ class WeatherForecastingWrapper(gym.Wrapper):
         Returns:
             Tuple[np.ndarray,Dict[str,Any]]: Tuple with next observation, and dict with information about the enviroment.
         """
-        self.set_weather_data()
+        self.set_forecast_data()
 
         obs, info = self.env.reset(seed=seed, options=options)
         obs = self.observation(obs, info)
 
-        return obs.reshape(-1,), info
+        return obs, info
 
     def step(self, action: Union[int, np.ndarray]
              ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
@@ -483,48 +491,20 @@ class WeatherForecastingWrapper(gym.Wrapper):
         obs, reward, terminated, truncated, info = self.env.step(action)
         obs = self.observation(obs, info)
 
-        return obs.reshape(-1,), reward, terminated, truncated, info
+        return obs, reward, terminated, truncated, info
 
-    def apply_ou_variability(self):
-        """Modify weather data using Ornstein-Uhlenbeck process according to the variation specified in the weather_variability dictionary.
-        """
-
-        if self.weather_variability is not None:
-
-            T = 1.  # Total time.
-            # All the columns are going to have the same num of rows since they are
-            # in the same dataframe
-            n = self.weather_data.shape[0]
-            dt = T / n
-            # t = np.linspace(0., T, n)  # Vector of times.
-
-            for variable, variation in self.weather_variability.items():
-
-                sigma = variation[0]  # Standard deviation.
-                mu = variation[1]  # Mean.
-                tau = variation[2]  # Time constant.
-
-                sigma_bis = sigma * np.sqrt(2. / tau)
-                sqrtdt = np.sqrt(dt)
-
-                # Create noise
-                noise = np.zeros(n)
-                for i in range(n - 1):
-                    noise[i + 1] = noise[i] + dt * (-(noise[i] - mu) / tau) + \
-                        sigma_bis * sqrtdt * np.random.randn()
-
-                self.weather_data[variable] += noise
-
-    def set_weather_data(self):
-        """Set the weather data used to build de state observation.
+    def set_forecast_data(self):
+        """Set the weather data used to build de state observation. If forecast_variability is not None,
+           it applies Ornstein-Uhlenbeck process to the data.
         """
         data = Weather()
-        data.read(self.weather_path)
-        self.weather_data = data.dataframe.loc[:, [
+        data.read(self.get_wrapper_attr('weather_path'))
+        self.forecast_data = data.dataframe.loc[:, [
             'Month', 'Day', 'Hour'] + self.columns]
 
-        if self.weather_variability:
-            self.apply_ou_variability()
+        if self.forecast_variability is not None:
+            self.forecast_data = ornstein_uhlenbeck_process(
+                data=self.forecast_data, variability_config=self.forecast_variability)
 
     def observation(self, obs: np.ndarray, info: Dict[str, Any]) -> np.ndarray:
         """Build the state observation by adding weather forecast information.
@@ -538,12 +518,12 @@ class WeatherForecastingWrapper(gym.Wrapper):
         # Search for the index corresponding to the time of the current
         # observation.
         filter = (
-            self.weather_data['Month'] == info['month']) & (
-            self.weather_data['Day'] == info['day']) & (
-            self.weather_data['Hour'] == (
+            self.forecast_data['Month'] == info['month']) & (
+            self.forecast_data['Day'] == info['day']) & (
+            self.forecast_data['Hour'] == (
                 info['hour'] +
                 1))
-        i = self.weather_data[filter].index[0]
+        i = self.forecast_data[filter].index[0]
 
         # Create a list of indexes corresponding to the weather forecasts to be
         # added
@@ -557,7 +537,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
                 1,
                 self.delta))
         # Ensure that DataFrame limits are not exceeded.
-        indexes = [idx for idx in indexes if idx < len(self.weather_data)]
+        indexes = [idx for idx in indexes if idx < len(self.forecast_data)]
 
         # Exceptional case 1: no weather forecast remains. In this case we fill in by repeating
         # the information from the weather forecast observation of current time
@@ -566,7 +546,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
             indexes = [i]
 
         # Obtain weather forecast observations
-        selected_rows = self.weather_data.loc[indexes, self.columns].values
+        selected_rows = self.forecast_data.loc[indexes, self.columns].values
 
         # Exceptional case 2: If there are not enough weather forecasts, repeat the last weather forecast observation
         # until the required size is reached.
