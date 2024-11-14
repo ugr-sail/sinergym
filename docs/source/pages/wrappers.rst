@@ -8,6 +8,11 @@ The code is available in
 You can create your own wrappers by inheriting from *gym.Wrapper* or one of its variants, as seen in the 
 `Gymnasium documentation <https://gymnasium.farama.org/tutorials/gymnasium_basics/implementing_custom_wrappers/>`__.
 
+.. note:: For examples about how to use these wrappers, visit :ref:`Wrappers example`.
+
+.. important:: You have to be careful if you are going to use several nested wrappers.
+               A wrapper works on top of the previous one. The order is flexible since *Sinergym* v3.0.5.
+
 ***********************
 MultiObjectiveReward
 ***********************
@@ -250,11 +255,6 @@ EnergyCostWrapper
 This wrapper adds energy cost information to the current observation.
 
 .. warning:: This wrapper internally uses the EnergyCostLinearReward reward function independently of the reward function set when creating the environment.
-
-.. note:: For examples about how to use these wrappers, visit :ref:`Wrappers example`.
-
-.. important:: You have to be careful if you are going to use several nested wrappers.
-               A wrapper works on top of the previous one. The order is flexible since *Sinergym* v3.0.5.
 
 **************************
 DeltaTempWrapper
