@@ -221,12 +221,12 @@ def test_apply_weather_variability(model_5zone):
     noise.read(path_result)
     # Check that the noise is applied in drybulb and windspd columns and not
     # in others
-    assert (original.dataframe['Dry Bulb Temperature']
-            != noise.dataframe['Dry Bulb Temperature']).any()
+    assert (original.dataframe['Dry Bulb Temperature'] !=
+            noise.dataframe['Dry Bulb Temperature']).any()
     assert (original.dataframe['Wind Speed'] !=
             noise.dataframe['Wind Speed']).any()
-    assert (original.dataframe['Relative Humidity']
-            == noise.dataframe['Relative Humidity']).all()
+    assert (original.dataframe['Relative Humidity'] ==
+            noise.dataframe['Relative Humidity']).all()
     assert (original.dataframe['Wind Direction'] ==
             noise.dataframe['Wind Direction']).all()
 
