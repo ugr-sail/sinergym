@@ -289,6 +289,7 @@ def test_weatherforecasting_wrapper_forecastdata(env_demo):
     # Check that reset create and apply noise in forecast data from original
     # weather data.
     env.reset()
+    assert env.get_wrapper_attr('forecast_data') is not None
     noised_weather_data = env.get_wrapper_attr('forecast_data')
 
     assert not noised_weather_data['Dry Bulb Temperature'].equals(
@@ -306,14 +307,15 @@ def test_weatherforecasting_wrapper_forecastdata(env_demo):
 
 def test_weatherforecasting_wrapper_exceptions(env_demo):
     # Specify a tuple with wrong shape (must be 3)
-    with pytest.raises(ValueError):
-        WeatherForecastingWrapper(env_demo,
-                                  n=3,
-                                  delta=1,
-                                  forecast_variability={
-                                      'Dry Bulb Temperature': (1.0, 0.0),
-                                      'Wind Speed': (3.0, 0.0)}
-                                  )
+    with pytest.raises(IndexError):
+        env = WeatherForecastingWrapper(env_demo,
+                                        n=3,
+                                        delta=1,
+                                        forecast_variability={
+                                            'Dry Bulb Temperature': (1.0, 0.0),
+                                            'Wind Speed': (3.0, 0.0)}
+                                        )
+        env.reset()
 
     # Specify a key that it isn't in `columns`
     with pytest.raises(ValueError):
@@ -346,15 +348,16 @@ def test_weatherforecasting_wrapper_exceptions(env_demo):
 def test_energycost_wrapper(env_demo):
     env = EnergyCostWrapper(
         env_demo,
-        energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023')
+        energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv')
 
     # Check attributes exist in wrapped env
     assert env.has_wrapper_attr('energy_cost_variability') and env.has_wrapper_attr(
-        'energy_cost_data_file') and env.has_wrapper_attr('energy_cost_data')
+        'energy_cost_data_path') and env.has_wrapper_attr('energy_cost_data')
 
     # Check observation space transformation
     original_shape = env.env.observation_space.shape[0]
     wrapped_shape = env.observation_space.shape[0]
+    assert 'energy_cost' in env.get_wrapper_attr('observation_variables')
     assert wrapped_shape == (original_shape + 1)
 
     # Check reset obs
@@ -373,14 +376,14 @@ def test_energycost_wrapper(env_demo):
 def test_energycost_wrapper_energycostdata(env_demo):
     env = EnergyCostWrapper(
         env_demo,
-        energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023',
+        energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv',
         energy_cost_variability=(
             1.0,
             0.0,
             0.001))
 
-    # Checks weather data has correct info
-    original_energy_cost_data = pd.read_csv(env.energy_cost_data_file, sep=';')
+    # Get and preprocess manually original cost data
+    original_energy_cost_data = pd.read_csv(env.energy_cost_data_path, sep=';')
     original_energy_cost_data['datetime'] = pd.to_datetime(
         original_energy_cost_data['datetime'], utc=True)
     original_energy_cost_data['datetime'] += pd.DateOffset(hours=1)
@@ -390,33 +393,23 @@ def test_energycost_wrapper_energycostdata(env_demo):
     original_energy_cost_data['Hour'] = original_energy_cost_data['datetime'].dt.hour
     original_energy_cost_data = original_energy_cost_data[[
         'Month', 'Day', 'Hour', 'value']]
-
-    noised_energy_cost_data = env.get_wrapper_attr('energy_cost_data')
-
-    assert original_energy_cost_data.columns.equals(
-        noised_energy_cost_data.columns)
-
-    # Checks noise is applied correctly in energy cost data
-    assert not original_energy_cost_data['value'].equals(
-        noised_energy_cost_data['value'])
-
-    columns_to_be_same = [
-        col for col in original_energy_cost_data.columns if col not in [
-            'value']]
-    original_columns_same = original_energy_cost_data[columns_to_be_same]
-    noised_columns_same = noised_energy_cost_data[columns_to_be_same]
-    assert original_columns_same.equals(noised_columns_same)
+    # Cost data attribute should be None until reset.
+    assert env.get_wrapper_attr('energy_cost_data') is None
 
     # Check that after the reset the energy cost data is recreated.
     env.reset()
-    energy_cost_data_after_reset = env.get_wrapper_attr('energy_cost_data')
+    assert env.get_wrapper_attr('energy_cost_data') is not None
+    noised_energy_cost_data = env.get_wrapper_attr('energy_cost_data')
 
     assert not noised_energy_cost_data['value'].equals(
-        energy_cost_data_after_reset['value'])
+        original_energy_cost_data['value'])
 
-    noised_columns_same = noised_energy_cost_data[columns_to_be_same]
-    after_reset_columns_same = energy_cost_data_after_reset[columns_to_be_same]
-    assert noised_columns_same.equals(after_reset_columns_same)
+    # Columns not affected by noise should be the same
+    columns_to_be_same = [
+        col for col in original_energy_cost_data.columns if col not in [
+            'value']]
+    assert noised_energy_cost_data[columns_to_be_same].equals(
+        original_energy_cost_data[columns_to_be_same])
 
 
 def test_energycost_wrapper_exceptions(env_demo):
@@ -424,15 +417,17 @@ def test_energycost_wrapper_exceptions(env_demo):
     with pytest.raises(IndexError):
         env = EnergyCostWrapper(
             env_demo,
-            energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023',
+            energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv',
             energy_cost_variability=(
                 1.0,
                 0.0))
+        env.reset()
 
     # Specify a energy cost file that doesn't exist
     with pytest.raises(FileNotFoundError):
         env = EnergyCostWrapper(env_demo,
-                                energy_cost_data_file='non-existent-file')
+                                energy_cost_data_path='non-existent-file.csv')
+        env.reset()
 
 
 def test_incremental_wrapper(env_demo):

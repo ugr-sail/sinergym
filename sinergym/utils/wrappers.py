@@ -435,9 +435,6 @@ class WeatherForecastingWrapper(gym.Wrapper):
                 if variable not in columns:
                     raise ValueError(
                         f"The variable '{variable}' in forecast_variability is not in columns.")
-                if len(forecast_variability[variable]) != 3:
-                    raise ValueError(f"The variable '{
-                        variable}' in forecast_variability must have 3 values: sigma, mean and tau.")
 
         super(WeatherForecastingWrapper, self).__init__(env)
         self.n = n
@@ -568,7 +565,7 @@ class EnergyCostWrapper(gym.Wrapper):
 
     def __init__(self,
                  env: Env,
-                 energy_cost_data_file: str,
+                 energy_cost_data_path: str,
                  reward_kwargs: Optional[Dict[str,
                                               Any]] = {'temperature_variables': ['air_temperature'],
                                                        'energy_variables': ['HVAC_electricity_demand_rate'],
@@ -590,8 +587,8 @@ class EnergyCostWrapper(gym.Wrapper):
 
         Args:
             env (Env): Original Gym environment.
-            energy_cost_data_file (str): file from which the energy cost data is obtained
-            energy_cost_variability (Tuple[float,float,float], optional): variation for energy cost data
+            energy_cost_data_path (str): Pathfile from which the energy cost data is obtained.
+            energy_cost_variability (Tuple[float,float,float], optional): variation for energy cost data for OU process (sigma, mu and tau).
             reward_kwargs (Dict[str, Any], optional): Parameters for customizing the reward function.
 
         """
@@ -615,16 +612,15 @@ class EnergyCostWrapper(gym.Wrapper):
                         f"The key '{key}' in reward_kwargs is not recognized.")
 
         super(EnergyCostWrapper, self).__init__(env)
-        self.get_wrapper_attr('observation_variables').append("energy_cost")
         self.energy_cost_variability = {
             'value': energy_cost_variability} if energy_cost_variability is not None else None
-        self.energy_cost_data_file = 'sinergym/data/energy_cost/' + \
-            energy_cost_data_file + '.csv'
+        self.energy_cost_data_path = energy_cost_data_path
+        self.observation_variables = self.env.get_wrapper_attr(
+            'observation_variables') + ['energy_cost']
         new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 1
         self.observation_space = gym.spaces.Box(
             low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
         self.energy_cost_data = None
-        self.set_energy_cost_data()
         self.reward_fn = EnergyCostLinearReward(**reward_kwargs)
         self.logger.info('Wrapper initialized.')
 
@@ -679,40 +675,11 @@ class EnergyCostWrapper(gym.Wrapper):
 
         return new_obs, new_reward, terminated, truncated, info
 
-    def apply_ou_variability(self):
-        """Modify energy cost data using Ornstein-Uhlenbeck process according to the variation specified in the energy_cost_variability variable.
-        """
-
-        if self.energy_cost_variability is not None:
-
-            T = 1.  # Total time.
-            # All the columns are going to have the same num of rows since they are
-            # in the same dataframe
-            n = self.energy_cost_data.shape[0]
-            dt = T / n
-
-            for variable, variation in self.energy_cost_variability.items():
-
-                sigma = variation[0]  # Standard deviation.
-                mu = variation[1]  # Mean.
-                tau = variation[2]  # Time constant.
-
-                sigma_bis = sigma * np.sqrt(2. / tau)
-                sqrtdt = np.sqrt(dt)
-
-                # Create noise
-                noise = np.zeros(n)
-                for i in range(n - 1):
-                    noise[i + 1] = noise[i] + dt * (-(noise[i] - mu) / tau) + \
-                        sigma_bis * sqrtdt * np.random.randn()
-
-                self.energy_cost_data.loc[:, variable] += noise
-
     def set_energy_cost_data(self):
         """Sets the cost of energy data used to construct the state observation.
         """
 
-        df = pd.read_csv(self.energy_cost_data_file, sep=';')
+        df = pd.read_csv(self.energy_cost_data_path, sep=';')
         df['datetime'] = pd.to_datetime(df['datetime'], utc=True)
         df['datetime'] += pd.DateOffset(hours=1)
 
@@ -723,7 +690,8 @@ class EnergyCostWrapper(gym.Wrapper):
         self.energy_cost_data = df[['Month', 'Day', 'Hour', 'value']]
 
         if self.energy_cost_variability:
-            self.apply_ou_variability()
+            self.energy_cost_data = ornstein_uhlenbeck_process(
+                data=self.energy_cost_data, variability_config=self.energy_cost_variability)
 
     def observation(self, obs, info):
         """Build the state observation by adding energy cost information.
