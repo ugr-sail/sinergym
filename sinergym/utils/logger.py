@@ -245,7 +245,7 @@ try:
             # Log all metrics
             wandb.log(metrics_to_log)
 except ImportError:
-    class WandBOutputFormat():
+    class WandBOutputFormat():  # pragma: no cover
         """WandBOutputFormat class for logging in WandB from SB3 logger.
         """
 

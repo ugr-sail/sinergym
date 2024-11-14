@@ -17,7 +17,7 @@ from epw.weather import Weather
 from gymnasium import Env
 from gymnasium.wrappers.utils import RunningMeanStd
 
-from sinergym.utils.common import is_wrapped
+from sinergym.utils.common import is_wrapped, ornstein_uhlenbeck_process
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 from sinergym.utils.logger import LoggerStorage, TerminalLogger
 from sinergym.utils.rewards import EnergyCostLinearReward
@@ -50,7 +50,12 @@ class DatetimeWrapper(gym.ObservationWrapper):
         # Update new shape
         new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 2
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=(
+                new_shape,
+            ),
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
         # Update observation variables
         new_observation_variables = deepcopy(
             self.get_wrapper_attr('observation_variables'))
@@ -131,7 +136,12 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         new_shape = self.env.get_wrapper_attr(
             'observation_space').shape[0] + len(previous_variables)
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=(
+                new_shape,
+            ),
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
 
         # previous observation initialization
         self.previous_observation = np.zeros(
@@ -187,7 +197,10 @@ class MultiObsWrapper(gym.Wrapper):
         shape = self.get_wrapper_attr('observation_space').shape
         new_shape = (shape[0] * n,) if flatten else ((n,) + shape)
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=new_shape,
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
 
         self.logger.info('Wrapper initialized.')
 
@@ -414,10 +427,10 @@ class WeatherForecastingWrapper(gym.Wrapper):
                                        'Wind Speed',
                                        'Direct Normal Radiation',
                                        'Diffuse Horizontal Radiation'],
-                 weather_variability: Optional[Dict[str,
-                                                    Tuple[float,
-                                                          float,
-                                                          float]]] = None):
+                 forecast_variability: Optional[Dict[str,
+                                                     Tuple[float,
+                                                           float,
+                                                           float]]] = None):
         """Adds weather forecast information to the current observation.
 
         Args:
@@ -425,29 +438,37 @@ class WeatherForecastingWrapper(gym.Wrapper):
             n (int, optional): Number of observations to be added. Default to 5.
             delta (int, optional): Time interval between observations. Defaults to 1.
             columns (List[str], optional): List of the names of the meteorological variables that will make up the weather forecast observation.
-            weather_variability (Dict[str, Tuple[float, float, float]], optional): Dictionary with the variation for each column in the weather data. Defaults to None.
+            forecast_variability (Dict[str, Tuple[float, float, float]], optional): Dictionary with the variation for each column in the weather data. Defaults to None.
             The key is the column name and the value is a tuple with the sigma, mean and tau for OU process. If not provided, it assumes no variability.
         Raises:
-            ValueError: If any key in `weather_variability` is not present in the `columns` list.
+            ValueError: If any key in `forecast_variability` is not present in the `columns` list.
         """
-        if weather_variability is not None:
-            for variable in weather_variability.keys():
+        if forecast_variability is not None:
+            for variable in forecast_variability.keys():
                 if variable not in columns:
                     raise ValueError(
-                        f"The variable '{variable}' in weather_variability is not in columns.")
+                        f"The variable '{variable}' in forecast_variability is not in columns.")
 
         super(WeatherForecastingWrapper, self).__init__(env)
         self.n = n
         self.delta = delta
         self.columns = columns
-        self.weather_variability = weather_variability
-        self.weather_path = env.get_wrapper_attr('weather_path')
-        shape = self.get_wrapper_attr('observation_space').shape
-        new_shape = (shape[0] + (len(columns) * n),)
+        self.forecast_variability = forecast_variability
+        new_observation_variables = []
+        for i in range(1, n + 1):
+            for column in columns:
+                new_observation_variables.append(
+                    'forecast_' + str(i) + '_' + column)
+        self.observation_variables = self.env.get_wrapper_attr(
+            'observation_variables') + new_observation_variables
+        new_shape = (self.get_wrapper_attr(
+            'observation_space').shape[0] + (len(columns) * n),)
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
-        self.weather_data = None
-        self.set_weather_data()
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=new_shape,
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
+        self.forecast_data = None
         self.logger.info('Wrapper initialized.')
 
     def reset(self,
@@ -461,12 +482,12 @@ class WeatherForecastingWrapper(gym.Wrapper):
         Returns:
             Tuple[np.ndarray,Dict[str,Any]]: Tuple with next observation, and dict with information about the enviroment.
         """
-        self.set_weather_data()
+        self.set_forecast_data()
 
         obs, info = self.env.reset(seed=seed, options=options)
         obs = self.observation(obs, info)
 
-        return obs.reshape(-1,), info
+        return obs, info
 
     def step(self, action: Union[int, np.ndarray]
              ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
@@ -483,48 +504,20 @@ class WeatherForecastingWrapper(gym.Wrapper):
         obs, reward, terminated, truncated, info = self.env.step(action)
         obs = self.observation(obs, info)
 
-        return obs.reshape(-1,), reward, terminated, truncated, info
+        return obs, reward, terminated, truncated, info
 
-    def apply_ou_variability(self):
-        """Modify weather data using Ornstein-Uhlenbeck process according to the variation specified in the weather_variability dictionary.
-        """
-
-        if self.weather_variability is not None:
-
-            T = 1.  # Total time.
-            # All the columns are going to have the same num of rows since they are
-            # in the same dataframe
-            n = self.weather_data.shape[0]
-            dt = T / n
-            # t = np.linspace(0., T, n)  # Vector of times.
-
-            for variable, variation in self.weather_variability.items():
-
-                sigma = variation[0]  # Standard deviation.
-                mu = variation[1]  # Mean.
-                tau = variation[2]  # Time constant.
-
-                sigma_bis = sigma * np.sqrt(2. / tau)
-                sqrtdt = np.sqrt(dt)
-
-                # Create noise
-                noise = np.zeros(n)
-                for i in range(n - 1):
-                    noise[i + 1] = noise[i] + dt * (-(noise[i] - mu) / tau) + \
-                        sigma_bis * sqrtdt * np.random.randn()
-
-                self.weather_data[variable] += noise
-
-    def set_weather_data(self):
-        """Set the weather data used to build de state observation.
+    def set_forecast_data(self):
+        """Set the weather data used to build de state observation. If forecast_variability is not None,
+           it applies Ornstein-Uhlenbeck process to the data.
         """
         data = Weather()
-        data.read(self.weather_path)
-        self.weather_data = data.dataframe.loc[:, [
+        data.read(self.get_wrapper_attr('weather_path'))
+        self.forecast_data = data.dataframe.loc[:, [
             'Month', 'Day', 'Hour'] + self.columns]
 
-        if self.weather_variability:
-            self.apply_ou_variability()
+        if self.forecast_variability is not None:
+            self.forecast_data = ornstein_uhlenbeck_process(
+                data=self.forecast_data, variability_config=self.forecast_variability)
 
     def observation(self, obs: np.ndarray, info: Dict[str, Any]) -> np.ndarray:
         """Build the state observation by adding weather forecast information.
@@ -538,12 +531,12 @@ class WeatherForecastingWrapper(gym.Wrapper):
         # Search for the index corresponding to the time of the current
         # observation.
         filter = (
-            self.weather_data['Month'] == info['month']) & (
-            self.weather_data['Day'] == info['day']) & (
-            self.weather_data['Hour'] == (
+            self.forecast_data['Month'] == info['month']) & (
+            self.forecast_data['Day'] == info['day']) & (
+            self.forecast_data['Hour'] == (
                 info['hour'] +
                 1))
-        i = self.weather_data[filter].index[0]
+        i = self.forecast_data[filter].index[0]
 
         # Create a list of indexes corresponding to the weather forecasts to be
         # added
@@ -557,7 +550,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
                 1,
                 self.delta))
         # Ensure that DataFrame limits are not exceeded.
-        indexes = [idx for idx in indexes if idx < len(self.weather_data)]
+        indexes = [idx for idx in indexes if idx < len(self.forecast_data)]
 
         # Exceptional case 1: no weather forecast remains. In this case we fill in by repeating
         # the information from the weather forecast observation of current time
@@ -566,7 +559,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
             indexes = [i]
 
         # Obtain weather forecast observations
-        selected_rows = self.weather_data.loc[indexes, self.columns].values
+        selected_rows = self.forecast_data.loc[indexes, self.columns].values
 
         # Exceptional case 2: If there are not enough weather forecasts, repeat the last weather forecast observation
         # until the required size is reached.
@@ -588,7 +581,7 @@ class EnergyCostWrapper(gym.Wrapper):
 
     def __init__(self,
                  env: Env,
-                 energy_cost_data_file: str,
+                 energy_cost_data_path: str,
                  reward_kwargs: Optional[Dict[str,
                                               Any]] = {'temperature_variables': ['air_temperature'],
                                                        'energy_variables': ['HVAC_electricity_demand_rate'],
@@ -610,8 +603,8 @@ class EnergyCostWrapper(gym.Wrapper):
 
         Args:
             env (Env): Original Gym environment.
-            energy_cost_data_file (str): file from which the energy cost data is obtained
-            energy_cost_variability (Tuple[float,float,float], optional): variation for energy cost data
+            energy_cost_data_path (str): Pathfile from which the energy cost data is obtained.
+            energy_cost_variability (Tuple[float,float,float], optional): variation for energy cost data for OU process (sigma, mu and tau).
             reward_kwargs (Dict[str, Any], optional): Parameters for customizing the reward function.
 
         """
@@ -635,16 +628,20 @@ class EnergyCostWrapper(gym.Wrapper):
                         f"The key '{key}' in reward_kwargs is not recognized.")
 
         super(EnergyCostWrapper, self).__init__(env)
-        self.get_wrapper_attr('observation_variables').append("energy_cost")
         self.energy_cost_variability = {
             'value': energy_cost_variability} if energy_cost_variability is not None else None
-        self.energy_cost_data_file = 'sinergym/data/energy_cost/' + \
-            energy_cost_data_file + '.csv'
+        self.energy_cost_data_path = energy_cost_data_path
+        self.observation_variables = self.env.get_wrapper_attr(
+            'observation_variables') + ['energy_cost']
         new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 1
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=(
+                new_shape,
+            ),
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
         self.energy_cost_data = None
-        self.set_energy_cost_data()
         self.reward_fn = EnergyCostLinearReward(**reward_kwargs)
         self.logger.info('Wrapper initialized.')
 
@@ -699,40 +696,11 @@ class EnergyCostWrapper(gym.Wrapper):
 
         return new_obs, new_reward, terminated, truncated, info
 
-    def apply_ou_variability(self):
-        """Modify energy cost data using Ornstein-Uhlenbeck process according to the variation specified in the energy_cost_variability variable.
-        """
-
-        if self.energy_cost_variability is not None:
-
-            T = 1.  # Total time.
-            # All the columns are going to have the same num of rows since they are
-            # in the same dataframe
-            n = self.energy_cost_data.shape[0]
-            dt = T / n
-
-            for variable, variation in self.energy_cost_variability.items():
-
-                sigma = variation[0]  # Standard deviation.
-                mu = variation[1]  # Mean.
-                tau = variation[2]  # Time constant.
-
-                sigma_bis = sigma * np.sqrt(2. / tau)
-                sqrtdt = np.sqrt(dt)
-
-                # Create noise
-                noise = np.zeros(n)
-                for i in range(n - 1):
-                    noise[i + 1] = noise[i] + dt * (-(noise[i] - mu) / tau) + \
-                        sigma_bis * sqrtdt * np.random.randn()
-
-                self.energy_cost_data.loc[:, variable] += noise
-
     def set_energy_cost_data(self):
         """Sets the cost of energy data used to construct the state observation.
         """
 
-        df = pd.read_csv(self.energy_cost_data_file, sep=';')
+        df = pd.read_csv(self.energy_cost_data_path, sep=';')
         df['datetime'] = pd.to_datetime(df['datetime'], utc=True)
         df['datetime'] += pd.DateOffset(hours=1)
 
@@ -743,7 +711,8 @@ class EnergyCostWrapper(gym.Wrapper):
         self.energy_cost_data = df[['Month', 'Day', 'Hour', 'value']]
 
         if self.energy_cost_variability:
-            self.apply_ou_variability()
+            self.energy_cost_data = ornstein_uhlenbeck_process(
+                data=self.energy_cost_data, variability_config=self.energy_cost_variability)
 
     def observation(self, obs, info):
         """Build the state observation by adding energy cost information.
@@ -1955,13 +1924,13 @@ class ReduceObservationWrapper(gym.Wrapper):
 
         # Update observation space
         self.observation_space = gym.spaces.Box(
-            low=-5e6,
-            high=5e6,
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
             shape=(
                 self.env.get_wrapper_attr('observation_space').shape[0] -
                 len(obs_reduction),
             ),
-            dtype=np.float32)
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
 
         # Separate removed variables from observation variables
         self.observation_variables = list(

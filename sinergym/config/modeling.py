@@ -11,7 +11,8 @@ import numpy as np
 from eppy.modeleditor import IDF
 from epw.weather import Weather
 
-from sinergym.utils.common import eppy_element_to_dict, get_delta_seconds
+from sinergym.utils.common import (eppy_element_to_dict, get_delta_seconds,
+                                   ornstein_uhlenbeck_process)
 from sinergym.utils.constants import (CWD, LOG_MODEL_LEVEL, PKG_DATA_PATH,
                                       WEEKDAY_ENCODING, YEAR)
 from sinergym.utils.logger import TerminalLogger
@@ -326,38 +327,16 @@ class ModelJSON(object):
         Returns:
             str: New EPW file path generated in simulator working path in that episode or current EPW path if variation is not defined.
         """
-        # deepcopy for weather_data
-        weather_data_mod = deepcopy(self.weather_data)
+
         filename = self._weather_path.split('/')[-1]
+        weather_data_mod = deepcopy(self.weather_data)
 
         # Apply variation to EPW if exists
         if weather_variability is not None:
 
-            T = 1.  # Total time.
-            # All the columns are going to have the same num of rows since they are
-            # in the same dataframe
-            # get first column of df
-            n = weather_data_mod.dataframe.shape[0]
-            dt = T / n
-            # t = np.linspace(0., T, n)  # Vector of times.
-
-            for variable, variation in weather_variability.items():
-
-                sigma = variation[0]  # Standard deviation.
-                mu = variation[1]  # Mean.
-                tau = variation[2]  # Time constant.
-
-                sigma_bis = sigma * np.sqrt(2. / tau)
-                sqrtdt = np.sqrt(dt)
-
-                # Create noise
-                noise = np.zeros(n)
-                for i in range(n - 1):
-                    noise[i + 1] = noise[i] + dt * (-(noise[i] - mu) / tau) + \
-                        sigma_bis * sqrtdt * np.random.randn()
-
-                # Add noise
-                weather_data_mod.dataframe[variable] += noise
+            weather_data_mod.dataframe = ornstein_uhlenbeck_process(
+                data=self.weather_data.dataframe,
+                variability_config=weather_variability)
 
             self.logger.info(
                 'Weather noise applied in columns: {}'.format(
