@@ -298,7 +298,8 @@ def env_demo_energy_cost(
         }
     )
     env = EnergyCostWrapper(
-        env, energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023')
+        env,
+        energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv')
     return env
 
 
@@ -366,7 +367,8 @@ def env_demo_summer_energy_cost(
         }
     )
     env = EnergyCostWrapper(
-        env, energy_cost_data_file='PVPC_active_energy_billing_Iberian_Peninsula_2023')
+        env,
+        energy_cost_data_path='/workspaces/sinergym/sinergym/data/energy_cost/PVPC_active_energy_billing_Iberian_Peninsula_2023.csv')
     return env
 
 

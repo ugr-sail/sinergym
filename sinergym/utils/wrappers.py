@@ -199,9 +199,7 @@ class MultiObsWrapper(gym.Wrapper):
         self.observation_space = gym.spaces.Box(
             low=self.env.get_wrapper_attr('observation_space').low[0],
             high=self.env.get_wrapper_attr('observation_space').high[0],
-            shape=(
-                new_shape,
-            ),
+            shape=new_shape,
             dtype=self.env.get_wrapper_attr('observation_space').dtype)
 
         self.logger.info('Wrapper initialized.')
@@ -468,9 +466,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
         self.observation_space = gym.spaces.Box(
             low=self.env.get_wrapper_attr('observation_space').low[0],
             high=self.env.get_wrapper_attr('observation_space').high[0],
-            shape=(
-                new_shape,
-            ),
+            shape=new_shape,
             dtype=self.env.get_wrapper_attr('observation_space').dtype)
         self.forecast_data = None
         self.logger.info('Wrapper initialized.')
