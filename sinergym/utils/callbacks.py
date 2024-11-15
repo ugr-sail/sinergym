@@ -32,7 +32,9 @@ class LoggerEvalCallback(EventCallback):
         excluded_metrics: List[str] = [
             'episode_num',
             'length (timesteps)',
-            'time_elapsed (hours)'],
+            'time_elapsed (hours)',
+            'truncated',
+            'terminated'],
         verbose: int = 1,
     ):
         """ Callback for evaluating an agent during training process logging all important data in WandB platform if is activated. It must be wrapped with BaseLoggerWrapper child class.
