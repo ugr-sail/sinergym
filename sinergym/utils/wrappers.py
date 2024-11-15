@@ -1962,8 +1962,8 @@ class ReduceObservationWrapper(gym.Wrapper):
             'removed_observation_variables')}
         info['removed_observation'] = removed_obs_dict
 
-        return np.array(list(reduced_obs_dict.values())
-                        ), reward, terminated, truncated, info
+        return np.array(list(reduced_obs_dict.values()),
+                        dtype=np.float32), reward, terminated, truncated, info
 
     def reset(self,
               seed: Optional[int] = None,
@@ -1983,7 +1983,8 @@ class ReduceObservationWrapper(gym.Wrapper):
             'removed_observation_variables')}
         info['removed_observation'] = removed_obs_dict
 
-        return np.array(list(reduced_obs_dict.values())), info
+        return np.array(list(reduced_obs_dict.values()),
+                        dtype=np.float32), info
 
 # ---------------------------------------------------------------------------- #
 #                         Specific environment wrappers                        #
@@ -1998,7 +1999,7 @@ class RoundActionWrapper(gym.ActionWrapper):
         action_ = np.array(deepcopy(action))
         rounded = np.round(action_[:5])
         new_a = np.concatenate([rounded, action_[-1].reshape(1)])
-        return list(new_a)
+        return np.array(new_a, dtype=np.float32)
 
 
 class ExtremeFlowControlWrapper(gym.ActionWrapper):
@@ -2016,7 +2017,7 @@ class ExtremeFlowControlWrapper(gym.ActionWrapper):
                     maximum) < abs(
                     action_value_ -
                     minimum) else minimum
-        return list(action_)
+        return np.array(action_, dtype=np.float32)
 
 
 class HeatPumpEnergyWrapper(gym.ObservationWrapper):
@@ -2066,13 +2067,8 @@ class HeatPumpEnergyWrapper(gym.ObservationWrapper):
                 self.env.observation_space.shape[0] + 6,
             ),
             dtype=np.float32)
-        self.observation_variables = self.env.observation_variables + [
-            'crf',
-            'heat_cap_mod',
-            'cop_plr_mod',
-            'cop_temp_mod',
-            'heat_cap',
-            'plr_current']
+        self.observation_variables = self.env.get_wrapper_attr('observation_variables') + [
+            'crf', 'heat_cap_mod', 'cop_plr_mod', 'cop_temp_mod', 'heat_cap', 'plr_current']
 
     def step(self,
              action: Union[int,
@@ -2157,7 +2153,7 @@ class HeatPumpEnergyWrapper(gym.ObservationWrapper):
         obs_dict['heat_cap'] = heat_cap
         obs_dict['plr_current'] = plr_current
 
-        return np.array(list(obs_dict.values()))
+        return np.array(list(obs_dict.values()), dtype=np.float32)
 
     def __check_limit_values(self, value: float, limits: tuple) -> float:
         if value >= limits[1]:
