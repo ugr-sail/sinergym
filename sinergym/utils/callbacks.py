@@ -191,6 +191,10 @@ class LoggerEvalCallback(EventCallback):
                     fname=self.save_path +
                     '/var.txt',
                     X=self.eval_env.get_wrapper_attr('var'))
+            # Save best model found summary in wandb if its active
+            if self.wandb_log:
+                self.train_env.get_wrapper_attr('_log_data')(
+                    data={'best_model': evaluation_summary})
 
         # We close evaluation env and starts training env again
         self.eval_env.close()
