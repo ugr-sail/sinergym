@@ -1,10 +1,12 @@
 """Common utilities."""
 
+from copy import deepcopy
 from datetime import datetime, timedelta
 from typing import Any, Dict, Optional, Tuple, Type, Union
 
 import gymnasium as gym
 import numpy as np
+import pandas as pd
 import xlsxwriter
 from eppy.modeleditor import IDF
 
@@ -179,6 +181,52 @@ def export_schedulers_to_excel(
             keys_format)
         object_num += 1
     workbook.close()
+
+# ------------------------ Ornstein Unhelbeck Process ------------------------ #
+
+
+def ornstein_uhlenbeck_process(
+        data: pd.DataFrame,
+        variability_config: Dict[str, Tuple[float, float, float]]) -> pd.DataFrame:
+    """Add noise to the data using the Ornstein-Uhlenbeck process.
+
+    Args:
+        data (pd.DataFrame): Data to be modified.
+        variability_config (Dict[str, Tuple[float, float, float]]): Dictionary with the variability configuration for each variable (sigma, mu and tau constants).
+
+    Returns:
+        pd.DataFrame: Data with noise added.
+    """
+
+    # deepcopy for weather_data
+    data_mod = deepcopy(data)
+
+    # Total time.
+    T = 1.
+    # get first column of df
+    n = data_mod.shape[0]
+    dt = T / n
+    # t = np.linspace(0., T, n)  # Vector of times.
+
+    for variable, variation in variability_config.items():
+
+        sigma = variation[0]  # Standard deviation.
+        mu = variation[1]  # Mean.
+        tau = variation[2]  # Time constant.
+
+        sigma_bis = sigma * np.sqrt(2. / tau)
+        sqrtdt = np.sqrt(dt)
+
+        # Create noise
+        noise = np.zeros(n)
+        for i in range(n - 1):
+            noise[i + 1] = noise[i] + dt * (-(noise[i] - mu) / tau) + \
+                sigma_bis * sqrtdt * np.random.randn()
+
+        # Add noise
+        data_mod[variable] += noise
+
+    return data_mod
 
 # ------------------ Reading JSON environment configuration ------------------ #
 

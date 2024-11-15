@@ -37,7 +37,9 @@ the Weights and Biases platform. Encapsulating the evaluation environment is not
 monitoring of these episodes is desired.
 
 The data logged on the platform, in the Evaluations section, will depend on the specific logger wrapper used 
-and its episode summary. Thus, to obtain new metrics, the logger wrapper must be modified, not the callback.
+and its episode summary. Thus, to obtain new metrics, the logger wrapper must be modified, not the callback. 
+Aditionally, whis callback will overwrite specific metrics for the best model obtained during the training process,
+in order to remember the metrics of the best model.
 
 The number of episodes run in each evaluation and their frequency can be configured, and metrics from the 
 underlying logger can be excluded if desired. Moreover, if normalization in observation space is applied,

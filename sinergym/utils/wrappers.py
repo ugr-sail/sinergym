@@ -11,13 +11,16 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import gymnasium as gym
 import numpy as np
+import pandas as pd
 import wandb
+from epw.weather import Weather
 from gymnasium import Env
-from gymnasium.wrappers.normalize import RunningMeanStd
+from gymnasium.wrappers.utils import RunningMeanStd
 
-from sinergym.utils.common import is_wrapped
+from sinergym.utils.common import is_wrapped, ornstein_uhlenbeck_process
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 from sinergym.utils.logger import LoggerStorage, TerminalLogger
+from sinergym.utils.rewards import EnergyCostLinearReward
 
 # ---------------------------------------------------------------------------- #
 #                             Observation wrappers                             #
@@ -47,7 +50,12 @@ class DatetimeWrapper(gym.ObservationWrapper):
         # Update new shape
         new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 2
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=(
+                new_shape,
+            ),
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
         # Update observation variables
         new_observation_variables = deepcopy(
             self.get_wrapper_attr('observation_variables'))
@@ -128,7 +136,12 @@ class PreviousObservationWrapper(gym.ObservationWrapper):
         new_shape = self.env.get_wrapper_attr(
             'observation_space').shape[0] + len(previous_variables)
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=(new_shape,), dtype=np.float32)
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=(
+                new_shape,
+            ),
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
 
         # previous observation initialization
         self.previous_observation = np.zeros(
@@ -184,7 +197,10 @@ class MultiObsWrapper(gym.Wrapper):
         shape = self.get_wrapper_attr('observation_space').shape
         new_shape = (shape[0] * n,) if flatten else ((n,) + shape)
         self.observation_space = gym.spaces.Box(
-            low=-5e6, high=5e6, shape=new_shape, dtype=np.float32)
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=new_shape,
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
 
         self.logger.info('Wrapper initialized.')
 
@@ -287,23 +303,27 @@ class NormalizeObservation(gym.Wrapper):
 
     def reset(self, **kwargs):
         """Resets the environment and normalizes the observation."""
+
+        # Update normalization calibration if it is required
+        if self.get_wrapper_attr('episode') > 0:
+            self._save_normalization_calibration()
+
         obs, info = self.env.reset(**kwargs)
 
         # Save original obs in class attribute
         self.unwrapped_observation = deepcopy(obs)
 
-        # Update normalization calibration if it is required
-        self._save_normalization_calibration()
-
         return self.normalize(np.array([obs]))[0], info
 
     def close(self):
-        """Close the environment and save normalization calibration."""
-        self.env.close()
+        """save normalization calibration and close the environment."""
         # Update normalization calibration if it is required
-        self._save_normalization_calibration()
+        if self.get_wrapper_attr('episode') > 0:
+            self._save_normalization_calibration()
 
-    # ----------------------- Wrapper extra functionality ----------------------- #
+        self.env.close()
+
+# ----------------------- Wrapper extra functionality ----------------------- #
 
     def _check_and_update_metric(self, metric, metric_name):
         if metric is not None:
@@ -337,7 +357,12 @@ class NormalizeObservation(gym.Wrapper):
         """
         self.logger.info(
             'Saving normalization calibration data.')
-        # Save in txt in output folder
+        # Save in txt in episode output folder
+        np.savetxt(fname=self.get_wrapper_attr(
+            'episode_path') + '/mean.txt', X=self.mean)
+        np.savetxt(fname=self.get_wrapper_attr(
+            'episode_path') + '/var.txt', X=self.var)
+        # Overwrite output root folder mean and var as latest calibration
         np.savetxt(fname=self.get_wrapper_attr(
             'workspace_path') + '/mean.txt', X=self.mean)
         np.savetxt(fname=self.get_wrapper_attr(
@@ -385,6 +410,417 @@ class NormalizeObservation(gym.Wrapper):
         return (obs - self.obs_rms.mean) / \
             np.sqrt(self.obs_rms.var + self.epsilon)
 
+
+class WeatherForecastingWrapper(gym.Wrapper):
+
+    logger = TerminalLogger().getLogger(
+        name='WRAPPER WeatherForecastingWrapper',
+        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: Env,
+                 n: int = 5,
+                 delta: int = 1,
+                 columns: List[str] = ['Dry Bulb Temperature',
+                                       'Relative Humidity',
+                                       'Wind Direction',
+                                       'Wind Speed',
+                                       'Direct Normal Radiation',
+                                       'Diffuse Horizontal Radiation'],
+                 forecast_variability: Optional[Dict[str,
+                                                     Tuple[float,
+                                                           float,
+                                                           float]]] = None):
+        """Adds weather forecast information to the current observation.
+
+        Args:
+            env (Env): Original Gym environment.
+            n (int, optional): Number of observations to be added. Default to 5.
+            delta (int, optional): Time interval between observations. Defaults to 1.
+            columns (List[str], optional): List of the names of the meteorological variables that will make up the weather forecast observation.
+            forecast_variability (Dict[str, Tuple[float, float, float]], optional): Dictionary with the variation for each column in the weather data. Defaults to None.
+            The key is the column name and the value is a tuple with the sigma, mean and tau for OU process. If not provided, it assumes no variability.
+        Raises:
+            ValueError: If any key in `forecast_variability` is not present in the `columns` list.
+        """
+        if forecast_variability is not None:
+            for variable in forecast_variability.keys():
+                if variable not in columns:
+                    raise ValueError(
+                        f"The variable '{variable}' in forecast_variability is not in columns.")
+
+        super(WeatherForecastingWrapper, self).__init__(env)
+        self.n = n
+        self.delta = delta
+        self.columns = columns
+        self.forecast_variability = forecast_variability
+        new_observation_variables = []
+        for i in range(1, n + 1):
+            for column in columns:
+                new_observation_variables.append(
+                    'forecast_' + str(i) + '_' + column)
+        self.observation_variables = self.env.get_wrapper_attr(
+            'observation_variables') + new_observation_variables
+        new_shape = (self.get_wrapper_attr(
+            'observation_space').shape[0] + (len(columns) * n),)
+        self.observation_space = gym.spaces.Box(
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=new_shape,
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
+        self.forecast_data = None
+        self.logger.info('Wrapper initialized.')
+
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
+        """Resets the environment.
+
+        Returns:
+            Tuple[np.ndarray,Dict[str,Any]]: Tuple with next observation, and dict with information about the enviroment.
+        """
+        self.set_forecast_data()
+
+        obs, info = self.env.reset(seed=seed, options=options)
+        obs = self.observation(obs, info)
+
+        return obs, info
+
+    def step(self, action: Union[int, np.ndarray]
+             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
+        """Performs the action in the new environment.
+
+        Args:
+            action (Union[int, np.ndarray]): Action to be executed in environment.
+
+        Returns:
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated
+            episode and dict with Information about the enviroment.
+        """
+
+        obs, reward, terminated, truncated, info = self.env.step(action)
+        obs = self.observation(obs, info)
+
+        return obs, reward, terminated, truncated, info
+
+    def set_forecast_data(self):
+        """Set the weather data used to build de state observation. If forecast_variability is not None,
+           it applies Ornstein-Uhlenbeck process to the data.
+        """
+        data = Weather()
+        data.read(self.get_wrapper_attr('weather_path'))
+        self.forecast_data = data.dataframe.loc[:, [
+            'Month', 'Day', 'Hour'] + self.columns]
+
+        if self.forecast_variability is not None:
+            self.forecast_data = ornstein_uhlenbeck_process(
+                data=self.forecast_data, variability_config=self.forecast_variability)
+
+    def observation(self, obs: np.ndarray, info: Dict[str, Any]) -> np.ndarray:
+        """Build the state observation by adding weather forecast information.
+
+        Args:
+            obs (np.ndarray): Original observation.
+            info (Dict[str, Any]): Information about the enviroment.
+        Returns:
+            np.ndarray: Transformed observation.
+        """
+        # Search for the index corresponding to the time of the current
+        # observation.
+        filter = (
+            self.forecast_data['Month'] == info['month']) & (
+            self.forecast_data['Day'] == info['day']) & (
+            self.forecast_data['Hour'] == (
+                info['hour'] +
+                1))
+        i = self.forecast_data[filter].index[0]
+
+        # Create a list of indexes corresponding to the weather forecasts to be
+        # added
+        indexes = list(
+            range(
+                i +
+                self.delta,
+                i +
+                self.delta *
+                self.n +
+                1,
+                self.delta))
+        # Ensure that DataFrame limits are not exceeded.
+        indexes = [idx for idx in indexes if idx < len(self.forecast_data)]
+
+        # Exceptional case 1: no weather forecast remains. In this case we fill in by repeating
+        # the information from the weather forecast observation of current time
+        # until the required size is reached.
+        if len(indexes) == 0:
+            indexes = [i]
+
+        # Obtain weather forecast observations
+        selected_rows = self.forecast_data.loc[indexes, self.columns].values
+
+        # Exceptional case 2: If there are not enough weather forecasts, repeat the last weather forecast observation
+        # until the required size is reached.
+        if len(selected_rows) < self.n:
+            last_row = selected_rows[-1]
+            needed_rows = self.n - len(selected_rows)
+            selected_rows = np.vstack(
+                [selected_rows, np.tile(last_row, (needed_rows, 1))])
+
+        info_forecasting = selected_rows.flatten()
+        obs = np.concatenate((obs, info_forecasting))
+
+        return obs
+
+
+class EnergyCostWrapper(gym.Wrapper):
+    logger = TerminalLogger().getLogger(name='WRAPPER EnergyCostWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: Env,
+                 energy_cost_data_path: str,
+                 reward_kwargs: Optional[Dict[str,
+                                              Any]] = {'temperature_variables': ['air_temperature'],
+                                                       'energy_variables': ['HVAC_electricity_demand_rate'],
+                                                       'energy_cost_variables': ['energy_cost'],
+                                                       'range_comfort_winter': [20.0,
+                                                                                23.5],
+                                                       'range_comfort_summer': [23.0,
+                                                                                26.0],
+                                                       'temperature_weight': 0.4,
+                                                       'energy_weight': 0.4,
+                                                       'lambda_energy': 1e-4,
+                                                       'lambda_temperature': 1.0,
+                                                       'lambda_energy_cost': 1.0},
+                 energy_cost_variability: Optional[Tuple[float,
+                                                         float,
+                                                         float]] = None):
+        """
+        Adds energy cost information to the current observation.
+
+        Args:
+            env (Env): Original Gym environment.
+            energy_cost_data_path (str): Pathfile from which the energy cost data is obtained.
+            energy_cost_variability (Tuple[float,float,float], optional): variation for energy cost data for OU process (sigma, mu and tau).
+            reward_kwargs (Dict[str, Any], optional): Parameters for customizing the reward function.
+
+        """
+        allowed_keys = {
+            'temperature_variables',
+            'energy_variables',
+            'energy_cost_variables',
+            'range_comfort_winter',
+            'range_comfort_summer',
+            'temperature_weight',
+            'energy_weight',
+            'lambda_energy',
+            'lambda_temperature',
+            'lambda_energy_cost'
+        }
+
+        if reward_kwargs:
+            for key in reward_kwargs.keys():
+                if key not in allowed_keys:
+                    raise ValueError(
+                        f"The key '{key}' in reward_kwargs is not recognized.")
+
+        super(EnergyCostWrapper, self).__init__(env)
+        self.energy_cost_variability = {
+            'value': energy_cost_variability} if energy_cost_variability is not None else None
+        self.energy_cost_data_path = energy_cost_data_path
+        self.observation_variables = self.env.get_wrapper_attr(
+            'observation_variables') + ['energy_cost']
+        new_shape = self.env.get_wrapper_attr('observation_space').shape[0] + 1
+        self.observation_space = gym.spaces.Box(
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=(
+                new_shape,
+            ),
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
+        self.energy_cost_data = None
+        self.reward_fn = EnergyCostLinearReward(**reward_kwargs)
+        self.logger.info('Wrapper initialized.')
+
+    def reset(self,
+              seed: Optional[int] = None,
+              options: Optional[Dict[str,
+                                     Any]] = None) -> Tuple[np.ndarray,
+                                                            Dict[str,
+                                                                 Any]]:
+        """Resets the environment.
+
+        Returns:
+            Tuple[np.ndarray,Dict[str,Any]]: Tuple with next observation, and dict with information about the enviroment.
+        """
+        self.set_energy_cost_data()
+
+        obs, info = self.env.reset(seed=seed, options=options)
+        obs = self.observation(obs, info)
+
+        return obs, info
+
+    def step(self, action: Union[int, np.ndarray]
+
+             ) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
+        """Performs the action in the new environment.
+
+        Args:
+            action (Union[int, np.ndarray]): Action to be executed in environment.
+
+        Returns:
+            Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated
+            episode and dict with Information about the enviroment.
+        """
+
+        obs, _, terminated, truncated, info = self.env.step(action)
+        new_obs = self.observation(obs, info)
+
+        obs_dict = dict(zip(self.get_wrapper_attr('observation_variables'), np.concatenate(
+            (new_obs[:len(self.get_wrapper_attr('observation_variables')) - 1], [new_obs[-1]]))))
+
+        # Recalculation of reward with new info
+        new_reward, new_terms = self.reward_fn(obs_dict)
+        info = {
+            key: info[key] for key in list(
+                info.keys())[
+                :list(
+                    info.keys()).index('reward') +
+                1]}
+
+        info.update({'reward': new_reward})
+        info.update(new_terms)
+
+        return new_obs, new_reward, terminated, truncated, info
+
+    def set_energy_cost_data(self):
+        """Sets the cost of energy data used to construct the state observation.
+        """
+
+        df = pd.read_csv(self.energy_cost_data_path, sep=';')
+        df['datetime'] = pd.to_datetime(df['datetime'], utc=True)
+        df['datetime'] += pd.DateOffset(hours=1)
+
+        df['Month'] = df['datetime'].dt.month
+        df['Day'] = df['datetime'].dt.day
+        df['Hour'] = df['datetime'].dt.hour
+
+        self.energy_cost_data = df[['Month', 'Day', 'Hour', 'value']]
+
+        if self.energy_cost_variability:
+            self.energy_cost_data = ornstein_uhlenbeck_process(
+                data=self.energy_cost_data, variability_config=self.energy_cost_variability)
+
+    def observation(self, obs, info):
+        """Build the state observation by adding energy cost information.
+
+        Args:
+            obs (np.ndarray): Original observation.
+            info (Dict[str, Any]): Information about the enviroment.
+        Returns:
+            np.ndarray: Transformed observation.
+        """
+        # Search for the index corresponding to the time of the current
+        # observation.
+        filter = (
+            self.energy_cost_data['Month'] == info['month']) & (
+            self.energy_cost_data['Day'] == info['day']) & (
+            self.energy_cost_data['Hour'] == (
+                info['hour']))
+        i = self.energy_cost_data[filter].index[0]
+
+        # Obtain energy cost observation
+        selected_row = self.energy_cost_data.loc[i, ['value']].values
+
+        info_energy_cost = selected_row.flatten()
+        obs = np.concatenate((obs, info_energy_cost))
+
+        return obs
+
+
+class DeltaTempWrapper(gym.ObservationWrapper):
+    """Wrapper to add delta temperature information to the current observation. If setpoint variables
+    has only one element, it will be considered as a unique setpoint for all temperature variables.
+    IMPORTANT: temperature variables and setpoint of each zone must be defined in the same order."""
+
+    logger = TerminalLogger().getLogger(name='WRAPPER DeltaTempWrapper',
+                                        level=LOG_WRAPPERS_LEVEL)
+
+    def __init__(self,
+                 env: Env,
+                 temperature_variables: List[str],
+                 setpoint_variables: List[str]):
+        """
+        Args:
+            env (Env): Original Gym environment.
+            temperature_variables (List[str]): List of temperature variables.
+            setpoint_variables (List[str]): List of setpoint variables. If the length is 1, it will be considered as a unique setpoint for all temperature variables.
+        """
+        super(DeltaTempWrapper, self).__init__(env)
+
+        # Check variables definition
+        assert len(setpoint_variables) == 1 or len(setpoint_variables) == len(
+            temperature_variables), 'Setpoint variables must have one element length or the same length than temperature variables.'
+
+        # Check all temperature and setpoint variables are in environment
+        # observation variables
+        assert all([variable in self.get_wrapper_attr('observation_variables')
+                    for variable in temperature_variables]), 'Some temperature variables are not defined in observation space.'
+        assert all([variable in self.get_wrapper_attr('observation_variables')
+                    for variable in setpoint_variables]), 'Some setpoint variables are not defined in observation space.'
+
+        # Define wrappers attributes
+        self.delta_temperatures = temperature_variables
+        self.delta_setpoints = setpoint_variables
+
+        # Add delta temperature variables to observation variables
+        new_observation_variables = deepcopy(
+            self.get_wrapper_attr('observation_variables'))
+        for temp_var in temperature_variables:
+            new_observation_variables.append('delta_' + temp_var)
+        self.observation_variables = new_observation_variables
+
+        # Update observation space shape
+        new_shape = self.env.get_wrapper_attr(
+            'observation_space').shape[0] + len(temperature_variables)
+        self.observation_space = gym.spaces.Box(
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
+            shape=(
+                new_shape,
+            ),
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
+
+        self.logger.info('Wrapper initialized.')
+
+    def observation(self, obs: np.ndarray) -> np.ndarray:
+        """Add delta temperature information to the current observation.
+        """
+        # Get obs dictionary
+        obs_dict = dict(
+            zip(self.env.get_wrapper_attr('observation_variables'), obs))
+
+        # Get temperature values and setpoint(s) values
+        temperatures = [obs_dict[variable]
+                        for variable in self.delta_temperatures]
+        setpoints = [obs_dict[variable] for variable in self.delta_setpoints]
+
+        # Calculate delta values
+        if len(setpoints) == 1:
+            delta_temps = [temp - setpoints[0] for temp in temperatures]
+        else:
+            delta_temps = [temp - setpoint for temp, setpoint in zip(
+                temperatures, setpoints)]
+
+        # Update observation array appending delta values
+        new_obs = np.concatenate((obs, delta_temps))
+
+        return new_obs
+
+
 # ---------------------------------------------------------------------------- #
 #                                Action wrappers                               #
 # ---------------------------------------------------------------------------- #
@@ -414,7 +850,7 @@ class IncrementalWrapper(gym.ActionWrapper):
         super().__init__(env)
 
         # Params
-        self.current_values = initial_values
+        self.current_values = np.array(initial_values, dtype=np.float32)
 
         # Check environment is valid
         try:
@@ -441,8 +877,10 @@ class IncrementalWrapper(gym.ActionWrapper):
         # All posible incremental variations
         self.values_definition = {}
         # Original action space variables
-        action_space_low = deepcopy(self.env.action_space.low)
-        action_space_high = deepcopy(self.env.action_space.high)
+        action_space_low = deepcopy(
+            self.env.get_wrapper_attr('action_space').low)
+        action_space_high = deepcopy(
+            self.env.get_wrapper_attr('action_space').high)
         # Calculating incremental variations and action space for each
         # incremental variable
         for variable, (delta_temp,
@@ -469,7 +907,7 @@ class IncrementalWrapper(gym.ActionWrapper):
         self.action_space = gym.spaces.Box(
             low=action_space_low,
             high=action_space_high,
-            shape=self.env.action_space.shape,
+            shape=self.env.get_wrapper_attr('action_space').shape,
             dtype=np.float32)
 
         self.logger.info(
@@ -495,12 +933,13 @@ class IncrementalWrapper(gym.ActionWrapper):
             # Update current_values
             self.current_values[i] += increment_value
             # Clip the value with original action space
-            self.current_values[i] = max(self.env.action_space.low[index], min(
-                self.current_values[i], self.env.action_space.high[index]))
+            self.current_values[i] = max(
+                self.env.get_wrapper_attr('action_space').low[index], min(
+                    self.current_values[i], self.env.get_wrapper_attr('action_space').high[index]))
 
             action_[index] = self.current_values[i]
 
-        return list(action_)
+        return action_
 
 # ---------------------------------------------------------------------------- #
 
@@ -533,7 +972,7 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         super().__init__(env)
 
         # Params
-        self.current_setpoints = initial_values
+        self.current_setpoints = np.array(initial_values, dtype=np.float32)
 
         # Check environment is valid
         try:
@@ -577,26 +1016,25 @@ class DiscreteIncrementalWrapper(gym.ActionWrapper):
         self.logger.info('Wrapper initialized')
 
     # Define action mapping method
-    def action_mapping(self, action: int) -> List[float]:
-        return self.mapping[action]
+    def action_mapping(self, action: int) -> np.ndarray:
+        return np.array(self.mapping[action], dtype=np.float32)
 
     def action(self, action):
         """Takes the discrete action and transforms it to setpoints tuple."""
         action_ = deepcopy(action)
         action_ = self.get_wrapper_attr('action_mapping')(action_)
         # Update current setpoints values with incremental action
-        self.current_setpoints = [
+        self.current_setpoints = np.array([
             sum(i) for i in zip(
                 self.get_wrapper_attr('current_setpoints'),
-                action_)]
+                action_)], dtype=np.float32)
         # clip setpoints returned
         self.current_setpoints = np.clip(
-            np.array(self.get_wrapper_attr('current_setpoints')),
-            self.env.action_space.low,
-            self.env.action_space.high
-        )
+            self.get_wrapper_attr('current_setpoints'),
+            self.env.get_wrapper_attr('action_space').low,
+            self.env.get_wrapper_attr('action_space').high)
 
-        return list(self.current_setpoints)
+        return self.current_setpoints
 
     # Updating property
     @property  # pragma: no cover
@@ -649,9 +1087,10 @@ class DiscretizeEnv(gym.ActionWrapper):
             'Make sure that the action space is compatible and contained in the original environment.')
         self.logger.info('Wrapper initialized')
 
-    def action(self, action: Union[int, List[int]]) -> List[int]:
+    def action(self, action: Union[int, List[int]]) -> np.ndarray:
         action_ = deepcopy(action)
-        action_ = self.get_wrapper_attr('action_mapping')(action_)
+        action_ = np.array(self.get_wrapper_attr(
+            'action_mapping')(action_), dtype=np.float32)
         return action_
 
     # Updating property
@@ -705,14 +1144,14 @@ class NormalizeAction(gym.ActionWrapper):
             low=np.array(
                 np.repeat(
                     lower_norm_value,
-                    env.action_space.shape[0]),
+                    env.get_wrapper_attr('action_space').shape[0]),
                 dtype=np.float32),
             high=np.array(
                 np.repeat(
                     upper_norm_value,
-                    env.action_space.shape[0]),
+                    env.get_wrapper_attr('action_space').shape[0]),
                 dtype=np.float32),
-            dtype=env.action_space.dtype)
+            dtype=env.get_wrapper_attr('action_space').dtype)
         # Updated action space to normalized space
         self.action_space = self.normalized_space
 
@@ -1228,9 +1667,6 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
                 'It is required to be wrapped by a BaseLoggerWrapper child class previously.')
             raise err
 
-        # Add requirement for wandb core
-        wandb.require("core")
-
         # Define wandb run name if is not specified
         run_name = run_name if run_name is not None else self.env.get_wrapper_attr(
             'name') + '_' + wandb.util.generate_id()
@@ -1257,7 +1693,7 @@ class WandBLogger(gym.Wrapper):  # pragma: no cover
                 'Error initializing WandB run, if project and entity are not specified, it should be a previous active wandb run, but it has not been found.')
             raise RuntimeError
 
-        # Wandb finish with env.close flag
+        # Flag to Wandb finish with env close
         self.wandb_finish = True
 
         # Define X-Axis for episode summaries
@@ -1488,13 +1924,13 @@ class ReduceObservationWrapper(gym.Wrapper):
 
         # Update observation space
         self.observation_space = gym.spaces.Box(
-            low=-5e6,
-            high=5e6,
+            low=self.env.get_wrapper_attr('observation_space').low[0],
+            high=self.env.get_wrapper_attr('observation_space').high[0],
             shape=(
-                self.env.observation_space.shape[0] -
+                self.env.get_wrapper_attr('observation_space').shape[0] -
                 len(obs_reduction),
             ),
-            dtype=np.float32)
+            dtype=self.env.get_wrapper_attr('observation_space').dtype)
 
         # Separate removed variables from observation variables
         self.observation_variables = list(

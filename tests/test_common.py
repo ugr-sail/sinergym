@@ -43,12 +43,12 @@ def test_unwrap_wrapper(
         env_5zone,
         env_all_wrappers):
     # Check if env_wrapper_normalization unwrapped is env_5zone
-    assert not hasattr(env_5zone, 'unwrapped_observation')
-    assert hasattr(env_all_wrappers, 'unwrapped_observation')
+    assert not env_5zone.has_wrapper_attr('unwrapped_observation')
+    assert env_all_wrappers.has_wrapper_attr('unwrapped_observation')
     env = common.unwrap_wrapper(
         env_all_wrappers,
         NormalizeObservation)
-    assert not hasattr(env, 'unwrapped_observation')
+    assert not env.has_wrapper_attr('unwrapped_observation')
     # Check if trying unwrap a not wrapped environment the result is None
     env = common.unwrap_wrapper(
         env_5zone,
@@ -107,3 +107,26 @@ def test_json_conf_exceptions(conf_5zone_exceptions):
     for conf_5zone_exception in conf_5zone_exceptions:
         with pytest.raises((RuntimeError, AssertionError)):
             common.convert_conf_to_env_parameters(conf_5zone_exception)
+
+
+def test_ornstein_uhlenbeck_process(weather_data):
+    df = weather_data.dataframe
+    # Specify variability configuration for each desired column
+    variability_conf = {
+        'Dry Bulb Temperature': (1.0, 0.0, 0.001),
+        'Wind Speed': (3.0, 0.0, 0.01)
+    }
+    # Calculate dataframe with noise
+    noise = common.ornstein_uhlenbeck_process(
+        data=df, variability_config=variability_conf)
+
+    # Columns specified in variability_conf should be different
+    assert (df['Dry Bulb Temperature'] !=
+            noise['Dry Bulb Temperature']).any()
+    assert (df['Wind Speed'] !=
+            noise['Wind Speed']).any()
+    # Columns not specified in variability_conf should be equal
+    assert (df['Relative Humidity'] ==
+            noise['Relative Humidity']).all()
+    assert (df['Wind Direction'] ==
+            noise['Wind Direction']).all()

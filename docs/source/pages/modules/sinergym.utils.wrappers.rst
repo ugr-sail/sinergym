@@ -22,8 +22,10 @@
       BaseLoggerWrapper
       CSVLogger
       DatetimeWrapper
+      DeltaTempWrapper
       DiscreteIncrementalWrapper
       DiscretizeEnv
+      EnergyCostWrapper
       IncrementalWrapper
       LoggerWrapper
       MultiObjectiveReward
@@ -34,6 +36,7 @@
       PreviousObservationWrapper
       ReduceObservationWrapper
       WandBLogger
+      WeatherForecastingWrapper
    
    
 

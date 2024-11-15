@@ -20,6 +20,7 @@
       :template: custom-class-template.rst               
    
       BaseReward
+      EnergyCostLinearReward
       ExpReward
       HourlyLinearReward
       LinearReward

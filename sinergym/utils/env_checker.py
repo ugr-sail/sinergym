@@ -60,20 +60,18 @@ def _check_obs(obs: Union[tuple,
     correspond to the declared one.
     """
     if not isinstance(observation_space, spaces.Tuple):
-        assert not isinstance(
-            obs, tuple
-        ), f"The observation returned by the `{method_name}()` method should be a single value, not a tuple"
+        assert not isinstance(obs, tuple), f"The observation returned by the `{
+            method_name}()` method should be a single value, not a tuple"
 
     if isinstance(observation_space, spaces.Discrete):
-        assert isinstance(
-            obs, int), f"The observation returned by `{method_name}()` method must be an int"
+        assert isinstance(obs, int), f"The observation returned by `{
+            method_name}()` method must be an int"
     elif _is_numpy_array_space(observation_space):
-        assert isinstance(
-            obs, np.ndarray), f"The observation returned by `{method_name}()` method must be a numpy array"
+        assert isinstance(obs, np.ndarray), f"The observation returned by `{
+            method_name}()` method must be a numpy array"
 
-    assert observation_space.contains(
-        obs
-    ), f"The observation returned by the `{method_name}()` method does not match the given observation space"
+    assert observation_space.contains(obs), f"The observation returned by the `{
+        method_name}()` method does not match the given observation space"
 
 
 def _check_returned_values(
@@ -141,10 +139,10 @@ def _check_spaces(env: gym.Env) -> None:
     # Helper to link to the code, because gym has no proper documentation
     gym_spaces = " cf https://github.com/openai/gym/blob/master/gym/spaces/"
 
-    assert hasattr(
-        env, "observation_space"), "You must specify an observation space (cf gym.spaces)" + gym_spaces
-    assert hasattr(
-        env, "action_space"), "You must specify an action space (cf gym.spaces)" + gym_spaces
+    assert env.has_wrapper_attr(
+        'observation_space'), 'You must specify an observation space (cf gym.spaces)' + gym_spaces
+    assert env.has_wrapper_attr(
+        'action_space'), 'You must specify an action space (cf gym.spaces)' + gym_spaces
 
     assert isinstance(env.observation_space,
                       spaces.Space), "The observation space must inherit from gymnasium.spaces" + gym_spaces
@@ -239,8 +237,8 @@ def check_env(
                 spaces.Box) and action_space.dtype != np.dtype(
                 np.float32):
             warnings.warn(
-                f"Your action space has dtype {action_space.dtype}, we recommend using np.float32 to avoid cast errors."
-            )
+                f"Your action space has dtype {
+                    action_space.dtype}, we recommend using np.float32 to avoid cast errors.")
 
     # ============ Check the returned values ===============
     _check_returned_values(env, observation_space, action_space)

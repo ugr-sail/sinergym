@@ -1,17 +1,16 @@
 """Constants used in whole project."""
 
 import os
+from importlib import resources
 from typing import List, Union
 
 import numpy as np
-import pkg_resources
 
 # ---------------------------------------------------------------------------- #
 #                               Generic constants                              #
 # ---------------------------------------------------------------------------- #
 # Sinergym Data path
-PKG_DATA_PATH = pkg_resources.resource_filename(
-    'sinergym', 'data/')
+PKG_DATA_PATH = str(resources.files('sinergym') / 'data')
 # Weekday encoding for simulations
 WEEKDAY_ENCODING = {'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3,
                     'friday': 4, 'saturday': 5, 'sunday': 6}

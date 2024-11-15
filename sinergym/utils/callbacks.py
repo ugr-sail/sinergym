@@ -32,7 +32,9 @@ class LoggerEvalCallback(EventCallback):
         excluded_metrics: List[str] = [
             'episode_num',
             'length (timesteps)',
-            'time_elapsed (hours)'],
+            'time_elapsed (hours)',
+            'truncated',
+            'terminated'],
         verbose: int = 1,
     ):
         """ Callback for evaluating an agent during training process logging all important data in WandB platform if is activated. It must be wrapped with BaseLoggerWrapper child class.
@@ -78,11 +80,17 @@ class LoggerEvalCallback(EventCallback):
         self.evaluation_metrics = pd.DataFrame(
             columns=self.evaluation_columns)
 
-        # Define metric for evaluation as X axis if WandB session is activated
+        # session is activated
         if self.wandb_log:
+            # Define metric for evaluation as X axis if WandB
             self.train_env.get_wrapper_attr('wandb_run').define_metric(
                 'Evaluation/*',
                 step_metric='Evaluation/evaluation_num')
+
+            # Define metric to save best model found (last)
+            self.train_env.get_wrapper_attr('wandb_run').define_metric(
+                'best_model/*',
+                step_metric='best_model/evaluation_num',)
 
     def _on_step(self) -> bool:
 
@@ -127,8 +135,19 @@ class LoggerEvalCallback(EventCallback):
         # ------------------------------ Log information ----------------------------- #
 
         # Add evaluation summary to the evaluation metrics (CSV)
-        self.evaluation_metrics = self.evaluation_metrics._append(
-            evaluation_summary, ignore_index=True)
+        evaluation_summary_df = pd.DataFrame(
+            [evaluation_summary]).dropna(
+            axis=1, how="all")
+
+        if not evaluation_summary_df.empty:
+            evaluation_summary_df = evaluation_summary_df.reindex(
+                columns=self.evaluation_metrics.columns)
+            evaluation_summary_df = evaluation_summary_df.reset_index(
+                drop=True)
+            self.evaluation_metrics = self.evaluation_metrics.dropna(
+                axis=1, how="all")
+            self.evaluation_metrics = pd.concat(
+                [self.evaluation_metrics, evaluation_summary_df], ignore_index=True)
         self.evaluation_metrics.to_csv(
             self.save_path + '/evaluation_metrics.csv')
 
@@ -160,6 +179,22 @@ class LoggerEvalCallback(EventCallback):
                     self.save_path,
                     'best_model.zip'))
             self.best_mean_reward = evaluation_summary['mean_reward']
+            # Save normalization calibration if exists
+            if is_wrapped(self.eval_env, NormalizeObservation):
+                self.logger.info(
+                    'Save normalization calibration in evaluation folder')
+                np.savetxt(
+                    fname=self.save_path +
+                    '/mean.txt',
+                    X=self.eval_env.get_wrapper_attr('mean'))
+                np.savetxt(
+                    fname=self.save_path +
+                    '/var.txt',
+                    X=self.eval_env.get_wrapper_attr('var'))
+            # Save best model found summary in wandb if its active
+            if self.wandb_log:
+                self.train_env.get_wrapper_attr('_log_data')(
+                    data={'best_model': evaluation_summary})
 
         # We close evaluation env and starts training env again
         self.eval_env.close()

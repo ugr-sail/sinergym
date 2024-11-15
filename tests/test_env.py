@@ -115,7 +115,7 @@ def test_all_environments():
         # Create env with TEST name
         env = gym.make(env_id)
 
-        check_env(env)
+        check_env(env, warn=False)
 
         # Rename directory with name TEST for future remove
         os.rename(env.get_wrapper_attr('workspace_path'), 'Eplus-env-TEST' +
