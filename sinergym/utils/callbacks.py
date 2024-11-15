@@ -135,8 +135,19 @@ class LoggerEvalCallback(EventCallback):
         # ------------------------------ Log information ----------------------------- #
 
         # Add evaluation summary to the evaluation metrics (CSV)
-        self.evaluation_metrics = self.evaluation_metrics._append(
-            evaluation_summary, ignore_index=True)
+        evaluation_summary_df = pd.DataFrame(
+            [evaluation_summary]).dropna(
+            axis=1, how="all")
+
+        if not evaluation_summary_df.empty:
+            evaluation_summary_df = evaluation_summary_df.reindex(
+                columns=self.evaluation_metrics.columns)
+            evaluation_summary_df = evaluation_summary_df.reset_index(
+                drop=True)
+            self.evaluation_metrics = self.evaluation_metrics.dropna(
+                axis=1, how="all")
+            self.evaluation_metrics = pd.concat(
+                [self.evaluation_metrics, evaluation_summary_df], ignore_index=True)
         self.evaluation_metrics.to_csv(
             self.save_path + '/evaluation_metrics.csv')
 
