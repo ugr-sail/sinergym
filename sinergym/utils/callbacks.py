@@ -80,11 +80,17 @@ class LoggerEvalCallback(EventCallback):
         self.evaluation_metrics = pd.DataFrame(
             columns=self.evaluation_columns)
 
-        # Define metric for evaluation as X axis if WandB session is activated
+        # session is activated
         if self.wandb_log:
+            # Define metric for evaluation as X axis if WandB
             self.train_env.get_wrapper_attr('wandb_run').define_metric(
                 'Evaluation/*',
                 step_metric='Evaluation/evaluation_num')
+
+            # Define metric to save best model found (last)
+            self.train_env.get_wrapper_attr('wandb_run').define_metric(
+                'best_model/*',
+                step_metric='best_model/evaluation_num',)
 
     def _on_step(self) -> bool:
 
