@@ -6,7 +6,6 @@ from datetime import datetime
 
 import gymnasium as gym
 import numpy as np
-import wandb
 from stable_baselines3 import *
 from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import HumanOutputFormat
@@ -16,6 +15,7 @@ from stable_baselines3.common.noise import NormalActionNoise
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
+import wandb
 from sinergym.utils.callbacks import *
 from sinergym.utils.common import is_wrapped
 from sinergym.utils.constants import *
