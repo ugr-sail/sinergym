@@ -69,7 +69,8 @@ pytest = { version = "^8.3.3", optional = true }
 pytest-cov = { version = "^5.0.0", optional = true }
 pytest-xdist = { version = "^3.6.1", optional = true }
 coverage = { version = "^7.6.1", optional = true }
-stable-baselines3 = { git = "https://github.com/DLR-RM/stable-baselines3", branch = "master", optional=true }
+mock = { version = "^5.1.0", optional = true }
+stable-baselines3 = { version = "^2.4.0", optional=true }
 wandb = { version = "^0.18.1", optional = true }
 IPython = { version = "^8.27.0", optional = true }
 google-api-python-client = { version = "^2.58.0", optional = true }
@@ -93,6 +94,7 @@ pytest = "^8.3.3"
 pytest-cov = "^5.0.0"
 pytest-xdist = "^3.6.1"
 coverage = "^7.6.1"
+mock = "^5.1.0"
 wandb = "^0.18.1"
 
 [tool.poetry.group.doc.dependencies]
@@ -111,7 +113,7 @@ IPython = "^8.27.0"
 IPython = "^8.27.0"
 
 [tool.poetry.group.drl.dependencies]
-stable-baselines3 = { git = "https://github.com/DLR-RM/stable-baselines3", branch = "master"}
+stable-baselines3 = "^2.4.0"
 
 [tool.poetry.group.platforms.dependencies]
 wandb = "^0.18.1"
@@ -130,11 +132,11 @@ google-cloud-storage = "^2.5.0"
 # -------------------------------------------------------------------------- #
 
 [tool.poetry.extras]
-test = ["pytest", "pytest-cov", "pytest-xdist", "coverage", "wandb"]
+test = ["pytest", "pytest-cov", "pytest-xdist", "coverage", "mock", "wandb"]
 drl = ["stable-baselines3", "wandb"]
 notebooks = ["IPython"]
 gcloud = ["google-api-python-client", "oauth2client", "google-cloud-storage"]
-extras = ["pytest", "pytest-cov", "pytest-xdist", "coverage","stable-baselines3", "wandb", "IPython", "google-api-python-client", "oauth2client", "google-cloud-storage"]
+extras = ["pytest", "pytest-cov", "pytest-xdist", "coverage", "mock", "stable-baselines3", "wandb", "IPython", "google-api-python-client", "oauth2client", "google-cloud-storage"]
 
 # -------------------------------------------------------------------------- #
 #                         Poetry build configuration                         #
