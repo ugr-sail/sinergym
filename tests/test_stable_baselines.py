@@ -3,11 +3,11 @@ from importlib import metadata
 import numpy as np
 import pytest
 
-required = {'stable-baselines3'}
+required = {'stable_baselines3'}
 installed = {dist.metadata['Name'].lower()
              for dist in metadata.distributions()}
-missing = required - installed
-if not missing:
+
+if required <= installed:
     import stable_baselines3
     from stable_baselines3.common.noise import NormalActionNoise
 
