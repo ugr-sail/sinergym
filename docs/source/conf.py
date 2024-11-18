@@ -12,6 +12,7 @@
 #
 import os
 import sys
+import mock
 
 sys.path.insert(0, os.path.abspath('./../..'))
 
@@ -50,6 +51,8 @@ autodoc_mock_imports = ['stable_baselines3',
                         'google',
                         'google.cloud',
                         'pyenergyplus']
+for module in ['gymnasium.wrappers.normalize']:
+    sys.modules[module] = mock.MagicMock()
 
 nbsphinx_custom_formats = {}
 
