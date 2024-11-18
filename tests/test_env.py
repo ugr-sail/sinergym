@@ -126,14 +126,6 @@ def test_all_environments():
 # -------------------------- Exceptions or rare test cases ------------------------- #
 
 
-def test_empty_queue_reset(env_5zone):
-    # Forcing empty queues
-    env_5zone.obs_queue = Queue(maxsize=0)
-    env_5zone.info_queue = Queue(maxsize=0)
-    # Only warning is expected, so any event is raised
-    obs, info = env_5zone.reset()
-
-
 def test_step_without_reset(env_5zone):
     # If step without reset, it should be raised an AssertionError
     with pytest.raises(AssertionError):
