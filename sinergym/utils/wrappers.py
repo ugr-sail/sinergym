@@ -12,11 +12,11 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import gymnasium as gym
 import numpy as np
 import pandas as pd
+import wandb
 from epw.weather import Weather
 from gymnasium import Env
 from gymnasium.wrappers.utils import RunningMeanStd
 
-import wandb
 from sinergym.utils.common import is_wrapped, ornstein_uhlenbeck_process
 from sinergym.utils.constants import LOG_WRAPPERS_LEVEL, YEAR
 from sinergym.utils.logger import LoggerStorage, TerminalLogger
