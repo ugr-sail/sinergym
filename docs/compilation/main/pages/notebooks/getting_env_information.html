@@ -1,0 +1,2695 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>19. Getting information about Sinergym environments &mdash; Sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=816ccb90" />
+
+  
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="20. Sinergym package information" href="sinergym_package.html" />
+    <link rel="prev" title="18. Basic example" href="basic_example.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Start Here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">1. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">2. Usage Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../buildings.html">3. Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../weathers.html">4. Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">5. Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">6. Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">7. Environments Configuration and Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging.html">8. Logging System Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">9. Output format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">10. Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">11. Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">12. Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">13. Extra Configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">14. Deep Reinforcement Learning Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">15. Sinergym with Google Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">16. Github Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">17. Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">18. Basic example</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">19. Getting information about Sinergym environments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Schedulers-information">19.1. Schedulers information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Environment-Properties">19.2. Environment Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Handlers-information">19.3. Handlers information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Displaying-all-the-environment-information">19.4. Displaying all the environment information</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sinergym_package.html">20. Sinergym package information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">21. Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">22. Default building control setting up an empty action interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">23. Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">24. Logger Wrapper personalization/configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging_unused_variables.html">25. Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">26. Rule Controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">27. DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">19. </span>Getting information about Sinergym environments</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/notebooks/getting_env_information.nblink.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Getting-information-about-Sinergym-environments">
+<h1><span class="section-number">19. </span>Getting information about Sinergym environments<a class="headerlink" href="#Getting-information-about-Sinergym-environments" title="Link to this heading"></a></h1>
+<p>Sinergym environments have an extended backend to work with building and weather models, the EnergyPlus engine, Wrappers, etc.</p>
+<p>However, it’s crucial that users can access information about these background components from the environment interface. This section will show you how to do that.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.common</span> <span class="kn">import</span> <span class="n">export_schedulers_to_excel</span>
+</pre></div>
+</div>
+</div>
+<section id="Schedulers-information">
+<h2><span class="section-number">19.1. </span>Schedulers information<a class="headerlink" href="#Schedulers-information" title="Link to this heading"></a></h2>
+<p>Buildings have a set of schedulers that control the building’s actuators according to predefined rules. In addition to the information available in the log files generated by EnergyPlus, you can consult Sinergym’s reading of the building to see how these schedulers affect the building. Schedulers information is extracted into a Python dictionary, and Sinergym can export that information to an Excel file. To do this, simply load the environment and follow the next steps:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
+<span class="n">schedulers</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;schedulers&#39;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">schedulers</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: demo-v1
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-demo-v1-res1
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Extra config: runperiod updated to {&#39;apply_weekend_holiday_rule&#39;: &#39;No&#39;, &#39;begin_day_of_month&#39;: 1, &#39;begin_month&#39;: 1, &#39;begin_year&#39;: 1991, &#39;day_of_week_for_start_day&#39;: &#39;Monday&#39;, &#39;end_day_of_month&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;use_weather_file_daylight_saving_period&#39;: &#39;Yes&#39;, &#39;use_weather_file_holidays_and_special_days&#39;: &#39;Yes&#39;, &#39;use_weather_file_rain_indicators&#39;: &#39;Yes&#39;, &#39;use_weather_file_snow_indicators&#39;: &#39;Yes&#39;}
+[MODELING] (INFO) : Updated episode length (seconds): 5184000.0
+[MODELING] (INFO) : Updated timestep size (seconds): 3600.0
+[MODELING] (INFO) : Updated timesteps per episode: 1440
+[MODELING] (INFO) : Runperiod established.
+[MODELING] (INFO) : Episode length (seconds): 5184000.0
+[MODELING] (INFO) : timestep size (seconds): 3600.0
+[MODELING] (INFO) : timesteps per episode: 1440
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+{&#39;ActSchd&#39;: {&#39;SPACE1-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;People&#39;},
+             &#39;SPACE2-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;People&#39;},
+             &#39;SPACE3-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;People&#39;},
+             &#39;SPACE4-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;People&#39;},
+             &#39;SPACE5-1 People 1&#39;: {&#39;field_name&#39;: &#39;activity_level_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;People&#39;},
+             &#39;Type&#39;: &#39;Any Number&#39;},
+ &#39;ActivitySch&#39;: {&#39;Type&#39;: &#39;Any Number&#39;},
+ &#39;AirVelocitySch&#39;: {&#39;SPACE1-1 People 1&#39;: {&#39;field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                          &#39;table_name&#39;: &#39;People&#39;},
+                    &#39;SPACE2-1 People 1&#39;: {&#39;field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                          &#39;table_name&#39;: &#39;People&#39;},
+                    &#39;SPACE3-1 People 1&#39;: {&#39;field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                          &#39;table_name&#39;: &#39;People&#39;},
+                    &#39;SPACE4-1 People 1&#39;: {&#39;field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                          &#39;table_name&#39;: &#39;People&#39;},
+                    &#39;SPACE5-1 People 1&#39;: {&#39;field_name&#39;: &#39;air_velocity_schedule_name&#39;,
+                                          &#39;table_name&#39;: &#39;People&#39;},
+                    &#39;Type&#39;: &#39;Any Number&#39;},
+ &#39;BasinHeaterSched&#39;: {&#39;Main Cooling Coil 1&#39;: {&#39;field_name&#39;: &#39;basin_heater_operating_schedule_name&#39;,
+                                              &#39;table_name&#39;: &#39;Coil:Cooling:DX:TwoSpeed&#39;},
+                      &#39;Type&#39;: &#39;On/Off&#39;},
+ &#39;Clg-SetP-Sch&#39;: {&#39;CoolingSetpoint&#39;: {&#39;field_name&#39;: &#39;setpoint_temperature_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;ThermostatSetpoint:SingleCooling&#39;},
+                  &#39;DualSetPoint&#39;: {&#39;field_name&#39;: &#39;cooling_setpoint_temperature_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ThermostatSetpoint:DualSetpoint&#39;},
+                  &#39;Type&#39;: &#39;Temperature&#39;},
+ &#39;ClothingSch&#39;: {&#39;Type&#39;: &#39;Any Number&#39;},
+ &#39;CoolingCoilAvailSched&#39;: {&#39;DX Cooling Coil System 1&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                        &#39;table_name&#39;: &#39;CoilSystem:Cooling:DX&#39;},
+                           &#39;Main Cooling Coil 1&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                   &#39;table_name&#39;: &#39;Coil:Cooling:DX:TwoSpeed&#39;},
+                           &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;EQUIP-1&#39;: {&#39;SPACE1-1 ElecEq 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ElectricEquipment&#39;},
+             &#39;SPACE2-1 ElecEq 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ElectricEquipment&#39;},
+             &#39;SPACE3-1 ElecEq 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ElectricEquipment&#39;},
+             &#39;SPACE4-1 ElecEq 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ElectricEquipment&#39;},
+             &#39;SPACE5-1 ElecEq 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ElectricEquipment&#39;},
+             &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;FanAvailSched&#39;: {&#39;Supply Fan 1&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;Fan:VariableVolume&#39;},
+                   &#39;Type&#39;: &#39;Fraction&#39;,
+                   &#39;VAV Sys 1 Avail&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                       &#39;table_name&#39;: &#39;AvailabilityManager:Scheduled&#39;}},
+ &#39;Htg-SetP-Sch&#39;: {&#39;DualSetPoint&#39;: {&#39;field_name&#39;: &#39;heating_setpoint_temperature_schedule_name&#39;,
+                                   &#39;table_name&#39;: &#39;ThermostatSetpoint:DualSetpoint&#39;},
+                  &#39;HeatingSetpoint&#39;: {&#39;field_name&#39;: &#39;setpoint_temperature_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;ThermostatSetpoint:SingleHeating&#39;},
+                  &#39;Type&#39;: &#39;Temperature&#39;},
+ &#39;INFIL-SCH&#39;: {&#39;SPACE1-1 Infil 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;SPACE2-1 Infil 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;SPACE3-1 Infil 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;SPACE4-1 Infil 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;SPACE5-1 Infil 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;ZoneInfiltration:DesignFlowRate&#39;},
+               &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;LIGHTS-1&#39;: {&#39;SPACE1-1 Lights 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;Lights&#39;},
+              &#39;SPACE2-1 Lights 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;Lights&#39;},
+              &#39;SPACE3-1 Lights 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;Lights&#39;},
+              &#39;SPACE4-1 Lights 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;Lights&#39;},
+              &#39;SPACE5-1 Lights 1&#39;: {&#39;field_name&#39;: &#39;schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;Lights&#39;},
+              &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;Min OA Sched&#39;: {&#39;OA Controller 1&#39;: {&#39;field_name&#39;: &#39;minimum_outdoor_air_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;Controller:OutdoorAir&#39;},
+                  &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;Min OARequirements Sched&#39;: {&#39;Type&#39;: &#39;Any Number&#39;,
+                              &#39;ZoneMinOARequirements&#39;: {&#39;field_name&#39;: &#39;outdoor_air_schedule_name&#39;,
+                                                        &#39;table_name&#39;: &#39;DesignSpecification:OutdoorAir&#39;}},
+ &#39;OCCUPY-1&#39;: {&#39;SPACE1-1 People 1&#39;: {&#39;field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;People&#39;},
+              &#39;SPACE2-1 People 1&#39;: {&#39;field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;People&#39;},
+              &#39;SPACE3-1 People 1&#39;: {&#39;field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;People&#39;},
+              &#39;SPACE4-1 People 1&#39;: {&#39;field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;People&#39;},
+              &#39;SPACE5-1 People 1&#39;: {&#39;field_name&#39;: &#39;number_of_people_schedule_name&#39;,
+                                    &#39;table_name&#39;: &#39;People&#39;},
+              &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;PlenumClg-SetP-Sch&#39;: {&#39;PlenumCoolingSetpoint&#39;: {&#39;field_name&#39;: &#39;setpoint_temperature_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ThermostatSetpoint:SingleCooling&#39;},
+                        &#39;Type&#39;: &#39;Temperature&#39;},
+ &#39;PlenumHtg-SetP-Sch&#39;: {&#39;PlenumHeatingSetpoint&#39;: {&#39;field_name&#39;: &#39;setpoint_temperature_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ThermostatSetpoint:SingleHeating&#39;},
+                        &#39;Type&#39;: &#39;Temperature&#39;},
+ &#39;ReheatCoilAvailSched&#39;: {&#39;Main heating Coil 1&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;Coil:Heating:Electric&#39;},
+                          &#39;SPACE1-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;SPACE1-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Electric&#39;},
+                          &#39;SPACE2-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;SPACE2-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Electric&#39;},
+                          &#39;SPACE3-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;SPACE3-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Electric&#39;},
+                          &#39;SPACE4-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;SPACE4-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Electric&#39;},
+                          &#39;SPACE5-1 VAV Reheat&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;AirTerminal:SingleDuct:VAV:Reheat&#39;},
+                          &#39;SPACE5-1 Zone Coil&#39;: {&#39;field_name&#39;: &#39;availability_schedule_name&#39;,
+                                                 &#39;table_name&#39;: &#39;Coil:Heating:Electric&#39;},
+                          &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;Seasonal Reset Supply Air Temp Sch&#39;: {&#39;Type&#39;: &#39;Temperature&#39;},
+ &#39;ShadeTransSch&#39;: {&#39;Main South Overhang&#39;: {&#39;field_name&#39;: &#39;transmittance_schedule_name&#39;,
+                                           &#39;table_name&#39;: &#39;Shading:Zone:Detailed&#39;},
+                   &#39;South Door Overhang&#39;: {&#39;field_name&#39;: &#39;transmittance_schedule_name&#39;,
+                                           &#39;table_name&#39;: &#39;Shading:Zone:Detailed&#39;},
+                   &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;WorkEffSch&#39;: {&#39;SPACE1-1 People 1&#39;: {&#39;field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;People&#39;},
+                &#39;SPACE2-1 People 1&#39;: {&#39;field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;People&#39;},
+                &#39;SPACE3-1 People 1&#39;: {&#39;field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;People&#39;},
+                &#39;SPACE4-1 People 1&#39;: {&#39;field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;People&#39;},
+                &#39;SPACE5-1 People 1&#39;: {&#39;field_name&#39;: &#39;work_efficiency_schedule_name&#39;,
+                                      &#39;table_name&#39;: &#39;People&#39;},
+                &#39;Type&#39;: &#39;Fraction&#39;},
+ &#39;Zone Control Type Sched&#39;: {&#39;SPACE1-1 Control&#39;: {&#39;field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;SPACE2-1 Control&#39;: {&#39;field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;SPACE3-1 Control&#39;: {&#39;field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;SPACE4-1 Control&#39;: {&#39;field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;SPACE5-1 Control&#39;: {&#39;field_name&#39;: &#39;control_type_schedule_name&#39;,
+                                                  &#39;table_name&#39;: &#39;ZoneControl:Thermostat&#39;},
+                             &#39;Type&#39;: &#39;Control Type&#39;}}
+</pre></div></div>
+</div>
+<p>If you want to get an Excel file with that information, there’s a function for that:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">export_schedulers_to_excel</span><span class="p">(</span><span class="n">schedulers</span><span class="o">=</span><span class="n">schedulers</span><span class="p">,</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;./example.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Environment-Properties">
+<h2><span class="section-number">19.2. </span>Environment Properties<a class="headerlink" href="#Environment-Properties" title="Link to this heading"></a></h2>
+<p>As mentioned, some environment features are created in the gym interface layer, but more information is calculated in the backend. Therefore, Sinergym environments have several properties to consult this information. For more details, visit the documentation, but here are some examples:</p>
+<p>Note: We’re using the <code class="docutils literal notranslate"><span class="pre">get_wrapper_attr</span></code> method from Gym to get information about the attributes, in line with the new Gymnasium protocol.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;What is all the variables names which conform my Gymnasium observation?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;What is all the variables names which conform my Gymnasium action?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;action_variables&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Is there an episode executing?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;is_running&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;What is the episode run period?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;runperiod&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Episode length in seconds?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;episode_length&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;How many steps have an episode?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;timestep_per_episode&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;How often do steps changed?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;step_size&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;What are the available zones?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;zone_names&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Where is the output path of Sinergym environment?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;workspace_path&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Where is the building used?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;building_path&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Where is the weather used?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;weather_path&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Is the action space discrete?: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;is_discrete&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+What is all the variables names which conform my Gymnasium observation?: [&#39;month&#39;, &#39;day_of_month&#39;, &#39;hour&#39;, &#39;outdoor_temperature&#39;, &#39;htg_setpoint&#39;, &#39;clg_setpoint&#39;, &#39;air_temperature&#39;, &#39;air_humidity&#39;, &#39;HVAC_electricity_demand_rate&#39;]
+What is all the variables names which conform my Gymnasium action?: [&#39;Heating_Setpoint_RL&#39;, &#39;Cooling_Setpoint_RL&#39;]
+Is there an episode executing?: False
+What is the episode run period?: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 1}
+Episode length in seconds?: 5184000.0
+How many steps have an episode?: 1440
+How often do steps changed?: 3600.0
+What are the available zones?: [&#39;PLENUM-1&#39;, &#39;SPACE1-1&#39;, &#39;SPACE2-1&#39;, &#39;SPACE3-1&#39;, &#39;SPACE4-1&#39;, &#39;SPACE5-1&#39;]
+Where is the output path of Sinergym environment?: /workspaces/sinergym/examples/Eplus-env-demo-v1-res1
+Where is the building used?: /workspaces/sinergym/sinergym/data/buildings/5ZoneAutoDXVAV.epJSON
+Where is the weather used?: /workspaces/sinergym/sinergym/data/weather/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw
+Is the action space discrete?: False
+</pre></div></div>
+</div>
+</section>
+<section id="Handlers-information">
+<h2><span class="section-number">19.3. </span>Handlers information<a class="headerlink" href="#Handlers-information" title="Link to this heading"></a></h2>
+<p>Similarly, we can consult the actuators, variables, and meters available in the environment, along with those we’re specifically controlling and observing with our environment.</p>
+<p>You can consult it as follows:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Available Handlers: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;available_handlers&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Controlled actuators: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;actuator_handlers&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Observed variables: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;var_handlers&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Observed meters: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;meter_handlers&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Available Handlers: None
+Controlled actuators: None
+Observed variables: None
+Observed meters: None
+</pre></div></div>
+</div>
+<p>As you can see, the information isn’t displayed. This is due to internal reasons of the EnergyPlus API. To make this information available, we need to perform the first <code class="docutils literal notranslate"><span class="pre">reset()</span></code> on the environment:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Available Handlers: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;available_handlers&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Controlled actuators: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;actuator_handlers&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Observed variables: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;var_handlers&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Observed meters: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;meter_handlers&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: demo-v1
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+Available Handlers: **ACTUATORS**
+Actuator,Schedule:Compact,Schedule Value,ACTSCHD;
+Actuator,Schedule:Compact,Schedule Value,ACTIVITYSCH;
+Actuator,Schedule:Compact,Schedule Value,AIRVELOCITYSCH;
+Actuator,Schedule:Compact,Schedule Value,BASINHEATERSCHED;
+Actuator,Schedule:Compact,Schedule Value,CLG-SETP-SCH;
+Actuator,Schedule:Compact,Schedule Value,CLOTHINGSCH;
+Actuator,Schedule:Compact,Schedule Value,COOLINGCOILAVAILSCHED;
+Actuator,Schedule:Compact,Schedule Value,EQUIP-1;
+Actuator,Schedule:Compact,Schedule Value,FANAVAILSCHED;
+Actuator,Schedule:Compact,Schedule Value,HTG-SETP-SCH;
+Actuator,Schedule:Compact,Schedule Value,INFIL-SCH;
+Actuator,Schedule:Compact,Schedule Value,LIGHTS-1;
+Actuator,Schedule:Compact,Schedule Value,MIN OA SCHED;
+Actuator,Schedule:Compact,Schedule Value,MIN OAREQUIREMENTS SCHED;
+Actuator,Schedule:Compact,Schedule Value,OCCUPY-1;
+Actuator,Schedule:Compact,Schedule Value,PLENUMCLG-SETP-SCH;
+Actuator,Schedule:Compact,Schedule Value,PLENUMHTG-SETP-SCH;
+Actuator,Schedule:Compact,Schedule Value,REHEATCOILAVAILSCHED;
+Actuator,Schedule:Compact,Schedule Value,SEASONAL RESET SUPPLY AIR TEMP SCH;
+Actuator,Schedule:Compact,Schedule Value,SHADETRANSSCH;
+Actuator,Schedule:Compact,Schedule Value,WORKEFFSCH;
+Actuator,Schedule:Compact,Schedule Value,ZONE CONTROL TYPE SCHED;
+Actuator,Weather Data,Outdoor Dry Bulb,Environment;
+Actuator,Weather Data,Outdoor Dew Point,Environment;
+Actuator,Weather Data,Outdoor Relative Humidity,Environment;
+Actuator,Weather Data,Diffuse Solar,Environment;
+Actuator,Weather Data,Direct Solar,Environment;
+Actuator,Weather Data,Wind Speed,Environment;
+Actuator,Weather Data,Wind Direction,Environment;
+Actuator,Material,Surface Property Solar Absorptance,BR01;
+Actuator,Material,Surface Property Thermal Absorptance,BR01;
+Actuator,Material,Surface Property Visible Absorptance,BR01;
+Actuator,Material,Surface Property Solar Absorptance,CC03;
+Actuator,Material,Surface Property Thermal Absorptance,CC03;
+Actuator,Material,Surface Property Visible Absorptance,CC03;
+Actuator,Material,Surface Property Solar Absorptance,GP01;
+Actuator,Material,Surface Property Thermal Absorptance,GP01;
+Actuator,Material,Surface Property Visible Absorptance,GP01;
+Actuator,Material,Surface Property Solar Absorptance,GP02;
+Actuator,Material,Surface Property Thermal Absorptance,GP02;
+Actuator,Material,Surface Property Visible Absorptance,GP02;
+Actuator,Material,Surface Property Solar Absorptance,IN02;
+Actuator,Material,Surface Property Thermal Absorptance,IN02;
+Actuator,Material,Surface Property Visible Absorptance,IN02;
+Actuator,Material,Surface Property Solar Absorptance,IN46;
+Actuator,Material,Surface Property Thermal Absorptance,IN46;
+Actuator,Material,Surface Property Visible Absorptance,IN46;
+Actuator,Material,Surface Property Solar Absorptance,PW03;
+Actuator,Material,Surface Property Thermal Absorptance,PW03;
+Actuator,Material,Surface Property Visible Absorptance,PW03;
+Actuator,Material,Surface Property Solar Absorptance,RG01;
+Actuator,Material,Surface Property Thermal Absorptance,RG01;
+Actuator,Material,Surface Property Visible Absorptance,RG01;
+Actuator,Material,Surface Property Solar Absorptance,WD01;
+Actuator,Material,Surface Property Thermal Absorptance,WD01;
+Actuator,Material,Surface Property Visible Absorptance,WD01;
+Actuator,Material,Surface Property Solar Absorptance,WD10;
+Actuator,Material,Surface Property Thermal Absorptance,WD10;
+Actuator,Material,Surface Property Visible Absorptance,WD10;
+Actuator,Material,Surface Property Solar Absorptance,CP01;
+Actuator,Material,Surface Property Thermal Absorptance,CP01;
+Actuator,Material,Surface Property Visible Absorptance,CP01;
+Actuator,Material,Surface Property Solar Absorptance,MAT-CLNG-1;
+Actuator,Material,Surface Property Thermal Absorptance,MAT-CLNG-1;
+Actuator,Material,Surface Property Visible Absorptance,MAT-CLNG-1;
+Actuator,Material,Surface Property Solar Absorptance,MAT-FLOOR-1;
+Actuator,Material,Surface Property Thermal Absorptance,MAT-FLOOR-1;
+Actuator,Material,Surface Property Visible Absorptance,MAT-FLOOR-1;
+Actuator,Material,Surface Property Solar Absorptance,MAT-SB-U;
+Actuator,Material,Surface Property Thermal Absorptance,MAT-SB-U;
+Actuator,Material,Surface Property Visible Absorptance,MAT-SB-U;
+Actuator,People,Number of People,SPACE1-1 PEOPLE 1;
+Actuator,People,Number of People,SPACE2-1 PEOPLE 1;
+Actuator,People,Number of People,SPACE3-1 PEOPLE 1;
+Actuator,People,Number of People,SPACE4-1 PEOPLE 1;
+Actuator,People,Number of People,SPACE5-1 PEOPLE 1;
+Actuator,Lights,Electricity Rate,SPACE1-1 LIGHTS 1;
+Actuator,Lights,Electricity Rate,SPACE2-1 LIGHTS 1;
+Actuator,Lights,Electricity Rate,SPACE3-1 LIGHTS 1;
+Actuator,Lights,Electricity Rate,SPACE4-1 LIGHTS 1;
+Actuator,Lights,Electricity Rate,SPACE5-1 LIGHTS 1;
+Actuator,ElectricEquipment,Electricity Rate,SPACE1-1 ELECEQ 1;
+Actuator,ElectricEquipment,Electricity Rate,SPACE2-1 ELECEQ 1;
+Actuator,ElectricEquipment,Electricity Rate,SPACE3-1 ELECEQ 1;
+Actuator,ElectricEquipment,Electricity Rate,SPACE4-1 ELECEQ 1;
+Actuator,ElectricEquipment,Electricity Rate,SPACE5-1 ELECEQ 1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,MAIN SOUTH OVERHANG;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,MAIN SOUTH OVERHANG;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,Mir-MAIN SOUTH OVERHANG;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,Mir-MAIN SOUTH OVERHANG;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SOUTH DOOR OVERHANG;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SOUTH DOOR OVERHANG;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,Mir-SOUTH DOOR OVERHANG;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,Mir-SOUTH DOOR OVERHANG;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WALL-1PB;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WALL-1PB;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WALL-1PF;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WALL-1PF;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WALL-1PL;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WALL-1PL;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WALL-1PR;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WALL-1PR;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C1-1P;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C1-1P;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C2-1P;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C2-1P;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C3-1P;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C3-1P;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C4-1P;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C4-1P;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C5-1P;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C5-1P;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,TOP-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,TOP-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,FRONT-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,FRONT-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB12;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB12;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB14;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB14;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB15;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB15;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,F1-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,F1-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C1-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C1-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,DF-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,DF-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WF-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WF-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,RIGHT-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,RIGHT-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB21;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB21;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB23;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB23;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB25;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB25;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,F2-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,F2-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C2-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C2-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WR-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WR-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,BACK-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,BACK-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB32;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB32;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB34;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB34;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB35;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB35;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,F3-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,F3-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C3-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C3-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,DB-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,DB-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WB-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WB-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,LEFT-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,LEFT-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB41;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB41;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB43;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB43;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB45;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB45;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,F4-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,F4-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C4-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C4-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WL-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WL-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB51;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB51;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB52;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB52;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB53;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB53;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB54;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB54;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,F5-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,F5-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C5-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C5-1;
+Actuator,Surface,Construction State,WALL-1PB;
+Actuator,Surface,Construction State,WALL-1PF;
+Actuator,Surface,Construction State,WALL-1PL;
+Actuator,Surface,Construction State,WALL-1PR;
+Actuator,Surface,Construction State,C1-1P;
+Actuator,Surface,Construction State,C2-1P;
+Actuator,Surface,Construction State,C3-1P;
+Actuator,Surface,Construction State,C4-1P;
+Actuator,Surface,Construction State,C5-1P;
+Actuator,Surface,Construction State,TOP-1;
+Actuator,Surface,Construction State,FRONT-1;
+Actuator,Surface,Construction State,SB12;
+Actuator,Surface,Construction State,SB14;
+Actuator,Surface,Construction State,SB15;
+Actuator,Surface,Construction State,F1-1;
+Actuator,Surface,Construction State,C1-1;
+Actuator,Surface,Construction State,DF-1;
+Actuator,Surface,Construction State,WF-1;
+Actuator,Surface,Construction State,RIGHT-1;
+Actuator,Surface,Construction State,SB21;
+Actuator,Surface,Construction State,SB23;
+Actuator,Surface,Construction State,SB25;
+Actuator,Surface,Construction State,F2-1;
+Actuator,Surface,Construction State,C2-1;
+Actuator,Surface,Construction State,WR-1;
+Actuator,Surface,Construction State,BACK-1;
+Actuator,Surface,Construction State,SB32;
+Actuator,Surface,Construction State,SB34;
+Actuator,Surface,Construction State,SB35;
+Actuator,Surface,Construction State,F3-1;
+Actuator,Surface,Construction State,C3-1;
+Actuator,Surface,Construction State,DB-1;
+Actuator,Surface,Construction State,WB-1;
+Actuator,Surface,Construction State,LEFT-1;
+Actuator,Surface,Construction State,SB41;
+Actuator,Surface,Construction State,SB43;
+Actuator,Surface,Construction State,SB45;
+Actuator,Surface,Construction State,F4-1;
+Actuator,Surface,Construction State,C4-1;
+Actuator,Surface,Construction State,WL-1;
+Actuator,Surface,Construction State,SB51;
+Actuator,Surface,Construction State,SB52;
+Actuator,Surface,Construction State,SB53;
+Actuator,Surface,Construction State,SB54;
+Actuator,Surface,Construction State,F5-1;
+Actuator,Surface,Construction State,C5-1;
+Actuator,Surface,View Factor To Ground,WALL-1PB;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WALL-1PB;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WALL-1PB;
+Actuator,Surface,Outdoor Air Wind Speed,WALL-1PB;
+Actuator,Surface,Outdoor Air Wind Direction,WALL-1PB;
+Actuator,Surface,View Factor To Ground,WALL-1PF;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WALL-1PF;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WALL-1PF;
+Actuator,Surface,Outdoor Air Wind Speed,WALL-1PF;
+Actuator,Surface,Outdoor Air Wind Direction,WALL-1PF;
+Actuator,Surface,View Factor To Ground,WALL-1PL;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WALL-1PL;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WALL-1PL;
+Actuator,Surface,Outdoor Air Wind Speed,WALL-1PL;
+Actuator,Surface,Outdoor Air Wind Direction,WALL-1PL;
+Actuator,Surface,View Factor To Ground,WALL-1PR;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WALL-1PR;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WALL-1PR;
+Actuator,Surface,Outdoor Air Wind Speed,WALL-1PR;
+Actuator,Surface,Outdoor Air Wind Direction,WALL-1PR;
+Actuator,Surface,View Factor To Ground,TOP-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,TOP-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,TOP-1;
+Actuator,Surface,Outdoor Air Wind Speed,TOP-1;
+Actuator,Surface,Outdoor Air Wind Direction,TOP-1;
+Actuator,Surface,View Factor To Ground,FRONT-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,FRONT-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,FRONT-1;
+Actuator,Surface,Outdoor Air Wind Speed,FRONT-1;
+Actuator,Surface,Outdoor Air Wind Direction,FRONT-1;
+Actuator,Surface,View Factor To Ground,DF-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,DF-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,DF-1;
+Actuator,Surface,Outdoor Air Wind Speed,DF-1;
+Actuator,Surface,Outdoor Air Wind Direction,DF-1;
+Actuator,Surface,View Factor To Ground,WF-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WF-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WF-1;
+Actuator,Surface,Outdoor Air Wind Speed,WF-1;
+Actuator,Surface,Outdoor Air Wind Direction,WF-1;
+Actuator,Surface,View Factor To Ground,RIGHT-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,RIGHT-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,RIGHT-1;
+Actuator,Surface,Outdoor Air Wind Speed,RIGHT-1;
+Actuator,Surface,Outdoor Air Wind Direction,RIGHT-1;
+Actuator,Surface,View Factor To Ground,WR-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WR-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WR-1;
+Actuator,Surface,Outdoor Air Wind Speed,WR-1;
+Actuator,Surface,Outdoor Air Wind Direction,WR-1;
+Actuator,Surface,View Factor To Ground,BACK-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,BACK-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,BACK-1;
+Actuator,Surface,Outdoor Air Wind Speed,BACK-1;
+Actuator,Surface,Outdoor Air Wind Direction,BACK-1;
+Actuator,Surface,View Factor To Ground,DB-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,DB-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,DB-1;
+Actuator,Surface,Outdoor Air Wind Speed,DB-1;
+Actuator,Surface,Outdoor Air Wind Direction,DB-1;
+Actuator,Surface,View Factor To Ground,WB-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WB-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WB-1;
+Actuator,Surface,Outdoor Air Wind Speed,WB-1;
+Actuator,Surface,Outdoor Air Wind Direction,WB-1;
+Actuator,Surface,View Factor To Ground,LEFT-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,LEFT-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,LEFT-1;
+Actuator,Surface,Outdoor Air Wind Speed,LEFT-1;
+Actuator,Surface,Outdoor Air Wind Direction,LEFT-1;
+Actuator,Surface,View Factor To Ground,WL-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WL-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WL-1;
+Actuator,Surface,Outdoor Air Wind Speed,WL-1;
+Actuator,Surface,Outdoor Air Wind Direction,WL-1;
+Actuator,Zone,Outdoor Air Drybulb Temperature,PLENUM-1;
+Actuator,Zone,Outdoor Air Wetbulb Temperature,PLENUM-1;
+Actuator,Zone,Outdoor Air Wind Speed,PLENUM-1;
+Actuator,Zone,Outdoor Air Wind Direction,PLENUM-1;
+Actuator,Zone,Outdoor Air Drybulb Temperature,SPACE1-1;
+Actuator,Zone,Outdoor Air Wetbulb Temperature,SPACE1-1;
+Actuator,Zone,Outdoor Air Wind Speed,SPACE1-1;
+Actuator,Zone,Outdoor Air Wind Direction,SPACE1-1;
+Actuator,Zone,Outdoor Air Drybulb Temperature,SPACE2-1;
+Actuator,Zone,Outdoor Air Wetbulb Temperature,SPACE2-1;
+Actuator,Zone,Outdoor Air Wind Speed,SPACE2-1;
+Actuator,Zone,Outdoor Air Wind Direction,SPACE2-1;
+Actuator,Zone,Outdoor Air Drybulb Temperature,SPACE3-1;
+Actuator,Zone,Outdoor Air Wetbulb Temperature,SPACE3-1;
+Actuator,Zone,Outdoor Air Wind Speed,SPACE3-1;
+Actuator,Zone,Outdoor Air Wind Direction,SPACE3-1;
+Actuator,Zone,Outdoor Air Drybulb Temperature,SPACE4-1;
+Actuator,Zone,Outdoor Air Wetbulb Temperature,SPACE4-1;
+Actuator,Zone,Outdoor Air Wind Speed,SPACE4-1;
+Actuator,Zone,Outdoor Air Wind Direction,SPACE4-1;
+Actuator,Zone,Outdoor Air Drybulb Temperature,SPACE5-1;
+Actuator,Zone,Outdoor Air Wetbulb Temperature,SPACE5-1;
+Actuator,Zone,Outdoor Air Wind Speed,SPACE5-1;
+Actuator,Zone,Outdoor Air Wind Direction,SPACE5-1;
+Actuator,Zone Infiltration,Air Exchange Flow Rate,SPACE1-1 INFIL 1;
+Actuator,Zone Infiltration,Air Exchange Flow Rate,SPACE2-1 INFIL 1;
+Actuator,Zone Infiltration,Air Exchange Flow Rate,SPACE3-1 INFIL 1;
+Actuator,Zone Infiltration,Air Exchange Flow Rate,SPACE4-1 INFIL 1;
+Actuator,Zone Infiltration,Air Exchange Flow Rate,SPACE5-1 INFIL 1;
+Actuator,Sizing:Zone,Zone Design Heating Air Mass Flow Rate,SPACE1-1;
+Actuator,Sizing:Zone,Zone Design Cooling Air Mass Flow Rate,SPACE1-1;
+Actuator,Sizing:Zone,Zone Design Heating Load,SPACE1-1;
+Actuator,Sizing:Zone,Zone Design Cooling Load,SPACE1-1;
+Actuator,Sizing:Zone,Zone Design Heating Vol Flow,SPACE1-1;
+Actuator,Sizing:Zone,Zone Design Cooling Vol Flow,SPACE1-1;
+Actuator,Sizing:Zone,Zone Design Heating Air Mass Flow Rate,SPACE2-1;
+Actuator,Sizing:Zone,Zone Design Cooling Air Mass Flow Rate,SPACE2-1;
+Actuator,Sizing:Zone,Zone Design Heating Load,SPACE2-1;
+Actuator,Sizing:Zone,Zone Design Cooling Load,SPACE2-1;
+Actuator,Sizing:Zone,Zone Design Heating Vol Flow,SPACE2-1;
+Actuator,Sizing:Zone,Zone Design Cooling Vol Flow,SPACE2-1;
+Actuator,Sizing:Zone,Zone Design Heating Air Mass Flow Rate,SPACE3-1;
+Actuator,Sizing:Zone,Zone Design Cooling Air Mass Flow Rate,SPACE3-1;
+Actuator,Sizing:Zone,Zone Design Heating Load,SPACE3-1;
+Actuator,Sizing:Zone,Zone Design Cooling Load,SPACE3-1;
+Actuator,Sizing:Zone,Zone Design Heating Vol Flow,SPACE3-1;
+Actuator,Sizing:Zone,Zone Design Cooling Vol Flow,SPACE3-1;
+Actuator,Sizing:Zone,Zone Design Heating Air Mass Flow Rate,SPACE4-1;
+Actuator,Sizing:Zone,Zone Design Cooling Air Mass Flow Rate,SPACE4-1;
+Actuator,Sizing:Zone,Zone Design Heating Load,SPACE4-1;
+Actuator,Sizing:Zone,Zone Design Cooling Load,SPACE4-1;
+Actuator,Sizing:Zone,Zone Design Heating Vol Flow,SPACE4-1;
+Actuator,Sizing:Zone,Zone Design Cooling Vol Flow,SPACE4-1;
+Actuator,Sizing:Zone,Zone Design Heating Air Mass Flow Rate,SPACE5-1;
+Actuator,Sizing:Zone,Zone Design Cooling Air Mass Flow Rate,SPACE5-1;
+Actuator,Sizing:Zone,Zone Design Heating Load,SPACE5-1;
+Actuator,Sizing:Zone,Zone Design Cooling Load,SPACE5-1;
+Actuator,Sizing:Zone,Zone Design Heating Vol Flow,SPACE5-1;
+Actuator,Sizing:Zone,Zone Design Cooling Vol Flow,SPACE5-1;
+Actuator,Zone Temperature Control,Heating Setpoint,SPACE1-1;
+Actuator,Zone Temperature Control,Cooling Setpoint,SPACE1-1;
+Actuator,Zone Temperature Control,Heating Setpoint,SPACE2-1;
+Actuator,Zone Temperature Control,Cooling Setpoint,SPACE2-1;
+Actuator,Zone Temperature Control,Heating Setpoint,SPACE3-1;
+Actuator,Zone Temperature Control,Cooling Setpoint,SPACE3-1;
+Actuator,Zone Temperature Control,Heating Setpoint,SPACE4-1;
+Actuator,Zone Temperature Control,Cooling Setpoint,SPACE4-1;
+Actuator,Zone Temperature Control,Heating Setpoint,SPACE5-1;
+Actuator,Zone Temperature Control,Cooling Setpoint,SPACE5-1;
+Actuator,Fan,Fan Air Mass Flow Rate,SUPPLY FAN 1;
+Actuator,Fan,Fan Pressure Rise,SUPPLY FAN 1;
+Actuator,Fan,Fan Total Efficiency,SUPPLY FAN 1;
+Actuator,Fan,Fan Autosized Air Flow Rate,SUPPLY FAN 1;
+Actuator,Sizing:System,Main Supply Volume Flow Rate,VAV SYS 1;
+Actuator,Sizing:System,Main Supply Coincident Peak Cooling Mass Flow Rate,VAV SYS 1;
+Actuator,Sizing:System,Main Supply Coincident Peak Heating Mass Flow Rate,VAV SYS 1;
+Actuator,Sizing:System,Main Supply Noncoincident Peak Cooling Mass Flow Rate,VAV SYS 1;
+Actuator,Sizing:System,Main Supply Noncoincident Peak Heating Mass Flow Rate,VAV SYS 1;
+Actuator,Sizing:System,Main Heating Volume Flow Rate,VAV SYS 1;
+Actuator,Sizing:System,Main Cooling Volume Flow Rate,VAV SYS 1;
+Actuator,Outdoor Air Controller,Air Mass Flow Rate,OA CONTROLLER 1;
+Actuator,Curve,Curve Result,VARSPEEDCOOLCAPFT;
+Actuator,Curve,Curve Result,VARSPEEDCOOLCAPLSFT;
+Actuator,Curve,Curve Result,VARSPEEDCOOLEIRFT;
+Actuator,Curve,Curve Result,VARSPEEDCOOLEIRLSFT;
+Actuator,Curve,Curve Result,PACKAGEDRATEDCOOLCAPFFLOW;
+Actuator,Curve,Curve Result,PACKAGEDRATEDCOOLEIRFFLOW;
+Actuator,Curve,Curve Result,VARSPEEDCYCLINGPLFFPLR;
+Actuator,System Node Setpoint,Temperature Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Temperature Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,Outdoor Air System Node,Drybulb Temperature,OUTSIDE AIR INLET NODE 1;
+Actuator,Outdoor Air System Node,Wetbulb Temperature,OUTSIDE AIR INLET NODE 1;
+Actuator,Outdoor Air System Node,Wind Speed,OUTSIDE AIR INLET NODE 1;
+Actuator,Outdoor Air System Node,Wind Direction,OUTSIDE AIR INLET NODE 1;
+Actuator,Outdoor Air System Node,Drybulb Temperature,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,Outdoor Air System Node,Wetbulb Temperature,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,Outdoor Air System Node,Wind Speed,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,Outdoor Air System Node,Wind Direction,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,AirLoopHVAC,Availability Status,VAV SYS 1;
+**INTERNAL_VARIABLES**
+InternalVariable,People Count Design Level,SPACE1-1 PEOPLE 1
+InternalVariable,People Count Design Level,SPACE2-1 PEOPLE 1
+InternalVariable,People Count Design Level,SPACE3-1 PEOPLE 1
+InternalVariable,People Count Design Level,SPACE4-1 PEOPLE 1
+InternalVariable,People Count Design Level,SPACE5-1 PEOPLE 1
+InternalVariable,Lighting Power Design Level,SPACE1-1 LIGHTS 1
+InternalVariable,Lighting Power Design Level,SPACE2-1 LIGHTS 1
+InternalVariable,Lighting Power Design Level,SPACE3-1 LIGHTS 1
+InternalVariable,Lighting Power Design Level,SPACE4-1 LIGHTS 1
+InternalVariable,Lighting Power Design Level,SPACE5-1 LIGHTS 1
+InternalVariable,Plug and Process Power Design Level,SPACE1-1 ELECEQ 1
+InternalVariable,Plug and Process Power Design Level,SPACE2-1 ELECEQ 1
+InternalVariable,Plug and Process Power Design Level,SPACE3-1 ELECEQ 1
+InternalVariable,Plug and Process Power Design Level,SPACE4-1 ELECEQ 1
+InternalVariable,Plug and Process Power Design Level,SPACE5-1 ELECEQ 1
+InternalVariable,Zone Floor Area,PLENUM-1
+InternalVariable,Zone Air Volume,PLENUM-1
+InternalVariable,Zone Multiplier,PLENUM-1
+InternalVariable,Zone List Multiplier,PLENUM-1
+InternalVariable,Zone Floor Area,SPACE1-1
+InternalVariable,Zone Air Volume,SPACE1-1
+InternalVariable,Zone Multiplier,SPACE1-1
+InternalVariable,Zone List Multiplier,SPACE1-1
+InternalVariable,Zone Floor Area,SPACE2-1
+InternalVariable,Zone Air Volume,SPACE2-1
+InternalVariable,Zone Multiplier,SPACE2-1
+InternalVariable,Zone List Multiplier,SPACE2-1
+InternalVariable,Zone Floor Area,SPACE3-1
+InternalVariable,Zone Air Volume,SPACE3-1
+InternalVariable,Zone Multiplier,SPACE3-1
+InternalVariable,Zone List Multiplier,SPACE3-1
+InternalVariable,Zone Floor Area,SPACE4-1
+InternalVariable,Zone Air Volume,SPACE4-1
+InternalVariable,Zone Multiplier,SPACE4-1
+InternalVariable,Zone List Multiplier,SPACE4-1
+InternalVariable,Zone Floor Area,SPACE5-1
+InternalVariable,Zone Air Volume,SPACE5-1
+InternalVariable,Zone Multiplier,SPACE5-1
+InternalVariable,Zone List Multiplier,SPACE5-1
+InternalVariable,Final Zone Design Heating Air Mass Flow Rate,SPACE1-1
+InternalVariable,Intermediate Zone Design Heating Air Mass Flow Rate,SPACE1-1
+InternalVariable,Final Zone Design Cooling Air Mass Flow Rate,SPACE1-1
+InternalVariable,Intermediate Zone Design Cooling Air Mass Flow Rate,SPACE1-1
+InternalVariable,Final Zone Design Heating Load,SPACE1-1
+InternalVariable,Intermediate Zone Design Heating Load,SPACE1-1
+InternalVariable,Final Zone Design Cooling Load,SPACE1-1
+InternalVariable,Intermediate Zone Design Cooling Load,SPACE1-1
+InternalVariable,Final Zone Design Heating Air Density,SPACE1-1
+InternalVariable,Intermediate Zone Design Heating Air Density,SPACE1-1
+InternalVariable,Final Zone Design Cooling Air Density,SPACE1-1
+InternalVariable,Intermediate Zone Design Cooling Air Density,SPACE1-1
+InternalVariable,Final Zone Design Heating Volume Flow,SPACE1-1
+InternalVariable,Intermediate Zone Design Heating Volume Flow,SPACE1-1
+InternalVariable,Final Zone Design Cooling Volume Flow,SPACE1-1
+InternalVariable,Intermediate Zone Design Cooling Volume Flow,SPACE1-1
+InternalVariable,Zone Outdoor Air Design Volume Flow Rate,SPACE1-1
+InternalVariable,Final Zone Design Heating Air Mass Flow Rate,SPACE2-1
+InternalVariable,Intermediate Zone Design Heating Air Mass Flow Rate,SPACE2-1
+InternalVariable,Final Zone Design Cooling Air Mass Flow Rate,SPACE2-1
+InternalVariable,Intermediate Zone Design Cooling Air Mass Flow Rate,SPACE2-1
+InternalVariable,Final Zone Design Heating Load,SPACE2-1
+InternalVariable,Intermediate Zone Design Heating Load,SPACE2-1
+InternalVariable,Final Zone Design Cooling Load,SPACE2-1
+InternalVariable,Intermediate Zone Design Cooling Load,SPACE2-1
+InternalVariable,Final Zone Design Heating Air Density,SPACE2-1
+InternalVariable,Intermediate Zone Design Heating Air Density,SPACE2-1
+InternalVariable,Final Zone Design Cooling Air Density,SPACE2-1
+InternalVariable,Intermediate Zone Design Cooling Air Density,SPACE2-1
+InternalVariable,Final Zone Design Heating Volume Flow,SPACE2-1
+InternalVariable,Intermediate Zone Design Heating Volume Flow,SPACE2-1
+InternalVariable,Final Zone Design Cooling Volume Flow,SPACE2-1
+InternalVariable,Intermediate Zone Design Cooling Volume Flow,SPACE2-1
+InternalVariable,Zone Outdoor Air Design Volume Flow Rate,SPACE2-1
+InternalVariable,Final Zone Design Heating Air Mass Flow Rate,SPACE3-1
+InternalVariable,Intermediate Zone Design Heating Air Mass Flow Rate,SPACE3-1
+InternalVariable,Final Zone Design Cooling Air Mass Flow Rate,SPACE3-1
+InternalVariable,Intermediate Zone Design Cooling Air Mass Flow Rate,SPACE3-1
+InternalVariable,Final Zone Design Heating Load,SPACE3-1
+InternalVariable,Intermediate Zone Design Heating Load,SPACE3-1
+InternalVariable,Final Zone Design Cooling Load,SPACE3-1
+InternalVariable,Intermediate Zone Design Cooling Load,SPACE3-1
+InternalVariable,Final Zone Design Heating Air Density,SPACE3-1
+InternalVariable,Intermediate Zone Design Heating Air Density,SPACE3-1
+InternalVariable,Final Zone Design Cooling Air Density,SPACE3-1
+InternalVariable,Intermediate Zone Design Cooling Air Density,SPACE3-1
+InternalVariable,Final Zone Design Heating Volume Flow,SPACE3-1
+InternalVariable,Intermediate Zone Design Heating Volume Flow,SPACE3-1
+InternalVariable,Final Zone Design Cooling Volume Flow,SPACE3-1
+InternalVariable,Intermediate Zone Design Cooling Volume Flow,SPACE3-1
+InternalVariable,Zone Outdoor Air Design Volume Flow Rate,SPACE3-1
+InternalVariable,Final Zone Design Heating Air Mass Flow Rate,SPACE4-1
+InternalVariable,Intermediate Zone Design Heating Air Mass Flow Rate,SPACE4-1
+InternalVariable,Final Zone Design Cooling Air Mass Flow Rate,SPACE4-1
+InternalVariable,Intermediate Zone Design Cooling Air Mass Flow Rate,SPACE4-1
+InternalVariable,Final Zone Design Heating Load,SPACE4-1
+InternalVariable,Intermediate Zone Design Heating Load,SPACE4-1
+InternalVariable,Final Zone Design Cooling Load,SPACE4-1
+InternalVariable,Intermediate Zone Design Cooling Load,SPACE4-1
+InternalVariable,Final Zone Design Heating Air Density,SPACE4-1
+InternalVariable,Intermediate Zone Design Heating Air Density,SPACE4-1
+InternalVariable,Final Zone Design Cooling Air Density,SPACE4-1
+InternalVariable,Intermediate Zone Design Cooling Air Density,SPACE4-1
+InternalVariable,Final Zone Design Heating Volume Flow,SPACE4-1
+InternalVariable,Intermediate Zone Design Heating Volume Flow,SPACE4-1
+InternalVariable,Final Zone Design Cooling Volume Flow,SPACE4-1
+InternalVariable,Intermediate Zone Design Cooling Volume Flow,SPACE4-1
+InternalVariable,Zone Outdoor Air Design Volume Flow Rate,SPACE4-1
+InternalVariable,Final Zone Design Heating Air Mass Flow Rate,SPACE5-1
+InternalVariable,Intermediate Zone Design Heating Air Mass Flow Rate,SPACE5-1
+InternalVariable,Final Zone Design Cooling Air Mass Flow Rate,SPACE5-1
+InternalVariable,Intermediate Zone Design Cooling Air Mass Flow Rate,SPACE5-1
+InternalVariable,Final Zone Design Heating Load,SPACE5-1
+InternalVariable,Intermediate Zone Design Heating Load,SPACE5-1
+InternalVariable,Final Zone Design Cooling Load,SPACE5-1
+InternalVariable,Intermediate Zone Design Cooling Load,SPACE5-1
+InternalVariable,Final Zone Design Heating Air Density,SPACE5-1
+InternalVariable,Intermediate Zone Design Heating Air Density,SPACE5-1
+InternalVariable,Final Zone Design Cooling Air Density,SPACE5-1
+InternalVariable,Intermediate Zone Design Cooling Air Density,SPACE5-1
+InternalVariable,Final Zone Design Heating Volume Flow,SPACE5-1
+InternalVariable,Intermediate Zone Design Heating Volume Flow,SPACE5-1
+InternalVariable,Final Zone Design Cooling Volume Flow,SPACE5-1
+InternalVariable,Intermediate Zone Design Cooling Volume Flow,SPACE5-1
+InternalVariable,Zone Outdoor Air Design Volume Flow Rate,SPACE5-1
+InternalVariable,Fan Maximum Mass Flow Rate,SUPPLY FAN 1
+InternalVariable,Fan Nominal Pressure Rise,SUPPLY FAN 1
+InternalVariable,Fan Nominal Total Efficiency,SUPPLY FAN 1
+InternalVariable,Intermediate Air System Main Supply Volume Flow Rate,VAV SYS 1
+InternalVariable,Intermediate Air System Coincident Peak Cooling Mass Flow Rate,VAV SYS 1
+InternalVariable,Intermediate Air System Coincident Peak Heating Mass Flow Rate,VAV SYS 1
+InternalVariable,Intermediate Air System Noncoincident Peak Cooling Mass Flow Rate,VAV SYS 1
+InternalVariable,Intermediate Air System Noncoincident Peak Heating Mass Flow Rate,VAV SYS 1
+InternalVariable,Intermediate Air System Heating Volume Flow Rate,VAV SYS 1
+InternalVariable,Intermediate Air System Cooling Volume Flow Rate,VAV SYS 1
+InternalVariable,Air System Cooling Design Sensible Capacity,VAV SYS 1
+InternalVariable,Air System Cooling Design Total Capacity,VAV SYS 1
+InternalVariable,Air System Heating Design Sensible Capacity,VAV SYS 1
+InternalVariable,Air System Preheating Design Sensible Capacity,VAV SYS 1
+InternalVariable,Air System Outdoor Air Design Volume Flow Rate,VAV SYS 1
+InternalVariable,Air System Cooling Design Mixed Air Temperature,VAV SYS 1
+InternalVariable,Air System Cooling Design Mixed Air Humidity Ratio,VAV SYS 1
+InternalVariable,Air System Cooling Design Return Air Temperature,VAV SYS 1
+InternalVariable,Air System Cooling Design Return Air Humidity Ratio,VAV SYS 1
+InternalVariable,Air System Cooling Design Outdoor Air Temperature,VAV SYS 1
+InternalVariable,Air System Cooling Design Outdoor Air Humidity Ratio,VAV SYS 1
+InternalVariable,Air System Heating Design Mixed Air Temperature,VAV SYS 1
+InternalVariable,Air System Heating Design Mixed Air Humidity Ratio,VAV SYS 1
+InternalVariable,Air System Heating Design Return Air Temperature,VAV SYS 1
+InternalVariable,Air System Heating Design Return Air Humidity Ratio,VAV SYS 1
+InternalVariable,Air System Heating Design Outdoor Air Temperature,VAV SYS 1
+InternalVariable,Air System Heating Design Outdoor Air Humidity Ratio,VAV SYS 1
+InternalVariable,Outdoor Air Controller Maximum Mass Flow Rate,OA CONTROLLER 1
+InternalVariable,Outdoor Air Controller Minimum Mass Flow Rate,OA CONTROLLER 1
+**PLUGIN_GLOBAL_VARIABLES**
+**TRENDS**
+**METERS**
+OutputMeter,Electricity:Facility
+OutputMeter,Electricity:Building
+OutputMeter,Electricity:Zone:SPACE1-1
+OutputMeter,Electricity:SpaceType:GENERAL
+OutputMeter,InteriorLights:Electricity
+OutputMeter,InteriorLights:Electricity:Zone:SPACE1-1
+OutputMeter,InteriorLights:Electricity:SpaceType:GENERAL
+OutputMeter,GeneralLights:InteriorLights:Electricity
+OutputMeter,GeneralLights:InteriorLights:Electricity:Zone:SPACE1-1
+OutputMeter,GeneralLights:InteriorLights:Electricity:SpaceType:GENERAL
+OutputMeter,Electricity:Zone:SPACE2-1
+OutputMeter,InteriorLights:Electricity:Zone:SPACE2-1
+OutputMeter,GeneralLights:InteriorLights:Electricity:Zone:SPACE2-1
+OutputMeter,Electricity:Zone:SPACE3-1
+OutputMeter,InteriorLights:Electricity:Zone:SPACE3-1
+OutputMeter,GeneralLights:InteriorLights:Electricity:Zone:SPACE3-1
+OutputMeter,Electricity:Zone:SPACE4-1
+OutputMeter,InteriorLights:Electricity:Zone:SPACE4-1
+OutputMeter,GeneralLights:InteriorLights:Electricity:Zone:SPACE4-1
+OutputMeter,Electricity:Zone:SPACE5-1
+OutputMeter,InteriorLights:Electricity:Zone:SPACE5-1
+OutputMeter,GeneralLights:InteriorLights:Electricity:Zone:SPACE5-1
+OutputMeter,InteriorEquipment:Electricity
+OutputMeter,InteriorEquipment:Electricity:Zone:SPACE1-1
+OutputMeter,InteriorEquipment:Electricity:SpaceType:GENERAL
+OutputMeter,General:InteriorEquipment:Electricity
+OutputMeter,General:InteriorEquipment:Electricity:Zone:SPACE1-1
+OutputMeter,General:InteriorEquipment:Electricity:SpaceType:GENERAL
+OutputMeter,InteriorEquipment:Electricity:Zone:SPACE2-1
+OutputMeter,General:InteriorEquipment:Electricity:Zone:SPACE2-1
+OutputMeter,InteriorEquipment:Electricity:Zone:SPACE3-1
+OutputMeter,General:InteriorEquipment:Electricity:Zone:SPACE3-1
+OutputMeter,InteriorEquipment:Electricity:Zone:SPACE4-1
+OutputMeter,General:InteriorEquipment:Electricity:Zone:SPACE4-1
+OutputMeter,InteriorEquipment:Electricity:Zone:SPACE5-1
+OutputMeter,General:InteriorEquipment:Electricity:Zone:SPACE5-1
+OutputMeter,EnergyTransfer:Facility
+OutputMeter,EnergyTransfer:Building
+OutputMeter,EnergyTransfer:Zone:PLENUM-1
+OutputMeter,Heating:EnergyTransfer
+OutputMeter,Heating:EnergyTransfer:Zone:PLENUM-1
+OutputMeter,General:Heating:EnergyTransfer
+OutputMeter,General:Heating:EnergyTransfer:Zone:PLENUM-1
+OutputMeter,Cooling:EnergyTransfer
+OutputMeter,Cooling:EnergyTransfer:Zone:PLENUM-1
+OutputMeter,General:Cooling:EnergyTransfer
+OutputMeter,General:Cooling:EnergyTransfer:Zone:PLENUM-1
+OutputMeter,EnergyTransfer:Zone:SPACE1-1
+OutputMeter,Heating:EnergyTransfer:Zone:SPACE1-1
+OutputMeter,General:Heating:EnergyTransfer:Zone:SPACE1-1
+OutputMeter,Cooling:EnergyTransfer:Zone:SPACE1-1
+OutputMeter,General:Cooling:EnergyTransfer:Zone:SPACE1-1
+OutputMeter,EnergyTransfer:Zone:SPACE2-1
+OutputMeter,Heating:EnergyTransfer:Zone:SPACE2-1
+OutputMeter,General:Heating:EnergyTransfer:Zone:SPACE2-1
+OutputMeter,Cooling:EnergyTransfer:Zone:SPACE2-1
+OutputMeter,General:Cooling:EnergyTransfer:Zone:SPACE2-1
+OutputMeter,EnergyTransfer:Zone:SPACE3-1
+OutputMeter,Heating:EnergyTransfer:Zone:SPACE3-1
+OutputMeter,General:Heating:EnergyTransfer:Zone:SPACE3-1
+OutputMeter,Cooling:EnergyTransfer:Zone:SPACE3-1
+OutputMeter,General:Cooling:EnergyTransfer:Zone:SPACE3-1
+OutputMeter,EnergyTransfer:Zone:SPACE4-1
+OutputMeter,Heating:EnergyTransfer:Zone:SPACE4-1
+OutputMeter,General:Heating:EnergyTransfer:Zone:SPACE4-1
+OutputMeter,Cooling:EnergyTransfer:Zone:SPACE4-1
+OutputMeter,General:Cooling:EnergyTransfer:Zone:SPACE4-1
+OutputMeter,EnergyTransfer:Zone:SPACE5-1
+OutputMeter,Heating:EnergyTransfer:Zone:SPACE5-1
+OutputMeter,General:Heating:EnergyTransfer:Zone:SPACE5-1
+OutputMeter,Cooling:EnergyTransfer:Zone:SPACE5-1
+OutputMeter,General:Cooling:EnergyTransfer:Zone:SPACE5-1
+OutputMeter,ElectricityPurchased:Facility
+OutputMeter,ElectricityPurchased:Plant
+OutputMeter,Cogeneration:ElectricityPurchased
+OutputMeter,General:Cogeneration:ElectricityPurchased
+OutputMeter,ElectricitySurplusSold:Facility
+OutputMeter,ElectricitySurplusSold:Plant
+OutputMeter,Cogeneration:ElectricitySurplusSold
+OutputMeter,General:Cogeneration:ElectricitySurplusSold
+OutputMeter,ElectricityNet:Facility
+OutputMeter,ElectricityNet:Plant
+OutputMeter,Cogeneration:ElectricityNet
+OutputMeter,General:Cogeneration:ElectricityNet
+OutputMeter,EnergyTransfer:HVAC
+OutputMeter,HeatingCoils:EnergyTransfer
+OutputMeter,Electricity:HVAC
+OutputMeter,Heating:Electricity
+OutputMeter,General:Heating:Electricity
+OutputMeter,Fans:Electricity
+OutputMeter,General:Fans:Electricity
+OutputMeter,CoolingCoils:EnergyTransfer
+OutputMeter,Cooling:Electricity
+OutputMeter,General:Cooling:Electricity
+OutputMeter,Water:Facility
+OutputMeter,Water:HVAC
+OutputMeter,Cooling:Water
+OutputMeter,General:Cooling:Water
+OutputMeter,MainsWater:Facility
+OutputMeter,MainsWater:HVAC
+OutputMeter,Cooling:MainsWater
+OutputMeter,General:Cooling:MainsWater
+OutputMeter,Carbon Equivalent:Facility
+OutputMeter,CarbonEquivalentEmissions:Carbon Equivalent
+**VARIABLES**
+OutputVariable,Site Outdoor Air Drybulb Temperature,ENVIRONMENT
+OutputVariable,Lights Electricity Energy,SPACE1-1 LIGHTS 1
+OutputVariable,Lights Electricity Energy,SPACE2-1 LIGHTS 1
+OutputVariable,Lights Electricity Energy,SPACE3-1 LIGHTS 1
+OutputVariable,Lights Electricity Energy,SPACE4-1 LIGHTS 1
+OutputVariable,Lights Electricity Energy,SPACE5-1 LIGHTS 1
+OutputVariable,Electric Equipment Electricity Energy,SPACE1-1 ELECEQ 1
+OutputVariable,Electric Equipment Electricity Energy,SPACE2-1 ELECEQ 1
+OutputVariable,Electric Equipment Electricity Energy,SPACE3-1 ELECEQ 1
+OutputVariable,Electric Equipment Electricity Energy,SPACE4-1 ELECEQ 1
+OutputVariable,Electric Equipment Electricity Energy,SPACE5-1 ELECEQ 1
+OutputVariable,Zone Air System Sensible Heating Energy,PLENUM-1
+OutputVariable,Zone Air System Sensible Cooling Energy,PLENUM-1
+OutputVariable,Zone Air System Sensible Heating Energy,SPACE1-1
+OutputVariable,Zone Air System Sensible Cooling Energy,SPACE1-1
+OutputVariable,Zone Air System Sensible Heating Energy,SPACE2-1
+OutputVariable,Zone Air System Sensible Cooling Energy,SPACE2-1
+OutputVariable,Zone Air System Sensible Heating Energy,SPACE3-1
+OutputVariable,Zone Air System Sensible Cooling Energy,SPACE3-1
+OutputVariable,Zone Air System Sensible Heating Energy,SPACE4-1
+OutputVariable,Zone Air System Sensible Cooling Energy,SPACE4-1
+OutputVariable,Zone Air Temperature,SPACE5-1
+OutputVariable,Zone Air Relative Humidity,SPACE5-1
+OutputVariable,Zone Air System Sensible Heating Energy,SPACE5-1
+OutputVariable,Zone Air System Sensible Cooling Energy,SPACE5-1
+OutputVariable,Zone Thermostat Heating Setpoint Temperature,SPACE5-1
+OutputVariable,Zone Thermostat Cooling Setpoint Temperature,SPACE5-1
+OutputVariable,Facility Total Purchased Electricity Energy,WHOLE BUILDING
+OutputVariable,Facility Total Surplus Electricity Energy,WHOLE BUILDING
+OutputVariable,Facility Net Purchased Electricity Energy,WHOLE BUILDING
+OutputVariable,Facility Total HVAC Electricity Demand Rate,WHOLE BUILDING
+OutputVariable,Heating Coil Heating Energy,MAIN HEATING COIL 1
+OutputVariable,Heating Coil Electricity Energy,MAIN HEATING COIL 1
+OutputVariable,Heating Coil Heating Energy,SPACE1-1 ZONE COIL
+OutputVariable,Heating Coil Electricity Energy,SPACE1-1 ZONE COIL
+OutputVariable,Heating Coil Heating Energy,SPACE2-1 ZONE COIL
+OutputVariable,Heating Coil Electricity Energy,SPACE2-1 ZONE COIL
+OutputVariable,Heating Coil Heating Energy,SPACE3-1 ZONE COIL
+OutputVariable,Heating Coil Electricity Energy,SPACE3-1 ZONE COIL
+OutputVariable,Heating Coil Heating Energy,SPACE4-1 ZONE COIL
+OutputVariable,Heating Coil Electricity Energy,SPACE4-1 ZONE COIL
+OutputVariable,Heating Coil Heating Energy,SPACE5-1 ZONE COIL
+OutputVariable,Heating Coil Electricity Energy,SPACE5-1 ZONE COIL
+OutputVariable,Fan Electricity Energy,SUPPLY FAN 1
+OutputVariable,Cooling Coil Total Cooling Energy,MAIN COOLING COIL 1
+OutputVariable,Cooling Coil Electricity Energy,MAIN COOLING COIL 1
+OutputVariable,Cooling Coil Evaporative Condenser Water Volume,MAIN COOLING COIL 1
+OutputVariable,Cooling Coil Evaporative Condenser Mains Supply Water Volume,MAIN COOLING COIL 1
+OutputVariable,Cooling Coil Evaporative Condenser Pump Electricity Energy,MAIN COOLING COIL 1
+OutputVariable,Cooling Coil Basin Heater Electricity Energy,MAIN COOLING COIL 1
+OutputVariable,Environmental Impact Total N2O Emissions Carbon Equivalent Mass,SITE
+OutputVariable,Environmental Impact Total CH4 Emissions Carbon Equivalent Mass,SITE
+OutputVariable,Environmental Impact Total CO2 Emissions Carbon Equivalent Mass,SITE
+
+Controlled actuators: {&#39;Heating_Setpoint_RL&#39;: 10, &#39;Cooling_Setpoint_RL&#39;: 5}
+Observed variables: {&#39;outdoor_temperature&#39;: 1, &#39;htg_setpoint&#39;: 26, &#39;clg_setpoint&#39;: 27, &#39;air_temperature&#39;: 22, &#39;air_humidity&#39;: 23, &#39;HVAC_electricity_demand_rate&#39;: 31}
+Observed meters: {}
+</pre></div></div>
+</div>
+</section>
+<section id="Displaying-all-the-environment-information">
+<h2><span class="section-number">19.4. </span>Displaying all the environment information<a class="headerlink" href="#Displaying-all-the-environment-information" title="Link to this heading"></a></h2>
+<p>You can also print all the environment information. Just remember to do <code class="docutils literal notranslate"><span class="pre">reset()</span></code> beforehand to have handlers information too:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+    #==================================================================================#
+                                ENVIRONMENT NAME: demo-v1
+    #==================================================================================#
+    #----------------------------------------------------------------------------------#
+                                ENVIRONMENT INFO:
+    #----------------------------------------------------------------------------------#
+    - Building file: /workspaces/sinergym/sinergym/data/buildings/5ZoneAutoDXVAV.epJSON
+    - Zone names: [&#39;PLENUM-1&#39;, &#39;SPACE1-1&#39;, &#39;SPACE2-1&#39;, &#39;SPACE3-1&#39;, &#39;SPACE4-1&#39;, &#39;SPACE5-1&#39;]
+    - Weather file(s): [&#39;USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw&#39;]
+    - Current weather used: /workspaces/sinergym/sinergym/data/weather/USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw
+    - Episodes executed: 1
+    - Workspace directory: /workspaces/sinergym/examples/Eplus-env-demo-v1-res1
+    - Reward function: &lt;sinergym.utils.rewards.LinearReward object at 0x7fef6b4dd130&gt;
+    - Reset default options: {}
+    - Run period: {&#39;start_day&#39;: 1, &#39;start_month&#39;: 1, &#39;start_year&#39;: 1991, &#39;end_day&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;start_weekday&#39;: 0, &#39;n_steps_per_hour&#39;: 1}
+    - Episode length (seconds): 5184000.0
+    - Number of timesteps in an episode: 1440
+    - Timestep size (seconds): 3600.0
+    - It is discrete?: False
+    #----------------------------------------------------------------------------------#
+                                ENVIRONMENT SPACE:
+    #----------------------------------------------------------------------------------#
+    - Observation space: Box(-50000000.0, 50000000.0, (9,), float32)
+    - Observation variables: [&#39;month&#39;, &#39;day_of_month&#39;, &#39;hour&#39;, &#39;outdoor_temperature&#39;, &#39;htg_setpoint&#39;, &#39;clg_setpoint&#39;, &#39;air_temperature&#39;, &#39;air_humidity&#39;, &#39;HVAC_electricity_demand_rate&#39;]
+    - Action space: Box([15.  22.5], [22.5 30. ], (2,), float32)
+    - Action variables: [&#39;Heating_Setpoint_RL&#39;, &#39;Cooling_Setpoint_RL&#39;]
+    #==================================================================================#
+                                    SIMULATOR
+    #==================================================================================#
+    *NOTE: To have information about available handlers and controlled elements, it is
+    required to do env reset before to print information.*
+
+    Is running? : True
+    #----------------------------------------------------------------------------------#
+                                AVAILABLE ELEMENTS:
+    #----------------------------------------------------------------------------------#
+    *Some variables can not be here depending if it is defined Output:Variable field
+     in building model. See documentation for more information.*
+
+    **ACTUATORS**
+Actuator,Schedule:Compact,Schedule Value,ACTSCHD;
+Actuator,Schedule:Compact,Schedule Value,ACTIVITYSCH;
+Actuator,Schedule:Compact,Schedule Value,AIRVELOCITYSCH;
+Actuator,Schedule:Compact,Schedule Value,BASINHEATERSCHED;
+Actuator,Schedule:Compact,Schedule Value,CLG-SETP-SCH;
+Actuator,Schedule:Compact,Schedule Value,CLOTHINGSCH;
+Actuator,Schedule:Compact,Schedule Value,COOLINGCOILAVAILSCHED;
+Actuator,Schedule:Compact,Schedule Value,EQUIP-1;
+Actuator,Schedule:Compact,Schedule Value,FANAVAILSCHED;
+Actuator,Schedule:Compact,Schedule Value,HTG-SETP-SCH;
+Actuator,Schedule:Compact,Schedule Value,INFIL-SCH;
+Actuator,Schedule:Compact,Schedule Value,LIGHTS-1;
+Actuator,Schedule:Compact,Schedule Value,MIN OA SCHED;
+Actuator,Schedule:Compact,Schedule Value,MIN OAREQUIREMENTS SCHED;
+Actuator,Schedule:Compact,Schedule Value,OCCUPY-1;
+Actuator,Schedule:Compact,Schedule Value,PLENUMCLG-SETP-SCH;
+Actuator,Schedule:Compact,Schedule Value,PLENUMHTG-SETP-SCH;
+Actuator,Schedule:Compact,Schedule Value,REHEATCOILAVAILSCHED;
+Actuator,Schedule:Compact,Schedule Value,SEASONAL RESET SUPPLY AIR TEMP SCH;
+Actuator,Schedule:Compact,Schedule Value,SHADETRANSSCH;
+Actuator,Schedule:Compact,Schedule Value,WORKEFFSCH;
+Actuator,Schedule:Compact,Schedule Value,ZONE CONTROL TYPE SCHED;
+Actuator,Weather Data,Outdoor Dry Bulb,Environment;
+Actuator,Weather Data,Outdoor Dew Point,Environment;
+Actuator,Weather Data,Outdoor Relative Humidity,Environment;
+Actuator,Weather Data,Diffuse Solar,Environment;
+Actuator,Weather Data,Direct Solar,Environment;
+Actuator,Weather Data,Wind Speed,Environment;
+Actuator,Weather Data,Wind Direction,Environment;
+Actuator,Material,Surface Property Solar Absorptance,BR01;
+Actuator,Material,Surface Property Thermal Absorptance,BR01;
+Actuator,Material,Surface Property Visible Absorptance,BR01;
+Actuator,Material,Surface Property Solar Absorptance,CC03;
+Actuator,Material,Surface Property Thermal Absorptance,CC03;
+Actuator,Material,Surface Property Visible Absorptance,CC03;
+Actuator,Material,Surface Property Solar Absorptance,GP01;
+Actuator,Material,Surface Property Thermal Absorptance,GP01;
+Actuator,Material,Surface Property Visible Absorptance,GP01;
+Actuator,Material,Surface Property Solar Absorptance,GP02;
+Actuator,Material,Surface Property Thermal Absorptance,GP02;
+Actuator,Material,Surface Property Visible Absorptance,GP02;
+Actuator,Material,Surface Property Solar Absorptance,IN02;
+Actuator,Material,Surface Property Thermal Absorptance,IN02;
+Actuator,Material,Surface Property Visible Absorptance,IN02;
+Actuator,Material,Surface Property Solar Absorptance,IN46;
+Actuator,Material,Surface Property Thermal Absorptance,IN46;
+Actuator,Material,Surface Property Visible Absorptance,IN46;
+Actuator,Material,Surface Property Solar Absorptance,PW03;
+Actuator,Material,Surface Property Thermal Absorptance,PW03;
+Actuator,Material,Surface Property Visible Absorptance,PW03;
+Actuator,Material,Surface Property Solar Absorptance,RG01;
+Actuator,Material,Surface Property Thermal Absorptance,RG01;
+Actuator,Material,Surface Property Visible Absorptance,RG01;
+Actuator,Material,Surface Property Solar Absorptance,WD01;
+Actuator,Material,Surface Property Thermal Absorptance,WD01;
+Actuator,Material,Surface Property Visible Absorptance,WD01;
+Actuator,Material,Surface Property Solar Absorptance,WD10;
+Actuator,Material,Surface Property Thermal Absorptance,WD10;
+Actuator,Material,Surface Property Visible Absorptance,WD10;
+Actuator,Material,Surface Property Solar Absorptance,CP01;
+Actuator,Material,Surface Property Thermal Absorptance,CP01;
+Actuator,Material,Surface Property Visible Absorptance,CP01;
+Actuator,Material,Surface Property Solar Absorptance,MAT-CLNG-1;
+Actuator,Material,Surface Property Thermal Absorptance,MAT-CLNG-1;
+Actuator,Material,Surface Property Visible Absorptance,MAT-CLNG-1;
+Actuator,Material,Surface Property Solar Absorptance,MAT-FLOOR-1;
+Actuator,Material,Surface Property Thermal Absorptance,MAT-FLOOR-1;
+Actuator,Material,Surface Property Visible Absorptance,MAT-FLOOR-1;
+Actuator,Material,Surface Property Solar Absorptance,MAT-SB-U;
+Actuator,Material,Surface Property Thermal Absorptance,MAT-SB-U;
+Actuator,Material,Surface Property Visible Absorptance,MAT-SB-U;
+Actuator,People,Number of People,SPACE1-1 PEOPLE 1;
+Actuator,People,Number of People,SPACE2-1 PEOPLE 1;
+Actuator,People,Number of People,SPACE3-1 PEOPLE 1;
+Actuator,People,Number of People,SPACE4-1 PEOPLE 1;
+Actuator,People,Number of People,SPACE5-1 PEOPLE 1;
+Actuator,Lights,Electricity Rate,SPACE1-1 LIGHTS 1;
+Actuator,Lights,Electricity Rate,SPACE2-1 LIGHTS 1;
+Actuator,Lights,Electricity Rate,SPACE3-1 LIGHTS 1;
+Actuator,Lights,Electricity Rate,SPACE4-1 LIGHTS 1;
+Actuator,Lights,Electricity Rate,SPACE5-1 LIGHTS 1;
+Actuator,ElectricEquipment,Electricity Rate,SPACE1-1 ELECEQ 1;
+Actuator,ElectricEquipment,Electricity Rate,SPACE2-1 ELECEQ 1;
+Actuator,ElectricEquipment,Electricity Rate,SPACE3-1 ELECEQ 1;
+Actuator,ElectricEquipment,Electricity Rate,SPACE4-1 ELECEQ 1;
+Actuator,ElectricEquipment,Electricity Rate,SPACE5-1 ELECEQ 1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,MAIN SOUTH OVERHANG;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,MAIN SOUTH OVERHANG;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,Mir-MAIN SOUTH OVERHANG;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,Mir-MAIN SOUTH OVERHANG;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SOUTH DOOR OVERHANG;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SOUTH DOOR OVERHANG;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,Mir-SOUTH DOOR OVERHANG;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,Mir-SOUTH DOOR OVERHANG;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WALL-1PB;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WALL-1PB;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WALL-1PF;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WALL-1PF;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WALL-1PL;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WALL-1PL;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WALL-1PR;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WALL-1PR;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C1-1P;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C1-1P;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C2-1P;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C2-1P;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C3-1P;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C3-1P;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C4-1P;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C4-1P;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C5-1P;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C5-1P;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,TOP-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,TOP-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,FRONT-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,FRONT-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB12;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB12;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB14;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB14;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB15;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB15;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,F1-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,F1-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C1-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C1-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,DF-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,DF-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WF-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WF-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,RIGHT-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,RIGHT-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB21;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB21;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB23;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB23;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB25;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB25;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,F2-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,F2-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C2-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C2-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WR-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WR-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,BACK-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,BACK-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB32;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB32;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB34;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB34;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB35;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB35;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,F3-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,F3-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C3-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C3-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,DB-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,DB-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WB-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WB-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,LEFT-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,LEFT-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB41;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB41;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB43;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB43;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB45;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB45;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,F4-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,F4-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C4-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C4-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,WL-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,WL-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB51;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB51;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB52;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB52;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB53;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB53;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,SB54;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,SB54;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,F5-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,F5-1;
+Actuator,Surface,Interior Surface Convection Heat Transfer Coefficient,C5-1;
+Actuator,Surface,Exterior Surface Convection Heat Transfer Coefficient,C5-1;
+Actuator,Surface,Construction State,WALL-1PB;
+Actuator,Surface,Construction State,WALL-1PF;
+Actuator,Surface,Construction State,WALL-1PL;
+Actuator,Surface,Construction State,WALL-1PR;
+Actuator,Surface,Construction State,C1-1P;
+Actuator,Surface,Construction State,C2-1P;
+Actuator,Surface,Construction State,C3-1P;
+Actuator,Surface,Construction State,C4-1P;
+Actuator,Surface,Construction State,C5-1P;
+Actuator,Surface,Construction State,TOP-1;
+Actuator,Surface,Construction State,FRONT-1;
+Actuator,Surface,Construction State,SB12;
+Actuator,Surface,Construction State,SB14;
+Actuator,Surface,Construction State,SB15;
+Actuator,Surface,Construction State,F1-1;
+Actuator,Surface,Construction State,C1-1;
+Actuator,Surface,Construction State,DF-1;
+Actuator,Surface,Construction State,WF-1;
+Actuator,Surface,Construction State,RIGHT-1;
+Actuator,Surface,Construction State,SB21;
+Actuator,Surface,Construction State,SB23;
+Actuator,Surface,Construction State,SB25;
+Actuator,Surface,Construction State,F2-1;
+Actuator,Surface,Construction State,C2-1;
+Actuator,Surface,Construction State,WR-1;
+Actuator,Surface,Construction State,BACK-1;
+Actuator,Surface,Construction State,SB32;
+Actuator,Surface,Construction State,SB34;
+Actuator,Surface,Construction State,SB35;
+Actuator,Surface,Construction State,F3-1;
+Actuator,Surface,Construction State,C3-1;
+Actuator,Surface,Construction State,DB-1;
+Actuator,Surface,Construction State,WB-1;
+Actuator,Surface,Construction State,LEFT-1;
+Actuator,Surface,Construction State,SB41;
+Actuator,Surface,Construction State,SB43;
+Actuator,Surface,Construction State,SB45;
+Actuator,Surface,Construction State,F4-1;
+Actuator,Surface,Construction State,C4-1;
+Actuator,Surface,Construction State,WL-1;
+Actuator,Surface,Construction State,SB51;
+Actuator,Surface,Construction State,SB52;
+Actuator,Surface,Construction State,SB53;
+Actuator,Surface,Construction State,SB54;
+Actuator,Surface,Construction State,F5-1;
+Actuator,Surface,Construction State,C5-1;
+Actuator,Surface,View Factor To Ground,WALL-1PB;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WALL-1PB;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WALL-1PB;
+Actuator,Surface,Outdoor Air Wind Speed,WALL-1PB;
+Actuator,Surface,Outdoor Air Wind Direction,WALL-1PB;
+Actuator,Surface,View Factor To Ground,WALL-1PF;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WALL-1PF;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WALL-1PF;
+Actuator,Surface,Outdoor Air Wind Speed,WALL-1PF;
+Actuator,Surface,Outdoor Air Wind Direction,WALL-1PF;
+Actuator,Surface,View Factor To Ground,WALL-1PL;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WALL-1PL;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WALL-1PL;
+Actuator,Surface,Outdoor Air Wind Speed,WALL-1PL;
+Actuator,Surface,Outdoor Air Wind Direction,WALL-1PL;
+Actuator,Surface,View Factor To Ground,WALL-1PR;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WALL-1PR;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WALL-1PR;
+Actuator,Surface,Outdoor Air Wind Speed,WALL-1PR;
+Actuator,Surface,Outdoor Air Wind Direction,WALL-1PR;
+Actuator,Surface,View Factor To Ground,TOP-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,TOP-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,TOP-1;
+Actuator,Surface,Outdoor Air Wind Speed,TOP-1;
+Actuator,Surface,Outdoor Air Wind Direction,TOP-1;
+Actuator,Surface,View Factor To Ground,FRONT-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,FRONT-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,FRONT-1;
+Actuator,Surface,Outdoor Air Wind Speed,FRONT-1;
+Actuator,Surface,Outdoor Air Wind Direction,FRONT-1;
+Actuator,Surface,View Factor To Ground,DF-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,DF-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,DF-1;
+Actuator,Surface,Outdoor Air Wind Speed,DF-1;
+Actuator,Surface,Outdoor Air Wind Direction,DF-1;
+Actuator,Surface,View Factor To Ground,WF-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WF-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WF-1;
+Actuator,Surface,Outdoor Air Wind Speed,WF-1;
+Actuator,Surface,Outdoor Air Wind Direction,WF-1;
+Actuator,Surface,View Factor To Ground,RIGHT-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,RIGHT-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,RIGHT-1;
+Actuator,Surface,Outdoor Air Wind Speed,RIGHT-1;
+Actuator,Surface,Outdoor Air Wind Direction,RIGHT-1;
+Actuator,Surface,View Factor To Ground,WR-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WR-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WR-1;
+Actuator,Surface,Outdoor Air Wind Speed,WR-1;
+Actuator,Surface,Outdoor Air Wind Direction,WR-1;
+Actuator,Surface,View Factor To Ground,BACK-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,BACK-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,BACK-1;
+Actuator,Surface,Outdoor Air Wind Speed,BACK-1;
+Actuator,Surface,Outdoor Air Wind Direction,BACK-1;
+Actuator,Surface,View Factor To Ground,DB-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,DB-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,DB-1;
+Actuator,Surface,Outdoor Air Wind Speed,DB-1;
+Actuator,Surface,Outdoor Air Wind Direction,DB-1;
+Actuator,Surface,View Factor To Ground,WB-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WB-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WB-1;
+Actuator,Surface,Outdoor Air Wind Speed,WB-1;
+Actuator,Surface,Outdoor Air Wind Direction,WB-1;
+Actuator,Surface,View Factor To Ground,LEFT-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,LEFT-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,LEFT-1;
+Actuator,Surface,Outdoor Air Wind Speed,LEFT-1;
+Actuator,Surface,Outdoor Air Wind Direction,LEFT-1;
+Actuator,Surface,View Factor To Ground,WL-1;
+Actuator,Surface,Outdoor Air Drybulb Temperature,WL-1;
+Actuator,Surface,Outdoor Air Wetbulb Temperature,WL-1;
+Actuator,Surface,Outdoor Air Wind Speed,WL-1;
+Actuator,Surface,Outdoor Air Wind Direction,WL-1;
+Actuator,Zone,Outdoor Air Drybulb Temperature,PLENUM-1;
+Actuator,Zone,Outdoor Air Wetbulb Temperature,PLENUM-1;
+Actuator,Zone,Outdoor Air Wind Speed,PLENUM-1;
+Actuator,Zone,Outdoor Air Wind Direction,PLENUM-1;
+Actuator,Zone,Outdoor Air Drybulb Temperature,SPACE1-1;
+Actuator,Zone,Outdoor Air Wetbulb Temperature,SPACE1-1;
+Actuator,Zone,Outdoor Air Wind Speed,SPACE1-1;
+Actuator,Zone,Outdoor Air Wind Direction,SPACE1-1;
+Actuator,Zone,Outdoor Air Drybulb Temperature,SPACE2-1;
+Actuator,Zone,Outdoor Air Wetbulb Temperature,SPACE2-1;
+Actuator,Zone,Outdoor Air Wind Speed,SPACE2-1;
+Actuator,Zone,Outdoor Air Wind Direction,SPACE2-1;
+Actuator,Zone,Outdoor Air Drybulb Temperature,SPACE3-1;
+Actuator,Zone,Outdoor Air Wetbulb Temperature,SPACE3-1;
+Actuator,Zone,Outdoor Air Wind Speed,SPACE3-1;
+Actuator,Zone,Outdoor Air Wind Direction,SPACE3-1;
+Actuator,Zone,Outdoor Air Drybulb Temperature,SPACE4-1;
+Actuator,Zone,Outdoor Air Wetbulb Temperature,SPACE4-1;
+Actuator,Zone,Outdoor Air Wind Speed,SPACE4-1;
+Actuator,Zone,Outdoor Air Wind Direction,SPACE4-1;
+Actuator,Zone,Outdoor Air Drybulb Temperature,SPACE5-1;
+Actuator,Zone,Outdoor Air Wetbulb Temperature,SPACE5-1;
+Actuator,Zone,Outdoor Air Wind Speed,SPACE5-1;
+Actuator,Zone,Outdoor Air Wind Direction,SPACE5-1;
+Actuator,Zone Infiltration,Air Exchange Flow Rate,SPACE1-1 INFIL 1;
+Actuator,Zone Infiltration,Air Exchange Flow Rate,SPACE2-1 INFIL 1;
+Actuator,Zone Infiltration,Air Exchange Flow Rate,SPACE3-1 INFIL 1;
+Actuator,Zone Infiltration,Air Exchange Flow Rate,SPACE4-1 INFIL 1;
+Actuator,Zone Infiltration,Air Exchange Flow Rate,SPACE5-1 INFIL 1;
+Actuator,Sizing:Zone,Zone Design Heating Air Mass Flow Rate,SPACE1-1;
+Actuator,Sizing:Zone,Zone Design Cooling Air Mass Flow Rate,SPACE1-1;
+Actuator,Sizing:Zone,Zone Design Heating Load,SPACE1-1;
+Actuator,Sizing:Zone,Zone Design Cooling Load,SPACE1-1;
+Actuator,Sizing:Zone,Zone Design Heating Vol Flow,SPACE1-1;
+Actuator,Sizing:Zone,Zone Design Cooling Vol Flow,SPACE1-1;
+Actuator,Sizing:Zone,Zone Design Heating Air Mass Flow Rate,SPACE2-1;
+Actuator,Sizing:Zone,Zone Design Cooling Air Mass Flow Rate,SPACE2-1;
+Actuator,Sizing:Zone,Zone Design Heating Load,SPACE2-1;
+Actuator,Sizing:Zone,Zone Design Cooling Load,SPACE2-1;
+Actuator,Sizing:Zone,Zone Design Heating Vol Flow,SPACE2-1;
+Actuator,Sizing:Zone,Zone Design Cooling Vol Flow,SPACE2-1;
+Actuator,Sizing:Zone,Zone Design Heating Air Mass Flow Rate,SPACE3-1;
+Actuator,Sizing:Zone,Zone Design Cooling Air Mass Flow Rate,SPACE3-1;
+Actuator,Sizing:Zone,Zone Design Heating Load,SPACE3-1;
+Actuator,Sizing:Zone,Zone Design Cooling Load,SPACE3-1;
+Actuator,Sizing:Zone,Zone Design Heating Vol Flow,SPACE3-1;
+Actuator,Sizing:Zone,Zone Design Cooling Vol Flow,SPACE3-1;
+Actuator,Sizing:Zone,Zone Design Heating Air Mass Flow Rate,SPACE4-1;
+Actuator,Sizing:Zone,Zone Design Cooling Air Mass Flow Rate,SPACE4-1;
+Actuator,Sizing:Zone,Zone Design Heating Load,SPACE4-1;
+Actuator,Sizing:Zone,Zone Design Cooling Load,SPACE4-1;
+Actuator,Sizing:Zone,Zone Design Heating Vol Flow,SPACE4-1;
+Actuator,Sizing:Zone,Zone Design Cooling Vol Flow,SPACE4-1;
+Actuator,Sizing:Zone,Zone Design Heating Air Mass Flow Rate,SPACE5-1;
+Actuator,Sizing:Zone,Zone Design Cooling Air Mass Flow Rate,SPACE5-1;
+Actuator,Sizing:Zone,Zone Design Heating Load,SPACE5-1;
+Actuator,Sizing:Zone,Zone Design Cooling Load,SPACE5-1;
+Actuator,Sizing:Zone,Zone Design Heating Vol Flow,SPACE5-1;
+Actuator,Sizing:Zone,Zone Design Cooling Vol Flow,SPACE5-1;
+Actuator,Zone Temperature Control,Heating Setpoint,SPACE1-1;
+Actuator,Zone Temperature Control,Cooling Setpoint,SPACE1-1;
+Actuator,Zone Temperature Control,Heating Setpoint,SPACE2-1;
+Actuator,Zone Temperature Control,Cooling Setpoint,SPACE2-1;
+Actuator,Zone Temperature Control,Heating Setpoint,SPACE3-1;
+Actuator,Zone Temperature Control,Cooling Setpoint,SPACE3-1;
+Actuator,Zone Temperature Control,Heating Setpoint,SPACE4-1;
+Actuator,Zone Temperature Control,Cooling Setpoint,SPACE4-1;
+Actuator,Zone Temperature Control,Heating Setpoint,SPACE5-1;
+Actuator,Zone Temperature Control,Cooling Setpoint,SPACE5-1;
+Actuator,Fan,Fan Air Mass Flow Rate,SUPPLY FAN 1;
+Actuator,Fan,Fan Pressure Rise,SUPPLY FAN 1;
+Actuator,Fan,Fan Total Efficiency,SUPPLY FAN 1;
+Actuator,Fan,Fan Autosized Air Flow Rate,SUPPLY FAN 1;
+Actuator,Sizing:System,Main Supply Volume Flow Rate,VAV SYS 1;
+Actuator,Sizing:System,Main Supply Coincident Peak Cooling Mass Flow Rate,VAV SYS 1;
+Actuator,Sizing:System,Main Supply Coincident Peak Heating Mass Flow Rate,VAV SYS 1;
+Actuator,Sizing:System,Main Supply Noncoincident Peak Cooling Mass Flow Rate,VAV SYS 1;
+Actuator,Sizing:System,Main Supply Noncoincident Peak Heating Mass Flow Rate,VAV SYS 1;
+Actuator,Sizing:System,Main Heating Volume Flow Rate,VAV SYS 1;
+Actuator,Sizing:System,Main Cooling Volume Flow Rate,VAV SYS 1;
+Actuator,Outdoor Air Controller,Air Mass Flow Rate,OA CONTROLLER 1;
+Actuator,Curve,Curve Result,VARSPEEDCOOLCAPFT;
+Actuator,Curve,Curve Result,VARSPEEDCOOLCAPLSFT;
+Actuator,Curve,Curve Result,VARSPEEDCOOLEIRFT;
+Actuator,Curve,Curve Result,VARSPEEDCOOLEIRLSFT;
+Actuator,Curve,Curve Result,PACKAGEDRATEDCOOLCAPFFLOW;
+Actuator,Curve,Curve Result,PACKAGEDRATEDCOOLEIRFFLOW;
+Actuator,Curve,Curve Result,VARSPEEDCYCLINGPLFFPLR;
+Actuator,System Node Setpoint,Temperature Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,OUTSIDE AIR INLET NODE 1;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE1-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE2-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE3-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE4-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE5-1 IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,VAV SYS 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,MIXED AIR NODE 1;
+Actuator,System Node Setpoint,Temperature Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,MAIN COOLING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,MAIN HEATING COIL 1 OUTLET NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,VAV SYS 1 INLET NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE1-1 NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE1-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE2-1 NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE2-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE3-1 NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE3-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE4-1 NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE4-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE5-1 NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE5-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,ZONE EQ IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,PLENUM-1 OUT NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE1-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE2-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE3-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE4-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE5-1 ATU IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE1-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE2-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE3-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE4-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,SPACE5-1 ZONE COIL AIR IN NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,PLENUM-1 NODE;
+Actuator,System Node Setpoint,Temperature Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Temperature Minimum Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Temperature Maximum Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Maximum Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Humidity Ratio Minimum Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Maximum Available Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,System Node Setpoint,Mass Flow Rate Minimum Available Setpoint,RELIEF AIR OUTLET NODE 1;
+Actuator,Outdoor Air System Node,Drybulb Temperature,OUTSIDE AIR INLET NODE 1;
+Actuator,Outdoor Air System Node,Wetbulb Temperature,OUTSIDE AIR INLET NODE 1;
+Actuator,Outdoor Air System Node,Wind Speed,OUTSIDE AIR INLET NODE 1;
+Actuator,Outdoor Air System Node,Wind Direction,OUTSIDE AIR INLET NODE 1;
+Actuator,Outdoor Air System Node,Drybulb Temperature,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,Outdoor Air System Node,Wetbulb Temperature,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,Outdoor Air System Node,Wind Speed,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,Outdoor Air System Node,Wind Direction,MAIN COOLING COIL 1 CONDENSER NODE;
+Actuator,AirLoopHVAC,Availability Status,VAV SYS 1;
+**INTERNAL_VARIABLES**
+InternalVariable,People Count Design Level,SPACE1-1 PEOPLE 1
+InternalVariable,People Count Design Level,SPACE2-1 PEOPLE 1
+InternalVariable,People Count Design Level,SPACE3-1 PEOPLE 1
+InternalVariable,People Count Design Level,SPACE4-1 PEOPLE 1
+InternalVariable,People Count Design Level,SPACE5-1 PEOPLE 1
+InternalVariable,Lighting Power Design Level,SPACE1-1 LIGHTS 1
+InternalVariable,Lighting Power Design Level,SPACE2-1 LIGHTS 1
+InternalVariable,Lighting Power Design Level,SPACE3-1 LIGHTS 1
+InternalVariable,Lighting Power Design Level,SPACE4-1 LIGHTS 1
+InternalVariable,Lighting Power Design Level,SPACE5-1 LIGHTS 1
+InternalVariable,Plug and Process Power Design Level,SPACE1-1 ELECEQ 1
+InternalVariable,Plug and Process Power Design Level,SPACE2-1 ELECEQ 1
+InternalVariable,Plug and Process Power Design Level,SPACE3-1 ELECEQ 1
+InternalVariable,Plug and Process Power Design Level,SPACE4-1 ELECEQ 1
+InternalVariable,Plug and Process Power Design Level,SPACE5-1 ELECEQ 1
+InternalVariable,Zone Floor Area,PLENUM-1
+InternalVariable,Zone Air Volume,PLENUM-1
+InternalVariable,Zone Multiplier,PLENUM-1
+InternalVariable,Zone List Multiplier,PLENUM-1
+InternalVariable,Zone Floor Area,SPACE1-1
+InternalVariable,Zone Air Volume,SPACE1-1
+InternalVariable,Zone Multiplier,SPACE1-1
+InternalVariable,Zone List Multiplier,SPACE1-1
+InternalVariable,Zone Floor Area,SPACE2-1
+InternalVariable,Zone Air Volume,SPACE2-1
+InternalVariable,Zone Multiplier,SPACE2-1
+InternalVariable,Zone List Multiplier,SPACE2-1
+InternalVariable,Zone Floor Area,SPACE3-1
+InternalVariable,Zone Air Volume,SPACE3-1
+InternalVariable,Zone Multiplier,SPACE3-1
+InternalVariable,Zone List Multiplier,SPACE3-1
+InternalVariable,Zone Floor Area,SPACE4-1
+InternalVariable,Zone Air Volume,SPACE4-1
+InternalVariable,Zone Multiplier,SPACE4-1
+InternalVariable,Zone List Multiplier,SPACE4-1
+InternalVariable,Zone Floor Area,SPACE5-1
+InternalVariable,Zone Air Volume,SPACE5-1
+InternalVariable,Zone Multiplier,SPACE5-1
+InternalVariable,Zone List Multiplier,SPACE5-1
+InternalVariable,Final Zone Design Heating Air Mass Flow Rate,SPACE1-1
+InternalVariable,Intermediate Zone Design Heating Air Mass Flow Rate,SPACE1-1
+InternalVariable,Final Zone Design Cooling Air Mass Flow Rate,SPACE1-1
+InternalVariable,Intermediate Zone Design Cooling Air Mass Flow Rate,SPACE1-1
+InternalVariable,Final Zone Design Heating Load,SPACE1-1
+InternalVariable,Intermediate Zone Design Heating Load,SPACE1-1
+InternalVariable,Final Zone Design Cooling Load,SPACE1-1
+InternalVariable,Intermediate Zone Design Cooling Load,SPACE1-1
+InternalVariable,Final Zone Design Heating Air Density,SPACE1-1
+InternalVariable,Intermediate Zone Design Heating Air Density,SPACE1-1
+InternalVariable,Final Zone Design Cooling Air Density,SPACE1-1
+InternalVariable,Intermediate Zone Design Cooling Air Density,SPACE1-1
+InternalVariable,Final Zone Design Heating Volume Flow,SPACE1-1
+InternalVariable,Intermediate Zone Design Heating Volume Flow,SPACE1-1
+InternalVariable,Final Zone Design Cooling Volume Flow,SPACE1-1
+InternalVariable,Intermediate Zone Design Cooling Volume Flow,SPACE1-1
+InternalVariable,Zone Outdoor Air Design Volume Flow Rate,SPACE1-1
+InternalVariable,Final Zone Design Heating Air Mass Flow Rate,SPACE2-1
+InternalVariable,Intermediate Zone Design Heating Air Mass Flow Rate,SPACE2-1
+InternalVariable,Final Zone Design Cooling Air Mass Flow Rate,SPACE2-1
+InternalVariable,Intermediate Zone Design Cooling Air Mass Flow Rate,SPACE2-1
+InternalVariable,Final Zone Design Heating Load,SPACE2-1
+InternalVariable,Intermediate Zone Design Heating Load,SPACE2-1
+InternalVariable,Final Zone Design Cooling Load,SPACE2-1
+InternalVariable,Intermediate Zone Design Cooling Load,SPACE2-1
+InternalVariable,Final Zone Design Heating Air Density,SPACE2-1
+InternalVariable,Intermediate Zone Design Heating Air Density,SPACE2-1
+InternalVariable,Final Zone Design Cooling Air Density,SPACE2-1
+InternalVariable,Intermediate Zone Design Cooling Air Density,SPACE2-1
+InternalVariable,Final Zone Design Heating Volume Flow,SPACE2-1
+InternalVariable,Intermediate Zone Design Heating Volume Flow,SPACE2-1
+InternalVariable,Final Zone Design Cooling Volume Flow,SPACE2-1
+InternalVariable,Intermediate Zone Design Cooling Volume Flow,SPACE2-1
+InternalVariable,Zone Outdoor Air Design Volume Flow Rate,SPACE2-1
+InternalVariable,Final Zone Design Heating Air Mass Flow Rate,SPACE3-1
+InternalVariable,Intermediate Zone Design Heating Air Mass Flow Rate,SPACE3-1
+InternalVariable,Final Zone Design Cooling Air Mass Flow Rate,SPACE3-1
+InternalVariable,Intermediate Zone Design Cooling Air Mass Flow Rate,SPACE3-1
+InternalVariable,Final Zone Design Heating Load,SPACE3-1
+InternalVariable,Intermediate Zone Design Heating Load,SPACE3-1
+InternalVariable,Final Zone Design Cooling Load,SPACE3-1
+InternalVariable,Intermediate Zone Design Cooling Load,SPACE3-1
+InternalVariable,Final Zone Design Heating Air Density,SPACE3-1
+InternalVariable,Intermediate Zone Design Heating Air Density,SPACE3-1
+InternalVariable,Final Zone Design Cooling Air Density,SPACE3-1
+InternalVariable,Intermediate Zone Design Cooling Air Density,SPACE3-1
+InternalVariable,Final Zone Design Heating Volume Flow,SPACE3-1
+InternalVariable,Intermediate Zone Design Heating Volume Flow,SPACE3-1
+InternalVariable,Final Zone Design Cooling Volume Flow,SPACE3-1
+InternalVariable,Intermediate Zone Design Cooling Volume Flow,SPACE3-1
+InternalVariable,Zone Outdoor Air Design Volume Flow Rate,SPACE3-1
+InternalVariable,Final Zone Design Heating Air Mass Flow Rate,SPACE4-1
+InternalVariable,Intermediate Zone Design Heating Air Mass Flow Rate,SPACE4-1
+InternalVariable,Final Zone Design Cooling Air Mass Flow Rate,SPACE4-1
+InternalVariable,Intermediate Zone Design Cooling Air Mass Flow Rate,SPACE4-1
+InternalVariable,Final Zone Design Heating Load,SPACE4-1
+InternalVariable,Intermediate Zone Design Heating Load,SPACE4-1
+InternalVariable,Final Zone Design Cooling Load,SPACE4-1
+InternalVariable,Intermediate Zone Design Cooling Load,SPACE4-1
+InternalVariable,Final Zone Design Heating Air Density,SPACE4-1
+InternalVariable,Intermediate Zone Design Heating Air Density,SPACE4-1
+InternalVariable,Final Zone Design Cooling Air Density,SPACE4-1
+InternalVariable,Intermediate Zone Design Cooling Air Density,SPACE4-1
+InternalVariable,Final Zone Design Heating Volume Flow,SPACE4-1
+InternalVariable,Intermediate Zone Design Heating Volume Flow,SPACE4-1
+InternalVariable,Final Zone Design Cooling Volume Flow,SPACE4-1
+InternalVariable,Intermediate Zone Design Cooling Volume Flow,SPACE4-1
+InternalVariable,Zone Outdoor Air Design Volume Flow Rate,SPACE4-1
+InternalVariable,Final Zone Design Heating Air Mass Flow Rate,SPACE5-1
+InternalVariable,Intermediate Zone Design Heating Air Mass Flow Rate,SPACE5-1
+InternalVariable,Final Zone Design Cooling Air Mass Flow Rate,SPACE5-1
+InternalVariable,Intermediate Zone Design Cooling Air Mass Flow Rate,SPACE5-1
+InternalVariable,Final Zone Design Heating Load,SPACE5-1
+InternalVariable,Intermediate Zone Design Heating Load,SPACE5-1
+InternalVariable,Final Zone Design Cooling Load,SPACE5-1
+InternalVariable,Intermediate Zone Design Cooling Load,SPACE5-1
+InternalVariable,Final Zone Design Heating Air Density,SPACE5-1
+InternalVariable,Intermediate Zone Design Heating Air Density,SPACE5-1
+InternalVariable,Final Zone Design Cooling Air Density,SPACE5-1
+InternalVariable,Intermediate Zone Design Cooling Air Density,SPACE5-1
+InternalVariable,Final Zone Design Heating Volume Flow,SPACE5-1
+InternalVariable,Intermediate Zone Design Heating Volume Flow,SPACE5-1
+InternalVariable,Final Zone Design Cooling Volume Flow,SPACE5-1
+InternalVariable,Intermediate Zone Design Cooling Volume Flow,SPACE5-1
+InternalVariable,Zone Outdoor Air Design Volume Flow Rate,SPACE5-1
+InternalVariable,Fan Maximum Mass Flow Rate,SUPPLY FAN 1
+InternalVariable,Fan Nominal Pressure Rise,SUPPLY FAN 1
+InternalVariable,Fan Nominal Total Efficiency,SUPPLY FAN 1
+InternalVariable,Intermediate Air System Main Supply Volume Flow Rate,VAV SYS 1
+InternalVariable,Intermediate Air System Coincident Peak Cooling Mass Flow Rate,VAV SYS 1
+InternalVariable,Intermediate Air System Coincident Peak Heating Mass Flow Rate,VAV SYS 1
+InternalVariable,Intermediate Air System Noncoincident Peak Cooling Mass Flow Rate,VAV SYS 1
+InternalVariable,Intermediate Air System Noncoincident Peak Heating Mass Flow Rate,VAV SYS 1
+InternalVariable,Intermediate Air System Heating Volume Flow Rate,VAV SYS 1
+InternalVariable,Intermediate Air System Cooling Volume Flow Rate,VAV SYS 1
+InternalVariable,Air System Cooling Design Sensible Capacity,VAV SYS 1
+InternalVariable,Air System Cooling Design Total Capacity,VAV SYS 1
+InternalVariable,Air System Heating Design Sensible Capacity,VAV SYS 1
+InternalVariable,Air System Preheating Design Sensible Capacity,VAV SYS 1
+InternalVariable,Air System Outdoor Air Design Volume Flow Rate,VAV SYS 1
+InternalVariable,Air System Cooling Design Mixed Air Temperature,VAV SYS 1
+InternalVariable,Air System Cooling Design Mixed Air Humidity Ratio,VAV SYS 1
+InternalVariable,Air System Cooling Design Return Air Temperature,VAV SYS 1
+InternalVariable,Air System Cooling Design Return Air Humidity Ratio,VAV SYS 1
+InternalVariable,Air System Cooling Design Outdoor Air Temperature,VAV SYS 1
+InternalVariable,Air System Cooling Design Outdoor Air Humidity Ratio,VAV SYS 1
+InternalVariable,Air System Heating Design Mixed Air Temperature,VAV SYS 1
+InternalVariable,Air System Heating Design Mixed Air Humidity Ratio,VAV SYS 1
+InternalVariable,Air System Heating Design Return Air Temperature,VAV SYS 1
+InternalVariable,Air System Heating Design Return Air Humidity Ratio,VAV SYS 1
+InternalVariable,Air System Heating Design Outdoor Air Temperature,VAV SYS 1
+InternalVariable,Air System Heating Design Outdoor Air Humidity Ratio,VAV SYS 1
+InternalVariable,Outdoor Air Controller Maximum Mass Flow Rate,OA CONTROLLER 1
+InternalVariable,Outdoor Air Controller Minimum Mass Flow Rate,OA CONTROLLER 1
+**PLUGIN_GLOBAL_VARIABLES**
+**TRENDS**
+**METERS**
+OutputMeter,Electricity:Facility
+OutputMeter,Electricity:Building
+OutputMeter,Electricity:Zone:SPACE1-1
+OutputMeter,Electricity:SpaceType:GENERAL
+OutputMeter,InteriorLights:Electricity
+OutputMeter,InteriorLights:Electricity:Zone:SPACE1-1
+OutputMeter,InteriorLights:Electricity:SpaceType:GENERAL
+OutputMeter,GeneralLights:InteriorLights:Electricity
+OutputMeter,GeneralLights:InteriorLights:Electricity:Zone:SPACE1-1
+OutputMeter,GeneralLights:InteriorLights:Electricity:SpaceType:GENERAL
+OutputMeter,Electricity:Zone:SPACE2-1
+OutputMeter,InteriorLights:Electricity:Zone:SPACE2-1
+OutputMeter,GeneralLights:InteriorLights:Electricity:Zone:SPACE2-1
+OutputMeter,Electricity:Zone:SPACE3-1
+OutputMeter,InteriorLights:Electricity:Zone:SPACE3-1
+OutputMeter,GeneralLights:InteriorLights:Electricity:Zone:SPACE3-1
+OutputMeter,Electricity:Zone:SPACE4-1
+OutputMeter,InteriorLights:Electricity:Zone:SPACE4-1
+OutputMeter,GeneralLights:InteriorLights:Electricity:Zone:SPACE4-1
+OutputMeter,Electricity:Zone:SPACE5-1
+OutputMeter,InteriorLights:Electricity:Zone:SPACE5-1
+OutputMeter,GeneralLights:InteriorLights:Electricity:Zone:SPACE5-1
+OutputMeter,InteriorEquipment:Electricity
+OutputMeter,InteriorEquipment:Electricity:Zone:SPACE1-1
+OutputMeter,InteriorEquipment:Electricity:SpaceType:GENERAL
+OutputMeter,General:InteriorEquipment:Electricity
+OutputMeter,General:InteriorEquipment:Electricity:Zone:SPACE1-1
+OutputMeter,General:InteriorEquipment:Electricity:SpaceType:GENERAL
+OutputMeter,InteriorEquipment:Electricity:Zone:SPACE2-1
+OutputMeter,General:InteriorEquipment:Electricity:Zone:SPACE2-1
+OutputMeter,InteriorEquipment:Electricity:Zone:SPACE3-1
+OutputMeter,General:InteriorEquipment:Electricity:Zone:SPACE3-1
+OutputMeter,InteriorEquipment:Electricity:Zone:SPACE4-1
+OutputMeter,General:InteriorEquipment:Electricity:Zone:SPACE4-1
+OutputMeter,InteriorEquipment:Electricity:Zone:SPACE5-1
+OutputMeter,General:InteriorEquipment:Electricity:Zone:SPACE5-1
+OutputMeter,EnergyTransfer:Facility
+OutputMeter,EnergyTransfer:Building
+OutputMeter,EnergyTransfer:Zone:PLENUM-1
+OutputMeter,Heating:EnergyTransfer
+OutputMeter,Heating:EnergyTransfer:Zone:PLENUM-1
+OutputMeter,General:Heating:EnergyTransfer
+OutputMeter,General:Heating:EnergyTransfer:Zone:PLENUM-1
+OutputMeter,Cooling:EnergyTransfer
+OutputMeter,Cooling:EnergyTransfer:Zone:PLENUM-1
+OutputMeter,General:Cooling:EnergyTransfer
+OutputMeter,General:Cooling:EnergyTransfer:Zone:PLENUM-1
+OutputMeter,EnergyTransfer:Zone:SPACE1-1
+OutputMeter,Heating:EnergyTransfer:Zone:SPACE1-1
+OutputMeter,General:Heating:EnergyTransfer:Zone:SPACE1-1
+OutputMeter,Cooling:EnergyTransfer:Zone:SPACE1-1
+OutputMeter,General:Cooling:EnergyTransfer:Zone:SPACE1-1
+OutputMeter,EnergyTransfer:Zone:SPACE2-1
+OutputMeter,Heating:EnergyTransfer:Zone:SPACE2-1
+OutputMeter,General:Heating:EnergyTransfer:Zone:SPACE2-1
+OutputMeter,Cooling:EnergyTransfer:Zone:SPACE2-1
+OutputMeter,General:Cooling:EnergyTransfer:Zone:SPACE2-1
+OutputMeter,EnergyTransfer:Zone:SPACE3-1
+OutputMeter,Heating:EnergyTransfer:Zone:SPACE3-1
+OutputMeter,General:Heating:EnergyTransfer:Zone:SPACE3-1
+OutputMeter,Cooling:EnergyTransfer:Zone:SPACE3-1
+OutputMeter,General:Cooling:EnergyTransfer:Zone:SPACE3-1
+OutputMeter,EnergyTransfer:Zone:SPACE4-1
+OutputMeter,Heating:EnergyTransfer:Zone:SPACE4-1
+OutputMeter,General:Heating:EnergyTransfer:Zone:SPACE4-1
+OutputMeter,Cooling:EnergyTransfer:Zone:SPACE4-1
+OutputMeter,General:Cooling:EnergyTransfer:Zone:SPACE4-1
+OutputMeter,EnergyTransfer:Zone:SPACE5-1
+OutputMeter,Heating:EnergyTransfer:Zone:SPACE5-1
+OutputMeter,General:Heating:EnergyTransfer:Zone:SPACE5-1
+OutputMeter,Cooling:EnergyTransfer:Zone:SPACE5-1
+OutputMeter,General:Cooling:EnergyTransfer:Zone:SPACE5-1
+OutputMeter,ElectricityPurchased:Facility
+OutputMeter,ElectricityPurchased:Plant
+OutputMeter,Cogeneration:ElectricityPurchased
+OutputMeter,General:Cogeneration:ElectricityPurchased
+OutputMeter,ElectricitySurplusSold:Facility
+OutputMeter,ElectricitySurplusSold:Plant
+OutputMeter,Cogeneration:ElectricitySurplusSold
+OutputMeter,General:Cogeneration:ElectricitySurplusSold
+OutputMeter,ElectricityNet:Facility
+OutputMeter,ElectricityNet:Plant
+OutputMeter,Cogeneration:ElectricityNet
+OutputMeter,General:Cogeneration:ElectricityNet
+OutputMeter,EnergyTransfer:HVAC
+OutputMeter,HeatingCoils:EnergyTransfer
+OutputMeter,Electricity:HVAC
+OutputMeter,Heating:Electricity
+OutputMeter,General:Heating:Electricity
+OutputMeter,Fans:Electricity
+OutputMeter,General:Fans:Electricity
+OutputMeter,CoolingCoils:EnergyTransfer
+OutputMeter,Cooling:Electricity
+OutputMeter,General:Cooling:Electricity
+OutputMeter,Water:Facility
+OutputMeter,Water:HVAC
+OutputMeter,Cooling:Water
+OutputMeter,General:Cooling:Water
+OutputMeter,MainsWater:Facility
+OutputMeter,MainsWater:HVAC
+OutputMeter,Cooling:MainsWater
+OutputMeter,General:Cooling:MainsWater
+OutputMeter,Carbon Equivalent:Facility
+OutputMeter,CarbonEquivalentEmissions:Carbon Equivalent
+**VARIABLES**
+OutputVariable,Site Outdoor Air Drybulb Temperature,ENVIRONMENT
+OutputVariable,Lights Electricity Energy,SPACE1-1 LIGHTS 1
+OutputVariable,Lights Electricity Energy,SPACE2-1 LIGHTS 1
+OutputVariable,Lights Electricity Energy,SPACE3-1 LIGHTS 1
+OutputVariable,Lights Electricity Energy,SPACE4-1 LIGHTS 1
+OutputVariable,Lights Electricity Energy,SPACE5-1 LIGHTS 1
+OutputVariable,Electric Equipment Electricity Energy,SPACE1-1 ELECEQ 1
+OutputVariable,Electric Equipment Electricity Energy,SPACE2-1 ELECEQ 1
+OutputVariable,Electric Equipment Electricity Energy,SPACE3-1 ELECEQ 1
+OutputVariable,Electric Equipment Electricity Energy,SPACE4-1 ELECEQ 1
+OutputVariable,Electric Equipment Electricity Energy,SPACE5-1 ELECEQ 1
+OutputVariable,Zone Air System Sensible Heating Energy,PLENUM-1
+OutputVariable,Zone Air System Sensible Cooling Energy,PLENUM-1
+OutputVariable,Zone Air System Sensible Heating Energy,SPACE1-1
+OutputVariable,Zone Air System Sensible Cooling Energy,SPACE1-1
+OutputVariable,Zone Air System Sensible Heating Energy,SPACE2-1
+OutputVariable,Zone Air System Sensible Cooling Energy,SPACE2-1
+OutputVariable,Zone Air System Sensible Heating Energy,SPACE3-1
+OutputVariable,Zone Air System Sensible Cooling Energy,SPACE3-1
+OutputVariable,Zone Air System Sensible Heating Energy,SPACE4-1
+OutputVariable,Zone Air System Sensible Cooling Energy,SPACE4-1
+OutputVariable,Zone Air Temperature,SPACE5-1
+OutputVariable,Zone Air Relative Humidity,SPACE5-1
+OutputVariable,Zone Air System Sensible Heating Energy,SPACE5-1
+OutputVariable,Zone Air System Sensible Cooling Energy,SPACE5-1
+OutputVariable,Zone Thermostat Heating Setpoint Temperature,SPACE5-1
+OutputVariable,Zone Thermostat Cooling Setpoint Temperature,SPACE5-1
+OutputVariable,Facility Total Purchased Electricity Energy,WHOLE BUILDING
+OutputVariable,Facility Total Surplus Electricity Energy,WHOLE BUILDING
+OutputVariable,Facility Net Purchased Electricity Energy,WHOLE BUILDING
+OutputVariable,Facility Total HVAC Electricity Demand Rate,WHOLE BUILDING
+OutputVariable,Heating Coil Heating Energy,MAIN HEATING COIL 1
+OutputVariable,Heating Coil Electricity Energy,MAIN HEATING COIL 1
+OutputVariable,Heating Coil Heating Energy,SPACE1-1 ZONE COIL
+OutputVariable,Heating Coil Electricity Energy,SPACE1-1 ZONE COIL
+OutputVariable,Heating Coil Heating Energy,SPACE2-1 ZONE COIL
+OutputVariable,Heating Coil Electricity Energy,SPACE2-1 ZONE COIL
+OutputVariable,Heating Coil Heating Energy,SPACE3-1 ZONE COIL
+OutputVariable,Heating Coil Electricity Energy,SPACE3-1 ZONE COIL
+OutputVariable,Heating Coil Heating Energy,SPACE4-1 ZONE COIL
+OutputVariable,Heating Coil Electricity Energy,SPACE4-1 ZONE COIL
+OutputVariable,Heating Coil Heating Energy,SPACE5-1 ZONE COIL
+OutputVariable,Heating Coil Electricity Energy,SPACE5-1 ZONE COIL
+OutputVariable,Fan Electricity Energy,SUPPLY FAN 1
+OutputVariable,Cooling Coil Total Cooling Energy,MAIN COOLING COIL 1
+OutputVariable,Cooling Coil Electricity Energy,MAIN COOLING COIL 1
+OutputVariable,Cooling Coil Evaporative Condenser Water Volume,MAIN COOLING COIL 1
+OutputVariable,Cooling Coil Evaporative Condenser Mains Supply Water Volume,MAIN COOLING COIL 1
+OutputVariable,Cooling Coil Evaporative Condenser Pump Electricity Energy,MAIN COOLING COIL 1
+OutputVariable,Cooling Coil Basin Heater Electricity Energy,MAIN COOLING COIL 1
+OutputVariable,Environmental Impact Total N2O Emissions Carbon Equivalent Mass,SITE
+OutputVariable,Environmental Impact Total CH4 Emissions Carbon Equivalent Mass,SITE
+OutputVariable,Environmental Impact Total CO2 Emissions Carbon Equivalent Mass,SITE
+
+    #----------------------------------------------------------------------------------#
+                                CONTROLLED ELEMENTS:
+    #----------------------------------------------------------------------------------#
+    - Actuators: {&#39;Heating_Setpoint_RL&#39;: 10, &#39;Cooling_Setpoint_RL&#39;: 5}
+    - Variables: {&#39;outdoor_temperature&#39;: 1, &#39;htg_setpoint&#39;: 26, &#39;clg_setpoint&#39;: 27, &#39;air_temperature&#39;: 22, &#39;air_humidity&#39;: 23, &#39;HVAC_electricity_demand_rate&#39;: 31}
+    - Meters: {}
+    - Internal Variables: None
+
+
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.12/dist-packages/gymnasium/core.py:311: UserWarning: <span class="ansi-yellow-fg">WARN: env.info to get variables from other wrappers is deprecated and will be removed in v1.0, to get this variable you can do `env.unwrapped.info` for environment variables or `env.get_wrapper_attr(&#39;info&#39;)` that will search the reminding wrappers.</span>
+  logger.warn(
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="basic_example.html" class="btn btn-neutral float-left" title="18. Basic example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sinergym_package.html" class="btn btn-neutral float-right" title="20. Sinergym package information" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: main
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
+            <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
+            <dd><a href="../../../v3.3.0/index.html">v3.3.0</a></dd>
+            <dd><a href="../../../v3.4.0/index.html">v3.4.0</a></dd>
+            <dd><a href="../../../v3.5.0/index.html">v3.5.0</a></dd>
+            <dd><a href="../../../v3.6.0/index.html">v3.6.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="getting_env_information.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>
