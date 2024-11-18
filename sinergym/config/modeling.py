@@ -53,6 +53,7 @@ class ModelJSON(object):
             env_name: str,
             json_file: str,
             weather_files: List[str],
+            cap_nom: float,
             variables: Dict[str, Tuple[str, str]],
             meters: Dict[str, str],
             actuators: Dict[str, Tuple[str, str, str]],
@@ -111,6 +112,7 @@ class ModelJSON(object):
         self.episode_path: Optional[str] = None
         self.max_ep_store = max_ep_store
         self.config = extra_config
+        self.cap_nom = cap_nom
 
         # Input/Output varibles
         self._actuators = actuators
@@ -193,6 +195,11 @@ class ModelJSON(object):
         self.logger.info('Adapting weather to building model.')
         self.logger.debug('Weather path: {}'.format(
             self._weather_path.split('/')[-1]))
+
+        # Apply capnom to building model
+        heatpump_heating = list(
+            self.building['HeatPump:PlantLoop:EIR:Heating'].values())[0]
+        heatpump_heating['reference_capacity'] = self.cap_nom
 
     def adapt_building_to_variables(self) -> None:
         """This method reads all variables and write it in the building model as Output:Variable field.

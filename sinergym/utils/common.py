@@ -351,17 +351,19 @@ def convert_conf_to_env_parameters(
         conf['weather_specification']['keys']), 'Weather files and id keys must have the same len'
 
     weather_info = list(zip(conf['weather_specification']['keys'],
-                        conf['weather_specification']['weather_files']))
+                        conf['weather_specification']['weather_files'],
+                        conf['weather_specification']['cap_noms']))
 
     weather_variability = conf.get('weather_variability')
 
-    for weather_id, weather_file in weather_info:
+    for weather_id, weather_file, cap_nom in weather_info:
 
         id = 'Eplus-' + conf['id_base'] + '-' + weather_id + '-continuous-v1'
 
         env_kwargs = {
             'building_file': conf['building_file'],
             'weather_files': weather_file,
+            'cap_nom': cap_nom,
             'action_space': eval(conf['action_space']),
             'time_variables': conf['time_variables'],
             'variables': variables,

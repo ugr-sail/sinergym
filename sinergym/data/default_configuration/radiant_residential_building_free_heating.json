@@ -9,6 +9,7 @@
                            "USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw",
                            "SWE_Stockholm.Arlanda.024600_IWEC.epw"
                         ],
+        "cap_noms": [1000, 2000, 3000, 12000],
         "keys"          : ["hot", "mixed", "cool", "stockholm"]
     },
 
