@@ -4072,12 +4072,12 @@ files = [
 
 [extras]
 drl = ["stable-baselines3", "wandb"]
-extras = ["IPython", "coverage", "google-api-python-client", "google-cloud-storage", "mock", "oauth2client", "pytest", "pytest-cov", "pytest-xdist", "stable-baselines3", "wandb"]
+extras = ["IPython", "coverage", "google-api-python-client", "google-cloud-storage", "oauth2client", "pytest", "pytest-cov", "pytest-xdist", "stable-baselines3", "wandb"]
 gcloud = ["google-api-python-client", "google-cloud-storage", "oauth2client"]
 notebooks = ["IPython"]
-test = ["coverage", "mock", "pytest", "pytest-cov", "pytest-xdist", "wandb"]
+test = ["coverage", "pytest", "pytest-cov", "pytest-xdist", "wandb"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "9d8d995eefec18f988c4a6604d18c175e74bcae96c9a9566dd48de01974684f6"
+content-hash = "cebe9a8bfaf517de88c227d76791cac305b6b56e593828dd694d9c64d0a650d7"
