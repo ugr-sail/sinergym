@@ -25,8 +25,6 @@ The following image provides a detailed view of this process:
 
 |
 
-### Environment initialization
-
 During environment initialization (*__init__*), a building model is created using the specified epJSON file (*1*), and a simulator instance is instantiated (*2*), receiving the necessary data for its creation. Handlers for various components are initialized to facilitate the collection of information and control of the 
 simulation via the EnergyPlus Python API.
 
@@ -38,9 +36,7 @@ The next step involves initializing the first episode (*reset*), corresponding t
 - **Adjusting building attributes** (e.g., altitude, latitude, and orientation) to align with the specified environment weather (*3.4*).  
 - **Applying weather variability**, if defined (*3.5*). This process involves adding random noise to the weather dataset to simulate varying weather conditions during each run period.
 
-### Simulation startup  
-
-During simulation startup, *Sinergym* executes the following steps:  
+Once the building model is configured, *Sinergym* executes the following steps for starting a simulation:
 
 - Stops any ongoing simulation (*4.1*).  
 - Generates the initial state (*4.2*).  
@@ -48,23 +44,19 @@ During simulation startup, *Sinergym* executes the following steps:
 - Initiates the simulation process (*4.4*).  
 - Executes the warmup process (*4.5*).  
 
-### Agent-environment interaction
-
-Once the simulation is ready, the agent begins sending control actions to the building (*5*). *Sinergym* replaces the building model's predefined schedulers by interrupting the simulation, applying the agent's actions, and resuming the process, thus enabling continuous control. The middleware coordinates this by waiting for the actions to take effect and the simulation state to update (*5.1*). Once updated, the new state is returned to the agent via the Gymnasium interface (*5.2*) and interaction continues via *step*. This cycle repeats until the episode concludes.
+When the simulation is ready, the agent begins sending control actions to the building (*5*). *Sinergym* replaces the building model's predefined schedulers by interrupting the simulation, applying the agent's actions, and resuming the process, thus enabling continuous control. The middleware coordinates this by waiting for the actions to take effect and the simulation state to update (*5.1*). Once updated, the new state is returned to the agent via the Gymnasium interface (*5.2*) and interaction continues via *step*. This cycle repeats until the episode concludes.
 
 |
 
-The framework is designed to handle additional tasks seamlessly, such as managing output directory structures, preparing handlers, and collecting data during the simulation using callbacks.  
-
-The *Sinergym* architecture achieves its design goals by providing several advantages:  
+The tool is designed to handle additional tasks seamlessly, such as managing output directory structures, preparing handlers, and collecting data during the simulation using callbacks. The *Sinergym* architecture achieves its design goals by providing several advantages:  
 
 - **Extensibility**. Support to custom reward functions, wrappers, controllers, and loggers, as well as new EnergyPlus building and weather configurations.  
 - **Comprehensive middleware**. The EnergyPlus API grants access to all building sensors, metrics, actuators, and related simulation data.  
 - **User-Friendly abstraction**. The framework abstracts away the complexities of simulator interaction, allowing users to focus on data generation, learning control strategies, and validation.
 
-***********************************
+**********************************
 Additional observation information
-***********************************
+**********************************
 
 In addition to the observations returned by the *step* and *reset* methods, as illustrated in the preceding images, both methods also provide a Python dictionary containing supplementary information:
 

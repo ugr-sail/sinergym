@@ -147,7 +147,7 @@ processes.
 
 Sinergym with this wrapper will save the mean and variance files in the root output directory as last
 calibration values. However, it also will save the intermediate values as files in episode directories, and in the
-best model found if :ref:`Evaluation Callback` is active in a DRL training process.
+best model found if :ref:`LoggerEvalCallback` is active in a DRL training process.
 
 These functionalities are crucial when evaluating models trained using this wrapper. 
 For more details, visit `#407 <https://github.com/ugr-sail/sinergym/issues/407>`__.

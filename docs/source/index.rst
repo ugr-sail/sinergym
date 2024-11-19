@@ -14,9 +14,9 @@ If you are interested in contributing to the development of *Sinergym*, there ar
 
 Before contributing, please refer to `CONTRIBUTING.md <https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md>`__ for additional information.
 
-########################
+#########################
 Projects using *Sinergym*
-########################
+#########################
 
 The following are some of the projects that utilize *Sinergym*.
 
@@ -37,9 +37,9 @@ If you are new to using *Sinergym*, you will need to perform some initial setup.
 
 Once the setup is complete, we recommend running the examples available in the `examples <https://github.com/ugr-sail/sinergym/tree/main/examples>`__ directory to explore the different features the tool offers.
 
-################
+#################
 Citing *Sinergym*
-################
+#################
 
 If you use *Sinergym* in your work, please cite our `paper <https://dl.acm.org/doi/abs/10.1145/3486611.3488729>`__::
 
