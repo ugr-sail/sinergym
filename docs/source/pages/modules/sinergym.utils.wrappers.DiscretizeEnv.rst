@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.DiscretizeEnv
+﻿sinergym.utils.wrappers.DiscretizeEnv
 =====================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -20,8 +20,10 @@ sinergym.utils.wrappers.DiscretizeEnv
       ~DiscretizeEnv.class_name
       ~DiscretizeEnv.close
       ~DiscretizeEnv.get_wrapper_attr
+      ~DiscretizeEnv.has_wrapper_attr
       ~DiscretizeEnv.render
       ~DiscretizeEnv.reset
+      ~DiscretizeEnv.set_wrapper_attr
       ~DiscretizeEnv.step
       ~DiscretizeEnv.wrapper_spec
    
@@ -38,9 +40,9 @@ sinergym.utils.wrappers.DiscretizeEnv
       ~DiscretizeEnv.logger
       ~DiscretizeEnv.metadata
       ~DiscretizeEnv.np_random
+      ~DiscretizeEnv.np_random_seed
       ~DiscretizeEnv.observation_space
       ~DiscretizeEnv.render_mode
-      ~DiscretizeEnv.reward_range
       ~DiscretizeEnv.spec
       ~DiscretizeEnv.unwrapped
    

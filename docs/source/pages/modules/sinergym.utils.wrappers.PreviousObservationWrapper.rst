@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.PreviousObservationWrapper
+﻿sinergym.utils.wrappers.PreviousObservationWrapper
 ==================================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -19,9 +19,11 @@ sinergym.utils.wrappers.PreviousObservationWrapper
       ~PreviousObservationWrapper.class_name
       ~PreviousObservationWrapper.close
       ~PreviousObservationWrapper.get_wrapper_attr
+      ~PreviousObservationWrapper.has_wrapper_attr
       ~PreviousObservationWrapper.observation
       ~PreviousObservationWrapper.render
       ~PreviousObservationWrapper.reset
+      ~PreviousObservationWrapper.set_wrapper_attr
       ~PreviousObservationWrapper.step
       ~PreviousObservationWrapper.wrapper_spec
    
@@ -37,9 +39,9 @@ sinergym.utils.wrappers.PreviousObservationWrapper
       ~PreviousObservationWrapper.logger
       ~PreviousObservationWrapper.metadata
       ~PreviousObservationWrapper.np_random
+      ~PreviousObservationWrapper.np_random_seed
       ~PreviousObservationWrapper.observation_space
       ~PreviousObservationWrapper.render_mode
-      ~PreviousObservationWrapper.reward_range
       ~PreviousObservationWrapper.spec
       ~PreviousObservationWrapper.unwrapped
    

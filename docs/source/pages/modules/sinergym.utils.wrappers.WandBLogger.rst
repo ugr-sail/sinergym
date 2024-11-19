@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.WandBLogger
+﻿sinergym.utils.wrappers.WandBLogger
 ===================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -19,10 +19,12 @@ sinergym.utils.wrappers.WandBLogger
       ~WandBLogger.class_name
       ~WandBLogger.close
       ~WandBLogger.get_wrapper_attr
+      ~WandBLogger.has_wrapper_attr
       ~WandBLogger.render
       ~WandBLogger.reset
       ~WandBLogger.save_artifact
       ~WandBLogger.set_wandb_finish
+      ~WandBLogger.set_wrapper_attr
       ~WandBLogger.step
       ~WandBLogger.wandb_log
       ~WandBLogger.wandb_log_summary
@@ -40,9 +42,9 @@ sinergym.utils.wrappers.WandBLogger
       ~WandBLogger.logger
       ~WandBLogger.metadata
       ~WandBLogger.np_random
+      ~WandBLogger.np_random_seed
       ~WandBLogger.observation_space
       ~WandBLogger.render_mode
-      ~WandBLogger.reward_range
       ~WandBLogger.spec
       ~WandBLogger.unwrapped
    

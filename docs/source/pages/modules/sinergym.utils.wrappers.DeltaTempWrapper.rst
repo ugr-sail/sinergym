@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.DeltaTempWrapper
+﻿sinergym.utils.wrappers.DeltaTempWrapper
 ========================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -19,9 +19,11 @@ sinergym.utils.wrappers.DeltaTempWrapper
       ~DeltaTempWrapper.class_name
       ~DeltaTempWrapper.close
       ~DeltaTempWrapper.get_wrapper_attr
+      ~DeltaTempWrapper.has_wrapper_attr
       ~DeltaTempWrapper.observation
       ~DeltaTempWrapper.render
       ~DeltaTempWrapper.reset
+      ~DeltaTempWrapper.set_wrapper_attr
       ~DeltaTempWrapper.step
       ~DeltaTempWrapper.wrapper_spec
    
@@ -37,9 +39,9 @@ sinergym.utils.wrappers.DeltaTempWrapper
       ~DeltaTempWrapper.logger
       ~DeltaTempWrapper.metadata
       ~DeltaTempWrapper.np_random
+      ~DeltaTempWrapper.np_random_seed
       ~DeltaTempWrapper.observation_space
       ~DeltaTempWrapper.render_mode
-      ~DeltaTempWrapper.reward_range
       ~DeltaTempWrapper.spec
       ~DeltaTempWrapper.unwrapped
    

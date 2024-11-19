@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.LoggerWrapper
+﻿sinergym.utils.wrappers.LoggerWrapper
 =====================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -21,8 +21,10 @@ sinergym.utils.wrappers.LoggerWrapper
       ~LoggerWrapper.close
       ~LoggerWrapper.get_episode_summary
       ~LoggerWrapper.get_wrapper_attr
+      ~LoggerWrapper.has_wrapper_attr
       ~LoggerWrapper.render
       ~LoggerWrapper.reset
+      ~LoggerWrapper.set_wrapper_attr
       ~LoggerWrapper.step
       ~LoggerWrapper.wrapper_spec
    
@@ -38,9 +40,9 @@ sinergym.utils.wrappers.LoggerWrapper
       ~LoggerWrapper.logger
       ~LoggerWrapper.metadata
       ~LoggerWrapper.np_random
+      ~LoggerWrapper.np_random_seed
       ~LoggerWrapper.observation_space
       ~LoggerWrapper.render_mode
-      ~LoggerWrapper.reward_range
       ~LoggerWrapper.spec
       ~LoggerWrapper.unwrapped
    

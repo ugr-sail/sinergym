@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.WeatherForecastingWrapper
+﻿sinergym.utils.wrappers.WeatherForecastingWrapper
 =================================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -16,14 +16,15 @@ sinergym.utils.wrappers.WeatherForecastingWrapper
    .. autosummary::
    
       ~WeatherForecastingWrapper.__init__
-      ~WeatherForecastingWrapper.apply_ou_variability
       ~WeatherForecastingWrapper.class_name
       ~WeatherForecastingWrapper.close
       ~WeatherForecastingWrapper.get_wrapper_attr
+      ~WeatherForecastingWrapper.has_wrapper_attr
       ~WeatherForecastingWrapper.observation
       ~WeatherForecastingWrapper.render
       ~WeatherForecastingWrapper.reset
-      ~WeatherForecastingWrapper.set_weather_data
+      ~WeatherForecastingWrapper.set_forecast_data
+      ~WeatherForecastingWrapper.set_wrapper_attr
       ~WeatherForecastingWrapper.step
       ~WeatherForecastingWrapper.wrapper_spec
    
@@ -39,9 +40,9 @@ sinergym.utils.wrappers.WeatherForecastingWrapper
       ~WeatherForecastingWrapper.logger
       ~WeatherForecastingWrapper.metadata
       ~WeatherForecastingWrapper.np_random
+      ~WeatherForecastingWrapper.np_random_seed
       ~WeatherForecastingWrapper.observation_space
       ~WeatherForecastingWrapper.render_mode
-      ~WeatherForecastingWrapper.reward_range
       ~WeatherForecastingWrapper.spec
       ~WeatherForecastingWrapper.unwrapped
    

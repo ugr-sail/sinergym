@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.EnergyCostWrapper
+﻿sinergym.utils.wrappers.EnergyCostWrapper
 =========================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -16,14 +16,15 @@ sinergym.utils.wrappers.EnergyCostWrapper
    .. autosummary::
    
       ~EnergyCostWrapper.__init__
-      ~EnergyCostWrapper.apply_ou_variability
       ~EnergyCostWrapper.class_name
       ~EnergyCostWrapper.close
       ~EnergyCostWrapper.get_wrapper_attr
+      ~EnergyCostWrapper.has_wrapper_attr
       ~EnergyCostWrapper.observation
       ~EnergyCostWrapper.render
       ~EnergyCostWrapper.reset
       ~EnergyCostWrapper.set_energy_cost_data
+      ~EnergyCostWrapper.set_wrapper_attr
       ~EnergyCostWrapper.step
       ~EnergyCostWrapper.wrapper_spec
    
@@ -39,9 +40,9 @@ sinergym.utils.wrappers.EnergyCostWrapper
       ~EnergyCostWrapper.logger
       ~EnergyCostWrapper.metadata
       ~EnergyCostWrapper.np_random
+      ~EnergyCostWrapper.np_random_seed
       ~EnergyCostWrapper.observation_space
       ~EnergyCostWrapper.render_mode
-      ~EnergyCostWrapper.reward_range
       ~EnergyCostWrapper.spec
       ~EnergyCostWrapper.unwrapped
    

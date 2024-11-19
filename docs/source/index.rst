@@ -1,5 +1,5 @@
-Welcome to **sinergym**!
-========================
+**Sinergym**
+============
 
 .. include:: pages/introduction.rst
 
@@ -7,40 +7,44 @@ Welcome to **sinergym**!
 Contributing
 ############
 
-For all those interested in improving *Sinergym*, there are always improvements to be made. 
-You can check `issues <https://github.com/ugr-sail/sinergym/issues>`__ in the repository.
+If you are interested in contributing to the development of *Sinergym*, there are several ways you can get involved:
 
-If you want to contribute, please read `CONTRIBUTING.md <https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md>`__ first.
+- Reporting bugs or suggesting improvements through `issues <https://github.com/ugr-sail/sinergym/issues>`__.
+- Assisting in the development of new features or fixing existing bugs.
+
+Before contributing, please refer to `CONTRIBUTING.md <https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md>`__ for additional information.
 
 ########################
-Projects using Sinergym
+Projects using *Sinergym*
 ########################
 
-The following are some of the projects benefiting from the advantages of *Sinergym*:
+The following are some of the projects that utilize *Sinergym*.
 
 - `Demosthen/ActiveRL <https://github.com/Demosthen/ActiveRL>`__
 - `VectorInstitute/HV-Ai-C <https://github.com/VectorInstitute/HV-Ai-C>`__
 - `rdnfn/beobench <https://github.com/rdnfn/beobench>`__
 
-If you want to appear in this list, do not hesitate to send us a PR and include the following badge in your repository:
+If you would like to be included in the list, just open a pull request requesting it. Before doing so, please add the following badge to your repository:
 
 .. raw:: html
     :file: ./_templates/sinergym.html
 
-############
+########
 Examples
-############
+########
 
-The examples can be run if you have your computer or container properly configured (see :ref:`Installation` section) from our notebooks hosted in the `examples <https://github.com/ugr-sail/sinergym/tree/main/examples>`__ folder of the official *Sinergym* repository.
+If you are new to using *Sinergym*, you will need to perform some initial setup. Please refer to the :ref:`Installation` section for a detailed guide on this process.
+
+Once the setup is complete, we recommend running the examples available in the `examples <https://github.com/ugr-sail/sinergym/tree/main/examples>`__ directory to explore the different features the tool offers.
 
 ################
-Citing Sinergym
+Citing *Sinergym*
 ################
 
 If you use *Sinergym* in your work, please cite our `paper <https://dl.acm.org/doi/abs/10.1145/3486611.3488729>`__::
 
     @inproceedings{2021sinergym,
-      title={Sinergym: A Building Simulation and Control Framework for Training Reinforcement Learning Agents}, 
+      title={*Sinergym*: A Building Simulation and Control Framework for Training Reinforcement Learning Agents}, 
       author={Jiménez-Raboso, Javier and Campoy-Nieves, Alejandro and Manjavacas-Lucas, Antonio and Gómez-Romero, Juan and Molina-Solana, Miguel},
       year={2021},
       isbn = {9781450391146},

@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.NormalizeAction
+﻿sinergym.utils.wrappers.NormalizeAction
 =======================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -20,9 +20,11 @@ sinergym.utils.wrappers.NormalizeAction
       ~NormalizeAction.class_name
       ~NormalizeAction.close
       ~NormalizeAction.get_wrapper_attr
+      ~NormalizeAction.has_wrapper_attr
       ~NormalizeAction.render
       ~NormalizeAction.reset
       ~NormalizeAction.reverting_action
+      ~NormalizeAction.set_wrapper_attr
       ~NormalizeAction.step
       ~NormalizeAction.wrapper_spec
    
@@ -38,9 +40,9 @@ sinergym.utils.wrappers.NormalizeAction
       ~NormalizeAction.logger
       ~NormalizeAction.metadata
       ~NormalizeAction.np_random
+      ~NormalizeAction.np_random_seed
       ~NormalizeAction.observation_space
       ~NormalizeAction.render_mode
-      ~NormalizeAction.reward_range
       ~NormalizeAction.spec
       ~NormalizeAction.unwrapped
    

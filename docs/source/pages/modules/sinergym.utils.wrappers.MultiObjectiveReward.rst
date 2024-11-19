@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.MultiObjectiveReward
+﻿sinergym.utils.wrappers.MultiObjectiveReward
 ============================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -19,8 +19,10 @@ sinergym.utils.wrappers.MultiObjectiveReward
       ~MultiObjectiveReward.class_name
       ~MultiObjectiveReward.close
       ~MultiObjectiveReward.get_wrapper_attr
+      ~MultiObjectiveReward.has_wrapper_attr
       ~MultiObjectiveReward.render
       ~MultiObjectiveReward.reset
+      ~MultiObjectiveReward.set_wrapper_attr
       ~MultiObjectiveReward.step
       ~MultiObjectiveReward.wrapper_spec
    
@@ -36,9 +38,9 @@ sinergym.utils.wrappers.MultiObjectiveReward
       ~MultiObjectiveReward.logger
       ~MultiObjectiveReward.metadata
       ~MultiObjectiveReward.np_random
+      ~MultiObjectiveReward.np_random_seed
       ~MultiObjectiveReward.observation_space
       ~MultiObjectiveReward.render_mode
-      ~MultiObjectiveReward.reward_range
       ~MultiObjectiveReward.spec
       ~MultiObjectiveReward.unwrapped
    
