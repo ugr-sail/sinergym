@@ -24,11 +24,11 @@ logger = terminal_logger.getLogger(
 
 # Creating environment and applying wrappers for normalization and logging
 env = gym.make(
-    'Eplus-radiant_free_heating-stockholm-continuous-stochastic-v1')
+    'Eplus-radiant_case1_heating-hot-continuous-stochastic-v1')
 # env = RoundActionWrapper(env)
-env = HeatPumpEnergyWrapper(env)
+# env = HeatPumpEnergyWrapper(env)
 env = NormalizeObservation(env)
-env = ExtremeFlowControlWrapper(env)
+# env = ExtremeFlowControlWrapper(env)
 env = NormalizeAction(env)
 env = LoggerWrapper(env)
 env = CSVLogger(env)
@@ -66,11 +66,10 @@ env = ReduceObservationWrapper(
         'heat_cap_mod',
         'cop_plr_mod',
         'cop_temp_mod',
-        'heat_cap',
         'plr_current'])
 
 # Execute interactions during 3 episodes
-for i in range(3):
+for i in range(1):
     # Reset the environment to start a new episode
     obs, info = env.reset()
     truncated = terminated = False
