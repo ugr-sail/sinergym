@@ -270,8 +270,7 @@ def json_to_variables(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
                 raise RuntimeError
 
             elif isinstance(specification['keys'], list):
-                assert len(
-                    specification['variable_names']) == len(
+                assert len(specification['variable_names']) == len(
                     specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
                 for variable_name, key_name in list(
                         zip(specification['variable_names'], specification['keys'])):
@@ -350,9 +349,15 @@ def convert_conf_to_env_parameters(
     assert len(conf['weather_specification']['weather_files']) == len(
         conf['weather_specification']['keys']), 'Weather files and id keys must have the same len'
 
-    weather_info = list(zip(conf['weather_specification']['keys'],
-                        conf['weather_specification']['weather_files'],
-                        conf['weather_specification']['cap_noms']))
+    if conf['weather_specification'].get('cap_noms'):
+
+        weather_info = list(zip(conf['weather_specification']['keys'],
+                            conf['weather_specification']['weather_files'],
+                            conf['weather_specification']['cap_noms']))
+    else:
+        weather_info = list(zip(conf['weather_specification']['keys'],
+                            conf['weather_specification']['weather_files'],
+                            [None for _ in range(len(conf['weather_specification']['keys']))]))
 
     weather_variability = conf.get('weather_variability')
 
@@ -396,6 +401,7 @@ def convert_conf_to_env_parameters(
             env_kwargs = {
                 'building_file': conf['building_file'],
                 'weather_files': weather_file,
+                'cap_nom': cap_nom,
                 'action_space': eval(conf['action_space']),
                 'time_variables': conf['time_variables'],
                 'variables': variables,

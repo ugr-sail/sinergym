@@ -36,7 +36,7 @@ class EplusEnv(gym.Env):
         self,
         building_file: str,
         weather_files: Union[str, List[str]],
-        cap_nom: float = 12000,
+        cap_nom: Optional[float] = None,
         action_space: gym.spaces.Box = gym.spaces.Box(
             low=0, high=0, shape=(0,), dtype=np.float32),
         time_variables: List[str] = [],
@@ -113,12 +113,12 @@ class EplusEnv(gym.Env):
             env_name=env_name,
             json_file=self.building_file,
             weather_files=self.weather_files,
-            cap_nom=cap_nom,
             actuators=self.actuators,
             variables=self.variables,
             meters=self.meters,
             max_ep_store=max_ep_data_store_num,
-            extra_config=config_params
+            extra_config=config_params,
+            cap_nom=cap_nom,
         )
 
         # ---------------------------------------------------------------------------- #

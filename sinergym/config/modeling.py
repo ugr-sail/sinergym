@@ -53,12 +53,12 @@ class ModelJSON(object):
             env_name: str,
             json_file: str,
             weather_files: List[str],
-            cap_nom: float,
             variables: Dict[str, Tuple[str, str]],
             meters: Dict[str, str],
             actuators: Dict[str, Tuple[str, str, str]],
             max_ep_store: int,
-            extra_config: Dict[str, Any]):
+            extra_config: Dict[str, Any],
+            cap_nom: Optional[float] = None):
         """Constructor. Variables, meters and actuators are required to update building model scheme.
 
         Args:
