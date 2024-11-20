@@ -24,7 +24,7 @@ logger = terminal_logger.getLogger(
 
 # Creating environment and applying wrappers for normalization and logging
 env = gym.make(
-    'Eplus-radiant_case1_heating-hot-continuous-stochastic-v1')
+    'Eplus-radiant_case1_heating-stockholm-continuous-stochastic-v1')
 # env = RoundActionWrapper(env)
 # env = HeatPumpEnergyWrapper(env)
 env = NormalizeObservation(env)

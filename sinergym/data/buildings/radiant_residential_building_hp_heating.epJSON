@@ -2894,14 +2894,14 @@
     },
     "Construction": {
         "Combined semi-exposed roof - Energy code standard - Heavyweight": {
-            "layer_2": "MW Glass Wool (rolls)_.0155",
+            "layer_2": "MW_Glass_Wool_Roof_Insulation",
             "layer_3": "Cast Concrete (Lightweight)_.1",
             "layer_4": "Plasterboard_.013",
             "outside_layer": "Plywood (Heavyweight)_.01"
         },
         "Combined semi-exposed roof - Energy code standard - Heavyweight_Rev": {
             "layer_2": "Cast Concrete (Lightweight)_.1",
-            "layer_3": "MW Glass Wool (rolls)_.0155",
+            "layer_3": "MW_Glass_Wool_Roof_Insulation",
             "layer_4": "Plywood (Heavyweight)_.01",
             "outside_layer": "Plasterboard_.013"
         },
@@ -3044,14 +3044,14 @@
             "outside_layer": "CLEAR 3MM"
         },
         "Wall - Energy code standard - Heavyweight": {
-            "layer_2": "XPS Extruded Polystyrene  - CO2 Blowing_.0037",
+            "layer_2": "XPS_Extruded_Polystyrene_Wall_Insulation",
             "layer_3": "Concrete Block (Medium)_.1",
             "layer_4": "Gypsum Plastering_.013",
             "outside_layer": "Brickwork Outer_.1"
         },
         "Wall - Energy code standard - Heavyweight_Rev": {
             "layer_2": "Concrete Block (Medium)_.1",
-            "layer_3": "XPS Extruded Polystyrene  - CO2 Blowing_.0037",
+            "layer_3": "XPS_Extruded_Polystyrene_Wall_Insulation",
             "layer_4": "Brickwork Outer_.1",
             "outside_layer": "Gypsum Plastering_.013"
         },
@@ -3924,7 +3924,7 @@
             "thickness": 0.045,
             "visible_absorptance": 0.6
         },
-        "MW Glass Wool (rolls)_.0155": {
+        "MW_Glass_Wool_Roof_Insulation": {
             "conductivity": 0.04,
             "density": 12,
             "roughness": "Rough",
@@ -3984,7 +3984,7 @@
             "thickness": 0.08,
             "visible_absorptance": 0.6
         },
-        "XPS Extruded Polystyrene  - CO2 Blowing_.0037": {
+        "XPS_Extruded_Polystyrene_Wall_Insulation": {
             "conductivity": 0.034,
             "density": 35,
             "roughness": "Rough",
@@ -11078,23 +11078,6 @@
         }
     },
     "ZoneHVAC:LowTemperatureRadiant:VariableFlow": {
-        "FirstFloor:Kitchen Radiant surface": {
-            "availability_schedule_name": "Radiant Availavility",
-            "circuit_length": 120,
-            "cooling_design_capacity": "Autosize",
-            "cooling_water_inlet_node_name": "FirstFloor:Kitchen Radiant surface Cold Water Inlet Node",
-            "cooling_water_outlet_node_name": "FirstFloor:Kitchen Radiant surface Cold Water Outlet Node",
-            "design_object": "FirstFloor:Kitchen Radiant surface Design Object",
-            "heating_design_capacity": "Autosize",
-            "heating_water_inlet_node_name": "FirstFloor:Kitchen Radiant surface Hot Water Inlet Node",
-            "heating_water_outlet_node_name": "FirstFloor:Kitchen Radiant surface Hot Water Outlet Node",
-            "hydronic_tubing_length": "Autosize",
-            "maximum_cold_water_flow": "Autosize",
-            "maximum_hot_water_flow": "Autosize",
-            "number_of_circuits": "CalculateFromCircuitLength",
-            "surface_name_or_radiant_surface_group_name": "FirstFloor:Kitchen Radiant surface list",
-            "zone_name": "FirstFloor:Kitchen"
-        },
         "FirstFloor:LivingRoom Radiant surface": {
             "availability_schedule_name": "Radiant Availavility",
             "circuit_length": 120,
@@ -11111,6 +11094,23 @@
             "number_of_circuits": "CalculateFromCircuitLength",
             "surface_name_or_radiant_surface_group_name": "FirstFloor:LivingRoom Radiant surface list",
             "zone_name": "FirstFloor:LivingRoom"
+        },
+        "FirstFloor:Kitchen Radiant surface": {
+            "availability_schedule_name": "Radiant Availavility",
+            "circuit_length": 120,
+            "cooling_design_capacity": "Autosize",
+            "cooling_water_inlet_node_name": "FirstFloor:Kitchen Radiant surface Cold Water Inlet Node",
+            "cooling_water_outlet_node_name": "FirstFloor:Kitchen Radiant surface Cold Water Outlet Node",
+            "design_object": "FirstFloor:Kitchen Radiant surface Design Object",
+            "heating_design_capacity": "Autosize",
+            "heating_water_inlet_node_name": "FirstFloor:Kitchen Radiant surface Hot Water Inlet Node",
+            "heating_water_outlet_node_name": "FirstFloor:Kitchen Radiant surface Hot Water Outlet Node",
+            "hydronic_tubing_length": "Autosize",
+            "maximum_cold_water_flow": "Autosize",
+            "maximum_hot_water_flow": "Autosize",
+            "number_of_circuits": "CalculateFromCircuitLength",
+            "surface_name_or_radiant_surface_group_name": "FirstFloor:Kitchen Radiant surface list",
+            "zone_name": "FirstFloor:Kitchen"
         },
         "SecondFloor:Bedroom01 Radiant surface": {
             "availability_schedule_name": "Radiant Availavility",

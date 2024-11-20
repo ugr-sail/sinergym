@@ -9,12 +9,41 @@
                            "USA_WA_Port.Angeles-William.R.Fairchild.Intl.AP.727885_TMY3.epw",
                            "SWE_Stockholm.Arlanda.024600_IWEC.epw"
                         ],
-        "cap_noms": [1000, 2000, 3000, 12000],
+        "weather_confs": [{"cap_nom_heating": 1000,
+                          "cap_nom_cooling": 100,
+                          "window_type": "double_pane_low_E_argon_eu",
+                          "thickness_roof": 0.15,
+                          "thickness_wall": 0.1,
+                          "maximum_hot_water_flow": ["Autosize","Autosize","Autosize","Autosize","Autosize"],
+                          "maximum_cold_water_flow": ["Autosize","Autosize","Autosize","Autosize","Autosize"]},
+                         {"cap_nom_heating": 2000,
+                          "cap_nom_cooling": 200,
+                          "window_type": "double_pane_low_E_argon_eu",
+                          "thickness_roof": 0.15,
+                          "thickness_wall": 0.1,
+                          "maximum_hot_water_flow": ["Autosize","Autosize","Autosize","Autosize","Autosize"],
+                          "maximum_cold_water_flow": ["Autosize","Autosize","Autosize","Autosize","Autosize"]},
+                         {"cap_nom_heating": 3000,
+                          "cap_nom_cooling": 300,
+                          "window_type": "double_pane_low_E_argon_eu",
+                          "thickness_roof": 0.15,
+                          "thickness_wall": 0.1,
+                          "maximum_hot_water_flow": ["Autosize","Autosize","Autosize","Autosize","Autosize"],
+                          "maximum_cold_water_flow": ["Autosize","Autosize","Autosize","Autosize","Autosize"]},
+                         {"cap_nom_heating": 12000,
+                          "cap_nom_cooling": 1200,
+                          "window_type": "double_pane_low_E_argon_eu",
+                          "thickness_roof": 0.15,
+                          "thickness_wall": 0.1,
+                          "maximum_hot_water_flow": ["Autosize","Autosize","Autosize","Autosize","Autosize"],
+                          "maximum_cold_water_flow": ["Autosize","Autosize","Autosize","Autosize","Autosize"]
+                          }],
         "keys"          : ["hot", "mixed", "cool", "stockholm"]
     },
 
     "config_params"          : {
-        "timesteps_per_hour" : 12
+        "timesteps_per_hour" : 12,
+        "north_axis" : 180.0
     },
 
     "weather_variability":{

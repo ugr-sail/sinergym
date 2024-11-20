@@ -58,7 +58,7 @@ class ModelJSON(object):
             actuators: Dict[str, Tuple[str, str, str]],
             max_ep_store: int,
             extra_config: Dict[str, Any],
-            cap_nom: Optional[float] = None):
+            weather_conf: Optional[Dict[str, Any]] = None):
         """Constructor. Variables, meters and actuators are required to update building model scheme.
 
         Args:
@@ -112,7 +112,7 @@ class ModelJSON(object):
         self.episode_path: Optional[str] = None
         self.max_ep_store = max_ep_store
         self.config = extra_config
-        self.cap_nom = cap_nom
+        self.weather_conf = weather_conf
 
         # Input/Output varibles
         self._actuators = actuators
@@ -196,10 +196,52 @@ class ModelJSON(object):
         self.logger.debug('Weather path: {}'.format(
             self._weather_path.split('/')[-1]))
 
-        # Apply capnom to building model
-        heatpump_heating = list(
-            self.building['HeatPump:PlantLoop:EIR:Heating'].values())[0]
-        heatpump_heating['reference_capacity'] = self.cap_nom
+        # Apply weather_conf if exists
+        if self.weather_conf is not None:
+            self.apply_weather_conf()
+
+    def apply_weather_conf(self) -> None:
+        """Apply weather configuration to building model.
+        """
+
+        if self.weather_conf.get('cap_nom_heating'):
+            list(self.building['HeatPump:PlantLoop:EIR:Heating'].values())[
+                0]['reference_capacity'] = self.weather_conf['cap_nom_heating']
+
+        if self.weather_conf.get('cap_nom_cooling'):
+            list(self.building['HeatPump:PlantLoop:EIR:Cooling'].values())[
+                0]['reference_capacity'] = self.weather_conf['cap_nom_cooling']
+
+        if self.weather_conf.get('window_type'):
+            filtered_surfaces = {
+                key: value for key,
+                value in self.building['FenestrationSurface:Detailed'].items() if key.endswith('_Win')}
+            for definition in list(filtered_surfaces.values()):
+                definition['construction_name'] = self.weather_conf['window_type']
+
+        if self.weather_conf.get('thickness_roof'):
+            filtered_surfaces = {
+                key: value for key,
+                value in self.building['Material'].items() if key.endswith('Roof_Insulation')}
+            for definition in list(filtered_surfaces.values()):
+                definition['thickness'] = self.weather_conf['thickness_roof']
+
+        if self.weather_conf.get('thickness_wall'):
+            filtered_surfaces = {
+                key: value for key,
+                value in self.building['Material'].items() if key.endswith('Wall_Insulation')}
+            for definition in list(filtered_surfaces.values()):
+                definition['thickness'] = self.weather_conf['thickness_wall']
+
+        if self.weather_conf.get('maximum_hot_water_flow'):
+            for i, definition in enumerate(
+                    list(self.building['ZoneHVAC:LowTemperatureRadiant:VariableFlow'].values())):
+                definition['maximum_hot_water_flow'] = self.weather_conf['maximum_hot_water_flow'][i]
+
+        if self.weather_conf.get('maximum_cold_water_flow'):
+            for i, definition in enumerate(
+                    list(self.building['ZoneHVAC:LowTemperatureRadiant:VariableFlow'].values())):
+                definition['maximum_cold_water_flow'] = self.weather_conf['maximum_cold_water_flow'][i]
 
     def adapt_building_to_variables(self) -> None:
         """This method reads all variables and write it in the building model as Output:Variable field.
@@ -282,6 +324,11 @@ class ModelJSON(object):
                 self.logger.info(
                     'Updated timesteps per episode: {}'.format(
                         self.timestep_per_episode))
+
+            # North axis
+            if self.config.get('north_axis'):
+                list(self.building['Building'].values())[0][
+                    'north_axis'] = self.config['north_axis']
 
     def save_building_model(self) -> str:
         """Take current building model and save as epJSON in current episode path folder.
@@ -634,6 +681,14 @@ class ModelJSON(object):
                     except AssertionError as err:
                         self.logger.critical(
                             'Extra Config: Runperiod specified in extra configuration has an incorrect format (tuple with 6 elements).')
+                        raise err
+                # North axis
+                elif config_key == 'north_axis':
+                    try:
+                        assert self.config[config_key] >= 0.0 and self.config[config_key] <= 360.0
+                    except AssertionError as err:
+                        self.logger.critical(
+                            'Extra Config: North axis specified in extra configuration must be a float value between 0 and 360.')
                         raise err
                 else:
                     self.logger.error(

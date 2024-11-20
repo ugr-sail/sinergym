@@ -349,11 +349,11 @@ def convert_conf_to_env_parameters(
     assert len(conf['weather_specification']['weather_files']) == len(
         conf['weather_specification']['keys']), 'Weather files and id keys must have the same len'
 
-    if conf['weather_specification'].get('cap_noms'):
+    if conf['weather_specification'].get('weather_confs'):
 
         weather_info = list(zip(conf['weather_specification']['keys'],
                             conf['weather_specification']['weather_files'],
-                            conf['weather_specification']['cap_noms']))
+                            conf['weather_specification']['weather_confs']))
     else:
         weather_info = list(zip(conf['weather_specification']['keys'],
                             conf['weather_specification']['weather_files'],
@@ -361,14 +361,14 @@ def convert_conf_to_env_parameters(
 
     weather_variability = conf.get('weather_variability')
 
-    for weather_id, weather_file, cap_nom in weather_info:
+    for weather_id, weather_file, weather_conf in weather_info:
 
         id = 'Eplus-' + conf['id_base'] + '-' + weather_id + '-continuous-v1'
 
         env_kwargs = {
             'building_file': conf['building_file'],
             'weather_files': weather_file,
-            'cap_nom': cap_nom,
+            'weather_conf': weather_conf,
             'action_space': eval(conf['action_space']),
             'time_variables': conf['time_variables'],
             'variables': variables,
@@ -401,7 +401,7 @@ def convert_conf_to_env_parameters(
             env_kwargs = {
                 'building_file': conf['building_file'],
                 'weather_files': weather_file,
-                'cap_nom': cap_nom,
+                'weather_conf': weather_conf,
                 'action_space': eval(conf['action_space']),
                 'time_variables': conf['time_variables'],
                 'variables': variables,
