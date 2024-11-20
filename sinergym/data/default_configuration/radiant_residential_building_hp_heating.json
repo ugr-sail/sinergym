@@ -208,11 +208,11 @@
                                    "air_temperature_bed3"],
         "energy_variables"      : ["heat_source_electricity_rate"],
         "range_comfort_winter"  : [19.5, 22.0],
-        "range_comfort_summer"  : [19.0, 21.0],
+        "range_comfort_summer"  : [19.5, 22.0],
         "summer_start"          : [6, 1],
         "summer_final"          : [9, 30],
-        "energy_weight"         : 0.0,
-        "lambda_energy"         : 1.0,
+        "energy_weight"         : 0.5,
+        "lambda_energy"         : 0.001,
         "lambda_temperature"    : 1.0
     }
 
