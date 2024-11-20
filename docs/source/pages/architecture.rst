@@ -25,10 +25,10 @@ The following image provides a detailed view of this process:
 
 |
 
-During environment initialization (*__init__*), a building model is created using the specified epJSON file (*1*), and a simulator instance is instantiated (*2*), receiving the necessary data for its creation. Handlers for various components are initialized to facilitate the collection of information and control of the 
+During environment initialization (``__init__``), a building model is created using the specified epJSON file (*1*), and a simulator instance is instantiated (*2*), receiving the necessary data for its creation. Handlers for various components are initialized to facilitate the collection of information and control of the 
 simulation via the EnergyPlus Python API.
 
-The next step involves initializing the first episode (*reset*), corresponding to the specified run period for the building. When a new episode begins, *Sinergym* utilizes its `modeling <https://github.com/ugr-sail/sinergym/blob/main/sinergym/config/modeling.py>`__ class to adapt the designated building and weather to the environment (*3*) and start the simulation (*4*). Key steps include:
+The next step involves initializing the first episode (``reset``), corresponding to the specified run period for the building. When a new episode begins, *Sinergym* utilizes its `modeling <https://github.com/ugr-sail/sinergym/blob/main/sinergym/config/modeling.py>`__ class to adapt the designated building and weather to the environment (*3*) and start the simulation (*4*). Key steps include:
 
 - **Updating the EPW file** if multiple files are used, randomly selecting one per episode (*3.1*).  
 - **Introducing Output Variables and Output Meters** specified in the environment into the building model (*3.2*).  
@@ -44,11 +44,9 @@ Once the building model is configured, *Sinergym* executes the following steps f
 - Initiates the simulation process (*4.4*).  
 - Executes the warmup process (*4.5*).  
 
-When the simulation is ready, the agent begins sending control actions to the building (*5*). *Sinergym* replaces the building model's predefined schedulers by interrupting the simulation, applying the agent's actions, and resuming the process, thus enabling continuous control. The middleware coordinates this by waiting for the actions to take effect and the simulation state to update (*5.1*). Once updated, the new state is returned to the agent via the Gymnasium interface (*5.2*) and interaction continues via *step*. This cycle repeats until the episode concludes.
+When the simulation is ready, the agent begins sending control actions to the building (*5*). *Sinergym* replaces the building model's predefined schedulers by interrupting the simulation, applying the agent's actions, and resuming the process, thus enabling continuous control. The middleware coordinates this by waiting for the actions to take effect and the simulation state to update (*5.1*). Once updated, the new state is returned to the agent via the Gymnasium interface (*5.2*) and interaction continues via ``step``. This cycle repeats until the episode concludes.
 
-|
-
-The tool is designed to handle additional tasks seamlessly, such as managing output directory structures, preparing handlers, and collecting data during the simulation using callbacks. The *Sinergym* architecture achieves its design goals by providing several advantages:  
+The tool is designed to handle additional tasks seamlessly, such as managing output directory structures, preparing handlers, and collecting data during simulation using callbacks. The *Sinergym* architecture achieves its design goals by providing several advantages:  
 
 - **Extensibility**. Support to custom reward functions, wrappers, controllers, and loggers, as well as new EnergyPlus building and weather configurations.  
 - **Comprehensive middleware**. The EnergyPlus API grants access to all building sensors, metrics, actuators, and related simulation data.  
@@ -58,7 +56,7 @@ The tool is designed to handle additional tasks seamlessly, such as managing out
 Additional observation information
 **********************************
 
-In addition to the observations returned by the *step* and *reset* methods, as illustrated in the preceding images, both methods also provide a Python dictionary containing supplementary information:
+In addition to the observations returned by the ``step`` and ``reset`` methods, as illustrated in the preceding images, both methods also provide a Python dictionary containing supplementary information:
 
 - *reset* info. This dictionary contains the following keys:
 

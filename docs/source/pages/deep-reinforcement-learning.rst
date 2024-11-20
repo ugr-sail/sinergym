@@ -54,7 +54,7 @@ The following are some key points to consider:
 
 * **Sequential / curriculum learning** can be implemented by adding a valid model path to the ``model`` parameter. In this way, the script will load and re-train an existing model.
 
-The ``train_agent.py`` script requires a single parameter (``-conf``), which is the JSON file containing the experiment configuration. A sample JSON structure is detailed in `sinergym/scripts/train/train_agent_PPO.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/train_agent_PPO.json>`__:
+The ``train_agent.py`` script requires a single parameter (``-conf``), which is the JSON file containing the experiment configuration. A sample JSON structure is detailed in `sinergym/scripts/train/train_agent_PPO.json <https://github.com/ugr-sail/sinergym/blob/main/scripts/train/train_agent_PPO.json>`__.
 
 We distinguish between *mandatory* and *optional* parameters:
 
@@ -65,7 +65,7 @@ We distinguish between *mandatory* and *optional* parameters:
 
 Once executed, the script performs the following steps:
 
-1. Names the experiment following the format: ``<algorithm>-<environment_name>-episodes<episodes_int>-seed<seed_value>(<experiment_date>)``.
+1. Names the experiment following the format: ``<algorithm>-<environment_name>-episodes<episodes>-seed<seed_value>(<experiment_date>)``.
 
 2. Sets environment parameters if specified.
 
@@ -85,7 +85,7 @@ Once executed, the script performs the following steps:
 
 10. Auto-deletes the remote container in Google Cloud Platform if the auto-delete parameter is specified.
 
-Model Loading
+Model loading
 ~~~~~~~~~~~~~~~~~~~~~~
 
 To load and evaluate/execute an previously trained model, use the script `sinergym/scripts/eval/load_agent.py <https://github.com/ugr-sail/sinergym/blob/main/scripts/eval/load_agent.py>`__. 
