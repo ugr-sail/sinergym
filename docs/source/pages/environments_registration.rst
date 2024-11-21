@@ -2,7 +2,6 @@
 Environments configuration and registration
 ###########################################
 
-
 New *Sinergym* environments can be created using the constructor of the `EplusEnv <https://github.com/ugr-sail/sinergym/blob/main/sinergym/envs/eplus_env.py>`__ class and the parameters listed in section :ref:`Available Parameters`.
 
 Since multiple environments can be generated from the same building, *Sinergym* provides an automated way for creating and registering them. Using a JSON file located in `sinergym/data/default_configuration <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/default_configuration>`__, a predefined set of parameters for each possible configuration will be applied to generate the environments. Each environment will be assigned a unique ID and automatically registered in Gymnasium.
