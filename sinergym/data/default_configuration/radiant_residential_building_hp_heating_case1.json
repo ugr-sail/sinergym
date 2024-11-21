@@ -31,9 +31,9 @@
                           "maximum_hot_water_flow": ["Autosize","Autosize","Autosize","Autosize","Autosize"],
                           "maximum_cold_water_flow": ["Autosize","Autosize","Autosize","Autosize","Autosize"]},
                          {"cap_nom_heating": 12000,
-                          "cap_nom_cooling": 1200,
-                          "window_type": "double_pane_low_E_argon_eu",
-                          "thickness_roof": 0.15,
+                          "cap_nom_cooling": "Autosize",
+                          "window_type": "double_pane_low_E_air_eu",
+                          "thickness_roof": 0.1,
                           "thickness_wall": 0.1,
                           "maximum_hot_water_flow": ["Autosize","Autosize","Autosize","Autosize","Autosize"],
                           "maximum_cold_water_flow": ["Autosize","Autosize","Autosize","Autosize","Autosize"]
@@ -129,43 +129,6 @@
                                 "SecondFloor:Bedroom01 radiant surface", 
                                 "SecondFloor:Bedroom02 radiant surface", 
                                 "SecondFloor:Bedroom03 radiant surface"]            
-        },
-        "Zone Radiant HVAC Inlet Temperature"                             : {
-            "variable_names" : ["radiant_hvac_inlet_temperature_living",
-                                "radiant_hvac_inlet_temperature_kitchen",
-                                "radiant_hvac_inlet_temperature_bed1",
-                                "radiant_hvac_inlet_temperature_bed2",
-                                "radiant_hvac_inlet_temperature_bed3"],
-            "keys"           : ["FirstFloor:LivingRoom radiant surface", 
-                                "FirstFloor:Kitchen radiant surface", 
-                                "SecondFloor:Bedroom01 radiant surface", 
-                                "SecondFloor:Bedroom02 radiant surface", 
-                                "SecondFloor:Bedroom03 radiant surface"]            
-        },
-        "Surface Internal User Specified Location Temperature"            : {
-            "variable_names" : ["surface_internal_user_specified_location_temperature_living",
-                                "surface_internal_user_specified_location_temperature_kitchen",
-                                "surface_internal_user_specified_location_temperature_bed1",
-                                "surface_internal_user_specified_location_temperature_bed2",
-                                "surface_internal_user_specified_location_temperature_bed3"],
-            "keys"           : ["FirstFloor:LivingRoom_groundfloor_0_0_0", 
-                                "FirstFloor:Kitchen_groundfloor_0_0_0", 
-                                "SecondFloor:Bedroom01_floor_0_0_0", 
-                                "SecondFloor:Bedroom02_floor_0_0_0", 
-                                "SecondFloor:Bedroom03_floor_0_0_0"]            
-        },
-        "Zone People Occupant Count"                                      : {
-            "variable_names" : ["people_occupant_living",
-                                "people_occupant_kitchen",
-                                "people_occupant_bed1",
-                                "people_occupant_bed2",
-                                "people_occupant_bed3"],
-            "keys"           : ["FirstFloor:LivingRoom", 
-                                "FirstFloor:Kitchen", 
-                                "SecondFloor:Bedroom01", 
-                                "SecondFloor:Bedroom02", 
-                                "SecondFloor:Bedroom03"
-                            ]            
         },
         "System Node Mass Flow Rate"                                : {
             "variable_names" : ["flow_rate_living",
