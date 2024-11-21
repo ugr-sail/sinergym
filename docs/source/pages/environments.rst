@@ -1,10 +1,8 @@
-##############
+############
 Environments
-##############
+############
 
-*Sinergym* generates multiple environments for each building, each defined by a unique 
-configuration that outlines the control problem to be solved. To view the list of available 
-environment IDs, it is recommended to use the provided method:
+*Sinergym* generates multiple environments for each building, each defined by a unique configuration that specifies the control problem to be addressed. To view the list of available environment IDs, it is recommended to use the provided method:
 
 .. code-block:: python
 
@@ -15,89 +13,63 @@ environment IDs, it is recommended to use the provided method:
   print(sinergym.__version__)
   print(sinergym.__ids__)
 
-  # Make and consult some of the environments
+  # Make and consult environment
   env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1')
   print(env.info())
 
-Environment names adhere to the pattern ``Eplus-<building-id>-<weather-id>-<control_type>-<stochastic (optional)>-v1``. 
-These IDs offer a general overview of the environment. For more detailed information about each environment, 
-utilize the ``info`` method as demonstrated in the example code.
+Environment names follow the format ``Eplus-<building-id>-<weather-id>-<control_type>-<stochastic (optional)>-v1``.  
+These identifiers provide a general summary of the environment's characteristics. For more detailed information about a specific environment, use the `info` method as shown in the example code.
 
-.. important:: As of *Sinergym* v3.0.9, environments are automatically generated 
-               using JSON configuration files for each building, eliminating the 
-               need for manual registration of each environment ID with parameters 
-               set directly in the environment constructor. Refer to 
-               :ref:`Environments Configuration and Registration` for more details.
+.. important:: Environments are automatically generated using JSON configuration files
+               for each building. This eliminates the need to manually register each 
+               environment ID or set parameters directly in the environment constructor.
+               For more information, see :ref:`Environments Configuration and Registration`.
 
-.. note:: Discrete environments are customizable. The default control for these 
-          environments is quite basic. You can employ a continuous environment 
-          and customize discretization using our dedicated wrapper. For more 
-          information, see :ref:`DiscretizeEnv`.
+.. note:: Discrete environments are fully customizable. By default, these environments use a basic control scheme.
+          However, you can opt for a continuous environment and apply custom discretization using our dedicated wrapper. For further details, refer to :ref:`DiscretizeEnv`.
 
-.. note:: For additional details on the buildings (epJSON) and weather conditions (EPW) 
-          used, please visit the :ref:`Buildings` and :ref:`Weathers` sections respectively.
+.. note:: For additional details on buildings (epJSON) and weather (EPW) configuration, see :ref:`Buildings` and :ref:`Weathers` sections, respectively.
 
-*********************
-Available Parameters
-*********************
+********************
+Available parameters
+********************
 
-With the **environment constructor**, we can configure the complete **context** 
-of our environment for experimentation, either starting from one predefined by 
-*Sinergym* or creating a new one.
+The **environment constructor** allows you to fully configure the **context** of an environment for experimentation. You can either start with a predefined setup provided by *Sinergym* or create a completely new one.
 
-*Sinergym* initially provides **non-configured** buildings and weathers. 
-Depending on these argument values, these files are updated to adapt to these 
-new features, this will be done by Sinergym automatically. For example, using 
-another weather file requires updating the building location and design days, 
-using new observation variables requires updating the ``Output:Variable`` and 
-``Output:Meter`` fields, the same occurs with extra configuration context 
-concerned with simulation directly, if weather variability is set, then a weather 
-with noise will be used. These new building and weather file versions are saved in 
-the Sinergym output folder, leaving the original intact.
+*Sinergym* initially supplies **non-configured** buildings and weather files. Based on the arguments provided, these files are automatically updated by *Sinergym* to accommodate the specified features. For example: 
 
-The next subsections will show which **parameters** are available and what 
-their functions are:
+- Selecting a different weather file updates the building's location and simulated days.  
+- Adding new observation variables modifies the ``Output:Variable`` and ``Output:Meter`` fields.  
+- If weather variability is enabled, a weather file with episodic random noise will be used.  
 
-building file 
-==============
+These updated versions of the building and weather files are saved in the *Sinergym* output folder, while the original files remain untouched.
 
-The parameter ``building_file`` is the *epJSON* file, a new 
-`adaptation <https://energyplus.readthedocs.io/en/latest/schema.html>`__ of *IDF* 
-(Intermediate Data Format) where *EnergyPlus* building model is defined. These 
-files are not configured for a particular environment as we have mentioned. 
-Sinergym does a previous building model preparation to the simulation, see the 
-*Modeling* element in *Sinergym* backend diagram.
+The following subsections will detail the **parameters** available and their respective functions.
+
+Building file 
+=============
+
+The ``building_file`` parameter refers to the *epJSON* file, an `adaptation <https://energyplus.readthedocs.io/en/latest/schema.html>`__ of the *IDF* (Intermediate Data Format) used to define *EnergyPlus* building models.
+
+Before starting the simulation, *Sinergym* performs a preparatory step to adapt the building model. For more details, refer to the *Modeling* component in the *Sinergym* backend diagram.
 
 Weather files
-==============
+=============
 
-The parameter ``weather_file`` is the *EPW* (*EnergyPlus* Weather) file name where 
-**climate conditions** during a year is defined.
+The ``weather_file`` parameter specifies the *EPW* (*EnergyPlus* Weather) file, which defines the **climate conditions** for a full year. 
 
-This parameter can be either a weather file name (``str``) as mentioned, or a list 
-of different weather files (``List[str]``). When a list of several files is defined, 
-*Sinergym* will select an *EPW* file in each episode and re-adapt the building model 
-randomly. This is done to increase the complexity in the environment if desired. 
+This parameter can be provided as a single weather file name (``str``) or as a list of multiple weather files (``List[str]``). When multiple files are specified, *Sinergym* will randomly select one *EPW* file for each episode and automatically adapt the building model accordingly. This feature adds complexity to the environment, if desired.
 
-The weather file used in each episode is stored in *Sinergym* episode output folder, 
-if **variability** (section :ref:`Weather Variability` is defined), the *EPW* stored 
-will have that noise included.
+The weather file used in each episode is saved in the *Sinergym* episode output folder. If **variability** (see section :ref:`Weather Variability`) is enabled, the stored *EPW* file will include the corresponding noise adjustments.
 
-Weather Variability
-====================
+Weather variability
+~~~~~~~~~~~~~~~~~~~
 
-**Weather variability** can be integrated into an environment using the
-``weather_variability`` parameter.
+**Weather variability** can be added to an environment using the ``weather_variability`` parameter. 
 
-It implements the 
-`Ornstein-Uhlenbeck process <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.4200&rep=rep1&type=pdf>`__ 
-to introduce **noise** to the weather data episode to episode. Then, the parameter 
-established is a Python dictionary with the EPW column name as key and tuple of three variables (*sigma*, *mu*, and *tau*) whose 
-as value, defining the nature of that noise. This allows to apply different noise in several aspects of the weather data.
+This feature utilizes an `Ornstein-Uhlenbeck process <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.4200&rep=rep1&type=pdf>`__  to introduce **random noise** into the weather data on an episode-by-episode basis. This noise is specified as a Python dictionary, where each key is the name of an EPW column, and the corresponding value is a tuple of three variables (*sigma*, *mu*, and *tau*) that define the characteristics of the noise. This enables to apply different noise configurations to different variables of the weather data.
 
-Since Sinergym v3.6.2, the weather data columns or variables names is generated with 
-`epw module Weather class <https://pypi.org/project/epw/>`__, the list of the
-available variable names is the next:
+Starting with *Sinergym* v3.6.2, the weather data column names (or variable names) are generated using the ``Weather`` class from the `epw module <https://pypi.org/project/epw/>`__. The list of available variable names is as follows:
 
 - ``Year``, ``Month``, ``Day``, ``Hour``, ``Minute``,
   ``Data Source and Uncertainty Flags``, ``Dry Bulb Temperature``,
@@ -115,69 +87,50 @@ available variable names is the next:
   ``Snow Depth``, ``Days Since Last Snowfall``, ``Albedo``,
   ``Liquid Precipitation Depth``, ``Liquid Precipitation Quantity``
 
-If you are using an older version of Sinergym, the weather data columns or variables names is generated with 
-*opyplus WeatherData class*, for more information about the available variable names with opyplus, visit 
-`Opyplus documentation <https://opyplus.readthedocs.io/en/2.0.7/quickstart/index.html#weather-data-epw-file>`__.
+.. note:: If you are using an older version of Sinergym, the weather data columns or variables names is
+          generated with the *opyplus* ``WeatherData`` class, for more  information about the available variable
+          names with *opyplus*, visit `opyplus documentation <https://opyplus.readthedocs.io/en/2.0.7/quickstart/index.html#weather-data-epw-file>`__.
 
 .. image:: /_static/ornstein_noise.png
   :scale: 80 %
   :alt: Ornstein-Uhlenbeck process noise with different hyperparameters.
   :align: center
 
-
 Reward
-=======
+======
 
-The parameter called ``reward`` is used to define the **reward class** 
-(see section :ref:`Rewards`) that the environment is going to use to 
-calculate and return scalar reward values each timestep.
+The `reward` parameter specifies the **reward class** (refer to section :ref:`Rewards`) that the environment will use to compute and return scalar reward values at each timestep.
 
-Reward Kwargs
-==============
+Reward kwargs
+~~~~~~~~~~~~~
 
-Depending on the reward class that is specified to the environment, it 
-may have **different arguments** depending on its type. In addition, 
-if a user creates a new custom reward, it can have new parameters as well.
+The ``reward_kwargs`` parameter is a Python dictionary used to define **all the arguments required by the reward class** specified for the environment. 
 
-Moreover, depending on the building being used for the environment, the 
-values of these reward parameters may need to be different, such as the 
-comfort range or the energy and temperature variables of the simulation 
-that will be used to calculate the reward.
+The arguments may vary depending on the type of reward class chosen. Additionally, if a user creates a custom reward class, this parameter can include any new arguments needed for that implementation. 
 
-Then, the parameter called ``reward_kwargs`` is a Python dictionary where 
-we can **specify all reward class arguments** that they are needed. For 
-more information about rewards, visit section :ref:`Rewards`.
+Furthermore, these arguments may need to be adjusted based on the building used in the environment. For instance, parameters like the comfort range or the energy and temperature variables used to compute the reward might differ between buildings.
 
-Maximum Episode Data Stored in Sinergym Output
-===============================================
+For more details about rewards, refer to section :ref:`Rewards`.
 
-*Sinergym* stores all the output of an experiment in a folder organized in 
-sub-folders for each episode (see section :ref:`Output format` for more 
-information). Depending on the value of the parameter ``max_ep_data_store_num``, 
-the experiment will store the output data of the **last n episodes** set, 
-where **n** is the value of the parameter.
+Maximum episode data stored in Sinergym output
+==============================================
 
-In any case, if *Sinergym* CSV storage (See :ref:`CSVLogger` section) is activated, 
-``progress.csv`` will be present with the summary data of each episode.
+*Sinergym* stores all experiment outputs in a folder, which is organized into sub-folders for each episode (see section :ref:`Output format` for further details). The parameter ``max_ep_data_store_num`` controls the number of episodes' output data that will be retained. Specifically, the experiment will store the output of the last ``n`` episodes, where ``n`` is defined by this parameter.
+
+If *Sinergym*'s CSV storage feature is enabled (refer to section :ref:`CSVLogger`), a ``progress.csv`` file will be generated. This file contains summary data for each episode.
 
 Time variables
-===============
+==============
 
-*EnergyPlus* Python API has several methods in order to extract information 
-about simulation time in progress. The argument ``time_variables`` is a list 
-in which we can specify the name of the 
-`API methods <https://energyplus.readthedocs.io/en/latest/datatransfer.html#datatransfer.DataExchange>`__ 
-whose values we want to include in our observation.
+The *EnergyPlus* Python API offers several methods to extract information about the ongoing simulation time. The ``time_variables`` argument is a list where you can specify the names of the 
+`API methods <https://energyplus.readthedocs.io/en/latest/datatransfer.html#datatransfer.DataExchange>`__  with the values to be included in the observations.
 
-By default, *Sinergym* environments will have the time variables 
-``month``, ``day_of_month`` and ``hour``.
+By default, *Sinergym* environments include the time variables ``month``, ``day_of_month`` and ``hour``.
 
 Variables
-==========
+=========
 
-The argument called ``variables`` is a dictionary in which it is specified 
-the ``Output:Variable``'s we want to include in the environment observation. 
-The format of each element, in order for *Sinergym* to process it, is the next:
+The ``variables`` argument is a dictionary in which it is specified the ``Output:Variable`` entries to be included in the environment's observation. The format for each element, so that *Sinergym* can process it correctly, is as follows:
 
 .. code-block:: python
 
@@ -186,15 +139,14 @@ The format of each element, in order for *Sinergym* to process it, is the next:
     # ...
   }
 
-.. note:: For more information about the available variables in an environment, execute a default simulation with
-          *EnergyPlus* engine and see RDD file generated in the output.
+.. note:: For more information about the available variables in an environment, execute a default simulation with 
+          *EnergyPlus* and check the RDD file generated in the output.
 
 Meters
-==========
+======
 
-In a similar way, the argument ``meters`` is a dictionary in which we can specify 
-the ``Output:Meter``'s we want to include in the environment observation. 
-The format of each element must be the next:
+In a similar way, the argument ``meters`` is a dictionary in which we can specify  the ``Output:Meter``'s we want to include in the environment observation. 
+The format of each element must be the following:
 
 .. code-block:: python
 
@@ -204,13 +156,12 @@ The format of each element must be the next:
   }
 
 .. note:: For more information about the available meters in an environment, execute a default simulation with
-          *EnergyPlus* engine and see MDD and MTD files generated in the output.
+          *EnergyPlus* and see the MDD and MTD files generated in the output.
 
 Actuators
-==========
+=========
 
-The argument called ``actuators`` is a dictionary in which we specify the actuators we 
-want to control with gymnasium interface, the format must be the next:
+The argument called ``actuators`` is a dictionary in which we specify the actuators to be controlled. The format must be the following:
 
 .. code-block:: python
 
@@ -222,10 +173,10 @@ want to control with gymnasium interface, the format must be the next:
 .. important:: Actuators that have not been specified will be controlled by the building's default schedulers.
 
 .. note:: For more information about the available actuators in an environment, execute a default control with
-          *Sinergym* directly (empty action space) and see ``data_available.txt`` generated.
+          *Sinergym* directly (i.e., with an empty action space) and check the file ``data_available.txt`` generated.
 
 Action space
-===========================
+============
 
 In *Sinergym*, the environment's observation and action spaces are defined through the 
 arguments ``time_variables``, ``variables``, ``meters``, and ``actuators``. The 
