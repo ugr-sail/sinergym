@@ -42,7 +42,7 @@ The **environment constructor** allows you to fully configure the **context** of
 - Adding new observation variables modifies the ``Output:Variable`` and ``Output:Meter`` fields.  
 - If weather variability is enabled, a weather file with episodic random noise will be used.  
 
-These updated versions of the building and weather files are saved in the *Sinergym* output folder, while the original files remain untouched.
+These updated versions of the building and weather files are saved in the *Sinergym* output folder, while the original files remain untouched. 
 
 The following subsections will detail the **parameters** available and their respective functions.
 
@@ -115,7 +115,9 @@ For more details about rewards, refer to section :ref:`Rewards`.
 Maximum episode data stored in Sinergym output
 ==============================================
 
-*Sinergym* stores all experiment outputs in a folder, which is organized into sub-folders for each episode (see section :ref:`Output format` for further details). The parameter ``max_ep_data_store_num`` controls the number of episodes' output data that will be retained. Specifically, the experiment will store the output of the last ``n`` episodes, where ``n`` is defined by this parameter.
+*Sinergym* stores all experiment outputs in a folder, which is organized into sub-folders for each episode (see section :ref:`Output format` for further details). The ``env_name`` parameter is utilized to generate the **working directory name**, facilitating differentiation between multiple experiments within the same environment.
+
+The parameter ``max_ep_data_store_num`` controls the number of episodes' output data that will be retained. Specifically, the experiment will store the output of the last ``n`` episodes, where ``n`` is defined by this parameter.
 
 If *Sinergym*'s CSV storage feature is enabled (refer to section :ref:`CSVLogger`), a ``progress.csv`` file will be generated. This file contains summary data for each episode.
 
@@ -145,7 +147,7 @@ The ``variables`` argument is a dictionary in which it is specified the ``Output
 Meters
 ======
 
-In a similar way, the argument ``meters`` is a dictionary in which we can specify  the ``Output:Meter``'s we want to include in the environment observation. 
+In a similar way, the argument ``meters`` is a dictionary in which we can specify the ``Output:Meter``'s we want to include in the environment observation. 
 The format of each element must be the following:
 
 .. code-block:: python
@@ -178,25 +180,19 @@ The argument called ``actuators`` is a dictionary in which we specify the actuat
 Action space
 ============
 
-In *Sinergym*, the environment's observation and action spaces are defined through the 
-arguments ``time_variables``, ``variables``, ``meters``, and ``actuators``. The 
-observation space, composed of ``time_variables``, ``variables``, and ``meters``, is 
-automatically generated. The action space, defined by the ``actuators``, requires explicit 
-definition to establish the range of values supported by the Gymnasium interface or the number 
-of discrete values in a discrete environment.
+In *Sinergym*, the environment's observation and action spaces are defined through the arguments ``time_variables``, ``variables``, ``meters``, and ``actuators``. While the observation space (composed of ``time_variables``, ``variables``, and ``meters``) is automatically generated, the action space (defined by the ``actuators``) requires explicit definition to establish the range of values supported by the Gymnasium interface or the number of discrete values in a discrete environment.
 
 .. image:: /_static/spaces_elements.png
   :scale: 35 %
   :alt: *EnergyPlus* API components that compose observation and action spaces in *Sinergym*.
   :align: center
 
-The ``action_space`` argument adheres to the Gymnasium standard and must be a continuous 
-space (``gym.spaces.Box``) due to the *EnergyPlus* simulator's continuous value 
-requirement. It's crucial that this definition aligns with the previously defined actuators, 
-with *Sinergym* highlighting any inconsistencies.
+|
+
+The ``action_space`` argument adheres to the Gymnasium standard and must be a continuous space (``gym.spaces.Box``) due to the *EnergyPlus* simulator's continuous values requirements. It's crucial that this definition aligns with the previously defined actuators. In any case, *Sinergym* will highlight any inconsistencies.
 
 .. note:: To adapt an environment to Gymnasium's ``Discrete``, ``MultiDiscrete``, or ``MultiBinary`` spaces, 
-          akin to our predefined discrete environments, consult the section :ref:`DiscretizeEnv` and the 
+          similar to our predefined discrete environments, see section :ref:`DiscretizeEnv` and the 
           example in :ref:`Environment Discretization Wrapper`.
 
 .. important:: While *Sinergym*'s environments come with predefined observation and action variables (
@@ -204,55 +200,37 @@ with *Sinergym* highlighting any inconsistencies.
                users are encouraged to explore and experiment with these spaces. For guidance, refer to 
                :ref:`Changing observation and action spaces`.
 
-*Sinergym* also provides the option to create **empty action interfaces**, allowing users 
-to leverage its benefits without directly using the *EnergyPlus* simulator. Control in 
-this scenario is managed by the **default building model schedulers**. For further details, 
-refer to the usage example :ref:`Default building control setting up an empty action interface`.
+*Sinergym* also offers the option to create **empty action interfaces**. In this case, control is managed by the **default building model schedulers**. For more information, see the usage example in :ref:`Default building control setting up an empty action interface`.
 
-Environment Name
-================
-
-The ``env_name`` parameter is utilized to generate the **working directory name**, 
-facilitating differentiation between multiple experiments within the same environment.
-
-Extra Configuration
+Extra configuration
 ===================
 
-Parameters related to the building model and simulator, such as ``people occupant``, ``timesteps per simulation hour``, 
-and ``runperiod``, can be set as extra configurations. These configurations, which may expand in the future, 
-are specified in the ``config_params`` argument, a Python Dictionary. For additional information 
-on extra configurations in *Sinergym*, refer to :ref:`Extra Configuration in Sinergym simulations`.
+Parameters related to the building model and simulation, such as ``people occupant``, ``timesteps per simulation hour``, and ``runperiod``, can be set as extra configurations. These parameters are specified in the ``config_params`` argument, a Python Dictionary. For additional information on extra configurations in *Sinergym*, refer to :ref:`Extra Configuration in Sinergym simulations`.
 
-*************************************
-Adding New Weathers for Environments
-*************************************
+*******************
+Adding new weathers
+*******************
 
-*Sinergym* provides a variety of weather files for diverse global climates to enhance experimental diversity.
+*Sinergym* provides a variety of weather files of diverse global climates to enhance experimental diversity.
 
 To incorporate a **new weather**:
 
-1. Download an **EPW** and its corresponding **DDY** file from the `EnergyPlus page <https://energyplus.net/weather>`__. 
-   The *DDY* file provides location and design day details.
+1. Download an **EPW** and its corresponding **DDY** file from the `EnergyPlus page <https://energyplus.net/weather>`__.  The *DDY* file provides location and design day details.
 
-2. Ensure both files share the same name, differing only in their extensions, and place them 
-   in the `weathers <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/weather>`__ folder.
+2. Ensure both files share the same name, differing only in their extensions, and place them in the `weathers <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/weather>`__ folder.
 
-Upon addition, *Sinergym* will automatically modify the ``SizingPeriod:DesignDays`` and ``Site:Location`` 
-fields in the building model file using the *DDY* file.
+*Sinergym* will automatically modify the ``SizingPeriod:DesignDays`` and ``Site:Location`` fields in the building model file using the *DDY* file.
 
-***************************************
-Adding New Buildings for Environments
-***************************************
+********************
+Adding new buildings
+********************
 
-Users can either modify existing environments or create new ones, incorporating new climates, 
-action, and observation spaces. They also have the option to use a different **building model** 
-(epJSON file) than the ones currently supported.
+Users can either modify existing environments or create new ones, incorporating new climates, actions, and observation spaces. It is also possible to incorporate new **building models** (epJSON file) apart from those currently supported.
 
-To add new buildings for use with *Sinergym*, follow these steps:
+To add new buildings to *Sinergym*, follow these steps:
 
-1. **Add your building file** (*epJSON*) to the 
-   `buildings <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings>`__ 
-   directory. Ensure it's compatible with the EnergyPlus version used in *Sinergym*. 
+1. **Add your building file** (*epJSON*) to the `buildings <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings>`__ 
+   directory. Ensure it's compatible with the EnergyPlus version used by *Sinergym*. 
    If you're using an *IDF* file from an older version, update it with **IDFVersionUpdater** 
    and convert it to *epJSON* format using **ConvertInputFormat**. Both tools are available 
    in the EnergyPlus installation folder.
@@ -267,7 +245,7 @@ To add new buildings for use with *Sinergym*, follow these steps:
    the most challenging part of the process. Typically, users are already familiar with the 
    building and know the *name* and *key* of the elements in advance. If not, follow the process below:
 
-   a. Run a preliminary simulation with EnergyPlus directly, without any control flow, to view the 
+   a. Run a preliminary simulation with EnergyPlus directly, without any control, to check the 
       different ``OutputVariables`` and ``Meters``. Consult the output files, specifically the *RDD* 
       extension file, to identify possible observable variables.
 
@@ -285,12 +263,12 @@ To add new buildings for use with *Sinergym*, follow these steps:
      and control are explained within the class and should be specified in the same format as the 
      EnergyPlus API.
 
-  b. Set up the configuration to register environment IDs directly. For more information, refer to 
-     the documentation :ref:`Environments Configuration and Registration`. *Sinergym* will verify 
-     that the established configuration is correct and notify you of any potential errors.
+  b. Set up the configuration to register environment IDs directly. For more information,
+     refer to :ref:`Environments Configuration and Registration`. *Sinergym* will verify 
+     that the established configuration is correct and notify about any potential errors.
 
-5. If you've used *Sinergym*'s registry, you'll have access to environment IDs associated with your building. 
-   Use them with ``gym.make(<environment_id>)`` as usual. If you've created an environment instance directly, 
+5. If you used *Sinergym*'s registry, you will have access to environment IDs associated with your building. 
+   Use them with ``gym.make(<environment_id>)`` as usual. Besides, if you created an environment instance directly, 
    use that instance to start interacting with the building.
 
 .. note:: To obtain information about the environment instance with the new building model, refer to 

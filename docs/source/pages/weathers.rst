@@ -6,7 +6,7 @@ Detailed climate data incorporated in *Sinergym* is presented below,
 independent of other environmental components utilized in each experiment.
 
 .. important:: If you are interested in including new weathers to this framework, 
-               please visit section :ref:`Adding new weathers for environments`.
+               please visit section :ref:`Adding new weathers`.
 
 +-------------------------------------------------------------+--------------------------+-------------------------------------------------------------------------------------------+------------+-----------+
 |                        Weather file                         |         Location         |                                       Climate type                                        | M.A.T (ºC) | M.A.H (%) |

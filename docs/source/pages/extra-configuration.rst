@@ -3,7 +3,7 @@ Extra Configuration in Sinergym simulations
 ############################################
 
 With the `Modeling class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/config/modeling.py>`__, 
-we have the ability to set up some **context details** in our simulation. This allows us to expand the 
+it is possible to set up some **context details** of the simulation. This allows us to expand the 
 context of each experiment and investigate more parameters. To use this functionality easily, you can 
 provide these extra parameters in the **environment constructor** as follows:
 
@@ -16,7 +16,7 @@ provide these extra parameters in the **environment constructor** as follows:
                   'runperiod' : (1,1,1997,12,3,1998)}
     env = gym.make('Eplus-5Zone-hot-continuous-v1', config_params=extra_params)
 
-The format for applying extra configuration is a **Python dictionary** with the extra parameter key name and its value.
+The format for adding extra configuration parameters is a **Python dictionary** with the corresponding *keys* and *values*).
 
 .. note:: *Currently, only code skeleton and some parameters has been designed. Stay tuned for upcoming releases!*
 

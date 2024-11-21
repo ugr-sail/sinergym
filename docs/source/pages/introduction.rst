@@ -59,6 +59,6 @@ or any external control.
 
 -  And much more!
 
-.. important:: If you want to introduce your own buildings in *Sinergym*, please visit :ref:`Adding new buildings for environments` section.
+.. important:: If you want to introduce your own buildings in *Sinergym*, please visit :ref:`Adding new buildings` section.
 
 .. note:: *This is a work in progress project. Stay tuned for upcoming releases!*

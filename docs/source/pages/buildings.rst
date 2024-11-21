@@ -7,7 +7,7 @@ This section outlines the buildings integrated into *Sinergym*, distinct from th
 The observation variable names consist of the base name prefixed with its corresponding key.
 
 .. important:: If you are interested in adding a new building to *Sinergym*, please refer to section 
-               :ref:`Adding new buildings for environments`.
+               :ref:`Adding new buildings`.
 
 **********
 Datacenter
