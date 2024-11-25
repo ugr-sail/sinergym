@@ -2,7 +2,7 @@
 Extra configuration in Sinergym simulations
 ###########################################
 
-Using the `Modeling class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/config/modeling.py>`__, it is possible to set up some **context details** of the simulation. This allows us to expand the context of each experiment and experiment with additional parameters. To use this functionality easily, you can provide these extra parameters to the **environment constructor** as follows:
+Using the `Modeling class <https://github.com/ugr-sail/sinergym/tree/main/sinergym/config/modeling.py>`__, it is possible to set up some **context details** of the simulation. This allows us to expand the context of each experiment with additional parameters. You can provide these extra configuration to the **environment constructor** as follows:
 
 .. code:: python
 
@@ -15,7 +15,7 @@ Using the `Modeling class <https://github.com/ugr-sail/sinergym/tree/main/sinerg
 
 The format of these extra configuration parameters is a **Python dictionary** with their corresponding *keys* and *values*.
 
-Let's examine each parameter separately:
+Let's examine each parameter separately.
 
 *****************
 timestep_per_hour
@@ -28,7 +28,7 @@ However, you can modify this value using the ``timestep_per_hour`` key in the ``
 runperiod
 *********
 
-By default, a *Sinergym* simulation episode lasts a single year (*from 1/1/1991 to 31/12/1991*). You can use the **runperiod** key to determine the **episode length** in the simulation. The format value for the ``runperiod`` key is a **tuple** with 
+By default, a *Sinergym* simulation episode lasts a single year (*from 1/1/1991 to 31/12/1991*). You can use the ``runperiod`` key to determine the **episode length** in the simulation. The format value for the ``runperiod`` key is a **tuple** with 
 (``start_day``, ``start_month``, ``start_year``, ``end_day``, ``end_month``, ``end_year``).
 
 .. warning:: If you include a manual ``runperiod``, make sure not to include 
