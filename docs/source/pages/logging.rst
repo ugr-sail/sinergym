@@ -22,17 +22,12 @@ LoggerStorage
 
 - Enables recording and managing interaction data.
 
-- Not included by default in Sinergym environments.
-
 - This class can be replaced by any other data storage system, such as a remote database if desired.
 
-|
+We provide a brief description of the wrappers that use ``LoggerStorage``. For a detailed explanation, visit the :ref:`Logger Wrappers` section. An usage example is included in :ref:`Logging and storing data with logger wrappers`.
 
-The idea is to enable modular logging across different methods or platforms. In this section, we provide a brief description 
-of the wrappers that use this logger storage module. For a detailed explanation, visit the :ref:`Logger Wrappers` section. An usage example is included in :ref:`Logging and storing data with logger wrappers`.
-
-LoggerWrapper
--------------
+Interaction data with LoggerWrapper
+-----------------------------------
 
 - Uses the ``LoggerStorage`` class to store all information during the controller-environment interaction flow.
 
@@ -40,16 +35,16 @@ LoggerWrapper
 
 - This wrapper also implements functionality to use the logger with custom metrics and episode summary metrics (i.e., it is customizable, as shown in :ref:`Logger Wrapper personalization/configuration`).
 
-CSVLogger
----------
+Summary metrics with CSVLogger
+------------------------------
 
-- Works with the **LoggerWrapper** ``data_logger`` instance. Calculates summary metrics implemented to parse 
-  and save data in CSV files during simulations (see :ref:`Output format`).
+- The ``CSVLogger`` uses a ``data_logger`` instance. Calculates summary metrics implemented to parse 
+  and save data in CSV files during simulations (see :ref:`Sinergym output`).
 
-WandB Logger
--------------
+Remote logging using WandBLogger
+--------------------------------
 
-- Works with the **LoggerWrapper** ``data_logger`` instance. Calculates summary metrics in real-time, recording information 
+- The ``WandBLogger`` uses a ``data_logger`` instance. Calculates summary metrics in real-time, recording information 
   on the Weights and Biases platform in real-time.
 
 *****************

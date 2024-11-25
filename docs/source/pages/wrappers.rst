@@ -168,7 +168,7 @@ provided in the following subsections.
   :align: center
 
 LoggerWrapper
----------------
+-------------
 
 **BaseLoggerWrapper** is the abstract class for logger wrappers. It stores all information during 
 environment interactions. The environment gains a new attribute, ``data_logger``, an instance of 
@@ -191,14 +191,14 @@ Although data is reset with each new episode, this wrapper can be combined with 
 and summaries in different ways and platforms. *Sinergym* implements **CSVLogger** and **WandBLogger** by default.
 
 CSVLogger
------------
+---------
 
 This wrapper works with the **LoggerWrapper** ``data_logger`` instance to parse and save data in CSV files during 
 simulations. A **progress.csv** file is generated in the root output directory, containing general simulation results, 
 updated per episode. The structure of this file is defined by the **LoggerWrapper** class.
 
 Each episode directory includes a **monitor** folder with several CSV files for data such as observations, actions, 
-rewards, infos, and custom metrics. For more details, see :ref:`Output Format`.
+rewards, infos, and custom metrics. For more details, see :ref:`Sinergym output`.
 
 Observations and infos CSV has one row more than the rest of the files, as they are saved at the beginning 
 of the episode (reset). Then, for a given row with the same index, there would be the observation and info, 
