@@ -229,47 +229,23 @@ Users can either modify existing environments or create new ones, incorporating 
 
 To add new buildings to *Sinergym*, follow these steps:
 
-1. **Add your building file** (*epJSON*) to the `buildings <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings>`__ 
-   directory. Ensure it's compatible with the EnergyPlus version used by *Sinergym*. 
-   If you're using an *IDF* file from an older version, update it with **IDFVersionUpdater** 
-   and convert it to *epJSON* format using **ConvertInputFormat**. Both tools are available 
-   in the EnergyPlus installation folder.
+  1. **Add your building file** (*epJSON*) to the `buildings <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/buildings>`__ directory. Ensure it's compatible with the EnergyPlus version used by *Sinergym*. If you're using an *IDF* file from an older version, update it with **IDFVersionUpdater** and convert it to *epJSON* format using **ConvertInputFormat**. Both tools are available in the EnergyPlus installation folder.
 
-2. **Adjust building objects** like ``RunPeriod`` and ``SimulationControl`` to suit your needs 
-   in Sinergym. We recommend setting ``run_simulation_for_sizing_periods`` to ``No`` in 
-   ``SimulationControl``. ``RunPeriod`` sets the episode length, which can be configured 
-   in the building file or Sinergym settings (see :ref:`runperiod`). Make these modifications 
-   in the *IDF* before step 1 or directly in the *epJSON* file.
+  2. **Adjust building objects** like ``RunPeriod`` and ``SimulationControl`` to suit your needs in Sinergym. We recommend setting ``run_simulation_for_sizing_periods`` to ``No`` in ``SimulationControl``. ``RunPeriod`` sets the episode length, which can be configured in the building file or Sinergym settings (see :ref:`runperiod`). Make these modifications in the *IDF* before step 1 or directly in the *epJSON* file.
 
-3. **Identify the components** of the building that you want to observe and control. This is 
-   the most challenging part of the process. Typically, users are already familiar with the 
-   building and know the *name* and *key* of the elements in advance. If not, follow the process below:
+  3. **Identify the components** of the building that you want to observe and control. This is the most challenging part of the process. Typically, users are already familiar with the building and know the *name* and *key* of the elements in advance. If not, follow the process below:
 
-   a. Run a preliminary simulation with EnergyPlus directly, without any control, to check the 
-      different ``OutputVariables`` and ``Meters``. Consult the output files, specifically the *RDD* 
-      extension file, to identify possible observable variables.
+    a. Run a preliminary simulation with EnergyPlus directly, without any control, to check the different ``OutputVariables`` and ``Meters``. Consult the output files, specifically the *RDD* extension file, to identify possible observable variables.
 
-   b. The challenge is knowing the names but not the possible *Keys* (EnergyPlus doesn't initially 
-      provide this information). Use these names to define the environment (see step 4). If the *Key* 
-      is incorrect, *Sinergym* will notify you of the error and provide a **data_available.txt** 
-      file in the output, as it has already connected with the EnergyPlus API. This file contains 
-      all the **controllable schedulers** for the actions and all the **observable variables**, now 
-      with their respective *Keys*, enabling the correct definition of the environment.
+    b. The challenge is knowing the names but not the possible *Keys* (EnergyPlus doesn't initially provide this information). Use these names to define the environment (see step 4). If the *Key* is incorrect, *Sinergym* will notify you of the error and provide a ``data_available.txt`` file in the output, as it has already connected with the EnergyPlus API. This file contains all the **controllable schedulers** for the actions and all the **observable variables**, now with their respective *Keys*, enabling the correct definition of the environment.
 
-4. With this information, the next step is **defining the environment** using the building model. 
-   You have several options:
+  4. With this information, the next step is **defining the environment** using the building model. You can:
 
-  a. Use the *Sinergym* environment constructor directly. The arguments for building observation 
-     and control are explained within the class and should be specified in the same format as the 
-     EnergyPlus API.
+    a. Use the *Sinergym* environment constructor directly. The arguments for building observation and control are explained within the class and should be specified in the same format as the EnergyPlus API.
 
-  b. Set up the configuration to register environment IDs directly. For more information,
-     refer to :ref:`Environments Configuration and Registration`. *Sinergym* will verify 
-     that the established configuration is correct and notify about any potential errors.
+    b. Set up the configuration to register environment IDs directly. For more information, refer to :ref:`Environments Configuration and Registration`. *Sinergym* will verify that the established configuration is correct and notify about any potential errors.
 
-5. If you used *Sinergym*'s registry, you will have access to environment IDs associated with your building. 
-   Use them with ``gym.make(<environment_id>)`` as usual. Besides, if you created an environment instance directly, 
-   use that instance to start interacting with the building.
+  5. If you used *Sinergym*'s registry, you will have access to environment IDs associated with your building. Use them with ``gym.make(<environment_id>)`` as usual. Besides, if you created an environment instance directly, use that instance to start interacting with the building.
 
 .. note:: To obtain information about the environment instance with the new building model, refer to 
           :ref:`Getting information about Sinergym environments`.

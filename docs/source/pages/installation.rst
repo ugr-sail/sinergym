@@ -214,5 +214,6 @@ Cloud Computing
 You also have the option to run your experiments in the Cloud. We utilize `Google Cloud <https://cloud.google.com/>`__ 
 for this purpose. Our team is working on setting up an account to run our *Sinergym* container 
 with **remote storage** and **Weights&Biases tracking**.
+
 For more information on installation and preparing the Google Cloud SDK to run your experiments, 
-please visit our :ref:`Preparing Google Cloud` section.
+please visit the :ref:`Google Cloud configuration` section.

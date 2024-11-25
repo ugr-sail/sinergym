@@ -58,18 +58,16 @@ If you use *Sinergym* in your work, please cite our `paper <https://dl.acm.org/d
     }
 
 .. toctree::
-   :numbered: 
    :hidden:
-   :caption: Start Here
+   :caption: Getting started
 
    pages/installation.rst
    pages/usage-example.rst
 
 
 .. toctree::
-   :numbered:
    :hidden:
-   :caption: sinergym
+   :caption: Sinergym
 
    pages/buildings.rst
    pages/weathers.rst
@@ -89,7 +87,6 @@ If you use *Sinergym* in your work, please cite our `paper <https://dl.acm.org/d
 
 
 .. toctree::
-   :numbered:
    :hidden:
    :caption: Examples
 

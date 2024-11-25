@@ -8,16 +8,16 @@ The main objective is to create a **virtual machine** (VM) using **Google Cloud 
 
 Once an instance completes its task, the container will automatically remove its host instance from the Google Cloud Platform if specified.
 
-*************
-Configuration
-*************
+**************************
+Google Cloud configuration
+**************************
 
 Prerequisites
 ~~~~~~~~~~~~~
 
 First, set up your Google Cloud account and configured SDK (e.g., auth, project ID, permissions). Additional information is available `here <https://cloud.google.com/sdk/docs/install>`__. 
 
-Then, it is required to have `Docker <https://www.docker.com/>`__ installed in order to manage containers in Google Cloud. You can link **gcloud** with **docker** as follows (see `authentication methods <https://cloud.google.com/container-registry/docs/advanced-authentication>`__):
+Then, it is required to have `Docker <https://www.docker.com/>`__ installed in order to manage containers in Google Cloud. You can link **Google Cloud** with **Docker** as follows (see `authentication methods <https://cloud.google.com/container-registry/docs/advanced-authentication>`__):
 
 .. code:: sh
 
@@ -29,6 +29,8 @@ To avoid future issues with image build and Google Cloud permissions, you must *
   :width: 500
   :alt: Permissions required for cloud build.
   :align: center
+
+|
 
 It is also required to enable **Google Cloud services** in the *API library*. You can allow these services in your **Google account** using the **gcloud client SDK** or the **Google Cloud Platform Console**:
 
@@ -70,8 +72,10 @@ It is also required to enable **Google Cloud services** in the *API library*. Yo
 
 .. image:: /_static/service-account-APIs.png
   :width: 800
-  :alt: API's required for cloud build.
+  :alt: APIs required for cloud build.
   :align: center
+
+|
 
 If *Sinergym* and *Sinergym extras* are installed, the **Google Cloud SDK must be linked with other Python modules** for some functionalities to work. Execute the following command in your terminal:
 
@@ -132,7 +136,7 @@ Do not confuse the options section at the end of the file with the virtual machi
 
 .. warning:: If your local computer does not have enough free space, it might report the same error.
 
-To execute `cloudbuild.yaml`, do the following:
+In order to use the configuration in ``cloudbuild.yaml``, do the following:
 
 .. code:: sh
 
@@ -146,13 +150,13 @@ You can use ``--substitutions`` to configure build parameters if needed.
 
 .. note:: In `cloudbuild.yaml`, there is a variable named *PROJECT_ID*. However, it is not defined 
           in substitutions. This is because it is a predefined variable by Google Cloud. When the 
-          build begins, `$PROJECT_ID`` is set to the current value in the gcloud configuration 
+          build begins, *$PROJECT_ID* is set to the current value in the gcloud configuration 
           (see `substitutions-variables <https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values>`__).
 
 Create your VM or MIG
 ~~~~~~~~~~~~~~~~~~~~~
 
-To create a **Virtual Machine** (VM) using this container, use the following command:
+To create a VM using this container, use the following command:
 
 .. code:: sh
 
@@ -167,7 +171,7 @@ To create a **Virtual Machine** (VM) using this container, use the following com
         --boot-disk-type pd-ssd \
         --machine-type n2-highcpu-8
 
-.. note:: The option ``--container-restart-policy never`` is essential for
+.. note:: The option ``--container-restart-policy never`` is essential for proper operation.
 
 To create a **Managed Instance Group** (MIG), first create a machine template:
 

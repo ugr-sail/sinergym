@@ -4,10 +4,9 @@ Deep Reinforcement Learning integration
 
 *Sinergym* is compatible with any controller that operates under the Gymnasium interface, and can be used with most existing **Deep Reinforcement Learning** (DRL) libraries.
 
-It has a close integration with `Stable Baselines 3 <https://stable-baselines3.readthedocs.io/en/master/>`__, especially regarding the use of **callbacks**.  
-Callbacks are functions called at specific stages of DRL agents execution. They allow access to the internal state of the DRL model during training, enabling monitoring, auto-saving, model manipulation, progress visualization, and more.  
+It has a close integration with `Stable Baselines 3 <https://stable-baselines3.readthedocs.io/en/master/>`__, especially regarding the use of **callbacks**.  Callbacks are functions called at specific stages of DRL agents execution. They allow access to the internal state of the DRL model during training, enabling monitoring, auto-saving, model manipulation, progress visualization, and more.  
 
-Pre-implemented callbacks provided by *Sinergym* inherit from StableBaselines3 and can be found in `sinergym/sinergym/utils/callbacks.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/callbacks.py>`__.
+Pre-implemented callbacks provided by *Sinergym* inherit from Stable Baselines 3 and can be found in `sinergym/sinergym/utils/callbacks.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/callbacks.py>`__.
 
 ******************
 LoggerEvalCallback
@@ -24,7 +23,7 @@ In addition, this callback stores the best model and evaluation summaries (in CS
 Weights And Biases logging
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To log all this data to the Weights and Biases platform, the training environment must be first wrapped with the ``WandbLoggerWrapper`` class (see :ref:`Logger Wrappers`). Encapsulation of the evaluation environment is not necessary unless detailed monitoring of these episodes is desired.
+To log all this data to the `Weights and Biases <https://wandb.ai/>`__ platform, the training environment must be first wrapped with the ``WandbLoggerWrapper`` class (see :ref:`Logger Wrappers`). Encapsulation of the evaluation environment is not necessary unless detailed monitoring of these episodes is desired.
 
 The data logged to the platform (in the *Evaluations* section) depends on the specific logger wrapper used and its episode summary. Therefore, to get new metrics, the logger wrapper must be modified, not the callback. In addition, this callback will overwrite certain metrics for the best model obtained during the training process, in order to preserve the metrics of the best model.
 
@@ -65,25 +64,25 @@ We distinguish between *mandatory* and *optional* parameters:
 
 Once executed, the script performs the following steps:
 
-1. Names the experiment following the format: ``<algorithm>-<environment_name>-episodes<episodes>-seed<seed_value>(<experiment_date>)``.
+  1. Names the experiment following the format: ``<algorithm>-<environment_name>-episodes<episodes>-seed<seed_value>(<experiment_date>)``.
 
-2. Sets environment parameters if specified.
+  2. Sets environment parameters if specified.
 
-3. Applies specified wrappers from the JSON configuration.
+  3. Applies specified wrappers from the JSON configuration.
 
-4. Saves all experiment's hyperparameters in WandB if a session is detected.
+  4. Saves all experiment's hyperparameters in WandB if a session is detected.
 
-5. Defines the model algorithm with the specified hyperparameters.
+  5. Defines the model algorithm with the specified hyperparameters.
 
-6. Calculates training timesteps from the number of episodes.
+  6. Calculates training timesteps from the number of episodes.
 
-7. Sets up an evaluation callback if specified.
+  7. Sets up an evaluation callback if specified.
 
-8. Trains the model with the environment.
+  8. Trains the model with the environment.
 
-9. If a remote store is specified, saves all outputs in a Google Cloud Bucket. If WandB is specified, saves all outputs in the WandB run artifact.
+  9. If a remote store is specified, saves all outputs in a Google Cloud Bucket. If WandB is specified, saves all outputs in the WandB run artifact.
 
-10. Auto-deletes the remote container in Google Cloud Platform if the auto-delete parameter is specified.
+  10. Auto-deletes the remote container in Google Cloud Platform if the auto-delete parameter is specified.
 
 Model loading
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -95,7 +94,7 @@ The ``load_agent.py`` script requires a single parameter, ``-conf``, indicating 
 
 Again, we distinguish between *mandatory* and *optional* parameters:
 
-* **Mandatory**: environment, evaluation episodes, algorithm (name only), and model to load. If the model is stored locally, specify it using the key ``model``. If it is stored in the cloud, use the ``wandb_model`` key. The model field can be a *local path*, a *bucket url* in the form ``gs://``, or a *wandb* artifact path for stored models.
+* **Mandatory**: environment, evaluation episodes, algorithm (name only), and model to load. If the model is stored locally, specify it using the key ``model``. If it is stored in the cloud, use the ``wandb_model`` key. The model field can be a *local path*, a *bucket url* in the form ``gs://``, or a WandB artifact path for stored models.
 
 * **Optional**: environment parameters (which overwrite defaults if specified), experiment identifier, wrappers (in order), and cloud options.
 

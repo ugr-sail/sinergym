@@ -62,14 +62,14 @@ In addition to the observations returned by the ``step`` and ``reset`` methods, 
 
 .. code-block:: python
 
-  info = {
-            'time_elapsed(hours)': # <Simulation time elapsed (in hours)>,
-            'month': # <Month in which the episode starts.>,
-            'day': # <Day in which the episode starts.>,
-            'hour': # <Hour in which the episode starts.>,
-            'is_raining': # <True if it is raining in the simulation.>,
-            'timestep': # <Timesteps count.>,
-        }
+  {
+    'time_elapsed(hours)': # <Simulation time elapsed (in hours)>,
+    'month': # <Month in which the episode starts.>,
+    'day': # <Day in which the episode starts.>,
+    'hour': # <Hour in which the episode starts.>,
+    'is_raining': # <True if it is raining in the simulation.>,
+    'timestep': # <Timesteps count.>,
+  }
 
-- *step* info. This dictionary shares the same keys as the reset info, but aslo includes 
+- *step* info. This dictionary shares the same keys as the *reset* info, but also includes 
   the action dispatched (to the simulation, not the environment), the reward, and the reward terms, which depend on the reward function employed. For more details, refer to :ref:`Reward terms`.
