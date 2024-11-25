@@ -1,7 +1,4 @@
-The goal of *Sinergym* is to create an environment following *Gymnasium* interface for wrapping 
-simulation engines (*EnergyPlus*) for building control using **deep reinforcement learning** 
-or any external control.
-
+*Sinergym* provides a Gymnasium-based interface to interact with simulation engines such as *EnergyPlus*. This allows control in simulation time through custom controllers, including **reinforcement learning** (RL) agents.
 
 .. image:: /_static/general_blueprint.png
   :width: 800
@@ -13,52 +10,33 @@ or any external control.
 .. raw:: html
     :file: ../_templates/shields.html
 
-.. note:: Please, help us to improve by **reporting your questions and issues** 
-   `here <https://github.com/ugr-sail/sinergym/issues>`__. It is easy, just 2 clicks 
-   using our issue templates (questions, bugs, improvements, etc.). More detailed 
-   info on how to report issues 
+.. note:: Please, help us to improve *Sinergym* by **reporting questions and issues** 
+   `here <https://github.com/ugr-sail/sinergym/issues>`__. Detailed 
+   information on how to report issues is available
    `here <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__. 
 
-*Sinergym* offers:
+*Synergym* includes the following features:
 
--  **Simulation Engine Compatibility**: Uses `EnergyPlus Python API <https://energyplus.readthedocs.io/en/latest/api.html>`__ 
-   for Python-EnergyPlus communication. Future plans include more engines like `OpenModelica <https://openmodelica.org/>`.
+   - ⚙️  **Simulation engines compatibility**. *Sinergym* is currently compatible with the `EnergyPlus Python API <https://energyplus.readthedocs.io/en/latest/api.html>`__ for controller-building communication. Future updates may include additional engines such as `OpenModelica <https://openmodelica.org/>`__.
 
--  **Benchmark Environments**: Designs environments for benchmarking and testing deep RL algorithms or other external strategies, 
-   similar to *Atari* or *Mujoco*.
+   - 📊  **Benchmark environments**. Similar to *Atari* or *Mujoco*, the tool allows the use of benchmarking environments to test and compare RL algorithms or custom control strategies.
 
--  **Customizable Environments**: Allows easy modification of experimental settings. Users can create 
-   their own environments or modify pre-configured ones in *Sinergym*.
+   - 🛠️  **Custom experimentation**. *Sinergym* enables effortless customization of experimental settings. Users can create their own environments or customize pre-configured ones within Sinergym. Select your preferred reward functions, wrappers, controllers, and more!
 
--  **Customizable Components**: Enables creation of new custom components for new environments, 
-   making *Sinergym* scalable, such as function rewards, wrappers,controllers, etc. 
+   - 🏠  **Automatic building model adaptation**. Automatic adaptation of the building model to align with user-defined settings.
 
--  **Automatic Building Model Adaptation**: *Sinergym* automates the process of adapting the 
-   building model to user changes in the environment definition.
+   - 🪛  **Automatic actuator control**. Seamless management of building actuators via the Gymnasium interface. Users only need to specify actuator names, and *Sinergym* will do the rest.
 
--  **Automatic Actuators Control**: Controls actuators through the Gymnasium interface 
-   based on user specification, only actuators names are required and *Sinergym* will
-   do the rest.
+   - 🤖  **Stable Baselines 3 integration**. *Sinergym* is highly integrated with Stable Baselines 3 algorithms, wrappers and callbacks.
 
--  **Extensive Environment Information**: Provides comprehensive information about *Sinergym* background components 
-   from the environment interface.
+   - ✅  **Controller-agnostic**. Any controller compatible with the Gymnasium interface can be integrated with *Sinergym*.
 
--  **Stable Baseline 3 Integration**: Customizes functionalities for easy testing of environments with SB3 algorithms, 
-   such as callbacks and customizable training real-time logging. However, *Sinergym* is agnostic to any DRL algorithm.
+   - ☁️  **Google Cloud execution**. Support for easy Google Cloud execution.
 
--  **Google Cloud Integration**: Offers guidance on using *Sinergym* with Google Cloud infrastructure.
+   - 📈  **Weights & Biases logging**. Automate the logging of training and evaluation data, and record your models in the cloud. *Sinergym* facilitates reproducibility and cloud data storage through `Weights & Biases <https://wandb.ai/site>`__ integration.
 
--  **Weights & Biases Compatibility**: Automates and facilitates training, reproducibility, and 
-   comparison of agents in simulation-based building control problems. `WandB <https://wandb.ai/site>`__ 
-   assists in managing and monitoring model lifecycle.
+   - 📒  **Notebook examples**. Learn how to get the most out of *Sinergym* through our Jupyter notebooks.
 
--  **Notebook Examples**: Provides code in notebook format for user familiarity with the tool.
+   - 📚  **Extensive documentation, unit tests, and GitHub actions workflows**. *Sinergym* follows proper development practices facilitating community contributions.
 
--  **Extensive Documentation, Unit Tests, and GitHub Actions Workflows**: Ensures *Sinergym* 
-   is an efficient ecosystem for understanding and development.
-
--  And much more!
-
-.. important:: If you want to introduce your own buildings in *Sinergym*, please visit :ref:`Adding new buildings` section.
-
-.. note:: *This is a work in progress project. Stay tuned for upcoming releases!*
+   - And much more!
