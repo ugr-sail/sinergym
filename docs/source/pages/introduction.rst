@@ -23,7 +23,7 @@
 
    - 🛠️  **Custom experimentation**. *Sinergym* enables effortless customization of experimental settings. Users can create their own environments or customize pre-configured ones within Sinergym. Select your preferred reward functions, wrappers, controllers, and more!
 
-   - 🏠  **Automatic building model adaptation**. Automatic adaptation of the building model to align with user-defined settings.
+   - 🏠  **Automatic building model adaptation**. Automatic adaptation of building models to align with user-defined settings.
 
    - 🪛  **Automatic actuator control**. Seamless management of building actuators via the Gymnasium interface. Users only need to specify actuator names, and *Sinergym* will do the rest.
 
