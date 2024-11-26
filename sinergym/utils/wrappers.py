@@ -480,7 +480,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
         """Resets the environment.
 
         Returns:
-            Tuple[np.ndarray,Dict[str,Any]]: Tuple with next observation, and dict with information about the enviroment.
+            Tuple[np.ndarray,Dict[str,Any]]: Tuple with next observation, and dict with information about the environment.
         """
         self.set_forecast_data()
 
@@ -498,7 +498,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
 
         Returns:
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated
-            episode and dict with Information about the enviroment.
+            episode and dict with Information about the environment.
         """
 
         obs, reward, terminated, truncated, info = self.env.step(action)
@@ -524,7 +524,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
 
         Args:
             obs (np.ndarray): Original observation.
-            info (Dict[str, Any]): Information about the enviroment.
+            info (Dict[str, Any]): Information about the environment.
         Returns:
             np.ndarray: Transformed observation.
         """
@@ -654,7 +654,7 @@ class EnergyCostWrapper(gym.Wrapper):
         """Resets the environment.
 
         Returns:
-            Tuple[np.ndarray,Dict[str,Any]]: Tuple with next observation, and dict with information about the enviroment.
+            Tuple[np.ndarray,Dict[str,Any]]: Tuple with next observation, and dict with information about the environment.
         """
         self.set_energy_cost_data()
 
@@ -673,7 +673,7 @@ class EnergyCostWrapper(gym.Wrapper):
 
         Returns:
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated
-            episode and dict with Information about the enviroment.
+            episode and dict with Information about the environment.
         """
 
         obs, _, terminated, truncated, info = self.env.step(action)
@@ -719,7 +719,7 @@ class EnergyCostWrapper(gym.Wrapper):
 
         Args:
             obs (np.ndarray): Original observation.
-            info (Dict[str, Any]): Information about the enviroment.
+            info (Dict[str, Any]): Information about the environment.
         Returns:
             np.ndarray: Transformed observation.
         """

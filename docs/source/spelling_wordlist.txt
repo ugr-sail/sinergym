@@ -66,11 +66,12 @@ DiscreteIncrementalWrapper
 discretization
 Discretization
 discretize
+discretized
 DiscretizeEnv
 discretizes
 Dockerfile
 docstring
-docstring
+docstrings
 doesn
 DQN
 drybulb
@@ -141,6 +142,7 @@ ite
 iterable
 IWMullion
 json
+Jupyter
 kfac
 Khee
 Kibam
@@ -199,6 +201,7 @@ OfficeGridStorageSmoothingActionConstraintsWrapper
 optimizers
 Opyplus
 Ornstein
+ornstein
 parallelize
 param
 params
@@ -279,6 +282,7 @@ TqdmLoggingHandler
 traceback
 txt
 Uhlenbeck
+uhlenbeck
 unnormalized
 uri
 usesTime

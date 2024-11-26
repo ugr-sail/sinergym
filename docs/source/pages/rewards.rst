@@ -10,7 +10,7 @@ The definition of a reward function is essential for reinforcement learning. For
 
 The predefined reward functions in *Sinergym* are designed as multi-objective, incorporating both **energy consumption** and **thermal discomfort**. These are **normalised** and added with varying **weights**. The assigned weights for each term in the reward function enable the importance of each reward component to be adjusted.
 
-It should be noted that pre -mplemented rewards are expressed in **negative** terms, signifying that optimal behaviour results in a cumulative reward of 0. Separate temperature comfort ranges are defined for summer and winter periods. 
+It should be noted that pre implemented rewards are expressed in **negative** terms, signifying that optimal behavior results in a cumulative reward of 0. Separate temperature comfort ranges are defined for summer and winter periods. 
 
 The most basic definition of the reward signal in *Sinergym* consists of the following equation:
 
