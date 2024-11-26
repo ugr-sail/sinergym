@@ -39,13 +39,13 @@ def test_adapt_building_to_epw(model_5zone):
     summer_day = designdays['CHICAGO_IL_USA Annual Cooling 1% Design Conditions DB/MCWB']
     assert summer_day['day_type'] == 'SummerDesignDay'
 
-    # Existing designday names
+    # Existing DesignDay names
     winterday = 'Ann Htg 99.6% Condns DB'
     summerday = 'Ann Clg .4% Condns DB=>MWB'
     # Adapt building to epw
     model_5zone.adapt_building_to_epw(summerday=summerday, winterday=winterday)
 
-    # we do the same and check new values for Location and Designdays
+    # we do the same and check new values for Location and DesignDays
     locations = model_5zone.building['Site:Location']
     designdays = model_5zone.building['SizingPeriod:DesignDay']
     assert len(locations) == 1
@@ -58,7 +58,7 @@ def test_adapt_building_to_epw(model_5zone):
     assert isinstance(location.get('time_zone'), float)
     assert isinstance(location.get('elevation'), float)
 
-    # Check new Designday is correct
+    # Check new DesignDay is correct
     assert designdays.get('davis monthan afb ann htg 99.6% condns db', False)
     winter_day = designdays['davis monthan afb ann htg 99.6% condns db']
     assert winter_day['day_type'] == 'WinterDesignDay'
@@ -120,7 +120,7 @@ def test_adapt_building_to_config(model_5zone, building_5zone):
     assert list(model_5zone.building['Timestep'].values())[
         0]['number_of_timesteps_per_hour'] == 2
 
-    # Check Runperiod elements is the same than runperiod from config specified
+    # Check runperiod elements is the same than runperiod from config specified
     config_runperiod = model_5zone.config['runperiod']
     runperiod = model_5zone.runperiod
     for i, key in enumerate(

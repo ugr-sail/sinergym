@@ -162,7 +162,7 @@ def test_unknown_handlers(simulator_5zone, pkg_data_path):
     assert len(obs) > 0 and obs is not None
     assert len(info) > 0 and info is not None
     # Now system is initialized (and handlers)
-    # It shloud only a error message in logger but not exception raised
+    # It should only show an error message in logger but not exception raised
     # There should be handlers with value > 0 and the false handlers should be
     # <= 0
     assert simulator_5zone.var_handlers is not None

@@ -1,14 +1,13 @@
 import pytest
 
-# We want tester this functions
-
 
 def multiply(input_num1, input_num2):
     return input_num1 * input_num2
 
-
 # We can implement several inputs and pytest try it one by one (in this
 # function pytest execute 3 tests)
+
+
 @pytest.mark.parametrize(
     'input_num1,input_num2,expected',
     [
@@ -35,9 +34,6 @@ def multiply(input_num1, input_num2):
 def test_multiply(input_num1, input_num2, expected):
     assert multiply(input_num1, input_num2) == expected
 
-# If we have an object that we will use in several tests, fixtures can be
-# really useful
-
 
 @pytest.fixture
 def example_value():
@@ -46,11 +42,10 @@ def example_value():
 
 # And now, we can use this value whenever
 
-
 def test_divisible5(example_value):
     assert ((example_value % 5) == 0)
 
 
 def test_divisible10(example_value):
-    # If we change the fixture state only is applied in that test function
+    # If we change the fixture state it is only applied in that test function
     assert ((example_value % 10) == 0)

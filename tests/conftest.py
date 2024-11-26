@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+
 from glob import glob  # to find directories with patterns
 from importlib import resources
 
@@ -420,7 +421,8 @@ def env_5zone_stochastic(
         ACTUATORS_5ZONE):
     env = EplusEnv(
         building_file='5ZoneAutoDXVAV.epJSON',
-        weather_files=['USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw'],
+        weather_files=[
+            'USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw'],
         action_space=ACTION_SPACE_5ZONE,
         time_variables=TIME_VARIABLES,
         variables=VARIABLES_5ZONE,
