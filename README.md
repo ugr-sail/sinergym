@@ -66,7 +66,7 @@ For more information about *Sinergym*, refer to its [documentation](https://ugr-
 
 🪛  **Automatic actuator control**. Seamless management of building actuators via the Gymnasium interface. Users only need to specify actuator names, and *Sinergym* will do the rest.
 
-🤖  **Stable Baselines 3 integration**. *Sinergym* is highly integrated with Stable Baselines 3 algorithms, wrappers and callbacks.
+🤖  **Stable Baselines 3 integration**. *Sinergym* is highly integrated with [Stable Baselines 3](https://github.com/DLR-RM/stable-baselines3) algorithms, wrappers and callbacks.
 
 ✅  **Controller-agnostic**. Any controller compatible with the Gymnasium interface can be integrated with *Sinergym*.
 
@@ -126,6 +126,12 @@ env.close()
 
 Several usage examples can be consulted [here](https://ugr-sail.github.io/sinergym/compilation/main/pages/notebooks/basic_example.html#Basic-example).
 
+## Contributing
+
+To report questions and issues, [open an issue](https://github.com/ugr-sail/sinergym/issues) following the provided templates. We appreciate your feedback!
+
+Check out [CONTRIBUTING.md](https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md) for specific details on how to contribute.
+
 ## Projects using Sinergym
 
 The following are some of the projects using *Sinergym*:
@@ -141,10 +147,6 @@ The following are some of the projects using *Sinergym*:
       <img src="https://img.shields.io/badge/Powered%20by-Sinergym%20%E2%86%92-gray.svg?colorA=00BABF&colorB=4BF2F7&style=for-the-badge"/>
   </a>
 </p>
-
-## Contributing
-
-To report questions and issues, please use our [issue tracker](https://github.com/ugr-sail/sinergym/issues). We appreciate your feedback and contributions. Check out our [CONTRIBUTING.md](https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md) for more details on how to contribute.
 
 ## Repository activity
 
