@@ -48,35 +48,35 @@
   <img src="images/general_blueprint.png" width=80%><br><br>
 </div>
 
+## About Sinergym
+
 *Sinergym* provides a [Gymnasium](https://gymnasium.farama.org/)-based interface to interact with simulation engines such as *EnergyPlus*. This allows control in simulation time through custom controllers, including **reinforcement learning** agents.
 
 For more information about *Sinergym*, refer to its [documentation](https://ugr-sail.github.io/sinergym/compilation/main/index.html).
 
-To report questions and issues, please use our [issue tracker](https://github.com/ugr-sail/sinergym/issues). We appreciate your feedback and contributions. Check out our [CONTRIBUTING.md](https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md) for more details on how to contribute.
+## Main features
 
-*Synergym* includes the following features:
+⚙️  **Simulation engines compatibility**. *Sinergym* is currently compatible with the [EnergyPlus Python API](https://energyplus.readthedocs.io/en/latest/api.html) for controller-building communication.
 
-   - ⚙️  **Simulation engines compatibility**. *Sinergym* is currently compatible with the [EnergyPlus Python API](https://energyplus.readthedocs.io/en/latest/api.html) for controller-building communication.
+📊  **Benchmark environments**. Similar to *Atari* or *Mujoco*, *Sinergym* allows the use of benchmarking environments to test and compare RL algorithms or custom control strategies.
 
-   - 📊  **Benchmark environments**. Similar to *Atari* or *Mujoco*, the tool allows the use of benchmarking environments to test and compare RL algorithms or custom control strategies.
+🛠️  **Custom experimentation**. *Sinergym* enables effortless customization of experimental settings. Users can create their own environments or customize pre-configured ones within *Sinergym*. Select your preferred reward functions, wrappers, controllers, and more!
 
-   - 🛠️  **Custom experimentation**. *Sinergym* enables effortless customization of experimental settings. Users can create their own environments or customize pre-configured ones within *Sinergym*. Select your preferred reward functions, wrappers, controllers, and more!
+🏠  **Automatic building model adaptation**. Automatic adaptation of building models to align with user-defined settings.
 
-   - 🏠  **Automatic building model adaptation**. Automatic adaptation of building models to align with user-defined settings.
+🪛  **Automatic actuator control**. Seamless management of building actuators via the Gymnasium interface. Users only need to specify actuator names, and *Sinergym* will do the rest.
 
-   - 🪛  **Automatic actuator control**. Seamless management of building actuators via the Gymnasium interface. Users only need to specify actuator names, and *Sinergym* will do the rest.
+🤖  **Stable Baselines 3 integration**. *Sinergym* is highly integrated with Stable Baselines 3 algorithms, wrappers and callbacks.
 
-   - 🤖  **Stable Baselines 3 integration**. *Sinergym* is highly integrated with Stable Baselines 3 algorithms, wrappers and callbacks.
+✅  **Controller-agnostic**. Any controller compatible with the Gymnasium interface can be integrated with *Sinergym*.
 
-   - ✅  **Controller-agnostic**. Any controller compatible with the Gymnasium interface can be integrated with *Sinergym*.
+☁️  **Google Cloud execution**. *Sinergym* provides several features to execute experiments in [Google Cloud](https://cloud.google.com/).
 
-   - ☁️  **Google Cloud execution**. Support for easy Google Cloud execution.
+📈  **Weights & Biases logging**. Automate the logging of training and evaluation data, and record your models in the cloud. *Sinergym* facilitates reproducibility and cloud data storage through [Weights and Biases](https://wandb.ai/site) integration.
 
-   - 📈  **Weights & Biases logging**. Automate the logging of training and evaluation data, and record your models in the cloud. *Sinergym* facilitates reproducibility and cloud data storage through [Weights and Biases](https://wandb.ai/site) integration.
+📒  **Notebook examples**. Learn how to get the most out of *Sinergym* through our [notebooks examples](https://github.com/ugr-sail/sinergym/tree/main/examples).
 
-   - 📒  **Notebook examples**. Learn how to get the most out of *Sinergym* through our Jupyter notebooks.
-
-   - 📚  **Extensive documentation, unit tests, and GitHub actions workflows**. *Sinergym* follows proper development practices facilitating community contributions.
+📚  **Extensive documentation, unit tests, and GitHub actions workflows**. *Sinergym* follows proper development practices facilitating community contributions.
 
 
 <div align="center">
@@ -126,10 +126,6 @@ env.close()
 
 Several usage examples can be consulted [here](https://ugr-sail.github.io/sinergym/compilation/main/pages/notebooks/basic_example.html#Basic-example).
 
-## Google Cloud integration
-
-We provide some features to execute experiments in [Google Cloud](https://cloud.google.com/). For more information, visit the [Google Cloud integration section](https://ugr-sail.github.io/sinergym/compilation/main/pages/gcloudAPI.html#sinergym-with-google-cloud) of the documentation.
-
 ## Projects using Sinergym
 
 The following are some of the projects using *Sinergym*:
@@ -145,6 +141,10 @@ The following are some of the projects using *Sinergym*:
       <img src="https://img.shields.io/badge/Powered%20by-Sinergym%20%E2%86%92-gray.svg?colorA=00BABF&colorB=4BF2F7&style=for-the-badge"/>
   </a>
 </p>
+
+## Contributing
+
+To report questions and issues, please use our [issue tracker](https://github.com/ugr-sail/sinergym/issues). We appreciate your feedback and contributions. Check out our [CONTRIBUTING.md](https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md) for more details on how to contribute.
 
 ## Repository activity
 

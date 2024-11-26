@@ -19,7 +19,7 @@
 
    - ⚙️  **Simulation engines compatibility**. *Sinergym* is currently compatible with the `EnergyPlus Python API <https://energyplus.readthedocs.io/en/latest/api.html>`__ for controller-building communication. Future updates may include additional engines such as `OpenModelica <https://openmodelica.org/>`__.
 
-   - 📊  **Benchmark environments**. Similar to *Atari* or *Mujoco*, the tool allows the use of benchmarking environments to test and compare RL algorithms or custom control strategies.
+   - 📊  **Benchmark environments**. Similar to *Atari* or *Mujoco*, *Sinergym* allows the use of benchmarking environments to test and compare RL algorithms or custom control strategies.
 
    - 🛠️  **Custom experimentation**. *Sinergym* enables effortless customization of experimental settings. Users can create their own environments or customize pre-configured ones within *Sinergym*. Select your preferred reward functions, wrappers, controllers, and more!
 
