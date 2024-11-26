@@ -8,6 +8,6 @@ Currently, we provide a **random controller** and a **rule-based controller** fo
 
 The operation of these controllers is simple: given an observation from the environment, the controllers return an action that is applied to the environment. The executed action may depend on a set of user-defined rules that utilize the observed values (e.g., internal temperature, occupancy, etc.).
 
-For an example of usage, refer to Section :ref:`Rule Controller example`.
+For an example of usage, refer to Section :ref:`Rule-based controller example`.
 
 .. warning:: Make sure that the variables used by your controller are part of the observation space of the environment.

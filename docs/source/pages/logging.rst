@@ -33,7 +33,7 @@ Interaction data with LoggerWrapper
 
 - The environment will include a new attribute called ``data_logger``: an instance of ``LoggerStorage`` containing all the relevant information.
 
-- This wrapper also implements functionality to use the logger with custom metrics and episode summary metrics (i.e., it is customizable, as shown in :ref:`Logger Wrapper personalization/configuration`).
+- This wrapper also implements functionality to use the logger with custom metrics and episode summary metrics (i.e., it is customizable, as shown in :ref:`LoggerWrapper customization`).
 
 Summary metrics with CSVLogger
 ------------------------------

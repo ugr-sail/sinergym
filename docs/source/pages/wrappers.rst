@@ -60,7 +60,7 @@ An **action mapping function** is also provided to map these values into ones th
                the discrete space should only take values that are considered in the original 
                continuous action space.
 
-Users can define this action mapping function to specify the transition from discrete to continuous values. If the output of the action mapping function does not align with the original environment action space, an error will be raised. Refer to :ref:`Environment discretization wrapper` for an usage example.
+Users can define this action mapping function to specify the transition from discrete to continuous values. If the output of the action mapping function does not align with the original environment action space, an error will be raised. Refer to :ref:`Action discretization wrapper` for an usage example.
 
 .. image:: /_static/discretize_wrapper.png
   :scale: 50 %
@@ -85,6 +85,8 @@ The following figure illustrates its operation. Essentially, the values are roun
   :scale: 50 %
   :alt: Incremental wrapper graph.
   :align: center
+
+|
 
 **************************
 DiscreteIncrementalWrapper
@@ -125,7 +127,7 @@ However, *Sinergym* extends its functionality with some additional features:
 
 In addition, this wrapper saves the **mean and standard deviation** values as part of the *Sinergym* output. These can be used when loading and a evaluating a trained model. 
 
-An example of its use can be found in :ref:`Loading a model`. It is also important that normalization calibration update is disabled during evaluation.
+An example of its use can be found in :ref:`Loading and evaluating a trained model`. It is also important that normalization calibration update is disabled during evaluation.
 
 *Sinergym* will also save intermediate mean and standard deviation values in files within episode directories, as well as for the
 best model obtained if :ref:`LoggerEvalCallback` is active during training.
@@ -157,7 +159,7 @@ LoggerWrapper
 
 Inherit from this class to create a new logger wrapper and implement abstract methods to define custom and episode summary metrics from the available data.
 
-*Sinergym* uses this base class to implement the ``LoggerWrapper``, the default logger, but custom loggers can be implemented easily from this abstract class (see :ref:`Logger Wrapper personalization/configuration`).
+*Sinergym* uses this base class to implement the ``LoggerWrapper``, the default logger, but custom loggers can be implemented easily from this abstract class (see :ref:`LoggerWrapper customization`).
 
 The current summary metrics for this default *Sinergym* wrapper are: ``episode_num``, ``mean_reward``, ``std_reward``,
 ``mean_reward_comfort_term``, ``std_reward_comfort_term``, ``mean_reward_energy_term``, ``std_reward_energy_term``,
@@ -201,7 +203,7 @@ Similarly, any other wrapper applied in layers prior to this one will affect the
 
 ***************
 MultiObsWrapper
-****************
+***************
 
 This wrapper stacks observations received in a history queue.
 

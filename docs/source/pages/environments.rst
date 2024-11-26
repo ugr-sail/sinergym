@@ -193,14 +193,14 @@ The ``action_space`` argument adheres to the Gymnasium standard and must be a co
 
 .. note:: To adapt an environment to Gymnasium's ``Discrete``, ``MultiDiscrete``, or ``MultiBinary`` spaces, 
           similar to our predefined discrete environments, see section :ref:`DiscretizeEnv` and the 
-          example in :ref:`Environment Discretization Wrapper`.
+          example in :ref:`Action discretization wrapper`.
 
 .. important:: While *Sinergym*'s environments come with predefined observation and action variables (
                details available in `default_configuration <https://github.com/ugr-sail/sinergym/tree/main/sinergym/data/default_configuration>`__), 
                users are encouraged to explore and experiment with these spaces. For guidance, refer to 
                :ref:`Changing observation and action spaces`.
 
-*Sinergym* also offers the option to create **empty action interfaces**. In this case, control is managed by the **default building model schedulers**. For more information, see the usage example in :ref:`Default building control setting up an empty action interface`.
+*Sinergym* also offers the option to create **empty action interfaces**. In this case, control is managed by the **default building model schedulers**. For more information, see the usage example in :ref:`Default building control using an empty action space`.
 
 Extra configuration
 ===================
