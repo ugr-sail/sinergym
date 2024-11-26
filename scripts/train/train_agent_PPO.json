@@ -45,7 +45,7 @@
             "storage_class": "sinergym.utils.logger.LoggerStorage"
         },
         "CSVLogger": {},
-        "WandBLogger":{
+        "WandBLogger": {
             "entity": "sail_ugr",
             "project_name": "test_project"
         }

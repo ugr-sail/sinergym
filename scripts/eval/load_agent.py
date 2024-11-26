@@ -40,7 +40,6 @@ logger = terminal_logger.getLogger(
     level=logging.INFO
 )
 
-
 # ---------------------------------------------------------------------------- #
 #                             Read json parameters                             #
 # ---------------------------------------------------------------------------- #
@@ -87,8 +86,7 @@ try:
         for key, parameters in conf['wrappers'].items():
             wrapper_class = eval(key)
             for name, value in parameters.items():
-                # parse str parameters to sinergym Callable or Objects if it is
-                # required
+                # parse str parameters to sinergym Callable or Objects if required
                 if isinstance(value, str):
                     if '.' in value and '.txt' not in value:
                         parameters[name] = eval(value)
@@ -99,12 +97,12 @@ try:
     # ---------------------------------------------------------------------------- #
     # ------------------------ Weights and Bias model path ----------------------- #
     if conf.get('wandb_model'):
-        # get wandb run or generate a new one
+        # Get wandb run or generate a new one
         if is_wrapped(env, WandBLogger):
             wandb_run = env.get_wrapper_attr('wandb_run')
         else:
             wandb_run = wandb.init()
-        # get model path
+        # Get model path
         artifact_tag = conf['wandb_model'].get(
             'artifact_tag', 'latest')
         wandb_path = conf['wandb_model']['entity'] + '/' + conf['wandb_model']['project'] + \
@@ -113,7 +111,7 @@ try:
         artifact = wandb_run.use_artifact(wandb_path)
         artifact.get_path(conf['wandb_model']
                           ['artifact_path']).download('.')
-        # Set model path to local wandb file downloaded
+        # Set model path to local wandb downloaded file
         model_path = './' + conf['wandb_model']['artifact_path']
 
     # -------------------------- Google cloud model path ------------------------- #
@@ -167,7 +165,7 @@ try:
         if conf['cloud'].get('remote_store'):
             # Initiate Google Cloud client
             client = gcloud.init_storage_client()
-            # Code for send output to common Google Cloud resource here.
+            # Send output to common Google Cloud resource
             gcloud.upload_to_bucket(
                 client,
                 src_path=env.get_wrapper_attr('workspace_path'),

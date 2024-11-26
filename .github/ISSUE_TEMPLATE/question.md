@@ -1,6 +1,6 @@
 ---
 name: Question ❓
-about: How to ask a question regarding Sinergym
+about: Ask a question related to Sinergym
 title: "[Question]"
 labels: question
 assignees: ''

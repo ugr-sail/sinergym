@@ -7,6 +7,7 @@ from datetime import datetime
 import gymnasium as gym
 import numpy as np
 import wandb
+
 from stable_baselines3 import *
 from stable_baselines3.common.callbacks import CallbackList
 from stable_baselines3.common.logger import HumanOutputFormat
@@ -30,7 +31,7 @@ from sinergym.utils.wrappers import *
 
 def process_environment_parameters(env_params: dict) -> dict:
 
-    # Transform required str's into Callables or list in tuples
+    # Transform required str's into Callables or lists in tuples
     if env_params.get('action_space'):
         env_params['action_space'] = eval(
             env_params['action_space'])
@@ -65,7 +66,7 @@ def process_environment_parameters(env_params: dict) -> dict:
             env_params['config_params']['runperiod'] = tuple(
                 env_params['config_params']['runperiod'])
 
-    # Add more keys if it is needed
+    # Add more keys if needed
 
     return env_params
 
@@ -79,7 +80,8 @@ def process_algorithm_parameters(alg_params: dict):
 
     if alg_params.get('action_noise'):
         alg_params['action_noise'] = eval(alg_params['action_noise'])
-    # Add more keys if it is needed
+    
+    # Add more keys if needed
 
     return alg_params
 
@@ -132,7 +134,7 @@ try:
         conf['environment'],
         ** env_params)
 
-    # env for evaluation if is enabled
+    # env for evaluation if enabled
     eval_env = None
     if conf.get('evaluation'):
         eval_name = conf['evaluation'].get(
@@ -149,14 +151,13 @@ try:
         for key, parameters in conf['wrappers'].items():
             wrapper_class = eval(key)
             for name, value in parameters.items():
-                # parse str parameters to sinergym Callable or Objects if it is
-                # required
+                # parse str parameters to sinergym Callable or Objects if required
                 if isinstance(value, str):
                     if '.' in value:
                         parameters[name] = eval(value)
             env = wrapper_class(env=env, ** parameters)
             if eval_env is not None:
-                # In evaluation, WandB Wrapper is not needed
+                # In evaluation, THE WandB wrapper is not needed
                 if key != 'WandBLogger':
                     eval_env = wrapper_class(env=eval_env, ** parameters)
 
@@ -215,7 +216,7 @@ try:
             raise RuntimeError(
                 F'Algorithm specified [{alg_name} ] is not registered.')
 
-        # Register hyperparameters in wandb if it is wrapped
+        # Register hyperparameters in wandb if wrapped
         if is_wrapped(env, WandBLogger):
             experiment_params = {
                 'sinergym-version': sinergym.__version__,
@@ -271,7 +272,7 @@ try:
     # ---------------------------------------------------------------------------- #
     callbacks = []
 
-    # Set up Evaluation and saving best model
+    # Set up Evaluation and best model saving
     if conf.get('evaluation'):
         eval_callback = LoggerEvalCallback(
             eval_env=eval_env,
@@ -284,7 +285,7 @@ try:
 
     # Set up wandb logger
     if is_wrapped(env, WandBLogger):
-        # wandb logger and setting in SB3
+        # wandb and SB3 logger
         logger = SB3Logger(
             folder=None,
             output_formats=[
@@ -305,9 +306,8 @@ try:
         log_interval=conf['algorithm']['log_interval'])
     model.save(env.get_wrapper_attr('workspace_path') + '/model')
 
-    # If the algorithm doesn't reset or close the environment, this script will do it in
-    # order to correctly log all the simulation data (Energyplus + Sinergym
-    # logs)
+    # If the environment is not closed, this script will do it in
+    # order to correctly log all the simulation data (Energyplus + Sinergym logs)
     if env.get_wrapper_attr('is_running'):
         env.close()
 
@@ -318,7 +318,7 @@ try:
         if conf['cloud'].get('remote_store'):
             # Initiate Google Cloud client
             client = gcloud.init_storage_client()
-            # Code for send output to common Google Cloud resource here.
+            # Send output to common Google Cloud resource
             gcloud.upload_to_bucket(
                 client,
                 src_path=env.get_wrapper_attr('workspace_path'),
