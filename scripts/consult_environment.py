@@ -6,6 +6,6 @@ import sinergym
 print(sinergym.__version__)
 print(sinergym.__ids__)
 
-# Make and consult some of the environments
+# Make and consult environment
 env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1')
 print(env.info())

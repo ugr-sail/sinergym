@@ -1,7 +1,8 @@
 import logging
 
-import gymnasium as gym
 import numpy as np
+import gymnasium as gym
+
 from gymnasium.wrappers.normalize import NormalizeReward
 
 import sinergym
@@ -9,8 +10,6 @@ from sinergym.utils.logger import TerminalLogger
 from sinergym.utils.wrappers import (LoggerWrapper, NormalizeAction,
                                      NormalizeObservation)
 
-# Optional: Terminal log in the same format as Sinergym.
-# Logger info can be replaced by print.
 terminal_logger = TerminalLogger()
 logger = terminal_logger.getLogger(
     name='MAIN',
@@ -23,7 +22,7 @@ env = NormalizeObservation(env)
 env = NormalizeReward(env)
 env = LoggerWrapper(env)
 
-# Execute interactions during 1 episode
+# Execute 1 episode
 for i in range(1):
     # Reset the environment to start a new episode
     obs, info = env.reset()
@@ -31,18 +30,20 @@ for i in range(1):
     truncated = terminated = False
     current_month = 0
     while not (terminated or truncated):
-        # Random action control
+        # Random action
         a = env.action_space.sample()
-        # Read observation and reward
+
+        # Perform action
         obs, reward, terminated, truncated, info = env.step(a)
+
         rewards.append(reward)
-        # If this timestep is a new month start
-        if info['month'] != current_month:  # display results every month
+
+        #  Display results every simulated month
+        if info['month'] != current_month:
             current_month = info['month']
-            # Print information
             logger.info('Reward: {}'.format(sum(rewards)))
             logger.info('Info: {}'.format(info))
-    # Final episode information print
+
     logger.info('Episode {} - Mean reward: {} - Cumulative Reward: {}'.format(i,
                                                                               np.mean(rewards), sum(rewards)))
 env.close()

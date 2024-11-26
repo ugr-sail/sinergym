@@ -21,7 +21,7 @@
 
    - 📊  **Benchmark environments**. Similar to *Atari* or *Mujoco*, the tool allows the use of benchmarking environments to test and compare RL algorithms or custom control strategies.
 
-   - 🛠️  **Custom experimentation**. *Sinergym* enables effortless customization of experimental settings. Users can create their own environments or customize pre-configured ones within Sinergym. Select your preferred reward functions, wrappers, controllers, and more!
+   - 🛠️  **Custom experimentation**. *Sinergym* enables effortless customization of experimental settings. Users can create their own environments or customize pre-configured ones within *Sinergym*. Select your preferred reward functions, wrappers, controllers, and more!
 
    - 🏠  **Automatic building model adaptation**. Automatic adaptation of building models to align with user-defined settings.
 
@@ -33,10 +33,8 @@
 
    - ☁️  **Google Cloud execution**. Support for easy Google Cloud execution.
 
-   - 📈  **Weights & Biases logging**. Automate the logging of training and evaluation data, and record your models in the cloud. *Sinergym* facilitates reproducibility and cloud data storage through `Weights & Biases <https://wandb.ai/site>`__ integration.
+   - 📈  **Weights and Biases logging**. Automate the logging of training and evaluation data, and record your models in the cloud. *Sinergym* facilitates reproducibility and cloud data storage through `Weights and Biases <https://wandb.ai/site>`__ integration.
 
    - 📒  **Notebook examples**. Learn how to get the most out of *Sinergym* through our Jupyter notebooks.
 
    - 📚  **Extensive documentation, unit tests, and GitHub actions workflows**. *Sinergym* follows proper development practices facilitating community contributions.
-
-   - And much more!
