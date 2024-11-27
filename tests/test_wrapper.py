@@ -270,6 +270,22 @@ def test_weatherforecasting_wrapper(env_demo):
     assert isinstance(obs, np.ndarray)
     assert len(obs) == wrapped_shape
 
+    # Checks exceptional case 2
+    env.forecast_data = env.get_wrapper_attr('forecast_data').head(2)
+    a = env.action_space.sample()
+    obs, reward, terminated, truncated, info = env.step(a)
+
+    assert isinstance(obs, np.ndarray)
+    assert len(obs) == wrapped_shape
+
+    # Checks exceptional case 1
+    env.forecast_data = env.get_wrapper_attr('forecast_data').head(1)
+    a = env.action_space.sample()
+    obs, reward, terminated, truncated, info = env.step(a)
+
+    assert isinstance(obs, np.ndarray)
+    assert len(obs) == wrapped_shape
+
 
 def test_weatherforecasting_wrapper_forecastdata(env_demo):
     env = WeatherForecastingWrapper(
