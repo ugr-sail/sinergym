@@ -95,6 +95,9 @@ spelling_word_list_filename = 'spelling_wordlist.txt'
 
 # -- Options for HTML output -------------------------------------------------
 
+# Warnings
+suppress_warnings = ["config.cache"]
+
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #

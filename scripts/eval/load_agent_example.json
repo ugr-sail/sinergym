@@ -12,21 +12,22 @@
     "model": "alex_ugr/sinergym/training:latest",
     "wrappers": {
         "NormalizeAction": {},
-        "NormalizeObservation": {"mean": null,
-                                 "var": null,
-                                 "automatic_update": false},
+        "NormalizeObservation": {
+            "mean": null,
+            "var": null,
+            "automatic_update": false
+        },
         "LoggerWrapper": {
             "storage_class": "sinergym.utils.logger.LoggerStorage"
         },
         "CSVLogger": {}
     },
     "wandb_model": {
-            "project": "test-project",
-            "entity": "sail_ugr",
-            "artifact_name": "test1",
-            "artifact_type": "output",
-            "artifact_tag": "v3",
-            "artifact_path": "Sinergym_output/evaluation/best_model.zip"
+        "project": "test-project",
+        "entity": "sail_ugr",
+        "artifact_name": "test1",
+        "artifact_type": "output",
+        "artifact_tag": "v3",
+        "artifact_path": "Sinergym_output/evaluation/best_model.zip"
     }
-    
 }

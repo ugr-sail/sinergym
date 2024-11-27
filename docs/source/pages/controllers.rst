@@ -1,16 +1,13 @@
-############
+###########
 Controllers
-############
+###########
 
-*Sinergym* includes a section for implementing your own **controllers**. At present, 
-we've developed a **random agent** and a **rule-based agent** for *5Zone* and *Datacenter* 
-buildings. You can locate this code in 
-`sinergym/sinergym/utils/controllers.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/controllers.py>`__. 
-This is particularly useful for performing benchmarks as a reference point for studying DRL algorithms.
+*Sinergym* offers the possibility to implement custom controllers. These controllers can be employed as a baseline for comparing with more sophisticated control strategies, such as Reinforcement Learning algorithms.
 
-The functionality is straightforward; given an environment observation, these instances return an action 
-to interact with the environment. You can create your own controllers or modify existing rules, 
-for instance. An example of usage can be found in the section :ref:`Rule Controller example`.
+Currently, we provide a **random controller** and a **rule-based controller** for both the *Datacenter* building and the *5Zone* building. See `controllers.py <https://github.com/ugr-sail/sinergym/blob/main/sinergym/utils/controllers.py>`__ for implementation details.
 
-.. warning:: You have to make sure that the variables used particularly for your controller 
-             are part of the observation space of the configured environment.
+The operation of these controllers is simple: given an observation from the environment, the controllers return an action that is applied to the environment. The executed action may depend on a set of user-defined rules that utilize the observed values (e.g., internal temperature, occupancy, etc.).
+
+For an example of usage, refer to Section :ref:`Rule-based controller example`.
+
+.. warning:: Make sure that the variables used by your controller are part of the observation space of the environment.

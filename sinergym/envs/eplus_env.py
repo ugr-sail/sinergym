@@ -440,27 +440,27 @@ class EplusEnv(gym.Env):
 
     # ---------------------------------- Spaces ---------------------------------- #
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def action_space(
         self
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
         return getattr(self, '_action_space')
 
-    @ action_space.setter  # pragma: no cover
+    @action_space.setter  # pragma: no cover
     def action_space(self, space: gym.spaces.Space[Any]):
         self._action_space = space
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def observation_space(
         self
     ) -> gym.spaces.Space[Any] | gym.spaces.Space[Any]:
         return getattr(self, '_observation_space')
 
-    @ observation_space.setter  # pragma: no cover
+    @observation_space.setter  # pragma: no cover
     def observation_space(self, space: gym.spaces.Space[Any]):
         self._observation_space = space
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def is_discrete(self) -> bool:
         if isinstance(self.action_space, gym.spaces.Box):
             return False
@@ -474,74 +474,74 @@ class EplusEnv(gym.Env):
 
     # --------------------------------- Simulator -------------------------------- #
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def var_handlers(self) -> Optional[Dict[str, int]]:
         return self.energyplus_simulator.var_handlers
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def meter_handlers(self) -> Optional[Dict[str, int]]:
         return self.energyplus_simulator.meter_handlers
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def actuator_handlers(self) -> Optional[Dict[str, int]]:
         return self.energyplus_simulator.actuator_handlers
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def available_handlers(self) -> Optional[str]:
         return self.energyplus_simulator.available_data
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def is_running(self) -> bool:
         return self.energyplus_simulator.is_running
 
     # ------------------------------ Building model ------------------------------ #
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def runperiod(self) -> Dict[str, int]:
         return self.model.runperiod
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def episode_length(self) -> float:
         return self.model.episode_length
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def timestep_per_episode(self) -> int:
         return self.model.timestep_per_episode
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def step_size(self) -> float:
         return self.model.step_size
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def zone_names(self) -> list:
         return self.model.zone_names
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def schedulers(self) -> Dict[str, Dict[str, Union[str, Dict[str, str]]]]:
         return self.model.schedulers
 
     # ----------------------------------- Paths ---------------------------------- #
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def workspace_path(self) -> str:
         return self.model.experiment_path
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def episode_path(self) -> str:
         return self.model.episode_path
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def building_path(self) -> str:
         return self.model.building_path
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def weather_path(self) -> str:
         return self.model.weather_path
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def ddy_path(self) -> str:
         return self.model.ddy_path
 
-    @ property  # pragma: no cover
+    @property  # pragma: no cover
     def idd_path(self) -> str:
         return self.model.idd_path
 

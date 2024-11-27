@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.CSVLogger
+﻿sinergym.utils.wrappers.CSVLogger
 =================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -20,8 +20,10 @@ sinergym.utils.wrappers.CSVLogger
       ~CSVLogger.close
       ~CSVLogger.dump_log_files
       ~CSVLogger.get_wrapper_attr
+      ~CSVLogger.has_wrapper_attr
       ~CSVLogger.render
       ~CSVLogger.reset
+      ~CSVLogger.set_wrapper_attr
       ~CSVLogger.step
       ~CSVLogger.wrapper_spec
    
@@ -37,9 +39,9 @@ sinergym.utils.wrappers.CSVLogger
       ~CSVLogger.logger
       ~CSVLogger.metadata
       ~CSVLogger.np_random
+      ~CSVLogger.np_random_seed
       ~CSVLogger.observation_space
       ~CSVLogger.render_mode
-      ~CSVLogger.reward_range
       ~CSVLogger.spec
       ~CSVLogger.unwrapped
    

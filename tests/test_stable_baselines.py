@@ -170,7 +170,7 @@ if required <= installed:
                 model.policy,
                 stable_baselines3.dqn.policies.DQNPolicy)
 
-            # Check model works
+            # Check if model works
 
             obs, info = env.reset()
             assert info['timestep'] == 0
@@ -273,7 +273,7 @@ if required <= installed:
                 model.policy,
                 stable_baselines3.sac.policies.SACPolicy)
 
-            # Check model works
+            # Check if model works
 
             obs, info = env.reset()
             assert info['timestep'] == 0

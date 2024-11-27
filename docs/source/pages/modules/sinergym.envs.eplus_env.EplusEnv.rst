@@ -18,9 +18,11 @@
       ~EplusEnv.__init__
       ~EplusEnv.close
       ~EplusEnv.get_wrapper_attr
+      ~EplusEnv.has_wrapper_attr
       ~EplusEnv.info
       ~EplusEnv.render
       ~EplusEnv.reset
+      ~EplusEnv.set_wrapper_attr
       ~EplusEnv.step
    
    
@@ -45,9 +47,9 @@
       ~EplusEnv.metadata
       ~EplusEnv.meter_handlers
       ~EplusEnv.np_random
+      ~EplusEnv.np_random_seed
       ~EplusEnv.observation_space
       ~EplusEnv.render_mode
-      ~EplusEnv.reward_range
       ~EplusEnv.runperiod
       ~EplusEnv.schedulers
       ~EplusEnv.simple_printer

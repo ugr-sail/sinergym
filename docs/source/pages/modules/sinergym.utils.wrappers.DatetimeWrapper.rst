@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.DatetimeWrapper
+﻿sinergym.utils.wrappers.DatetimeWrapper
 =======================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -19,9 +19,11 @@ sinergym.utils.wrappers.DatetimeWrapper
       ~DatetimeWrapper.class_name
       ~DatetimeWrapper.close
       ~DatetimeWrapper.get_wrapper_attr
+      ~DatetimeWrapper.has_wrapper_attr
       ~DatetimeWrapper.observation
       ~DatetimeWrapper.render
       ~DatetimeWrapper.reset
+      ~DatetimeWrapper.set_wrapper_attr
       ~DatetimeWrapper.step
       ~DatetimeWrapper.wrapper_spec
    
@@ -37,9 +39,9 @@ sinergym.utils.wrappers.DatetimeWrapper
       ~DatetimeWrapper.logger
       ~DatetimeWrapper.metadata
       ~DatetimeWrapper.np_random
+      ~DatetimeWrapper.np_random_seed
       ~DatetimeWrapper.observation_space
       ~DatetimeWrapper.render_mode
-      ~DatetimeWrapper.reward_range
       ~DatetimeWrapper.spec
       ~DatetimeWrapper.unwrapped
    

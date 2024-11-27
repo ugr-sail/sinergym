@@ -1,5 +1,5 @@
-Welcome to **sinergym**!
-========================
+**Sinergym**
+============
 
 .. include:: pages/introduction.rst
 
@@ -7,65 +7,65 @@ Welcome to **sinergym**!
 Contributing
 ############
 
-For all those interested in improving *Sinergym*, there are always improvements to be made. 
-You can check `issues <https://github.com/ugr-sail/sinergym/issues>`__ in the repository.
+If you are interested in contributing to the development of *Sinergym*, there are several ways you can get involved:
 
-If you want to contribute, please read `CONTRIBUTING.md <https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md>`__ first.
+- Reporting bugs or suggesting improvements through `issues <https://github.com/ugr-sail/sinergym/issues>`__.
+- Assisting in the development of new features or fixing existing bugs.
 
-########################
-Projects using Sinergym
-########################
+Before contributing, please refer to `CONTRIBUTING.md <https://github.com/ugr-sail/sinergym/blob/main/CONTRIBUTING.md>`__ for additional information.
 
-The following are some of the projects benefiting from the advantages of *Sinergym*:
+#########################
+Projects using *Sinergym*
+#########################
+
+The following are some of the projects that utilize *Sinergym*.
 
 - `Demosthen/ActiveRL <https://github.com/Demosthen/ActiveRL>`__
 - `VectorInstitute/HV-Ai-C <https://github.com/VectorInstitute/HV-Ai-C>`__
 - `rdnfn/beobench <https://github.com/rdnfn/beobench>`__
 
-If you want to appear in this list, do not hesitate to send us a PR and include the following badge in your repository:
+If you would like to be included in the list, just open a pull request requesting it. Before doing so, please add the following badge to your repository:
 
 .. raw:: html
     :file: ./_templates/sinergym.html
 
-############
+########
 Examples
-############
+########
 
-The examples can be run if you have your computer or container properly configured (see :ref:`Installation` section) from our notebooks hosted in the `examples <https://github.com/ugr-sail/sinergym/tree/main/examples>`__ folder of the official *Sinergym* repository.
+If you are new to using *Sinergym*, you will need to perform some initial setup. Please refer to the :ref:`Installation` section for a detailed guide on this process.
 
-################
-Citing Sinergym
-################
+Once the setup is complete, we recommend running the examples available in the `examples <https://github.com/ugr-sail/sinergym/tree/main/examples>`__ directory to explore the different features the tool offers.
 
-If you use *Sinergym* in your work, please cite our `paper <https://dl.acm.org/doi/abs/10.1145/3486611.3488729>`__::
+#################
+Citing *Sinergym*
+#################
 
-    @inproceedings{2021sinergym,
-      title={Sinergym: A Building Simulation and Control Framework for Training Reinforcement Learning Agents}, 
-      author={Jiménez-Raboso, Javier and Campoy-Nieves, Alejandro and Manjavacas-Lucas, Antonio and Gómez-Romero, Juan and Molina-Solana, Miguel},
-      year={2021},
-      isbn = {9781450391146},
-      publisher = {Association for Computing Machinery},
-      address = {New York, NY, USA},
-      url = {https://doi.org/10.1145/3486611.3488729},
-      doi = {10.1145/3486611.3488729},
-      booktitle = {Proceedings of the 8th ACM International Conference on Systems for Energy-Efficient Buildings, Cities, and Transportation},
-      pages = {319–323},
-      numpages = {5},
-    }
+If you use *Sinergym* in your work, please, cite our `paper <https://www.sciencedirect.com/science/article/pii/S0378778824011915>`__:
+
+.. code-block:: bibtex
+
+   @article{campoy2024sinergym,
+      title     = {Sinergym--A virtual testbed for building energy optimization with Reinforcement Learning},
+      author    = {Campoy-Nieves, Alejandro and Manjavacas, Antonio and Jim{\'e}nez-Raboso, Javier and Molina-Solana, Miguel and G{\'o}mez-Romero, Juan},
+      journal   = {Energy and Buildings},
+      pages     = {115075},
+      year      = {2024},
+      publisher = {Elsevier}
+   }
+
 
 .. toctree::
-   :numbered: 
    :hidden:
-   :caption: Start Here
+   :caption: Getting started
 
    pages/installation.rst
    pages/usage-example.rst
 
 
 .. toctree::
-   :numbered:
    :hidden:
-   :caption: sinergym
+   :caption: Sinergym
 
    pages/buildings.rst
    pages/weathers.rst
@@ -85,7 +85,6 @@ If you use *Sinergym* in your work, please cite our `paper <https://dl.acm.org/d
 
 
 .. toctree::
-   :numbered:
    :hidden:
    :caption: Examples
 

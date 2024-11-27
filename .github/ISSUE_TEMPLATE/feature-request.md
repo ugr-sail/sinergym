@@ -1,6 +1,6 @@
 ---
 name: "Feature request \U0001F680"
-about: Suggest an idea for this project
+about: Suggest an idea for future Sinergym's updates
 title: "[Feature]:"
 labels: Feature request
 assignees: ''

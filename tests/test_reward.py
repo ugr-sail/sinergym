@@ -31,7 +31,7 @@ def test_rewards(reward_name, env_name, request):
     assert isinstance(terms, dict)
     assert len(terms) > 0
 
-    # Do an entire episode to manage different hours and seassons
+    # Do an entire episode to manage different hours and seasons
     while not (terminated or truncated):
         a = env.action_space.sample()
         obs, _, terminated, truncated, _ = env.step(a)
@@ -65,7 +65,8 @@ def test_rewards_temperature_exception(reward_name, env_name, request):
 
 @pytest.mark.parametrize('reward_name,env_name',
                          [('linear_reward', 'env_demo_summer'),
-                          ('energy_cost_linear_reward', 'env_demo_summer_energy_cost'),
+                          ('energy_cost_linear_reward',
+                           'env_demo_summer_energy_cost'),
                           ('exponential_reward', 'env_demo_summer'),
                           ('hourly_linear_reward', 'env_demo_summer'),
                           ('normalized_linear_reward', 'env_demo_summer')
