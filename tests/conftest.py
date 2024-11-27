@@ -1,7 +1,6 @@
 import json
 import os
 import shutil
-
 from glob import glob  # to find directories with patterns
 from importlib import resources
 

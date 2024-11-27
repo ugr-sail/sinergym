@@ -1,8 +1,7 @@
 import logging
 
-import numpy as np
 import gymnasium as gym
-
+import numpy as np
 from gymnasium.wrappers.normalize import NormalizeReward
 
 import sinergym

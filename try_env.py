@@ -1,7 +1,7 @@
 import logging
 
-import numpy as np
 import gymnasium as gym
+import numpy as np
 
 import sinergym
 from sinergym.utils.logger import TerminalLogger
