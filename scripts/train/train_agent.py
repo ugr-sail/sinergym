@@ -79,7 +79,7 @@ def process_algorithm_parameters(alg_params: dict):
 
     if alg_params.get('action_noise'):
         alg_params['action_noise'] = eval(alg_params['action_noise'])
-    
+
     # Add more keys if needed
 
     return alg_params
@@ -150,7 +150,8 @@ try:
         for key, parameters in conf['wrappers'].items():
             wrapper_class = eval(key)
             for name, value in parameters.items():
-                # parse str parameters to sinergym Callable or Objects if required
+                # parse str parameters to sinergym Callable or Objects if
+                # required
                 if isinstance(value, str):
                     if '.' in value:
                         parameters[name] = eval(value)
@@ -306,7 +307,8 @@ try:
     model.save(env.get_wrapper_attr('workspace_path') + '/model')
 
     # If the environment is not closed, this script will do it in
-    # order to correctly log all the simulation data (Energyplus + Sinergym logs)
+    # order to correctly log all the simulation data (Energyplus + Sinergym
+    # logs)
     if env.get_wrapper_attr('is_running'):
         env.close()
 
