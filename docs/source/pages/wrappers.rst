@@ -44,7 +44,7 @@ By default, normalization is applied in the range ``[-1,1]``. However, a differe
 *Sinergym* parses these values to the real action space defined in the original environment internally before sending it to the *EnergyPlus* Simulator via the API middleware.
 
 .. image:: /_static/normalize_action_wrapper.png
-  :scale: 50 %
+  :scale: 20 %
   :alt: Normalize action wrapper graph.
   :align: center
 
@@ -63,7 +63,7 @@ An **action mapping function** is also provided to map these values into ones th
 Users can define this action mapping function to specify the transition from discrete to continuous values. If the output of the action mapping function does not align with the original environment action space, an error will be raised. Refer to :ref:`Action discretization wrapper` for an usage example.
 
 .. image:: /_static/discretize_wrapper.png
-  :scale: 50 %
+  :scale: 20 %
   :alt: Discretize wrapper graph.
   :align: center
 
@@ -82,7 +82,7 @@ A dictionary is given as an argument to calculate the possible increments/decrem
 The following figure illustrates its operation. Essentially, the values are rounded to the nearest increment value and added to the current real values of the simulation:
 
 .. image:: /_static/incremental_wrapper.png
-  :scale: 50 %
+  :scale: 20 %
   :alt: Incremental wrapper graph.
   :align: center
 
@@ -99,7 +99,7 @@ based on the specified **delta** and **step**. The action is added to the **curr
              apply to all variables. In essence, selecting variables individually as the ``IncrementalWrapper`` does is not possible.
 
 .. image:: /_static/discrete_incremental_wrapper.png
-  :scale: 50 %
+  :scale: 20 %
   :alt: Discrete incremental wrapper graph.
   :align: center
 
@@ -146,7 +146,7 @@ The diagram below illustrates the relationship between the wrappers and the logg
 provided in the following subsections.
 
 .. image:: /_static/logger_structure.png
-  :scale: 50 %
+  :scale: 20 %
   :alt: Logger wrappers graph.
   :align: center
 

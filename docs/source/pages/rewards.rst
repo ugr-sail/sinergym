@@ -63,7 +63,7 @@ By default, reward functions return a **scalar value** and the values of the **t
 The reward structure generally matches the diagram below:
 
 .. image:: /_static/reward_terms.png
-  :scale: 70 %
+  :scale: 13 %
   :alt: Reward terms
   :align: center
 
@@ -91,7 +91,7 @@ For advanced reward functions, we recommend inheriting from the main class, ``Li
 Pre-defined reward functions simplify observation processing to extract consumption and comfort violation data, from which  penalty values are calculated. Weighted reward terms are then computed from these penalties and subsequently added.
 
 .. image:: /_static/reward_structure.png
-  :scale: 70 %
+  :scale: 17 %
   :alt: Reward steps structure
   :align: center
 
