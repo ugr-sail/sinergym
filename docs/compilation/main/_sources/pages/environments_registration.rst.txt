@@ -88,7 +88,7 @@ Variables specification
 The ``variables`` field follows a specific format to efficiently define all observed variables in the environment. Variable names and keys can be provided as either individual strings or lists of strings. The functionality is illustrated in the following graph:
 
 .. image:: /_static/json_variables_conf.png
-  :scale: 70 %
+  :scale: 25 %
   :alt: *variables* field format in the JSON configuration of *Sinergym* environments
   :align: center
 

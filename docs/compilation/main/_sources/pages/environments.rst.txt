@@ -183,7 +183,7 @@ Action space
 In *Sinergym*, the environment's observation and action spaces are defined through the arguments ``time_variables``, ``variables``, ``meters``, and ``actuators``. While the observation space (composed of ``time_variables``, ``variables``, and ``meters``) is automatically generated, the action space (defined by the ``actuators``) requires explicit definition to establish the range of values supported by the Gymnasium interface or the number of discrete values in a discrete environment.
 
 .. image:: /_static/spaces_elements.png
-  :scale: 35 %
+  :scale: 50 %
   :alt: *EnergyPlus* API components that compose observation and action spaces in *Sinergym*.
   :align: center
 
