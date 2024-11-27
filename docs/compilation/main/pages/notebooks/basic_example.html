@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Basic example &mdash; Sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=d94dbed7" />
+
+  
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Getting information about Sinergym environments" href="getting_env_information.html" />
+    <link rel="prev" title="Tests" href="../tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../buildings.html">Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../weathers.html">Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">Deep Reinforcement Learning integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">Google Cloud integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sinergym_package.html">Sinergym package information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">Default building control using an empty action space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">LoggerWrapper customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging_unused_variables.html">Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">Rule-based controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Basic example</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/notebooks/basic_example.nblink.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Basic-example">
+<h1>Basic example<a class="headerlink" href="#Basic-example" title="Link to this heading"></a></h1>
+<p>Sinergym adheres to the the standard <a class="reference external" href="https://gymnasium.farama.org/index.html">Farama Gymnasium API</a>. Let’s explore how to create a basic control loop.</p>
+<p>To begin, we need to import <em>Sinergym</em> and create an environment. In this example, we will use the <code class="docutils literal notranslate"><span class="pre">Eplus-demo-v1</span></code> environment.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">sinergym</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-demo-v1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: demo-v1
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-demo-v1-res1
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Extra config: runperiod updated to {&#39;apply_weekend_holiday_rule&#39;: &#39;No&#39;, &#39;begin_day_of_month&#39;: 1, &#39;begin_month&#39;: 1, &#39;begin_year&#39;: 1991, &#39;day_of_week_for_start_day&#39;: &#39;Monday&#39;, &#39;end_day_of_month&#39;: 1, &#39;end_month&#39;: 3, &#39;end_year&#39;: 1991, &#39;use_weather_file_daylight_saving_period&#39;: &#39;Yes&#39;, &#39;use_weather_file_holidays_and_special_days&#39;: &#39;Yes&#39;, &#39;use_weather_file_rain_indicators&#39;: &#39;Yes&#39;, &#39;use_weather_file_snow_indicators&#39;: &#39;Yes&#39;}
+[MODELING] (INFO) : Updated episode length (seconds): 5184000.0
+[MODELING] (INFO) : Updated timestep size (seconds): 3600.0
+[MODELING] (INFO) : Updated timesteps per episode: 1440
+[MODELING] (INFO) : Runperiod established.
+[MODELING] (INFO) : Episode length (seconds): 5184000.0
+[MODELING] (INFO) : timestep size (seconds): 3600.0
+[MODELING] (INFO) : timesteps per episode: 1440
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+</pre></div></div>
+</div>
+<p>At first glance, <em>Sinergym</em> might seem to be only imported and not used. However, importing <em>Sinergym</em> inherently defines all the available <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/environments.html">Environments</a>. In this case, <code class="docutils literal notranslate"><span class="pre">Eplus-demo-v1</span></code> is a pre-defined environment that is just ready to use.</p>
+<p>With this straightforward setup, we are prepared to iterate over episodes. For this basic example, we will consider a single episode.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">truncated</span> <span class="o">=</span> <span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">current_month</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_month</span><span class="p">:</span>  <span class="c1"># display results every month</span>
+            <span class="n">current_month</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reward: &#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span> <span class="n">info</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: demo-v1
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[ENVIRONMENT] (INFO) : Saving episode output path.
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+Reward:  -43.96143518328036 {&#39;time_elapsed(hours)&#39;: 2.5, &#39;month&#39;: 1, &#39;day&#39;: 1, &#39;hour&#39;: 1, &#39;is_raining&#39;: False, &#39;action&#39;: array([21.257265, 22.842768], dtype=float32), &#39;timestep&#39;: 1, &#39;reward&#39;: -43.96143518328036, &#39;energy_term&#39;: -43.67932315835093, &#39;comfort_term&#39;: -0.2821120249294271, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -87.35864631670186, &#39;abs_comfort_penalty&#39;: -0.5642240498588542, &#39;total_power_demand&#39;: 87.35864631670186, &#39;total_temperature_violation&#39;: 0.5642240498588542}
+Simulation Progress [Episode 1]:  53%|█████▎    | 53/100 [00:00&lt;00:00, 206.77%/s, 53% completed] Reward:  -1654090.4591468547 {&#39;time_elapsed(hours)&#39;: 745.0833333333334, &#39;month&#39;: 2, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: array([15.304309, 23.142662], dtype=float32), &#39;timestep&#39;: 744, &#39;reward&#39;: -10307.216587526324, &#39;energy_term&#39;: -10307.216587526324, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -20614.433175052647, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 20614.433175052647, &#39;total_temperature_violation&#39;: 0.0}
+Simulation Progress [Episode 1]:  98%|█████████▊| 98/100 [00:00&lt;00:00, 176.82%/s, 98% completed]Reward:  -2817928.777706766 {&#39;time_elapsed(hours)&#39;: 1417.25, &#39;month&#39;: 3, &#39;day&#39;: 1, &#39;hour&#39;: 0, &#39;is_raining&#39;: False, &#39;action&#39;: array([15.631611, 24.258501], dtype=float32), &#39;timestep&#39;: 1416, &#39;reward&#39;: -2181.3837787755947, &#39;energy_term&#39;: -2181.3837787755947, &#39;comfort_term&#39;: 0.0, &#39;reward_weight&#39;: 0.5, &#39;abs_energy_penalty&#39;: -4362.767557551189, &#39;abs_comfort_penalty&#39;: 0, &#39;total_power_demand&#39;: 4362.767557551189, &#39;total_temperature_violation&#39;: 0.0}
+</pre></div></div>
+</div>
+<p>Remember to close the environment once the interaction is complete:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Simulation Progress [Episode 1]:  98%|█████████▊| 98/100 [00:02&lt;00:00, 38.51%/s, 98% completed]
+[ENVIRONMENT] (INFO) : Environment closed. [demo-v1]
+</pre></div></div>
+</div>
+<p>Now, let’s examine the final rewards:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+    <span class="s1">&#39;Mean reward: &#39;</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rewards</span><span class="p">),</span>
+    <span class="s1">&#39;Cumulative reward: &#39;</span><span class="p">,</span>
+    <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Mean reward:  -1968.0675045384069 Cumulative reward:  -2834017.206535306
+</pre></div></div>
+</div>
+<p><em>Sinergym</em> has an extensive <a class="reference external" href="https://github.com/ugr-sail/sinergym/blob/main/sinergym/__init__.py">list of registered environments</a>. We utilize building models with varying characteristics, such as continuous or discrete action spaces, different weather types, weather noise, run periods, timesteps, reward functions, and more.</p>
+<p>We will explore these features in the rest of notebooks.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../tests.html" class="btn btn-neutral float-left" title="Tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="getting_env_information.html" class="btn btn-neutral float-right" title="Getting information about Sinergym environments" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: main
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
+            <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
+            <dd><a href="../../../v3.3.0/index.html">v3.3.0</a></dd>
+            <dd><a href="../../../v3.4.0/index.html">v3.4.0</a></dd>
+            <dd><a href="../../../v3.5.0/index.html">v3.5.0</a></dd>
+            <dd><a href="../../../v3.6.0/index.html">v3.6.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="basic_example.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>

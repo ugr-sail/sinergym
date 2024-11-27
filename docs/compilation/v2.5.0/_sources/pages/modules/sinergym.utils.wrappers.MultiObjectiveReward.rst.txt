@@ -1,0 +1,46 @@
+sinergym.utils.wrappers.MultiObjectiveReward
+============================================
+
+.. currentmodule:: sinergym.utils.wrappers
+
+.. autoclass:: MultiObjectiveReward
+   :members:                                                           
+   :undoc-members:               
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~MultiObjectiveReward.__init__
+      ~MultiObjectiveReward.class_name
+      ~MultiObjectiveReward.close
+      ~MultiObjectiveReward.get_wrapper_attr
+      ~MultiObjectiveReward.has_wrapper_attr
+      ~MultiObjectiveReward.render
+      ~MultiObjectiveReward.reset
+      ~MultiObjectiveReward.set_wrapper_attr
+      ~MultiObjectiveReward.step
+      ~MultiObjectiveReward.wrapper_spec
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MultiObjectiveReward.action_space
+      ~MultiObjectiveReward.metadata
+      ~MultiObjectiveReward.np_random
+      ~MultiObjectiveReward.np_random_seed
+      ~MultiObjectiveReward.observation_space
+      ~MultiObjectiveReward.render_mode
+      ~MultiObjectiveReward.spec
+      ~MultiObjectiveReward.unwrapped
+   
+   
