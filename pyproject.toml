@@ -6,16 +6,16 @@
 package-mode = true
 name = "sinergym"
 
-version = "3.6.10"
-description = "The goal of sinergym is to create an environment following OpenAI Gym interface for wrapping simulation engines for building control using deep reinforcement learning."
+version = "3.6.12"
+description = "Sinergym provides a Gymnasium-based interface to interact with building simulations. This allows control in simulation time through custom controllers, including reinforcement learning agents"
 license = "MIT"
 
 authors = [
     "Alejandro Campoy Nieves <alejandroac79@gmail.com>",
     "Antonio Manjavacas",
     "Javier Jiménez",
-    "Juan Gómez",
     "Miguel Molina",
+    "Juan Gómez"
 ]
 # maintainers = [...
 
@@ -31,7 +31,7 @@ keywords = [
     "reinforcement-learning",
     "buildings",
     "simulation",
-    "Control",
+    "control",
     "reinforcement-learning-environments",
 ]
 
