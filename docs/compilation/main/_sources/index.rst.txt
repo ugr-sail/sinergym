@@ -44,6 +44,7 @@ Citing *Sinergym*
 If you use *Sinergym* in your work, please, cite our `paper <https://www.sciencedirect.com/science/article/pii/S0378778824011915>`__:
 
 .. code-block:: bibtex
+   
    @article{Campoy2025sinergym,
       title     = {Sinergym – A virtual testbed for building energy optimization with Reinforcement Learning},
       author    = {Alejandro Campoy-Nieves and Antonio Manjavacas and Javier Jiménez-Raboso and Miguel Molina-Solana and Juan Gómez-Romero},
