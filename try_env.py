@@ -14,8 +14,7 @@ from sinergym.utils.wrappers import (
     ReduceObservationWrapper,
     CSVLogger)
 
-# Optional: Terminal log in the same format as Sinergym.
-# Logger info can be replaced by print.
+# Logger
 terminal_logger = TerminalLogger()
 logger = terminal_logger.getLogger(
     name='MAIN',
@@ -53,6 +52,7 @@ env = ReduceObservationWrapper(
         'cop_temp_mod',
         'plr_current'])
 
+<< << << < HEAD
 # Execute interactions during 3 episodes
 for i in range(1):
     # Reset the environment to start a new episode
@@ -60,20 +60,34 @@ for i in range(1):
     truncated = terminated = False
     rewards = []
     current_month = 11
-    while not (terminated or truncated):
-        # Random action control
+== == == =
+# Execute 3 episodes
+for i in range(3):
+
+    # Reset the environment to start a new episode
+    obs, info = env.reset()
+
+    rewards = []
+    truncated = terminated = False
+    current_month = 0
+
+>>>>>> > main
+   while not (terminated or truncated):
+
+        # Random action selection
         a = env.action_space.sample()
-        # Read observation and reward
+
+        # Perform action and receive env information
         obs, reward, terminated, truncated, info = env.step(a)
+
         rewards.append(reward)
-        # If this timestep is a new month start
-        if info['month'] != current_month:  # display results every month
+
+        # Display results every simulated month
+        if info['month'] != current_month:
             current_month = info['month']
-            # Print information
             logger.info('Reward: {}'.format(sum(rewards)))
             logger.info('Info: {}'.format(info))
-    # Final episode information print
+
     logger.info('Episode {} - Mean reward: {} - Cumulative Reward: {}'.format(i,
                                                                               np.mean(rewards), sum(rewards)))
-# Close the environment
 env.close()

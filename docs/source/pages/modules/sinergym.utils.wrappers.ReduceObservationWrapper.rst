@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.ReduceObservationWrapper
+﻿sinergym.utils.wrappers.ReduceObservationWrapper
 ================================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -19,8 +19,10 @@ sinergym.utils.wrappers.ReduceObservationWrapper
       ~ReduceObservationWrapper.class_name
       ~ReduceObservationWrapper.close
       ~ReduceObservationWrapper.get_wrapper_attr
+      ~ReduceObservationWrapper.has_wrapper_attr
       ~ReduceObservationWrapper.render
       ~ReduceObservationWrapper.reset
+      ~ReduceObservationWrapper.set_wrapper_attr
       ~ReduceObservationWrapper.step
       ~ReduceObservationWrapper.wrapper_spec
    
@@ -36,9 +38,9 @@ sinergym.utils.wrappers.ReduceObservationWrapper
       ~ReduceObservationWrapper.logger
       ~ReduceObservationWrapper.metadata
       ~ReduceObservationWrapper.np_random
+      ~ReduceObservationWrapper.np_random_seed
       ~ReduceObservationWrapper.observation_space
       ~ReduceObservationWrapper.render_mode
-      ~ReduceObservationWrapper.reward_range
       ~ReduceObservationWrapper.spec
       ~ReduceObservationWrapper.unwrapped
    

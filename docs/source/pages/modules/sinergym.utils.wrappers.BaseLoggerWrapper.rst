@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.BaseLoggerWrapper
+﻿sinergym.utils.wrappers.BaseLoggerWrapper
 =========================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -21,8 +21,10 @@ sinergym.utils.wrappers.BaseLoggerWrapper
       ~BaseLoggerWrapper.close
       ~BaseLoggerWrapper.get_episode_summary
       ~BaseLoggerWrapper.get_wrapper_attr
+      ~BaseLoggerWrapper.has_wrapper_attr
       ~BaseLoggerWrapper.render
       ~BaseLoggerWrapper.reset
+      ~BaseLoggerWrapper.set_wrapper_attr
       ~BaseLoggerWrapper.step
       ~BaseLoggerWrapper.wrapper_spec
    
@@ -37,9 +39,9 @@ sinergym.utils.wrappers.BaseLoggerWrapper
       ~BaseLoggerWrapper.action_space
       ~BaseLoggerWrapper.metadata
       ~BaseLoggerWrapper.np_random
+      ~BaseLoggerWrapper.np_random_seed
       ~BaseLoggerWrapper.observation_space
       ~BaseLoggerWrapper.render_mode
-      ~BaseLoggerWrapper.reward_range
       ~BaseLoggerWrapper.spec
       ~BaseLoggerWrapper.unwrapped
    

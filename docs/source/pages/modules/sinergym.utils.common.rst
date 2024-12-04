@@ -22,6 +22,7 @@
       json_to_actuators
       json_to_meters
       json_to_variables
+      ornstein_uhlenbeck_process
       unwrap_wrapper
    
    

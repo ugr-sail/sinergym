@@ -154,7 +154,7 @@ def test_step_in_completed_episode(env_demo):
     last_obs = obs
     last_info = info
 
-    # Terminted should be false and truncated true
+    # Terminated should be false, and truncated true
     assert not terminated
     assert truncated
 

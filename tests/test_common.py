@@ -14,7 +14,7 @@ from sinergym.utils.wrappers import NormalizeObservation
         (2002, 1, 10, 2002, 2, 5, 2332800),
         # st_time=00:00:00 and ed_time=24:00:00
         (2021, 5, 5, 2021, 5, 5, 3600 * 24),
-        (2004, 7, 1, 2004, 6, 1, -2505600),  # Negative delta secons test
+        (2004, 7, 1, 2004, 6, 1, -2505600),  # Negative delta seconds test
     ]
 )
 def test_get_delta_seconds(

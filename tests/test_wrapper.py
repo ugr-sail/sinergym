@@ -16,7 +16,7 @@ def test_datetime_wrapper(env_demo):
     env = DatetimeWrapper(env=env_demo)
 
     observation_variables = env.observation_variables
-    # Check observation varibles have been updated
+    # Check if observation variables have been updated
     assert 'day' not in observation_variables
     assert 'month' not in observation_variables
     assert 'hour' not in observation_variables
@@ -266,6 +266,22 @@ def test_weatherforecasting_wrapper(env_demo):
     # Checks step obs
     a = env.action_space.sample()
     obs, _, _, _, _ = env.step(a)
+
+    assert isinstance(obs, np.ndarray)
+    assert len(obs) == wrapped_shape
+
+    # Checks exceptional case 2
+    env.forecast_data = env.get_wrapper_attr('forecast_data').head(2)
+    a = env.action_space.sample()
+    obs, reward, terminated, truncated, info = env.step(a)
+
+    assert isinstance(obs, np.ndarray)
+    assert len(obs) == wrapped_shape
+
+    # Checks exceptional case 1
+    env.forecast_data = env.get_wrapper_attr('forecast_data').head(1)
+    a = env.action_space.sample()
+    obs, reward, terminated, truncated, info = env.step(a)
 
     assert isinstance(obs, np.ndarray)
     assert len(obs) == wrapped_shape
@@ -909,7 +925,7 @@ def test_CSVlogger_custom_logger(env_demo, custom_logger_wrapper):
 
 
 def test_logger_exceptions(env_demo):
-    # Use a Logger without previous BaseLoggerWrapper child class shloud raise
+    # Use a Logger without previous BaseLoggerWrapper child class should raise
     # exception
     with pytest.raises(AssertionError):
         env = CSVLogger(env=env_demo)
@@ -923,7 +939,7 @@ def test_reduced_observation_wrapper(env_demo):
             'outdoor_temperature',
             'outdoor_humidity',
             'air_temperature'])
-    # Check that the original variable names has the removed varibles
+    # Check that the original variable names has the removed variables
     # but not in reduced variables
     original_observation_variables = env.env.get_wrapper_attr(
         'observation_variables')
@@ -1016,7 +1032,7 @@ def test_env_wrappers(env_all_wrappers):
         assert isinstance(reward, list)
     env_all_wrappers.reset()
 
-    # Let's check if history has been completed succesfully
+    # Let's check if history has been completed successfully
     assert len(env_all_wrappers.history) == env_all_wrappers.n
     assert isinstance(env_all_wrappers.history[0], np.ndarray)
 

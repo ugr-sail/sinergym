@@ -1,12 +1,10 @@
-############
+########
 Weathers
-############
+########
 
-Detailed climate data incorporated in *Sinergym* is presented below, 
-independent of other environmental components utilized in each experiment.
+The following are the default **weather datasets** included in *Sinergym*. These are used to replicate climate conditions during simulations.
 
-.. important:: If you are interested in including new weathers to this framework, 
-               please visit section :ref:`Adding new weathers for environments`.
+.. note:: If you are interested in including new weathers files, please, visit section :ref:`Adding new weathers`.
 
 +-------------------------------------------------------------+--------------------------+-------------------------------------------------------------------------------------------+------------+-----------+
 |                        Weather file                         |         Location         |                                       Climate type                                        | M.A.T (ºC) | M.A.H (%) |
@@ -40,12 +38,10 @@ independent of other environmental components utilized in each experiment.
 | SWE_Stockholm.Arlanda.024600_IWEC                           | Stockholm, Sweden        | Moist continental (warm summer, cold winter, no dry season).                              | 6.43       | 78.42     |
 +-------------------------------------------------------------+--------------------------+-------------------------------------------------------------------------------------------+------------+-----------+
 
-*M.A.T: Mean Temperature*,
-*M.A.H: Mean Humidity*
+*M.A.T = Mean Ambient Temperature*; *M.A.H = Mean Ambient Humidity*
 
-.. note:: Weather types according to `DOE's
+.. note:: Weather types are aligned with `DOE's
           classification <https://www.energycodes.gov/development/commercial/prototype_models#TMY3>`__.
 
-.. important:: It can be specified several weathers in the same experiment. *Sinergym* will sample one weather in each episode to use it. For more
-               information, visit section :ref:`Weather files`.
+.. important:: Multiple weathers can be used in a single simulation. For more information, visit section :ref:`Weather files`.
 

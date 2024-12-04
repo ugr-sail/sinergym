@@ -1,4 +1,4 @@
-sinergym.utils.wrappers.DiscreteIncrementalWrapper
+﻿sinergym.utils.wrappers.DiscreteIncrementalWrapper
 ==================================================
 
 .. currentmodule:: sinergym.utils.wrappers
@@ -21,8 +21,10 @@ sinergym.utils.wrappers.DiscreteIncrementalWrapper
       ~DiscreteIncrementalWrapper.class_name
       ~DiscreteIncrementalWrapper.close
       ~DiscreteIncrementalWrapper.get_wrapper_attr
+      ~DiscreteIncrementalWrapper.has_wrapper_attr
       ~DiscreteIncrementalWrapper.render
       ~DiscreteIncrementalWrapper.reset
+      ~DiscreteIncrementalWrapper.set_wrapper_attr
       ~DiscreteIncrementalWrapper.step
       ~DiscreteIncrementalWrapper.wrapper_spec
    
@@ -39,9 +41,9 @@ sinergym.utils.wrappers.DiscreteIncrementalWrapper
       ~DiscreteIncrementalWrapper.logger
       ~DiscreteIncrementalWrapper.metadata
       ~DiscreteIncrementalWrapper.np_random
+      ~DiscreteIncrementalWrapper.np_random_seed
       ~DiscreteIncrementalWrapper.observation_space
       ~DiscreteIncrementalWrapper.render_mode
-      ~DiscreteIncrementalWrapper.reward_range
       ~DiscreteIncrementalWrapper.spec
       ~DiscreteIncrementalWrapper.unwrapped
    

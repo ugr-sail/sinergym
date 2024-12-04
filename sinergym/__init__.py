@@ -11,7 +11,7 @@ from sinergym.utils.common import convert_conf_to_env_parameters
 from sinergym.utils.constants import *
 from sinergym.utils.rewards import *
 
-# Ignore epw module warning (epw module mistake)
+# Ignore epw module warning
 warnings.filterwarnings(
     "ignore",
     module='epw')
@@ -88,7 +88,7 @@ for root, dirs, files in os.walk(configuration_path):
         file_path = os.path.join(root, file)
         conf_files.append(file_path)
 
-# ---------------- For each conf file, setting up environments --------------- #
+# ---------------- For each conf file, set up environments --------------- #
 for conf_file in conf_files:
     with open(conf_file) as json_f:
         conf = json.load(json_f)

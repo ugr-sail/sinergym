@@ -1,4 +1,3 @@
-
 {
     "id": "SACExperimentExample",
     "environment": "Eplus-5zone-hot-continuous-stochastic-v1",
@@ -20,7 +19,7 @@
             "replay_buffer_class": null,
             "replay_buffer_kwargs": null,
             "optimize_memory_usage": false,
-            "ent_coef":"auto",
+            "ent_coef": "auto",
             "target_update_interval": 1,
             "target_entropy": "auto",
             "use_sde": false,

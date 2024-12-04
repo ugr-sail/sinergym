@@ -1,6 +1,6 @@
 ---
 name: "Improvement \U0001F527"
-about: Create a report to help us improve
+about: Create a report to help us improving Sinergym
 title: "[Enhancement]:"
 labels: enhancement
 assignees: ''

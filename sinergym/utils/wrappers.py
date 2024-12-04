@@ -480,7 +480,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
         """Resets the environment.
 
         Returns:
-            Tuple[np.ndarray,Dict[str,Any]]: Tuple with next observation, and dict with information about the enviroment.
+            Tuple[np.ndarray,Dict[str,Any]]: Tuple with next observation, and dict with information about the environment.
         """
         self.set_forecast_data()
 
@@ -498,7 +498,7 @@ class WeatherForecastingWrapper(gym.Wrapper):
 
         Returns:
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated
-            episode and dict with Information about the enviroment.
+            episode and dict with Information about the environment.
         """
 
         obs, reward, terminated, truncated, info = self.env.step(action)
@@ -524,33 +524,26 @@ class WeatherForecastingWrapper(gym.Wrapper):
 
         Args:
             obs (np.ndarray): Original observation.
-            info (Dict[str, Any]): Information about the enviroment.
+            info (Dict[str, Any]): Information about the environment.
         Returns:
             np.ndarray: Transformed observation.
         """
         # Search for the index corresponding to the time of the current
         # observation.
         filter = (
-            self.forecast_data['Month'] == info['month']) & (
-            self.forecast_data['Day'] == info['day']) & (
-            self.forecast_data['Hour'] == (
-                info['hour'] +
-                1))
-        i = self.forecast_data[filter].index[0]
+            (self.forecast_data['Month'].to_numpy() == info['month']) &
+            (self.forecast_data['Day'].to_numpy() == info['day']) &
+            (self.forecast_data['Hour'].to_numpy() == info['hour'] + 1)
+        )
+        i = np.where(filter)[0][0]
 
         # Create a list of indexes corresponding to the weather forecasts to be
         # added
-        indexes = list(
-            range(
-                i +
-                self.delta,
-                i +
-                self.delta *
-                self.n +
-                1,
-                self.delta))
-        # Ensure that DataFrame limits are not exceeded.
-        indexes = [idx for idx in indexes if idx < len(self.forecast_data)]
+        indexes = np.arange(
+            i + self.delta,
+            i + self.delta * self.n + 1,
+            self.delta)
+        indexes = indexes[indexes < len(self.forecast_data)]
 
         # Exceptional case 1: no weather forecast remains. In this case we fill in by repeating
         # the information from the weather forecast observation of current time
@@ -559,18 +552,20 @@ class WeatherForecastingWrapper(gym.Wrapper):
             indexes = [i]
 
         # Obtain weather forecast observations
-        selected_rows = self.forecast_data.loc[indexes, self.columns].values
+        selected_rows = self.forecast_data.iloc[indexes,
+                                                :][self.columns].values
 
         # Exceptional case 2: If there are not enough weather forecasts, repeat the last weather forecast observation
         # until the required size is reached.
         if len(selected_rows) < self.n:
-            last_row = selected_rows[-1]
             needed_rows = self.n - len(selected_rows)
+            # Ensure adecuate shape
+            last_row = selected_rows[-1:]
             selected_rows = np.vstack(
-                [selected_rows, np.tile(last_row, (needed_rows, 1))])
+                [selected_rows, np.repeat(last_row, needed_rows, axis=0)])
 
-        info_forecasting = selected_rows.flatten()
-        obs = np.concatenate((obs, info_forecasting))
+        # Flatten the selected rows
+        obs = np.concatenate((obs, selected_rows.ravel()))
 
         return obs
 
@@ -654,7 +649,7 @@ class EnergyCostWrapper(gym.Wrapper):
         """Resets the environment.
 
         Returns:
-            Tuple[np.ndarray,Dict[str,Any]]: Tuple with next observation, and dict with information about the enviroment.
+            Tuple[np.ndarray,Dict[str,Any]]: Tuple with next observation, and dict with information about the environment.
         """
         self.set_energy_cost_data()
 
@@ -673,7 +668,7 @@ class EnergyCostWrapper(gym.Wrapper):
 
         Returns:
             Tuple[np.ndarray, float, bool, Dict[str, Any]]: Tuple with next observation, reward, bool for terminated
-            episode and dict with Information about the enviroment.
+            episode and dict with Information about the environment.
         """
 
         obs, _, terminated, truncated, info = self.env.step(action)
@@ -714,29 +709,29 @@ class EnergyCostWrapper(gym.Wrapper):
             self.energy_cost_data = ornstein_uhlenbeck_process(
                 data=self.energy_cost_data, variability_config=self.energy_cost_variability)
 
-    def observation(self, obs, info):
+    def observation(self, obs: np.ndarray, info: Dict[str, Any]) -> np.ndarray:
         """Build the state observation by adding energy cost information.
 
         Args:
             obs (np.ndarray): Original observation.
-            info (Dict[str, Any]): Information about the enviroment.
+            info (Dict[str, Any]): Information about the environment.
         Returns:
             np.ndarray: Transformed observation.
         """
         # Search for the index corresponding to the time of the current
         # observation.
         filter = (
-            self.energy_cost_data['Month'] == info['month']) & (
-            self.energy_cost_data['Day'] == info['day']) & (
-            self.energy_cost_data['Hour'] == (
-                info['hour']))
-        i = self.energy_cost_data[filter].index[0]
+            (self.energy_cost_data['Month'].to_numpy() == info['month']) &
+            (self.energy_cost_data['Day'].to_numpy() == info['day']) &
+            (self.energy_cost_data['Hour'].to_numpy() == info['hour'])
+        )
+        i = np.where(filter)[0][0]
 
         # Obtain energy cost observation
         selected_row = self.energy_cost_data.loc[i, ['value']].values
 
-        info_energy_cost = selected_row.flatten()
-        obs = np.concatenate((obs, info_energy_cost))
+        # Flatten the selected rows
+        obs = np.concatenate((obs, selected_row.ravel()))
 
         return obs
 
