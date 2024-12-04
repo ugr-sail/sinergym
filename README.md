@@ -157,12 +157,15 @@ The following are some of the projects using *Sinergym*:
 If you use *Sinergym* in your work, please cite our [paper](https://dl.acm.org/doi/abs/10.1145/3486611.3488729):
 
 ```bibtex
-@article{campoy2024sinergym,
-  title     = {Sinergym--A virtual testbed for building energy optimization with Reinforcement Learning},
-  author    = {Campoy-Nieves, Alejandro and Manjavacas, Antonio and Jim{\'e}nez-Raboso, Javier and Molina-Solana, Miguel and G{\'o}mez-Romero, Juan},
+@article{Campoy2025sinergym,
+  title = {Sinergym – A virtual testbed for building energy optimization with Reinforcement Learning},
+  author = {Alejandro Campoy-Nieves and Antonio Manjavacas and Javier Jiménez-Raboso and Miguel Molina-Solana and Juan Gómez-Romero},
   journal   = {Energy and Buildings},
-  pages     = {115075},
-  year      = {2024},
-  publisher = {Elsevier}
+  volume = {327},
+  articleno = {115075},
+  year = {2025},
+  issn = {0378-7788},
+  doi = {10.1016/j.enbuild.2024.115075},
+  url = {https://www.sciencedirect.com/science/article/pii/S0378778824011915},
 }
 ```
