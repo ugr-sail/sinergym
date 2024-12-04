@@ -52,15 +52,6 @@ env = ReduceObservationWrapper(
         'cop_temp_mod',
         'plr_current'])
 
-<< << << < HEAD
-# Execute interactions during 3 episodes
-for i in range(1):
-    # Reset the environment to start a new episode
-    obs, info = env.reset()
-    truncated = terminated = False
-    rewards = []
-    current_month = 11
-== == == =
 # Execute 3 episodes
 for i in range(3):
 
@@ -71,8 +62,7 @@ for i in range(3):
     truncated = terminated = False
     current_month = 0
 
->>>>>> > main
-   while not (terminated or truncated):
+    while not (terminated or truncated):
 
         # Random action selection
         a = env.action_space.sample()
