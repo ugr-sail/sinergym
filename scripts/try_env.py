@@ -2,42 +2,48 @@ import logging
 
 import gymnasium as gym
 import numpy as np
-from gymnasium.wrappers.normalize import NormalizeReward
 
 import sinergym
 from sinergym.utils.logger import TerminalLogger
-from sinergym.utils.wrappers import (LoggerWrapper, NormalizeAction,
+from sinergym.utils.wrappers import (CSVLogger, LoggerWrapper, NormalizeAction,
                                      NormalizeObservation)
 
+# Logger
 terminal_logger = TerminalLogger()
 logger = terminal_logger.getLogger(
     name='MAIN',
     level=logging.INFO
 )
 
-env = gym.make('Eplus-demo-v1')
+# Create environment and apply wrappers for normalization and logging
+env = gym.make('Eplus-5zone-hot-continuous-stochastic-v1')
 env = NormalizeAction(env)
 env = NormalizeObservation(env)
-env = NormalizeReward(env)
 env = LoggerWrapper(env)
+env = CSVLogger(env)
 
 # Execute 1 episode
-for i in range(1):
+episodes = 1
+for i in range(episodes):
+
     # Reset the environment to start a new episode
     obs, info = env.reset()
+
     rewards = []
     truncated = terminated = False
     current_month = 0
+
     while not (terminated or truncated):
-        # Random action
+
+        # Random action selection
         a = env.action_space.sample()
 
-        # Perform action
+        # Perform action and receive env information
         obs, reward, terminated, truncated, info = env.step(a)
 
         rewards.append(reward)
 
-        #  Display results every simulated month
+        # Display results every simulated month
         if info['month'] != current_month:
             current_month = info['month']
             logger.info('Reward: {}'.format(sum(rewards)))
