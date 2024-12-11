@@ -51,5 +51,7 @@ coverage.xml
 #wandb
 wandb/
 
+artifacts/
+
 #fcntl
 .lock
