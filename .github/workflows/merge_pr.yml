@@ -98,7 +98,7 @@ jobs:
           destination_dir: docs/compilation
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-          keep_files: false
+          keep_files: true
           enable_jekyll: true
 
   tests:
