@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logging unused variables &mdash; Sinergym  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=d94dbed7" />
+
+  
+    <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Rule-based controller example" href="rule_controller_example.html" />
+    <link rel="prev" title="LoggerWrapper customization" href="personalize_loggerwrapper.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #a5beba" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Sinergym
+              <img src="../../_static/logo-sidebar.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage-example.html">Usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sinergym</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../buildings.html">Buildings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../weathers.html">Weathers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments_registration.html">Environments configuration and registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging system overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">Sinergym output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewards.html">Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra-configuration.html">Extra configuration in Sinergym simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-reinforcement-learning.html">Deep Reinforcement Learning integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gcloudAPI.html">Google Cloud integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../github-actions.html">Github actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tests.html">Tests</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_example.html">Basic example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_env_information.html">Getting information about Sinergym environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sinergym_package.html">Sinergym package information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_environment.html">Changing an environment registered in Sinergym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="default_building_control.html">Default building control using an empty action space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers_examples.html">Wrappers example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personalize_loggerwrapper.html">LoggerWrapper customization</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Logging unused variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rule_controller_example.html">Rule-based controller example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drl.html">DRL usage example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../API-reference.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #a5beba" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Sinergym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Logging unused variables</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/notebooks/logging_unused_variables.nblink.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Logging-unused-variables">
+<h1>Logging unused variables<a class="headerlink" href="#Logging-unused-variables" title="Link to this heading"></a></h1>
+<p>Custom logger wrappers in <em>Sinergym</em> enable recording any metric based on interaction data with the environment (as shown <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/notebooks/personalize_loggerwrapper.html">here</a>). However, there may be cases where you want to monitor data directly from the simulator.</p>
+<p>Until version v3.3.2 of <em>Sinergym</em>, all variables monitored using the <code class="docutils literal notranslate"><span class="pre">LoggerWrapper</span></code> had to be present in the observation space. This represents a drawback when we want to monitor certain variables of the simulation that are not used for control (i.e., that are not present in the environment’s observation space).</p>
+<p>Including extra variables that are not directly part of the observation space requires certain internal changes that break the minimalist structure of the classes and EnergyPlus API usage that make up the tool.</p>
+<p>This notebook explains the correct way to do it, which is possible since <em>Sinergym</em> v3.3.3. It involves the use of the <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/wrappers.html#reduceobservationwrapper">ReduceObservationWrapper</a> in combination with the <a class="reference external" href="https://ugr-sail.github.io/sinergym/compilation/main/pages/wrappers.html#loggerwrapper">LoggerWrapper</a>.</p>
+<p>The idea is to define all the variables to be observed, whether they are part of the final observation space or not, and monitor everything with the <code class="docutils literal notranslate"><span class="pre">LoggerWrapper</span></code>, to later add a layer that removes the desired variables from the observation space (just when they are already being monitored, which is our goal).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">sinergym</span>
+<span class="kn">from</span> <span class="nn">sinergym.utils.wrappers</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">LoggerWrapper</span><span class="p">,</span>
+    <span class="n">NormalizeAction</span><span class="p">,</span>
+    <span class="n">NormalizeObservation</span><span class="p">,</span>
+    <span class="n">ReduceObservationWrapper</span><span class="p">,</span>
+    <span class="n">CSVLogger</span><span class="p">,</span>
+    <span class="n">WandBLogger</span><span class="p">)</span>
+
+<span class="c1"># Creating environment and applying wrappers for normalization and logging</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Eplus-5zone-hot-continuous-stochastic-v1&#39;</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeAction</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">NormalizeObservation</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">LoggerWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;###########################################################################&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Old observation space shape: &#39;</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Old observation variables: &#39;</span><span class="p">,</span>
+      <span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;###########################################################################&#39;</span><span class="p">)</span>
+
+<span class="c1"># Here we can add the CSVLogger or WandBLogger</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">CSVLogger</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">WandBLogger</span><span class="p">(</span><span class="n">env</span><span class="p">,</span>
+                  <span class="n">entity</span><span class="o">=</span><span class="s1">&#39;sail_ugr&#39;</span><span class="p">,</span>
+                  <span class="n">project_name</span><span class="o">=</span><span class="s1">&#39;test-porject&#39;</span><span class="p">,</span>
+                  <span class="n">run_name</span><span class="o">=</span><span class="s1">&#39;test-reduction&#39;</span><span class="p">)</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">ReduceObservationWrapper</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">obs_reduction</span><span class="o">=</span><span class="p">[</span>
+                               <span class="s1">&#39;outdoor_temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;outdoor_humidity&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;###########################################################################&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrapped observation space shape: &#39;</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrapped observation variables: &#39;</span><span class="p">,</span>
+      <span class="n">env</span><span class="o">.</span><span class="n">get_wrapper_attr</span><span class="p">(</span><span class="s1">&#39;observation_variables&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;###########################################################################&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#==============================================================================================#
+[ENVIRONMENT] (INFO) : Creating Gymnasium environment.
+[ENVIRONMENT] (INFO) : Name: 5zone-hot-continuous-stochastic-v1
+#==============================================================================================#
+[MODELING] (INFO) : Experiment working directory created.
+[MODELING] (INFO) : Working directory: /workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-stochastic-v1-res1
+[MODELING] (INFO) : Model Config is correct.
+[MODELING] (INFO) : Update building model Output:Variable with variable names.
+[MODELING] (INFO) : Update building model Output:Meter with meter names.
+[MODELING] (INFO) : Runperiod established.
+[MODELING] (INFO) : Episode length (seconds): 31536000.0
+[MODELING] (INFO) : timestep size (seconds): 900.0
+[MODELING] (INFO) : timesteps per episode: 35040
+[REWARD] (INFO) : Reward function initialized.
+[ENVIRONMENT] (INFO) : Environment created successfully.
+[WRAPPER NormalizeAction] (INFO) : New normalized action Space: Box(-1.0, 1.0, (2,), float32)
+[WRAPPER NormalizeAction] (INFO) : Wrapper initialized
+[WRAPPER NormalizeObservation] (INFO) : Wrapper initialized.
+[WRAPPER LoggerWrapper] (INFO) : Wrapper initialized.
+###########################################################################
+Old observation space shape:  17
+Old observation variables:  [&#39;month&#39;, &#39;day_of_month&#39;, &#39;hour&#39;, &#39;outdoor_temperature&#39;, &#39;outdoor_humidity&#39;, &#39;wind_speed&#39;, &#39;wind_direction&#39;, &#39;diffuse_solar_radiation&#39;, &#39;direct_solar_radiation&#39;, &#39;htg_setpoint&#39;, &#39;clg_setpoint&#39;, &#39;air_temperature&#39;, &#39;air_humidity&#39;, &#39;people_occupant&#39;, &#39;co2_emission&#39;, &#39;HVAC_electricity_demand_rate&#39;, &#39;total_electricity_HVAC&#39;]
+###########################################################################
+[WRAPPER CSVLogger] (INFO) : Wrapper initialized.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Failed to detect the name of this notebook, you can set it manually with the WANDB_NOTEBOOK_NAME environment variable to enable code saving.
+<span class="ansi-blue-intense-fg ansi-bold">wandb</span>: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+<span class="ansi-blue-intense-fg ansi-bold">wandb</span>: Currently logged in as: <span class="ansi-yellow-fg">alex_ugr</span> (<span class="ansi-yellow-fg">sail_ugr</span>). Use <span class="ansi-bold">`wandb login --relogin`</span> to force relogin
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+Tracking run with wandb version 0.17.7</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+Run data is saved locally in <code>/workspaces/sinergym/examples/wandb/run-20240910_074919-rl1s4e17</code></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+Syncing run <strong><a href='https://wandb.ai/sail_ugr/test-porject/runs/rl1s4e17' target="_blank">test-reduction</a></strong> to <a href='https://wandb.ai/sail_ugr/test-porject' target="_blank">Weights & Biases</a> (<a href='https://wandb.me/run' target="_blank">docs</a>)<br/></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+View project at <a href='https://wandb.ai/sail_ugr/test-porject' target="_blank">https://wandb.ai/sail_ugr/test-porject</a></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+View run at <a href='https://wandb.ai/sail_ugr/test-porject/runs/rl1s4e17' target="_blank">https://wandb.ai/sail_ugr/test-porject/runs/rl1s4e17</a></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[WRAPPER WandBLogger] (INFO) : Wrapper initialized.
+[WRAPPER ReduceObservationWrapper] (INFO) : Wrapper initialized.
+###########################################################################
+Wrapped observation space shape:  14
+Wrapped observation variables:  [&#39;month&#39;, &#39;day_of_month&#39;, &#39;hour&#39;, &#39;wind_speed&#39;, &#39;wind_direction&#39;, &#39;diffuse_solar_radiation&#39;, &#39;direct_solar_radiation&#39;, &#39;htg_setpoint&#39;, &#39;clg_setpoint&#39;, &#39;air_humidity&#39;, &#39;people_occupant&#39;, &#39;co2_emission&#39;, &#39;HVAC_electricity_demand_rate&#39;, &#39;total_electricity_HVAC&#39;]
+###########################################################################
+</pre></div></div>
+</div>
+<p>The order of the wrappers is important! By applying normalization first, for example, we ensure that this transformation is subsequently monitored.</p>
+<p>As we apply the logger before reducing the observation space, we also record these variables before they are removed from the observations. If we use the logger wrapper at the end, these variables would not be monitored. This can be verified by reviewing the CSV files generated for the observation variables.</p>
+<p>Let’s review the info dictionary to see the normalized variables that are no longer in <code class="docutils literal notranslate"><span class="pre">obs</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;###########################################################################&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reset observation length: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Removed variables info: &#39;</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;removed_observation&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;###########################################################################&#39;</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+<span class="n">obs</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;###########################################################################&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;step observation length: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Removed variables info: &#39;</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;removed_observation&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;###########################################################################&#39;</span><span class="p">)</span>
+
+<span class="n">terminated</span> <span class="o">=</span> <span class="n">truncated</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#----------------------------------------------------------------------------------------------#
+[ENVIRONMENT] (INFO) : Starting a new episode.
+[ENVIRONMENT] (INFO) : Episode 1: 5zone-hot-continuous-stochastic-v1
+#----------------------------------------------------------------------------------------------#
+[MODELING] (INFO) : Episode directory created.
+[MODELING] (INFO) : Weather file USA_AZ_Davis-Monthan.AFB.722745_TMY3.epw used.
+[MODELING] (INFO) : Adapting weather to building model.
+[MODELING] (INFO) : Weather noise applied in columns: [&#39;drybulb&#39;]
+[ENVIRONMENT] (INFO) : Saving episode output path.
+[ENVIRONMENT] (INFO) : Episode 1 started.
+[SIMULATOR] (INFO) : handlers initialized.
+[SIMULATOR] (INFO) : handlers are ready.
+[SIMULATOR] (INFO) : System is ready.
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+###########################################################################
+Reset observation length:  14
+Removed variables info:  {&#39;outdoor_temperature&#39;: np.float64(0.009759825889935545), &#39;outdoor_humidity&#39;: np.float64(0.009998816541465044), &#39;air_temperature&#39;: np.float64(0.009987481748785842)}
+###########################################################################
+###########################################################################
+step observation length:  14
+Removed variables info:  {&#39;outdoor_temperature&#39;: np.float64(0.9852854070847759), &#39;outdoor_humidity&#39;: np.float64(-0.9745626607331893), &#39;air_temperature&#39;: np.float64(-0.44056459754655924)}
+###########################################################################
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:14&lt;00:00,  6.90%/s, 100% completed]
+</pre></div></div>
+</div>
+<p>Note that even if we remove a variable that is used in the reward function, as this value is used in the core of the environment (before any wrapper), it still works as expected.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[WRAPPER WandBLogger] (INFO) : Environment closed, dumping summary metrics in WandB Platform.
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:16&lt;00:00,  6.90%/s, 100% completed]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+<span class="ansi-blue-intense-fg ansi-bold">wandb</span>: Adding directory to artifact (/workspaces/sinergym/examples/Eplus-env-5zone-hot-continuous-stochastic-v1-res1)... Done. 0.0s
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<style>
+    table.wandb td:nth-child(1) { padding: 0 10px; text-align: left ; width: auto;} td:nth-child(2) {text-align: left ; width: 100%}
+    .wandb-row { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; width: 100% }
+    .wandb-col { display: flex; flex-direction: column; flex-basis: 100%; flex: 1; padding: 10px; }
+    </style>
+<div class="wandb-row"><div class="wandb-col"><h3>Run history:</h3><br/><table class="wandb"><tr><td>Agent_actions/Cooling_Setpoint_RL</td><td>▃▆▇▇▄▁█▄▄▃▂▇▅█▇▃▄█▇▄▅▅█▅█▄█▂▃▂█▂▄▃▃</td></tr><tr><td>Agent_actions/Heating_Setpoint_RL</td><td>▆█▁█▂▁▃▃█▆█▂▅▆▃▂▇▆▃▅▅▅▇▄▃▆▇▃▄▇▃▇▆▃▃</td></tr><tr><td>Info/abs_comfort_penalty</td><td>▃▇█▃█▇██▃█▅█▁█▆█▇██▇▇█▃█▄██▇████▄█▆</td></tr><tr><td>Info/abs_energy_penalty</td><td>██▁██▆██▇█▃█▆▇█▂█▇▇▆▇█▇█▇██▆██████▅</td></tr><tr><td>Info/comfort_term</td><td>▃▇█▃█▇██▃█▅█▁█▆█▇██▇▇█▃█▄██▇████▄█▆</td></tr><tr><td>Info/energy_term</td><td>██▁██▆██▇█▃█▆▇█▂█▇▇▆▇█▇█▇██▆██████▅</td></tr><tr><td>Info/total_power_demand</td><td>▁▁█▁▁▃▁▁▂▁▆▁▃▂▁▇▁▂▂▃▂▁▂▁▂▁▁▃▁▁▁▁▁▁▄</td></tr><tr><td>Info/total_temperature_violation</td><td>▆▂▁▆▁▂▁▁▆▁▄▁█▁▃▁▂▁▁▂▂▁▆▁▅▁▁▂▁▁▁▁▅▁▃</td></tr><tr><td>Normalized_observations/HVAC_electricity_demand_rate</td><td>▁▁█▁▁▃▁▂▂▂▇▂▃▂▁█▂▂▂▃▂▁▂▁▂▁▁▃▁▁▁▁▁▁▅</td></tr><tr><td>Normalized_observations/air_humidity</td><td>▆▆▄█▇▅▆▃▄▁▅▁▃▁▃▂▅▂▆▂▇▂▆▂▄▃▅▃▅▃▅▃▃▃▄</td></tr><tr><td>Normalized_observations/air_temperature</td><td>▆▄▂▇▂▅▃▃▆▃▅▄▇▄▂▄▃▄▃▃▆▃█▃█▃▁▄▂▃▃▁▅▁▅</td></tr><tr><td>Normalized_observations/clg_setpoint</td><td>▇▄█▆▄▂▄▇▇▂▃█▆▃▇▁▆▅▄▂██▇▃█▇▆▃▁▇▆▆▇▇▃</td></tr><tr><td>Normalized_observations/co2_emission</td><td>▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁</td></tr><tr><td>Normalized_observations/day_of_month</td><td>██▁▄▆▂▄▇▂▅▇▂▅▇▂▅▇▂▅▇▂▅▇▃▅▇▃▅█▃▅█▃▆█</td></tr><tr><td>Normalized_observations/diffuse_solar_radiation</td><td>▄▁▁▅▁▆▁▃▂▁█▁▄▁▂▃▁▇▁▃▂▁▄▁▄▁▁▃▁▂▁▂▁▁▃</td></tr><tr><td>Normalized_observations/direct_solar_radiation</td><td>▆▁▁▂▁▇▁▆▄▁▅▁▇▁▄▆▁▅▁▆▂▁▁▁▆▁▁▄▁█▁▅▁▁▇</td></tr><tr><td>Normalized_observations/hour</td><td>▄▇▃▆▂▅█▄▇▂▅▁▄▇▃▆▂▅█▄▇▂▅▁▄▇▃▆▂▅█▄▇▂▅</td></tr><tr><td>Normalized_observations/htg_setpoint</td><td>▃▂█▄▁▂▇▂▅▆▂▅▂▄▇▆▄▇▄▅█▃▂▄▂▇▃▇▆▅▂▃▃▂▃</td></tr><tr><td>Normalized_observations/month</td><td>▁▁█▂▂▃▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂</td></tr><tr><td>Normalized_observations/outdoor_humidity</td><td>▆▆██▇▄▆▂▁▃▂▂▂▂▃▂▃▂█▆▄▅▃▆▂▃▆▂▆▂▄▄▃▅▂</td></tr><tr><td>Normalized_observations/outdoor_temperature</td><td>▃▃▂▄▃▅▄▂█▅▇▆▇▆▅█▅▆▄▅▆▄▆▅▅▅▂▄▂▄▃▂▃▁▄</td></tr><tr><td>Normalized_observations/people_occupant</td><td>█▂▁█▁▄▁█▄▁█▁█▁▁▁▁▁▁▁▄▁█▁█▁▁▁▁▁▁▁▅▁█</td></tr><tr><td>Normalized_observations/total_electricity_HVAC</td><td>▁▁█▁▁▃▁▁▂▂▇▂▃▂▁█▁▂▂▃▂▁▂▁▂▁▁▃▁▁▁▁▁▁▅</td></tr><tr><td>Normalized_observations/wind_direction</td><td>▄▆▄▃▄█▄▆▆▃▆▆▅▆▃▆▃▇▃▃▁▃▇▃▃▇▃▅▃▄▃▄█▃▆</td></tr><tr><td>Normalized_observations/wind_speed</td><td>▂▂▄▃▃▅▃▂▅▃▄▄▂▅▃▆▃▃▄▄▃▃▇▃█▃▁▅▂▂▄▄▁▁▂</td></tr><tr><td>Observations/HVAC_electricity_demand_rate</td><td>▁▁█▁▁▃▁▁▂▁▆▁▃▂▁▇▁▂▂▃▂▁▂▁▂▁▁▃▁▁▁▁▁▁▄</td></tr><tr><td>Observations/air_humidity</td><td>▇▆▅██▆▇▄▅▁▅▁▃▁▃▁▅▁▇▂▇▂▆▂▄▂▅▃▅▃▅▃▃▃▄</td></tr><tr><td>Observations/air_temperature</td><td>▆▄▂▆▁▄▃▂▆▂▅▃▇▄▂▄▃▄▃▃▆▃█▃█▃▁▄▂▃▃▁▅▁▅</td></tr><tr><td>Observations/clg_setpoint</td><td>▇▄█▆▄▂▄▇▆▂▃█▆▃▇▁▆▅▄▂▇█▇▃█▇▆▃▁▇▆▆▇▇▃</td></tr><tr><td>Observations/co2_emission</td><td>▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁</td></tr><tr><td>Observations/day_of_month</td><td>▃▆▁▃▆▂▄▇▂▄▇▂▅▇▂▅▇▂▅▇▂▅▇▃▅▇▃▅█▃▅█▃▆█</td></tr><tr><td>Observations/diffuse_solar_radiation</td><td>▃▁▁▄▁▅▁▃▂▁█▁▄▁▂▃▁▇▁▃▂▁▄▁▄▁▁▃▁▂▁▂▁▁▃</td></tr><tr><td>Observations/direct_solar_radiation</td><td>▆▁▁▁▁▆▁▆▃▁▄▁▇▁▄▆▁▆▁▆▂▁▁▁▇▁▁▄▁█▁▅▁▁▇</td></tr><tr><td>Observations/hour</td><td>▄▇▃▆▂▅█▄▇▂▅▁▄▇▃▆▂▅█▄▇▂▅▁▄▇▃▆▂▅█▄▇▂▅</td></tr><tr><td>Observations/htg_setpoint</td><td>▃▂█▄▁▂▇▂▅▆▂▅▂▄▇▆▄▇▄▅█▃▂▄▂▇▃▆▆▅▂▃▃▂▃</td></tr><tr><td>Observations/month</td><td>▁▁▂▂▂▂▂▂▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▇▇▇▇▇▇███</td></tr><tr><td>Observations/outdoor_humidity</td><td>▆▇███▅▇▃▁▄▂▂▁▂▃▁▂▁▇▅▃▄▃▅▂▂▅▁▅▁▃▃▂▄▂</td></tr><tr><td>Observations/outdoor_temperature</td><td>▂▂▁▃▂▃▂▁▆▄▆▅▆▅▅█▅▇▄▆▇▅▇▅▆▆▂▅▂▅▃▂▃▁▄</td></tr><tr><td>Observations/people_occupant</td><td>█▂▁█▁▄▁█▅▁█▁█▁▁▁▁▁▁▁▅▁█▁█▁▁▁▁▁▁▁▅▁█</td></tr><tr><td>Observations/total_electricity_HVAC</td><td>▁▁█▁▁▃▁▁▂▁▇▁▃▂▁█▁▁▂▃▂▁▂▁▂▁▁▃▁▁▁▁▁▁▅</td></tr><tr><td>Observations/wind_direction</td><td>▃▆▃▃▃█▄▆▆▃▆▆▅▆▃▆▃▇▃▃▁▃▇▄▃█▃▅▃▄▃▄█▄▆</td></tr><tr><td>Observations/wind_speed</td><td>▂▂▄▃▃▄▂▂▄▂▄▄▂▅▃▆▃▃▄▄▃▃▇▃█▃▁▅▂▂▄▃▁▁▂</td></tr><tr><td>Reward/reward</td><td>▄▇▆▃█▇██▃█▄█▁█▆▇▇██▇▇█▃█▄██▇████▅█▅</td></tr><tr><td>Simulation_actions/Cooling_Setpoint_RL</td><td>▃▆▇▇▄▁█▄▄▃▂▇▅█▇▃▄█▇▄▅▅█▅█▄█▂▃▂█▂▄▃▃</td></tr><tr><td>Simulation_actions/Heating_Setpoint_RL</td><td>▆█▁█▂▁▃▃█▆█▂▅▆▃▂▇▆▃▅▅▅▇▄▃▆▇▃▄▇▃▇▆▃▃</td></tr><tr><td>episode_summaries/comfort_violation_time(%)</td><td>▁</td></tr><tr><td>episode_summaries/cumulative_power_demand</td><td>▁</td></tr><tr><td>episode_summaries/episode_num</td><td>▁</td></tr><tr><td>episode_summaries/length(timesteps)</td><td>▁</td></tr><tr><td>episode_summaries/mean_abs_comfort_penalty</td><td>▁</td></tr><tr><td>episode_summaries/mean_abs_energy_penalty</td><td>▁</td></tr><tr><td>episode_summaries/mean_power_demand</td><td>▁</td></tr><tr><td>episode_summaries/mean_reward</td><td>▁</td></tr><tr><td>episode_summaries/mean_reward_comfort_term</td><td>▁</td></tr><tr><td>episode_summaries/mean_reward_energy_term</td><td>▁</td></tr><tr><td>episode_summaries/mean_temperature_violation</td><td>▁</td></tr><tr><td>episode_summaries/std_abs_comfort_penalty</td><td>▁</td></tr><tr><td>episode_summaries/std_abs_energy_penalty</td><td>▁</td></tr><tr><td>episode_summaries/std_power_demand</td><td>▁</td></tr><tr><td>episode_summaries/std_reward</td><td>▁</td></tr><tr><td>episode_summaries/std_reward_comfort_term</td><td>▁</td></tr><tr><td>episode_summaries/std_reward_energy_term</td><td>▁</td></tr><tr><td>episode_summaries/std_temperature_violation</td><td>▁</td></tr><tr><td>episode_summaries/time_elapsed(hours)</td><td>▁</td></tr></table><br/></div><div class="wandb-col"><h3>Run summary:</h3><br/><table class="wandb"><tr><td>Agent_actions/Cooling_Setpoint_RL</td><td>-0.4241</td></tr><tr><td>Agent_actions/Heating_Setpoint_RL</td><td>-0.45542</td></tr><tr><td>Info/abs_comfort_penalty</td><td>-1.32374</td></tr><tr><td>Info/abs_energy_penalty</td><td>-4978.12566</td></tr><tr><td>Info/comfort_term</td><td>-0.66187</td></tr><tr><td>Info/energy_term</td><td>-0.24891</td></tr><tr><td>Info/total_power_demand</td><td>4978.12566</td></tr><tr><td>Info/total_temperature_violation</td><td>1.32374</td></tr><tr><td>Normalized_observations/HVAC_electricity_demand_rate</td><td>1.27458</td></tr><tr><td>Normalized_observations/air_humidity</td><td>-0.41403</td></tr><tr><td>Normalized_observations/air_temperature</td><td>0.63074</td></tr><tr><td>Normalized_observations/clg_setpoint</td><td>-0.92581</td></tr><tr><td>Normalized_observations/co2_emission</td><td>0</td></tr><tr><td>Normalized_observations/day_of_month</td><td>1.74094</td></tr><tr><td>Normalized_observations/diffuse_solar_radiation</td><td>0.40586</td></tr><tr><td>Normalized_observations/direct_solar_radiation</td><td>1.70599</td></tr><tr><td>Normalized_observations/hour</td><td>0.36235</td></tr><tr><td>Normalized_observations/htg_setpoint</td><td>-0.63437</td></tr><tr><td>Normalized_observations/month</td><td>1.59077</td></tr><tr><td>Normalized_observations/outdoor_humidity</td><td>-0.97885</td></tr><tr><td>Normalized_observations/outdoor_temperature</td><td>-0.03853</td></tr><tr><td>Normalized_observations/people_occupant</td><td>1.69558</td></tr><tr><td>Normalized_observations/total_electricity_HVAC</td><td>1.36765</td></tr><tr><td>Normalized_observations/wind_direction</td><td>0.71151</td></tr><tr><td>Normalized_observations/wind_speed</td><td>-1.10769</td></tr><tr><td>Observations/HVAC_electricity_demand_rate</td><td>4978.12549</td></tr><tr><td>Observations/air_humidity</td><td>23.60334</td></tr><tr><td>Observations/air_temperature</td><td>24.82374</td></tr><tr><td>Observations/clg_setpoint</td><td>24.82435</td></tr><tr><td>Observations/co2_emission</td><td>0</td></tr><tr><td>Observations/day_of_month</td><td>31</td></tr><tr><td>Observations/diffuse_solar_radiation</td><td>95.75</td></tr><tr><td>Observations/direct_solar_radiation</td><td>879</td></tr><tr><td>Observations/hour</td><td>14</td></tr><tr><td>Observations/htg_setpoint</td><td>15.57557</td></tr><tr><td>Observations/month</td><td>12</td></tr><tr><td>Observations/outdoor_humidity</td><td>11.75</td></tr><tr><td>Observations/outdoor_temperature</td><td>21.2873</td></tr><tr><td>Observations/people_occupant</td><td>20</td></tr><tr><td>Observations/total_electricity_HVAC</td><td>5090787.5</td></tr><tr><td>Observations/wind_direction</td><td>247.5</td></tr><tr><td>Observations/wind_speed</td><td>1.375</td></tr><tr><td>Reward/reward</td><td>-0.91078</td></tr><tr><td>Simulation_actions/Cooling_Setpoint_RL</td><td>25.19366</td></tr><tr><td>Simulation_actions/Heating_Setpoint_RL</td><td>15.06324</td></tr><tr><td>episode_summaries/comfort_violation_time(%)</td><td>47.27169</td></tr><tr><td>episode_summaries/cumulative_power_demand</td><td>64460871.50538</td></tr><tr><td>episode_summaries/episode_num</td><td>1</td></tr><tr><td>episode_summaries/length(timesteps)</td><td>35040</td></tr><tr><td>episode_summaries/mean_abs_comfort_penalty</td><td>-0.72661</td></tr><tr><td>episode_summaries/mean_abs_energy_penalty</td><td>-1839.63674</td></tr><tr><td>episode_summaries/mean_power_demand</td><td>1839.63674</td></tr><tr><td>episode_summaries/mean_reward</td><td>-0.45529</td></tr><tr><td>episode_summaries/mean_reward_comfort_term</td><td>-0.3633</td></tr><tr><td>episode_summaries/mean_reward_energy_term</td><td>-0.09198</td></tr><tr><td>episode_summaries/mean_temperature_violation</td><td>0.72661</td></tr><tr><td>episode_summaries/std_abs_comfort_penalty</td><td>1.1996</td></tr><tr><td>episode_summaries/std_abs_energy_penalty</td><td>2461.27112</td></tr><tr><td>episode_summaries/std_power_demand</td><td>2461.27112</td></tr><tr><td>episode_summaries/std_reward</td><td>0.60452</td></tr><tr><td>episode_summaries/std_reward_comfort_term</td><td>0.5998</td></tr><tr><td>episode_summaries/std_reward_energy_term</td><td>0.12306</td></tr><tr><td>episode_summaries/std_temperature_violation</td><td>1.1996</td></tr><tr><td>episode_summaries/time_elapsed(hours)</td><td>8760</td></tr></table><br/></div></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+View run <strong style="color:#cdcd00">test-reduction</strong> at: <a href='https://wandb.ai/sail_ugr/test-porject/runs/rl1s4e17' target="_blank">https://wandb.ai/sail_ugr/test-porject/runs/rl1s4e17</a><br/> View project at: <a href='https://wandb.ai/sail_ugr/test-porject' target="_blank">https://wandb.ai/sail_ugr/test-porject</a><br/>Synced 5 W&B file(s), 0 media file(s), 12 artifact file(s) and 0 other file(s)</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+Find logs at: <code>./wandb/run-20240910_074919-rl1s4e17/logs</code></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[WRAPPER CSVLogger] (INFO) : Environment closed, data updated in monitor and progress.csv.
+Simulation Progress [Episode 1]: 100%|██████████| 100/100 [00:29&lt;00:00,  3.37%/s, 100% completed]
+[ENVIRONMENT] (INFO) : Environment closed. [5zone-hot-continuous-stochastic-v1]
+[WRAPPER NormalizeObservation] (INFO) : Saving normalization calibration data.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.12/dist-packages/wandb/sdk/wandb_run.py:2372: UserWarning: Run (rl1s4e17) is finished. The call to `_console_raw_callback` will be ignored. Please make sure that you are using an active run.
+  lambda data: self._console_raw_callback(&#34;stdout&#34;, data),
+</pre></div></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="personalize_loggerwrapper.html" class="btn btn-neutral float-left" title="LoggerWrapper customization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rule_controller_example.html" class="btn btn-neutral float-right" title="Rule-based controller example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: main
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v1.4.0/index.html">v1.4.0</a></dd>
+            <dd><a href="../../../v1.6.0/index.html">v1.6.0</a></dd>
+            <dd><a href="../../../v1.7.0/index.html">v1.7.0</a></dd>
+            <dd><a href="../../../v2.0.0/index.html">v2.0.0</a></dd>
+            <dd><a href="../../../v2.1.0/index.html">v2.1.0</a></dd>
+            <dd><a href="../../../v2.2.0/index.html">v2.2.0</a></dd>
+            <dd><a href="../../../v2.3.0/index.html">v2.3.0</a></dd>
+            <dd><a href="../../../v2.5.0/index.html">v2.5.0</a></dd>
+            <dd><a href="../../../v3.1.0/index.html">v3.1.0</a></dd>
+            <dd><a href="../../../v3.2.0/index.html">v3.2.0</a></dd>
+            <dd><a href="../../../v3.3.0/index.html">v3.3.0</a></dd>
+            <dd><a href="../../../v3.4.0/index.html">v3.4.0</a></dd>
+            <dd><a href="../../../v3.5.0/index.html">v3.5.0</a></dd>
+            <dd><a href="../../../v3.6.0/index.html">v3.6.0</a></dd>
+            <dd><a href="../../../v3.7.0/index.html">v3.7.0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="logging_unused_variables.html">main</a></dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+<style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search,
+    .wy-nav-top {
+        background: #a5beba;
+    }
+
+    /* Sidebar */
+    .wy-nav-side {
+        background: #2b3435;
+    }
+</style>
+
+
+</body>
+</html>
