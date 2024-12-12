@@ -90,6 +90,7 @@ jobs:
         run: poetry run sphinx-multiversion docs/source docs/compilation
 
       - name: Deploy to GitHub Pages
+        if: steps.verify-documentation-update.outputs.doc == 'true'
         uses: peaceiris/actions-gh-pages@v4
         with:
           personal_token: ${{ secrets.GITHUB_TOKEN }}
@@ -98,7 +99,7 @@ jobs:
           destination_dir: docs/compilation
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-          keep_files: true
+          keep_files: false
           enable_jekyll: true
 
   tests:
