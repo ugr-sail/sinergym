@@ -121,6 +121,10 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Optional files and directories are not shown in the image above. They are explained in the text below.</p>
+</div>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">Eplus-env-sub_run&lt;num_episode&gt;</span></code> directories record the results of each simulation episode. The number of directories retained depends on the value specified by the <code class="docutils literal notranslate"><span class="pre">max_ep_data_store_num</span></code> parameter (see <a class="reference internal" href="environments.html#maximum-episode-data-stored-in-sinergym-output"><span class="std std-ref">Maximum episode data stored in Sinergym output</span></a>). Within these directories, the structure is consistent and follows the same format, including:</p>
 <blockquote>
@@ -151,6 +155,16 @@ visit the <a class="reference external" href="https://bigladdersoftware.com/epx/
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">progress.csv</span></code>. This file contains information about general simulation results. Each row contains episode information registering relevant data such as mean power consumption, rewards or comfort penalties. This file is only available when the environment has been wrapped with a <code class="docutils literal notranslate"><span class="pre">LoggerWrapper</span></code> and <code class="docutils literal notranslate"><span class="pre">CSVLogger</span></code> (see <a class="reference internal" href="wrappers.html#logger-wrappers"><span class="std std-ref">Logger Wrappers</span></a> for more information). The structure of this file is defined by the <code class="docutils literal notranslate"><span class="pre">LoggerWrapper</span></code> class.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">data_available.txt</span></code>. It is generated when the <em>EnergyPlus</em> API initializes all callbacks and handlers for the simulation. In this file, you can find all the available components of the building model, such as actuators, schedulers, meters, variables,  internal variables, etc.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mean.txt</span></code> and <code class="docutils literal notranslate"><span class="pre">var.txt</span></code>. These files contain the mean and variation values for calibration of normalization in observation space if wrapper <code class="docutils literal notranslate"><span class="pre">NormalizeObservation</span></code> is used (see <a class="reference internal" href="wrappers.html#normalizeobservation"><span class="std std-ref">NormalizeObservation</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">evaluation/</span></code>. This directory contains the best model obtained during the training process. It is only created when the environment has been used with Stable Baselines 3 and wrapped with <code class="docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code> (see <a class="reference internal" href="deep-reinforcement-learning.html#loggerevalcallback"><span class="std std-ref">LoggerEvalCallback</span></a>). The structure of this directory is as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">best_model.zip</span></code>. This file contains the best model obtained during the training process. It is saved in a compressed format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mean.txt</span></code> and <code class="docutils literal notranslate"><span class="pre">var.txt</span></code>. Same as the files in the root directory, these files contain the mean and variation values for calibration of normalization in observation space, but for best model evaluation moments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">evaluation_summary.csv</span></code>. This file contains the evaluation summaries in CSV format. The structure of this file is defined by the <code class="docutils literal notranslate"><span class="pre">LoggerEvalCallback</span></code> class.</p></li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
