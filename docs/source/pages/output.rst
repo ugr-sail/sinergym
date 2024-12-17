@@ -13,6 +13,8 @@ The contents of this root output directory include the results of the simulation
 
 |
 
+.. note:: Optional files and directories are not shown in the image above. They are explained in the text below.
+
 - ``Eplus-env-sub_run<num_episode>`` directories record the results of each simulation episode. The number of directories retained depends on the value specified by the ``max_ep_data_store_num`` parameter (see :ref:`Maximum episode data stored in Sinergym output`). Within these directories, the structure is consistent and follows the same format, including:
 
     - A copy of the ``environment.epJSON`` used during the simulation episode. This does not need to match the original one, as the simulation can be modified to accommodate specific user-defined settings when defining the Gymnasium environment.
@@ -45,6 +47,16 @@ The contents of this root output directory include the results of the simulation
 - ``progress.csv``. This file contains information about general simulation results. Each row contains episode information registering relevant data such as mean power consumption, rewards or comfort penalties. This file is only available when the environment has been wrapped with a ``LoggerWrapper`` and ``CSVLogger`` (see :ref:`Logger Wrappers` for more information). The structure of this file is defined by the ``LoggerWrapper`` class.
 
 - ``data_available.txt``. It is generated when the *EnergyPlus* API initializes all callbacks and handlers for the simulation. In this file, you can find all the available components of the building model, such as actuators, schedulers, meters, variables,  internal variables, etc.
+
+- ``mean.txt`` and ``var.txt``. These files contain the mean and variation values for calibration of normalization in observation space if wrapper ``NormalizeObservation`` is used (see :ref:`NormalizeObservation`).
+
+- ``evaluation/``. This directory contains the best model obtained during the training process. It is only created when the environment has been used with Stable Baselines 3 and wrapped with ``LoggerEvalCallback`` (see :ref:`LoggerEvalCallback`). The structure of this directory is as follows:
+
+    - ``best_model.zip``. This file contains the best model obtained during the training process. It is saved in a compressed format.
+
+    - ``mean.txt`` and ``var.txt``. Same as the files in the root directory, these files contain the mean and variation values for calibration of normalization in observation space, but for best model evaluation moments.
+
+    - ``evaluation_summary.csv``. This file contains the evaluation summaries in CSV format. The structure of this file is defined by the ``LoggerEvalCallback`` class.
 
 .. warning:: Some component lists, such as ``Output:Variable``, may not fully appear in `data_available.txt` because they need to
             be declared in the building model first. To view all variables or meters specifically, you should check the *EnergyPlus* output file. If you specify a valid variable in the environment, *Sinergym* will automatically add the ``Output:Variable`` element to the building model before the simulation begins.
