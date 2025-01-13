@@ -7,7 +7,7 @@
   <title>sinergym.envs.eplus_env.EplusEnv &mdash; Sinergym  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=d94dbed7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/doc_theme.css?v=642ef2a8" />
 
   
     <link rel="shortcut icon" href="../../_static/logo-sidebar.png"/>
@@ -147,10 +147,10 @@
 <li><p><strong>variables</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.</p></li>
 <li><p><strong>meters</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.</p></li>
 <li><p><strong>actuators</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. Defaults to empty dict.</p></li>
-<li><p><strong>Optional</strong><strong>[</strong><strong>Dict</strong><strong>[</strong><strong>str</strong> (<em>weather_variability</em>) – Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Defaults to None.</p></li>
-<li><p><strong>Tuple</strong><strong>[</strong><strong>float</strong> – Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Defaults to None.</p></li>
-<li><p><strong>float</strong> – Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Defaults to None.</p></li>
-<li><p><strong>float</strong><strong>]</strong><strong>]</strong><strong>]</strong> – Tuple with sigma, mu and tao of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Defaults to None.</p></li>
+<li><p><strong>Optional</strong><strong>[</strong><strong>Dict</strong><strong>[</strong><strong>str</strong> (<em>weather_variability</em>) – Tuple with sigma, mu and tau of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Defaults to None.</p></li>
+<li><p><strong>Tuple</strong><strong>[</strong><strong>float</strong> – Tuple with sigma, mu and tau of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Defaults to None.</p></li>
+<li><p><strong>float</strong> – Tuple with sigma, mu and tau of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Defaults to None.</p></li>
+<li><p><strong>float</strong><strong>]</strong><strong>]</strong><strong>]</strong> – Tuple with sigma, mu and tau of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Defaults to None.</p></li>
 <li><p><strong>reward</strong> (<em>Any</em><em>, </em><em>optional</em>) – Reward function instance used for agent feedback. Defaults to LinearReward.</p></li>
 <li><p><strong>reward_kwargs</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Parameters to be passed to the reward function. Defaults to empty dict.</p></li>
 <li><p><strong>max_ep_data_store_num</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of last sub-folders (one for each episode) generated during execution on the simulation.</p></li>
