@@ -67,7 +67,7 @@ Weather variability
 
 **Weather variability** can be added to an environment using the ``weather_variability`` parameter. 
 
-This feature utilizes an `Ornstein-Uhlenbeck process <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.4200&rep=rep1&type=pdf>`__  to introduce **random noise** into the weather data on an episode-by-episode basis. This noise is specified as a Python dictionary, where each key is the name of an EPW column, and the corresponding value is a tuple of three variables (*sigma*, *mu*, and *tau*) that define the characteristics of the noise. This enables to apply different noise configurations to different variables of the weather data.
+This feature utilizes an `Ornstein-Uhlenbeck process <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.710.4200&rep=rep1&type=pdf>`__  to introduce **random noise** into the weather data on an episode-by-episode basis. This noise is specified as a Python dictionary, where each key is the name of an EPW column, and the corresponding value is a tuple of three variables (:math:`\sigma`, :math:`\mu`, and :math:`\tau`) that define the characteristics of the noise. This enables to apply different noise configurations to different variables of the weather data.
 
 Starting with *Sinergym* v3.6.2, the weather data column names (or variable names) are generated using the ``Weather`` class from the `epw module <https://pypi.org/project/epw/>`__. The list of available variable names is as follows:
 
@@ -91,7 +91,17 @@ Starting with *Sinergym* v3.6.2, the weather data column names (or variable name
           generated with the *opyplus* ``WeatherData`` class, for more  information about the available variable
           names with *opyplus*, visit `opyplus documentation <https://opyplus.readthedocs.io/en/2.0.7/quickstart/index.html#weather-data-epw-file>`__.
 
-.. image:: /_static/ornstein_noise.png
+:math:`\sigma` represents the standard deviation of the noise and determines the amplitude of variability. In a climate context, :math:`\sigma` can reflect daily or annual fluctuations in temperature (ºC). High values of :math:`\sigma` indicate a more unpredictable climate with larger temperature swings, while low values suggest a more stable climate.
+
+:math:`\mu` is the mean of the noise, representing the value toward which the process naturally tends to return (ºC). When the random variable in the process deviates from :math:`\mu`, a restoring force pushes it back toward the mean. If :math:`\mu` is set to 0, the process is centered relative to the original climate conditions.
+
+Finally, :math:`\tau` is the time constant (in hours), controlling how quickly the process returns to the mean :math:`\mu` after a disturbance. A small :math:`\tau` indicates a rapid return to the mean, resulting in a less persistent and more rigid system. Conversely, a large :math:`\tau` means the process takes longer to stabilize, allowing deviations to persist for a longer time before normalizing.
+
+In climate systems, a large :math:`\tau` could model scenarios where extreme events, such as heatwaves or cold spells, last longer before the system reverts to its average state. The next figure illustrates the effect of different hyperparameters on the Ornstein-Uhlenbeck process noise in a mixed weather.
+
+.. note:: Starting from Sinergym v3.7.1, :math:`\tau` is represented in hours instead of as a percentage of the climate file, making its use more intuitive.
+
+.. image:: /_static/ornstein_noise_v2.png
   :scale: 80 %
   :alt: Ornstein-Uhlenbeck process noise with different hyperparameters.
   :align: center
