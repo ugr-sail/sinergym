@@ -431,7 +431,7 @@ def env_5zone_stochastic(
             'Dry Bulb Temperature': (
                 1.0,
                 0.0,
-                0.001)},
+                24.0)},
         reward=LinearReward,
         reward_kwargs={
             'temperature_variables': ['air_temperature'],

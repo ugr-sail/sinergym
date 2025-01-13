@@ -15,7 +15,7 @@
 
     "weather_variability":{
         "Dry Bulb Temperature": [1.0, 0.0],
-        "Wind Speed": [3.0, 0.0, 0.01]
+        "Wind Speed": [3.0, 0.0, 30.0]
     },
 
     "max_ep_data_store_num" : 10,
