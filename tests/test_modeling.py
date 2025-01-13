@@ -202,8 +202,8 @@ def test_apply_weather_variability(model_5zone):
     assert original_filename == path_filename
     # Check with a variation
     weather_variability = {
-        'Dry Bulb Temperature': (1.0, 0.0, 0.001),
-        'Wind Speed': (3.0, 0.0, 0.01)
+        'Dry Bulb Temperature': (1.0, 0.0, 24.0),
+        'Wind Speed': (3.0, 0.0, 35.0)
     }
     path_result = model_5zone.apply_weather_variability(
         weather_variability=weather_variability)

@@ -51,7 +51,7 @@ def test_reset_custom_options(env_5zone_stochastic):
     custom_options = {
         'weather_variability': {
             'Dry Bulb Temperature': (
-                1.1, 0.1, 0.002)}}
+                1.1, 0.1, 30.0)}}
     env_5zone_stochastic.reset(options=custom_options)
     # Check if epw with new variation is overwriting default options
     weather_path = env_5zone_stochastic.model._weather_path

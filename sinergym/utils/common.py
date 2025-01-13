@@ -205,7 +205,8 @@ def ornstein_uhlenbeck_process(
     T = 1.
     # get first column of df
     n = data_mod.shape[0]
-    dt = T / n
+    # dt = T / n  # tau defined as percentage of epw
+    dt = T / 1.0  # tau defined as epw rows (hours)
     # t = np.linspace(0., T, n)  # Vector of times.
 
     for variable, variation in variability_config.items():
