@@ -318,11 +318,19 @@ class ModelJSON(object):
 
     def apply_weather_variability(
             self,
-            weather_variability: Optional[Dict[str, Tuple[float, float, float]]] = None) -> str:
+            weather_variability: Optional[Dict[str, Tuple[
+            Union[float, Tuple[float, float]],
+            Union[float, Tuple[float, float]],
+            Union[float, Tuple[float, float]]
+            ]]] = None) -> str:
         """Modify weather data using Ornstein-Uhlenbeck process according to the variation specified in the weather_variability dictionary.
 
         Args:
-            weather_variability (Optional[Dict[str, Tuple[float, float, float]]], optional): Dictionary with the variation for each column in the weather data. Defaults to None. The key is the column name and the value is a tuple with the sigma, mean and tau for OU process.
+            weather_variability (Optional[Dict[str, Tuple[
+            Union[float, Tuple[float, float]],
+            Union[float, Tuple[float, float]],
+            Union[float, Tuple[float, float]]
+        ]]]): Dictionary with the variation for each column in the weather data. Defaults to None. The key is the column name and the value is a tuple with the sigma, mean and tau for OU process.
 
         Returns:
             str: New EPW file path generated in simulator working path in that episode or current EPW path if variation is not defined.
@@ -334,18 +342,27 @@ class ModelJSON(object):
         # Apply variation to EPW if exists
         if weather_variability is not None:
 
+            # Check if there are ranges specified in params and get a random
+            # value
+            variability_config = {
+                weather_var: tuple(
+                    np.random.uniform(param[0], param[1]) if isinstance(param, tuple) else param
+                    for param in params
+                )
+                for weather_var, params in weather_variability.items()
+            }
+            # Apply Ornstein-Uhlenbeck process to weather data
             weather_data_mod.dataframe = ornstein_uhlenbeck_process(
                 data=self.weather_data.dataframe,
-                variability_config=weather_variability)
+                variability_config=variability_config)
 
             self.logger.info(
                 'Weather noise applied in columns: {}'.format(
                     list(
-                        weather_variability.keys())))
+                        variability_config.keys())))
 
-            # Change name filename to specify variation nature in name
-            filename = filename.split('.epw')[0]
-            filename += '_OU_Noise.epw'
+            # Modify filename to reflect noise addition
+            filename = f"{filename.split('.epw')[0]}_OU_Noise.epw"
 
         episode_weather_path = self.episode_path + '/' + filename
         weather_data_mod.write(episode_weather_path)
