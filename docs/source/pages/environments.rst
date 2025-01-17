@@ -99,7 +99,7 @@ Finally, :math:`\tau` is the time constant (in hours), controlling how quickly t
 
 In climate systems, a large :math:`\tau` could model scenarios where extreme events, such as heatwaves or cold spells, last longer before the system reverts to its average state. The next figure illustrates the effect of different hyperparameters on the Ornstein-Uhlenbeck process noise in a mixed weather.
 
-Starting from version 3.7.2 of Sinergym, these hyperparameters (:math:\sigma, :math:\mu, and :math:\tau) can also be defined as ranges of values rather than fixed constants. To configure this, a tuple of two values (minimum and maximum) is used instead of a single float. For each episode, a random value is sampled from the specified range, enabling more dynamic and varied simulations that better capture the inherent unpredictability of climate systems.
+Starting from version 3.7.2 of Sinergym, these hyperparameters (:math:\sigma, :math:\mu, and :math:\tau) can also be defined as ranges of values rather than fixed constants. To configure this, a tuple of two values (minimum and maximum) is used instead of a single float. For each episode, a random value is sampled from the specified range, enabling more dynamic and varied simulations that better capture the inherent unpredictability of climate systems. A JSON file is saved with the chosen parameters in each episode subfolder.
 
 .. note:: Starting from Sinergym v3.7.1, :math:`\tau` is represented in hours instead of as a percentage of the climate file, making its use more intuitive.
 
