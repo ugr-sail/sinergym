@@ -113,8 +113,8 @@ def test_ornstein_uhlenbeck_process(weather_data):
     df = weather_data.dataframe
     # Specify variability configuration for each desired column
     variability_conf = {
-        'Dry Bulb Temperature': (1.0, 0.0, 0.001),
-        'Wind Speed': (3.0, 0.0, 0.01)
+        'Dry Bulb Temperature': (1.0, 0.0, 24.0),
+        'Wind Speed': (3.0, 0.0, 48.0)
     }
     # Calculate dataframe with noise
     noise = common.ornstein_uhlenbeck_process(

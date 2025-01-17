@@ -291,8 +291,8 @@ def test_weatherforecasting_wrapper_forecastdata(env_demo):
     env = WeatherForecastingWrapper(
         env_demo, n=3, delta=1, forecast_variability={
             'Dry Bulb Temperature': (
-                1.0, 0.0, 0.001), 'Wind Speed': (
-                3.0, 0.0, 0.01)})
+                1.0, 0.0, 24.0), 'Wind Speed': (
+                3.0, 0.0, 48.0)})
 
     # Get original weather_data
     original_weather_data = Weather()
@@ -350,15 +350,15 @@ def test_weatherforecasting_wrapper_exceptions(env_demo):
                 'Dry Bulb Temperature': (
                     1.0,
                     0.0,
-                    0.001),
+                    24.0),
                 'Wind Speed': (
                     3.0,
                     0.0,
-                    0.01),
+                    48.0),
                 'Not in columns': (
                     3.0,
                     0.0,
-                    0.01)})
+                    48.0)})
 
 
 def test_energycost_wrapper(env_demo):
@@ -396,7 +396,7 @@ def test_energycost_wrapper_energycostdata(env_demo):
         energy_cost_variability=(
             1.0,
             0.0,
-            0.001))
+            24.0))
 
     # Get and preprocess manually original cost data
     original_energy_cost_data = pd.read_csv(env.energy_cost_data_path, sep=';')
