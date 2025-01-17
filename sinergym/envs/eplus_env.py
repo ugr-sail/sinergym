@@ -442,6 +442,42 @@ class EplusEnv(gym.Env):
                 'Action space shape must match with number of action variables specified.')
             raise err
 
+        # WEATHER VARIABILITY
+        if 'weather_variability' in self.default_options:
+            def validate_params(params):
+                """Validate weather variability parameters."""
+                if not isinstance(params, tuple) or len(params) != 3:
+                    raise ValueError(
+                        f"Invalid parameter for Ornstein-Uhlenbeck process: {params}. "
+                        "It must be a tuple of 3 elements."
+                    )
+
+                for param in params:
+                    if not (
+                        isinstance(
+                            param,
+                            tuple) or isinstance(
+                            param,
+                            float)):
+                        raise ValueError(
+                            f"Invalid parameter for Ornstein-Uhlenbeck process: {param}. "
+                            "It must be a tuple of two values (range), or a float."
+                        )
+                    if isinstance(param, tuple) and len(param) != 2:
+                        raise ValueError(
+                            f"Invalid parameter for Ornstein-Uhlenbeck process: {param}. "
+                            "Tuples must have exactly two values (range)."
+                        )
+
+            try:
+                # Validate each weather variability parameter
+                for _, params in self.default_options['weather_variability'].items(
+                ):
+                    validate_params(params)
+            except ValueError as err:
+                self.logger.critical(str(err))  # Convert the error to a string
+                raise err
+
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #
     # ---------------------------------------------------------------------------- #
