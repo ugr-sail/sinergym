@@ -351,6 +351,13 @@ class ModelJSON(object):
                 )
                 for weather_var, params in weather_variability.items()
             }
+
+            # Write variability_config to a JSON file for episode
+            config_path = f"{
+                self.episode_path}/weather_variability_config.json"
+            with open(config_path, 'w') as f:
+                json.dump(variability_config, f)
+
             # Apply Ornstein-Uhlenbeck process to weather data
             weather_data_mod.dataframe = ornstein_uhlenbeck_process(
                 data=self.weather_data.dataframe,
