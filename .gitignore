@@ -47,6 +47,7 @@ dist/
 .coverage
 codecov
 coverage.xml
+cov.xml
 
 #wandb
 wandb/

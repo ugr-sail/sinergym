@@ -67,6 +67,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ vars.PYTHON_VERSION }}
+
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
@@ -74,11 +79,6 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
           installer-parallel: true
-      
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ vars.PYTHON_VERSION }}
       
       - name: Build the distribution files
         run: poetry build
