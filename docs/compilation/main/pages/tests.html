@@ -72,6 +72,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tests</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#install-pytest">Install pytest</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#running-tests">Running tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-coverage">Test coverage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#available-tests">Available tests</a></li>
 </ul>
 </li>
@@ -149,6 +150,13 @@ and the <a class="reference internal" href="github-actions.html#github-actions">
 </pre></div>
 </div>
 </section>
+<section id="test-coverage">
+<h2>Test coverage<a class="headerlink" href="#test-coverage" title="Link to this heading"></a></h2>
+<p>To check the test coverage, you can use the following command:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>.<span class="w"> </span>tests/<span class="w"> </span>--cov-report<span class="w"> </span>xml:cov.xml
+</pre></div>
+</div>
+</section>
 <section id="available-tests">
 <h2>Available tests<a class="headerlink" href="#available-tests" title="Link to this heading"></a></h2>
 <p>Tests are available in the <code class="docutils literal notranslate"><span class="pre">sinergym/tests</span></code> directory. They are organized by different modules:</p>
@@ -185,7 +193,7 @@ and the <a class="reference internal" href="github-actions.html#github-actions">
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
+    <p>&#169; Copyright 2025, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
