@@ -185,6 +185,50 @@ def test_action_contradiction(env_demo):
         env_demo._check_eplus_env()
 
 
+def test_wrong_weather_variability_conf(env_5zone_stochastic):
+
+    env_5zone_stochastic.get_wrapper_attr(
+        'default_options')['weather_variability'] = {
+        'Dry Bulb Temperature': ((1.0, 2.0), (-0.5, 0.5), 24.0),
+        'Wind Speed': (3.0, 0.0, (30.0, 35.0))
+    }
+    # It should accept ranges
+    env_5zone_stochastic._check_eplus_env()
+
+    # It should raise an exception if is not a tuple or with wrong length (3)
+    env_5zone_stochastic.get_wrapper_attr(
+        'default_options')['weather_variability'] = {
+        'Dry Bulb Temperature': ((1.0, 2.0), (-0.5, 0.5), 24.0),
+        'Wind Speed': (3.0, (30.0, 35.0))
+    }
+    with pytest.raises(ValueError):
+        env_5zone_stochastic._check_eplus_env()
+    # It should raise an exception if is not a tuple or with wrong length (3)
+    env_5zone_stochastic.get_wrapper_attr(
+        'default_options')['weather_variability'] = {
+        'Dry Bulb Temperature': 25.0,
+        'Wind Speed': (3.0, 0.0, (30.0, 35.0))
+    }
+    with pytest.raises(ValueError):
+        env_5zone_stochastic._check_eplus_env()
+    # It should raise an exception if the param is not a tuple or float
+    env_5zone_stochastic.get_wrapper_attr(
+        'default_options')['weather_variability'] = {
+        'Dry Bulb Temperature': ('a', (-0.5, 0.5), 24.0),
+        'Wind Speed': (3.0, 0.0, (30.0, 35.0))
+    }
+    with pytest.raises(ValueError):
+        env_5zone_stochastic._check_eplus_env()
+    # It should raise an exception if the range has not 2 values
+    env_5zone_stochastic.get_wrapper_attr(
+        'default_options')['weather_variability'] = {
+        'Dry Bulb Temperature': ((1.0, 2.0, 3.0), (-0.5, 0.5), 24.0),
+        'Wind Speed': (3.0, 0.0, (30.0, 35.0))
+    }
+    with pytest.raises(ValueError):
+        env_5zone_stochastic._check_eplus_env()
+
+
 def test_is_discrete_property(env_5zone):
     assert isinstance(env_5zone.action_space, gym.spaces.Box)
     assert env_5zone.is_discrete == False

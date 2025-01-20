@@ -42,7 +42,11 @@ class EplusEnv(gym.Env):
         variables: Dict[str, Tuple[str, str]] = {},
         meters: Dict[str, str] = {},
         actuators: Dict[str, Tuple[str, str, str]] = {},
-        weather_variability: Optional[Dict[str, Tuple[float, float, float]]] = None,
+        weather_variability: Optional[Dict[str, Tuple[
+            Union[float, Tuple[float, float]],
+            Union[float, Tuple[float, float]],
+            Union[float, Tuple[float, float]]
+        ]]] = None,
         reward: Any = LinearReward,
         reward_kwargs: Optional[Dict[str, Any]] = {},
         max_ep_data_store_num: int = 10,
@@ -59,7 +63,7 @@ class EplusEnv(gym.Env):
             variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.
             meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
             actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. Defaults to empty dict.
-            weather_variability Optional[Dict[str, Tuple[float, float, float]]]: Tuple with sigma, mu and tau of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Defaults to None.
+            weather_variability (Optional[Dict[str,Tuple[Union[float,Tuple[float,float]],Union[float,Tuple[float,float]],Union[float,Tuple[float,float]]]]]): Tuple with sigma, mu and tau of the Ornstein-Uhlenbeck process for each desired variable to be applied to weather data. Ranges can be specified to and a value will be select randomly for each episode. Defaults to None.
             reward (Any, optional): Reward function instance used for agent feedback. Defaults to LinearReward.
             reward_kwargs (Optional[Dict[str, Any]], optional): Parameters to be passed to the reward function. Defaults to empty dict.
             max_ep_data_store_num (int, optional): Number of last sub-folders (one for each episode) generated during execution on the simulation.
@@ -433,6 +437,52 @@ class EplusEnv(gym.Env):
             self.logger.critical(
                 'Action space shape must match with number of action variables specified.')
             raise err
+
+        # WEATHER VARIABILITY
+        if 'weather_variability' in self.default_options:
+            def validate_params(params):
+                """Validate weather variability parameters."""
+                if not (isinstance(params, tuple) or isinstance(params, list)):
+                    raise ValueError(
+                        f"Invalid parameter for Ornstein-Uhlenbeck process: {params}. "
+                        "It must be a tuple of 3 elements."
+                    )
+                if len(params) != 3:
+                    raise ValueError(
+                        f"Invalid parameter for Ornstein-Uhlenbeck process: {params}. "
+                        "It must have exactly 3 values."
+                    )
+
+                for param in params:
+                    if not (
+                        isinstance(
+                            param,
+                            tuple) or isinstance(
+                            param,
+                            list) or isinstance(
+                            param,
+                            float)
+                    ):
+                        raise ValueError(
+                            f"Invalid parameter for Ornstein-Uhlenbeck process: {param}. "
+                            "It must be a tuple of two values (range), or a float."
+                        )
+                    if (isinstance(
+                            param, tuple) or isinstance(
+                            param, list)) and len(param) != 2:
+                        raise ValueError(
+                            f"Invalid parameter for Ornstein-Uhlenbeck process: {param}. "
+                            "Tuples must have exactly two values (range)."
+                        )
+
+            try:
+                # Validate each weather variability parameter
+                for _, params in self.default_options['weather_variability'].items(
+                ):
+                    validate_params(params)
+            except ValueError as err:
+                self.logger.critical(str(err))  # Convert the error to a string
+                raise err
 
     # ---------------------------------------------------------------------------- #
     #                                  Properties                                  #

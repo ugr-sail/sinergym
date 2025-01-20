@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('./../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'Sinergym'
-copyright = '2024, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy'
+copyright = '2025, J. Jiménez, J. Gómez, M. Molina, A. Manjavacas, A. Campoy'
 author = 'J. Jiménez, J. Gómez, M.l Molina, A. Manjavacas, A. Campoy'
 
 

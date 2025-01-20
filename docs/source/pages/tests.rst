@@ -43,6 +43,16 @@ To run tests for a specific module, such as ``test_common.py``, use the followin
 
   $ pytest tests/test_common.py -vv
 
+*************
+Test coverage
+*************
+
+To check the test coverage, you can use the following command:
+
+.. code:: sh
+
+  $ pytest --cov=. tests/ --cov-report xml:cov.xml
+
 ***************
 Available tests
 ***************
