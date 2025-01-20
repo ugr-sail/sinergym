@@ -444,7 +444,7 @@ class EplusEnv(gym.Env):
         if 'weather_variability' in self.default_options:
             def validate_params(params):
                 """Validate weather variability parameters."""
-                if not (isinstance(params, tuple) or isinstance(params, list)):
+                if not (isinstance(params, tuple)):
                     raise ValueError(
                         f"Invalid parameter for Ornstein-Uhlenbeck process: {params}. "
                         "It must be a tuple of 3 elements."
@@ -461,17 +461,13 @@ class EplusEnv(gym.Env):
                             param,
                             tuple) or isinstance(
                             param,
-                            list) or isinstance(
-                            param,
                             float)
                     ):
                         raise ValueError(
                             f"Invalid parameter for Ornstein-Uhlenbeck process: {param}. "
                             "It must be a tuple of two values (range), or a float."
                         )
-                    if (isinstance(
-                            param, tuple) or isinstance(
-                            param, list)) and len(param) != 2:
+                    if (isinstance(param, tuple)) and len(param) != 2:
                         raise ValueError(
                             f"Invalid parameter for Ornstein-Uhlenbeck process: {param}. "
                             "Tuples must have exactly two values (range)."

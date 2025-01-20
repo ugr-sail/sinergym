@@ -44,9 +44,13 @@ def process_environment_parameters(env_params: dict) -> dict:
             env_params['actuators'][actuator_name] = tuple(components)
 
     if env_params.get('weather_variability'):
-        for var_name, var_params in env_params['weather_variability'].items():
-            env_params['weather_variability'][var_name] = tuple(
-                var_params)
+        env_params['weather_variability'] = {
+            var_name: tuple(
+                tuple(param) if isinstance(param, list) else param
+                for param in var_params
+            )
+            for var_name, var_params in env_params['weather_variability'].items()
+        }
 
     if env_params.get('reward'):
         env_params['reward'] = eval(env_params['reward'])
