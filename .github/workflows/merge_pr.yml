@@ -26,31 +26,21 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
+      - name: Install autopep8 and isort
+        run: poetry install --no-interaction --only format
+
       - name: Apply isort
-        id: isort-step
-        # default configuration use --check-only and --diff instead of --in-place options.
-        uses: isort/isort-action@master
-        with:
-          configuration: --only-modified
+        id: isort
+        run: poetry run isort .
+        continue-on-error: true
 
-      - name: autopep8 check and fix
+      - name: apply autopep8
         id: autopep8
-        uses: peter-evans/autopep8@v2
-        with:
-          args: --exit-code --recursive --in-place --aggressive --aggressive .
-
-      - name: Detect changes by isort
-        uses: tj-actions/verify-changed-files@v18
-        id: verify-isort-update
-        with:
-          files: |
-            tests/
-            sinergym/
-            examples/
-            *.py
+        run: poetry run autopep8 --exit-code --recursive --in-place --aggressive --aggressive .
+        continue-on-error: true
 
       - name: Commit format changes
-        if: steps.autopep8.outputs.exit-code == 2 || steps.verify-isort-update.outputs.files_changed == 'true'
+        if: steps.autopep8.outcome != 'success' || steps.isort.outcome != 'success'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Automatic format fixes (autopep8 + isort)
