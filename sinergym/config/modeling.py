@@ -103,6 +103,8 @@ class ModelJSON(object):
         # Weather data (epw.weather object)
         self.weather_data = Weather()
         self.weather_data.read(self._weather_path)
+        # Weather variability if exists
+        self.weather_variability_config = None
 
         # ----------------------------- Other attributes ----------------------------- #
 
@@ -340,7 +342,7 @@ class ModelJSON(object):
 
             # Check if there are ranges specified in params and get a random
             # value
-            variability_config = {
+            self.weather_variability_config = {
                 weather_var: tuple(
                     np.random.uniform(param[0], param[1]) if isinstance(param, tuple) else param
                     for param in params
@@ -348,21 +350,15 @@ class ModelJSON(object):
                 for weather_var, params in weather_variability.items()
             }
 
-            # Write variability_config to a JSON file for episode
-            config_path = f"{
-                self.episode_path}/weather_variability_config.json"
-            with open(config_path, 'w') as f:
-                json.dump(variability_config, f)
-
             # Apply Ornstein-Uhlenbeck process to weather data
             weather_data_mod.dataframe = ornstein_uhlenbeck_process(
                 data=self.weather_data.dataframe,
-                variability_config=variability_config)
+                variability_config=self.weather_variability_config)
 
             self.logger.info(
                 'Weather noise applied in columns: {}'.format(
                     list(
-                        variability_config.keys())))
+                        self.weather_variability_config.keys())))
 
             # Modify filename to reflect noise addition
             filename = f"{filename.split('.epw')[0]}_OU_Noise.epw"
