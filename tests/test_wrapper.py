@@ -850,9 +850,14 @@ def test_custom_loggers(env_demo, custom_logger_wrapper):
     assert logger.interactions == 0
 
 
-def test_CSVlogger_wrapper(env_demo):
+@pytest.mark.parametrize('env_name',
+                         [('env_demo'),
+                          ('env_5zone_stochastic')
+                          ])
+def test_CSVlogger_wrapper(env_name, request):
+    env = request.getfixturevalue(env_name)
 
-    env = CSVLogger(env=LoggerWrapper(env=NormalizeObservation(env=env_demo)))
+    env = CSVLogger(env=LoggerWrapper(env=NormalizeObservation(env=env)))
     # Check progress CSV path
     assert env.get_wrapper_attr('progress_file_path') == env.get_wrapper_attr(
         'workspace_path') + '/progress.csv'
@@ -862,6 +867,8 @@ def test_CSVlogger_wrapper(env_demo):
 
     # Assert logger files are not created
     assert not os.path.isfile(env.get_wrapper_attr('progress_file_path'))
+    assert not os.path.isfile(env.get_wrapper_attr(
+        'weather_variability_config_path'))
     assert not os.path.isdir(env.get_wrapper_attr('episode_path') + '/monitor')
 
     # simulating short episode
@@ -881,6 +888,15 @@ def test_CSVlogger_wrapper(env_demo):
         reader = csv.reader(csvfile, delimiter=',')
         # Header row and episode summary
         assert len(list(reader)) == 2
+    if env_name == 'env_demo':
+        # File not exists
+        assert not os.path.isfile(env.get_wrapper_attr(
+            'weather_variability_config_path'))
+    else:
+        with open(env.get_wrapper_attr('weather_variability_config_path'), mode='r', newline='') as csvfile:
+            reader = csv.reader(csvfile, delimiter=',')
+            # Header row and episode config
+            assert len(list(reader)) == 2
     # Check csv in monitor is created correctly (only check with observations)
     with open(episode_path + '/monitor/observations.csv', mode='r', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')

@@ -1478,6 +1478,9 @@ class CSVLogger(gym.Wrapper):
         self.progress_file_path = self.get_wrapper_attr(
             'workspace_path') + '/progress.csv'
 
+        self.weather_variability_config_path = self.get_wrapper_attr(
+            'workspace_path') + '/weather_variability_config.csv'
+
         self.logger.info('Wrapper initialized.')
 
     def reset(self,
@@ -1601,6 +1604,31 @@ class CSVLogger(gym.Wrapper):
                 if self.get_wrapper_attr('episode') == 1:
                     writer.writerow(list(episode_summary.keys()))
                 writer.writerow(list(episode_summary.values()))
+
+            # Update weather_variability_config if exists
+            modeling = self.get_wrapper_attr('model')
+            config_path = self.get_wrapper_attr(
+                'weather_variability_config_path')
+
+            if modeling.weather_variability_config is not None:
+                with open(config_path, 'a+') as f:
+                    writer = csv.writer(f)
+
+                    # If first episode, write header
+                    if self.get_wrapper_attr('episode') == 1:
+                        header = ['episode_num'] + [
+                            f"{var_name}_{var_param}"
+                            for var_name in list(modeling.weather_variability_config.keys())
+                            for var_param in ['sigma', 'mu', 'tau']
+                        ]
+                        writer.writerow(header)
+
+                    # Write OU params for each weather variable
+                    var_values = list()
+                    var_values = [
+                        self.get_wrapper_attr('episode')] + [
+                        value for params in modeling.weather_variability_config.values() for value in params]
+                    writer.writerow(var_values)
 
 
 # ---------------------------------------------------------------------------- #
