@@ -154,7 +154,7 @@ The following are some of the projects using *Sinergym*:
 
 ## Citing Sinergym
 
-If you use *Sinergym* in your work, please cite our [paper](https://dl.acm.org/doi/abs/10.1145/3486611.3488729):
+If you use *Sinergym* in your work, please cite our [paper](https://www.sciencedirect.com/science/article/abs/pii/S0378778824011915):
 
 ```bibtex
 @article{Campoy2025sinergym,
