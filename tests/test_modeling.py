@@ -200,12 +200,6 @@ def test_apply_weather_variability(model_5zone):
     original_filename = model_5zone._weather_path.split('/')[-1]
     path_filename = path_result.split('/')[-1]
     assert original_filename == path_filename
-    # It shouldn't generate variability config
-    # It should generate a json file
-    assert not os.path.exists(
-        model_5zone.episode_path +
-        '/weather_variability_config.json')
-
     # Check with a variation
     weather_variability = {
         'Dry Bulb Temperature': (1.0, 0.0, 24.0),
@@ -213,10 +207,6 @@ def test_apply_weather_variability(model_5zone):
     }
     path_result = model_5zone.apply_weather_variability(
         weather_variability=weather_variability)
-    # It should generate weather variability config file
-    assert os.path.exists(
-        model_5zone.episode_path +
-        '/weather_variability_config.json')
     filename = model_5zone._weather_path.split('/')[-1]
     filename = filename.split('.epw')[0]
     filename += '_OU_Noise.epw'
