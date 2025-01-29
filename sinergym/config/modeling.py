@@ -245,6 +245,20 @@ class ModelJSON(object):
                     list(self.building['ZoneHVAC:LowTemperatureRadiant:VariableFlow'].values())):
                 definition['maximum_cold_water_flow'] = self.weather_conf['maximum_cold_water_flow'][i]
 
+        design_keys = ['setpoint_control_type',
+                       'heating_control_throttling_range',
+                       'cooling_control_throttling_range']
+        applicable_design_keys = {
+            key: value for key,
+            value in self.weather_conf.items() if key in design_keys}
+
+        if applicable_design_keys:
+            designs = list(
+                self.building['ZoneHVAC:LowTemperatureRadiant:VariableFlow:Design'].values())
+            for definition in designs:
+                for key in applicable_design_keys:
+                    definition[key] = applicable_design_keys[key]
+
     def adapt_building_to_variables(self) -> None:
         """This method reads all variables and write it in the building model as Output:Variable field.
         """
