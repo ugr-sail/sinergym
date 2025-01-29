@@ -271,8 +271,9 @@ def json_to_variables(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
                 raise RuntimeError
 
             elif isinstance(specification['keys'], list):
-                assert len(specification['variable_names']) == len(
-                    specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
+                assert len(
+    specification['variable_names']) == len(
+         specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
                 for variable_name, key_name in list(
                         zip(specification['variable_names'], specification['keys'])):
                     output[variable_name] = (variable, key_name)
@@ -378,16 +379,13 @@ def convert_conf_to_env_parameters(
         if weather_variability:
 
             # Cast weather variability variation from list to tuple
-            for variable, variation in weather_variability.items():
-                weather_variability[variable] = tuple(variation)
-                # Check that the weather variability variation is a tuple of
-                # three elements
-                try:
-                    assert len(weather_variability[variable]) == 3
-                except AssertionError as err:
-                    logger.critical(
-                        'Weather variability variation in {} must be a tuple of three elements (sigma, mu and tao of OU process)'.format(variable))
-                    raise err
+            weather_variability = {
+                var_name: tuple(
+                    tuple(param) if isinstance(param, list) else param
+                    for param in var_params
+                )
+                for var_name, var_params in weather_variability.items()
+            }
 
             id = 'Eplus-' + conf['id_base'] + '-' + \
                 weather_id + '-continuous-stochastic-v1'
