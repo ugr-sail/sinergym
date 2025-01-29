@@ -271,9 +271,8 @@ def json_to_variables(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
                 raise RuntimeError
 
             elif isinstance(specification['keys'], list):
-                assert len(
-    specification['variable_names']) == len(
-         specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
+                assert len(specification['variable_names']) == len(
+                    specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
                 for variable_name, key_name in list(
                         zip(specification['variable_names'], specification['keys'])):
                     output[variable_name] = (variable, key_name)
