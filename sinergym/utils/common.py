@@ -360,6 +360,7 @@ def convert_conf_to_env_parameters(
     variables = json_to_variables(conf['variables'])
     meters = json_to_meters(conf['meters'])
     actuators = json_to_actuators(conf['actuators'])
+    context = json_to_actuators(conf['context'])
 
     assert len(conf['weather_specification']['weather_files']) == len(
         conf['weather_specification']['keys']), 'Weather files and id keys must have the same len'
@@ -381,6 +382,8 @@ def convert_conf_to_env_parameters(
             'variables': variables,
             'meters': meters,
             'actuators': actuators,
+            'context': context,
+            'initial_context': conf.get('initial_context'),
             'reward': eval(conf['reward']),
             'reward_kwargs': conf['reward_kwargs'],
             'max_ep_data_store_num': conf['max_ep_data_store_num'],
@@ -410,6 +413,8 @@ def convert_conf_to_env_parameters(
                 'variables': variables,
                 'meters': meters,
                 'actuators': actuators,
+                'context': context,
+                'initial_context': conf.get('initial_context'),
                 'weather_variability': weather_variability,
                 'reward': eval(conf['reward']),
                 'reward_kwargs': conf['reward_kwargs'],
