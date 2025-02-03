@@ -149,6 +149,8 @@ class LoggerStorage():
         """
         if isinstance(action, np.ndarray):
             action = action.tolist()
+        if isinstance(action, (int, np.int64)):
+            action = [action]
         if isinstance(obs, np.ndarray):
             obs = obs.tolist()
         self.observations.append(obs)
