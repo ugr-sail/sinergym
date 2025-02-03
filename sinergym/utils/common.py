@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 import xlsxwriter
 from eppy.modeleditor import IDF
+from stable_baselines3.common.noise import NormalActionNoise
 
 import sinergym
 from sinergym.utils.constants import LOG_COMMON_LEVEL, YEAR

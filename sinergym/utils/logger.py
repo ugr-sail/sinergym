@@ -199,8 +199,9 @@ class LoggerStorage():
 
 
 try:
-    import wandb
     from stable_baselines3.common.logger import KVWriter
+
+    import wandb
 
     class WandBOutputFormat(KVWriter):  # pragma: no cover
         """
