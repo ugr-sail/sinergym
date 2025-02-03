@@ -1,12 +1,11 @@
 import argparse
-import yaml
 import sys
 import traceback
 from datetime import datetime
 
 import gymnasium as gym
 import numpy as np
-import wandb
+import yaml
 from stable_baselines3 import *
 from stable_baselines3 import __version__ as sb3_version
 from stable_baselines3.common.callbacks import CallbackList
@@ -17,8 +16,10 @@ from stable_baselines3.common.noise import NormalActionNoise
 
 import sinergym
 import sinergym.utils.gcloud as gcloud
+import wandb
 from sinergym.utils.callbacks import *
-from sinergym.utils.common import is_wrapped, process_algorithm_parameters, process_environment_parameters
+from sinergym.utils.common import (is_wrapped, process_algorithm_parameters,
+                                   process_environment_parameters)
 from sinergym.utils.constants import *
 from sinergym.utils.logger import WandBOutputFormat
 from sinergym.utils.rewards import *
