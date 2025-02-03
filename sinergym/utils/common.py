@@ -284,8 +284,7 @@ def json_to_variables(variables: Dict[str, Any]) -> Dict[str, Tuple[str, str]]:
                 raise RuntimeError
 
             elif isinstance(specification['keys'], list):
-                assert len(
-                    specification['variable_names']) == len(
+                assert len( specification['variable_names']) == len(
                     specification['keys']), 'variable names and keys must have the same len in {}'.format(variable)
                 for variable_name, key_name in list(
                         zip(specification['variable_names'], specification['keys'])):
@@ -431,7 +430,7 @@ def convert_conf_to_env_parameters(
 # ---------------------------------------------------------------------------- #
 
 
-def process_environment_parameters(env_params: dict) -> dict:
+def process_environment_parameters(env_params: dict) -> dict:  # pragma: no cover
     # Transform required str's into Callables or lists in tuples
     if env_params.get('action_space'):
         env_params['action_space'] = eval(
@@ -476,7 +475,7 @@ def process_environment_parameters(env_params: dict) -> dict:
     return env_params
 
 
-def process_algorithm_parameters(alg_params: dict):
+def process_algorithm_parameters(alg_params: dict):  # pragma: no cover
 
     # Transform required str's into Callables or list in tuples
     if alg_params.get('train_freq') and isinstance(
