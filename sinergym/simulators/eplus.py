@@ -5,7 +5,7 @@ Class for connecting EnergyPlus with Python using pyenergyplus API.
 import sys
 import threading
 from pathlib import Path
-from queue import Queue
+from queue import Queue, Empty
 from typing import Any, Dict, List, Optional, Tuple
 
 from pyenergyplus.api import EnergyPlusAPI
@@ -32,10 +32,12 @@ class EnergyPlus(object):
             obs_queue: Queue,
             info_queue: Queue,
             act_queue: Queue,
+            context_queue: Queue,
             time_variables: List[str] = [],
             variables: Dict[str, Tuple[str, str]] = {},
             meters: Dict[str, str] = {},
-            actuators: Dict[str, Tuple[str, str, str]] = {}):
+            actuators: Dict[str, Tuple[str, str, str]] = {},
+            context: Dict[str, Tuple[str, str, str]] = {}):
         """EnergyPlus runner class. This class run an episode in a thread when start() is called.
 
         Args:
@@ -43,10 +45,12 @@ class EnergyPlus(object):
             obs_queue (Queue): Observation queue for Gymnasium environment communication.
             info_queue (Queue): Extra information dict queue for Gymnasium environment communication.
             act_queue (Queue): Action queue for Gymnasium environment communication.
+            context_queue (Queue): Context queue for Gymnasium environment communication, modifying internal states.
             time_variables (List[str]): EnergyPlus time variables we want to observe. The name of the variable must match with the name of the E+ Data Transfer API method name. Defaults to empty list
             variables (Dict[str, Tuple[str, str]]): Specification for EnergyPlus Output:Variable. The key name is custom, then tuple must be the original variable name and the output variable key. Defaults to empty dict.
             meters (Dict[str, str]): Specification for EnergyPlus Output:Meter. The key name is custom, then value is the original EnergyPlus Meters name.
             actuators (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Input Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. Defaults to empty dict.
+            context (Dict[str, Tuple[str, str, str]]): Specification for EnergyPlus Context Actuators. The key name is custom, then value is a tuple with actuator type, value type and original actuator name. These values are processed as real-time building configuration instead of real-time control. Defaults to empty dict.
         """
 
         # ---------------------------------------------------------------------------- #
@@ -57,6 +61,7 @@ class EnergyPlus(object):
         self.obs_queue = obs_queue
         self.info_queue = info_queue
         self.act_queue = act_queue
+        self.context_queue = context_queue
 
         # Warmup process
         self.warmup_queue = Queue()
@@ -70,6 +75,7 @@ class EnergyPlus(object):
         self.var_handlers: Optional[Dict[str, int]] = None
         self.meter_handlers: Optional[Dict[str, int]] = None
         self.actuator_handlers: Optional[Dict[str, int]] = None
+        self.context_handlers: Optional[Dict[str, int]] = None
         self.available_data: Optional[str] = None
 
         # Simulation elements to read/write
@@ -77,6 +83,7 @@ class EnergyPlus(object):
         self.variables = variables
         self.meters = meters
         self.actuators = actuators
+        self.context = context
 
         # Simulation thread
         self.energyplus_thread: Optional[threading.Thread] = None
@@ -168,6 +175,10 @@ class EnergyPlus(object):
         # register callback used to send actions
         self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
             self.energyplus_state, self._process_action)
+
+        # register callback used to process context
+        self.api.runtime.callback_end_zone_timestep_after_zone_reporting(
+            self.energyplus_state, self._process_context)
 
         # run EnergyPlus in a non-blocking way
         def _run_energyplus(runtime, cmd_args, state, results):
@@ -340,6 +351,36 @@ class EnergyPlus(object):
                 #     'Set in actuator {} value {}.'.format(
                 #         act_name, next_action[i]))
 
+    def _process_context(self, state_argument: int) -> None:
+        """EnergyPlus callback that sets actuator as a building context, instead of control.
+
+        Args:
+            state_argument (int): EnergyPlus API state
+        """
+
+        # If simulation is complete or not initialized --> do nothing
+        if self.simulation_complete:
+            return
+        # Check system is ready (only is executed is not)
+        self._init_system(self.energyplus_state)
+        if not self.system_ready:
+            return
+        # Get next action from queue and check type
+        try:
+            next_context = self.context_queue.get(block=False)
+            if not self.simulation_complete:
+                # Set the context values obtained in context handlers
+                # (actuators)
+                for i, (context_name, context_handle) in enumerate(
+                        self.context_handlers.items()):
+                    self.exchange.set_actuator_value(
+                        state=state_argument,
+                        actuator_handle=context_handle,
+                        actuator_value=next_context[i]
+                    )
+        except Empty:
+            pass
+
     def _init_system(self, state_argument: int) -> None:
         """Indicate whether system are ready to work. After waiting to API data is available, handlers are initialized, and warmup flag is correct.
 
@@ -382,6 +423,13 @@ class EnergyPlus(object):
                     key: self.exchange.get_actuator_handle(
                         state_argument, *actuator)
                     for key, actuator in self.actuators.items()
+                }
+
+                # Get context handlers using context info
+                self.context_handlers = {
+                    key: self.exchange.get_actuator_handle(
+                        state_argument, *context)
+                    for key, context in self.context.items()
                 }
 
                 # Save available_data information
@@ -429,6 +477,7 @@ class EnergyPlus(object):
                 self.obs_queue,
                 self.act_queue,
                 self.info_queue,
+                self.context_queue,
                 self.warmup_queue]:
             while not q.empty():
                 q.get()
