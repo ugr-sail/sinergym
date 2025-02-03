@@ -116,7 +116,6 @@ class EplusEnv(gym.Env):
             env_name=env_name,
             json_file=self.building_file,
             weather_files=self.weather_files,
-            actuators=self.actuators,
             variables=self.variables,
             meters=self.meters,
             max_ep_store=max_ep_data_store_num,
